@@ -1,4 +1,6 @@
 package com.jci.dao.impl;
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -269,9 +271,13 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 			Transaction tx = session.beginTransaction();
 			SQLQuery query = session.createSQLQuery(queryStr);
 	        res = query.list();
+	        RawJuteProcurementAndPayment raw = new RawJuteProcurementAndPayment();
+	        System.err.println("res"+res);
+	        if(!res.isEmpty())
+	        {
 			Object[] o = res.get(0);
 
-				RawJuteProcurementAndPayment raw = new RawJuteProcurementAndPayment();
+				
 				String farmer = (String)o[0];
 				String datepurchase = (String)o[1];
 				String basis = (String)o[2];
@@ -306,7 +312,10 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 				raw.setSlip_image((String)o[15]);
 			//	result.add(raw);
 				//System.out.println("farmer  ====== "+farmer);
-
+	        }
+	        else {
+				return raw ;
+			}
 			  return raw;
 	}
 
@@ -447,7 +456,7 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 	@Override
 	public JSONArray searchTally(String tallyno) {
 		JSONArray arr = new JSONArray();
-		String	queryStr="select tallyslipno,status from jciprocurement where tallyslipno in ("+tallyno+")";
+		String	queryStr="select tallyslipno,status from jciprocurement where tallyslipno in ('"+tallyno+"')";
 		List<RawJuteProcurementAndPayment> result = new ArrayList<>();
 		List<Object[]> res = new ArrayList<>();
 

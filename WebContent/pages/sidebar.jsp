@@ -122,14 +122,14 @@ body {
 				  	<li data-pre="18" id="o18"><a href="mspGradesPriceList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View MSP </b></a></li>
 					<li data-pre="19" id="o19"><a href="viewCommercialCeilingPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Commercial Ceiling Price Intimation</b></a></li>
 					<li data-pre="20" id="o20"><a href="tallyapproval.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Verification of Tally Slip</b></a></li>
-					<li data-pre="21" id="o74"><a href="viewVerifiedTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RO Finance Verification of Tally Slip</b></a></li>
+					<li data-pre="74" id="o74"><a href="viewVerifiedTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RO Finance Verification of Tally Slip</b></a></li>
 					<li data-pre="53" id="o53"><a href="viewVerifiedTallySlipList_RM.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RM Payment Process of Tally Slip</b></a></li>
 					<li data-pre="54" id="o54"><a href="viewVerifiedTallySlipList_ZM.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>HO Payment Process of Tally Slip</b></a></li>
 					<li data-pre="22" id="o22"><a href="disputedtallyslip.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Disputed Tally Slip</b></a></li>					
 					<li data-pre="55" id="o55"><a href="tallyListRMA.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RM Purchase Date Approval- Tally Slip</b></a></li>
 					<li data-pre="23" id="o23"><a href="dailyPurchaseList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase List</b></a></li>				
 					<li data-pre="24" id="o24"><a href="viewDistributionoftallyslips.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Distribution of Tally Slip</b></a></li>
-                    <li data-pre="59" id="o75"><a href="SearchTally.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Tally Slip Status</b></a></li>
+                    <li data-pre="75" id="o75"><a href="SearchTally.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Tally Slip Status</b></a></li>
 					<li data-pre="58" id="o58"><a href="verifiedHoldTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>F & A Hold Tally Slip List</b></a></li>
 					<li data-pre="76" id="o76"><a href="uploadexcelsheet.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Upload Payment Excel Sheet</b></a></li>
 				</ul> </li> 
@@ -227,7 +227,7 @@ body {
 					    }
 				}
 			});
-		for(var i=1; i<=90;i++){
+		for(var i=1; i<=100;i++){
 			$("#o"+i).hide();
 			
 			}
@@ -260,14 +260,17 @@ $.ajax({
 				//	console.log("values "+values);
 
 
-					for(var j=0;j<userAction.length;j++){
-						for(var i=0;i<=58; i++){
-					if($("#o"+i).data("pre") == userAction[j]){
-					//console.log(userAction[j]);
-						$("#o"+i).show();
-							}
-						}
-					}	 
+					for(var j=0;j<userAction.length;j++)
+					{
+						for(var i=0;i<=100; i++)
+						  {
+					         if($("#o"+i).data("pre") == userAction[j])
+					            {
+					               //console.log(userAction[j]);
+						            $("#o"+i).show();
+							     }
+						   }
+					 }	 
 					
 				});
 			}

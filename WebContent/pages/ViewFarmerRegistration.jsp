@@ -7,6 +7,7 @@
 <%@page import="com.jci.model.StateList"%>
 <%@page import="com.jci.controller.LoginController"%>
 <%@page import="com.jci.common.Encry"%>
+<%@page import="java.net.URLEncoder"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -138,12 +139,20 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 									
 									int i = 1;
 									for(FarmerRegModelDTO farmerRegModelList : allFarmersList){
-										String firstname = "";
+										/*String firstname = "";
 										String middlename = "";
 										String lastname = "";
 										String fname = "";
+										String nfname = "";
 										String[] farmerName = new  String[3];
 										farmerName = farmerRegModelList.getF_NAME().split(" ");
+										
+									    for(int k = 0; k< farmerName.length ; k++)
+									    {
+									    	String farmername = farmerName[k];
+									    	nfname = nfname+farmername+" ";
+									    }
+									 	
 										if(farmerName.length == 1){
 										firstname = farmerRegModelList.getF_NAME().split(" ")[0];
 										fname = firstname;
@@ -164,21 +173,21 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 											 if(middlename.equalsIgnoreCase("NA"))
 												 middlename = "";
 											 fname = firstname +" "+middlename+" "+lastname;
-											}
-     						           String encryptedid = Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()),key);
-
+											} */
+     						           //String encryptedid = Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()),key);
+     						          String encryptedid = URLEncoder.encode(Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()), key), "UTF-8");
 								%>
 									<tr role="row" class="odd">
 									<td class="sorting_1"><%=i%></td>
 									<td><a href = "viewFarmerReg.obj?id=<%=encryptedid%>" ><u><%=farmerRegModelList.getRegno() %></u></a></td>
-									<td><%=fname %></td> 
+									<td><%=farmerRegModelList.getF_NAME() %></td> 
 									<td><%=farmerRegModelList.getF_MOBILE() %></td>
 									<td><%=farmerRegModelList.getState() %></td>
 									<td><%=farmerRegModelList.getDistrict() %></td>
 									<td><%=farmerRegModelList.getBlock() %></td>
 									<td>
 								<%
-										if(farmerRegModelList.getIS_VERIFIED()==0){d
+										if(farmerRegModelList.getIS_VERIFIED()==0){
 											out.print("Not Verified");
 										}else{
 											out.print("Verified");
@@ -189,7 +198,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 										<%-- <td><%=farmerRegModelList.getF_REG_BY() %></td> --%>
 										<% if(farmerRegModelList.getF_DOC_Mandate()==null || farmerRegModelList.getF_DOC_Mandate().equalsIgnoreCase("null") ){
 											%>
-											<td><a href="editFarmerReg.obj?id=<%=encryptedid%>"class="btn btn-danger btn-sm btn-block" style="background: darkgreen;">Update Mandate</a></td>
+											<td><a href="editFarmerReg.obj?id=<%=farmerRegModelList.getF_ID()%>"class="btn btn-danger btn-sm btn-block" style="background: darkgreen;">Update Mandate</a></td>
 									<% 
 										}
 										else{

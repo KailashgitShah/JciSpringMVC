@@ -35,9 +35,13 @@ import java.text.ParseException;
 import com.jci.model.BalePreparation;
 import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.jci.model.FarmerRegModel;
+
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.File;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +68,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jci.model.DistrictModel;
 import com.jci.model.StateList;
 import com.jci.model.PincodeModel;
+import com.jci.model.PoliceStationModel;
+
 import java.util.List;
 import java.util.Random;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,6 +125,8 @@ import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -1723,9 +1731,9 @@ public class InsertDataController
             if (ipAddress == null) {
                 ipAddress = request.getRemoteAddr();
             }
-            final String zone = request.getParameter("zone");
-            final String region = request.getParameter("region");
-            final String centerordpc = request.getParameter("centerordpc");
+            String zone = request.getParameter("zone");
+             String region = request.getParameter("region");
+             String centerordpc = request.getParameter("centerordpc");
             final String employeeid = request.getParameter("employeeid");
             final String employeename = request.getParameter("employeename");
             final String email = request.getParameter("emailAddress");
@@ -1737,6 +1745,15 @@ public class InsertDataController
             final String roletype = request.getParameter("roletype");
             final String roleid = request.getParameter("roleid");
             final String duplicateEmail = request.getParameter("emailCheck");
+            if(zone == null) {
+            	zone = "";
+            }
+            if(region == null) {
+            	region = "";
+            }
+            if(centerordpc == null) {
+            	centerordpc = "";
+            }
             
             if(isStringValid(zone) || isStringValid(region) ||isStringValid(centerordpc) ||isStringValid(employeeid) || isStringValid(employeename) || isStringValid(email)
                 || isStringValid(mobileno) || isStringValid(password) ||isStringValid(usertype) ||isStringValid(role) || isStringValid(username1) || isStringValid(roletype) || isStringValid(roleid) ||isStringValid(duplicateEmail)
@@ -1767,6 +1784,8 @@ public class InsertDataController
             userRegistration.setRegistrationdate(new Date());
             userRegistration.setUsername(username1);
             userRegistration.setUsertype(usertype);
+            userRegistration.setFailedLoginAttempts(0);
+            userRegistration.setUserStatus("Active");
             
            // userRegistration.setRoleId(Integer.parseInt(role));
             final boolean emailNotExist = this.UserRegistrationService.validateEmail(email);
@@ -1878,8 +1897,14 @@ public class InsertDataController
     @RequestMapping({ "findDpcByRegion" })
     public String findDpcByRegion(final HttpServletRequest request) {
     	String username =(String)request.getSession().getAttribute("usrname");
+    	String role = request.getParameter("role");
+    	if(role == null)
+    	{
+    		role = "";
+    	}
+    	String id = request.getParameter("id");
         final Gson gson = new Gson();
-        return gson.toJson((Object)this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
+        return gson.toJson((Object)this.purchaseCenterService.purchaseCenter(id,role));
     }
     
     @RequestMapping({ "editFarmer" })
@@ -1932,7 +1957,7 @@ public class InsertDataController
     }
     
     @RequestMapping(value = { "saveVerification" }, method = { RequestMethod.POST })
-    public ModelAndView saveVerification(final HttpServletRequest request) {
+    public ModelAndView saveVerification(final HttpServletRequest request, RedirectAttributes redirectAttributes) {
     	String username =(String)request.getSession().getAttribute("usrname");
         final ModelAndView mv = new ModelAndView("ViewFarmerRegistration");
         if(username == null) {
@@ -1941,80 +1966,75 @@ public class InsertDataController
         try {
         	
             final int id = Integer.parseInt(request.getParameter("id"));
-            final String farmer_reg_no = request.getParameter("farmer_reg_no");
-            final String ifsc_code = request.getParameter("ifsc_code");
-            final String ac_no = request.getParameter("ac_no");
-            final String farmer_name = request.getParameter("farmer_name");
+             String farmer_reg_no = request.getParameter("farmer_reg_no");
+             farmer_reg_no = farmer_reg_no.trim();
+             String ifsc_code = request.getParameter("ifsc_code");
+             ifsc_code = ifsc_code.trim();
+             String ac_no = request.getParameter("ac_no");
+             ac_no = ac_no.trim();
+             String farmer_name = request.getParameter("farmer_name");
+             farmer_name = farmer_name.trim();
           //  final String address = request.getParameter("address");
             // removed by animesh as per instruction 28 june 23
          //   final String idProofType = request.getParameter("idProofType");
          //   final String identityProofNo = request.getParameter("identityProofNo");
             final FarmerRegModel farmerdetails = this.farmerRegService.edit(id);
-            final String farmerRegNoDb = farmerdetails.getF_REG_NO();
-            final String ifscDb = farmerdetails.getF_BANK_IFSC();
-            final String accNoDb = farmerdetails.getF_AC_NO();
-            final String farmerNameDb = farmerdetails.getF_NAME();
+             String farmerRegNoDb = farmerdetails.getF_REG_NO();
+             farmerRegNoDb = farmerRegNoDb.trim();
+             String ifscDb = farmerdetails.getF_BANK_IFSC();
+             ifscDb = ifscDb.trim();
+             String accNoDb = farmerdetails.getF_AC_NO();
+             accNoDb = accNoDb.trim();
+             String farmerNameDb = farmerdetails.getF_NAME();
+             farmerNameDb = farmerNameDb.trim();
+             
         //    final String farmerAddressDb = farmerdetails.getF_ADDRESS();
         	String placeofactivity =(String)request.getSession().getAttribute("dpcId");
          	String regionId =(String)request.getSession().getAttribute("regionId");
          	String zoneId =(String)request.getSession().getAttribute("zoneId");
             final String farmerIdProofTypeDb = farmerdetails.getF_ID_PROF_TYPE();
             final String farmerIdProodNumberDb = farmerdetails.getF_ID_PROF_NO();
+            
             String farmerRegNoFinal;
-            if (farmer_reg_no.equalsIgnoreCase(farmerRegNoDb)) {
+            if (farmer_reg_no.equalsIgnoreCase(farmerRegNoDb)) 
+            {
                 farmerRegNoFinal = farmerRegNoDb;
-                
             }
-            else {
-                farmerRegNoFinal = null;
-                
+            else { farmerRegNoFinal = null;
+            redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b>Please Check Farmer Registration no !</b> </div>\r\n");
+            return new ModelAndView((View)new RedirectView("verifyFarmer.obj"));
             }
+            
             String ifscDbFinal;
             if (ifsc_code.equalsIgnoreCase(ifscDb)) {
                 ifscDbFinal = ifsc_code;
-                
             }
-            else {
-                ifscDbFinal = null;
+            else { ifscDbFinal = null;
+            redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b>Please Check Farmer IFSC Code !</b> </div>\r\n");
+            return new ModelAndView((View)new RedirectView("verifyFarmer.obj"));
             }
+            
             String accNoDbFinal;
-            if (ac_no.equalsIgnoreCase(accNoDb)) {
+            if (ac_no.equalsIgnoreCase(accNoDb))
+            {
                 accNoDbFinal = ac_no;
-                
             }
             else {
-                accNoDbFinal = null;
-               
+            	accNoDbFinal = null;
+            redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b>Please Check Farmer Acount No !</b> </div>\r\n");
+            return new ModelAndView((View)new RedirectView("verifyFarmer.obj"));
             }
+            
             String farmerNameFinal;
-            System.out.println("farmer name = "+farmer_name);
-            if (farmer_name.equalsIgnoreCase(farmerNameDb)) {
+            if (farmer_name.equalsIgnoreCase(farmerNameDb)) 
+            {
                 farmerNameFinal = farmer_name;
-               
             }
-            else {
-                farmerNameFinal = null;
-              
+            else { farmerNameFinal = null;
+            redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b>Please Check Farmer Name !</b> </div>\r\n");
+            return new ModelAndView((View)new RedirectView("verifyFarmer.obj"));
             }
-			
-			
-/*			  String idProofTypeFinal; 
-			  if(idProofType.equalsIgnoreCase(farmerIdProofTypeDb)) 
-			  { idProofTypeFinal = idProofType;
-			  
-			  } else { idProofTypeFinal = null;
-			  
-			  }
-			 
-			
-			  String idProofNumberFinal; if
-			  (identityProofNo.equalsIgnoreCase(farmerIdProodNumberDb)) {
-			  idProofNumberFinal = identityProofNo;
-			  
-			  } else { idProofNumberFinal = null;
-			  
-			  }
-			 */
+            
             final VerifyFarmerModel verifyFarmer = new VerifyFarmerModel();
             verifyFarmer.setAccountno(accNoDbFinal);
             verifyFarmer.setFarmername(farmerNameFinal);
@@ -2035,10 +2055,8 @@ public class InsertDataController
             final List<FarmerRegModelDTO> allFarmersList = (List<FarmerRegModelDTO>)this.farmerRegService.verificationStatus( placeofactivity,  regionId,  zoneId);
             final VerifyFarmerModel farmerById = this.verifyFarmerService.findbyReg(farmer_reg_no);
 			if (farmerById.getRegno() != null && farmerById.getIfsccode() != null && farmerById.getAccountno() != null
-					&& farmerById.getFarmername() != null /*
-															 * && farmerById.getIdentityProofType() != null &&
-															 * farmerById.getIdentityProofNumber() != null
-															 */) {
+					&& farmerById.getFarmername() != null) 
+			{
 				System.out.println("update verification status");
                 this.farmerRegService.updateVerificationStatus(id);
             }
@@ -2063,9 +2081,21 @@ public class InsertDataController
         try {
         if (request.getParameter("id") != null) {
         	String key = LoginController.secretkey;
-    		String decryptedString = request.getParameter("id");
-    		final int id = Integer.parseInt(Encry.decrypt(decryptedString, key));
+    		//String decryptedString = request.getParameter("id");
+    		//String decryptedString = URLDecoder.decode(request.getParameter("id"), "UTF-8");
+    		//final int id = Integer.parseInt(Encry.decrypt(decryptedString, key));
+        	int id = Integer.parseInt(request.getParameter("id"));
             final FarmerRegModel farmerDetailsById = this.farmerRegService.find(id);
+            String state = stateList.statebyid(farmerDetailsById.getF_STATE());
+            List<String> alldistrict = distric.findByDistrictId(farmerDetailsById.getF_District());
+            String district = alldistrict.get(0);
+            int policestation = Integer.parseInt(farmerDetailsById.getPolice_station());
+            PoliceStationModel policemodel = PoliceStationService.find(policestation);
+            
+            farmerDetailsById.setF_STATE(state);
+            farmerDetailsById.setF_District(district);
+            farmerDetailsById.setPolice_station(policemodel.getPolice_stationName());
+            
             final List<StateList> Liststate = (List<StateList>)this.stateList.getAll();
             mv.addObject("Liststate", (Object)Liststate);
             mv.addObject("farmerDetailsById", (Object)farmerDetailsById);
@@ -4365,11 +4395,13 @@ public class InsertDataController
     	 String dpcId =(String)request.getSession().getAttribute("dpcId");
     	 String role_type = (String)request.getSession().getAttribute("roletype");
     	 String key = LoginController.secretkey;
-	     String decryptedString = request.getParameter("id");
-	     final int id = Integer.parseInt(Encry.decrypt(decryptedString, key));
+	    // String decryptedString = request.getParameter("id");
+	     final int id = Integer.parseInt(request.getParameter("id"));
         String region =(String)request.getSession().getAttribute("region"); 
         final VerifyTallySlip vrf = this.verifyTallySlipService.find(id);
+        System.out.println("vrf_________________"+vrf);
         final RawJuteProcurementAndPayment raw = this.rawJuteProcurAndPayService.findbyTally(vrf.getTallyNo(), Integer.parseInt(vrf.getRegion_id()));
+        System.out.println("raw_________________"+raw);
         final List<VerifyTallySlip> verifyList = (List<VerifyTallySlip>)this.verifyTallySlipService.getAll("RMD", region, role_type);
         mv.addObject("verifyTallySliList", (Object)verifyList);
         mv.addObject("vrftally", (Object)vrf);
@@ -4496,8 +4528,9 @@ public class InsertDataController
         }
 	   	String key = LoginController.secretkey;
 	 	String decryptedString = request.getParameter("tally");
-	 	final String tally = Encry.decrypt(decryptedString, key);
-        mv.addObject("tallyslip", (Object)tally);
+	 	//final String tally = Encry.decrypt(decryptedString, key);
+	 	System.err.println("tally+"+decryptedString);
+        mv.addObject("tallyslip", (Object)decryptedString);
         mv.setViewName("verifyTallySlip");
         
         return mv;
@@ -4812,16 +4845,33 @@ public class InsertDataController
 			int refid = Integer.parseInt(request.getParameter("id"));
 			UserRegistrationModel userRegistration = userRegService.find(refid);
 				String email = request.getParameter("emailAddress");
+				if(email == null)
+				{	email = "";}
 				String mobileno =  request.getParameter("mobile");
+				if(mobileno == null)
+				{	mobileno = "";}
 				String centername = request.getParameter("centerordpc");
+				if(centername == null)
+				{	centername = "";}
 				String roname =  request.getParameter("region");
+				if(roname == null)
+				{	roname = "";}
 				String zonename = request.getParameter("zone");
+				if(zonename == null)
+				{	zonename = "";}
 				String usertype = request.getParameter("usertype");
+				if(usertype == null)
+				{	usertype = "";}
 				userRegistration.setRefid(refid);
-				final String role = request.getParameter("rolename");
-		        final String roletype = request.getParameter("roletype");
-		        final String roleid = request.getParameter("roleid");
-		        System.err.println("before");
+				 String role = request.getParameter("rolename");
+				 if(role == null)
+					{	role = "";}
+		         String roletype = request.getParameter("roletype");
+		         if(roletype == null)
+					{	roletype = "";}
+		         String roleid = request.getParameter("roleid");
+		         if(roleid == null)
+					{	roleid = "0";}
                 if(isStringValid(email) || isStringValid(mobileno) || isStringValid(centername) || isStringValid(roname) || isStringValid(zonename)
                   || isStringValid(usertype) || isStringValid(role) || isStringValid(roletype) || isStringValid(roleid))
 		            {
@@ -4908,6 +4958,7 @@ public class InsertDataController
 	  
 	  @Value("${upload.tallyexcel}")
 	    String path;
+	  @ResponseBody
 	    @RequestMapping(value = { "update_paymentstatus" }, method = { RequestMethod.GET })
 	    public String updatedpaymentstatus(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpSession session) {
 	    	String a = "success";
@@ -4915,7 +4966,7 @@ public class InsertDataController
 	    	String username =(String)request.getSession().getAttribute("usrname");
 	    	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
 	    //	String path1 ="/Users/apple/Documents/Bob/";
-	    //	String path1 ="Downloads";
+	    	//String path1 ="Downloads";
 	    	//generating crop year
 	    	String cropyear = "";
 			Calendar cal = new GregorianCalendar();
@@ -4944,6 +4995,13 @@ public class InsertDataController
 	     String[] tally = tallyno.split(",");
 	     List<PaymentprocesstellyslipModel> list = new ArrayList();
 	     PaymentprocesstellyslipModel paymentlist = new PaymentprocesstellyslipModel();
+	     for(int i=0;i<tally.length;i++)
+         {
+     	    String tallyslipno = tally[i];
+     	    tallyslipno = tallyslipno.replace("\"", "");
+     	    System.out.println("tallyslipno = "+tallyslipno);
+     	this.verifyTallySlipService.updatestatustoPP(tallyslipno);
+         }
 	     String filename = "";
 	     double totalamount = 0;
 	     String jciref = "";
@@ -5063,12 +5121,7 @@ public class InsertDataController
 		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
 		          }
 	             
-		    	  for(int i=0;i<tally.length;i++)
-		            {
-		        	    String tallyslipno = tally[i];
-		        	    tallyslipno = tallyslipno.replace("\"", "");
-		        	this.verifyTallySlipService.updatestatustoPP(tallyslipno);
-		            }
+		    	 
 	            }
 	            catch (Exception e)   
 		        {  
@@ -5142,10 +5195,10 @@ public class InsertDataController
      			   return mv=new ModelAndView("Home");
              }
                String key = LoginController.secretkey;
-        	   String decryptedtallyNo = request.getParameter("tallyno");
-               String decryptedfarmerno = request.getParameter("farmerno");
-               String tallyNo = String.valueOf(Encry.decrypt(decryptedtallyNo, key));
-               String farmerno = String.valueOf(Encry.decrypt(decryptedfarmerno, key));
+        	   String tallyNo = request.getParameter("tallyno");
+               String farmerno = request.getParameter("farmerno");
+               //String tallyNo = String.valueOf(Encry.decrypt(decryptedtallyNo, key));
+               //String farmerno = String.valueOf(Encry.decrypt(decryptedfarmerno, key));
                
                session.setAttribute("farmerno", farmerno);
               // String farmerno1 =(String)request.getSession().getAttribute("farmerno");
@@ -5256,14 +5309,38 @@ public class InsertDataController
 	          			   Row row = sheet.getRow(i);
 	          			   Cell cell=row.getCell(7); 
 	          			   String jciref = cell.getStringCellValue();
+	          			   
 	          			   cell=row.getCell(11); 
 	          			   Integer utrno1 =(int) cell.getNumericCellValue();
 	          			   String utrno =""+utrno1;
+	          			   
 	          			   cell=row.getCell(12); 
-	          			   Date date = cell.getDateCellValue();
-	          			   DateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	          	           String strdate = outputDateFormat.format(date);
-	                       System.out.println(" jciref = "+ jciref +" utrno = "+ utrno  +" date = "+  strdate);
+	          			   String strdate = "";
+	                          int cellType = cell.getCellType();
+	                          if (cellType == Cell.CELL_TYPE_STRING)
+	                          {
+	                        	  // It's a String cell
+	                        	  strdate = cell.getStringCellValue();
+	                          }
+	                          else if (cellType == Cell.CELL_TYPE_NUMERIC) 
+	                          {
+	                              if (DateUtil.isCellDateFormatted(cell)) 
+	                              {
+	                                  // It's a date cell
+	                            	  Date date = cell.getDateCellValue();
+	                                  SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	                                  strdate = dateFormat.format(date);
+	                              } 
+	                              else {
+	                                  // It's a numeric cell
+	                                  strdate = String.valueOf(cell.getNumericCellValue());
+	                              }
+	                          }
+	          			   //DateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	          	           //String strdate = outputDateFormat.parse(date);
+	          	         //System.err.println("Date333333333"+date);
+	                       //System.out.println(" jciref = "+ jciref +" utrno = "+ utrno  +" date = "+  strdate);
+	                       
 	                       verifyTallySlipService.updateexceldata(jciref,utrno,strdate);
 	                       tally = jciref.split("-");
 	                       tallyno = tally[1];
@@ -5427,10 +5504,11 @@ public class InsertDataController
  		            }
            final boolean accountBool = Boolean.parseBoolean(duplicateAccNo);
            final String F_BANK_DOCupload = F_BANK_DOC.getOriginalFilename();
-           String checkfilename = "(?i).+\\\\.(jpg|jpeg|png)$";
+           String checkfilename = "(?i).+\\.(jpg|jpeg|png)$";
            final String b_doc = request.getParameter("BANK_DOC");
            final String id_proof = request.getParameter("ID_PROF");
            final String reg_form = request.getParameter("REG_FORM");
+           
            
            if(!b_doc.matches(checkfilename) || !id_proof.matches(checkfilename) ||!reg_form.matches(checkfilename))
            {

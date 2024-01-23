@@ -336,7 +336,10 @@ var hasError2 = false;
 	
 	<script>
        $("#role").change(function () {
-             
+    	   var html = "<option disabled selected value>-Select-</option>";
+			$("#centerordpc").html(html);
+			$("#region").html(html);
+			
              var val = $('#role option:selected').data("id");
              document.getElementById("roletype").value =  val;
            
@@ -960,7 +963,7 @@ function deleteErrorMsg(){
 					url:"findRoByZone.obj",
 					data:{"id":id},
 					success:function(result){
-						alert(result)
+						//alert(result)
 		 				var data= jQuery.parseJSON(result);
 	 	 				var html = "<option disabled selected value>-Select-</option>";
 		 				  for (var i = 0; i< data.length; i++){
@@ -975,11 +978,12 @@ function deleteErrorMsg(){
 		
 		$("#region").on("change", function() {
 			var id = (this.value);	
+			var role = document.getElementById("role").value;
 			if(id!=null){
 				$.ajax({
 					type:"GET",
 					url:"findDpcByRegion.obj",
-					data:{"id":id},
+					data:{"id":id,"role":role},
 					success:function(result){
 		 				   var data= jQuery.parseJSON(result);
 	 	 					 var html = "<option disabled selected value>-Select-</option>";
@@ -1016,7 +1020,7 @@ function deleteErrorMsg(){
 		    let text = val;
 		    let result = text.indexOf(" ");
 		    if(result != -1){
-		    	alert(result);
+		    	//alert(result);
 		    }
 			
 			/* var str = this.value.replace(/(\w)[\s,]+(\w?)/g, '$1, $2');

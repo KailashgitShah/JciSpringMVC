@@ -122,7 +122,7 @@
 										<td><%=verificationlists.getGrossquantity()%></td> 
 										<td><%=verificationlists.getGrasatrate()%></td>
 						              <%--  <td><%=verificationlists.getAmountpayable()%></td> --%>
-						               <td><a href="verificationTallyslip2.obj?tally=<%=encryptedid%>" class="btn btn-danger btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Verify</a></td> 
+						               <td><a href="verificationTallyslip2.obj?tally=<%=verificationlists.getTallyslipno()%>" class="btn btn-danger btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Verify</a></td> 
 
 									</tr>
 									<% 

@@ -53,4 +53,10 @@ public class StateServiceImpl implements StateService {
 		return stateListDao.submitform(off);
 	}
 
+	@Override
+	public String statebyid(String state_name) {
+		// TODO Auto-generated method stub
+		return stateListDao.statebyid(state_name);
+	}
+
 }

@@ -433,7 +433,7 @@ button#turn {
 											<div class="click-zoom target">
 
 												<img name="uploadedImage" id="uploadedImage"
-													src="https://placehold.jp/960x450.png" class="magniflier" />
+													 class="magniflier" />
 											</div>
 										</div>
 									</div>

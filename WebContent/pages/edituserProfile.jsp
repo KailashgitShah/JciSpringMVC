@@ -33,7 +33,7 @@
   }</style>
 </head>
 
-<body class="fixed-navbar">
+<body class="fixed-navbar" >
     <div class="page-wrapper">
         <!-- START HEADER-->
          <%@ include file="header.jsp"%>
@@ -151,7 +151,7 @@
 											
  										</div>                       
                                     <div class="form-group col-sm-12">
-                                    <button class="btn btn-default" type="submit">Submit</button>
+                                    <button class="btn btn-default" type="submit" onclick="setroles()">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -302,7 +302,15 @@
 	});
        </script>
        
-	
+       <script>
+          function setroles()
+          {
+              document.getElementById("roletype").value =  $('#role option:selected').data("id");
+              document.getElementById("roleid").value =	$('#role option:selected').val().split("-")[0];
+              document.getElementById("rolename").value =	$('#role option:selected').val().split("-")[1];
+          }
+          
+       </script>
 	<script>
 	 $("#ho").change(function () {
 		//var val = this.val;
@@ -432,6 +440,7 @@
 				return false;
 		  }
 		  else if(centerordpc == ""){
+			  alert("dpc");
 				 document.getElementById("errDPC").innerHTML = "Dpc can not be empty!";
 				document.getElementById("centerordpc").focus();
 				return false;

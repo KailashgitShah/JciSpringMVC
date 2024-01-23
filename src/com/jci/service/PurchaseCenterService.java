@@ -13,7 +13,7 @@ public interface PurchaseCenterService {
 	public RoDetailsModel find(int id);
 	public List <RoDetailsModel> getAll();
 	public boolean submitform(RoDetailsModel roDetails);
-	public List<String> purchaseCenter(String regionCode);
+	public List<String> purchaseCenter(String regionCode,String role);
 	public List<String> dpcbyId(String dpc);
 	public List<String> getAllDpc();
 	public String findDpcname(String dpccode);

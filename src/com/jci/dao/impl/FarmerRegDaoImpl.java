@@ -108,7 +108,7 @@ public class FarmerRegDaoImpl implements FarmerRegDao{
 
 		if(roletypes.equalsIgnoreCase("HO")){
 		
-			querystr = "Select top 20 a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id order by a.F_id desc";
+			querystr = "Select top 100 a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id order by a.F_id desc";
 		}	
 		else if(roletypes.equalsIgnoreCase("ZO"))
 		  { 

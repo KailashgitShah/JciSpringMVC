@@ -132,7 +132,7 @@ public class VerifyFarmerDaoImpl implements VerifyFarmerDao {
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
 		List<Object[]> rows = query.list();
-		boolean listEmpty = rows.isEmpty();		// returns true if no aadhar number is found in db
+		boolean listEmpty = rows.isEmpty();		// returns true if no row is found in db
 		// System.out.println("result===== "+ listEmpty);
 		if(listEmpty) {
 			return true;

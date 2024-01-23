@@ -128,18 +128,30 @@
 			alert("CheckBox Not Selected !..Please Select");
 			return false;
 		}
-		 $.ajax({
+	/* 	 $.ajax({
               type:'GET',
               url:'update_paymentstatus.obj',
               data:{"tallyno":JSON.stringify(array),"roho":roho},
+              //async: false,
               success:function(result){
 					alert("hello"+result);
- 	 				 
 				}	
-       });
-       alert("Payment Advice sheet Generated, Mail has been sent to your and your AFM Accounts!!!");
-       location.reload();
-		
+       }); */
+		 
+		 $.ajax({
+				type:"GET",
+				url:"update_paymentstatus.obj",
+				data:{"tallyno":JSON.stringify(array),"roho":roho},
+				success:function(result)
+				{
+					//alert();
+				     location.reload();
+				}
+		 });
+		  alert("Payment Advice sheet Generated, Mail has been sent to your and your AFM Accounts!!!");
+		  location.reload();
+          location.reload();
+      // window.location.href = "viewVerifiedTallySlipList_RM.obj";
 	}
 	</script>
 	
@@ -201,8 +213,8 @@
 		        						String encryptedtally = Encry.encrypt(String.valueOf(verificationlists.getTallyNo()),key);
 		        						String encryptedfarmerno = Encry.encrypt(String.valueOf(verificationlists.getFarmerRegNo()),key);
 										%>
-										<td><a href="popupimage.obj?tallyno=<%=encryptedtally%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
-										<td><a href="popupimage.obj?tallyno=<%=encryptedtally%>&farmerno=<%=encryptedfarmerno%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>
 				                    	<td><%=verificationlists.getBasis()%></td>

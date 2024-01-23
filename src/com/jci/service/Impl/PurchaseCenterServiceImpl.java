@@ -59,8 +59,8 @@ public class PurchaseCenterServiceImpl implements PurchaseCenterService {
 	}
 
 	@Override
-	public List<String> purchaseCenter(String regionCode) {
-		return purchaseCenterDao.purchaseCenter(regionCode);
+	public List<String> purchaseCenter(String regionCode,String role) {
+		return purchaseCenterDao.purchaseCenter(regionCode,role);
 	}
 
 

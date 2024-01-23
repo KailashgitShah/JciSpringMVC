@@ -144,7 +144,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	@Override
 	public String GettransectionDetails(String tallyNo, String region) {
 
-		// System.out.println("############"+ tallyNo);
+		 System.err.println("***********"+ tallyNo);
 		List<VerifyTallySlip> r = new ArrayList<>();
 		List<Object[]> result = new ArrayList<>();
 		String querystr = "Select  datepurchase, rateslipno, binno, netquantity, grasatrate, amountpayable, jutevariety, grossquantity, farmerregno, slip_image, tallyslipno,placeofpurchase, pur.centername  from jciprocurement  jci left join jcipurchasecenter pur on jci.placeofpurchase = pur.CENTER_CODE where tallyslipno='"
@@ -180,6 +180,8 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 			verifyTallySlip.setTallyNo((String) row[10]);
 			verifyTallySlip.setPlaceOfPurchase((String) row[11]);
 			verifyTallySlip.setPopname((String) row[12]);
+			 System.err.println("############"+ verifyTallySlip);
+
 			// System.out.println("================>>>>>>>>>>>result "+result.toString());
 			// r.add(verifyTallySlip);
 			Gson gson = new Gson();
@@ -190,6 +192,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 		} else {
 			return null;
 		}
+
 	}
 
 	@Override
@@ -530,10 +533,10 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	@Override
 	public void updatestatustoPP(String tallyslipno) {
 		try {
-			String hql = "update verificationtallyslip set payment_status = 1, status ='PP' where tallyNo =" + tallyslipno;
+			String hql = "update verificationtallyslip set payment_status = 1, status ='PP' where tallyNo = '" + tallyslipno+"'";
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 			
-			String hql1 = "update jciprocurement set status = 'PP' where tallyslipno =" + tallyslipno;
+			String hql1 = "update jciprocurement set status = 'PP' where tallyslipno = '" + tallyslipno+"'";
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());

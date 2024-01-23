@@ -12,7 +12,7 @@ public interface PurchaseCenterDao {
 	public RoDetailsModel find(int id);
 	public List <RoDetailsModel> getAll();
 	public boolean submitform(RoDetailsModel roDetails);
-	public List<String> purchaseCenter(String region);
+	public List<String> purchaseCenter(String region,String role);
 	public List<String> dpcbyid(String dpc);
 	public List<String> getAllDpc();
 	public String findDpcname(String dpccode);
