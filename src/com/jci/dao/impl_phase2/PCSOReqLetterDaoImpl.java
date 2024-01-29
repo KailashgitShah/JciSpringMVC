@@ -48,7 +48,7 @@ public class PCSOReqLetterDaoImpl implements PCSOReqLetterDao {
 
 	@Override
 	public List<PCSORequestLetter> getTopThreeRecords(String cropString) {
-		String sqlString = "select Top 5 * from jcipcso_gen ORDER by ReqGenDate desc";
+		String sqlString = "select Top 5 * from jcipcso_gen ORDER by convert(datetime,ReqGenDate,103) desc";
 		
 //		String sqlString = "select Top 5 * from jcipcso_gen where crop_year='" + cropString
 //				+ "' ORDER by ReqGenDate desc";

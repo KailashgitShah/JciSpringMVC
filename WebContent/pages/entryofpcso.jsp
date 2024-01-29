@@ -29,7 +29,7 @@
 	position: fixed;  
 	z-index: 100;
 	top : 56px;
-	padding:5px;
+	padding:40px;
 	background: #f1f1f1;
 }
 
@@ -199,7 +199,7 @@
 
 										</div>
 									</div>
-									<div class="row" style="margin-top: 45px;">
+									<div class="row" style="margin-top: 145px;">
 										<div class="col-sm-4 form-group ">
 											<label class="font-weight-bold">Mill Code</label>
 										</div>
