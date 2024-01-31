@@ -30,7 +30,7 @@ public class CashDocumentModel {
 	
 	
 	@Column(name = "BOS_Date", nullable = false)
-	private Date BOS_Date;
+	private String BOS_Date;
 
 
 	
@@ -66,17 +66,17 @@ public class CashDocumentModel {
 	}
 
 
-	public Date getBOS_Date() {
+	public String getBOS_Date() {
 		return BOS_Date;
 	}
 
 
-	public void setBOS_Date(Date bOS_Date) {
-		BOS_Date = bOS_Date;
+	public void setBOS_Date(String bOS_Date2) {
+		BOS_Date = bOS_Date2;
 	}
 
 
-	public CashDocumentModel(int cAD_Doc_id, int cAD_Doc_No, Date cAD_Date, String bOS_No, Date bOS_Date) {
+	public CashDocumentModel(int cAD_Doc_id, int cAD_Doc_No, Date cAD_Date, String bOS_No, String bOS_Date) {
 		super();
 		
 		CAD_Doc_No = cAD_Doc_No;

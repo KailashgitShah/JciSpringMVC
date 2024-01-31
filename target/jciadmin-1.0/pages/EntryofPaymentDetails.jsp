@@ -158,15 +158,15 @@
                                     </div>  
                                      
                                         <div class="row">
-                                        
-                                         <div class="col-sm-4 form-group">
-												<label id="doexpiry">Date of Expiry</label> 
-												<input class="form-control" name="dateofexpiry" id="dateofexpiry" placeholder="Date of Expiry" type="date" >
-										   </div>
-										   <div class="col-sm-4 form-group">
+                                        <div class="col-sm-4 form-group">
 												<label id="doshipment">Last Shipment date</label> 
 												<input class="form-control" name="dateofship" id="dateofship" placeholder="Date of Shipment" type="date" >
 										   </div>
+                                         <div class="col-sm-4 form-group">
+												<label id="doexpiry">Date of Expiry</label> 
+												<input class="form-control" name="dateofexpiry" id="dateofexpiry" placeholder="Date of Expiry" type="date" disabled >
+										   </div>
+										   
                                    
                                             <div class="col-sm-4 form-group">
 	                                             <label id="autoamounta">Auto Revolving Amount</label>
@@ -179,7 +179,7 @@
 
 	                                     <div class="row"> 
                                                 <div class="col-sm-12 form-group">
-									             <input type="submit" value="Submit"class="btn btn-primary" id="submit" onclick="">
+									             <input type="submit" value="changePradeep"class="btn btn-primary" id="submit" onclick="">
 									            </div>
 									           <!--  <div class="clear">
 												  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
@@ -228,6 +228,58 @@
 	</script> 
 	
 	
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var dateOfExpiryInput = document.getElementById("dateofexpiry");
+    var dateOfShipmentInput = document.getElementById("dateofship");
+
+    dateOfShipmentInput.addEventListener("input", function () {
+       
+        var dateOfShipment = dateOfShipmentInput.value;
+
+        dateOfExpiryInput.disabled = !dateOfShipment;
+
+        if (!dateOfShipment) {
+            dateOfExpiryInput.value = "";
+        }
+    });
+
+    dateOfExpiryInput.addEventListener("input", function () {
+        
+        var dateOfExpiry = dateOfExpiryInput.value;
+        var dateOfShipment = dateOfShipmentInput.value;
+
+        var isDateValid = !dateOfShipment || new Date(dateOfExpiry) > new Date(dateOfShipment);
+
+        
+        if (!isDateValid) {
+            dateOfExpiryInput.value = "";
+        }
+    });
+
+
+    dateOfExpiryInput.addEventListener("focus", function () {
+        var dateOfExpiry = dateOfExpiryInput.value;
+        if (dateOfExpiry) {
+           
+            var formattedDate = new Date(dateOfExpiry).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            });
+
+            dateOfExpiryInput.value = formattedDate;
+        }
+    });
+    dateOfExpiryInput.addEventListener("blur", function () {
+        var dateOfExpiry = dateOfExpiryInput.value;
+        if (dateOfExpiry) {
+         
+            dateOfExpiryInput.value = new Date(dateOfExpiry).toISOString().split('T')[0];
+        }
+    });
+});
+</script>
     
     <script>
         function myFunction() {

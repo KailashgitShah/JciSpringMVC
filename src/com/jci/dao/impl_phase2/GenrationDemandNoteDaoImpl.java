@@ -68,12 +68,13 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		List<Object[]> result = new ArrayList<>();
 		try 
 		  {
-				String sql = "select a.Contract_no, a.Contract_date,c.Payment_duedate, c.Contract_cancel_date ,d.Payment_id, f.Contracted_qty, f.Carrying_Cost_Charged\r\n"
-						+ "									from jcidispatch_details a left join jcicontract c on c.Contract_no = a.Contract_No left join\r\n"
-						+ "										jcipayment_arrangement d on d.Contract_No = a.Contract_No \r\n"
-						+ "											left join jcifinancial_concurrence f on f.Contractno = a.Contract_No \r\n"
-						+ "											   where f.Contractno = 'JCI/012/2023-2024/BT002'";
-	    		
+			String sql = "select a.Contract_no, a.Contract_date,c.Payment_duedate, c.Contract_cancel_date ,d.Payment_id, f.Contracted_qty, f.Carrying_Cost_Charged\r\n"
+					+ "									from jcidispatch_details a left join jcicontract c on c.Contract_no = a.Contract_No left join\r\n"
+					+ "										jcipayment_arrangement d on d.Contract_No = a.Contract_No \r\n"
+					+ "											left join jcifinancial_concurrence f on f.Contractno = a.Contract_No \r\n"
+					+ "											   where f.Contractno = '" + st + "' ";
+    		
+	
 		
 		Session session = sessionFactory.getCurrentSession();
 		  Transaction tx = session.beginTransaction();

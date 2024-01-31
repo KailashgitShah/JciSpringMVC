@@ -92,6 +92,7 @@ input[type="radio"] {
 	String shipmentDetails = (String) request.getSession().getAttribute("shipmentDetails");
 	String ContractNo = (String) request.getSession().getAttribute("ContractNo");
 	String roId = (String) request.getSession().getAttribute("roId");
+	String ChallanNo = (String) request.getSession().getAttribute("ChallanNo");
 	int Count = (int) request.getSession().getAttribute("Count") + 1;
 	Double nominalWt = (Double) request.getSession().getAttribute("nominalWeight");
 
@@ -191,6 +192,11 @@ input[type="radio"] {
 												name="shipment" id="shipment" type="text"
 												value="<%=shipmentDetails%>" readonly>
 										</div>
+										
+										 <input class="form-control "
+												name="ChallanNo" id="ChallanNo" type="hidden"
+												value="<%=ChallanNo%>" readonly>
+									
 										<div class="col-sm-4 form-group" for="formFile">
 											<label>File Upload </label> <input class="form-control"
 												name="file" id="formFile" type="file">

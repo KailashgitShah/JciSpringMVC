@@ -166,7 +166,7 @@
 										</div>
 										<div class="col-sm-4 form-group">
 										   <label>Mill Reciept Qty. </label>
-	                                             <input class="form-control taxtbox" name="Mill_Reciept_Qty."  type="text" placeholder="Mill_Reciept_Qty." required>
+	                                             <input class="form-control taxtbox" name="Mill_Reciept_Qty"  type="text" placeholder="Mill_Reciept_Qty." required>
 	                                       </div>
 	                                        
                                          
@@ -218,10 +218,18 @@
 	                                             <label id="NCV_Qty34">NCV Qty</label>
 	                                             <input class="form-control taxtbox"  id ="NCV_Qty12" name="NCVQty12" min="0"  step="0.01"  type="Text" placeholder="NCV Qty." >
 	                                       </div>
+	                                       <div class="col-sm-4 form-group" style="display: none;"  >
+														  <label "display:none;">Mill  code</label>
+														    <input class="form-control taxtbox" name="Millcode2" id ="Millcode1" type="hidden" value="" placeholder="Millcode1" required>
+														</div> 
+	                                      
+												
 	                                </div>  
 	                                
 	                              
-                                    <div class="row"> 
+                                    <div class="row">
+                                      
+                                    	
                                                 <div class="col-sm-12 form-group">
 									             <input type="submit" value="Submit"class="btn btn-primary" id="submit">
 									            </div>
@@ -291,9 +299,12 @@
 	            url: 'fetchingdata.obj',
 	            data: { "contractno": field2Value },
 	            success: function(data) {
+	            	alert(data);
 	            	
 	            	var data1 = JSON.parse(data);
 	                var Date_of_shipment = data1.Date_shipment;
+	                var mill = data1.Mill_id;
+	                alert(mill);
 	                var DI_Date = data1.Ho_date;
 	              
 	                
@@ -319,6 +330,8 @@
 	                 $('#Crop_Year').val(data1.Crop_year); 
 	                 $('#HO_Date1').val(formattedDate1);
 	                 $('#ChallanQty1').val(data1.Challan_qty);
+	                 $('#Millcode1').val(data1.Mill_id);
+	               
 	                 $('#Short_Qty1').val(data1.Actual_qty);
 	                 $('#Actual_Qty1').val(data1.Short_qty);
 	                 

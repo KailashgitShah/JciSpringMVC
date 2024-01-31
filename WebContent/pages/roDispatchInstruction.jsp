@@ -174,7 +174,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 									</div>
 									<div class="row">
 										<div class="col-sm-4 form-group">
-											<label>Jute Variety</label> <input class="form-control mb-3"
+[]											<label>Jute Variety</label> <input class="form-control mb-3"
 												type="text" name="juteVariety" id="juteVariety" readonly>
 
 											<label>Remarks </label> <input class="form-control"

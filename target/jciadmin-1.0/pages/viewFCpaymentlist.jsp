@@ -175,33 +175,12 @@ th {
 										<%-- <td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
 										<td><%= entryPaymentDetailsModel.getSupportingDocument() %></td>
                                         <td>
-								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>"
-								               class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a>
+								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
+								              <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->
+								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>
 								        </td>
 
-										<%-- <%
-											int fcStatus = (Integer)entryPaymentDetailsModel.getFc_status();
-											%>
-										<% if (fcStatus == 0) { 
-											 %>
-
-										<td><a
-											href="issuePaymentDetail.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>">
-												<button class="btn btn-primary btn-sm" type="button">Issue
-													FC</button>
-										</a></td>
-										<td><a
-											href="updatefcstatus.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>"
-											class="btn btn-danger btn-sm btn-block"
-											onclick="return confirm('Are you sure you want to reject this record')">Reject</a></td>
-
-										 <% } else { %>
-										<td><a
-											href="updatefcstatus.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>"
-											class="btn btn-danger btn-sm btn-block"
-											onclick="return confirm('Are you sure you want to reject this record')">Reject</a></td>
-
-										<% } %> --%>
+								
 
 
 									<td>
@@ -210,29 +189,11 @@ th {
 									    </a>
 									</td> 
 									
-						          <%-- <td>
-									    <a href="issuePaymentDetail.obj?token=${token}&contno=<%= entryPaymentDetailsModel.getContractno() %>">
-									        <button class="btn btn-primary custom-button" type="button">Issue FC</button>
-									    </a>
-									</td> --%>
-									
-									
-								 <%--   <td><a href="updatefcstatus.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>&contno=<%=entryPaymentDetailsModel.getContractno()%>"
-									        class="btn btn-danger custom-button" onclick="openRejectModal('<%=entryPaymentDetailsModel.getContractno()%>', '<%=entryPaymentDetailsModel.getPayment_id()%>')">
-												<button class="btn btn-danger custom-button" type="button">Reject</button>
-										</a></td> --%>
-										
-										 
-                                     
-
-											<%--  <td><a class="btn btn-danger custom-button"
-											onclick="openRejectModal('<%=entryPaymentDetailsModel.getContractno()%>')">
-												<button class="btn btn-danger custom-button" type="button">Reject</button>
-										</a></td> --%>  
-										
+						  
+									<!-- 	class="btn btn-danger custom-button" -->
 										
 										 <td>
-										    <a  class="btn btn-danger custom-button" onclick="rejectAndNavigate('<%=entryPaymentDetailsModel.getContractno()%>', '<%=entryPaymentDetailsModel.getPayment_id()%>')">
+										    <a   onclick="rejectAndNavigate('<%=entryPaymentDetailsModel.getContractno()%>', '<%=entryPaymentDetailsModel.getPayment_id()%>')">
 										        <button class="btn btn-danger custom-button" type="button">Reject</button>
 										    </a>
 										</td> 
@@ -344,6 +305,7 @@ th {
 
     function rejectAndNavigate(contractNo, paymentId) {
         openRejectModal(contractNo)
+       alert("KKKKK");
         $('#rejectModalButton').off('click').on('click', function () {
             var remarks = $('#remarks').val().trim();
 

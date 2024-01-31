@@ -47,19 +47,19 @@ public class MillRecieptModel {
 	@Column( name = "Challan_qty")
 	private Double Challan_qty;
 	
-	
-	@Column( name = "Jute_variety")
-	private String Jute_variety;
-	
-	
-	public String getJute_variety() {
-		return Jute_variety;
-	}
-
-
-	public void setJute_variety(String jute_variety) {
-		Jute_variety = jute_variety;
-	}
+//	
+//	@Column( name = "Jute_variety")
+//	private String Jute_variety;
+//	
+//	
+//	public String getJute_variety() {
+//		return Jute_variety;
+//	}
+//
+//
+//	public void setJute_variety(String jute_variety) {
+//		Jute_variety = jute_variety;
+//	}
 
 
 	@Column( name = "Actual_qty")
@@ -366,7 +366,7 @@ public class MillRecieptModel {
 		Date_shipment = date_shipment;
 		Vehicle_no = vehicle_no;
 		Challan_qty = challan_qty;
-		Jute_variety = jute_variety;
+//		Jute_variety = jute_variety;
 		Actual_qty = actual_qty;
 		Bale_mark = bale_mark;
 		Crop_year = crop_year;
@@ -390,7 +390,7 @@ public class MillRecieptModel {
 	public String toString() {
 		return "MillRecieptModel [Mr_id=" + Mr_id + ", HO_di=" + HO_di + ", Ho_date=" + Ho_date + ", Challan_no="
 				+ Challan_no + ", Date_shipment=" + Date_shipment + ", Vehicle_no=" + Vehicle_no + ", Challan_qty="
-				+ Challan_qty + ", Jute_variety=" + Jute_variety + ", Actual_qty=" + Actual_qty + ", Bale_mark="
+				+ Challan_qty + ", Actual_qty=" + Actual_qty + ", Bale_mark="
 				+ Bale_mark + ", Crop_year=" + Crop_year + ", dispathcDetailModel=" + dispathcDetailModel
 				+ ", Quality_claim=" + Quality_claim + ", MoistureContent=" + MoistureContent + ", NCV_percentage="
 				+ NCV_percentage + ", NCV_qty=" + NCV_qty + ", MR_no=" + MR_no + ", Mr_date=" + Mr_date + ", MR_qty="

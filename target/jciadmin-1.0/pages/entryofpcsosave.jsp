@@ -62,14 +62,9 @@
 
 			<%
 			List<EntryofpcsoModel> allentryofpcsolist = (List<EntryofpcsoModel>) request.getAttribute("entryofpcso");
-			String referencedate = (String) request.getAttribute("referencedate");
-			String pcsodate = (String) request.getAttribute("pcsodate");
+			String pcsodate = (String) request.getAttribute("pcsoDate");
+			String pcsoReqDate = (String) request.getAttribute("pcsoReqDate");
 			String referenceNo = (String) request.getAttribute("referenceno");
-			
-		
-		/* 	for(EntryofpcsoModel e : allentryofpcsolist){
-				System.out.println(e.toString());
-			} */
 		
 			String deliveryPeriod = (String)request.getAttribute("deliveryPeriod");
 			String juteRatio = (String)request.getAttribute("juteRatio");
@@ -89,20 +84,20 @@
 
 									<div class="row">
 										<div class="col-sm-4 form-group">
-											<label>Reference.No.</label> <input class="form-control"
+											<label>JC Ref No</label> <input class="form-control"
 												type="text" value="<%=referenceNo%>" readonly
 												name="referenceno">
 										</div>
 
 										<div class="col-sm-4 form-group">
-											<label>Reference Date</label> <input class="form-control"
-												type="text" value="<%=referencedate%>" readonly
-												name="referencedate">
+											<label>PCO Date</label> <input class="form-control"
+												type="text"  name="pcsoDate" value="<%=pcsodate%>" readonly
+												>
 										</div>
 
 										<div class="col-sm-4 form-group">
-											<label>PCSO Date</label> <input class="form-control"
-												type="text" name="pcsodate" value="<%=pcsodate%>" readonly>
+											<label>PCO Request Date</label> <input class="form-control"
+												type="text" name="pcsoReqDate" value="<%=pcsoReqDate%>" readonly>
 										</div>
 									</div>
 									<div class="row">
@@ -112,8 +107,8 @@
 										</div>
 
 										<div class="col-sm-3 form-group">
-											<label>Delivery Period</label> <input class="form-control"
-												name="deliveryPeriod" id="deliveryPeriod" value="<%=deliveryPeriod %>" readonly
+											<label>Dispatch Period</label> <input class="form-control"
+												name="dispatchPeriod" id="dispatchPeriod" value="<%=deliveryPeriod %>" readonly
 												 >
 										</div>
 
@@ -123,8 +118,13 @@
 												>
 										</div>
 										<div class="col-sm-3 form-group">
-											<label>PCSO Qty</label> <input class="form-control"
+											<label>PCO Qty</label> <input class="form-control"
 												 name="pcsoQty" id="pcsoQty" readonly value="<%=pcsoQty%>"
+												>
+										</div>
+										<div class="col-sm-3 form-group">
+											<label>PCO Requested Qty</label> <input class="form-control"
+												 name="pcsoReqQty" id="pcsoReqQty" readonly value="<%=pcsoQty%>"
 												>
 										</div>
 									</div>

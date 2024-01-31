@@ -43,7 +43,8 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	public List<EntryPaymentDetailsModel> getAllPaymentInstruments() {
 		
 		
-	    String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
+	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
+	    String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0";
 	    List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession()
 	            .createSQLQuery(sql)
 	            .addEntity(EntryPaymentDetailsModel.class)

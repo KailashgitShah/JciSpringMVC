@@ -275,10 +275,12 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 									<div class="row">
 
-										<div class="form-group">
-
+										<div class="form-group col-sm-1">
 											<button class="btn btn-success" id="submit" type="submit">Submit</button>
 										</div>
+										<div class="form-group col-sm-1">
+											<a class="btn btn-primary" href="entryderivativepricelist.obj" >Check Price List</a>
+											</div>
 									</div>
 								</form>
 							</div>

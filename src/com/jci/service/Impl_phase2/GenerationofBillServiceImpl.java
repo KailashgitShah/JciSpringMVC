@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jci.dao_phase2.GenerationofBillDao;
 import com.jci.model.GenerationOfBillSupplyModel;
+
 import com.jci.service_phase2.GenerationofBillService;
 
 
@@ -25,6 +26,8 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 		
 	}
 
+	
+	
 	@Override
 	public List<GenerationOfBillSupplyModel> getAll() {
 		
@@ -32,7 +35,7 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 	@Override
-	public List<Object> ChallanNo() {
+	public List<Object[]>ChallanNo() {
 		return generationofBillDao.ChallanNo();
 	}
 
@@ -41,6 +44,10 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	public  List<Object[]> contarctno( String st) {
 		return generationofBillDao.contarctno(st);
 	}
+//	@Override
+//	public  List<Object[]>contarctnoformaster( String st) {
+//		return generationofBillDao.contarctnoformaster(st);
+//	}
 	@Override
 	public  List<Object[]> Dispatchentry( String st) {
 		return generationofBillDao.Dispatchentry(st);
@@ -51,6 +58,32 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 		
 		return generationofBillDao.billofsupplyno(st);
 	}
+
+	@Override
+	public List<Object[]>contarctnoformaster(String st) {
+		
+		return generationofBillDao.contarctnoformaster(st);
+	}
+
+
+
+	@Override
+	public  String billUpdation(String st) {
+	
+		return generationofBillDao.billUpdation(st);
+		
+	}
+
+	@Override
+	public void remark(String remark,String  con_No) {
+		System.out.println(remark);
+		System.out.println(con_No);
+		generationofBillDao.remark(remark,con_No);
+		
+	}
+
+
+	
 
 
 }

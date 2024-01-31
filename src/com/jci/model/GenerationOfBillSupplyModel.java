@@ -93,6 +93,17 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "Contract_no", nullable = false)
 	private String Contract_no;
+	
+	@Column(name = "Remarks")
+	private String Remarks;
+
+	public String getRemarks() {
+		return Remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		Remarks = remarks;
+	}
 
 	public Integer getBos_id() {
 		return Bos_id;

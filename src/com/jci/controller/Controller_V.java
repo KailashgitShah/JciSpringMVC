@@ -75,6 +75,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
+import com.jci.model.CashDocumentModel;
 import com.jci.model.ConfirmationClaimSettlementModel;
 import com.jci.model.Contractgeneration;
 import com.jci.model.CreditNotes;
@@ -94,6 +95,7 @@ import com.jci.model.PCSORequestLetter;
 import com.jci.model.RoDetailsModel;
 import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
+
 import com.jci.model.settlemetCnDnModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
@@ -108,6 +110,7 @@ import com.jci.service_phase2.FactorssInvolvedCommercialService;
 import com.jci.service_phase2.FinancialConcurenceService;
 import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
+import com.jci.service_phase2.GenrationCashDocumentService;
 import com.jci.service_phase2.MillRecieptService;
 import com.jci.service_phase2.OperationAndTransportCostService;
 import com.jci.service_phase2.OperationCostService;
@@ -205,6 +208,9 @@ public class Controller_V {
 
 	@Autowired
 	OperationCostService operationcostservice;
+	
+	@Autowired
+	GenrationCashDocumentService genrationCashDocumentService;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -1778,7 +1784,7 @@ public class Controller_V {
 	@RequestMapping("saveentryofpaymentinstrumentDetails")
 	public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
+		final File theDir = new File("upload.Imagedownload");
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
@@ -1819,7 +1825,7 @@ public class Controller_V {
 
 			Date date3 = new Date();
 			Double flag = 0.0;
-
+		
 			if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
 				autorevolvingamount = "0";
 				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
@@ -1848,9 +1854,11 @@ public class Controller_V {
 
 				Date dateofship1 = formatter1.parse(dateofship);
 				entryPaymentDetailsModel.setDateofship(dateofship1);
+				System.err.println(dateofship1);
 
 				Date dateofexpiry1 = formatter1.parse(dateofexpiry);
 				entryPaymentDetailsModel.setDateofexpiry(dateofexpiry1);
+				System.err.println(dateofship1);
 
 				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
 			}
@@ -1877,7 +1885,7 @@ public class Controller_V {
 
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
+		String imageDirectory = "upload.Imagedownload"; // Replace with your image directory path
 		String imagePath = imageDirectory + File.separator + filename;
 
 		File imageFile = new File(imagePath);
@@ -1979,6 +1987,51 @@ public class Controller_V {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("saveRemarksofbill")
+	public ResponseEntity<String> saveRemarksofbill(@RequestParam("remarks") String remarks,@RequestParam("con_no") String contractNo,
+			 HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
+		final ModelAndView mv = new ModelAndView("EntryGenerationBill");
+
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+		}
+		try {
+			
+			System.err.println(remarks);
+			System.err.println(contractNo);
+			this.generationofBillService.remark(remarks, contractNo);
+			System.err.println("coming");
+			
+
+			
+
+			redirectAttributes.addFlashAttribute("msg",
+//
+					"<div class=\"alert alert-success\"><b>Success !</b> Data rejected successfully.</div>");
+			return new ResponseEntity<>("{\"redirect\":\"EntryofGenerationBillsupply.obj\"}", HttpStatus.OK);
+
+		} catch (Exception ex) {
+			return new ResponseEntity<>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping("saveFinancialConcurence")
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2089,8 +2142,12 @@ public class Controller_V {
 			String MR_No = request.getParameter("MR_No");
 			String MR_Date1 = request.getParameter("MR_Date");
 			String HR_Date1 = request.getParameter("HO_Date");
+			String Mill_code = request.getParameter("Millcode2");
+			System.err.println(Mill_code);
+			
+			//String mill_id = request.getParameter("HO_Date");
 
-			String Mill_Reciept_Qty = request.getParameter("Mill_Reciept_Qty.");
+			String Mill_Reciept_Qty = request.getParameter("Mill_Reciept_Qty");
 			double Mill_Reciept_Qty1 = Double.parseDouble(Mill_Reciept_Qty);
 			String Short_Qty = request.getParameter("Short_Qty");
 			double Short_Qty1 = Double.parseDouble(Short_Qty);
@@ -2157,13 +2214,15 @@ public class Controller_V {
 			// millRecieptModel.setMi(Mill_Reciept_Qty);
 			millRecieptModel.setShort_qty(Short_Qty1);
 			millRecieptModel.setMR_qty(Mill_Reciept_Qty1);
-			millRecieptModel.setMill_id("1");
+			System.out.println(Mill_code);
+			millRecieptModel.setMill_id(Mill_code);
+			//millRecieptModel.setDie(Mill_code);
 			Date date = new Date();
 			// Date currdate = date.toString();
 			millRecieptModel.setCreated_on(date);
 			// millRecieptModel.setHo_date(date);
 			millRecieptModel.setCreated_by("kailash");
-			millRecieptModel.setMR_qty(123.0);
+			//millRecieptModel.setMR_qty(123.0);
 			millRecieptModel.setClaim_status(2);
 
 			this.millRecieptService.create(millRecieptModel);
@@ -2372,11 +2431,74 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getsettlementlist);
 		return resultString;
 	}
+	
+
+	@RequestMapping("EntryofGenerationBillsupply")
+	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("EntryGenerationBill");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+   	List<Object[]> getChallanlist =(List<Object[]>) this.generationofBillService.ChallanNo();
+		mv.addObject("getChallanlist", getChallanlist);
+		
+		
+		 int allIndiaSerialNo = 1;
+		 int stateSerialNo = 1;
+		 String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(),allIndiaSerialNo,stateSerialNo);
+		    mv.addObject("billOfSupplyNo", billOfSupplyNo);
+
+		return mv;
+		
+		
+	}
+	private String generateBillOfSupplyNumber(HttpSession session, int allIndiaSerialNo, int stateSerialNo) {
+        String prefix = "B";
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR) % 100;
+        String yearCode = String.format("%02d", currentYear);
+
+       
+        if (session.getAttribute("allIndiaSerialNo") != null) {
+            allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
+            allIndiaSerialNo++;
+        }
+        session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+
+        String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
+
+        String stateGSTCode = "19";
+
+     
+        if (session.getAttribute("stateSerialNo") != null) {
+            stateSerialNo = (int) session.getAttribute("stateSerialNo");
+            stateSerialNo++;
+        }
+        session.setAttribute("stateSerialNo", stateSerialNo);
+
+        String formattedStateSerialNo = String.format("%05d", stateSerialNo);
+
+        String  laString= prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
+       String status=this.generationofBillService.billofsupplyno(laString);
+       if ("1".equals(status)) {
+          
+           return generateBillOfSupplyNumber(session, allIndiaSerialNo + 1, stateSerialNo + 1);
+       } else {
+           
+           return laString;
+       }
+    }
+	
 
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
 	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
-			RedirectAttributes redirectAttributes) {
-
+			RedirectAttributes redirectAttributes,@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
+		 final File theDir = new File("upload.Imagedownload");
+		    if (!theDir.exists()) {
+		        theDir.mkdirs();
+		    }
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
@@ -2398,6 +2520,10 @@ public class Controller_V {
 			// double Moisture_Content12 = Double.parseDouble(Moisture_Content1);
 			// String NCV_Percentage1 = request.getParameter("NCV_Percentage1");
 			// double NCV_Percentage12 = Double.parseDouble(NCV_Percentage1);
+			
+	        final String filename = SupportingDocument.getOriginalFilename();
+	        File serverFile = new File(theDir, filename);
+	        SupportingDocument.transferTo(serverFile);
 			double defaultValue = 0.0;
 
 			String Inspection_by1 = request.getParameter("Inspectionby1");
@@ -2491,246 +2617,231 @@ public class Controller_V {
 
 		return new ModelAndView(new RedirectView("entryofConfirationSettelment.obj"));
 	}
+	
+	
+	
 
-	@RequestMapping("EntryofGenerationBillsupply")
-	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
+	 @RequestMapping("saveentryofGenrationbill") 
+	  public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes
+		       ) {
+		    final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
+		    if (!theDir.exists()) {
+		        theDir.mkdirs();
+		    }
+		    final ModelAndView mv = new ModelAndView();
+		    String username = (String) request.getSession().getAttribute("usrname");
+		    try {
 
-		ModelAndView mv = new ModelAndView("EntryGenerationBill");
-		if (username == null) {
-			mv = new ModelAndView("index");
+		        String Challan_No1 = request.getParameter("Challan_No1");
+		        String Challan_Date1 = request.getParameter("Challan_Date1");
+		        String Shipment_Details = request.getParameter("Shipment_Details");
+		        String Shipment_Value1 = request.getParameter("Shipment_Value1");
+		        String SGST_Amt = request.getParameter("SGST_Amt");
+		        String CGST_Amt = request.getParameter("CGST_Amt");
+		        String IGST_Amt = request.getParameter("IGST_Amt");
+		        String TCS_Amt = request.getParameter("TCS_Amt");
+		        String TDS_Amt = request.getParameter("TDS_Amt");
+		        String Bill_of_Supply = request.getParameter("Bill_of_Supply");
+		        String Invoice_Value = request.getParameter("Invoice_Value");
+		        String BOS_Date = request.getParameter("BOS_Date");
+		        String Supplier_Name = request.getParameter("Supplier_Name");
+		        String Supplier_GSTN = request.getParameter("Supplier_GSTN");
+		        String Supplier_Address = request.getParameter("Supplier_Address");
+		        String Recipient_Name = request.getParameter("Recipient_Name");
+		        String Recipient_GSTN = request.getParameter("Recipient_GSTN");
+		        String Recipient_Address = request.getParameter("Recipient_Address");
+		        String Consignee_Name = request.getParameter("Consignee_Name");
+		        String Consignee_GSTN = request.getParameter("Consignee_GSTN");
+		        String Consignee_Address = request.getParameter("Consignee_Address");
+		        String Conract_no = request.getParameter("Contarct_no");
+		        String Clientstate = request.getParameter("Clientstate");
+		        String Clientcode = request.getParameter("Clientcode");
+		        String ClientPan = request.getParameter("ClientPan");
+//		       // String QtyAllowed = request.getParameter("QtyAllowed");
+////		        final String filename = SupportingDocument.getOriginalFilename();
+////		        File serverFile = new File(theDir, filename);
+////		        SupportingDocument.transferTo(serverFile);
+////		        
+//		        // Conditionally set autorevolvingamount based on payment type
+		        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+		       // Date instdate1 = formatter1.parse(Challan_Date1);
+		       // Date instdate2 = formatter1.parse(Challan_Date1);
+		        GenerationOfBillSupplyModel generationOfBillSupplyModel = new GenerationOfBillSupplyModel();
+		        generationOfBillSupplyModel.setChallan_No(Challan_No1);
+		        generationOfBillSupplyModel.setChallan_date(Challan_Date1);
+		        generationOfBillSupplyModel.setShipment_details(Shipment_Details);
+		        generationOfBillSupplyModel.setShipment_value(Shipment_Value1);
+		        generationOfBillSupplyModel.setSGST_amt(SGST_Amt);
+		        generationOfBillSupplyModel.setCGST_amt(CGST_Amt);
+		        generationOfBillSupplyModel.setIGST_amt(IGST_Amt);
+		        generationOfBillSupplyModel.setTCS_amt(TCS_Amt);
+		        generationOfBillSupplyModel.setTDS_amt(TDS_Amt);
+		        generationOfBillSupplyModel.setBill_of_supply_no(Bill_of_Supply);
+		        generationOfBillSupplyModel.setInvoice_value(Invoice_Value);
+		        generationOfBillSupplyModel.setBOS_date(BOS_Date);
+		        generationOfBillSupplyModel.setSupplier_name(Supplier_Name);
+		        generationOfBillSupplyModel.setSupplier_gSTN(Supplier_GSTN);
+		        generationOfBillSupplyModel.setSupplier_address(Supplier_Address);
+		        generationOfBillSupplyModel.setRecipient_name(Recipient_Name);
+		        generationOfBillSupplyModel.setRecipient_gSTN(Recipient_GSTN);
+		        generationOfBillSupplyModel.setRecipient_address(Recipient_Address);
+		        generationOfBillSupplyModel.setConsignee_name(Consignee_Name);
+		        generationOfBillSupplyModel.setConsignee_gSTN(Consignee_GSTN);
+		        generationOfBillSupplyModel.setConsignee_address(Consignee_Address);
+		        generationOfBillSupplyModel.setContract_no(Conract_no);
+		      
+		          Date date = new Date();
+		          generationOfBillSupplyModel.setCreation_date(date);
+		          generationOfBillSupplyModel.setRo_id("1");
+		          //generationOfBillSupplyModel.setBos_file_path("documents");
+		          List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
+		          
+		          
+		          CashDocumentModel cashDocumentModel = new CashDocumentModel();
+		          cashDocumentModel.setCAD_Date(date);
+		          cashDocumentModel.setBOS_No(Bill_of_Supply);
+		          cashDocumentModel.setBOS_Date(BOS_Date);
+		          
+		          
+		          
+//		          cashDocumentModel.setBOS_Date(BOS_Date);
+//		          cashDocumentModel.setBOS_No(Bill_of_Supply);
+					
+		       
+		          
+		         
+		          
+		          PdfGenerator_K pdfgenereatorK = new PdfGenerator_K();
+		          String filePath = pdfgenereatorK.generateBillPdf( Invoice_Value,Challan_No1,Shipment_Details,Supplier_Name,
+			        		Supplier_GSTN,Supplier_Address,Recipient_Name,Recipient_GSTN,Recipient_Address,Consignee_Name,Consignee_GSTN,
+			        		Consignee_Address,Bill_of_Supply, Conract_no,Clientstate,Clientcode,ClientPan,BOS_Date, list);
+			        
+			      
+			        
+			        generationOfBillSupplyModel.setBos_file_path(filePath);
+			    System.out.println(filePath);
+			    System.out.println(filePath);
+			    System.out.println(filePath);
+			    
+			       
+		        
+		        this.generationofBillService.create(generationOfBillSupplyModel);
+		        this.genrationCashDocumentService.create(cashDocumentModel);
+		        this.generationofBillService.billUpdation(Conract_no);
+		        
+		      
+//		        
+//		       
+//		        this.paymentDetailService.contratTable(contractno);
+		         redirectAttributes.addFlashAttribute("msg",
+		                "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+		         
+		         
+		      
+
+		    } catch (Exception e) {
+
+		        e.printStackTrace();
+		    }
+		    if (username == null) {
+		        return new ModelAndView("index");
+		    }
+		    
+		    
+		    // Starting Email Sender
+          
+           EmailSender email=new EmailSender();
+           InternetAddress[] toAddresses=null;
+           
+            String subject="Bill of Supply attachement";
+           
+             String body = "In this All information regarding Bill of supply . ";
+             
+             String filename="C:\\Users\\kailash.shah\\Downloads\\website.jpg";
+             //String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
+             String username1="";
+             try {
+                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+           
+             
+                   toAddresses = new InternetAddress[]{
+                                new InternetAddress("shahkailash2000@gmail.com"),
+                                new InternetAddress("kailashshahsha81@gmail.com")
+                            };
+             
+             } catch (AddressException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+           }
+           
+            email.sendEmail( toAddresses ,  body , subject, filename, username1);
+           
+          
+
+		    
+		    // End Email
+		    
+		    
+//
+		    return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
 		}
-		List<Object> getChallanlist = this.generationofBillService.ChallanNo();
-		mv.addObject("getChallanlist", getChallanlist);
+	 
 
-		int allIndiaSerialNo = 1;
-		int stateSerialNo = 1;
-		String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo);
-		mv.addObject("billOfSupplyNo", billOfSupplyNo);
 
-		return mv;
+    @RequestMapping("downloadPDF")
+		 public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
+  	  String imageDirectory = "upload.Imagedownload";
+  	 
+		    String imagePath = imageDirectory + File.separator + filename;
 
-	}
+		    File imageFile = new File(imagePath);
+  	  
+  	  try {
+			           
 
-	private String generateBillOfSupplyNumber(HttpSession session, int allIndiaSerialNo, int stateSerialNo) {
-		String prefix = "B";
+			            if (imageFile.exists()) {
+			               
+			                String contentType = determineContentType1(filename);
+			                response.setContentType(contentType);
 
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR) % 100;
-		String yearCode = String.format("%02d", currentYear);
+			                response.setContentLength((int) imageFile.length());
+			                response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
+//			                //response.setHeader("Content-Disposition", "");
+			              
+			                FileInputStream fileInputStream = new FileInputStream(imageFile);
+			                OutputStream responseOutputStream = response.getOutputStream();
+//
+			                byte[] buffer = new byte[1024];
+			                int bytesRead;
+			                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+			                    responseOutputStream.write(buffer, 0, bytesRead);
+			                }
+//
+			                fileInputStream.close();
+			                responseOutputStream.close();
+			            } else {
+			                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			            }
+			        } catch (IOException e) {
+//			            
+			            e.printStackTrace();
+			            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			        }
+			    }
+			 private String determineContentType1(String filePath) {
+			        if (filePath.endsWith(".pdf")) {
+			            return "application/pdf";
+			        } else if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+			            return "image/jpeg";
+			        } else if (filePath.endsWith(".png")) {
+			            return "image/png";
+			        } else {
+			            return "application/octet-stream";
+			        }
+			    }
+//			 
 
-		if (session.getAttribute("allIndiaSerialNo") != null) {
-			allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
-			allIndiaSerialNo++;
-		}
-		session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
-
-		String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
-
-		String stateGSTCode = "19";
-
-		if (session.getAttribute("stateSerialNo") != null) {
-			stateSerialNo = (int) session.getAttribute("stateSerialNo");
-			stateSerialNo++;
-		}
-		session.setAttribute("stateSerialNo", stateSerialNo);
-
-		String formattedStateSerialNo = String.format("%05d", stateSerialNo);
-
-		String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
-		String status = this.generationofBillService.billofsupplyno(laString);
-		if ("1".equals(status)) {
-
-			return generateBillOfSupplyNumber(session, allIndiaSerialNo + 1, stateSerialNo + 1);
-		} else {
-
-			return laString;
-		}
-
-	}
-
-	@RequestMapping("saveentryofGenrationbill")
-	public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
-		final ModelAndView mv = new ModelAndView();
-		String username = (String) request.getSession().getAttribute("usrname");
-		try {
-
-			String Challan_No1 = request.getParameter("Challan_No1");
-			String Challan_Date1 = request.getParameter("Challan_Date1");
-			String Shipment_Details = request.getParameter("Shipment_Details");
-			String Shipment_Value1 = request.getParameter("Shipment_Value1");
-			String SGST_Amt = request.getParameter("SGST_Amt");
-			String CGST_Amt = request.getParameter("CGST_Amt");
-			String IGST_Amt = request.getParameter("IGST_Amt");
-			String TCS_Amt = request.getParameter("TCS_Amt");
-			String TDS_Amt = request.getParameter("TDS_Amt");
-			String Bill_of_Supply = request.getParameter("Bill_of_Supply");
-			String Invoice_Value = request.getParameter("Invoice_Value");
-			String BOS_Date = request.getParameter("BOS_Date");
-			String Supplier_Name = request.getParameter("Supplier_Name");
-			String Supplier_GSTN = request.getParameter("Supplier_GSTN");
-			String Supplier_Address = request.getParameter("Supplier_Address");
-			String Recipient_Name = request.getParameter("Recipient_Name");
-			String Recipient_GSTN = request.getParameter("Recipient_GSTN");
-			String Recipient_Address = request.getParameter("Recipient_Address");
-			String Consignee_Name = request.getParameter("Consignee_Name");
-			String Consignee_GSTN = request.getParameter("Consignee_GSTN");
-			String Consignee_Address = request.getParameter("Consignee_Address");
-			String Conract_no = request.getParameter("Contarct_no");
-//				       // String QtyAllowed = request.getParameter("QtyAllowed");
-////				        final String filename = SupportingDocument.getOriginalFilename();
-////				        File serverFile = new File(theDir, filename);
-////				        SupportingDocument.transferTo(serverFile);
-////				        
-//				        // Conditionally set autorevolvingamount based on payment type
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			// Date instdate1 = formatter1.parse(Challan_Date1);
-			// Date instdate2 = formatter1.parse(Challan_Date1);
-			GenerationOfBillSupplyModel generationOfBillSupplyModel = new GenerationOfBillSupplyModel();
-			generationOfBillSupplyModel.setChallan_No(Challan_No1);
-			generationOfBillSupplyModel.setChallan_date(Challan_Date1);
-			generationOfBillSupplyModel.setShipment_details(Shipment_Details);
-			generationOfBillSupplyModel.setShipment_value(Shipment_Value1);
-			generationOfBillSupplyModel.setSGST_amt(SGST_Amt);
-			generationOfBillSupplyModel.setCGST_amt(CGST_Amt);
-			generationOfBillSupplyModel.setIGST_amt(IGST_Amt);
-			generationOfBillSupplyModel.setTCS_amt(TCS_Amt);
-			generationOfBillSupplyModel.setTDS_amt(TDS_Amt);
-			generationOfBillSupplyModel.setBill_of_supply_no(Bill_of_Supply);
-			generationOfBillSupplyModel.setInvoice_value(Invoice_Value);
-			generationOfBillSupplyModel.setBOS_date(BOS_Date);
-			generationOfBillSupplyModel.setSupplier_name(Supplier_Name);
-			generationOfBillSupplyModel.setSupplier_gSTN(Supplier_GSTN);
-			generationOfBillSupplyModel.setSupplier_address(Supplier_Address);
-			generationOfBillSupplyModel.setRecipient_name(Recipient_Name);
-			generationOfBillSupplyModel.setRecipient_gSTN(Recipient_GSTN);
-			generationOfBillSupplyModel.setRecipient_address(Recipient_Address);
-			generationOfBillSupplyModel.setConsignee_name(Consignee_Name);
-			generationOfBillSupplyModel.setConsignee_gSTN(Consignee_GSTN);
-			generationOfBillSupplyModel.setConsignee_address(Consignee_Address);
-			generationOfBillSupplyModel.setContract_no(Conract_no);
-
-			Date date = new Date();
-			generationOfBillSupplyModel.setCreation_date(date);
-			generationOfBillSupplyModel.setRo_id("1");
-			// generationOfBillSupplyModel.setBos_file_path("documents");
-			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
-
-			PdfGenerator_K pdfgenereatorK = new PdfGenerator_K();
-			String filePath = (String) pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Shipment_Details,
-					Supplier_Name, Supplier_GSTN, Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address,
-					Consignee_Name, Consignee_GSTN, Consignee_Address, Bill_of_Supply, Conract_no, list);
-//					        
-			if (filePath != null) {
-
-				generationOfBillSupplyModel.setBos_file_path(filePath);
-				System.out.println(filePath);
-				System.out.println(filePath);
-				System.out.println(filePath);
-				System.out.println(filePath);
-			}
-
-			this.generationofBillService.create(generationOfBillSupplyModel);
-
-//				        
-//				       
-//				        this.paymentDetailService.contratTable(contractno);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		// Starting Email Sender
-
-		EmailSender email = new EmailSender();
-		InternetAddress[] toAddresses = null;
-
-		String subject = "This is the  EMail Subject!!";
-
-		String body = "This is the Body of the Email . ";
-
-		String filename = "C:\\Users\\kailash.shah\\Downloads\\website.jpg";
-		String username1 = "";
-		try {
-			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
-			// InternetAddress("animesh.anand@cyfuture.com")};
-
-			toAddresses = new InternetAddress[] { new InternetAddress("ksudheer553@gmail.com"),
-					new InternetAddress("sudheervijay83@gmail.com") };
-
-		} catch (AddressException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		email.sendEmail(toAddresses, body, subject, filename, username1);
-
-		// End Email
-
-		//
-		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
-	}
-
-	@RequestMapping(value = "downloadPDF", method = RequestMethod.GET)
-
-	public void downloadRequestLetter1(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		String fileName = request.getParameter("imagePath");
-
-		System.err.println(fileName);
-
-		File imageFile = new File(fileName);
-
-		if (imageFile.exists()) {
-
-			try {
-				response.setContentType("application/pdf");
-
-				response.setHeader("Content-Disposition", "");
-				FileInputStream fileInputStream = new FileInputStream(imageFile);
-
-				OutputStream responseOutputStream = response.getOutputStream();
-
-				byte[] buffer = new byte[1024];
-
-				int bytesRead;
-
-				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-
-					responseOutputStream.write(buffer, 0, bytesRead);
-
-				}
-
-				fileInputStream.close();
-
-				responseOutputStream.close();
-
-			} catch (IOException e) {
-
-				// Handle IO exception
-
-				e.printStackTrace();
-
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
-			}
-
-		} else {
-
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-
-		}
-
-	}
+			
 
 	@RequestMapping({ "ViewofGenerationBillsupply" })
 	public ModelAndView viewBillofSupplyReciept(final HttpServletRequest request) {
@@ -2756,6 +2867,16 @@ public class Controller_V {
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(BI_no);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "fetchingdataforbill", method = RequestMethod.GET)
+	public String fetchingdatanominactionclaimforbill(@RequestParam("contractno") String  contractno) {
+		List<Object[]>millRecieptModelt1 = generationofBillService.contarctnoformaster(contractno);
+	    System.err.println("resultList++++++++++"+millRecieptModelt1);
+	    Gson gson = new Gson();
+	    String resultString =  new Gson().toJson(millRecieptModelt1);
+	    return resultString;//gson.toJson((Object)millRecieptModelt1);
 	}
 
 	@RequestMapping("entry_of_transportation_and_operation_cost")
@@ -2925,6 +3046,7 @@ public class Controller_V {
 
 		return mv;
 	}
+
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

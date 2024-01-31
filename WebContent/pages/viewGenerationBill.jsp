@@ -98,7 +98,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View Mill Reciept List</h1>
+				<h1 class="page-title">View  Generation of bill List</h1>
 
 			</div>
 
@@ -184,61 +184,13 @@ th {
 										<td><%= generationOfBillSupplyModel.getConsignee_gSTN()%></td>
 										<td><%= generationOfBillSupplyModel.getConsignee_address() %></td>
 										
-										 <td>
-										    <%
-										        String path = "C:\\Users\\kailash.shah\\documentimage\\";
-										        String filePath = path + generationOfBillSupplyModel.getBos_file_path();
-										        String encodedFilePath = URLEncoder.encode(filePath, "UTF-8");
-										    %>
-										    <td>
-										        <button class="btn btn-outline-success"
-										                onclick="openLinkInNewTab('downloadPDF.obj?filePath=' + encodedFilePath'<%=encodedFilePath%>'))">
-										            Download
-										        </button>
-										    </td>
-										     <script>
-											      
-										     function openLinkInNewTab(url) {
-
-										    	 window.open(url, 
-										    	 '_blank');
-
-										    	 }
-
-											    </script>
-										</td> 
-
-																						
 										
-			<%-- 							 <td>
-											    <a href="#" onclick="downloadPDF('<%= generationOfBillSupplyModel.getBos_file_path() %>');"
-											       class="btn btn-primary btn-sm" target="_blank"> Download PDF</a>
-											
-											    <script>
-											        function downloadPDF(filePath) {
-											            
-											        	 var encodedPath = encodeURIComponent(filePath);
-											        	    var downloadURL = '<%= request.getContextPath() %>downloadPDF.obj?filePath=' + encodedPath;
-
-											           
-											            console.log('Download URL:', downloadURL);
-											
-											          
-											            var link = document.createElement('a');
-											            link.href = downloadURL;
-											            link.target = '_blank';
-											
-											            link.download = 'billofsupplyfinal.pdf'; 
-											            console.log('Initiating download...');
-											            link.click();
-											        }
-											    </script>
-											</td> --%>
-		 									 
-
+							
 										
-										
-
+                                       <td>
+								            <a href="downloadPDF.obj?filename=<%= generationOfBillSupplyModel.getBos_file_path()%>"
+								               class="btn btn-primary btn-sm" target="_blank"> Generate BOS</a>
+								        </td>
 
 
 									</tr>

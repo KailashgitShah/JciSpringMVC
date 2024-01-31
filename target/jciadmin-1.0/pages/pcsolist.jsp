@@ -146,11 +146,10 @@
 								var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";
 
 								tableData += "<thead><tr>" + "<th>S.N.</th>"
-										+ "<th>Reference Date</th>"
 										+ "<th>JCI letter Ref.</th>"
-										+ "<th>PCSO Date</th>"
-										+ "<th>PCSO Qty. (M.T)</th>"
-										+ "<th>Delivery Period</th>"
+										+ "<th>PCO Requested Date</th>"
+										+ "<th>PCO Requested Qty. (M.T)</th>"
+										+ "<th>Dispatch Period</th>"
 										+ "<th>Mill Code</th>"
 										+ "<th>Mill Name</th>"
 										+ "<th>Allocation</th>"
@@ -163,16 +162,15 @@
 
 									tableData += "<tr><td>" + count + "</td>";
 
-									tableData += "<td>" + data[i].pcso_date
-											+ "</td>";
 									tableData += "<td>" + data[i].letterRef
 											+ "</td>";
-									tableData += "<td>" + data[i].pcso_date
+							
+									tableData += "<td>" + data[i].pcso_req_date
 											+ "</td>";
-									tableData += "<td>" + data[i].pcsoQty
+									tableData += "<td>" + data[i].pcsoReqQty
 											+ "</td>";
 									tableData += "<td>"
-											+ data[i].deliveryPeriod + "</td>";
+											+ data[i].dispatch_period + "</td>";
 									tableData += "<td>" + data[i].mill_code
 											+ "</td>";
 									tableData += "<td>" + data[i].mill_name

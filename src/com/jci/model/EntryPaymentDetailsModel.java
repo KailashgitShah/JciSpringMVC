@@ -50,11 +50,11 @@ public class EntryPaymentDetailsModel {
 	private String InstrumentValue;
 	
 	@Column(name = "Expiry_date")
-	@Temporal(value=TemporalType.TIMESTAMP)
+	//@Temporal(value=TemporalType.TIMESTAMP)
 	private Date dateofexpiry ;
 	
 	@Column(name = "Last_shipment_date")
-	@Temporal(value=TemporalType.TIMESTAMP)
+	//@Temporal(value=TemporalType.TIMESTAMP)
 	private Date dateofship;
 	
 	@Column(name = "Auto_revolving_amount")

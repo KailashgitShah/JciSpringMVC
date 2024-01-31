@@ -83,9 +83,13 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		  try 
 		  { 
 			  //String sql ="SELECT a.Challan_no, a.Date_of_shipment, a.Vehicle_no, a.Bale_mark, a.Jute_variety, a.Crop_year, b.DI_Date FROM jcidispatch_details a left join jciDI_ho b on b.Contract_No = a.Contract_no WHERE a.Contract_No = '"  +st+"'"; 
-			  String sql =" SELECT a.Challan_no, a.Date_of_shipment, a.Vehicle_no, a.Bale_mark, a.Jute_variety, a.Crop_year, a.DI_Date,a.Nominal_qty,s.Actual_qty, s.Short_qty from ( SELECT a.Credit_note_amount,a.Contract_no, a.Mr_no, b.Actual_qty, b.Short_qty FROM jcicredit_note_settled AS a LEFT JOIN jcicredit_note AS b ON a.Credit_note_no = b.Credit_note_no)  AS s"
-			  		+ " LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No "
-			  		+ "  WHERE a.Contract_No =  '" +st+"'"; 
+//			  String sql =" SELECT a.Challan_no, a.Date_of_shipment, a.Vehicle_no, a.Bale_mark, a.Jute_variety, a.Crop_year, a.DI_Date,a.Nominal_qty,s.Actual_qty, s.Short_qty from ( SELECT a.Credit_note_amount,a.Contract_no, a.Mr_no, b.Actual_qty, b.Short_qty FROM jcicredit_note_settled AS a LEFT JOIN jcicredit_note AS b ON a.Credit_note_no = b.Credit_note_no)  AS s"
+//			  		+ " LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No "
+//			  		+ "  WHERE a.Contract_No =  '" +st+"'"; 
+			  
+			  String sql ="     SELECT a.Challan_no, a.Date_of_shipment, a.Vehicle_no, a.Bale_mark, a.Jute_variety, a.Crop_year, a.DI_Date,a.Nominal_qty,a.Mill_code,s.Actual_qty, s.Short_qty  FROM jcicredit_note as s\r\n"
+			  		+ "			  	     LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No \r\n"
+			  		+ "			  		  WHERE a.Contract_No =  '" +st+"'"; 
 			  
 			  Session session = sessionFactory.getCurrentSession();
 			  Transaction tx = session.beginTransaction();
@@ -99,12 +103,14 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		   resultList.setDate_shipment((Date)row[1]);
 		   resultList.setVehicle_no((String)row[2]);
 		   resultList.setBale_mark((String)row[3]);
-		   resultList.setJute_variety((String)row[4]);
+		//   resultList.set((String)row[4]);
 		   resultList.setCrop_year((String)row[5]);
 		   resultList.setHo_date((Date)row[6]);
 		   resultList.setChallan_qty((Double)row[7]);
-		   resultList.setActual_qty((Double)row[8]);
-		   resultList.setShort_qty((Double)row[9]);
+		   resultList.setMill_id((String)row[8]);
+		
+		   resultList.setActual_qty((Double)row[9]);
+		   resultList.setShort_qty((Double)row[10]);
 		
 		   }
 		  

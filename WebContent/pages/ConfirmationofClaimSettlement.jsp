@@ -1,3 +1,4 @@
+<%-- <%@page import="java.util.List"%> --%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.math.BigDecimal"%>
@@ -150,11 +151,12 @@
                                    <div class="row">
                                     
                                     
-                                        <div class="col-sm-4 form-group">
-	                                            <label>Supporting document </label> 
-	                                            <span class="text-danger">* </span>&nbsp; <span id="Supporting_document " name="Supporting_document  " class="text-danger" > </span>
-												 <input class="form-control taxtbox" name="Supportingdocument1" id="Supportingdocument1" value =""  placeholder="Supporting_document1" required>
-	                                     </div>
+                                         <div class="col-sm-4 form-group">
+											<label class="required">Supporting Document (330kb-1MB)</label>&nbsp; 
+											<span id="errRegForm" name="errRegForm" class="text-danger"> </span>
+									       <img id="imgPreview"  /><input class="form-control taxtbox" name="SupportingDocument" type="file" accept=".jpg,.jpeg,.png"
+									        oninput="validateREGFileType()"  placeholder="Supporting Document" id="SupportingDocument" onkeypress="deleteErrorMsg()" required>
+										</div>
                                       <div class="col-sm-4 form-group">
 	                                            <label>Crop Year</label> 
 	                                            <span class="text-danger">* </span>&nbsp; <span id="Crop_Year" name="Crop_Year " class="text-danger" > </span>
@@ -425,6 +427,26 @@
 
       
       </script>
+      
+       <script>
+    function deleteErrorMsg(){
+    	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
+   		 if(F_BANK_IFSC.length>1){
+	       $("#errIFSC").hide();
+	    }
+   		var F_REG_FORM = document.forms["myForm"]["F_REG_FORM"].value; 
+        if(F_REG_FORM.length>1){
+       	    $("#errRegForm").hide();
+       	}
+
+}
+	}
+    function allow_alphabets(element){
+      let textInput = element.value;
+        textInput = textInput.replace(/[^A-Za-z ]+$/gm, ""); 
+        element.value = textInput; 
+    }
+</script>
       <!--  For Fetching the Grade_Composition based on Contract Number -->
 
        <script type="text/javascript">
