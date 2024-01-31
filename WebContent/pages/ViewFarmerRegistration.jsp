@@ -197,10 +197,13 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 										</td>
 										<%-- <td><%=farmerRegModelList.getF_REG_BY() %></td> --%>
 										<% if(farmerRegModelList.getF_DOC_Mandate()==null || farmerRegModelList.getF_DOC_Mandate().equalsIgnoreCase("null") ){
+											if(farmerRegModelList.getMandate_flag() == 0)
+											{
 											%>
 											<td><a href="editFarmerReg.obj?id=<%=farmerRegModelList.getF_ID()%>"class="btn btn-danger btn-sm btn-block" style="background: darkgreen;">Update Mandate</a></td>
 									<% 
-										}
+											}
+											}
 										else{
 											if(farmerRegModelList.getIS_VERIFIED()==0)
 											{

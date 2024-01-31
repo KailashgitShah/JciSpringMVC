@@ -149,6 +149,13 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 		VerificationTallySlipDao.updatestatustoPP(tallyslipno);
 	}
 
+	@Override
+	public void updatestatustoRMZM(String tallyno) {
+		// TODO Auto-generated method stub
+		VerificationTallySlipDao.updatestatustoRMZM(tallyno);
+
+	}
+
 
 
 }

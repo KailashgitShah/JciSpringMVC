@@ -165,9 +165,17 @@ public class FarmerRegModelDTO {
 	private String district;
 
 	private String block;
+	
+	private int Mandate_flag;
 
 	public FarmerRegModelDTO() {
 
+	}
+
+	
+
+	public int getVerficationid() {
+		return verficationid;
 	}
 
 	public FarmerRegModelDTO(int f_ID, String f_NAME, String f_ADDRESS, String f_MOBILE, String f_ID_PROF,
@@ -177,7 +185,8 @@ public class FarmerRegModelDTO {
 			String f_REG_NO, String yield_received_last_year, String bank_ac_type, String gender, String caste,
 			String f_DOC_Mandate, int verficationid, String regno, String ifsccode, String accountno, String farmername,
 			String address, int status, Date verificationdate, int retrycount, String state, String district,
-			String block) {
+			String block, int mandate_flag) {
+		super();
 		F_ID = f_ID;
 		F_NAME = f_NAME;
 		F_ADDRESS = f_ADDRESS;
@@ -216,10 +225,7 @@ public class FarmerRegModelDTO {
 		this.state = state;
 		this.district = district;
 		this.block = block;
-	}
-
-	public int getVerficationid() {
-		return verficationid;
+		Mandate_flag = mandate_flag;
 	}
 
 	public void setVerficationid(int verficationid) {
@@ -574,7 +580,17 @@ public class FarmerRegModelDTO {
 				+ verficationid + ", regno=" + regno + ", ifsccode=" + ifsccode + ", accountno=" + accountno
 				+ ", farmername=" + farmername + ", address=" + address + ", status=" + status + ", verificationdate="
 				+ verificationdate + ", retrycount=" + retrycount + ", state=" + state + ", district=" + district
-				+ ", block=" + block + "]";
+				+ ", block=" + block + ", Mandate_flag=" + Mandate_flag + "]";
 	}
+
+	public int getMandate_flag() {
+		return Mandate_flag;
+	}
+
+	public void setMandate_flag(int mandate_flag) {
+		Mandate_flag = mandate_flag;
+	}
+
+	
 
 }

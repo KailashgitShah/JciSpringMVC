@@ -30,4 +30,5 @@ public interface VerifyTallySlipService {
 	public void setholdstatus(String tno);
 	public List<VerifyTallySlip> getAllHold(String region, String role_type);
 	public void updatestatustoPP(String tallyslipno);
+	public void updatestatustoRMZM(String tallyno);
 }

@@ -533,14 +533,33 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	@Override
 	public void updatestatustoPP(String tallyslipno) {
 		try {
-			String hql = "update verificationtallyslip set payment_status = 1, status ='PP' where tallyNo = '" + tallyslipno+"'";
+			String hql = "update verificationtallyslip set payment_status = 1, status ='PP' where tallyNo in (" + tallyslipno+")";
+			System.err.println("hql = "+hql);
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 			
-			String hql1 = "update jciprocurement set status = 'PP' where tallyslipno = '" + tallyslipno+"'";
+			String hql1 = "update jciprocurement set status = 'PP' where tallyslipno in (" + tallyslipno+")";
+			System.err.println("hql1 = "+hql1);
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 		}
+	}
+
+	@Override
+	public void updatestatustoRMZM(String tallyno) {
+		// TODO Auto-generated method stub
+		try {
+			String hql = "update verificationtallyslip set payment_status = 0, status ='RMZM' where tallyNo in (" + tallyno+")";
+			System.err.println("hql = "+hql);
+			this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+			
+			String hql1 = "update jciprocurement set status = 'RMZM' where tallyslipno in (" + tallyno+")";
+			System.err.println("hql1 = "+hql1);
+			this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e.getLocalizedMessage());
+		}
+		
 	}
 
 }

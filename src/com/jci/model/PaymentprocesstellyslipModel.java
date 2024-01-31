@@ -57,7 +57,7 @@ public class PaymentprocesstellyslipModel {
 	private String UTR_no;
 	
 	@Column(name = "date")
-	private Date date;
+	private String date;
 	
 	@Column(name = "excel_link")
 	private String excel_link;
@@ -199,11 +199,11 @@ public class PaymentprocesstellyslipModel {
 		UTR_no = uTR_no;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -224,7 +224,7 @@ public class PaymentprocesstellyslipModel {
 
 	public PaymentprocesstellyslipModel(int payment_id, double amount, String debitAC_no, String beneficiary_IFSC_code,
 			String beneficiaryAC_No, String aC_type, String beneficiary_name, String beneficiary_branch, String jCI_Ref,
-			String sender, String beneficiary_bank, String purchase_date, String uTR_no, Date date, String excel_link,
+			String sender, String beneficiary_bank, String purchase_date, String uTR_no, String date, String excel_link,
 			String dpc_name, String farmerreg_no) {
 		super();
 		this.payment_id = payment_id;

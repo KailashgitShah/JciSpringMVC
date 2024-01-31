@@ -13,8 +13,8 @@ public class SendMail {
 
 		 String smtpHost = "smtp.office365.com";
 	        int smtpPort = 587; // Use 587 for TLS or 465 for SSL
-	        String username = "jci.erp.ops@jcimail.in"; // Office 365 email address
-	        String password = "Jute@1234";
+	        String username = "jci.sahyog@jcimail.in"; // Office 365 email address
+	        String password = "Patsan@2024";
 	       // String recipient = "vishal.vishwakarma@cyfuture.com"; // Recipient's email address
 	        
 	        
@@ -60,5 +60,5 @@ public class SendMail {
 			 }
 	 
 	 }
-	    
+	 
 }

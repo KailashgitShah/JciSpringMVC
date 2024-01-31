@@ -292,12 +292,10 @@ public class InsertDataController
         final List<PincodeModel> pincodeList = (List<PincodeModel>)this.pincodeService.getAll();
         final List<StateList> Liststate = (List<StateList>)this.stateList.getAll();
         final List<DistrictModel> DistrictList = (List<DistrictModel>)this.distric.getAll();
-      
         mv.addObject("pincodeList", (Object)pincodeList);
         mv.addObject("Liststate", (Object)Liststate);
         mv.addObject("DistrictList", (Object)DistrictList);
         }
-        
         catch(Exception e) {
         	e.printStackTrace();
         }
@@ -1967,26 +1965,26 @@ public class InsertDataController
         	
             final int id = Integer.parseInt(request.getParameter("id"));
              String farmer_reg_no = request.getParameter("farmer_reg_no");
-             farmer_reg_no = farmer_reg_no.trim();
+             farmer_reg_no = farmer_reg_no.replaceAll("\\s", "");
              String ifsc_code = request.getParameter("ifsc_code");
-             ifsc_code = ifsc_code.trim();
+             ifsc_code = ifsc_code.replaceAll("\\s", "");
              String ac_no = request.getParameter("ac_no");
-             ac_no = ac_no.trim();
+             ac_no = ac_no.replaceAll("\\s", "");
              String farmer_name = request.getParameter("farmer_name");
-             farmer_name = farmer_name.trim();
+             farmer_name = farmer_name.replaceAll("\\s", "");
           //  final String address = request.getParameter("address");
             // removed by animesh as per instruction 28 june 23
          //   final String idProofType = request.getParameter("idProofType");
          //   final String identityProofNo = request.getParameter("identityProofNo");
             final FarmerRegModel farmerdetails = this.farmerRegService.edit(id);
              String farmerRegNoDb = farmerdetails.getF_REG_NO();
-             farmerRegNoDb = farmerRegNoDb.trim();
+             farmerRegNoDb = farmerRegNoDb.replaceAll("\\s", "");
              String ifscDb = farmerdetails.getF_BANK_IFSC();
-             ifscDb = ifscDb.trim();
+             ifscDb = ifscDb.replaceAll("\\s", "");
              String accNoDb = farmerdetails.getF_AC_NO();
-             accNoDb = accNoDb.trim();
+             accNoDb = accNoDb.replaceAll("\\s", "");
              String farmerNameDb = farmerdetails.getF_NAME();
-             farmerNameDb = farmerNameDb.trim();
+             farmerNameDb = farmerNameDb.replaceAll("\\s", "");
              
         //    final String farmerAddressDb = farmerdetails.getF_ADDRESS();
         	String placeofactivity =(String)request.getSession().getAttribute("dpcId");
@@ -4962,11 +4960,12 @@ public class InsertDataController
 	    @RequestMapping(value = { "update_paymentstatus" }, method = { RequestMethod.GET })
 	    public String updatedpaymentstatus(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpSession session) {
 	    	String a = "success";
+	    	String tallyno = "";
 	    try {
 	    	String username =(String)request.getSession().getAttribute("usrname");
 	    	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
 	    //	String path1 ="/Users/apple/Documents/Bob/";
-	    	//String path1 ="Downloads";
+	    //	String path1 ="C:\\Users\\vishal.vishwakarma\\Downloads\\";
 	    	//generating crop year
 	    	String cropyear = "";
 			Calendar cal = new GregorianCalendar();
@@ -4989,19 +4988,15 @@ public class InsertDataController
 	     usrname = cropyear +"-"+ random_no +".xlsx";
 	     String tno ="";
 	     String tnoemail="";
-	     String tallyno = request.getParameter("tallyno");
+	     tallyno = request.getParameter("tallyno");
+	    // System.err.println("all tallyno   ="+tallyno);
 	     String roho = request.getParameter("roho");
-	     tallyno = tallyno.replaceAll("\\[","").replaceAll("\\]","");
+	     tallyno = tallyno.replaceAll("\\[","").replaceAll("\\]","").replaceAll("\"", "'");
+	    // System.err.println("tallyno array  ="+tallyno);
+	     this.verifyTallySlipService.updatestatustoPP(tallyno);
 	     String[] tally = tallyno.split(",");
 	     List<PaymentprocesstellyslipModel> list = new ArrayList();
 	     PaymentprocesstellyslipModel paymentlist = new PaymentprocesstellyslipModel();
-	     for(int i=0;i<tally.length;i++)
-         {
-     	    String tallyslipno = tally[i];
-     	    tallyslipno = tallyslipno.replace("\"", "");
-     	    System.out.println("tallyslipno = "+tallyslipno);
-     	this.verifyTallySlipService.updatestatustoPP(tallyslipno);
-         }
 	     String filename = "";
 	     double totalamount = 0;
 	     String jciref = "";
@@ -5122,9 +5117,12 @@ public class InsertDataController
 		          }
 	             
 		    	 
-	            }
+	            
+	    }
 	            catch (Exception e)   
 		        {  
+	            //something wrong to send mail then set status to rmzm and payment status 0 	
+	            this.verifyTallySlipService.updatestatustoRMZM(tallyno);
 		        	System.out.println("email send failed");
 		              e.printStackTrace();  
 		              

@@ -626,23 +626,16 @@ button#turn {
 		//alert(facNo);
 		var fName = '<%=fname%>';
 		fName = fName.trim();
+		fName = fName.split(" ").join("");
 		//alert("fName++"+fName);
-	//	fName =  fName.trim();
-		//alert(fName);
 		<%-- var fidProofType = <%=farmerModel.getF_ID_PROF_TYPE()%>;
 		var fidProofNo = <%=farmerModel.getF_ID_PROF_NO()%>; --%>
 		var ifsc_code = document.getElementById("ifsc_code").value;
-	//	alert(ifsc_code+" "+fIfsc);
 		var ac_no = document.getElementById("ac_no").value;
-		//alert(ac_no==facNo);
 		var farmer_name = document.getElementById("farmer_name").value;
-		//alert("farmer_name++"+farmer_name);
 		farmer_name = farmer_name.trim();
-		//alert("trimfarmer_name++"+farmer_name);
-		//alert(farmer_name+"12"+fName+"23");
+		farmer_name = farmer_name.split(" ").join("");
 		//remove proof id n dtype by animesh - 28 june 23
-	//	var idProofType = document.getElementById("idProofType").value;
-	//	var identityProofNo = document.getElementById("identityProofNo").value;
 	
 		if(fIfsc!==ifsc_code){
 		  //  alert("if fifs");

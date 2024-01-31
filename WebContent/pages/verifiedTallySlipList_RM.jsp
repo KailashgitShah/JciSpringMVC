@@ -50,7 +50,7 @@
 }
 </style>
  
- <script type="text/javascript">
+<!--  <script type="text/javascript">
 	$(document).ready(function ()  
 	{  
 		 $("#verifiedlist").DataTable({         
@@ -58,7 +58,7 @@
 	         "pageLength": 50
 	       }); 
 	});  
- </script>  
+ </script>  --> 
  
  <script src="https://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>  
  <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js" type="text/javascript"></script>  
