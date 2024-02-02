@@ -138,7 +138,7 @@
 											<label>Mill Name</label>
 										</div>
 										<div class="col-sm-4 form-group">
-											<label>Total allocation</label>
+											<label>Total allocation (M. T.)</label>
 										</div>
 									</div>
 
