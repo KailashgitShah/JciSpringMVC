@@ -28,7 +28,7 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	}
 
 	@Override
-	public ModelAndView pcso_details(List<String> pcso,String gradeComp) {
+	public ModelAndView pcso_details(List<String> pcso,List<String> gradeComp) {
 		return this.contractGenerationDao2.pcso_details(pcso,gradeComp);
 	}
 

@@ -107,7 +107,27 @@ input[type="radio"] {
 	//generation of credit Note No.
 	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
 	String indiaSerialNo = "001640";
-	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count; 
+	
+/* 	String shipmentDetails = "";
+	String ContractNo ="";
+	String roId = "";
+	String ChallanNo ="";
+	int Count = 1;
+	Double nominalWt = 0.0;
+
+	Double actualWt = 0.0;
+	Double invoiceVal =0.0;
+	Double shortQty = nominalWt - actualWt;
+
+	Double price = 0.0;
+	int crnAmount = 0;
+
+	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+	//generation of credit Note No.
+	String lastDigitOfCropYear ="";
+	String indiaSerialNo = "001640";
+	String creditNoteIdnNo = "sdfb"; */
 	%>
 
 	<div class="page-wrapper">

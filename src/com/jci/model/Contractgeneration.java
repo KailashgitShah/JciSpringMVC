@@ -36,9 +36,6 @@ public class Contractgeneration {
 	@Column(name = "Contract_value", nullable = false)
 	private double Contract_value;
 	
-	@Column(name = "Jute_value", nullable = false)
-	private double Jute_value;
-
 	@Column(name = "Mill_code", nullable = false)
 	private String Mill_code;
 
@@ -92,6 +89,11 @@ public class Contractgeneration {
 	
 	@Column(name = "SortingId")
 	private int SortingId;
+	
+
+	@Column(name = "Jute_value")
+	private double Jute_value;
+
 
 	public Long getContract_id() {
 		return contract_id;

@@ -46,6 +46,7 @@
 
 /* EncodeId encodeId = new EncodeId();
 SecretKey secretKey = encodeId.generateAESKey(128); */
+String username = (String) request.getSession().getAttribute("usrname");
  
 %>
 
@@ -182,6 +183,7 @@ $(document).ready(function() {
          $.ajax({
         		type : "POST",
         		url : "generateCrn.obj",
+        	
         		data : {
         			"contractNo":contractNo,
         			"shipmentDetails":shipmentDetails,
@@ -190,9 +192,10 @@ $(document).ready(function() {
         			"ChallanNo" : ChallanNo,
         			"roId" : roId,
         			"invoiceValue" : invoiceVal
+        			
         		},
         		success : function(){
-        			window.location.href = "creditNoteForm.obj"
+        			window.location.href = "creditNoteForm.obj";
         		}
         	})
         }

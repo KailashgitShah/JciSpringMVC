@@ -59,7 +59,7 @@ int count = (int) request.getAttribute("count") + 1;
 List<Object> allJuteVariety = (List<Object>) request.getAttribute("allJuteVariety");
 //List<String> allLabelName = (List<String>) request.getAttribute("allLabelName"); 
 int sizeOfJuteVariey = allJuteVariety.size();
-String contactIdnNo = "BT00" + count;
+String contactIdnNo = "BT-" + count;
 %>
 
 <body class="fixed-navbar">
@@ -83,7 +83,7 @@ String contactIdnNo = "BT00" + count;
 
 							<div class="ibox-body">
 								<span>${msg}</span>
-								<form method="POST">
+					<form method="POST">
 
 									<div class="row">
 										<div class="col-sm-5 form-group">
@@ -95,9 +95,7 @@ String contactIdnNo = "BT00" + count;
 										<div class="col-sm-5 form-group">
 											<label class="required">Contract identification No.</label> <input
 												class="form-control" name="contractIdn" id="contractIdn"
-												type="text" placeholder="Contract identification No."
-												value="<%=contactIdnNo%>" required readonly> <span
-												id="contractIdnMsg" class="text-danger"></span>
+												type="text"	value="<%=contactIdnNo%>" readonly>
 
 										</div>
 
@@ -172,8 +170,6 @@ String contactIdnNo = "BT00" + count;
 												<label>Available Qty</label> <input name="available_qty"
 													id="available_qty" type="text" class="form-control"
 													required />
-
-
 											</div>
 
 											<div class="col-sm-4 form-group">
@@ -184,8 +180,6 @@ String contactIdnNo = "BT00" + count;
 										</div>
 
 										<div class="row table-responsive-sm m-4">
-
-											<!-- 		<label>Jute Composition</label> -->
 											<table>
 												<thead>
 													<tr class="row">
@@ -222,7 +216,7 @@ String contactIdnNo = "BT00" + count;
 														<%
 														if (i == 1) {
 														%>
-														<td class="col-sm-2"><textarea name="remark"
+														<td class="col-sm-2"><textarea name="remark" id="remark"
 																class="form-control" required></textarea></td>
 														<%
 														}
@@ -242,11 +236,7 @@ String contactIdnNo = "BT00" + count;
 												</tbody>
 											</table>
 										</div>
-
-										<!-- <div>
-										<button class="btn btn-success submit" id="disableButton"
-											type="submit" disabled>Submit</button>
-									</div> -->
+										
 										<input type="hidden" name="size" value="<%=sizeOfJuteVariey%>">
 
 									</div>
@@ -290,6 +280,11 @@ String contactIdnNo = "BT00" + count;
 												class="form-control" name="contract_qty" id="contract_qty"
 												type="number" readonly>
 										</div>
+										<div id="list"></div>
+										<div>
+											<button class="btn btn-success submit"
+												type="submit">Submit</button>
+										</div>
 									</div>
 
 
@@ -299,9 +294,10 @@ String contactIdnNo = "BT00" + count;
 										<div class=" col-sm-4 form-group">
 											<button class="btn btn-warning" type="button" id="toggle">Next</button>
 										</div>
-								</form>
+									</div>
+				</form>
 
-								<div id="list"></div>
+
 							</div>
 						</div>
 					</div>
@@ -342,6 +338,11 @@ $("#toggle").on("click" , function(){
 		document.getElementById("error").innerHTML = "";
 	}
 	
+	
+	var availableQty = $("#available_qty").val();
+	var remarks = $("#remark").val();
+	
+	//if(!availableQty || !remarks) return false
 	/////////////////////////////////////////////////////////////////////
 	
 	
@@ -366,58 +367,80 @@ var contractedValueMillWise = [];
 var listOfTotalQty = [];
 $("#pcso_date").chosen();
 $("#pcso_date").addClass("chosen-select");
-var parsedArray = null;
+var parsedArray = [];
+var jsonGrades = [];
+var jsonPcsoDates = [];
 var count = 0;
 
 	$(".pcso")
 			.on(
 					"change",
-					function() {					
-						var array = [];
-						listOfTotalQty = [];
-						contractedValueMillWise = [];
+					function() {
 						
+						contractedValueMillWise = [];
+						listOfTotalQty = [];
+						parsedArray = [];
+						jsonPcsoDates = []
+						jsonGrades = [];
+						listOfTotalQty = [];
+						
+						var array = [];
+						var gradeArray = [];
+					
+						
+						for(var i=1 ; i<= 6 ;i++){
+							var grade = $("#grade"+i).val();
+							if(grade != '') gradeArray.push(+grade);
+							else  gradeArray.push(0);
+						}
+						
+						/* console.log(gradeArray,"gradeArray"); */
 						 
 						//var deliveryType = $("#deliveryType").val();
 
 						$("#pcso_date").find("option:selected").each(function() {
 							array.push($(this).val());
 						});
+						
+					/* 	console.log(array , "Array"); */
 
-						var jsonArray = JSON.stringify(array);
-					
-						parsedArray = JSON.parse(jsonArray);
-					    var lastIndex = parsedArray.length - 1;
+						 jsonPcsoDates = JSON.stringify(array);
+						 jsonGrades = JSON.stringify(gradeArray);
+			
+					/* 	console.log(jsonPcsoDates , "jsonPcsoDates");
+						console.log(jsonGrades , "jsonGrades"); */
+						
+					    var lastIndex = array.length-1;
 					    
-					    if(parsedArray.length == 0){
-					    	
+					    if(array.length == 0){
 					    	$("#list").html("<div></div>");
 					    	$("#contract_qty").val(0);
 					    	return;
 					    }
 					    
-					    if(gradeComp != null && parsedArray.length != 0 ){
-					    	
+					    if(array.length != 0){	
 					   
 						 $
 								.ajax({
 									type : 'GET',
 									url : 'pcso_details.obj',
 									data : {
-										"pcso_dates" : jsonArray,
-										"gradeComp":gradeComp
+										"pcso_dates" : jsonPcsoDates,
+										"grades" : jsonGrades
 										//"deliveryType":deliveryType
 									},
 									success : function(result) {
 										var data1 = jQuery.parseJSON(result).model;
+										parsedArray = JSON.parse(jsonPcsoDates);
 										var List = data1.List;
 										var TotelContractedValue = data1.totelContractedValue;
 									     contractedValueMillWise = data1.contractedValueMillWise;
-										 count = List.length;
+									     
+										count = List.length;
 										
 										var sizeOfSingleResultArray = List[0].length; 
 										
-								 	    var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped">';
+								 	    var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped" style="margin-top:16px">';
 										var sum = 0;
 										var dateStringAsColumnName = parsedArray.map(ele => {
 											return '<th style="text-align:center">'+ ele + '</th>';
@@ -425,11 +448,11 @@ var count = 0;
 										
 									
 										
-										htmlTable += '<tr><th style="text-align:center">Mill code</th><th style="text-align:center">Mill Name</th>'+dateStringAsColumnName+'<th style="text-align:center">Total allocation</th><th style="text-align:center">Delivery Type</th></tr>';
+										htmlTable += '<thead><tr><th style="text-align:center">Mill code</th><th style="text-align:center">Mill Name</th>'+dateStringAsColumnName+'<th style="text-align:center">Total allocation</th><th style="text-align:center">Jute Value</th><th style="text-align:center">Delivery Type</th></tr></thead>';
 									
 										htmlTable += '<tbody id="body">';
 										for (i = 0; i < List.length; i++) {
-											
+											 
 											listOfTotalQty.push(List[i][sizeOfSingleResultArray-1]);
 											
 											htmlTable += '<tr border="2px"><td id="code'+i+'" style="text-align:center">'
@@ -444,7 +467,7 @@ var count = 0;
 													
 									   htmlTable +=	'<td id="allocated'+i+'" style="text-align:center">'
 													+ List[i][sizeOfSingleResultArray-1]
-													+ '</td><td><select onchange={updateOnChange('+i+')} class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
+													+ '</td><td style="text-align:center">' +contractedValueMillWise[i]+'</td><td><select onchange={updateOnChange('+i+')} class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
 													
 									   htmlTable +="<input type='hidden' id='contractedValue"+i+"' value='"+contractedValueMillWise[i]+"'>";
 													
@@ -455,7 +478,7 @@ var count = 0;
 // 													+ sum + '</td></tr>';
 										htmlTable += '</tbody></table>';
 									 htmlTable += '<br><h4> Total Allocation = ' + sum + '</h6>';
-										
+									
 										$("#list").html(htmlTable); 
 										$("#contract_qty").val(sum);
 										$("#count").val(count);
@@ -467,15 +490,18 @@ var count = 0;
 
 					});
 
- $("#submit")
+ $(".submit")
 			.click(
 					function() {
-
+						
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
 						var contractdate = $("#contactDate").val();
 						var contractQty = $("#contract_qty").val();
-						var gradeComp = $("#gradeComp").val();
+						var labelName = $("#labelname").val();
+						var availableQty = $("#available_qty").val();
+						var remarks = $("#remark").val();
+					
 						
 						
 						var millDetails = [];
@@ -492,7 +518,7 @@ var count = 0;
 						  millDetails.push({
 							  "millCode" : millCode,
 							  "millName" : millName,
-							  "contractedValue" : contractedValue,
+							  "juteValue" : contractedValue,
 							  "Qty" : Qty,
 							  "delivery_type" : delivery_type
 						  })
@@ -502,19 +528,21 @@ var count = 0;
 						//console.log(millDetails,"millDetails");
 						
 						var data = {
-								"pcsoDate" : pcsoDate,
+								"pcsoDate" : jsonPcsoDates,
 								"contractIdn" : contractIdn,
 								"contractdate" : contractdate,
 								"contractQty" : contractQty,
-								"gradeComp" : gradeComp,
+								"gradeComp" : jsonGrades,
 								"millDetails":millDetails,	
-								"SortingId": '<%=count%>'
+								"SortingId": '<%=count%>',
+								"labelName": labelName,
+								"availableQty": availableQty,
+								"remarks": remarks
 						 };
 						 
-						//console.log(data);
-						
-						
-                if(gradeComp != null){
+					
+                 if(jsonPcsoDates.length > 4){
+                	 
 				   $.ajax({
 							type : "POST",
 							url : "contractgenerationPcsoWiseSave.obj",
@@ -570,43 +598,6 @@ console.log(contractedValueMillWise);
 
 	
 }
-</script>
-
-
-
-
-<script>
-$("#contractIdn")
-.on(
-		"blur",
-		function() {
-			var val = $(this).val();
-
-			$
-					.ajax({
-						type : "GET",
-						url : "isValid_Identification_No.obj",
-						data : {
-							"contractIdn" : val
-						},
-						success : function(result){
-							//console.log(result , "result");
-
-							if (result === 'true') {
-								document
-										.getElementById("contractIdnMsg").innerHTML = "Contract Identification Number is already exist";
-								
-							}
-
-							else {
-								document
-										.getElementById("contractIdnMsg").innerHTML = "";
-							
-							}
-						}
-
-					});
-		});
 </script>
 
 

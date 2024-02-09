@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,6 +22,9 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Autowired
 	SessionFactory sessionFactory;
+
+	@Autowired
+	HttpServletRequest request;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -42,6 +47,9 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		combinedResult.addAll(listOfGradesExGodown);
 
 		for (Object[] gradeP : combinedResult) {
+			System.err.println("**********");
+			System.err.println("******Grade prices****");
+			
 			System.err.println(((BigDecimal) gradeP[0]).doubleValue());
 			System.err.println(((BigDecimal) gradeP[1]).doubleValue());
 			System.err.println(((BigDecimal) gradeP[2]).doubleValue());
@@ -49,7 +57,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			System.err.println(((BigDecimal) gradeP[4]).doubleValue());
 			System.err.println(((BigDecimal) gradeP[5]).doubleValue());
 
-			System.err.println("**********");
+			
 			System.err.println("**********");
 			System.err.println("**********");
 
@@ -69,35 +77,24 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		return list;
 	}
 
+	
+	
+	
 	@Override
-	public ModelAndView pcso_details(List<String> pcsoDates, String gradeComp) {
+	public ModelAndView pcso_details(List<String> pcsoDates, List<String> gradeComp) {
 
 		pg.clear();
-		gc.clear();
-		
-		LocalDate obj = LocalDate.now();
-		// LocalDate obj = LocalDate.of(2020, 1, 8)
+		//gc.clear();
+	
+		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 
-		int currentyear = obj.getYear();
-		int nextyear = 0;
-		int month = obj.getMonthValue();
-
-		if (month >= 7) {
-			nextyear = currentyear + 1;
-		} else {
-			nextyear = currentyear;
-			currentyear -= 1;
-		}
-
-		String cropYear = currentyear + "-" + nextyear;
-
-		List<PcsoDateModel> ll = new ArrayList<>();
 		List<Object[]> rows = new ArrayList<>();
+		
 		StringBuilder querystr = new StringBuilder("SELECT  mill_name, mill_code,");
 		pcsoDates.forEach(date -> {
 			querystr.append("SUM(CASE WHEN pcso_date =" + date + "THEN Allocated_qty ELSE 0 END) AS " + date + ",");
 		});
-//		querystr.deleteCharAt(querystr.length() - 1);
+
 		querystr.append(
 				"SUM(Allocated_qty) AS Total_Allocation FROM [XMWJCI].[dbo].[jcientryof_pcso] WHERE pcso_date IN (");
 
@@ -109,18 +106,18 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		SQLQuery query = currentSession().createSQLQuery(querystr.toString());
 		rows = query.list();
-		List<Object[]> listOfGradeComp = getListOfGradeComposition(gradeComp);
+	
 
 		int i = 0;
-		for (Object[] rObject : listOfGradeComp) {
-			gc.add((Double) rObject[1]);
-			System.out.println(rObject[0]);
-			System.out.println((Double) rObject[1]);
+		for (String price: gradeComp) {
+			//gc.add((Double) price);
+			System.out.println("Grade" + i + " " + price + " ");
+			i++;
 		}
-		System.out.println();
 		
+	
 
-		List<Object[]> listOfGradesPrice = getListOfGradesPrice(cropYear);
+		List<Object[]> listOfGradesPrice = getListOfGradesPrice(currCropYear);
 
 		//System.out.println(listOfGradesPrice.size());
 
@@ -155,9 +152,9 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			int sizeOfComponents = pg.size() / 2;
 			Double contractedValueForPerticularMill = 0.0;
 			for (int j = 0; j < sizeOfComponents; j++) {
-				 System.out.println(gc.get(j)/100 + "<->" + totalAllocatedToMill +"<->"
+				 System.out.println(Double.parseDouble(gradeComp.get(j))/100 + "<->" + totalAllocatedToMill +"<->"
 				 +pg.get(j));
-				contractedValueForPerticularMill += (gc.get(j) / 100) * (totalAllocatedToMill * pg.get(j));
+				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100) * (totalAllocatedToMill * pg.get(j));
 			}
 			System.out.println("-------------------------------------------");
 			System.out.println(contractedValueForPerticularMill);

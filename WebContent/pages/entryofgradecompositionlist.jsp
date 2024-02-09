@@ -111,7 +111,7 @@ $(document).ready(function() {
 										<td><%=egcl.getProposed_composition()%></td>	
 							 
 										<td><a href="editentryofgradecomposition.obj?grade_id=<%=egcl.getId()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-										<td><a onclick="return confirm('Are you sure you want to delete this item?');" href="entryofgradecompositiondelete.obj?grade_id=<%=egcl.getId()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td>
+										<%-- <td><a onclick="return confirm('Are you sure you want to delete this item?');" href="entryofgradecompositiondelete.obj?grade_id=<%=egcl.getId()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
 										
 									</tr>
 									<% 

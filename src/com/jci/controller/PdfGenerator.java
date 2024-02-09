@@ -40,7 +40,7 @@ import com.lowagie.text.pdf.GrayColor;
 public class PdfGenerator {
 
 	public void generatePdf(String jciRefNo, String millNameString, String millCode, Double qty, String cropyear,
-			List<Object[]> priceList, List<Object[]> compList, String fileName, String deliveryType,
+			List<Object[]> priceList, List<String> compList, String fileName, String deliveryType,
 			String contractDate, String filePath, String letterHeadPath) throws DocumentException, IOException {
 
 		PdfWriter pdfWriter = new PdfWriter(filePath);
@@ -133,17 +133,16 @@ public class PdfGenerator {
 		int totalCompositionInt = 0;
 		double totalContractedprice = 0.0;
 		for (int i = 0; i < compList.size(); i++) {
-			Object[] rObject1 = compList.get(i);
+			Double rObject1 = Double.parseDouble(compList.get(i));
 			Object[] rObject2 = priceList.get(0);
 
-			Double composition = ((double) (rObject1[1]) / 100) * qty;
+			Double composition = (rObject1 / 100) * qty;
 			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
 			totalContractedprice += composition * priceDouble;
 
 			int compositionInt = (int) Math.round(composition);
 			totalCompositionInt += compositionInt;
-
-			distributionTable.addCell(new Cell().add((String) rObject1[0])).setTextAlignment(TextAlignment.CENTER);
+			distributionTable.addCell(new Cell().add(rObject1+"")).setTextAlignment(TextAlignment.CENTER);
 			distributionTable.addCell(new Cell().add(compositionInt + "").setTextAlignment(TextAlignment.CENTER));
 
 			distributionTable.addCell(new Cell().add("##.##").setTextAlignment(TextAlignment.CENTER));

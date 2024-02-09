@@ -44,6 +44,7 @@
 	content: " *";
 	color: red;
 }
+
 </style>
 
 
@@ -176,10 +177,10 @@ int count = (int) request.getAttribute("count") + 1;
 									<div class="row">
 										<input class="form-control" type="hidden" name="count"
 											id="count">
-										<div class=" col-sm-4 form-group">										 
+										<div class=" col-sm-4 form-group">
 											<button class="btn btn-success" type="submit" value="Submit"
 												id="submit">Submit</button>
-												
+
 										</div>
 									</div>
 								</form>
@@ -265,7 +266,7 @@ var count = 0;
 										
 										var sizeOfSingleResultArray = List[0].length; 
 										
-								 	    var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped">';
+								 	    var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped tableColor">';
 										var sum = 0;
 										var dateStringAsColumnName = parsedArray.map(ele => {
 											return '<th style="text-align:center">'+ ele + '</th>';

@@ -256,9 +256,9 @@ body {
 					<li data-pre="" id=""><a href="entryderivativepricelist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Derivative
 								Price List</b></a></li>
-					<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
+				<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-								Grade Composition</b></a></li>
+								Grade Composition</b></a></li> -->
 					<li data-pre="" id=""><a href="entrygradecompositionlist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>List of Grade
 								Composition</b></a></li>

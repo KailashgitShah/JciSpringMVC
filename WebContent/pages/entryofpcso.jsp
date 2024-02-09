@@ -315,14 +315,6 @@
 				 
 	</script>
 
-
-
-
-
-
-
-
-
 	<script>
 		$("#pcsoDate").on(
 				"change",
@@ -428,26 +420,19 @@
 														.val();
 												var sum = 0;
 												for (var i = 0; i < sz; i++) {
-													val
-													ele
-															- $(
-																	"#totalallocation"
-																			+ i)
-																	.val();
+													var ele =  $("#totalallocation"+ i).val();
 													if (ele) {
 														sum += parseInt(ele);
 													}
 												}
 
 												if (sum != pcoQty) {
-													document
-															.getElementById("errMsg").innerHTML = "Current sum = "
+													document.getElementById("errMsg").innerHTML = "Current sum = "
 															+ sum
 															+ " not equal to PCO Qty.";
 													return false;
 												} else {
-													document
-															.getElementById("errMsg").innerHTML = "";
+													document.getElementById("errMsg").innerHTML = "";
 													return true;
 												}
 

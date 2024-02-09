@@ -12,7 +12,7 @@ public interface ContractGenerationDao2 {
 	int highestDerivativePrice(String cropYear, String deliveryType);
 	boolean isValidContractIdn(String contractIdn);
 //	ModelAndView pcso_details(List<String> pcsoDates,String gradeComp , String deliveryType);
-	ModelAndView pcso_details(List<String> pcsoDates,String gradeComp);
+	ModelAndView pcso_details(List<String> pcsoDates,List<String> gradeComp);
 	List<Object[]> getListOfGradesPrice(String cropYear);
 	List<Object[]> getListOfGradeComposition(String gradeComp);
 	int updateContractedValue(String deliveryType, String totalQtyOfMill);
