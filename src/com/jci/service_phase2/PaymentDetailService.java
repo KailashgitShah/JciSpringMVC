@@ -23,4 +23,6 @@ public interface PaymentDetailService {
 		public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry();
 		public List<Object>ContractNo();
 		public void contratTable(String cont_no);
+		  public  List<Object[]>paymentdetails(String  st);
+		  public  List<Object[]>gradewiseqty(String  st,String contractqty);
 }

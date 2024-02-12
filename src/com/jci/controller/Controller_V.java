@@ -1772,9 +1772,25 @@ public class Controller_V {
 			EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 			entryPaymentDetailsModel.setContractno(contractno);
 			entryPaymentDetailsModel.setInstrumentno(Instrument);
+//			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//			Date instdate1 = formatter1.parse(instdate);
+//			entryPaymentDetailsModel.setInstdate(instdate1);
+
+			
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date instdate1 = formatter1.parse(instdate);
-			entryPaymentDetailsModel.setInstdate(instdate1);
+
+			// Set the time portion to midnight
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(instdate1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+
+			Date instdateWithoutTime = calendar.getTime();
+
+			entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
 
 			entryPaymentDetailsModel.setPayment(payment);
 			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
@@ -2000,8 +2016,8 @@ public class Controller_V {
 			String FC_Issue_Date = request.getParameter("FC_Issue_Date");
 			String FC_Ref_No = request.getParameter("FC_Ref_No.");
 			String Contracted_Qty = request.getParameter("Contracted_Qty.");
-			String QtyAllowed = request.getParameter("QtyAllowed");
-			String carryingCostParam = request.getParameter("Carrying_cost");
+			String QtyAllowed = request.getParameter("Shipment_Value1");
+			String carryingCostParam = request.getParameter("SGST_Amt");
 			double Carrying_Cost_Charged = 0.0; // Default value if the parameter is not present or cannot be parsed
 
 			if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
@@ -2371,15 +2387,15 @@ public class Controller_V {
 		return resultString;
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "gradecomposition", method = RequestMethod.GET)
-	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
-		List<Object> gradecmposition = confirmationofClaimSettlementService.gradecomposition(ContractNo);
-		Gson gson = new Gson();
-		String jsonResponse = gson.toJson(gradecmposition);
-		return jsonResponse;
-
-	}
+//	@ResponseBody
+//	@RequestMapping(value = "gradecomposition", method = RequestMethod.GET)
+//	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
+//		List<Object> gradecmposition = confirmationofClaimSettlementService.gradecfetchingdata1omposition(ContractNo);
+//		Gson gson = new Gson();
+//		String jsonResponse = gson.toJson(gradecmposition);
+//		return jsonResponse;
+//
+//	}
 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
@@ -2821,6 +2837,20 @@ public class Controller_V {
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "paymentdetailsforshow", method = RequestMethod.GET)
+	public String paymentdetails(@RequestParam("contractno") String contractno1) {
+
+		List<Object[]> paymentdetails = paymentDetailService.paymentdetails(contractno1);
+		System.err.println("resultList++++++++++" + paymentdetails);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(paymentdetails);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	
+	 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdataforbill", method = RequestMethod.GET)
 	public String fetchingdatanominactionclaimforbill(@RequestParam("contractno") String  contractno) {
@@ -2830,6 +2860,18 @@ public class Controller_V {
 	    String resultString =  new Gson().toJson(millRecieptModelt1);
 	    return resultString;//gson.toJson((Object)millRecieptModelt1);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "greadewiseqty", method = RequestMethod.GET)
+	public String greadewiseqtypayment(@RequestParam("contractno") String  contractno,@RequestParam("contractqty") String  contractqty) {
+		List<Object[]>Graedewiseqty = paymentDetailService.gradewiseqty(contractno,contractqty);
+	    System.err.println("resultList++++++++++"+Graedewiseqty);
+	    Gson gson = new Gson();
+	    String resultString =  new Gson().toJson(Graedewiseqty);
+	    return resultString;//gson.toJson((Object)millRecieptModelt1);
+	}
+	
 
 	@RequestMapping("entry_of_transportation_and_operation_cost")
 	public ModelAndView entry_of_transportation_and_operation_cost(HttpServletRequest request) {

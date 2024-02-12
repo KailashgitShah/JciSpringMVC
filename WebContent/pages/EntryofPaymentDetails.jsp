@@ -17,6 +17,7 @@
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="assets/css/main.min.css" rel="stylesheet" />
+     
     <!-- PAGE LEVEL STYLES-->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
      <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -27,6 +28,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <!-- CORE SCRIPTS-->
   
  <style>
@@ -68,9 +70,9 @@
                                        <div class="col-sm-4 form-group">
 	                                             <label>Contract No.</label>
 	                                              <span class="text-danger">* </span>&nbsp; <span id="contractno" name="contractno" class="text-danger"> </span>
-	                                        	 <select name="fullcontractno" id="fullcontractno" class="form-control taxtbox" required>
+	                                        	 <select name="fullcontractno" id="contractno12" class="form-control taxtbox" required>
 	                                        		
-													    <option value="">-Select-</option>
+													    <option value="select">-Select-</option>
 													    <%
 													    for (Object row : getcontractList1) {
 													       String field1 = (String)row;
@@ -83,7 +85,42 @@
 	                                        		
 	                                        
                                         </div>
+                                        
                                          <div class="col-sm-4 form-group">
+	                                             <label id ="ContracQty2">Contract_Qty </label>
+	                                             <input class="form-control" 
+												 id="ContracQty1" value="" readonly="readonly"
+												 >
+	                                       </div>
+	                                        <div class="col-sm-4 form-group">
+	                                             <label id ="contract_Value2">Contract_Value</label>
+	                                             <input class="form-control taxtbox"  id="contract_Value1"  value=""  readonly="readonly" >
+	                                       </div>
+                                       
+										
+										
+	                                     
+                                 </div>
+                                  <div class="row">
+                                  
+                                    <div class="col-sm-4 form-group">
+	                                             <label  id ="Contract_date2">Contract_date</label>
+	                                             <input class="form-control taxtbox"  id="Contract_date1"  value="" readonly="readonly"  >
+	                                       </div>
+	                                         <div class="col-sm-4 form-group">
+	                                             <label  id ="payment_dueDate2">Payment_dueDate</label>
+	                                             <input class="form-control" 
+												 id="payment_dueDate1" value="" readonly="readonly"
+												 >
+	                                       </div>
+	                                        <div class="col-sm-4 form-group">
+	                                             <label  id ="Mill_name2">Mill name</label>
+	                                             <input class="form-control taxtbox"  id="Mill_name1"  value="" readonly="readonly" >
+	                                       </div>
+                                  </div>
+                                    
+                                    <div class="row">
+                                      <div class="col-sm-4 form-group">
 	                                            <label>Instrument Type</label> 
 	                                            <span class="text-danger">* </span>&nbsp; <span id="payment" name="payment" class="text-danger"> </span>
 												<select name="paymenttype" id="paymenttype" class="form-control taxtbox" required>
@@ -97,15 +134,8 @@
                                          <div class="col-sm-4 form-group">
 												<label>Instrument No</label> 
 												<span class="text-danger">* </span>&nbsp; <span id="instrument" name=Instrument class="text-danger"> </span>
-												<input class="form-control" name="Instrument" id="Instrumentno" type="Number" required>
+												<input class="form-control" name="Instrument" id="Instrumentno"  oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);" maxlength="16" type="text" pattern="[A-Za-z0-9/-]*" title="Only alphanumeric characters, slashes, and hyphens are allowed" required>
 										</div> 
-										
-										
-	                                     
-                                 </div>
-                                  
-                                    
-                                    <div class="row">
                                     
                                     
                                     
@@ -117,17 +147,7 @@
 	                                       
 	                                    
 	                                       
-	                                        <div class="col-sm-4 form-group">
-												<label>Instrument Date</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="instrumentdate" name="instrumentdate" class="text-danger"> </span>
-												<input class="form-control" name="instdate" id="instdate" type="date" required>
-										   </div>
-	                                       <div class="col-sm-4 form-group">
-											<label class="required">Supporting Document (330kb-1MB)</label>&nbsp; 
-											<span id="errRegForm" name="errRegForm" class="text-danger"> </span>
-									       <img id="imgPreview"  /><input class="form-control taxtbox" name="SupportingDocument" type="file" accept=".jpg,.jpeg,.png"
-									        oninput="validateREGFileType()"  placeholder="Supporting Document" id="SupportingDocument" onkeypress="deleteErrorMsg()" required>
-										</div>
+	                                     
 										   
 	                                     
 	                                     
@@ -135,13 +155,32 @@
                                        
                                    <div class="row">
                                    
+                                      <div class="col-sm-4 form-group">
+												<label>Instrument Date</label> 
+												<span class="text-danger">* </span>&nbsp; <span id="instrumentdate" name="instrumentdate" class="text-danger"> </span>
+												<input class="form-control" name="instdate" id="instdate" type="date" required>
+										   </div>
+	                                       <div class="col-sm-4 form-group">
+											<label class="required">Supporting Document (330kb-1MB)</label>&nbsp; 
+											<span id="errRegForm" name="errRegForm" class="text-danger"> </span>
+									       <img id="imgPreview"  /><input class="form-control taxtbox" name="SupportingDocument" type="file" accept=".jpg,.jpeg,.png.pdf"
+									        oninput="validateREGFileType()"  placeholder="Supporting Document" id="SupportingDocument" onkeypress="deleteErrorMsg()" required>
+										</div>
                                            <div class="col-sm-4 form-group">
 	                                             <label id="IFSC1">IFSC </label>
 	                                             <input class="form-control" oninput="this.value = this.value.toUpperCase()" maxlength="11" name="IFSC" type="text"
 												placeholder="IFSC Code" id="IFSC"
 												onchange="deleteErrorMsg()" >
 	                                       </div>
-	                                        <div class="col-sm-4 form-group">
+	                                       
+	                                       
+	                                     
+	                                       
+	                                       
+                                    </div>  
+                                     
+                                        <div class="row">
+                                         <div class="col-sm-4 form-group">
 	                                             <label id="BankName1">Bank Name</label>
 	                                             <input class="form-control taxtbox" name="BankName" id="BankName" min="0" type="text" placeholder="Bank Name" onchange="deleteErrorMsg()" >
 	                                       </div>
@@ -151,20 +190,36 @@
 	                                             <input class="form-control taxtbox" name="Branch" id="Branch" min="0" type="text" placeholder="Branch" onchange="deleteErrorMsg()">
 	                                       </div>
 	                                      
-	                                       
-	                                     
-	                                       
-	                                       
-                                    </div>  
-                                     
-                                        <div class="row">
                                         <div class="col-sm-4 form-group">
 												<label id="doshipment">Last Shipment date</label> 
 												<input class="form-control" name="dateofship" id="dateofship" placeholder="Date of Shipment" type="date" >
 										   </div>
-                                         <div class="col-sm-4 form-group">
+                                        
+	                                       <div class="col-sm-2 form-group" style="display: none;">
+												<label "display:none;">GradeComposition </label> <span
+													class="text-danger">* </span>&nbsp; <span id="GradeComposition1"
+													name="GradeComposition" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="GradeComposition"
+													id="GradeComposition2" value="" readonly="readonly">
+											</div>
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label "display:none;">Contarctqty </label> <span
+													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
+													name="Contarctqty" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="Contarctqty"
+													id="Contarctqty2" value="" readonly="readonly">
+											</div>
+	                                     
+	                                      
+	                                       
+                                    </div>
+                                    
+                  
+									 
+									  <div class="row"> 
+									   <div class="col-sm-4 form-group">
 												<label id="doexpiry">Date of Expiry</label> 
-												<input class="form-control" name="dateofexpiry" id="dateofexpiry" placeholder="Date of Expiry" type="date" disabled >
+												<input class="form-control" name="dateofexpiry" id="dateofexpiry" placeholder="Date of Expiry" type="date" >
 										   </div>
 										   
                                    
@@ -172,13 +227,75 @@
 	                                             <label id="autoamounta">Auto Revolving Amount</label>
 	                                             <input class="form-control taxtbox" name="autorevolvingamount" id="autorevolvingamount" min="0" type="number" placeholder="Auto Revolving Amount" 	>
 	                                       </div>
+                                              
 	                                     
-	                                      
+	                                     
+	                                       </div>
 	                                       
-                                    </div>
+	                                      <!--  <div class="col-sm-4 form-group">
+	                                             <label >GradeComposition</label>
+	                                             <input class="form-control taxtbox" id="GradeComposition2" value="" readonly="readonly" >
+	                                       </div>
+	                                        -->
+	                                    
+												<div class="row">
+												    <div class="col-sm-15">
+												        <table class="table">
+												            <thead>
+												                <tr>
+												                    <th id="grade">Grade</th>
+												                    <th id="grade1">Jute combination</th>
+												                    <th id="grade2">Quantity</th>
+												                </tr>
+												            </thead>
+												            <tbody>
+												               <tr>
+																    <td  id="g111">Grade 1:</td>
+																    <td><input type="text" id="g11" name="g11" readonly="readonly" value="" style="width: 300px; height: 30px;"></td>
+																    <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+																</tr>
 
-	                                     <div class="row"> 
-                                                <div class="col-sm-12 form-group">
+												                <tr>
+												                    <td id="g211" >Grade 2:</td>
+												                    <td><input type="text" id="g21" name="g21" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g22" name="g22" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g311">Grade 3:</td>
+												                    <td><input type="text" id="g31" name="g31" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g32" name="g32" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g411">Grade 4:</td>
+												                    <td><input type="text" id="g41" name="g41" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g42" name="g42" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g511">Grade 5:</td>
+												                    <td><input type="text" id="g51" name="g51" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g52" name="g52" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g611">Grade 6:</td>
+												                    <td><input type="text" id="g61" name="g61" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g62" name="g62" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g21"></td>
+												                     <td> <input type="text" id="g71" name="g71" readonly="readonly"   value ="Total" style="width: 300px; height: 30px; text-align:right; font-weight: bold; "></td>
+												                   <!--  <td><strong style ="text-align:right">Total</strong></td> -->
+												                    <td><input type="text" id="g72" name="g72" readonly="readonly" value ="" style="width: 200px; height: 30px; font-weight: bold;"></td>
+												                </tr>
+												            </tbody>
+												            
+												        </table>
+												    </div>
+												</div>
+												
+											
+									 
+                                         <div class="row"> 
+                                             <div class="col-sm-12 form-group">
 									             <input type="submit" value="Submit"class="btn btn-primary" id="submit" onclick="">
 									            </div>
 									           <!--  <div class="clear">
@@ -226,62 +343,206 @@
 	 });
 		
 	</script> 
-	
-	
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    var dateOfExpiryInput = document.getElementById("dateofexpiry");
-    var dateOfShipmentInput = document.getElementById("dateofship");
-
-    dateOfShipmentInput.addEventListener("input", function () {
-       
-        var dateOfShipment = dateOfShipmentInput.value;
-
-        dateOfExpiryInput.disabled = !dateOfShipment;
-
-        if (!dateOfShipment) {
-            dateOfExpiryInput.value = "";
+	 
+	 
+	 <script>
+    function validateInstrumentNo(input) {
+        var pattern = /^[A-Za-z0-9/-]*$/;
+        if (!pattern.test(input.value)) {
+            input.setCustomValidity("Only alphanumeric characters, slashes, and hyphens are allowed.");
+        } else {
+            input.setCustomValidity("");
         }
+    }
+</script>
+<!-- <script>
+    $(document).ready(function() {
+    
+        $('#contractno12').change(function() {
+            $('#rejectModal').modal('show');
+        });
+
+
+        $('#rejectModalButton').click(function() {
+
+            alert('Record rejected!');
+            $('#rejectModal').modal('hide');
+        });
+    });
+</script> -->
+	
+	<script>
+    const dropdown = document.getElementById('contractno12');
+    const sidebar = document.getElementById('sidebar');
+
+    // Show sidebar when dropdown is hovered
+    dropdown.addEventListener('mouseenter', () => {
+        sidebar.style.display = 'block';
     });
 
-    dateOfExpiryInput.addEventListener("input", function () {
-        
-        var dateOfExpiry = dateOfExpiryInput.value;
-        var dateOfShipment = dateOfShipmentInput.value;
-
-        var isDateValid = !dateOfShipment || new Date(dateOfExpiry) > new Date(dateOfShipment);
-
-        
-        if (!isDateValid) {
-            dateOfExpiryInput.value = "";
-        }
+    // Hide sidebar when cursor leaves dropdown or sidebar
+    dropdown.addEventListener('mouseleave', () => {
+        sidebar.addEventListener('mouseleave', () => {
+            sidebar.style.display = 'none';
+        });
     });
 
+</script>
 
-    dateOfExpiryInput.addEventListener("focus", function () {
-        var dateOfExpiry = dateOfExpiryInput.value;
-        if (dateOfExpiry) {
-           
-            var formattedDate = new Date(dateOfExpiry).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric"
+ <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get references to the date input fields
+            var instDateInput = document.getElementById('instdate');
+            var shipDateInput = document.getElementById('dateofship');
+            var expiryDateInput = document.getElementById('dateofexpiry');
+
+            // Add change event listener to the instrument date input
+            instDateInput.addEventListener('change', function() {
+                updateShipmentMinDate();
+            });
+            
+            shipDateInput.addEventListener('change', function() {
+                updateExpiryMinDate();
             });
 
-            dateOfExpiryInput.value = formattedDate;
-        }
-    });
-    dateOfExpiryInput.addEventListener("blur", function () {
-        var dateOfExpiry = dateOfExpiryInput.value;
-        if (dateOfExpiry) {
-         
-            dateOfExpiryInput.value = new Date(dateOfExpiry).toISOString().split('T')[0];
-        }
-    });
-});
-</script>
+            // Function to update the minimum selectable date for the shipment date input
+            function updateShipmentMinDate() {
+            
+                var selectedInstrumentDate = new Date(instDateInput.value);
+               
+                var minShipmentDate = new Date(selectedInstrumentDate);
+                minShipmentDate.setDate(selectedInstrumentDate.getDate() + 1);
+                
+                var minShipmentDateString = minShipmentDate.toISOString().split('T')[0];
+          
+                shipDateInput.setAttribute('min', minShipmentDateString);
+             
+                shipDateInput.disabled = false;
+            }
+            function updateExpiryMinDate() {
+                var selectedShipmentDate = new Date(shipDateInput.value);
+                var minExpiryDate = new Date(selectedShipmentDate);
+                minExpiryDate.setDate(selectedShipmentDate.getDate() + 1);
+                var minExpiryDateString = minExpiryDate.toISOString().split('T')[0];
+                expiryDateInput.setAttribute('min', minExpiryDateString);
+                expiryDateInput.disabled = false;
+            }
+       });
+    </script>
+
     
-    <script>
+    
+    
+    
+    
+<script type="text/javascript">
+      
+ $(document).ready(function() {
+	    $('#contractno12').on('change', function() {
+	    var field2Value = $(this).val();
+	   
+	      $.ajax({
+	            type: 'GET',
+	            url: 'paymentdetailsforshow.obj',
+	            data: { "contractno": field2Value },
+	            success: function(data) {
+	            
+	            	 try {
+	        	            var dataArray = JSON.parse(data);
+
+	        	            if (dataArray && dataArray.length > 0) {
+	        	                var Contarctqty = dataArray[0][0];
+	        	                var Contarctdate = dataArray[0][2];
+	        	                var ContarctValue = dataArray[0][1];
+	        	                var Paymentduedate = dataArray[0][3];
+	        	                var mill_name = dataArray[0][4];
+	        	                
+	        	               var GradeComposition = dataArray[0][5];
+	     					  $('#GradeComposition2').val(GradeComposition);
+	        	              $('#Contract_date1').val(Contarctdate);
+	        	              $('#contract_Value1').val(ContarctValue);
+	        	              $('#payment_dueDate1').val(Paymentduedate);
+	        	              $('#Mill_name1').val(mill_name);
+	        	              $('#ContracQty1').val(Contarctqty);
+	        	            
+	        	               $.ajax({
+	     			                  type: 'GET',
+	     			                  url: 'greadewiseqty.obj',
+	     			                  data: { "contractno": GradeComposition, 
+	     			                	  "contractqty": Contarctqty },
+	     			                      success: function(secondData) {
+	     			                     
+	     			                      try { 
+	     			                      var dataArray = JSON.parse(secondData);
+
+	     			                     if (dataArray && dataArray.length > 0) {
+	     			                    	var g11 = dataArray[0][0];
+	     		        	                var g12 = dataArray[0][1];
+	     		        	                var g21 = dataArray[1][0];
+	     		        	                var g22 = dataArray[1][1];
+	     		        	                var g31 = dataArray[2][0];
+	     		        	                var g32 = dataArray[2][1];
+	     		        	                var g41 = dataArray[3][0];
+	     		        	                var g42 = dataArray[3][1];
+	     		        	                var g51 = dataArray[4][0];
+	     		        	                var g52 = dataArray[4][1];
+	     		        	                var g61 = dataArray[5][0];
+	     		        	                var g62 = dataArray[5][1];
+	     		        	           
+	     		        	                  var totalsum = 0; 
+
+	     		        	                  for (var i = 0; i < dataArray.length; i++) {
+	     		        	                      totalsum += dataArray[i][1];
+	     		        	                  }
+
+	     		        	                
+	     		        	               
+	     		     					  $('#g11').val(g11);
+	     		        	              $('#g12').val(g12);
+	     		        	              $('#g21').val(g21);
+	     		        	              $('#g22').val(g22);
+	     		        	              $('#g31').val(g31);
+	     		        	              $('#g32').val(g32);
+	     		        	              $('#g41').val(g41);
+	     		        	              $('#g42').val(g42);
+	     		        	              $('#g51').val(g51);
+	     		        	              $('#g52').val(g52);
+	     		        	              $('#g61').val(g61);
+	     		        	              $('#g62').val(g62);
+	     		        	              $('#g72').val(totalsum);
+	     			                    	 
+	     			                     }
+	     			             	        } catch (error) {
+	     			             	            console.error("Error parsing JSON: " + error);
+	     			             	        }
+	     		},
+	     			                  error: function(error) {
+	     			                      console.error('Second Ajax call error:', error);
+	     			                  }
+	     			              });
+	        	            }
+	            	 }
+	        	         catch (error) {
+	        	            console.error("Error parsing JSON: " + error);
+	        	        }
+	        	           
+	        	   }
+	          }); 
+	    });
+	});
+
+      
+      </script> 
+    
+    
+    
+    
+         
+         
+         
+         
+         
+  <!--   <script>
         function myFunction() {
             // Your code to be executed when the page loads goes here
            	
@@ -299,10 +560,11 @@ document.addEventListener("DOMContentLoaded", function () {
       	  $("#BankName1").hide();
     	  $("#Branch1").hide();  
     	  
-      	 
-      	   
+   
         }
-    </script>
+    </script> -->
+    
+    
     <script>
     function deleteErrorMsg(){
     	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
@@ -322,6 +584,53 @@ document.addEventListener("DOMContentLoaded", function () {
         element.value = textInput; 
     }
 </script>
+
+    <script>
+        function myFunction() {
+        	 $("#doexpiry").hide();
+         	  $("#dateofexpiry").hide();
+         	  $("#doshipment").hide();
+         	  $("#dateofship").hide();
+         	  $("#autoamounta").hide();
+         	  $("#autorevolvingamount").hide();  
+         	
+         	  $("#IFSC").hide();
+       	  $("#BankName").hide();  
+       	  $("#Branch").hide();
+         	  $("#IFSC1").hide();  
+         	  $("#BankName1").hide();
+       	  $("#Branch1").hide();  
+        	
+        	
+        	// Your code to be executed when the page loads goes here
+          $("#g111").hide();
+      	  $("#g11").hide();
+      	  $("#g12").hide();
+      	 $("#g211").hide();
+     	  $("#g21").hide();
+     	  $("#g22").hide();
+     	 $("#g311").hide();
+     	  $("#g31").hide();
+     	  $("#g32").hide();
+     	 $("#g411").hide();
+     	  $("#g41").hide();
+     	  $("#g42").hide();
+     	 $("#g511").hide();
+     	  $("#g51").hide();
+     	  $("#g52").hide();
+     	 $("#g611").hide();
+     	  $("#g61").hide();
+     	  $("#g62").hide();
+     	 $("#g71").hide();
+    	  $("#g72").hide();
+     	 $("#grade").hide();
+    	  $("#grade1").hide();
+    	  $("#grade2").hide();
+     	  
+      	 
+    	 }
+    </script>
+   
 			<script>
 			$(document).ready(function(){
 			  // Define a function to fetch and update data
@@ -374,6 +683,19 @@ document.addEventListener("DOMContentLoaded", function () {
     	    // alert(paymenttype);
     	});
       </script>
+      
+      <script type="text/javascript">
+      $("#contractno12").on("change", function() {
+    	    var paymenttype = $(this).val();
+    	    if (paymenttype === "select" ) {
+    	      
+    	        $('#grade, #grade1, #grade2,#g111, #g11, #g12,#g211, #g21, #g22,#g311, #g31, #g32,#g411,#g41,#g42, #g511, #g51,#g52,#g611, #g61, #g62,#g71, #g72').hide();
+    	    } else  {
+    	        $(' #grade, #grade1, #grade2,#g111, #g11, #g12,#g211, #g21, #g22,#g311, #g31, #g32,#g411,#g41,#g42, #g511, #g51,#g52,#g611, #g61, #g62,#g71, #g72').show();
+    	    }
+    	    // alert(paymenttype);
+    	});
+      </script> 
 
    <script>
     function validateREGFileType(){

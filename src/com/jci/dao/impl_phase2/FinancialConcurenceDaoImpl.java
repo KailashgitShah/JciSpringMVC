@@ -68,9 +68,13 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 			System.err.println(cont_no);
 			 double charges =0.0;
 			List<Object[]> result = new ArrayList<>();
-			String sql = "select b.Created_date, c.QtyAllowed, d.Contract_date from jcipayment_arrangement\r\n"
-					+ "		    	 b left join jcifinancial_concurrence c on c.Contractno = b.Contract_No left join\r\n"
-					+ "		    	 jcicontract d on d.Contract_no = b.Contract_No where c.Contractno ='" + cont_no + "'";
+//			String sql = "select b.Created_date, c.QtyAllowed, d.Contract_date from jcipayment_arrangement\r\n"
+//					+ "		    	 b left join jcifinancial_concurrence c on c.Contractno = b.Contract_No left join\r\n"
+//					+ "		    	 jcicontract d on d.Contract_no = b.Contract_No where c.Contractno ='" + cont_no + "'";
+//		
+//			
+			String sql = " select b.Instrument_Date,d.Contract_date from jcipayment_arrangement\r\n"
+					+ "		 b left join jcicontract d on d.Contract_no = b.Contract_No  where b.Contract_No ='" + cont_no + "'";
 		
 			try {
 				org.hibernate.classic.Session session = sessionFactory.getCurrentSession();
@@ -84,32 +88,36 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 			   if (result.size() >= 1) {
 				for (Object[] row : result) {
 					
-//		            Date condate = (Date) row[0];
+////		            Date condate = (Date) row[0];
+////		            Object qtyAllowedObj = row[1];
+////		            Date createddate = (Date) row[2];
+//		            
+//		            Timestamp contdateTimestamp = (Timestamp) row[0];
 //		            Object qtyAllowedObj = row[1];
-//		            Date createddate = (Date) row[2];
-		            
-		            Timestamp contdateTimestamp = (Timestamp) row[0];
-		            Object qtyAllowedObj = row[1];
-		            String createddateString = row[2].toString(); 
-                    Date condate = new Date(contdateTimestamp.getTime());
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		            Date createddate = dateFormat.parse(createddateString);
-		           
-		            float qtyAllowed = 0.0f; // Default value for null
-		            if (qtyAllowedObj != null) 
-		            {
-		            	qtyAllowed = Float.parseFloat(qtyAllowedObj.toString());
-		            }
-		         
-		            System.out.println("createddate: " + createddate);
-		            System.out.println("condate: " + condate);
-		            System.out.println("qtyAllowed: " + qtyAllowed);
+//		            String createddateString = row[2].toString(); 
+//                    Date condate = new Date(contdateTimestamp.getTime());
+//                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//		            Date createddate = dateFormat.parse(createddateString);
+//		            long diffInMilliseconds = Math.abs(condate.getTime() - createddate.getTime());
+//		            long daysBetween = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+//		           // charges = qtyAllowed * daysBetween * 70;
+//		             charges =  daysBetween ;
+					
+					
+					Timestamp contdateTimestamp = (Timestamp) row[0];
+	                Date condate = new Date(contdateTimestamp.getTime());
+	                String createdDateString = (String) row[1];
+	                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	                Date createddate = dateFormat.parse(createdDateString);
+	               // Date createddate = (Date) row[1];
 
-		            long diffInMilliseconds = Math.abs(condate.getTime() - createddate.getTime());
-		            long daysBetween = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
-		            charges = qtyAllowed * daysBetween * 70;
-		            System.out.println("daysBetween" + daysBetween);
-		            System.out.println("charges: " + charges);
+	                long diffInMilliseconds = Math.abs(condate.getTime() - createddate.getTime());
+	                long daysBetween = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+	                
+	                charges = daysBetween;
+	                System.out.println("daysBetween: " + daysBetween);
+	                System.out.println("charges: " + charges);
+		         
 		           
 				}
 				return charges;

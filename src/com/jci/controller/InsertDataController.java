@@ -5881,6 +5881,7 @@ public class InsertDataController
 				 double cost= this.fiannacialConcurenceService.calculateCharges(id,Con_no);
 				 financialConcurenceModel.setCarrying_Cost_Charged(cost);
 				 mv.addObject("cost",cost);
+				 System.err.println(cost);
 			    }
 
 			return mv;

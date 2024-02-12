@@ -153,4 +153,30 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		 String hql = "UPDATE jcicontract set intial_payment_flag = 1 ,intial_payment_date= '" + dateTime + "', contract_status='Payment Done' where Contract_no = '" + cont_no + "' ";
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	}
+
+	@Override
+	public  List<Object[]> paymentdetails(String st) {
+		String sql="select  Contract_qty,Contract_value ,Contract_date, Payment_duedate,Mill_name,Grade_composition from  jcicontract where  Contract_no='" + st + "' ";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+
+				
+	}
+	
+//	String sql="SELECT c.Regional_Office, s.unit_name, s.unit_address1, s.unit_state, s.unit_location, s.client_gstin, s.client_pan, s.client_state, s.client_address1, s.client_name\r\n"
+//			+ "				FROM (SELECT a.unit_name, a.unit_address1, a.unit_state, a.unit_location,  b.client_gstin, b.client_pan, b.client_state, b.client_address1, b.client_name, a.client_unit_code\r\n"
+//			+ "			 FROM jcimilldetailchild AS a LEFT JOIN jcimilldetailmaster AS b ON a.client_code = b.client_code)\r\n"
+//			+ "				 AS s LEFT JOIN jcidispatch_details AS c ON s.client_unit_code = c.Mill_code\r\n"
+//			+ "                  Label_name='" + st + "'";
+	
+	
+	@Override
+	public  List<Object[]>gradewiseqty(String st ,String contractqty) {
+		String sql=" select Jute_combination,System_composition*'" + contractqty + "' as ammount   from  jcigrade_composition where Label_name='" + st + "'";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+     }
+	
+	
+	
 }

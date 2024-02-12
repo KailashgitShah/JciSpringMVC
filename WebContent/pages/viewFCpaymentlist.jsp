@@ -173,7 +173,7 @@ th {
 										<td><%= entryPaymentDetailsModel.getDateofship() %></td>
 										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
 										<%-- <td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
-										<td><%= entryPaymentDetailsModel.getSupportingDocument() %></td>
+										<%-- <td><%= entryPaymentDetailsModel.getSupportingDocument() %></td> --%>
                                         <td>
 								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
 								              <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->
@@ -242,7 +242,7 @@ th {
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> 
 
 
 						</div>
@@ -305,7 +305,7 @@ th {
 
     function rejectAndNavigate(contractNo, paymentId) {
         openRejectModal(contractNo)
-       alert("KKKKK");
+    
         $('#rejectModalButton').off('click').on('click', function () {
             var remarks = $('#remarks').val().trim();
 

@@ -77,4 +77,19 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		// TODO Auto-generated method stub
 		this.paymentDetailsdao.contratTable(cont_no);
 	}
+	@Override
+	public List<Object[]>paymentdetails(String st) {
+		
+		return paymentDetailsdao.paymentdetails(st);
+	}
+	@Override
+	public List<Object[]>gradewiseqty(String st,String contractqty) {
+		
+		return  paymentDetailsdao.gradewiseqty(st,contractqty);
+	}
+	
+//	@Override
+//	public  List<Object[]> paymentdetails(String st) {
+//		return paymentDetailsdao.paymentdetails(st);
+//	}
 }
