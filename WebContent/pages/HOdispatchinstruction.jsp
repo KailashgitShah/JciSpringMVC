@@ -38,7 +38,7 @@
 <body class="fixed-navbar" onload="myFunction()">
     <div class="page-wrapper">
         <!-- START HEADER-->
-        <%@ include file="header.jsp"%>
+         <%@ include file="header.jsp"%> 
         <!-- END HEADER-->
         <!-- START SIDEBAR-->
         <%@ include file="sidebar.jsp"%>

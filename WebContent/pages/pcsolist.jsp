@@ -23,8 +23,16 @@
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="./assets/vendors/DataTables/datatables.min.js"
 	type="text/javascript"></script>
+
+
+
+
 
 <!-- PAGE LEVEL STYLES-->
 <style>
@@ -122,6 +130,9 @@
 			type="text/javascript"></script>
 		<!-- CORE SCRIPTS-->
 		<script src="assets/js/app.min.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<!-- PAGE LEVEL SCRIPTS-->
 		<script type="text/javascript">
 			/* 	$(function() {
@@ -164,7 +175,7 @@
 
 									tableData += "<td>" + data[i].letterRef
 											+ "</td>";
-							
+
 									tableData += "<td>" + data[i].pcso_req_date
 											+ "</td>";
 									tableData += "<td>" + data[i].pcsoReqQty

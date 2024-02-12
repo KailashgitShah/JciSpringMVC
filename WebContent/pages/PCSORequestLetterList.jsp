@@ -4,8 +4,6 @@
 <%@page import="java.net.URLEncoder"%>
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,18 +12,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
-<!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
-	rel="stylesheet" />
-<!-- THEME STYLES-->
-<link href="assets/css/main.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <!-- THEME STYLES-->
+    <link href="assets/css/main.min.css" rel="stylesheet" />
+    <!-- PAGE LEVEL STYLES-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> 
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- PAGE LEVEL STYLES-->
@@ -45,7 +46,7 @@
 </style>
 <script>
 	$(document).ready(function() {
-		alert();
+		
 		var table = $('#example-table').DataTable({
 			scrollY : "300px",
 			scrollX : true,
@@ -133,7 +134,7 @@
 										%>
 
 										<td><button class="btn btn-outline-secondary" disabled>Email
-												Sent</button></td>
+												Sent on <%= requestEl.getEmailSentOn() %></button></td>
 										<%
 										}
 										%>
@@ -175,8 +176,6 @@
 		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
 		type="text/javascript"></script>
 	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
 	<!-- PAGE LEVEL SCRIPTS-->
@@ -233,3 +232,13 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+

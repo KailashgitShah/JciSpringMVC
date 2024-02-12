@@ -1,5 +1,7 @@
 package com.jci.dao.impl_phase2;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,8 +75,12 @@ public class PCSOReqLetterDaoImpl implements PCSOReqLetterDao {
 
 	@Override
 	public void setEmailStatus(int id, int status) {
-		String sqlString = "update jcipcso_gen set emailStatus = " + status + " where pcso_gen_id = " + id;
+		
+		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+		String currDate = formater.format(new Date());
+		String sqlString = "update jcipcso_gen set emailStatus = " + status + ", emailSentOn = '"+currDate+"' where pcso_gen_id = " + id;
 		currentSession().createSQLQuery(sqlString).executeUpdate();
+		
 	}
 
 	@Override

@@ -47,6 +47,10 @@
 <!-- PAGE LEVEL STYLES-->
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
 	type="text/javascript"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <%
 String currCropYear = (String) request.getSession().getAttribute("currCropYear");
@@ -224,7 +228,7 @@ if (bale.get(7) != null)
 												<td id="grade5"><%=grade5%></td>
 												<td id="grade6"><%=grade6%></td>
 												<td id="grade7"><%=grade7%></td>
-												<td  id="total"><%=loosejute + balesum%></td>
+												<td id="total"><%=loosejute + balesum%></td>
 
 											</tr>
 
@@ -266,10 +270,10 @@ if (bale.get(7) != null)
 
 									</div>
 									<div class="row">
-										 <input
-												class="form-control" name="uncontractedQty"
-												id="uncontractedQty" type="hidden" value="<%=totalUnContractedQty%>" readonly>
-										
+										<input class="form-control" name="uncontractedQty"
+											id="uncontractedQty" type="hidden"
+											value="<%=totalUnContractedQty%>" readonly>
+
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty.</label> <input
 												class="form-control" name="reqQty" id="reqQty" type="number"

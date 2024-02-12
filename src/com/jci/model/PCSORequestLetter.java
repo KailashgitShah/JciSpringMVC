@@ -44,6 +44,9 @@ public class PCSORequestLetter {
 	@Column(name = "emailStatus")
 	private int emailStatus = 0;
 	
+	@Column(name = "emailSentOn",length = 255)
+	private String emailSentOn;
+	
 
 	public int getReqId() {
 		return reqId;
@@ -115,5 +118,15 @@ public class PCSORequestLetter {
 
 	public void setEmailStatus(int emailStatus) {
 		this.emailStatus = emailStatus;
+	}
+
+	public String getEmailSentOn() {
+		return emailSentOn;
+	}
+
+	public void setEmailSentOn(String emailSentOn) {
+		this.emailSentOn = emailSentOn;
 	}	
+	
+	
 }

@@ -22,17 +22,18 @@
 	right: 20px;
 	z-index: 100;
 	display: none;
-}
 
+}
 
 .fixedCol {
-	position: fixed;  
-	z-index: 100;
-	top : 56px;
-	padding:40px;
-	background: #f1f1f1;
+position: fixed;
+    z-index: 100;
+    top: 56px;
+    padding: 20px;
+    background: #f1f1f1;
+    right: 5vw;
+    width: 77rem;
 }
-
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -118,10 +119,8 @@
 							</div>
 							<div class="ibox-body">
 								<form action="entryofpcsosave.obj" method="POST">
-									<div class="fixedCol row">
+									<div class="fixedCol">
 										<div class="row">
-
-
 											<div class="col-sm-3 form-group">
 												<label>JCI letter Ref.</label> <select class="form-control"
 													name="letterRefNo" id="refNo" required>
@@ -130,85 +129,71 @@
 													for (String ref : allRefNo) {
 													%>
 													<option value="<%=ref%>"
-														<%if (ref.equals(letterRefNo)) {
-	out.print("Selected");
-} else {
-	out.print("");
-}%>>
+														<%if (ref.equals(letterRefNo)) {out.print("Selected");} else {out.print("");}%>>
 														<%=ref%></option>
 
 													<%
 													}
 													%>
-
-
 												</select>
 											</div>
-
 											<div class="col-sm-3 form-group">
-												<label>PCO Req Date</label> <input class="form-control"
+												<label>PCO Req. Date</label> <input class="form-control"
 													name="pcsoReqdate" id="pcsoReqdate"
 													placeholder="dd-mm-yyyy" value="<%=pcsoReqdate%>" readonly>
 											</div>
-
-
 											<div class="col-sm-3 form-group">
-												<label>PCO Requested Qty. (M.T)</label> <input
+												<label>PCO Req. Qty. (M.T)</label> <input
 													class="form-control" name="pcsoReqQty" id="pcsoReqQty"
 													value="<%=pcsoReqQty%>" readonly>
 											</div>
-
 											<div class="col-sm-3 form-group">
 												<label>PCO Date</label> <input class="form-control"
 													name="pcsoDate" id="pcsoDate" placeholder="dd-mm-yyyy"
 													value="<%=pcsoDate%>" required>
 											</div>
 										</div>
-										<br>
+										
 										<div class="row">
-
-
 											<div class="col-sm-3 form-group">
 												<label>JC Office Ref.No.</label> <input class="form-control"
 													type="text" name="referenceno" placeholder="Reference.No."
 													value="<%=referenceno%>" id="referenceno" required>
 											</div>
-
 											<div class="col-sm-3 form-group">
 												<label>JCI Linkage Percentage.</label> <input
 													class="form-control" type="number" name="juteRatio"
 													id="juteRatio" min="0" step="0.01" value="<%=juteRatio%>"
 													required>
 											</div>
-
-
-
 											<div class="col-sm-3 form-group">
 												<label>PCO Qty. (M.T)</label> <input class="form-control"
 													value="<%=pcsoQty%>" name="pcsoQty" id="pcsoQty">
 											</div>
-
-
-
-
 											<div class="col-sm-3 form-group">
 												<label>Dispatch Period</label> <input class="form-control"
 													value="<%=dispatchPeriod%>" name="dispatchPeriod"
 													id="dispatchPeriod" required placeholder="dd-mm-yyyy">
 											</div>
+										</div>
+										
+										<div class="row" style="margin-bottom: -21px;">
+
+											<div class="col-sm-4 text-center form-group ">
+												<label class="font-weight-bold">Mill Code</label>
+											</div>
+											<div class="col-sm-4 form-group">
+												<label class="font-weight-bold">Mill Name</label>
+											</div>
+											<div class="col-sm-4 form-group">
+												<label class="font-weight-bold">Total allocation
+													(MT)</label>
+											</div>
 
 										</div>
 									</div>
-									<div class="row" style="margin-top: 145px;">
-										<div class="col-sm-4 form-group ">
-											<label class="font-weight-bold">Mill Code</label>
-										</div>
-										<div class="col-sm-4 form-group">
-											<label class="font-weight-bold">Mill Name</label>
-										</div>
-										<div class="col-sm-4 form-group">
-											<label class="font-weight-bold">Total allocation (MT)</label>
-										</div>
+									<div class="row" style="margin-top: 110px;">
+
 										<%
 										int mill = 0;
 										for (Object[] entryofpcsolist : allentryofpcsolist) {
@@ -478,7 +463,7 @@
 
 
 
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+	<!-- <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
 		type="text/javascript"></script>
 	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
 		type="text/javascript"></script>
@@ -487,9 +472,9 @@
 	<script
 		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
 		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
+	PAGE LEVEL PLUGINS
+	CORE SCRIPTS
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
+	PAGE LEVEL SCRIPTS -->
 </body>
 </html>

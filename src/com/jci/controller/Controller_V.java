@@ -310,7 +310,7 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "sendThankYouEmailToJC", method = RequestMethod.GET)
-	public ModelAndView sendThankYouEmailToJC(HttpServletRequest request, RedirectAttributes redirectAttributes)
+	public void sendThankYouEmailToJC(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws AddressException {
 		String refNo = request.getParameter("refNo");
 		String date = request.getParameter("date");
@@ -324,7 +324,8 @@ public class Controller_V {
 				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
 				+ "Thanks & Regards \n " + "Jute Corporation Of India";
 
-		InternetAddress[] toAddresses = { new InternetAddress("pradeep.rathor@cyfuture.com"),
+		InternetAddress[] toAddresses = {  new InternetAddress("binod.yadav@cyfuture.com"),
+				new InternetAddress("Tripti.Mall@cyfuture.com"),
 				new InternetAddress("pradeepcyf24@gmail.com") };
 
 		SendMail sendMail = new SendMail();
@@ -341,7 +342,7 @@ public class Controller_V {
 		genReqLetterService.setEmailStatus(id, 1);
 
 //		return new ResponseEntity<>("{\"redirect\": \"pcsoRequestLetterList.obj\"}", HttpStatus.OK);
-     	return new ModelAndView("pcsoRequestLetterList.obj");
+		// return new ModelAndView("pcsoRequestLetterList.obj");
 
 	}
 
@@ -726,7 +727,6 @@ public class Controller_V {
 	public String saveContractGenerationPcsoWise(HttpServletRequest request,
 			@RequestBody Map<String, Object> requestBody)
 			throws IOException, ParseException, DocumentException, AddressException {
-		
 
 		String cropYear = (String) request.getSession().getAttribute("currCropYear");
 		ModelAndView mv = new ModelAndView("contractgeneration");
@@ -734,27 +734,25 @@ public class Controller_V {
 		List<Map<String, String>> millDetails = (List<Map<String, String>>) requestBody.get("millDetails");
 
 		int refId = (Integer) request.getSession().getAttribute("userId");
-	
+
 		String contractIdn = (String) requestBody.get("contractIdn");
 		int SortingId = Integer.parseInt((String) requestBody.get("SortingId"));
 		String contractQty = (String) requestBody.get("contractQty");
 		String contractdate = (String) requestBody.get("contractdate");
 
-		String pcsoDate =  (String) requestBody.get("pcsoDate");
-	    String gradeComp =  (String) requestBody.get("gradeComp");
+		String pcsoDate = (String) requestBody.get("pcsoDate");
+		String gradeComp = (String) requestBody.get("gradeComp");
 
-
-	    pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
-	    gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 
 		final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
-		
-		//entry of grade composition....
-		
+
+		// entry of grade composition....
+
 		String lableName = (String) requestBody.get("labelName");
 		String remarks = (String) requestBody.get("remarks");
-		Double availableQty = Double.parseDouble((String)requestBody.get("availableQty"));
-
+		Double availableQty = Double.parseDouble((String) requestBody.get("availableQty"));
 
 		Date date = new Date();
 		SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -766,18 +764,18 @@ public class Controller_V {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 		List<Object> allJuteCombination = entryofGradeCompositionService.getAllJuteCombination();
-		 
-           int idx = 0;
-       	for (Object row : allJuteCombination) {
+
+		int idx = 0;
+		for (Object row : allJuteCombination) {
 			Object[] rowData = (Object[]) row; // Cast each row to an Object array
 			// Access individual columns by their index (0-based)
 			Object variety = rowData[1];
 			Object systemComposition = rowData[2];
 			EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
 			Double ProposedValue = Double.parseDouble(gradeArray.get(idx));
-			Double systemValue = Double.parseDouble(systemComposition+"");
+			Double systemValue = Double.parseDouble(systemComposition + "");
 			entryofGradeCompositionModel.setJute_combination((String) variety);
 			entryofGradeCompositionModel.setSystem_composition(systemValue);
 			entryofGradeCompositionModel.setProposed_composition(ProposedValue);
@@ -787,7 +785,7 @@ public class Controller_V {
 			entryofGradeCompositionModel.setLabel_name(lableName);
 			entryofGradeCompositionModel.setCreated_by(refId);
 			entryofGradeCompositionModel.setCreated_date(created_Date);
-			
+
 			System.err.println(entryofGradeCompositionModel.toString());
 			System.err.println(entryofGradeCompositionModel.toString());
 			System.err.println(entryofGradeCompositionModel.toString());
@@ -796,18 +794,12 @@ public class Controller_V {
 			idx++;
 		}
 
-		
-		
-		
-		
 		///
-		
-
 
 		for (Map<String, String> millDetail : millDetails) {
 			Contractgeneration contractgeneration = new Contractgeneration();
-            
-			Double juteValue = Double.parseDouble(millDetail.get("juteValue")) ;
+
+			Double juteValue = Double.parseDouble(millDetail.get("juteValue"));
 			String millCode = millDetail.get("millCode");
 			String millNameString = millDetail.get("millName");
 			Double millQty = Double.parseDouble(millDetail.get("Qty"));
@@ -819,8 +811,8 @@ public class Controller_V {
 			contractgeneration.setContract_date(contractdate);
 			contractgeneration.setDelivery_type(deliveryType);
 			contractgeneration.setContract_no(finalGeneratedContractNo);
-			//contract value =  110% of jute value
-			contractgeneration.setContract_value(juteValue*1.1);
+			// contract value = 110% of jute value
+			contractgeneration.setContract_value(juteValue * 1.1);
 			contractgeneration.setCreated_date(new Date());
 			contractgeneration.setCreated_by(refId);
 			contractgeneration.setGrade_composition(lableName);
@@ -840,7 +832,8 @@ public class Controller_V {
 
 			PdfGenerator pdfGenerator = new PdfGenerator();
 			List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
-			//List<Object[]> GradeCompList = contractGenerationService2.getListOfGradeComposition(gradeComp);
+			// List<Object[]> GradeCompList =
+			// contractGenerationService2.getListOfGradeComposition(gradeComp);
 
 			String filePath = contractLetterPath + File.separator + contractIdn;
 
@@ -862,8 +855,8 @@ public class Controller_V {
 			String sub = "Contract Details";
 			final String filePathDir = filePath;
 			SendMail sendMail = new SendMail();
-			InternetAddress[] toAddresses = { new InternetAddress("pradeep.rathor@cyfuture.com"),
-					new InternetAddress("pradeeprao31110@gmail.com") };
+			InternetAddress[] toAddresses = { new InternetAddress("binod.yadav@cyfuture.com"),
+					new InternetAddress("Tripti.Mall@cyfuture.com"), new InternetAddress("pradeeprao31110@gmail.com") };
 
 			CompletableFuture.runAsync(() -> {
 				try {
@@ -915,7 +908,7 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "pcso_details", method = RequestMethod.GET)
-	public String pcso_details(HttpServletRequest request) {		
+	public String pcso_details(HttpServletRequest request) {
 
 		String pcsoDates = request.getParameter("pcso_dates");
 		String grades = request.getParameter("grades");
@@ -925,10 +918,9 @@ public class Controller_V {
 		pcsoDates = pcsoDates.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		grades = grades.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 
-
 		final List<String> pcsoArray = Arrays.asList(pcsoDates.split(","));
 		final List<String> gradeArray = Arrays.asList(grades.split(","));
-				
+
 		ModelAndView pcso = contractGenerationService2.pcso_details(pcsoArray, gradeArray);
 		Gson gson = new Gson();
 		return gson.toJson(pcso);
@@ -1331,13 +1323,14 @@ public class Controller_V {
 	@RequestMapping("entrygradecompositionlist")
 	public ModelAndView EntryGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
 		List<EntryofGradeCompositionModel> egc = entryofGradeCompositionService.getAllEGC();
 
 		ModelAndView mv = new ModelAndView("entryofgradecompositionlist");
 		mv.addObject("egc", egc);
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
 		return mv;
 	}
 
