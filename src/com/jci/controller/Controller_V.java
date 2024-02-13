@@ -271,7 +271,6 @@ public class Controller_V {
 		double system_qty = Double.parseDouble(request.getParameter("uncontractedQty"));
 		double req_qty = Double.parseDouble(request.getParameter("reqQty"));
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-//		 String dateString = request.getParameter("date");
 
 		Date creationDateTime = new Date();
 //		Date convertTodateDate = simpleDateFormat.parse(creationDateTime);
