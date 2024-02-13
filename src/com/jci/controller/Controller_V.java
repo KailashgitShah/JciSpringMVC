@@ -307,6 +307,9 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+	@Value("${upload.requestLetter}")
+	String requestLetterPath;
 
 	@ResponseBody
 	@RequestMapping(value = "sendThankYouEmailToJC", method = RequestMethod.GET)
@@ -317,6 +320,8 @@ public class Controller_V {
 		String cropYear = request.getParameter("cropYear");
 		String qty = request.getParameter("qty");
 		int id = Integer.parseInt(request.getParameter("id"));
+		
+		String filePath = requestLetterpath + File.separator + refNo + ".pdf"; 
 
 		String sub = "Expressing Gratitude for Contract Approval";
 		String body = "Dear Jute Commissioner Officer ,\n " + "Hope This email finds you well ,\n"
@@ -324,15 +329,14 @@ public class Controller_V {
 				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
 				+ "Thanks & Regards \n " + "Jute Corporation Of India";
 
-		InternetAddress[] toAddresses = {  new InternetAddress("binod.yadav@cyfuture.com"),
-				new InternetAddress("Tripti.Mall@cyfuture.com"),
+		InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
 				new InternetAddress("pradeepcyf24@gmail.com") };
 
 		SendMail sendMail = new SendMail();
 
 		CompletableFuture.runAsync(() -> {
 			try {
-				sendMail.sendEmailWithoutAttachment(toAddresses, sub, body);
+				sendMail.sendEmail(toAddresses, body, sub, filePath , refNo+".pdf");
 				// Your email sending code here
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -855,8 +859,8 @@ public class Controller_V {
 			String sub = "Contract Details";
 			final String filePathDir = filePath;
 			SendMail sendMail = new SendMail();
-			InternetAddress[] toAddresses = { new InternetAddress("binod.yadav@cyfuture.com"),
-					new InternetAddress("Tripti.Mall@cyfuture.com"), new InternetAddress("pradeeprao31110@gmail.com") };
+			InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+					new InternetAddress("pradeepcyf24@gmail.com") };
 
 			CompletableFuture.runAsync(() -> {
 				try {

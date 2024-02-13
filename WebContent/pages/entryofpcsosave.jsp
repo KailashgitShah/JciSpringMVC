@@ -195,7 +195,7 @@
 										</button> -->
 										<button class="btn btn-default" type="submit" id="submit">Submit</button>
 										<button class="btn btn-default" type="submit" id="reset"
-											formaction="entryofpcso.obj">Reset</button>
+											formaction="entryofpcso.obj">Back</button>
 									</div>
 								</form>
 							</div>

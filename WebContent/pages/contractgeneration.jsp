@@ -24,25 +24,9 @@
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/chosen.css">
-<script src="./assets/vendors/jquery/dist/jquery.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-	type="text/javascript"></script>
-<script
-	src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-	type="text/javascript"></script>
 <!-- PAGE LEVEL PLUGINS-->
 <!-- CORE SCRIPTS-->
 <script src="assets/js/app.min.js" type="text/javascript"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-	crossorigin="anonymous">
 <!-- PAGE LEVEL STYLES-->
 <style>
 .required:after {
@@ -51,13 +35,11 @@
 }
 </style>
 
-
 </head>
 <%
 String cropYear = (String) request.getSession().getAttribute("currCropYear");
 int count = (int) request.getAttribute("count") + 1;
 List<Object> allJuteVariety = (List<Object>) request.getAttribute("allJuteVariety");
-//List<String> allLabelName = (List<String>) request.getAttribute("allLabelName"); 
 int sizeOfJuteVariey = allJuteVariety.size();
 String contactIdnNo = "BT-" + count;
 %>
@@ -83,7 +65,7 @@ String contactIdnNo = "BT-" + count;
 
 							<div class="ibox-body">
 								<span>${msg}</span>
-					<form method="POST">
+								<form method="POST">
 
 									<div class="row">
 										<div class="col-sm-5 form-group">
@@ -95,72 +77,11 @@ String contactIdnNo = "BT-" + count;
 										<div class="col-sm-5 form-group">
 											<label class="required">Contract identification No.</label> <input
 												class="form-control" name="contractIdn" id="contractIdn"
-												type="text"	value="<%=contactIdnNo%>" readonly>
+												type="text" value="<%=contactIdnNo%>" readonly>
 
 										</div>
-
-
-										<%-- 					<div class="col-sm-4 form-group">
-											<label>Grade Composition</label> <select
-												class="form-control pcso" name="gradeComp" id="gradeComp"
-												required>
-												<option disabled selected>-Select-</option>
-												<%
-												List<String> gradeCompositionLable = (List<String>) request.getAttribute("gradeCompositionLable");
-												for (String s : gradeCompositionLable) {
-												%>
-												<option><%=s%></option>
-												<%
-												}
-												%>
-
-
-											</select>
-										</div> --%>
-										<%-- 	<div class="col-sm-4 form-group">
-											<label class="required">PCSO Date</label>
-
-											<%
-											List<Date> pcsoDates = (List<Date>) request.getAttribute("pcsoDates");
-											%>
-											<select data-placeholder='Choose Dates..'
-												class='chosen-select form-control pcso pcso_date' multiple
-												tabindex='3' name="pcso_date" id="pcso_date" required>
-												<option disabled>-Select-</option>
-												<%
-												for (int i = 0; i < pcsoDates.size(); i++) {
-												%>
-												<option value="<%=pcsoDates.get(i)%>"><%=pcsoDates.get(i)%>
-												</option>
-												<%
-												}
-												%>
-											</select>
-										</div>
- --%>
-
 
 									</div>
-
-
-
-
-
-									<%-- 
-									<div class="col-sm-3 form-group">
-
-											<label class="required">Contact Date</label> <input
-												class="form-control" name="contractDate" id="contactDate"
-												type="text" readonly
-												value="<%=new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())%>">
-										</div>
-
-										<div class="col-sm-3 form-group">
-											<label class="required">Contract Qty.</label> <input
-												class="form-control" name="contract_qty" id="contract_qty"
-												type="number" readonly>
-										</div>
-							  --%>
 
 									<div class="ibox-body" id="gradeCompostion">
 
@@ -216,8 +137,8 @@ String contactIdnNo = "BT-" + count;
 														<%
 														if (i == 1) {
 														%>
-														<td class="col-sm-2"><textarea name="remark" id="remark"
-																class="form-control" required></textarea></td>
+														<td class="col-sm-2"><textarea name="remark"
+																id="remark" class="form-control" required></textarea></td>
 														<%
 														}
 														%>
@@ -236,7 +157,7 @@ String contactIdnNo = "BT-" + count;
 												</tbody>
 											</table>
 										</div>
-										
+
 										<input type="hidden" name="size" value="<%=sizeOfJuteVariey%>">
 
 									</div>
@@ -282,8 +203,7 @@ String contactIdnNo = "BT-" + count;
 										</div>
 										<div id="list"></div>
 										<div>
-											<button class="btn btn-success submit"
-												type="submit">Submit</button>
+											<button class="btn btn-success submit" type="submit">Submit</button>
 										</div>
 									</div>
 
@@ -295,7 +215,7 @@ String contactIdnNo = "BT-" + count;
 											<button class="btn btn-warning" type="button" id="toggle">Next</button>
 										</div>
 									</div>
-				</form>
+								</form>
 
 
 							</div>
@@ -316,10 +236,6 @@ String contactIdnNo = "BT-" + count;
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script>
 var flag = 1;
 $("#toggle").on("click" , function(){
@@ -336,7 +252,7 @@ $("#toggle").on("click" , function(){
 
 	if ((+totel != 100)) {
 		document.getElementById("error").innerHTML = "total should be 100 !";
-		return false;
+	 	return false;
 	} else {
 		document.getElementById("error").innerHTML = "";
 	}
@@ -503,11 +419,13 @@ var count = 0;
 						var contractQty = $("#contract_qty").val();
 						var labelName = $("#labelname").val();
 						var availableQty = $("#available_qty").val();
-						var remarks = $("#remark").val();
-					
-						
-						
+						var remarks = $("#remark").val();						
 						var millDetails = [];
+						
+						if(pcsoDate.length == 0){
+							alert("Please select PCSO Date");
+							return false;
+						}
 				
 						// Loop through the rows of the table (skipping the header row)
 						$('#table_r #body tr').each(function(index, row) {
