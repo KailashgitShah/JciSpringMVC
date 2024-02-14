@@ -163,15 +163,6 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 										</div>
 									</div>
 
-
-									<!-- <div class="col-sm-4 form-group">
-											<label>Jute Variety</label> <select name="jute_variety"
-												id="jute_variety" class="form-control" required>
-
-											</select>
-
-										</div> -->
-
 									<div class="row">
 										<div class="col-sm-10 form-group">
 

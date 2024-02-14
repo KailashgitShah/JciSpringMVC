@@ -745,11 +745,16 @@ public class Controller_V {
 
 		String pcsoDate = (String) requestBody.get("pcsoDate");
 		String gradeComp = (String) requestBody.get("gradeComp");
+		//String juteVariety = (String) requestBody.get("juteVariety");
 
 		pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 
 		final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
+		//final List<String> juteArray = Arrays.asList(juteVariety.split(","));
+//		
+//		for(String jutString : juteArray)
+//		System.err.println(jutString);
 
 		// entry of grade composition....
 
@@ -769,12 +774,14 @@ public class Controller_V {
 		}
 
 		List<Object> allJuteCombination = entryofGradeCompositionService.getAllJuteCombination();
+		List<String> varietyArray = new ArrayList<>();
 
 		int idx = 0;
 		for (Object row : allJuteCombination) {
 			Object[] rowData = (Object[]) row; // Cast each row to an Object array
 			// Access individual columns by their index (0-based)
 			Object variety = rowData[1];
+			varietyArray.add((String)variety);
 			Object systemComposition = rowData[2];
 			EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
 			Double ProposedValue = Double.parseDouble(gradeArray.get(idx));
@@ -788,11 +795,6 @@ public class Controller_V {
 			entryofGradeCompositionModel.setLabel_name(lableName);
 			entryofGradeCompositionModel.setCreated_by(refId);
 			entryofGradeCompositionModel.setCreated_date(created_Date);
-
-			System.err.println(entryofGradeCompositionModel.toString());
-			System.err.println(entryofGradeCompositionModel.toString());
-			System.err.println(entryofGradeCompositionModel.toString());
-
 			entryofGradeCompositionService.create(entryofGradeCompositionModel);
 			idx++;
 		}
@@ -851,7 +853,7 @@ public class Controller_V {
 
 			// System.err.println(filePath);
 			pdfGenerator.generatePdf(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
-					GradePriceList, gradeArray, fileName, deliveryType, contractdate, filePath, letterHeadPath);
+					GradePriceList, gradeArray , varietyArray, fileName, deliveryType, contractdate, filePath, letterHeadPath);
 
 			// send email
 			String body = "Please find below attachment to get full details of contract grade wise..";

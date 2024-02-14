@@ -40,7 +40,7 @@ import com.lowagie.text.pdf.GrayColor;
 public class PdfGenerator {
 
 	public void generatePdf(String jciRefNo, String millNameString, String millCode, Double qty, String cropyear,
-			List<Object[]> priceList, List<String> compList, String fileName, String deliveryType,
+			List<Object[]> priceList, List<String> compList,List<String> varietyArray, String fileName, String deliveryType,
 			String contractDate, String filePath, String letterHeadPath) throws DocumentException, IOException {
 
 		PdfWriter pdfWriter = new PdfWriter(filePath);
@@ -58,35 +58,11 @@ public class PdfGenerator {
 		float widthOfTwoColumn[] = { columnHalfWidth, columnHalfWidth };
 		float widthOfThreeCoulmn[] = { columnWidth60, columnWidth20, columnWidth20 };
 		float widthOfThreeEqualCoulmn[] = { equalThreeColumWidth, equalThreeColumWidth, equalThreeColumWidth };
-		float widthOfHeader[] = { columnWidth20, columnWidth60, columnWidth20 };
 
 		Table table = new Table(widthOfTwoColumn);
 
 		Image letterHead = new Image(ImageDataFactory.create(letterHeadPath));
 
-//		Table headerTable = new Table(widthOfHeader);
-//		Image logoImage = new Image(ImageDataFactory
-//				.create("C:\\Users\\pradeep.rathor\\Desktop\\JCI-PHASE2\\JCI-CMS\\WebContent\\assets\\img\\logo5.png"));
-//		
-//		Image letterHead = new Image(ImageDataFactory
-//				.create("C:\\Users\\pradeep.rathor\\Desktop\\Backup\\JCI-CMS\\WebContent\\assets\\img\\letterHead.png"));
-//		letterHead.setWidth(250);
-//		letterHead.setHeight(60);
-//		
-//		logoImage.setWidth(100);
-//		logoImage.setHeight(100);
-//
-//		Paragraph headerParagraph = new Paragraph()
-//				.add(letterHead).add("\n")
-//				.add(new Text("Regd. & Head Office : 15N, Nellie Sengupta Sarani").setFontSize(9)).add("\n")
-//				.add(new Text("7th Floor, Kolkata - 700 087").setFontSize(9)).add("\n")
-//				.add(new Text("Corporate Identification Number : U17232WB1971GOI027958").setFontSize(9))
-//				.setTextAlignment(TextAlignment.CENTER).setMargin(5f);
-//
-//		headerTable.addCell(new Cell().add(logoImage).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT)
-//				.setPadding(0));
-//		headerTable.addCell(new Cell().add(headerParagraph).setBorder(Border.NO_BORDER).setPadding(0));
-//		headerTable.addCell(new Cell().add("").setBorder(Border.NO_BORDER));
 
 		table.addCell(new Cell().add(new Paragraph().add(new Text("No, ").setBold()).add(new Text(jciRefNo)))
 				.setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
@@ -114,10 +90,7 @@ public class PdfGenerator {
 						+ " quintals of raw jute / Mesta under linkage of " + cropyear
 						+ " Crop of the following variety and grades at prices and terms and conditions specified .")
 				.add("\n").add("The details of sale is as under : ");
-//
-//		Paragraph deliveryTypeParagraph = new Paragraph().add(new Text("Mill Delivery").setBold())
-//				.setBorderBottom(new SolidBorder(1)).setWidth(columnWidth20)
-//				.setTextAlignment(TextAlignment.CENTER);
+ 
 
 		Paragraph innerParagraph = new Paragraph().add(new Text(deliveryType).setBold())
 				.setBorderBottom(new SolidBorder(1)).setWidth(columnWidth20).setTextAlignment(TextAlignment.CENTER);
@@ -142,7 +115,7 @@ public class PdfGenerator {
 
 			int compositionInt = (int) Math.round(composition);
 			totalCompositionInt += compositionInt;
-			distributionTable.addCell(new Cell().add(rObject1+"")).setTextAlignment(TextAlignment.CENTER);
+			distributionTable.addCell(new Cell().add(varietyArray.get(i)+"")).setTextAlignment(TextAlignment.CENTER);
 			distributionTable.addCell(new Cell().add(compositionInt + "").setTextAlignment(TextAlignment.CENTER));
 
 			distributionTable.addCell(new Cell().add("##.##").setTextAlignment(TextAlignment.CENTER));

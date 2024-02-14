@@ -89,8 +89,8 @@ String contactIdnNo = "BT-" + count;
 
 											<div class="col-sm-4 form-group">
 												<label>Available Qty</label> <input name="available_qty"
-													id="available_qty" type="text" class="form-control"
-													required />
+													id="available_qty" type="number" class="form-control"
+													 />
 											</div>
 
 											<div class="col-sm-4 form-group">
@@ -125,7 +125,8 @@ String contactIdnNo = "BT-" + count;
 
 													<tr class="row">
 														<td class="col-sm-6"><input class="form-control"
-															name="variety<%=i%>" value="<%=variety%>" /></td>
+															name="variety<%=i%>" value="<%=variety%>"
+															id="variety<%=i%>" /></td>
 														<td class="col-sm-2"><input
 															class="clrSys form-control" name="system<%=i%>"
 															value="<%=rate%>" readonly /></td>
@@ -138,7 +139,7 @@ String contactIdnNo = "BT-" + count;
 														if (i == 1) {
 														%>
 														<td class="col-sm-2"><textarea name="remark"
-																id="remark" class="form-control" required></textarea></td>
+																id="remark" class="form-control" ></textarea></td>
 														<%
 														}
 														%>
@@ -163,47 +164,50 @@ String contactIdnNo = "BT-" + count;
 									</div>
 
 
-									<div class="ibox-body row" id="contractgeneration"
-										style="visibility: hidden;">
+									<div class="ibox-body" id="contractgeneration">
 
-										<div class="col-sm-4 form-group">
-											<label class="required">PCSO Date</label>
+								<div class="row">
+											<div class="col-sm-4 form-group">
+												<label class="required">PCSO Date</label>
 
-											<%
-											List<Date> pcsoDates = (List<Date>) request.getAttribute("pcsoDates");
-											%>
-											<select data-placeholder='Choose Dates..'
-												class='chosen-select form-control pcso' multiple
-												tabindex='3' name="pcso_date" id="pcso_date" required>
-												<option disabled>-Select-</option>
 												<%
-												for (int p = 0; p < pcsoDates.size(); p++) {
+												List<Date> pcsoDates = (List<Date>) request.getAttribute("pcsoDates");
 												%>
-												<option value="<%=pcsoDates.get(p)%>"><%=pcsoDates.get(p)%>
-												</option>
-												<%
-												}
-												%>
-											</select>
-										</div>
+												<select data-placeholder='Choose Dates..'
+													class='chosen-select form-control pcso' multiple
+													tabindex='3' name="pcso_date" id="pcso_date" required>
+													<option disabled>-Select-</option>
+													<%
+													for (int p = 0; p < pcsoDates.size(); p++) {
+													%>
+													<option value="<%=pcsoDates.get(p)%>"><%=pcsoDates.get(p)%>
+													</option>
+													<%
+													}
+													%>
+												</select>
+											</div>
+								
 
+											<div class="col-sm-3 form-group">
 
-										<div class="col-sm-3 form-group">
+												<label class="required">Contact Date</label> <input
+													class="form-control" name="contractDate" id="contactDate"
+													type="text" readonly
+													value="<%=new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())%>">
+											</div>
 
-											<label class="required">Contact Date</label> <input
-												class="form-control" name="contractDate" id="contactDate"
-												type="text" readonly
-												value="<%=new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())%>">
-										</div>
+											<div class="col-sm-3 form-group">
+												<label class="required">Contract Qty.</label> <input
+													class="form-control" name="contract_qty" id="contract_qty"
+													type="number" readonly>
+											</div>
+									</div>
 
-										<div class="col-sm-3 form-group">
-											<label class="required">Contract Qty.</label> <input
-												class="form-control" name="contract_qty" id="contract_qty"
-												type="number" readonly>
-										</div>
+										
 										<div id="list"></div>
 										<div>
-											<button class="btn btn-success submit" type="submit">Submit</button>
+											<button class="btn btn-success float-right submit" type="submit">Submit</button>
 										</div>
 									</div>
 
@@ -230,26 +234,53 @@ String contactIdnNo = "BT-" + count;
 
 
 	<div class="sidenav-backdrop backdrop"></div>
-
-
-
+  <div class="preloader-backdrop" id="loader">
+            <div class="page-preloader">Loading</div>
+      </div> 
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 <script>
+$("#pcso_date").chosen();
+$("#pcso_date").addClass("chosen-select");
+
+
+
+async function loader(val) {
+    await new Promise((resolve) => {
+        document.getElementById("loader").style.setProperty('display', val);
+        setTimeout(resolve, 100); // Resolves the promise after 100ms
+    });
+}
+
+
 var flag = 1;
-$("#toggle").on("click" , function(){
+$("#toggle").on("click" ,async () => {
+	
+	var avaQty =$('#available_qty').val();
+	var remark = $('#remark').val();
+	
+	if(avaQty.length == 0){
+		alert("Please fill Available Qty");
+		return false;
+	}
+	
+	if(remark.length == 0){
+		alert("Please add Remarks..");
+		return false;
+	}
 	
 	
 	//grade composition validations
-	
 	let totel = 0;
 	for (var i = 1; i <='<%=sizeOfJuteVariey%>'; i++) {
 		let temp = $('#grade' + i).val();
-		if (temp == '') temp = 0;
+		let variety = $('#variety' + i).val();
+		if (temp == '') temp = 0; 
 		totel += parseFloat(temp);
 	}
-
+	
+	
 	if ((+totel != 100)) {
 		document.getElementById("error").innerHTML = "total should be 100 !";
 	 	return false;
@@ -258,30 +289,29 @@ $("#toggle").on("click" , function(){
 	}
 	
 	
-	var availableQty = $("#available_qty").val();
-	var remarks = $("#remark").val();
-	
-	//if(!availableQty || !remarks) return false
-	/////////////////////////////////////////////////////////////////////
 	
 	
 	//display properties
-
-	document.getElementById("gradeCompostion").style.setProperty('display',flag==1 ? 'none' : 'block');
-	document.getElementById("contractgeneration").style.setProperty('visibility',flag==1 ? 'visible' : 'hidden');
     flag = flag == 1 ? 0 : 1;
 	document.getElementById("toggle").innerHTML = flag == 1 ? "Next" : "Prev";
 	
-	//////////////
-
-	//document.getElementById('gradeCompostion').className='hide';
-	//document.getElementById('gradeCompostion').classList.add('hide');
+	document.getElementById("gradeCompostion").style.setProperty('display',flag==1 ? 'block' : 'none');
+	//document.getElementById("contractgeneration").style.setProperty('visibility',flag==1 ? 'visible' : 'hidden');
+	document.getElementById("contractgeneration").style.setProperty('display',flag==1 ? 'none' : 'block');
+	
+ 
 })
+
+
+	document.getElementById("gradeCompostion").style.setProperty('display',flag==1 ? 'block' : 'none');
+	//document.getElementById("contractgeneration").style.setProperty('visibility',flag==1 ? 'visible' : 'hidden');
+	document.getElementById("contractgeneration").style.setProperty('display',flag==1 ? 'none' : 'block');
 
 </script>
 
 
 <script>
+document.getElementById("loader").style.setProperty('display','none' );
 var contractedValueMillWise = [];
 var listOfTotalQty = [];
 $("#pcso_date").chosen();
@@ -411,8 +441,10 @@ var count = 0;
 
  $(".submit")
 			.click(
-					function() {
+					async () => {
 						
+						await loader("block");
+										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
 						var contractdate = $("#contactDate").val();
@@ -460,7 +492,7 @@ var count = 0;
 								"availableQty": availableQty,
 								"remarks": remarks
 						 };
-						 
+						
 					
                  if(jsonPcsoDates.length > 4){
                 	 
@@ -470,9 +502,10 @@ var count = 0;
 							data :JSON.stringify(data),
 							async: false,
 							contentType: "application/json",
-							success : function(result) {
-								// alert("mid");
-								//window.location.href = "viewcontractgeneration.obj";
+							success : async (result) => {
+							  
+							  	window.location.href = "viewcontractgeneration.obj";
+								await loader("none");
 								// window.open("viewcontractgeneration.obj");
 								
 							},

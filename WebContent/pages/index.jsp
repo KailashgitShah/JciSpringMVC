@@ -66,7 +66,7 @@
       <div class="sidenav-backdrop backdrop"></div>
       <div class="preloader-backdrop">
             <div class="page-preloader">Loading</div>
-      </div>
+      </div> 
       <!-- END PAGA BACKDROPS-->
       <!-- CORE PLUGINS -->
       <script src="./assets/vendors/jquery/dist/jquery.min.js"
