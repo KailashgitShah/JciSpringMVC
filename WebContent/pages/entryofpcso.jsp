@@ -115,7 +115,7 @@ position: fixed;
 					<div class="col-md-11">
 						<div class="ibox">
 							<div class="ibox-head">
-								<span>${msg}</span>
+								<span id="flashMessage">${msg}</span>
 							</div>
 							<div class="ibox-body">
 								<form action="entryofpcsosave.obj" method="POST">
@@ -168,7 +168,7 @@ position: fixed;
 											</div>
 											<div class="col-sm-3 form-group">
 												<label>PCO Qty. (M.T)</label> <input class="form-control"
-													value="<%=pcsoQty%>" name="pcsoQty" id="pcsoQty">
+													value="<%=pcsoQty%>" type="number" min="0" name="pcsoQty" id="pcsoQty">
 											</div>
 											<div class="col-sm-3 form-group">
 												<label>Dispatch Period</label> <input class="form-control"
@@ -274,6 +274,11 @@ position: fixed;
 		/* 	$("#pcsoReqdate").datepicker({
 				dateFormat : 'dd-mm-yy'
 			}); */
+			
+
+	        setTimeout(function() {
+	            document.getElementById('flashMessage').style.display = 'none';
+	        }, 1500);
 	</script>
 
 

@@ -102,7 +102,6 @@ if (bale.get(7) != null)
 				<h1 class="page-title">Generation of PCO Request Letter</h1>
 			</div>
 			<div class="page-content fade-in-up">
-
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
@@ -186,9 +185,9 @@ if (bale.get(7) != null)
 									<table class="table table-striped table-bordered table-hover"
 										id="example-table" cellspacing="0" width="100%">
 
+										<caption>1st Level view of Procured Jute</caption>
 
 										<thead>
-										<caption>1st Level view of Procured Jute</caption>
 										<tr>
 											<th>Sl.no</th>
 											<th></th>
@@ -308,6 +307,8 @@ if (bale.get(7) != null)
 				minDate : 0
 			});
 		});
+
+
 	</script>
 
 	<script type="text/javascript">
@@ -455,15 +456,6 @@ if (bale.get(7) != null)
 						});
 	</script>
 
-
-
-
-
-
-
-
-
-
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
 	<script src="./assets/vendors/jquery/dist/jquery.min.js"
@@ -477,32 +469,9 @@ if (bale.get(7) != null)
 	<script
 		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
 		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-
-
-	<!--  	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>  -->
-
-
-
-
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
 	<!-- PAGE LEVEL PLUGINS-->
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>

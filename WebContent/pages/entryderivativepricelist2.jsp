@@ -67,6 +67,11 @@
             <div class="page-content fade-in-up">
                 <div class="ibox">
                     <div class="ibox-head">
+                    
+					<div class="ibox-head">
+						<span id="flashMessage">${msg}</span>
+					</div>
+                    
                         <div class="ibox-title"></div>
                     </div>
 
@@ -146,6 +151,11 @@
                 pageLength: 10
             }); */
         });
+        
+
+        setTimeout(function() {
+            document.getElementById('flashMessage').style.display = 'none';
+        }, 1500);
     </script>
 
     <script>

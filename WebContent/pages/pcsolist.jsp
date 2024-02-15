@@ -71,6 +71,9 @@
 			List<String> refNos = (List<String>) request.getAttribute("refNos");
 			%>
 			<div class="page-content fade-in-up">
+				<div class="ibox-head">
+						<span id="flashMessage">${msg}</span>
+					</div>
 				<div class="accordion" id="accordionExample">
 					<%
 					int i = 1;
@@ -135,13 +138,11 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<!-- PAGE LEVEL SCRIPTS-->
 		<script type="text/javascript">
-			/* 	$(function() {
-					$('#example-table').DataTable({
 
-						fixedHeader : true
-
-					});
-				}) */
+        setTimeout(function() {
+            document.getElementById('flashMessage').style.display = 'none';
+        }, 1500);
+        
 
 			function findDetails(refNo, id) {
 

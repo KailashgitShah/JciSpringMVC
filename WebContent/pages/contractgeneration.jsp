@@ -282,7 +282,7 @@ $("#toggle").on("click" ,async () => {
 	
 	
 	if ((+totel != 100)) {
-		document.getElementById("error").innerHTML = "total should be 100 !";
+		document.getElementById("error").innerHTML = "total should be equal to 100 !";
 	 	return false;
 	} else {
 		document.getElementById("error").innerHTML = "";

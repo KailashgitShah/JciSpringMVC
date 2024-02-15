@@ -81,7 +81,7 @@
 				<div class="ibox">
 
 					<div class="ibox-head">
-						<span>${msg}</span>
+						<span id="flashMessage">${msg}</span>
 					</div>
 
 					<div class="ibox-body">
@@ -193,6 +193,12 @@
 			]*/
 			});
 		});
+		
+
+        setTimeout(function() {
+            document.getElementById('flashMessage').style.display = 'none';
+        }, 1500);
+		
 	</script>
 	<script>
 		function openLinkInNewTab(url) {

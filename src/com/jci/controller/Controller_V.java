@@ -292,7 +292,7 @@ public class Controller_V {
 				referenceno + ".pdf", requestLetterpath, letterHeadPath, SignaturePdf);
 
 		redirectAttributes.addFlashAttribute("msg",
-				"<div class=\"alert alert-success\"><b>Success !</b> Record created successfully.</div>\r\n" + "");
+				"<div class=\"alert alert-success\"><b> Record Created successfully.</b></div>\r\n" + "");
 
 		return new ModelAndView(new RedirectView("pcsoRequestLetterList.obj"));
 	}
@@ -607,7 +607,7 @@ public class Controller_V {
 				pcsoentryservice.create(entryofpcso);
 			}
 			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record created successfully.</div>\r\n" + "");
+					"<div class=\"alert alert-success\"><b>Record created successfully.</b></div>\r\n" + "");
 
 		} catch (Exception e) {
 			System.out.println(e);
@@ -851,7 +851,6 @@ public class Controller_V {
 
 			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
 
-			// System.err.println(filePath);
 			pdfGenerator.generatePdf(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
 					GradePriceList, gradeArray , varietyArray, fileName, deliveryType, contractdate, filePath, letterHeadPath);
 
@@ -1693,7 +1692,11 @@ public class Controller_V {
 		ModelAndView mView = new ModelAndView("uploadPaymentRealizationDisDetails");
 		return mView;
 	}
+	
 
+	@Value("${upload.PaymentRealizationDisDetails}")
+	String paymentRealDetailsPath;
+	
 	@RequestMapping("saveuploadPaymentRealizationDisDetails")
 	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request,
 			@RequestParam("excelFile") MultipartFile excelFile, RedirectAttributes redirectAttributes)
@@ -1703,9 +1706,7 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		String filePathString = "C:\\Users\\pradeep.rathor\\Desktop\\JCIStuff\\PaymentRealization_DisDetails";
-
-		File filePathDir = new File(filePathString);
+		File filePathDir = new File(paymentRealDetailsPath);
 
 		if (!filePathDir.exists()) {
 			filePathDir.mkdir();
@@ -1718,55 +1719,55 @@ public class Controller_V {
 			File serveFile = new File(filePathDir, originalFileNameString);
 			excelFile.transferTo(serveFile);
 
-			try (Workbook workbook = WorkbookFactory.create(excelFile.getInputStream())) {
-				Sheet sheet = workbook.getSheetAt(0);
-				int i = 1;
-				int rowCount = sheet.getLastRowNum();
-				System.out.println("rowcount" + rowCount);
-				// FormulaEvaluator formulaEvaluator =
-				// workbook.getCreationHelper().createFormulaEvaluator();
-				String[] tally;
-				// String tallyno;
-				for (i = 1; i < rowCount + 1; i++) {
-					try {
-						Row row = sheet.getRow(i);
-						Cell cell = row.getCell(2);
-						String jciref = cell.getStringCellValue();
-						cell = row.getCell(10);
-
-						String dataDate = cell.getStringCellValue();
-
-						cell = row.getCell(5);
-						String cell5 = cell.getStringCellValue();
-
-						System.err.println(" jciref = " + jciref + " date = " + dataDate + " cell5" + cell5);
-
-						tally = jciref.split("-");
-						// tallyno = tally[1];
-						// System.out.println("tallyno========="+tallyno);
-
-					} catch (Exception e) {
-						System.out.println("error in catch field-________" + e);
-//						mv.addObject("msg",
-//								(Object) "<div class=\"alert alert-danger\"><b>OOps!</b> Date formate should be dd/mm/yyyy and UTR NO should be Number in excel file</div>\r\n");
-//						return mv;
-					}
-
-				}
-			}
-
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try (Workbook workbook = WorkbookFactory.create(excelFile.getInputStream())) {
+//				Sheet sheet = workbook.getSheetAt(0);
+//				int i = 1;
+//				int rowCount = sheet.getLastRowNum();
+//				System.out.println("rowcount" + rowCount);
+//				// FormulaEvaluator formulaEvaluator =
+//				// workbook.getCreationHelper().createFormulaEvaluator();
+//				String[] tally;
+//				// String tallyno;
+//				for (i = 1; i < rowCount + 1; i++) {
+//					try {
+//						Row row = sheet.getRow(i);
+//						Cell cell = row.getCell(2);
+//						String jciref = cell.getStringCellValue();
+//						cell = row.getCell(10);
+//
+//						String dataDate = cell.getStringCellValue();
+//
+//						cell = row.getCell(5);
+//						String cell5 = cell.getStringCellValue();
+//
+//						System.err.println(" jciref = " + jciref + " date = " + dataDate + " cell5" + cell5);
+//
+//						tally = jciref.split("-");
+//						// tallyno = tally[1];
+//						// System.out.println("tallyno========="+tallyno);
+//
+//					} catch (Exception e) {
+//						System.out.println("error in catch field-________" + e);
+////						mv.addObject("msg",
+////								(Object) "<div class=\"alert alert-danger\"><b>OOps!</b> Date formate should be dd/mm/yyyy and UTR NO should be Number in excel file</div>\r\n");
+////						return mv;
+//					}
+//
+//				}
+//			}
+//
+//			catch (IOException e) {
+//				e.printStackTrace();
+//			}
 
 			// paymentRealizationService.create(originalFileNameString);
 			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> File Saved successfully.</div>\r\n" + "");
+					"<div class=\"alert alert-success\"><b> File Saved successfully.</b></div>\r\n" + "");
 
 		} catch (Exception e) {
 
 			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-danger\"><b>Success !</b> Something went wrong...</div>\r\n" + "");
+					"<div class=\"alert alert-danger\"><b>Something went wrong...</b></div>\r\n" + "");
 		}
 
 		return new ModelAndView(new RedirectView("uploadPaymentRealizationDisDetails.obj"));
