@@ -1858,10 +1858,14 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofPaymentDetails.obj"));
 	}
 
+	
+	@Value("${upload.Supportdocument1}")
+	String Supportdocument1;
+	
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
-		String imagePath = imageDirectory + File.separator + filename;
+		//String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
+		String imagePath = Supportdocument1 + File.separator + filename;
 
 		File imageFile = new File(imagePath);
 
@@ -1937,7 +1941,7 @@ public class Controller_V {
 		}
 		try {
 			this.financialConcurenceservice.remark(remarks, contractNo);
-			this.paymentDetailService.update1(contractNo);
+			this.paymentDetailService.update1(contractNo,paymentId);
 
 			EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(paymentId);
 			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
@@ -2386,16 +2390,17 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getcontractddownlist);
 		return resultString;
 	}
-
+//
 //	@ResponseBody
-//	@RequestMapping(value = "gradecomposition", method = RequestMethod.GET)
+//	@RequestMapping(value = "gradefetchingdata", method = RequestMethod.GET)
 //	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
-//		List<Object> gradecmposition = confirmationofClaimSettlementService.gradecfetchingdata1omposition(ContractNo);
+//		List<Object[]> gradecmposition = confirmationofClaimSettlementService.gradecfetchingdata1omposition(ContractNo);
 //		Gson gson = new Gson();
 //		String jsonResponse = gson.toJson(gradecmposition);
 //		return jsonResponse;
 //
 //	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
@@ -2594,6 +2599,22 @@ public class Controller_V {
 	}
 	
 	
+
+	@RequestMapping({ "ViewConfirmationsettelment" })
+	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
+				.getAll();
+		mv.addObject("confirmationClaim", confirmationClaim);
+
+		return mv;
+	}
+	
 	
 
 	 @RequestMapping("saveentryofGenrationbill") 
@@ -2725,24 +2746,24 @@ public class Controller_V {
 		    
 		    // Starting Email Sender
           
-//           EmailSender email=new EmailSender();
-//           InternetAddress[] toAddresses=null;
-//           String subject="Bill of Supply attachement";
-//           String body = "In this All information regarding Bill of supply . ";
-//             String filename="C:\\Users\\kailash.shah\\Downloads\\website.jpg";
-//             //String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
-//             String username1="";
-//             try {
-//                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
-//           toAddresses = new InternetAddress[]{
-//                                new InternetAddress("shahkailash2000@gmail.com"),
-//                                new InternetAddress("kailashshahsha81@gmail.com")
-//                            };
-//           } catch (AddressException e) {
-//                 // TODO Auto-generated catch block
-//                 e.printStackTrace();
-//           }
-//           email.sendEmail( toAddresses ,  body , subject, filename, username1);
+           EmailSender email=new EmailSender();
+           InternetAddress[] toAddresses=null;
+           String subject="Bill of Supply attachement";
+           String body = "In this All information regarding Bill of supply . ";
+             String filename="C:\\Users\\kailash.shah\\Downloads\\website.jpg";
+             //String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
+             String username1="";
+             try {
+                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+           toAddresses = new InternetAddress[]{
+                                new InternetAddress("shahkailash2000@gmail.com"),
+                                new InternetAddress("kailashshahsha81@gmail.com")
+                            };
+           } catch (AddressException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+           }
+           email.sendEmail( toAddresses ,  body , subject, filename, username1);
 ////           
 //          
 
@@ -2755,12 +2776,15 @@ public class Controller_V {
 		}
 	 
 
+	 
+	 @Value("${upload.Supportdocument}")
+		String Supportdocument;
 
     @RequestMapping("downloadPDF")
 		 public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
-  	  String imageDirectory = "C:\\Users\\kailash.shah\\documentimage";
+  	 // String imageDirectory = "C:\\Users\\kailash.shah\\documentimage";
   	 
-		    String imagePath = imageDirectory + File.separator + filename;
+		    String imagePath = Supportdocument + File.separator + filename;
 
 		    File imageFile = new File(imagePath);
   	  

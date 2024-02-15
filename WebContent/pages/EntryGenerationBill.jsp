@@ -79,7 +79,7 @@
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
-							<span>${msg}</span>
+							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveentryofGenrationbill.obj" method="POST"
 									name="myForm" enctype="multipart/form-data">
@@ -776,7 +776,14 @@
 			}
 		}
 	</script>
-
+	<script>
+    $(document).ready(function(){
+      
+        setTimeout(function(){
+            $('#flashMessage').fadeOut('slow');
+        }, 3000); ded
+    });
+</script>
 
 
 

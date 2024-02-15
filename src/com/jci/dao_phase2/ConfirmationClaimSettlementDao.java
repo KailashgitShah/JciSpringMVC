@@ -10,5 +10,5 @@ public interface ConfirmationClaimSettlementDao {
 	 public  List<Object> SettlementId();
 	 public List<Object[]> fetchdataofclaim(String st);
 	 public List<Object[]> fetchdatasttlement(int st);
-	 public  List<Object> gradecomposition(String st);
+	 public  List<Object[]> gradecfetchingdata1omposition(String st);
 }

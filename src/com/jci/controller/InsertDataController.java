@@ -5897,7 +5897,7 @@ public class InsertDataController
 				if (request.getParameter("id") != null) {
 				final int id = Integer.parseInt(request.getParameter("id")); 
 				final String  contno=request.getParameter("contno");
-				this.paymentDetailService.update1(contno);
+				//this.paymentDetailService.update1(contno);
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
 			}

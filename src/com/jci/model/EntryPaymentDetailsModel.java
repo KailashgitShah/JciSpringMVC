@@ -76,6 +76,20 @@ public class EntryPaymentDetailsModel {
 	
 	@Column(name = "Created_date")
 	private Date Created_date ;
+	
+	
+	@Column(name = "Remarks")
+	private String Remarks ;
+
+	
+
+	public String getRemarks() {
+		return Remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		Remarks = remarks;
+	}
 
 	public int getPayment_id() {
 		return Payment_id;

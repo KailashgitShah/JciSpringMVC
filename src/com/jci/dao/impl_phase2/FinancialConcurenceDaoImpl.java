@@ -60,7 +60,9 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 		@Override
 		public void remark(String remark ,String  con_No) {
 			 String hql = "UPDATE  jcifinancial_concurrence set Remarks =  '" + remark + "'  where Contractno = '" + con_No + "' ";
+			
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+	
 		}
 		
 		@Override

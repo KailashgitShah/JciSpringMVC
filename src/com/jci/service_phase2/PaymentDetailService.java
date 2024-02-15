@@ -17,7 +17,7 @@ public interface PaymentDetailService {
 		EntryPaymentDetailsModel getPaymentInstrumentById(int id);
 		 public  void updatePaymentInstrument(EntryPaymentDetailsModel EntryPaymentDetailsModel);
 		public EntryPaymentDetailsModel find(int id);
-		public void update1(String cont_no);
+		public void update1(String cont_no,int paymentId);
 		public void update2(String cont_no);
 		
 		public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry();

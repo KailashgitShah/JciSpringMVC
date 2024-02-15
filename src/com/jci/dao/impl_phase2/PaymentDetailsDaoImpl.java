@@ -86,11 +86,12 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	 
 	
 	@Override
-	 public void update1(String cont_no) {
+	 public void update1(String cont_no,int paymentId) {
 			Date date= new Date();
 			 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		     String dateString = dateFormat.format(date);
-		    String hql = "UPDATE jcipayment_arrangement set Fc_status = 2,Fc_remarks='Rejected', Fc_action_date = '" + dateString + "'  where Contract_No = '" + cont_no + "' ";
+		    String hql = "UPDATE jcipayment_arrangement set Fc_status = 2,Fc_remarks='Rejected', Fc_action_date = '" + dateString + "'  where Contract_No = '" + cont_no + "' and  Payment_id = '" + paymentId + "' ";
+
 		    
 		    String hql1 = "UPDATE jcicontract set contract_status='Approved by Finance' where Contract_no = '" + cont_no + "' ";
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
@@ -172,7 +173,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	
 	@Override
 	public  List<Object[]>gradewiseqty(String st ,String contractqty) {
-		String sql=" select Jute_combination,System_composition*'" + contractqty + "' as ammount   from  jcigrade_composition where Label_name='" + st + "'";
+		String sql=" select Jute_combination,(Proposed_composition*'" + contractqty + "')/100 as ammount   from  jcigrade_composition where Label_name='" + st + "'";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
      }

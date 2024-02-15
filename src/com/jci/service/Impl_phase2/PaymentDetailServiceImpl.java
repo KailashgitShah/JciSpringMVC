@@ -58,8 +58,8 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		return paymentDetailsdao.find(id);
 	}
     @Override
-	public void update1(String cont_no) {
-    	 this.paymentDetailsdao.update1(cont_no);
+	public void update1(String cont_no,int paymentId) {
+    	 this.paymentDetailsdao.update1(cont_no,paymentId);
 	}
     @Override
 	public void update2(String cont_no) {

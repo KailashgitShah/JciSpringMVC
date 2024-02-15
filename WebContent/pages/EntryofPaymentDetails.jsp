@@ -1,6 +1,11 @@
+
+<%@page import="com.mashape.unirest.http.options.Option"%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
+<%@page import="com.jci.model.MillRecieptModel"%>
+<%@page import="com.jci.model.EntryPaymentDetailsModel"%>
+<%@page import="com.jci.model.MillreceiptDto"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +22,6 @@
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="assets/css/main.min.css" rel="stylesheet" />
-     
     <!-- PAGE LEVEL STYLES-->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
      <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -28,7 +32,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <!-- CORE SCRIPTS-->
   
  <style>
@@ -38,7 +41,7 @@
 }
 </style> 
 </head>
-<body class="fixed-navbar" onload="myFunction()">
+<body class="fixed-navbar"  onload="myFunction()" >
     <div class="page-wrapper">
         <!-- START HEADER-->
         <%@ include file="header.jsp"%>
@@ -52,17 +55,19 @@
                 <h1 class="page-title">Entry of Payment Details</h1>
             </div>
             
-            <% 
+             <% 
             List<Object>getcontractList1=(List<Object>)request.getAttribute("getcontractList1");
          
             %>
-            
-            
-            <div class="page-content fade-in-up">
+         
+         
+         
+         
+         <div class="page-content fade-in-up">
                 <div class="row">
                     <div class="col-md-11">
                         <div class="ibox">
-                          <span>${msg}</span>
+                          <span id="flashMessage">${msg}</span>
                             <div class="ibox-body">
                        <form action="saveentryofpaymentinstrumentDetails.obj" method="POST" name ="myForm" enctype="multipart/form-data">
                            <div class="child-checkbox" id="disableform">
@@ -343,6 +348,16 @@
 	 });
 		
 	</script> 
+	
+	
+	<script>
+    $(document).ready(function(){
+      
+        setTimeout(function(){
+            $('#flashMessage').fadeOut('slow');
+        }, 3000); ded
+    });
+</script>
 	 
 	 
 	 <script>
@@ -355,28 +370,14 @@
         }
     }
 </script>
-<!-- <script>
-    $(document).ready(function() {
-    
-        $('#contractno12').change(function() {
-            $('#rejectModal').modal('show');
-        });
-
-
-        $('#rejectModalButton').click(function() {
-
-            alert('Record rejected!');
-            $('#rejectModal').modal('hide');
-        });
-    });
-</script> -->
+-->
 	
 	<script>
-    const dropdown = document.getElementById('contractno12');
-    const sidebar = document.getElementById('sidebar');
+    //const dropdown = document.getElementById('contractno12');
+  //  const sidebar = document.getElementById('sidebar');
 
     // Show sidebar when dropdown is hovered
-    dropdown.addEventListener('mouseenter', () => {
+/*     dropdown.addEventListener('mouseenter', () => {
         sidebar.style.display = 'block';
     });
 
@@ -385,7 +386,7 @@
         sidebar.addEventListener('mouseleave', () => {
             sidebar.style.display = 'none';
         });
-    });
+    }); */
 
 </script>
 
@@ -534,37 +535,7 @@
       
       </script> 
     
-    
-    
-    
-         
-         
-         
-         
-         
-  <!--   <script>
-        function myFunction() {
-            // Your code to be executed when the page loads goes here
-           	
-      	  $("#doexpiry").hide();
-      	  $("#dateofexpiry").hide();
-      	  $("#doshipment").hide();
-      	  $("#dateofship").hide();
-      	  $("#autoamounta").hide();
-      	  $("#autorevolvingamount").hide();  
-      	
-      	  $("#IFSC").hide();
-    	  $("#BankName").hide();  
-    	  $("#Branch").hide();
-      	  $("#IFSC1").hide();  
-      	  $("#BankName1").hide();
-    	  $("#Branch1").hide();  
-    	  
    
-        }
-    </script> -->
-    
-    
     <script>
     function deleteErrorMsg(){
     	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
@@ -584,7 +555,7 @@
         element.value = textInput; 
     }
 </script>
-
+ 
     <script>
         function myFunction() {
         	 $("#doexpiry").hide();
@@ -631,6 +602,7 @@
     	 }
     </script>
    
+ 
 			<script>
 			$(document).ready(function(){
 			  // Define a function to fetch and update data
@@ -710,7 +682,6 @@
         }   
     }
 </script>
-		  
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
@@ -726,3 +697,13 @@
     <!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

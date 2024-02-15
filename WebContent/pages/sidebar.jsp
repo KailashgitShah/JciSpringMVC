@@ -312,17 +312,18 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								Payment Realization / Disbursal Details</b></a></li>
 
-					<li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
+					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-								payment instrument</b></a></li>
-					<li data-pre="42" id="o42"><a href="HOdispatch.obj"><i
+								payment instrument</b></a></li> -->
+								
+				<!-- 	<li data-pre="42" id="o42"><a href="HOdispatch.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>HO Dispatch
-								Instruction</b></a></li>
-					<li data-pre="43" id="o43"><a href="entryofsale.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Sale</b></a></li>
-					<li data-pre="44" id="o44"><a href="uploadingreceipt.obj"><i
+								Instruction</b></a></li> -->
+				<!-- 	<li data-pre="43" id="o43"><a href="entryofsale.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Sale</b></a></li> -->
+					<!-- <li data-pre="44" id="o44"><a href="uploadingreceipt.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
-								receipt</b></a></li>
+								receipt</b></a></li> -->
 								
 
 				</ul></li>
@@ -333,28 +334,19 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 				
-				<li  data-pre="41" id="o41"><a href="EntryofPaymentDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of payment Details</b></a></li>
- 								<li  data-pre="44" id="o44"><a href="viewPaymentEntryDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Payment of  Detail list</b></a></li>
-				
-				    <li  data-pre="44" id="o44"><a href="viewPaymentForFC.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Payment   Detail list</b></a></li>
-                    <li  data-pre="44" id="o44"><a href="EntryofFinancialConcurence.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Financial Concurence</b></a></li>
-				    <li  data-pre="44" id="o44"><a href="viewFinancialConcurence.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Financial Concuerence list</b></a></li>
-					
-					
-					<li  data-pre="44" id="o44"><a href="EntryofMillreceipt.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill Receipt</b></a></li>
-                    <li  data-pre="44" id="o44"><a href="viewMillReciept.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Mill Receipt</b></a></li>
-                   
-                   
-                      <li  data-pre="" id=""><a href="EntryofGenrationDeamandNote.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Generation demand Note</b></a></li>
-				   <li  data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Generation demand Note list</b></a></li>
-				  <li  data-pre="" id=""><a href="EntryofGenerationBillsupply.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Generation Bill of supply</b></a></li>
-				<li  data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Generation Bill of supply</b></a></li>
-				
-				
-				<li  data-pre="44" id="o44"><a href="entryofConfirationSettelment.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Confirmation of Claim Settlement Report </b></a></li>
-                  
-
-				</ul></li>
+				<li  data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of payment Details</b></a></li>
+ 				<li  data-pre="" id=""><a href="viewPaymentEntryDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Payment list</b></a></li>
+				<li  data-pre="" id=""><a href="viewPaymentForFC.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View FC  Payment list</b></a></li>
+                <li  data-pre="" id=""><a href="viewFinancialConcurence.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Financial Concuerence list</b></a></li>
+				 <li  data-pre="" id=""><a href="EntryofMillreceipt.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill Receipt</b></a></li>
+                 <li  data-pre="" id=""><a href="viewMillReciept.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Mill Receipt</b></a></li>
+                 <li  data-pre="" id=""><a href="EntryofGenrationDeamandNote.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Generation demand Note</b></a></li>
+			     <li  data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Generation demand Note list</b></a></li>
+			     <li  data-pre="" id=""><a href="EntryofGenerationBillsupply.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Generation Bill of supply</b></a></li>
+				 <li  data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Generation Bill of supply</b></a></li>
+				 <li  data-pre="" id=""><a href="entryofConfirationSettelment.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Confirmation of Claim Settlement Report </b></a></li>
+                 <li  data-pre="" id=""><a href="ViewConfirmationsettelment.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Confirmation of Claim Settlement Report </b></a></li>
+                 </ul></li>
  	
 				
 				
@@ -362,7 +354,7 @@ body {
 				
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">8.&nbsp;Commercial / Daily Sales / Free
+					class="nav-label">9.&nbsp;Commercial / Daily Sales / Free
 						Sale</span> <i class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level">
 
@@ -397,7 +389,7 @@ body {
 				<li>
 				    <a href="javascript:void(0);"><i
 						class="sidebar-item-icon fa fa-th-large"></i> <span
-						class="nav-label">9.&nbsp;Commercial Sales</span> <i class="fa fa-angle-left arrow"></i>
+						class="nav-label">10.&nbsp;Commercial Sales</span> <i class="fa fa-angle-left arrow"></i>
 				   </a>
 				   <ul class="nav-2-level">
 					<li  data-pre="" id=""><a href="entry_of_transportation_and_operation_cost.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Transportation & Operation Cost</b></a></li>					
