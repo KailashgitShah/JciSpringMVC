@@ -41,7 +41,7 @@
 }
 </style> 
 </head>
-<body class="fixed-navbar"  onload="myFunction()" >
+<body class="fixed-navbar"  >
     <div class="page-wrapper">
         <!-- START HEADER-->
         <%@ include file="header.jsp"%>
@@ -125,7 +125,7 @@
                                   </div>
                                     
                                     <div class="row">
-                                      <div class="col-sm-4 form-group">
+                                      <div class="col-sm-4 form-group" id ="instrument">
 	                                            <label>Instrument Type</label> 
 	                                            <span class="text-danger">* </span>&nbsp; <span id="payment" name="payment" class="text-danger"> </span>
 												<select name="paymenttype" id="paymenttype" class="form-control taxtbox" required>
@@ -171,7 +171,7 @@
 									       <img id="imgPreview"  /><input class="form-control taxtbox" name="SupportingDocument" type="file" accept=".jpg,.jpeg,.png.pdf"
 									        oninput="validateREGFileType()"  placeholder="Supporting Document" id="SupportingDocument" onkeypress="deleteErrorMsg()" required>
 										</div>
-                                           <div class="col-sm-4 form-group">
+                                           <div class="col-sm-4 form-group" id="IFSC1">
 	                                             <label id="IFSC1">IFSC </label>
 	                                             <input class="form-control" oninput="this.value = this.value.toUpperCase()" maxlength="11" name="IFSC" type="text"
 												placeholder="IFSC Code" id="IFSC"
@@ -185,17 +185,17 @@
                                     </div>  
                                      
                                         <div class="row">
-                                         <div class="col-sm-4 form-group">
+                                         <div class="col-sm-4 form-group" id="BankName1">
 	                                             <label id="BankName1">Bank Name</label>
 	                                             <input class="form-control taxtbox" name="BankName" id="BankName" min="0" type="text" placeholder="Bank Name" onchange="deleteErrorMsg()" >
 	                                       </div>
 	                                     
-	                                       <div class="col-sm-4 form-group">
+	                                       <div class="col-sm-4 form-group" id="Branch1">
 	                                             <label id="Branch1">Branch</label>
 	                                             <input class="form-control taxtbox" name="Branch" id="Branch" min="0" type="text" placeholder="Branch" onchange="deleteErrorMsg()">
 	                                       </div>
 	                                      
-                                        <div class="col-sm-4 form-group">
+                                        <div class="col-sm-4 form-group" id="doshipment">
 												<label id="doshipment">Last Shipment date</label> 
 												<input class="form-control" name="dateofship" id="dateofship" placeholder="Date of Shipment" type="date" >
 										   </div>
@@ -222,13 +222,13 @@
                   
 									 
 									  <div class="row"> 
-									   <div class="col-sm-4 form-group">
+									   <div class="col-sm-4 form-group" id="doexpiry">
 												<label id="doexpiry">Date of Expiry</label> 
 												<input class="form-control" name="dateofexpiry" id="dateofexpiry" placeholder="Date of Expiry" type="date" >
 										   </div>
 										   
                                    
-                                            <div class="col-sm-4 form-group">
+                                            <div class="col-sm-4 form-group" id="autoamounta">
 	                                             <label id="autoamounta">Auto Revolving Amount</label>
 	                                             <input class="form-control taxtbox" name="autorevolvingamount" id="autorevolvingamount" min="0" type="number" placeholder="Auto Revolving Amount" 	>
 	                                       </div>
@@ -243,7 +243,7 @@
 	                                       </div>
 	                                        -->
 	                                    
-												<div class="row">
+												<div class="row" id="gradesDiv">
 												    <div class="col-sm-15">
 												        <table class="table">
 												            <thead>
@@ -320,8 +320,49 @@
     </div>
     
     <div class="sidenav-backdrop backdrop"></div>
+       <script type="text/javascript">
+      $("#paymenttype").on("change", function() {
+    	    var paymenttype = $(this).val();
+    	    if (paymenttype === "Letter_of_Credit") {
+    	    	 document.getElementById("autoamounta").style.setProperty("display",'block');
+    	    	 document.getElementById("doexpiry").style.setProperty("display",'block');
+    	    	 document.getElementById("BankName1").style.setProperty("display",'block');
+    	    	 document.getElementById("doshipment").style.setProperty("display",'block');
+    	    	 document.getElementById("Branch1").style.setProperty("display",'block');
+    	    	 document.getElementById("IFSC1").style.setProperty("display",'block');
+    	    	
+    	       
+    	    } else if (paymenttype === "NEFT/RTGS") {
+   	    	 document.getElementById("autoamounta").style.setProperty("display",'none');
+	    	 document.getElementById("doexpiry").style.setProperty("display",'none');
+	    	 document.getElementById("BankName1").style.setProperty("display",'none');
+	    	 document.getElementById("doshipment").style.setProperty("display",'none');
+	    	 document.getElementById("Branch1").style.setProperty("display",'none');
+	    	 document.getElementById("IFSC1").style.setProperty("display",'none');
+    	       
+    	    } 
+    	    else if (paymenttype === "Cheque/DD") {
+    	   	 document.getElementById("autoamounta").style.setProperty("display",'none');
+	    	 document.getElementById("doexpiry").style.setProperty("display",'none');
+	    	 document.getElementById("doshipment").style.setProperty("display",'none');
+	    	 document.getElementById("BankName1").style.setProperty("display",'block');
+	    	 document.getElementById("Branch1").style.setProperty("display",'block');
+	    	 document.getElementById("IFSC1").style.setProperty("display",'block');
+    	    
+    	    }
+    	 
+    	});
+      </script>
     
      <script type="text/javascript">
+     
+     document.getElementById("gradesDiv").style.setProperty("display",'none');
+     document.getElementById("autoamounta").style.setProperty("display",'none');
+     document.getElementById("doexpiry").style.setProperty("display",'none');
+     document.getElementById("doshipment").style.setProperty("display",'none');
+     document.getElementById("Branch1").style.setProperty("display",'none');
+     document.getElementById("BankName1").style.setProperty("display",'none');
+     document.getElementById("IFSC1").style.setProperty("display",'none');
     
 	$(document).ready(function(){
 		 $("#submit").click(function(){
@@ -370,25 +411,9 @@
         }
     }
 </script>
--->
+
 	
-	<script>
-    //const dropdown = document.getElementById('contractno12');
-  //  const sidebar = document.getElementById('sidebar');
 
-    // Show sidebar when dropdown is hovered
-/*     dropdown.addEventListener('mouseenter', () => {
-        sidebar.style.display = 'block';
-    });
-
-    // Hide sidebar when cursor leaves dropdown or sidebar
-    dropdown.addEventListener('mouseleave', () => {
-        sidebar.addEventListener('mouseleave', () => {
-            sidebar.style.display = 'none';
-        });
-    }); */
-
-</script>
 
  <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -441,8 +466,11 @@
  $(document).ready(function() {
 	    $('#contractno12').on('change', function() {
 	    var field2Value = $(this).val();
-	   
-	      $.ajax({
+	   if(field2Value==="select"){
+		   document.getElementById("gradesDiv").style.setProperty("display",'none'); 
+	   }
+	   else {
+		   $.ajax({
 	            type: 'GET',
 	            url: 'paymentdetailsforshow.obj',
 	            data: { "contractno": field2Value },
@@ -511,6 +539,8 @@
 	     		        	              $('#g61').val(g61);
 	     		        	              $('#g62').val(g62);
 	     		        	              $('#g72').val(totalsum);
+	     		        	              
+	     		        	             document.getElementById("gradesDiv").style.setProperty("display",'block');
 	     			                    	 
 	     			                     }
 	     			             	        } catch (error) {
@@ -528,7 +558,9 @@
 	        	        }
 	        	           
 	        	   }
-	          }); 
+	          });
+	   }
+	      
 	    });
 	});
 
@@ -574,30 +606,7 @@
         	
         	
         	// Your code to be executed when the page loads goes here
-          $("#g111").hide();
-      	  $("#g11").hide();
-      	  $("#g12").hide();
-      	 $("#g211").hide();
-     	  $("#g21").hide();
-     	  $("#g22").hide();
-     	 $("#g311").hide();
-     	  $("#g31").hide();
-     	  $("#g32").hide();
-     	 $("#g411").hide();
-     	  $("#g41").hide();
-     	  $("#g42").hide();
-     	 $("#g511").hide();
-     	  $("#g51").hide();
-     	  $("#g52").hide();
-     	 $("#g611").hide();
-     	  $("#g61").hide();
-     	  $("#g62").hide();
-     	 $("#g71").hide();
-    	  $("#g72").hide();
-     	 $("#grade").hide();
-    	  $("#grade1").hide();
-    	  $("#grade2").hide();
-     	  
+         
       	 
     	 }
     </script>
@@ -641,33 +650,8 @@
     
   
     
-      <script type="text/javascript">
-      $("#paymenttype").on("change", function() {
-    	    var paymenttype = $(this).val();
-    	    if (paymenttype === "Letter_of_Credit") {
-    	        $('#autorevolvingamount, #autoamounta, #dateofship, #doshipment, #dateofexpiry, #doexpiry, #Branch1, #BankName1, #IFSC1, #Branch, #BankName, #IFSC').show();
-    	    } else if (paymenttype === "NEFT/RTGS") {
-    	        $('#autorevolvingamount, #autoamounta, #dateofship, #doshipment, #dateofexpiry, #doexpiry, #Branch1, #BankName1, #IFSC1, #Branch, #BankName, #IFSC').hide();
-    	    } else if (paymenttype === "Cheque/DD") {
-    	        $('#autorevolvingamount, #autoamounta, #dateofship, #doshipment, #dateofexpiry, #doexpiry').hide();
-    	        $('#Branch1, #BankName1, #IFSC1, #Branch, #BankName, #IFSC').show();
-    	    }
-    	    // alert(paymenttype);
-    	});
-      </script>
-      
-      <script type="text/javascript">
-      $("#contractno12").on("change", function() {
-    	    var paymenttype = $(this).val();
-    	    if (paymenttype === "select" ) {
-    	      
-    	        $('#grade, #grade1, #grade2,#g111, #g11, #g12,#g211, #g21, #g22,#g311, #g31, #g32,#g411,#g41,#g42, #g511, #g51,#g52,#g611, #g61, #g62,#g71, #g72').hide();
-    	    } else  {
-    	        $(' #grade, #grade1, #grade2,#g111, #g11, #g12,#g211, #g21, #g22,#g311, #g31, #g32,#g411,#g41,#g42, #g511, #g51,#g52,#g611, #g61, #g62,#g71, #g72').show();
-    	    }
-    	    // alert(paymenttype);
-    	});
-      </script> 
+   
+
 
    <script>
     function validateREGFileType(){
