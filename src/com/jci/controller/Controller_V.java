@@ -221,8 +221,11 @@ public class Controller_V {
 
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
+ 
+// generation of pcso request letter form	
 
-	@RequestMapping("/pcsoRequestLetter")
+	@RequestMapping("pcsoRequestLetter")
+
 	public ModelAndView pcsoRequestLetter(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		String cropYearString = (String) request.getSession().getAttribute("currCropYear");

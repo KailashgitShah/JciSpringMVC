@@ -2,7 +2,7 @@
 <%@page import="com.jci.model.PCSORequestLetter"%>
 <%@page import="java.util.List"%>
 <%@page import="java.net.URLEncoder"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="javax.servlet.http.HttpServletRequest"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,20 +12,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-    <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    <!-- PLUGINS STYLES-->
-    <!-- THEME STYLES-->
-    <link href="assets/css/main.min.css" rel="stylesheet" />
-    <!-- PAGE LEVEL STYLES-->
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> 
-<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> 
+<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="./assets/vendors/themify-icons/css/themify-icons.css"
+	rel="stylesheet" />
+<!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
+<!-- THEME STYLES-->
+<link href="assets/css/main.min.css" rel="stylesheet" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
@@ -44,21 +44,6 @@
 	text-decoration: none;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		
-		var table = $('#example-table').DataTable({
-			scrollY : "300px",
-			scrollX : true,
-			scrollCollapse : true,
-			paging : false,
-			fixedColumns : {
-				left : 1,
-				right : 1
-			}
-		});
-	});
-</script>
 </head>
 
 <body class="fixed-navbar">
@@ -79,15 +64,14 @@
 			%>
 			<div class="page-content fade-in-up">
 				<div class="ibox">
-
 					<div class="ibox-head">
 						<span id="flashMessage">${msg}</span>
 					</div>
 
 					<div class="ibox-body">
 						<div class="scrollmenu">
-							<table class="table table-striped table-bordered table-hover"
-								id="example-table" cellspacing="0" width="100%">
+							<table id="example-table"
+								class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>SN.</th>
@@ -96,13 +80,15 @@
 										<th>Crop Year</th>
 										<th>Requested Qty.</th>
 										<th>Uncontracted Qty.</th>
+										<th></th>
+										<th></th>
 								</thead>
 								<tbody>
 									<%
 									int i = 1;
 									for (PCSORequestLetter requestEl : requestList) {
 										//String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
-									
+
 										String fullFilePath = requestEl.getLetter_path();
 										String date = requestEl.getReqGenDate();
 										String encodedFilePath = URLEncoder.encode(fullFilePath, "UTF-8");
@@ -128,13 +114,15 @@
 										if (emailStatus == 0) {
 										%>
 										<td><button class="btn btn-outline-warning"
-												onclick="acknowlegeRequest('<%=refNo%>','<%=date%>','<%=cropYear%>','<%=qty%>','<%=id%>')">Send Mail</button></td>
+												onclick="acknowlegeRequest('<%=refNo%>','<%=date%>','<%=cropYear%>','<%=qty%>','<%=id%>')">Send
+												Mail</button></td>
 										<%
 										} else {
 										%>
 
-										<td><button class="btn btn-outline-secondary" disabled>Email
-												Sent on <%= requestEl.getEmailSentOn() %></button></td>
+										<td><button class="btn btn-outline-secondary" disabled>
+												Email Sent on
+												<%=requestEl.getEmailSentOn()%></button></td>
 										<%
 										}
 										%>
@@ -161,44 +149,10 @@
 	<!-- END THEME CONFIG PANEL-->
 	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
-
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
 	<script type="text/javascript">
-		$(function() {
-			$('#example-table').DataTable({
-				pageLength : 10,
-			//"ajax": './assets/demo/data/table_data.json',
-			/*"columns": [
-			    { "S": "name" },
-			    { "data": "office" },
-			    { "data": "extn" },
-			    { "data": "start_date" },
-			    { "data": "salary" }
-			]*/
-			});
-		});
-		
-
-        setTimeout(function() {
-            document.getElementById('flashMessage').style.display = 'none';
-        }, 1500);
-		
+		setTimeout(function() {
+			document.getElementById('flashMessage').style.display = 'none';
+		}, 1500);
 	</script>
 	<script>
 		function openLinkInNewTab(url) {
@@ -222,10 +176,10 @@
 						"id" : id
 					},
 					success : function(result) {
-					 
-					   location.reload();
+
+						location.reload();
 						//window.location.href = "entryofpcso.obj";
-						
+
 					}
 				})
 			} else {
@@ -233,6 +187,39 @@
 			}
 
 		}
+	</script>
+
+	<script src="./assets/vendors/jquery/dist/jquery.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script
+		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- PAGE LEVEL PLUGINS-->
+	<script src="./assets/vendors/DataTables/datatables.min.js"
+		type="text/javascript"></script>
+	<!-- CORE SCRIPTS-->
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	<!-- PAGE LEVEL SCRIPTS-->
+	<script type="text/javascript">
+		$(function() {
+			$('#example-table').DataTable({
+				pageLength : 10,
+			//"ajax": './assets/demo/data/table_data.json',
+			/*"columns": [
+			    { "S": "name" },
+			    { "data": "office" },
+			    { "data": "extn" },
+			    { "data": "start_date" },
+			    { "data": "salary" }
+			]*/
+			});
+		})
 	</script>
 
 </body>

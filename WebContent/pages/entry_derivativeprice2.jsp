@@ -10,7 +10,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -18,18 +17,11 @@
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/chosen.css">
-<link
-	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-<link
-	href="<%=request.getContextPath()%>/resources/css/styleUserReg.css"
-	rel="stylesheet">
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -37,29 +29,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src='./resources/js/responsivevoice.js'></script>
-<script type="text/javascript"
-	src='<%=request.getContextPath()%>/resources/js/custom.js'></script>
-<script type="text/javascript"
-	src='<%=request.getContextPath()%>/resources/js/jquery.mCustomScrollbar.concat.min.js'></script>
-<script type="text/javascript"
-	src='<%=request.getContextPath()%>/resources/js/jquery.validate.min.js'></script>
-<script src="./assets/vendors/jquery/dist/jquery.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-	type="text/javascript"></script>
-<script
-	src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-	type="text/javascript"></script>
-<!-- PAGE LEVEL PLUGINS-->
-<!-- CORE SCRIPTS-->
-<script src="assets/js/app.min.js" type="text/javascript"></script>
 
-<!-- PAGE LEVEL STYLES-->
 <style>
 .field-icon {
 	float: right;
@@ -270,8 +240,9 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 											<button class="btn btn-success" id="submit" type="submit">Submit</button>
 										</div>
 										<div class="form-group col-sm-1">
-											<a class="btn btn-primary" href="entryderivativepricelist.obj" >Check Price List</a>
-											</div>
+											<a class="btn btn-primary"
+												href="entryderivativepricelist.obj">Check Price List</a>
+										</div>
 									</div>
 								</form>
 							</div>
@@ -287,21 +258,13 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
-
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
-	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script src="assets/css/docsupport/prism.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="assets/css/docsupport/init.js" type="text/javascript"
-		charset="utf-8"></script>
-
+	<script defer src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 	<script>
 		$(".chosen-select").chosen({
 			no_results_text : "Oops, nothing found!"
 		})
 	</script>
-
+	
 	<script>
 		function validOptions() {
 			var val = $('#ParentMenuID').val();
@@ -483,7 +446,8 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 	<script>
 		$("#submit").click(function(){
-			
+ 
+			// grade validations...
  
 			let groupIDs = {
 			  t: ['#tgr1', '#tgr2', '#tgr3', '#tgr4', '#tgr5'],
@@ -519,6 +483,23 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 			return flag;
 		})
 	</script>
+	<script src="./assets/vendors/jquery/dist/jquery.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script
+		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- PAGE LEVEL PLUGINS-->
+	<script src="./assets/vendors/DataTables/datatables.min.js"
+		type="text/javascript"></script>
+	<!-- CORE SCRIPTS-->
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	<!-- PAGE LEVEL SCRIPTS-->
 
 </body>
 </html>

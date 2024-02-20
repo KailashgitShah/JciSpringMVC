@@ -1,19 +1,15 @@
 <!DOCTYPE html>
-
-
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.*"%>
 <%@page import="java.io.File"%>
 
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -21,12 +17,13 @@
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/chosen.css">
-<!-- PAGE LEVEL PLUGINS-->
-<!-- CORE SCRIPTS-->
-<script src="assets/js/app.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"
+	type="text/javascript"></script>
 <!-- PAGE LEVEL STYLES-->
 <style>
 .required:after {
@@ -240,6 +237,20 @@ String contactIdnNo = "BT-" + count;
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+			type="text/javascript"></script>
+		<script
+			src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+			type="text/javascript"></script>
+		<!-- PAGE LEVEL PLUGINS-->
+	
+		<!-- CORE SCRIPTS-->
+		<script src="assets/js/app.min.js" type="text/javascript"></script>
+
 <script>
 $("#pcso_date").chosen();
 $("#pcso_date").addClass("chosen-select");

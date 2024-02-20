@@ -33,20 +33,14 @@
 	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- PLUGINS STYLES-->
-<!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <!-- PAGE LEVEL STYLES-->
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
 	type="text/javascript"></script>
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
@@ -188,21 +182,21 @@ if (bale.get(7) != null)
 										<caption>1st Level view of Procured Jute</caption>
 
 										<thead>
-										<tr>
-											<th>Sl.no</th>
-											<th></th>
+											<tr>
+												<th>Sl.no</th>
+												<th></th>
 
-											<th>Loose</th>
-											<th>Gr1</th>
-											<th>Gr2</th>
-											<th>Gr3</th>
-											<th>Gr4</th>
-											<th>Gr5</th>
-											<th>Gr6</th>
-											<th>Gr7</th>
-											<th>Gr8</th>
-											<th>Total</th>
-										</tr>
+												<th>Loose</th>
+												<th>Gr1</th>
+												<th>Gr2</th>
+												<th>Gr3</th>
+												<th>Gr4</th>
+												<th>Gr5</th>
+												<th>Gr6</th>
+												<th>Gr7</th>
+												<th>Gr8</th>
+												<th>Total</th>
+											</tr>
 
 										</thead>
 										<tbody>
@@ -307,8 +301,6 @@ if (bale.get(7) != null)
 				minDate : 0
 			});
 		});
-
-
 	</script>
 
 	<script type="text/javascript">
@@ -329,6 +321,7 @@ if (bale.get(7) != null)
 						$(this).val(refVal);
 					});
 
+<<<<<<< HEAD
 					// to set requested quantity as needed
 
 					/* 		inputField
@@ -352,6 +345,8 @@ if (bale.get(7) != null)
 												}
 											}); */
 
+=======
+>>>>>>> 8a3e51a5 (pagination and search func impl in all listing pages (1.0.1) date(21-02-24))
 					// to prevent + and - from being input
 					inputField.on("keydown", function(event) {
 						if (event.key === "-" || event.key === "+"
@@ -469,8 +464,7 @@ if (bale.get(7) != null)
 	<script
 		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
 		type="text/javascript"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+ 
 
 	<!-- PAGE LEVEL PLUGINS-->
 	<!-- CORE SCRIPTS-->

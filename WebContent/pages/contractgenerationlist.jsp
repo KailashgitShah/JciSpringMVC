@@ -46,6 +46,10 @@
 	padding: 14px;
 	text-decoration: none;
 }
+  .hover{
+  color : blue;
+}
+
 </style>
 <script>
 	$(document).ready(function() {
@@ -105,7 +109,7 @@
 									data-toggle="collapse" data-target="#collapse<%=i%>"
 									aria-expanded="false" aria-controls="collapse<%=i%>">
 
-									<div class="row">
+									<div class="row hover">
 										<div class="col-sm-3"><%=i%></div>
 										<div class="col-sm-3"><%=contract.getContract_identification_no()%></div>
 										<div class="col-sm-3"><%=contract.getContract_date()%></div>
