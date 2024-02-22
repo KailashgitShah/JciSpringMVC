@@ -139,7 +139,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	    	return false;	
 	    }
 	    	else {
-	    	alert("Please select excel file only..")
+	    	alert("Please select excel file only..");
 	        inputFile.value = '';
 	        return false;
 	    }
@@ -148,6 +148,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	</script>
 	
 	    <script>
+	    //for hide the displayed message
             setTimeout(function() {
                 document.getElementById('flashMessage').style.display = 'none';
             }, 1500);

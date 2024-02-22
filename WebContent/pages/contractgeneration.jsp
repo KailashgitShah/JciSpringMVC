@@ -265,7 +265,7 @@ async function loader(val) {
 }
 
 
-var flag = 1;
+var flag = 1; //user for show and hide the content
 $("#toggle").on("click" ,async () => {
 	
 	var avaQty =$('#available_qty').val();
@@ -454,6 +454,7 @@ var count = 0;
 			.click(
 					async () => {
 						
+						//loader active 
 						await loader("block");
 										    
 						var pcsoDate = parsedArray;
@@ -516,6 +517,7 @@ var count = 0;
 							success : async (result) => {
 							  
 							  	window.location.href = "viewcontractgeneration.obj";
+							  	//loader hide
 								await loader("none");
 								// window.open("viewcontractgeneration.obj");
 								

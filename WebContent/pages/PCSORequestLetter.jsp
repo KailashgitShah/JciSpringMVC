@@ -321,32 +321,6 @@ if (bale.get(7) != null)
 						$(this).val(refVal);
 					});
 
-<<<<<<< HEAD
-					// to set requested quantity as needed
-
-					/* 		inputField
-									.on(
-											"input",
-											function() {
-												var inputVal = parseInt($(this)
-														.val());
-												var max = parseInt(sAQty.val());
-												if (inputVal > max) {
-													submitButton.prop(
-															"disabled", true);
-													$("#errMsg")
-															.html(
-																	"Requested quantity must be less than Available Quantity!");
-												} else {
-													submitButton.prop(
-															"disabled", false);
-													reqErr.html("");
-
-												}
-											}); */
-
-=======
->>>>>>> 8a3e51a5 (pagination and search func impl in all listing pages (1.0.1) date(21-02-24))
 					// to prevent + and - from being input
 					inputField.on("keydown", function(event) {
 						if (event.key === "-" || event.key === "+"

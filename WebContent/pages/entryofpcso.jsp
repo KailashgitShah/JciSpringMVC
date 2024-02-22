@@ -359,18 +359,6 @@ position: fixed;
 							if (inputVal === "")
 								return;
 
-							// inputVal = inputVal.replace(/[^0-9.]/g, '');
-
-							/* 	if (isNaN(inputVal)) {
-									$(this).val(lastVal);
-								} else if (inputVal > 999999) {
-									$(this).val(lastVal);
-								} else if (inputVal < 1) {
-									$(this).val(1);
-									lastVal = 1;
-								} else {
-									lastVal = inputVal;
-								} */
 						});
 
 						// to prevent +, - and e from being input
@@ -469,33 +457,10 @@ position: fixed;
 					$("#pcsoReqdate").val(pcsoReqdate);
 					$("#pcsoReqQty").val(reqQty);
 
-					/* 		var contract = data.contractDetails[0];
-					var count = data.count + 1;
-
-					$("#contractDate").val(contract[2]);
-					$("#contractNo").val(contract[3]);
-					$("#cropYear").val(contract[7]);
-					$("#roDiNo").val(val + "/" + count);
-					 */
 				}
 			})
 		});
 	</script>
 
-
-
-	<!-- <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	PAGE LEVEL PLUGINS
-	CORE SCRIPTS
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	PAGE LEVEL SCRIPTS -->
 </body>
 </html>

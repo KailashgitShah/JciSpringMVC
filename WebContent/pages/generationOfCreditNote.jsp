@@ -70,8 +70,9 @@ input[type="radio"] {
 	//generation of credit Note No.
 	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
 	String indiaSerialNo = "001640";
-	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count; 
+	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
 	
+	//default data for testing
 /* 	String shipmentDetails = "";
 	String ContractNo ="";
 	String roId = "";

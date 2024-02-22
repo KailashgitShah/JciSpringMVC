@@ -159,10 +159,8 @@
 			window.open(url, '_blank');
 		}
 
+		//send mail funtion
 		function acknowlegeRequest(refNo, date, cropYear, qty, id) {
-
-			console.log(refNo, date, cropYear, qty);
-
 			if (confirm("do you want to approve this request , send mail to JC office")) {
 
 				$.ajax({

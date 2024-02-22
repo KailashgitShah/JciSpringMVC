@@ -95,6 +95,7 @@
 						</tr>
 					</thead>
 				</table>
+				//drill down listing
 				<div class="accordion" id="accordionExample">
 					<%
 					int i = 1;
@@ -177,6 +178,8 @@
 	</script>
 
 	<script type="text/javascript">
+	
+	//get conract details on the basis of the contractno
 		function findDetails(contractId, id) {
 
 			$

@@ -222,8 +222,8 @@ public class Controller_V {
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
  
+	
 // generation of pcso request letter form	
-
 	@RequestMapping("pcsoRequestLetter")
 
 	public ModelAndView pcsoRequestLetter(HttpServletRequest request) {
@@ -256,6 +256,8 @@ public class Controller_V {
 	@Value("${upload.SignaturePdf}")
 	String SignaturePdf;
 
+	
+	//pcso request letter save controller
 	@RequestMapping("generatePCSORequest")
 	public ModelAndView generatePCSORequestLetter(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException, DocumentException, IOException {
@@ -300,6 +302,8 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsoRequestLetterList.obj"));
 	}
 
+	
+	//listing page of pcso reuqest letters
 	@RequestMapping("pcsoRequestLetterList")
 	public ModelAndView requestList() {
 		ModelAndView mv = new ModelAndView("PCSORequestLetterList");
@@ -313,6 +317,8 @@ public class Controller_V {
 	@Value("${upload.requestLetter}")
 	String requestLetterPath;
 
+	
+	//send thankyou mail to jc office
 	@ResponseBody
 	@RequestMapping(value = "sendThankYouEmailToJC", method = RequestMethod.GET)
 	public void sendThankYouEmailToJC(HttpServletRequest request, RedirectAttributes redirectAttributes)
@@ -355,6 +361,8 @@ public class Controller_V {
 	@Value("${upload.requestLetter}")
 	String requestLetterpath;
 
+
+	// pcso letter download
 	@RequestMapping(value = "downloadRequestLetter", method = RequestMethod.GET)
 	public void downloadRequestLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
@@ -400,6 +408,7 @@ public class Controller_V {
 	@Value("${upload.contractLetterJava}")
 	String contractLetterJava;
 
+	//download contract letter
 	@RequestMapping(value = "downloadContractLetter", method = RequestMethod.GET)
 	public void downloadContractLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
@@ -441,6 +450,7 @@ public class Controller_V {
 
 	}
 
+	//delete pcso request
 	@RequestMapping("pcsoRequestDelete")
 	public ModelAndView requestDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -461,6 +471,8 @@ public class Controller_V {
 	// ---------------------------------------------------------
 	// Entry Of PCSO
 	// ---------------------------------------------------------
+	
+	//form page of entryofPcso
 	@RequestMapping("entryofpcso")
 	public ModelAndView EntryofpcsoModel(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -495,6 +507,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//disable screen with all prefield value
 	@RequestMapping("entryofpcsosave")
 	public ModelAndView saveUserMid(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -567,6 +580,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//save Entry of pcso
 	@RequestMapping("saveentryofpcsodata")
 	public ModelAndView entryofpcsosave(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -622,6 +636,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsolist.obj"));
 	}
 
+	//pcso listing page
 	@RequestMapping("pcsolist")
 	public ModelAndView pcsolist(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -636,6 +651,7 @@ public class Controller_V {
 		return mv;
 	}
 
+
 	@ResponseBody
 	@RequestMapping(value = { "getAllMillDetails" }, method = { RequestMethod.GET })
 	public String getAllMillDetails(final HttpServletRequest request) {
@@ -647,6 +663,8 @@ public class Controller_V {
 
 	}
 
+
+	//pcso delete
 	@RequestMapping("pcsoDelete")
 	public ModelAndView pcsoDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -664,6 +682,8 @@ public class Controller_V {
 
 	}
 
+
+	//update pcso
 	@RequestMapping("updatePcso")
 	public ModelAndView updatePcso(HttpServletRequest request) throws ParseException {
 		int refId = Integer.parseInt(request.getParameter("pcsorefid"));
@@ -681,6 +701,8 @@ public class Controller_V {
 		return mv;
 	}
 
+
+	//updating pcso details
 	@RequestMapping("updatesavePcso")
 	public ModelAndView updatesavePcso(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -704,6 +726,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsolist.obj"));
 	}
 
+	//contract generation page
 	@RequestMapping("contractgenerationPCSOWise")
 	public ModelAndView contractgenerationShow(HttpServletRequest req) {
 		String username = (String) req.getSession().getAttribute("usrname");
@@ -727,7 +750,8 @@ public class Controller_V {
 
 	@Value("${upload.contractLetter}")
 	String contractLetterPath;
-
+    
+	//saving the grade composition and also generation of the contract letter of the mill, its also having func of pdg generation and sending email
 	@ResponseBody
 	@RequestMapping(value = "contractgenerationPcsoWiseSave", method = { RequestMethod.POST })
 	public String saveContractGenerationPcsoWise(HttpServletRequest request,
@@ -879,6 +903,7 @@ public class Controller_V {
 		return "Saved";
 	}
 
+	//listing of the contract list
 	@RequestMapping("viewcontractgeneration")
 	public ModelAndView viewContractGenerationList(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("contractgenerationlist");
@@ -892,6 +917,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//get details of the contract on the basis of the pcso dates
 	@ResponseBody
 	@RequestMapping(value = { "getAllContractDetails" }, method = { RequestMethod.GET })
 	public String getAllContractDetails(final HttpServletRequest request) {
@@ -934,6 +960,7 @@ public class Controller_V {
 
 	}
 
+	//update price on the basis of delivery type
 	@ResponseBody
 	@RequestMapping(value = "updateContractedValue", method = RequestMethod.GET)
 	public String updateContractedValue(final HttpServletRequest request) {
@@ -956,6 +983,7 @@ public class Controller_V {
 	// Entry Of Derivative Price
 	// ---------------------------------------------------------
 
+	//derivative price form
 	@RequestMapping("entry_derivativeprice")
 	public ModelAndView ViewEDPrice(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -969,7 +997,8 @@ public class Controller_V {
 	}
 
 	public static String priKeyString = "6f@135";
-
+	
+	//edit page of the derivative price
 	@RequestMapping("editentryderivativeprice")
 	public ModelAndView editEDP(HttpServletRequest request) throws NumberFormatException, Exception {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -995,6 +1024,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//update the ED price
 	@RequestMapping("updateEDPrice")
 	public ModelAndView updateEDC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1043,6 +1073,8 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("entryderivativepricelist.obj"));
 	}
 
+	
+	//listing og the price list
 	@RequestMapping("entryderivativepricelist")
 	public ModelAndView EntryDerivativePrice(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1055,6 +1087,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//delete controller
 	@RequestMapping("entryderivativepriceDelete")
 	public ModelAndView entryderivativepriceDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -1071,6 +1104,7 @@ public class Controller_V {
 
 	}
 
+	//save ed price
 	@RequestMapping("saveEDPrice")
 	public ModelAndView derivativePriceHandler(HttpServletRequest request) {
 
@@ -1247,6 +1281,7 @@ public class Controller_V {
 	// Entry Of Grade Composition
 	// ---------------------------------------------------------
 
+	//grade composition page
 	@RequestMapping("entry_gradecomposition")
 	public ModelAndView ViewGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1260,6 +1295,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//save grade compo
 	@RequestMapping("saveGradeComp")
 	public ModelAndView saveGradeComposition(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -1311,6 +1347,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//delete grades
 	@RequestMapping("entryofgradecompositiondelete")
 	public ModelAndView entryofgradecompositiondelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -1327,6 +1364,7 @@ public class Controller_V {
 
 	}
 
+	//listing of the grade composition 
 	@RequestMapping("entrygradecompositionlist")
 	public ModelAndView EntryGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1341,6 +1379,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//edit grade comp.
 	@RequestMapping("editentryofgradecomposition")
 	public ModelAndView EditeEntryOfGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1358,6 +1397,8 @@ public class Controller_V {
 		return mv;
 	}
 
+
+	//update grade comp.
 	@RequestMapping("updateGradeComp")
 	public ModelAndView updateEGC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1392,6 +1433,7 @@ public class Controller_V {
 	// Ro Dispatch Instruction
 	// ---------------------------------------------------------
 
+	//ro dispatch view page
 	@RequestMapping("roDispatchInstruction")
 	public ModelAndView viewRoDispatcher(HttpServletRequest request) throws FileNotFoundException {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1413,6 +1455,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//save ro dispatch instruction
 	@RequestMapping("saveRoDi")
 	public ModelAndView saveRoDispatch(HttpServletRequest request, @ModelAttribute RoDispatchModel roDispatchModel,
 			RedirectAttributes redirectAttributes) throws ParseException {
@@ -1439,6 +1482,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("roDispatchList.obj"));
 	}
 
+	//ro list
 	@RequestMapping("roDispatchList")
 	public ModelAndView roDiList(HttpServletRequest request) {
 
@@ -1458,6 +1502,7 @@ public class Controller_V {
 	// Generation Of Credit Notes
 	// ---------------------------------------------------------
 
+	//listing page of the volunteer credit note generation form
 	@RequestMapping("generationOfCreditNoteList")
 	public ModelAndView generationOfCreditNotes(HttpServletRequest request) {
 
@@ -1476,6 +1521,7 @@ public class Controller_V {
 
 	}
 
+	//set all the contract details in session and redirect to the generate credit note form page in the ajax response
 	@ResponseBody
 	@RequestMapping(value = { "generateCrn" }, method = { RequestMethod.POST })
 	public ModelAndView generateCrn(final HttpServletRequest request, RedirectAttributes redirectAttributes,
@@ -1503,6 +1549,7 @@ public class Controller_V {
 		return mView;
 	}
 
+	//credit note form page
 	@RequestMapping("creditNoteForm")
 	public ModelAndView creditNoteForm(HttpServletRequest request) {
 
@@ -1519,6 +1566,7 @@ public class Controller_V {
 	@Value("${upload.creditNoteDetails}")
 	String creditNoteDetails;
 
+	//save credit note
 	@ResponseBody
 	@RequestMapping(value = { "saveCreditNote" }, method = { RequestMethod.POST })
 	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request,
@@ -1580,6 +1628,7 @@ public class Controller_V {
 
 	}
 
+	//status update of credit note
 	@RequestMapping("changeCrnStatus")
 	public ModelAndView changeCrnStatusTo1(HttpServletRequest request, RedirectView redirectView) {
 
@@ -1595,6 +1644,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("creditNoteList.obj"));
 	}
 
+	//listing page of the credit note
 	@RequestMapping("creditNoteList")
 	public ModelAndView creditNoteList(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1616,6 +1666,7 @@ public class Controller_V {
 	// Settlement Of Credit and Debit notes
 	// ---------------------------------------------------------
 
+	//settlement page listing
 	@RequestMapping("settlementcndn")
 	public ModelAndView settlementcndn(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1631,6 +1682,7 @@ public class Controller_V {
 		return mView;
 	}
 
+	//redirected page of the settlement form
 	@RequestMapping("finalsettlementNoteJsp")
 	public ModelAndView finalsettlementNoteJsp(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1651,6 +1703,7 @@ public class Controller_V {
 		return mView;
 	}
 
+	//create the instance of the finalSettlelment 
 	@RequestMapping("finalSettlement")
 	public ModelAndView finalSettlement(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1763,7 +1816,7 @@ public class Controller_V {
 //				e.printStackTrace();
 //			}
 
-			// paymentRealizationService.create(originalFileNameString);
+			 paymentRealizationService.create(originalFileNameString);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b> File Saved successfully.</b></div>\r\n" + "");
 
