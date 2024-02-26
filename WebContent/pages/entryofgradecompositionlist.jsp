@@ -1,3 +1,5 @@
+<%@page import="com.jci.common.Encry"%>
+<%@page import="com.jci.controller.LoginController"%>
 <%@page import="com.jci.model.EntryofGradeCompositionModel"%>
 <%@page import="com.jci.model.EntryDerivativePrice"%>
 <%@page import="java.util.HashMap"%>
@@ -22,6 +24,14 @@
     <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
     <!-- THEME STYLES-->
     <link href="assets/css/main.min.css" rel="stylesheet" />
+    
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
      
 
     <!-- PAGE LEVEL STYLES-->
@@ -39,23 +49,11 @@
   padding: 14px;
   text-decoration: none;
 }
-</style>
- 
-<script>
-$(document).ready(function() {
-	alert();
-    var table = $('#example-table').DataTable( {
-        scrollY:        "300px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         false,
-        fixedColumns:   {
-            left: 1,
-            right: 1
-        }
-    } );
-} );
-</script>
+</style> 
+
+<%
+String key = LoginController.secretkey;
+%>
 
 </head>
 <body class="fixed-navbar">
@@ -108,8 +106,13 @@ $(document).ready(function() {
 										<td><%=egcl.getSystem_composition()%></td>
 										<td><%=egcl.getProposed_composition()%></td>
 
+	                                    <%
+		        						String encryptedid = Encry.encrypt(egcl.getId()+"",key);
+										
+										%>
+
 										<td><a
-											href="editentryofgradecomposition.obj?grade_id=<%=egcl.getId()%>"
+											href="editentryofgradecomposition.obj?grade_id=<%=encryptedid%>"
 											class="btn btn-warning btn-sm btn-block"> <i
 												class="fa fa-pencil" aria-hidden="true"
 												style="font-size: 15px;"></i></a></td>

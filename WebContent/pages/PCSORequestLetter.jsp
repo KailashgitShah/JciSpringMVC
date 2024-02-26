@@ -295,6 +295,7 @@ if (bale.get(7) != null)
 
 
 	<script>
+	//datepicker
 		$(document).ready(function() {
 			$("#reqDate").datepicker({
 				dateFormat : 'dd-mm-yy',
@@ -340,6 +341,8 @@ if (bale.get(7) != null)
 							$("#cropyr")
 									.on(
 											'change',
+											
+											//get the entries from inventory
 											function() {
 												var cropyr = $("#cropyr").val();
 												var basis = "MSP";

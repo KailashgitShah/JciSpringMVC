@@ -270,13 +270,11 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 			var val = $('#ParentMenuID').val();
 			var cropYear = $("#crop_year").val();
 			var delivery_type = $("#delibry_type").val();
-			//$('#child').html("<option disabled>-Select-</option>");
-			//alert(val);
-			// console.log(val , cropYear , delivery_type);
 			var html = "<label id='dpclabel' class='required'>District</label> <select data-placeholder='Choose District...' class='chosen-select form-control' name='district'  multiple tabindex='3' id = 'centerordpc'>";
 			if (val != null && val != '' && cropYear != null && cropYear != ""
 					&& delivery_type != '' && delivery_type != null) {
-				// console.log("i am in boy")
+		
+				//get the data based on delivery type and crop year and district
 				$
 						.ajax({
 							type : "GET",
@@ -326,84 +324,8 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	</script>
 
 	<script>
-		//grades validation
-		/* 	 	let tgrIds = ['#tgr1','#tgr2','#tgr3','#tgr4','#tgr5'];
-				let wgrIds = ['#wgr1','#wgr2','#wgr3','#wgr4','#wgr5'];
-				let mgrIds = ['#mgr1','#mgr2','#mgr3','#mgr4','#mgr5','#mgr6'];
-				let bgrIds = ['#bgr1','#bgr2','#bgr3','#bgr4','#bgr5','#bgr6'];
-				
-				 flagtgr = false;
-				 flagwgr = false;
-				 flagmgr = false;
-				 flagbgr = false;
-				 
-				 $(".validation").on("keydown" ,function(){    
-				    	if (event.key === "-" || event.key === "+" || event.key === "e" || event.key === "E") {
-							event.preventDefault();
-						}
-				    
-				})
-
-				tgrIds.map(id => {
-				    $(id).on("input" , function(){ 
-				    	selectPerticulerInputBox("tgr", 5)
-				    })})
-				
-				wgrIds.map(id => {
-				    $(id).on("input" ,function(){    
-				    	selectPerticulerInputBox("wgr", 5)
-				    })})
-				    
-				mgrIds.map(id => {
-				    $(id).on("input" , function(){  
-				    	selectPerticulerInputBox("mgr", 6)
-				    })})
-				    
-				bgrIds.map(id => {
-				    $(id).on("input" ,function(){  
-				    	selectPerticulerInputBox("bgr", 6)
-				    })})
-				    
-			function selectPerticulerInputBox(key, no) {
-				if (isValid(key, no)) {
-					document.getElementById("errEmail" + key).innerHTML = "";
-					if(key === 'tgr') flagtgr = true;
-					if(key === 'wgr') flagwgr = true;
-					if(key === 'mgr') flagmgr = true;
-					if(key === 'bgr') flagbgr = true;
-					//console.log("error gone")
-				} else {
-					document.getElementById("errEmail" + key).innerHTML = "sum should be 100";
-		// 				$('#btn').attr("disabled" , "disabled");
-					//console.log("Error arrived")
-					if(key === 'tgr') flagtgr = false;
-					if(key === 'wgr') flagwgr = false;
-					if(key === 'mgr') flagmgr = false;
-					if(key === 'bgr') flagbgr = false;
-				};
-				
-				//console.log(flagtgr,flagwgr ,flagmgr , flagbgr)
-				if(flagtgr === true && flagwgr  === true && flagmgr  === true && flagbgr === true){
-					$('#btn').removeAttr("disabled");
-				}else{
-					$('#btn').attr("disabled","disabled");
-				}
-			}
-				
-				
-
-			function isValid(key, n) {
-				let totel = 0;
-				for (var i = 1; i <= n; i++) {
-					let temp = $('#' + key + i).val();
-					if (temp == '') temp = 0;
-					console.log(parseFloat(temp))
-					totel += parseFloat(temp);
-				}
-				return (+totel == 100);
-			}; */
-
-		// 		*************************************************************
+		
+		//input validation
 		$(".validation").on(
 				"keydown",
 				function() {
@@ -414,34 +336,6 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 				})
 
-
-	
-			
-		/* function enforceNumberValidation(ele) {
-			if ($(ele).data('decimal') != null) {
-				// found valid rule for decimal
-				var decimal = parseInt($(ele).data('decimal')) || 0;
-				var val = $(ele).val();
-				if (decimal > 0) {
-					var splitVal = val.split('.');
-					if (splitVal.length == 2 && splitVal[1].length > decimal) {
-						// user entered invalid input
-						$(ele).val(
-								splitVal[0] + '.'
-										+ splitVal[1].substr(0, decimal));
-					}
-				} else if (decimal == 0) {
-					// do not allow decimal place
-					var splitVal = val.split('.');
-					if (splitVal.length > 1) {
-						// user entered invalid input
-						$(ele).val(splitVal[0]); // always trim everything after '.'
-					}
-				}
-			}
-		} */
-
-		// 		******************************************************************
 	</script>
 
 	<script>

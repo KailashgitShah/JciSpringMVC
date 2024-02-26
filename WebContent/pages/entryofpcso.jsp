@@ -98,7 +98,7 @@ position: fixed;
 			String juteRatio = (String) request.getAttribute("juteRatio");
 			String dispatchPeriod = (String) request.getAttribute("dispatchPeriod");
 			String letterRefNo = (String) request.getAttribute("letterRefNo");
-
+ 
 			if (referenceno == null) {
 				pcsoDate = "";
 				pcsoReqdate = "";
@@ -276,7 +276,7 @@ position: fixed;
 				dateFormat : 'dd-mm-yy'
 			}); */
 			
-
+//hide the flash message
 	        setTimeout(function() {
 	            document.getElementById('flashMessage').style.display = 'none';
 	        }, 1500);
@@ -291,8 +291,9 @@ position: fixed;
 		window.onscroll = function() {
 			scrollFunction();
 		};
-
+      
 		function scrollFunction() {
+			//if the page scrolled grater then 20 then this line will trigger
 			if (document.body.scrollTop > 20
 					|| document.documentElement.scrollTop > 20) {
 				mybutton.style.display = "block";

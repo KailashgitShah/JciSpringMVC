@@ -78,6 +78,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
 import com.jci.model.ConfirmationClaimSettlementModel;
 import com.jci.model.Contractgeneration;
@@ -231,7 +232,8 @@ public class Controller_V {
 		String cropYearString = (String) request.getSession().getAttribute("currCropYear");
 		double contractedQty = genReqLetterService.getTotalContractedQty(cropYearString);
 		ModelAndView mv = new ModelAndView("PCSORequestLetter");
-
+       
+		//get the inventory data
 		List<String> cropYearList = dailyPurchaseModelConfService.getCropYear();
 		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "msp");
 		List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2023-2024", "msp");
@@ -250,9 +252,11 @@ public class Controller_V {
 		return mv;
 	}
 
+	//get the letter head img path from config file
 	@Value("${upload.letterHeadPath}")
 	String letterHeadPath;
 
+	//get the signature img path from config file
 	@Value("${upload.SignaturePdf}")
 	String SignaturePdf;
 
@@ -314,6 +318,7 @@ public class Controller_V {
 		return mv;
 	}
 	
+	//get the dir where we have to store the generated pdf
 	@Value("${upload.requestLetter}")
 	String requestLetterPath;
 
@@ -358,10 +363,11 @@ public class Controller_V {
 
 	}
 
+	//get file from the server
 	@Value("${upload.requestLetter}")
 	String requestLetterpath;
-
-
+	
+  
 	// pcso letter download
 	@RequestMapping(value = "downloadRequestLetter", method = RequestMethod.GET)
 	public void downloadRequestLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -405,6 +411,7 @@ public class Controller_V {
 
 	}
 
+	//get the contract letter path
 	@Value("${upload.contractLetterJava}")
 	String contractLetterJava;
 
@@ -527,12 +534,7 @@ public class Controller_V {
 			String juteRatio = request.getParameter("juteRatio");
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
 			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
-
-//			EntryofpcsoModel entryofpcso = new EntryofpcsoModel();
-
-			// set default fields one time and modify when its needed
-
-			///////////////////////////////////////////////
+ 
 
 			for (int c = 0; c < count; c++) {
 
@@ -652,6 +654,7 @@ public class Controller_V {
 	}
 
 
+	//get mill details based on refno
 	@ResponseBody
 	@RequestMapping(value = { "getAllMillDetails" }, method = { RequestMethod.GET })
 	public String getAllMillDetails(final HttpServletRequest request) {
@@ -748,6 +751,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//get the contract letter path from config file
 	@Value("${upload.contractLetter}")
 	String contractLetterPath;
     
@@ -995,8 +999,6 @@ public class Controller_V {
 		}
 		return mv;
 	}
-
-	public static String priKeyString = "6f@135";
 	
 	//edit page of the derivative price
 	@RequestMapping("editentryderivativeprice")
@@ -1074,7 +1076,7 @@ public class Controller_V {
 	}
 
 	
-	//listing og the price list
+	//listing of the price list
 	@RequestMapping("entryderivativepricelist")
 	public ModelAndView EntryDerivativePrice(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1384,7 +1386,12 @@ public class Controller_V {
 	public ModelAndView EditeEntryOfGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		List<Object> allJuteCombination = entryofGradeCompositionService.getAllJuteCombination();
-		BigInteger gradeId = new BigInteger(request.getParameter("grade_id"));
+		
+		String key = LoginController.secretkey;
+		String decryptedString = request.getParameter("grade_id");
+		BigInteger gradeId = new BigInteger(Encry.decrypt(decryptedString, key));
+		
+		
 //		BigInteger gradeId = new BigInteger(request.getParameter("grade_id"));
 		EntryofGradeCompositionModel egc = (EntryofGradeCompositionModel) entryofGradeCompositionService.Edit(gradeId);
 

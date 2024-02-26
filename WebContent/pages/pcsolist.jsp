@@ -65,7 +65,7 @@
 				<div class="ibox-head">
 					<span id="flashMessage">${msg}</span>
 				</div>
-				// way to show drill down listing 
+				<!--  way to show drill down listing  -->
 				<div class="accordion" id="accordionExample">
 					<%
 					int i = 1;
