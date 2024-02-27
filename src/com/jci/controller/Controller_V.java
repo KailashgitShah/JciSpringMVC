@@ -2,6 +2,7 @@ package com.jci.controller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
@@ -1726,6 +1727,8 @@ public class Controller_V {
 	}
 
 	// kailash
+	
+	//Entry controller of payment details page
 	@RequestMapping("EntryofPaymentDetails")
 	public ModelAndView EntryofpiModelDetails(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1739,11 +1742,16 @@ public class Controller_V {
 		return mv;
 
 	}
-
+	
+	//Initiate payment document path
+	@Value("${upload.PaymentDocument}")
+	String PaymentDocument;
+	
+	//save the data of payment  detail data
 	@RequestMapping("saveentryofpaymentinstrumentDetails")
 	public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
+		final File theDir = new File("PaymentDocument");
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
@@ -1761,6 +1769,8 @@ public class Controller_V {
 			String InstrumentValue = request.getParameter("InstrumentValue");
 			String dateofexpiry = request.getParameter("dateofexpiry");
 			String dateofship = request.getParameter("dateofship");
+			String Pyamentduedate = request.getParameter("payment_dueDate12");
+			String contrcat_value23 = request.getParameter("contrcat_value23");
 			String autorevolvingamount = request.getParameter("autorevolvingamount");
 			// String QtyAllowed = request.getParameter("QtyAllowed");
 			final String filename = SupportingDocument.getOriginalFilename();
@@ -1772,6 +1782,8 @@ public class Controller_V {
 			EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 			entryPaymentDetailsModel.setContractno(contractno);
 			entryPaymentDetailsModel.setInstrumentno(Instrument);
+			entryPaymentDetailsModel.setPaymentDue_date(Pyamentduedate);
+			entryPaymentDetailsModel.setContract_value(contrcat_value23);
 //			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 //			Date instdate1 = formatter1.parse(instdate);
 //			entryPaymentDetailsModel.setInstdate(instdate1);
@@ -1859,13 +1871,14 @@ public class Controller_V {
 	}
 
 	
-	@Value("${upload.Supportdocument1}")
-	String Supportdocument1;
+
+	
+	//download the  support document which upload
 	
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
 		//String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
-		String imagePath = Supportdocument1 + File.separator + filename;
+		String imagePath = PaymentDocument + File.separator + filename;
 
 		File imageFile = new File(imagePath);
 
@@ -1916,6 +1929,10 @@ public class Controller_V {
 		}
 	}
 
+	
+	
+	
+	// entry Controller of the financial concurence page 
 	@RequestMapping("EntryofFinancialConcurence")
 	public ModelAndView EntryofFinancialConcurence(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1928,6 +1945,9 @@ public class Controller_V {
 		return mv;
 	}
 
+	
+	
+	 //ajax  remark for approval and selection after fc rejection
 	@ResponseBody
 	@RequestMapping("saveRemarks")
 	public ResponseEntity<String> saveRemarks(@RequestParam("remarks") String remarks,
@@ -1946,13 +1966,6 @@ public class Controller_V {
 			EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(paymentId);
 			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
 
-////				request.getSession().setAttribute("myModel", entryPaymentDetailsModel);
-//////
-////				redirectAttributes.addFlashAttribute("contractNo", entryPaymentDetailsModel.getContractno());
-////				redirectAttributes.addFlashAttribute("paymentId", entryPaymentDetailsModel.getPayment_id());
-//
-//				//String modelQueryString = "contractNo=" + entryPaymentDetailsModel.getContractno() + "&paymentType="
-////						+ entryPaymentDetailsModel.getPayment_id();
 
 			redirectAttributes.addFlashAttribute("entryPaymentDetailsModel", entryPaymentDetailsModel);
 
@@ -1971,6 +1984,8 @@ public class Controller_V {
 	
 	
 	
+	
+	//ajax remarks  for bill of supply form 
 	
 	@ResponseBody
 	@RequestMapping("saveRemarksofbill")
@@ -2011,6 +2026,8 @@ public class Controller_V {
 	
 	
 	
+	// save the data of FC after issuing the fc and modfied data.
+	
 	@RequestMapping("saveFinancialConcurence")
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2021,20 +2038,24 @@ public class Controller_V {
 			String FC_Ref_No = request.getParameter("FC_Ref_No.");
 			String Contracted_Qty = request.getParameter("Contracted_Qty.");
 			String QtyAllowed = request.getParameter("Shipment_Value1");
-			String carryingCostParam = request.getParameter("SGST_Amt");
-			double Carrying_Cost_Charged = 0.0; // Default value if the parameter is not present or cannot be parsed
+			String carryingCostParam = request.getParameter("SGST_Amt1");
+			BigInteger Carrying_Cost_Charged =  BigInteger.ZERO; // Default value if the parameter is not present or cannot be parsed
 
 			if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
-				try {
-					Carrying_Cost_Charged = Double.parseDouble(carryingCostParam);
-				} catch (NumberFormatException e) {
-				}
-			}
+	            try {
+	            	double carryingCostDouble = Double.parseDouble(carryingCostParam);
+	                // Convert the double value to a BigInteger (assuming you want to work with integers)
+	            	Carrying_Cost_Charged = BigInteger.valueOf((long) carryingCostDouble);
+	            } catch (NumberFormatException e) {
+	            	 e.printStackTrace();
+	         
+	            }
+	        }
 
 			// double Carrying_Cost_Charged = request.getParameter("Carrying_cost");
 
 			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
-			System.out.print(financialConcurenceModel);
+			
 			financialConcurenceModel.setFullcontractno(fullcontractno);
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date contdate = formatter1.parse(FC_Issue_Date);
@@ -2044,11 +2065,14 @@ public class Controller_V {
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
+			System.err.println("++++++++++++++" + Carrying_Cost_Charged);
+			
 
 			Date date = new Date();
 			// Date currdate = date.toString();
 			financialConcurenceModel.setCreated_date(date);
 			financialConcurenceModel.setRemarks("Not any");
+			System.out.print(financialConcurenceModel);
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -2063,6 +2087,10 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
 	}
 
+	
+	
+	
+	// entry controller of mill receipt
 	@RequestMapping("EntryofMillreceipt")
 	public ModelAndView EntryofMillreceipt(HttpServletRequest request)
 
@@ -2081,6 +2109,9 @@ public class Controller_V {
 		return mv;
 	}
 
+	
+	
+	//ajax controller for mill reciept service
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
 	public String hodinofetch(@RequestParam("contractno") String contractno) {
@@ -2092,6 +2123,8 @@ public class Controller_V {
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 
+	
+	//save controller for mill reciept form 
 	@RequestMapping("saveentryofMillreciept")
 	public ModelAndView saveentryofMR(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -2235,6 +2268,10 @@ public class Controller_V {
 		return mv;
 	}
 
+	
+	
+	
+	//ajax url for genrated demand note service to fetch data
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatatocontractno", method = RequestMethod.GET)
 	public String fetchingdatatocontractnoq(@RequestParam("contractno") String contractno) {
@@ -2245,6 +2282,8 @@ public class Controller_V {
 		return resultString;
 	}
 
+	
+	//entry controller of generation demand note
 	@RequestMapping("EntryofGenrationDeamandNote")
 	public ModelAndView EntryofGenrationDemand(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2264,7 +2303,7 @@ public class Controller_V {
 		// GenrationDEmandDto cotract_No =
 		// this.genratedDemandNoteService.fetchContract_no();
 
-//			System.out.println("cotract_No>>>>>>>>>>>>>"+cotract_No);
+//			
 //			Date date =cotract_No.getContract_date();
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 //			String formattedDate = dateFormat.format(date);
@@ -2275,7 +2314,7 @@ public class Controller_V {
 		return mv;
 	}
 
-//		
+		
 	// private String generateDemandNoteNumber()
 	private String generateDemandNoteNumber(HttpSession session, int lastSerialNumber) {
 		Date currentDate = new Date();
@@ -2297,6 +2336,8 @@ public class Controller_V {
 
 	}
 
+	
+	//save entry of geration demand note form field
 	@RequestMapping("saveentryofGenrationDeamandNote")
 	public ModelAndView saveentryofGDN(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -2367,6 +2408,8 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofGenrationDeamandNote.obj"));
 	}
 
+	
+	//entry page confirmation form 
 	@RequestMapping("entryofConfirationSettelment")
 	public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2412,6 +2455,8 @@ public class Controller_V {
 		return resultString;
 	}
 	
+	
+	// entrt page of genration bill
 
 	@RequestMapping("EntryofGenerationBillsupply")
 	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request) {
@@ -2470,12 +2515,13 @@ public class Controller_V {
            return laString;
        }
     }
-	
+	@Value("${upload.Confirmationsettlement}")
+	String Confirmationsettlement;
 
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
 	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
 			RedirectAttributes redirectAttributes,@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		 final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
+		 final File theDir = new File("Confirmationsettlement");
 		    if (!theDir.exists()) {
 		        theDir.mkdirs();
 		    }
@@ -2599,6 +2645,8 @@ public class Controller_V {
 	}
 	
 	
+	
+	// view page of confirmation settelment form
 
 	@RequestMapping({ "ViewConfirmationsettelment" })
 	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
@@ -2616,11 +2664,14 @@ public class Controller_V {
 	}
 	
 	
-
+	// save page of generation bill of supply
+	
+	@Value("${upload.Genrationofbill}")
+	String Genrationofbill;
 	 @RequestMapping("saveentryofGenrationbill") 
 	  public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes
 		       ) {
-		    final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
+		    final File theDir = new File("Genrationofbill");
 		    if (!theDir.exists()) {
 		        theDir.mkdirs();
 		    }
@@ -2750,7 +2801,9 @@ public class Controller_V {
            InternetAddress[] toAddresses=null;
            String subject="Bill of Supply attachement";
            String body = "In this All information regarding Bill of supply . ";
-             String filename="C:\\Users\\kailash.shah\\Downloads\\website.jpg";
+             String filename="Genrationofbill";
+             
+             
              //String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
              String username1="";
              try {
@@ -2777,14 +2830,16 @@ public class Controller_V {
 	 
 
 	 
-	 @Value("${upload.Supportdocument}")
-		String Supportdocument;
+//	 @Value("${upload.Genrationofbilldownlad}")
+//		String Genrationofbilldownlad;
 
+	 
+	 //download document of BOS
     @RequestMapping("downloadPDF")
 		 public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
   	 // String imageDirectory = "C:\\Users\\kailash.shah\\documentimage";
   	 
-		    String imagePath = Supportdocument + File.separator + filename;
+		    String imagePath = Genrationofbill + File.separator + filename;
 
 		    File imageFile = new File(imagePath);
   	  

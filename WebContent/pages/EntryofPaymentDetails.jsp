@@ -99,7 +99,7 @@
 	                                       </div>
 	                                        <div class="col-sm-4 form-group">
 	                                             <label id ="contract_Value2">Contract_Value</label>
-	                                             <input class="form-control taxtbox"  id="contract_Value1"  value=""  readonly="readonly" >
+	                                             <input class="form-control taxtbox"  id="contract_Value1" name ="contrcat_value23"  value=""  readonly="readonly" >
 	                                       </div>
                                        
 										
@@ -114,7 +114,7 @@
 	                                       </div>
 	                                         <div class="col-sm-4 form-group">
 	                                             <label  id ="payment_dueDate2">Payment_dueDate</label>
-	                                             <input class="form-control" 
+	                                             <input class="form-control"  name="payment_dueDate12"
 												 id="payment_dueDate1" value="" readonly="readonly"
 												 >
 	                                       </div>
@@ -321,6 +321,7 @@
     
     <div class="sidenav-backdrop backdrop"></div>
        <script type="text/javascript">
+       //Through ajax call on paymenttype id  we can hide and visible the parameters.
       $("#paymenttype").on("change", function() {
     	    var paymenttype = $(this).val();
     	    if (paymenttype === "Letter_of_Credit") {
@@ -365,6 +366,7 @@
      document.getElementById("IFSC1").style.setProperty("display",'none');
     
 	$(document).ready(function(){
+		//checking validation for different  ID for client side validation
 		 $("#submit").click(function(){
 		
 			  var contractdate = $("#contractdate").val();
@@ -462,7 +464,7 @@
     
     
 <script type="text/javascript">
-      
+      //getting details of grade composition and contract table
  $(document).ready(function() {
 	    $('#contractno12').on('change', function() {
 	    var field2Value = $(this).val();
@@ -611,10 +613,12 @@
     	 }
     </script>
    
+   
+   
  
 			<script>
 			$(document).ready(function(){
-			  // Define a function to fetch and update data
+			  // Define a function to fetch and update data of razorpay api
 			  function updateData(F_BANK_IFSC) {
 			    var len = F_BANK_IFSC.length;
 			    if (len == 11) {

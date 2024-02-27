@@ -20,10 +20,11 @@ public interface FinancialConcurenceDao {
 		//FinancialConcurenceModel getById(int id);
 		  //public   void update(PaymentInstrumentModel paymentInstrument);
 		//public FinancialConcurenceModel find(int id);
-	 public double calculateCharges(int id, String contno);
+	 public int calculateCharges(int id, String contno);
 	 public FinancialConcurenceModel find(int id);
 	 public void remark(String remark,String  con_No);
 	 public String ContractedQty(String cont_no);
 	 public int paymentid(String cont_no);
+	public List<Object> dataofdates(String con_no,int Payment_id);
 }
 

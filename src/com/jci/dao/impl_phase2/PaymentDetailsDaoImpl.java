@@ -38,13 +38,14 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		currentSession().saveOrUpdate(entryPaymentDetailsModel);
 	}
 //	
-	
+	//get all details of payment instrument
 	@Override
 	public List<EntryPaymentDetailsModel> getAllPaymentInstruments() {
 		
 		
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
-	    String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0";
+	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 and Fc_status = 1 ";
+	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0,1)";
 	    List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession()
 	            .createSQLQuery(sql)
 	            .addEntity(EntryPaymentDetailsModel.class)

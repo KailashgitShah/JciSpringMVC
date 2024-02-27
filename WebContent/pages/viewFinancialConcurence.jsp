@@ -113,7 +113,7 @@ th {
 			
 			<div class="page-content fade-in-up">
 				<div class="ibox">
-					<span>${msg}</span>
+					<span id="flashMessage">${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
 							<table
@@ -188,6 +188,15 @@ th {
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
+	
+		<script>
+    $(document).ready(function(){
+      
+        setTimeout(function(){
+            $('#flashMessage').fadeOut('slow');
+        }, 3000); ded
+    });
+</script>
 	<!-- BEGIN THEME CONFIG PANEL-->
 
 	<!-- END THEME CONFIG PANEL-->

@@ -1,9 +1,15 @@
-<%-- <%@page import="java.util.List"%> --%>
+<%@page import="java.util.List"%> 
+<%@page import="java.math.BigInteger"%> 
+<%@page import="java.math.BigDecimal"%> 
+<%@page import="java.math.RoundingMode"%> 
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="com.jci.model.EntryPaymentDetailsModel"%>
 <%@page import="com.jci.model.FinancialConcurenceModel"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,17 +55,44 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Entry of Financial Concurence</h1>
+                <h1 class="page-title">Issue of Financial Concurence</h1>
             </div>
             <%
 			EntryPaymentDetailsModel entryPaymentDetailsModel  = (EntryPaymentDetailsModel) request.getAttribute("entryPaymentDetailsModel");
 		    String fetchCont_no = (String) request.getAttribute("parsedstring");
 		    String Cont_qty = (String) request.getAttribute("parsedstring2");
 		    String issuedate = (String) request.getAttribute("parsed");
+		    String paymentDueDate = (String) request.getAttribute("paymentDueDate");
+		    String paymentType = (String) request.getAttribute("paymentType");
+		    String instrumentvalue = (String) request.getAttribute("instrumentvalue");
+		    String ContractValue = (String) request.getAttribute("CntractValue");
+		    Double qtyallowed = (Double) request.getAttribute("qtyallowed");
+		    Date instrumentDate = (Date) request.getAttribute("instrumentDate");
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); // Choose your desired date format
+	        String instrumentDate1 = sdf.format(instrumentDate);
+		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
+		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
+		/*     out.println(charge);
+		    out.println(instrumentDate1);
+		    out.println(paymentType);
+		    out.println(instrumentDate);
+		    out.println(instrumentvalue);
+		    out.println(ContractValue); */
 		    
-	 	     FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
-		    Double charge =(Double) (request.getAttribute("cost"));
-		    out.println(charge);
+		    
+		   
+		  
+		    BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
+		    BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue));
+
+		    BigDecimal qtdsub = contractValueBigInt.subtract(instrumentValueBigInt);
+
+		    BigDecimal contractqty = new BigDecimal(String.valueOf(Cont_qty));
+		    BigDecimal qtdiv = contractValueBigInt.divide(contractqty,2, RoundingMode.HALF_UP);
+		  
+		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP); 
+		    
+	 	   
 	 	    
 			%>
             <div class="page-content fade-in-up">
@@ -70,15 +103,7 @@
                             <div class="ibox-body">
                        <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" >
                            <div class="child-checkbox" id="disableform">
-                                       <div class="col-4">
-											    <div class="form-check mb-4">
-											      <input class="form-check-input" type="checkbox" id="inlineFormCheck" >
-											      
-											       <label class="form-check-label" for="inlineFormCheck">
-											        Carrying cost
-											      </label> 
-											    </div>
-											  </div>
+                                       
 			                                  <div class="row">
 			                                       <div class="col-sm-4 form-group">
 				                                             <label>Contract No.</label>
@@ -107,66 +132,87 @@
 			                                    
 			                                  
 			                                    
-			                                    <div class="row">
+			                                    
+			                                            <div class="row">
 			                                    
 			                                    
 			                                    
 			                                            <div class="col-sm-4 form-group">
-				                                            <label>Contracted Qty.</label> 
-				                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
-															 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0" type="double" placeholder="Qty Allowed" value=<%= Cont_qty %> readonly="true" required>
+				                                            <label>Contract PaymentDue  Date </label> 
+				                                            <span class="text-danger">* </span>&nbsp; <span id="Contract_PaymentDue_Date " name="Contract_PaymentDue_Date " class="text-danger" >   </span>
+															 <input class="form-control taxtbox" name="Contract_PaymentDue_Date" id ="Contract_PaymentDue_Date"  value=<%= paymentDueDate %>  placeholder="Contract_PaymentDue_Date" readonly="true">
+				                                     </div>
+				                                      <div class="col-sm-4 form-group">
+				                                            <label>Instrument type </label> 
+				                                            <span class="text-danger">* </span>&nbsp; <span id="Instrument_type" name="Instrument_type" class="text-danger" > </span>
+															 <input class="form-control taxtbox" name="Instrument_type" id ="Instrument_type"  value=<%= paymentType %> placeholder="Instrument_type"  readonly="true" >
+				                                     </div>
+				                                      <div class="col-sm-4 form-group">
+				                                            <label>Instrument Date </label> 
+				                                            <span class="text-danger">* </span>&nbsp; <span id="Instrument_Date" name="Instrument_Date " class="text-danger" > </span>
+															 <input class="form-control taxtbox" name="Instrument_Date" id ="Instrument_Date"  value=<%= instrumentDate1 %> placeholder="Instrument_Date"  readonly="true" >
 				                                     </div>
 				                                     
-				                                     	<div class="col-sm-4 form-group">
-													<label>Qty. Allowed</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12" min="0"
-													step="1" pattern="\d+" placeholder="Qty. Allowed"
-													required oninput="calculateGST()">
-											</div>
-
-
-											<div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;"> 
-												<label>Carrying cost Charged</label> <input class="form-control taxtbox"
-													name="SGST_Amt" id="SGST_Amt" min=0 step=0.01
-													placeholder="Carrying cost Charged">
-											</div>
+			
+                                                </div>
+				                                      
+			                                    <div class="row">
 			                                    
-			                                       <!--     <div class="col-sm-4 form-group">
-				                                           <label>Qty. Allowed</label> <span class="text-danger">*
-															</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
-																class="text-danger"> </span> <input
-																class="form-control taxtbox" name="Shipment_Value1" min="0"
-																step="1" pattern="\d+" placeholder="Qty allowed"
-																required oninput="calculateCC()">
-										            	</div>
-				                                    
-				                                     <div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;"> 
-													    <label>Carrying cost Charged</label> <input class="form-control taxtbox"
-															name="SGST_Amt" id="SGST_Amt" min=0 step=0.01
-															placeholder="carring cost" readonly="readonly">
-											         </div> 
-				                                    </div>  -->
-				                                    </div>
-				                                      
-				                                      
-										<div class="row">
+			                                    	        <div class="col-sm-4 form-group">
+				                                            <label> Days Difference  </label> 
+				                                            <span class="text-danger">* </span>&nbsp; <span class="text-danger" > </span>
+															 <input class="form-control taxtbox" name="Days_Diffrence" id ="DaysDiffrencetotal" value="<%= charge %>"  max=35 placeholder="Days_Diffrence" onchange="calculateGST()">
+				                                     </div>
+			                                    
+				                                            <div class="col-sm-4 form-group">
+					                                            <label>Contracted Qty</label> 
+					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
+																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0" type="double" placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
+					                                     </div>
+					                       						<div class="col-sm-4 form-group">
+																	    <label>Qty. Allowed ( max Allowed = <%=qtdivtotal %>)</label>
+																	    <span class="text-danger">*</span>
+																	    <span id="Shipment_Value" class="text-danger"></span>
+																	    <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
+																	    <div id="errorMessage" style="color: red; display: none;">Amount exceeds the allowed limit!</div>
+																	</div>
+																
 
-
-
-										
 											
-
-
-
+			                                    
+			                                    
+				                                    </div>
+				                      				    <div class="row">
+				                          
+				                          							<div class="col-sm-4 form-group">
+																	    
+																	    <div class="form-check mb-4">
+																	        <input class="form-check-input me-2" type="checkbox" id="inlineFormCheck">
+																	        <label class="form-check-label" for="inlineFormCheck">
+																	            Carrying cost 
+																	        </label> 
+																	    
+																	
+																	<div class="col-sm-15" id="carryingCostFormGroup"
+																			style="display: none;">
+																			<!-- <label>Carrying cost Charged</label> --> <input
+																				class="form-control taxtbox" name="SGST_Amt1" id="SGST_Amt"
+																				min=0 step=0.01 placeholder="Carrying cost Charged">
+																		</div> 
+																		</div>
+																		</div>
+											
+											
+																						
+											
 										</div>
+			
 									
 			                                       
 			                                        
 				                                     <div class="row"> 
 			                                                <div class="col-sm-12 form-group">
-												             <input type="submit" value="Submit"class="btn btn-primary" id="submit">
+												             <input type="submit"  value="Submit"class="btn btn-primary" id="submit">
 												            </div>
 												          </div>
 			                                   </div>
@@ -193,46 +239,50 @@
 			    
 			    </script> -->
 			     <script type="text/javascript">
-			    
-				$(document).ready(function(){
-					 $("#submit").click(function(){
-					
-						  var contractdate = $("#contractdate").val();
-						  var instdate = $("#instdate").val();
-						  var paymenttype = $("#paymenttype").val();
-						  var contQty = parseFloat($("#Shipment_Value12").val()); 
-						  var contQty1 = parseFloat(<%= Cont_qty %>);
-						  
-						  if(contractdate =="" || instdate =="")
-							  {
-							    alert("Please select mandatory Fields!");
-							  }
-						  if(contQty>contQty1)
-						  {
-						    alert("Please give lesser value than contract Qty");
-						    event.preventDefault();
-						  }
-						  if(paymenttype =="letterofcredit")
-							  {
-								  var dateofship = $("#dateofship").val();
-								  var dateofexpiry = $("#dateofexpiry").val();
-								  if(dateofship =="" || dateofexpiry =="")
-									  {
-									    alert("Please select mandatory Fields!");
-									    event.preventDefault();
-									  }
-							  }
-						  
-					    });
-				 });
-					
-				</script>
+					$(document).ready(function(){
+					    function validateForm() {
+					        var contractdate = $("#contractdate").val();
+					        var Days_Diffrence = $("#DaysDiffrencetotal").val();
+					       
+					        var instdate = $("#instdate").val();
+					        var paymenttype = $("#paymenttype").val();
+					        var contQty = parseFloat($("#Shipment_Value12").val()); 
+					        var contQty1 = parseFloat(<%= Cont_qty %>);
+					        
+					        if (contractdate === "" || instdate === "") {
+					            alert("Please select mandatory Fields!");
+					            return false;
+					        }
+					        if (contQty > contQty1) {
+					            alert("Please give lesser value than contract Qty");
+					            return false;
+					        }
+					        if (Days_Diffrence > 35) {
+					            alert("Please give lesser value than 35");
+					            return false;
+					        }
+					        if (paymenttype === "letterofcredit") {
+					            var dateofship = $("#dateofship").val();
+					            var dateofexpiry = $("#dateofexpiry").val();
+					            if (dateofship === "" || dateofexpiry === "") {
+					                alert("Please select mandatory Fields!");
+					                return false;
+					            }
+					        }
+					        
+					        return true; // Form is valid, allow submission
+					    }
+					});
+					</script>
+
 				
 	   <script>
 		function calculateGST() {
 			
 			var shipmentValue = parseFloat(document
 					.getElementsByName("Shipment_Value1")[0].value);
+			 var charge = parseFloat(document.getElementById("DaysDiffrencetotal").value);
+
 			var contQty = <%= Cont_qty %>;
               if(shipmentValue>contQty){
             	  alert("Qty allowed exceed the limit of contracted qty");
@@ -243,13 +293,35 @@
 			if (!isNaN(shipmentValue)) {
 				
 			
-				var sgstAmt = (<%= charge %> * 70) * shipmentValue;
+				var sgstAmt = (charge  * 70) * shipmentValue;
 				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
 				
 				
 			}
 			return true; 
 		}
+	</script>
+	
+	<script>
+	
+	function validateAmount() {
+	    var inputValue = parseFloat(document.getElementById("Shipment_Value12").value);
+	  
+	    var maxAllowedAmount = <%=qtdivtotal%>; 
+
+	    var errorMessageElement = document.getElementById("errorMessage");
+
+	    if (inputValue > maxAllowedAmount) {
+	        errorMessageElement.style.display = "block";
+	    } else {
+	        errorMessageElement.style.display = "none";
+	    }
+	  
+	}
+
+	
+	
+	
 	</script>
 		
 			    <script>
@@ -271,6 +343,9 @@
 			        inputField.value = num;
 			</script>
 			
+			
+			
+		
 			
 			
 				<script>

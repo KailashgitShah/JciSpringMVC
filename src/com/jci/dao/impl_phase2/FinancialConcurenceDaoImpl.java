@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao_phase2.FinancialConcurenceDao;
+import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.FinancialConcurenceDto;
 import com.jci.model.FinancialConcurenceModel;
 import com.jci.model.VerifyTallySlip;
@@ -51,8 +52,14 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 	
 	@Override
 	    public List<FinancialConcurenceModel> getAllPaymentInstruments() {
-	        Criteria criteria = currentSession().createCriteria(FinancialConcurenceModel.class);
-	        return criteria.list();
+//	        Criteria criteria = currentSession().createCriteria(FinancialConcurenceModel.class);
+//	        return criteria.list();
+	        String sql = " SELECT * FROM jcifinancial_concurrence ";
+		    List<FinancialConcurenceModel> fCList = sessionFactory.getCurrentSession()
+		            .createSQLQuery(sql)
+		            .addEntity(FinancialConcurenceModel.class)
+		            .list();
+		    return fCList;
 	    }
 		public FinancialConcurenceModel find(int id) {
 		return (FinancialConcurenceModel) currentSession().get(FinancialConcurenceModel.class, id);
@@ -66,16 +73,16 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 		}
 		
 		@Override
-		public double calculateCharges(int id,String cont_no) {
+		public int calculateCharges(int Payment_id,String cont_no) {
 			System.err.println(cont_no);
-			 double charges =0.0;
+			 int charges =0;
 			List<Object[]> result = new ArrayList<>();
 //			String sql = "select b.Created_date, c.QtyAllowed, d.Contract_date from jcipayment_arrangement\r\n"
 //					+ "		    	 b left join jcifinancial_concurrence c on c.Contractno = b.Contract_No left join\r\n"
 //					+ "		    	 jcicontract d on d.Contract_no = b.Contract_No where c.Contractno ='" + cont_no + "'";
 //		
 //			
-			String sql = " select b.Instrument_Date,d.Contract_date from jcipayment_arrangement\r\n"
+			String sql = " select b.Instrument_Date,d.Payment_duedate from jcipayment_arrangement\r\n"
 					+ "		 b left join jcicontract d on d.Contract_no = b.Contract_No  where b.Contract_No ='" + cont_no + "'";
 		
 			try {
@@ -114,7 +121,7 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 	               // Date createddate = (Date) row[1];
 
 	                long diffInMilliseconds = Math.abs(condate.getTime() - createddate.getTime());
-	                long daysBetween = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+	                int daysBetween = (int) TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
 	                
 	                charges = daysBetween;
 	                System.out.println("daysBetween: " + daysBetween);
@@ -151,6 +158,13 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 		    int payid=Integer.parseInt("hql1");  
 			return payid;
 	       
+		}
+
+		@Override
+		public 	List<Object> dataofdates(String con_no,int Payment_id) {
+			 String hql1 = " Select PaymentDue_date,Payment_type,Instrument_Date,Instrument_value,Contract_value from jcipayment_arrangement where Contract_no ='" + con_no + "' and Payment_id ='" + Payment_id + "'";
+	         return  (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(hql1).list();
+
 		}
 
 }

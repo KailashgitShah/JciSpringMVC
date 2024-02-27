@@ -146,8 +146,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		     
 		     
 		     for(  Object[] element:list) {
-		    	 System.out.println("KKKKKKKKKKKKK"+element[1]);
-			      System.out.println("SSSSSSSSSSSSS"+element[0]);
+		    	
 			      
 			      
 
@@ -160,7 +159,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 					 * resultList1.setActual_qty((String)element[0]);
 					 * resultList1.setShort_qty((String)element[1]);
 					 */
-		      System.out.println("bbbbbbbbbbbbbbb"+resultList1.getActual_qty());
+		    
 		      
 		    }
 		  }

@@ -81,7 +81,31 @@ public class EntryPaymentDetailsModel {
 	@Column(name = "Remarks")
 	private String Remarks ;
 
+	@Column(name = "PaymentDue_date")
+	private String PaymentDue_date ;
 	
+	
+	@Column(name = "Contract_value")
+	private String Contract_value ;
+
+
+	
+
+	public String getContract_value() {
+		return Contract_value;
+	}
+
+	public void setContract_value(String contract_value) {
+		Contract_value = contract_value;
+	}
+
+	public String getPaymentDue_date() {
+		return PaymentDue_date;
+	}
+
+	public void setPaymentDue_date(String paymentDue_date) {
+		PaymentDue_date = paymentDue_date;
+	}
 
 	public String getRemarks() {
 		return Remarks;

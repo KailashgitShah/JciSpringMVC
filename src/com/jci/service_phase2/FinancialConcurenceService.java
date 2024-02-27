@@ -1,5 +1,6 @@
 package com.jci.service_phase2;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ public interface FinancialConcurenceService {
 //		FinancialConcurenceModel getPaymentInstrumentById(int id);
 //		 public  void updatePaymentInstrument(FinancialConcurenceModel financialConcurenceModel);
 		public FinancialConcurenceModel find(int id);
-	 public double calculateCharges(int  id, String contno);
+	 public int calculateCharges(int  id, String contno);
 	 public void remark(String cont_no,String  con_No);
 	 public String ContractedQty(String cont_no);
+	 public List<Object> dataofdates(String Con_no,int Payment_id);
+	 
 	 public int  paymentid(String cont_no);
+	
 }
 
