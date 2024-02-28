@@ -25,19 +25,19 @@ public interface RawJuteProcurementAndPaymentDao {
 	public List<String> findGradePriceJuteVariety (String variety, int msp_no, String cropyr,String dpcid );
 	public List<String> getfarmerno(String dpc);
 	public List <RawJuteProcurementAndPayment>farmerDetailsList();
-	public boolean updateProcurement(String status, int verified,String tallyno);
-	public boolean updateProcurementerror(String status, int verified,String tallyno,String error,String region);
+	public boolean updateProcurement(String status, int verified,String tallyno, String placeofp);
+	public boolean updateProcurementerror(String status, int verified,String tallyno,String error,String region, String placeofp);
 	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId);
  
 	public List<RawJuteProcurementAndPayment> jutelistbystatus(String status,HttpServletRequest request);
  
 	public boolean validateTally(String tally, String ro);
 	public String getbinno(String binno);
-	boolean updateStatus(String tally);
+	boolean updateStatus(String tally, String placeofp);
 	
 	//Search tally by animesh
 		public JSONArray searchTally(String tallyno);
-		public boolean updateStatusDPCW(String tally);
+		public boolean updateStatusDPCW(String tally, String placeofp);
 		public List<RawJuteProcurementAndPayment> delayedenteredtallylist(String status1, String status2,
 				HttpServletRequest request);
 }

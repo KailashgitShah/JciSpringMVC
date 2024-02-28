@@ -138,7 +138,7 @@ public class FarmerRegDaoImpl implements FarmerRegDao{
 			String bankMandateForm = (String)row[13];
 			String BankDoc= (String)row[14];
 			String status = null;
-			System.err.println("check the row"+row[36]);
+			//System.err.println("check the row"+row[36]);
 			byte mandate = (Byte)row[36];
 			int mandateflag = mandate;
 			String vRegNo = (String)row[38];

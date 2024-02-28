@@ -60,16 +60,17 @@
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 
-<!--  
+ 
  <script type="text/javascript">
 	$(document).ready(function ()  
 	{  
 		 $("#verifiedlist").DataTable({         
 	         scrollX: true,
-	         "pageLength": 50
+	         "bPaginate": false,
+	        "pageLength": 50
 	       }); 
 	});  
- </script>  --> 
+ </script>  
     <script>
 	function updatefastatus(tallyno) {
 		//alert(tallyno);
@@ -88,13 +89,15 @@
 	}
 	</script>
 	<script>
-	function paymentonhold(tallyno) {
-		//alert(tallyno);
-		
+	function paymentonhold(tallynoandplaceofp) {
+		var status = "hold";
+		  var splitValues = tallynoandplaceofp.split('#');
+		    var tallyno = splitValues[0];
+		    var placeofp = splitValues[1];
 		$.ajax({
 			type:"GET",
 			url:"setholdstatus.obj",
-			data:{"tallyno":tallyno},
+			data:{"tallyno":tallyno,"status":status,"placeofp":placeofp},
 			success:function(result){
 				 window.location.reload();
  				   var data= jQuery.parseJSON(result);
@@ -188,18 +191,7 @@
 										<td><%=verificationlists.getDop()%></td> 
 										<td><%=verificationlists.getNetquantity()%></td> 
 						                <td><%=verificationlists.getAmountpayable()%></td>
-									<td><button type="button" class="btn btn-danger btn-sm" onclick="paymentonhold('<%=verificationlists.getTallyNo()%>')">Hold</button></td>
-						              <!-- <td><a href="update_paymentstatus.obj?tallyno=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">Payment</a></td>
-						                 <td><a href="edittallyslip.obj?id=verificationlists.getTallyslipno()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>-->
-										<%-- <td><a onclick="return confirm('Are you sure you want to delete this item?');" href="deletetallyslip.obj?id=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-						
-										
-										
-										<%-- <td><%=bnaList.getEnable()==1?"Active":"Inactive"%></td>
-	<td><a href="bnaDelete.obj?id=<%=bnaList.getId()%>" class="btn btn-danger btn-sm btn-block" onclick="return confirm('Are you sure you want to delete this BNA')">Delete</a></td> --%>
- 						 
-
-									</tr>
+									    <td><button type="button" class="btn btn-danger btn-sm" onclick="paymentonhold('<%=verificationlists.getTallyNo()%>#<%=verificationlists.getErrors()%>')">Hold</button></td>
 									<% 
 								  }  
 							          i++; 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.jci.dao.VerificationTallySlipDao;
 import com.jci.model.ImageVerificationModel;
 import com.jci.model.PaymentprocesstellyslipModel;
+import com.jci.model.PurchaseRegisterDTO;
 import com.jci.model.VerifyTallySlip;
 import com.jci.service.VerifyTallySlipService;
 
@@ -60,15 +61,15 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 	 */
 
 	@Override
-	public String GettransectionDetails(String tallyNo,String region) {
+	public String GettransectionDetails(String tallyNo,String region,String placeofp) {
 
-		return VerificationTallySlipDao.GettransectionDetails(tallyNo,region);
+		return VerificationTallySlipDao.GettransectionDetails(tallyNo,region,placeofp);
 	}
 
 	@Override
-	public boolean updatebyTally(String status, int verified, String tallyno) {
+	public boolean updatebyTally(String status, int verified, String tallyno,String DPCpop,String DEOpop) {
 
-		return VerificationTallySlipDao.updatebyTally(status, verified, tallyno);
+		return VerificationTallySlipDao.updatebyTally(status, verified, tallyno,DPCpop,DEOpop);
 	}
 
 	@Override
@@ -132,9 +133,9 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 	}
 
 	@Override
-	public void setholdstatus(String tno) {
+	public void setholdstatus(String tno,String status,String placeofp) {
 		// TODO Auto-generated method stub
-		VerificationTallySlipDao.setholdstatus(tno);
+		VerificationTallySlipDao.setholdstatus(tno,status,placeofp);
 	}
 
 	@Override
@@ -154,6 +155,12 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 		// TODO Auto-generated method stub
 		VerificationTallySlipDao.updatestatustoRMZM(tallyno);
 
+	}
+
+	@Override
+	public List<PurchaseRegisterDTO> getAllPurchase() {
+		// TODO Auto-generated method stub
+		return VerificationTallySlipDao.getAllPurchase();
 	}
 
 

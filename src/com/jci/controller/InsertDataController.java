@@ -20,6 +20,8 @@ import com.jci.model.ZoneModel;
 import com.jci.model.ProgOfAssortmentModel;
 import com.jci.model.DailyPurchaseConfModel;
 import com.jci.model.PurchaseCenterModel;
+import com.jci.model.PurchaseRegisterDTO;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -116,6 +118,8 @@ import com.jci.service.UserRegistrationService;
 import com.jci.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+
 import com.jci.service.PincodeService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -134,6 +138,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 @Controller
 public class InsertDataController
@@ -1318,9 +1325,7 @@ public class InsertDataController
             final SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
             final Date d1 = formatter1.parse(datepurchase);
             final Date n = new Date();
-            System.out.println("n == "+n);
             final long time_difference = n.getTime() - d1.getTime();
-            System.out.println("time_difference == "+time_difference);
             final long days_difference = TimeUnit.MILLISECONDS.toDays(time_difference) % 365L;
             if (days_difference == 1L || days_difference == 0L) {
                 rawJuteProcAndPay.setStatus("DPC");
@@ -2043,10 +2048,8 @@ public class InsertDataController
             verifyFarmer.setStatus(1);
             verifyFarmer.setVerificationdate(new Date());
             verifyFarmer.setRegno(farmer_reg_no);
-            System.out.println("verify farmer = "+verifyFarmer.toString());
             final Boolean verifyRow = this.verifyFarmerService.duplicateVerificationEntryNumberCheck(farmer_reg_no);
             if (verifyRow) {
-            	System.out.println("verify row status");
                 this.verifyFarmerService.submitform(verifyFarmer);
             }
             String dcpid= (String)request.getSession().getAttribute("dpcId");
@@ -2055,7 +2058,7 @@ public class InsertDataController
 			if (farmerById.getRegno() != null && farmerById.getIfsccode() != null && farmerById.getAccountno() != null
 					&& farmerById.getFarmername() != null) 
 			{
-				System.out.println("update verification status");
+				//System.out.println("update verification status");
                 this.farmerRegService.updateVerificationStatus(id);
             }
             mv.addObject("allFarmersList", (Object)allFarmersList);
@@ -2605,6 +2608,9 @@ public class InsertDataController
             String errors = request.getParameter("error");
             final String status = request.getParameter("status");
             final String grsqty = request.getParameter("grsqty");
+            String placeofp = request.getParameter("placeofp");
+
+            
             int is_verified = 0;
             if (status.equalsIgnoreCase("FA")) {
                 is_verified = 1;
@@ -2847,7 +2853,7 @@ public class InsertDataController
             if (session.getAttribute("region") != null) {
                 region = (String)session.getAttribute("region");
             }
-            final boolean procupdate = this.rawJuteProcurAndPayService.updateProcurementerror(status, is_verified, tallyNo, errors.trim(), region);
+            final boolean procupdate = this.rawJuteProcurAndPayService.updateProcurementerror(status, is_verified, tallyNo, errors.trim(), region,placeofp);
             //System.out.println(procupdate);
             if (procupdate) {
                 this.verifyTallySlipService.submitform(verifyTallySlip);
@@ -3029,7 +3035,7 @@ public class InsertDataController
             rulingMarket.setMixmois(minmoisture);
             if (grade1 != null && grade1 != "0") {
                 rulingMarket.setGrade1(Double.parseDouble(grade1));
-                System.out.println(grade1);
+                //System.out.println(grade1);
             }
             if (grade2 != null && grade2 != "0") {
                 rulingMarket.setGrade2(Double.parseDouble(grade2));
@@ -4274,7 +4280,7 @@ public class InsertDataController
             balePreparation.setCreation_date(date);
             final long millis = System.currentTimeMillis();
             final java.sql.Date sqlDate = new java.sql.Date(millis);
-            System.out.println("sqlDate =====   "+sqlDate);
+            //System.out.println("sqlDate =====   "+sqlDate);
             balePreparation.setPacking_date(sqlDate.toString());
             balePreparation.setPlace_of_packing(place_of_packing);
             balePreparation.setCrop_year(crop_year);
@@ -4338,7 +4344,7 @@ public class InsertDataController
     @ResponseBody
     @RequestMapping(value = { "transectionDetails" }, method = { RequestMethod.GET })
     public String transectionDetails(final HttpServletRequest request) {
-        final String details = this.verifyTallySlipService.GettransectionDetails(request.getParameter("tallyslipNo"), request.getParameter("region"));
+        final String details = this.verifyTallySlipService.GettransectionDetails(request.getParameter("tallyslipNo"), request.getParameter("region"),request.getParameter("placeofp"));
         return details;
     }
     
@@ -4363,7 +4369,7 @@ public class InsertDataController
          List<VerifyTallySlip> verifyList = (List<VerifyTallySlip>)this.verifyTallySlipService.getAll("RMD",region, role_type);
         mv.addObject("verifyTallySliList", (Object)verifyList);
         Integer userRole= (Integer)request.getSession().getAttribute("roleId");
-   		System.out.println("userRole=="+userRole);
+   		//System.out.println("userRole=="+userRole);
    		  }
         catch (Exception e)
 		{
@@ -4414,9 +4420,11 @@ public class InsertDataController
         final String tally = request.getParameter("tallyno");
         final String status = request.getParameter("status");
         final int is_verified = Integer.parseInt(request.getParameter("verified"));
-        final boolean raw = this.rawJuteProcurAndPayService.updateProcurement(status, is_verified, tally);
+        String DPCpop = request.getParameter("DPCpop");
+        String DEOpop = request.getParameter("DEOpop");
+        final boolean raw = this.rawJuteProcurAndPayService.updateProcurement(status, is_verified, tally,DPCpop);
         
-        final boolean ver = this.verifyTallySlipService.updatebyTally(status, is_verified, tally);
+        final boolean ver = this.verifyTallySlipService.updatebyTally(status, is_verified, tally,DPCpop,DEOpop);
         if (raw && ver) {
             return "true";
         }
@@ -4466,7 +4474,8 @@ public class InsertDataController
             }
     	ModelAndView mv = new ModelAndView("tallyListRMA");
     	String tally = request.getParameter("tally");
-    	boolean status = rawJuteProcurAndPayService.updateStatus(tally);
+    	String placeofp = request.getParameter("placeofp");
+    	boolean status = rawJuteProcurAndPayService.updateStatus(tally,placeofp);
     	String roletype = (String) request.getSession().getAttribute("roletype");
         final List<RawJuteProcurementAndPayment> juteList = (List<RawJuteProcurementAndPayment>)this.rawJuteProcurAndPayService.delayedenteredtallylist("RMA","DPC",request);
         mv.addObject("juteList", (Object)juteList);
@@ -4483,7 +4492,8 @@ public class InsertDataController
             }
     	ModelAndView mv = new ModelAndView("tallyListRMA");
     	String tally = request.getParameter("tally");
-    	boolean status = rawJuteProcurAndPayService.updateStatusDPCW(tally);
+    	String placeofp = request.getParameter("placeofp");
+    	boolean status = rawJuteProcurAndPayService.updateStatusDPCW(tally,placeofp);
     	String roletype = (String) request.getSession().getAttribute("roletype");
         final List<RawJuteProcurementAndPayment> juteList = (List<RawJuteProcurementAndPayment>)this.rawJuteProcurAndPayService.delayedenteredtallylist("RMA","DPC",request);
         mv.addObject("juteList", (Object)juteList);
@@ -4504,7 +4514,7 @@ public class InsertDataController
     @RequestMapping(value = { "findBinno" }, method = { RequestMethod.GET })
     public String findBinno(final HttpServletRequest request) {
         final Gson gson = new Gson();
-        System.out.println(request.getParameter("cropyr") +"   "+request.getParameter("dpcid"));
+        //System.out.println(request.getParameter("cropyr") +"   "+request.getParameter("dpcid"));
         final List<String> result = (List<String>)this.ropeMakingService.findBinno(request.getParameter("cropyr"), request.getParameter("dpcid"));
         return gson.toJson((Object)result);
     }
@@ -4525,10 +4535,12 @@ public class InsertDataController
 			   return mv=new ModelAndView("Home");
         }
 	   	String key = LoginController.secretkey;
+	   	String placeofp = request.getParameter("placeofp");
 	 	String decryptedString = request.getParameter("tally");
 	 	//final String tally = Encry.decrypt(decryptedString, key);
-	 	System.err.println("tally+"+decryptedString);
         mv.addObject("tallyslip", (Object)decryptedString);
+        mv.addObject("placeofp", (Object)placeofp);
+        //System.err.println("placeof purchases"+request.getParameter("placeofp"));
         mv.setViewName("verifyTallySlip");
         
         return mv;
@@ -4682,7 +4694,7 @@ public class InsertDataController
 		try {
 			binPurchaseList = batchService.GetBinListFromDb();
 			 Integer roleId= (Integer)request.getSession().getAttribute("roleId");
-	   		   System.out.println("roleId===="+roleId);
+	   		   //System.out.println("roleId===="+roleId);
 	   	
 		} catch (Exception e) {
 			 System.out.println(e.getLocalizedMessage());
@@ -4992,8 +5004,11 @@ public class InsertDataController
 	    // System.err.println("all tallyno   ="+tallyno);
 	     String roho = request.getParameter("roho");
 	     tallyno = tallyno.replaceAll("\\[","").replaceAll("\\]","").replaceAll("\"", "'");
-	    // System.err.println("tallyno array  ="+tallyno);
+	     System.err.println("tallyno array  ="+tallyno);
 	     this.verifyTallySlipService.updatestatustoPP(tallyno);
+	     
+	     System.err.println("Status Updated to table for tally = "+tallyno);
+	     
 	     String[] tally = tallyno.split(",");
 	     List<PaymentprocesstellyslipModel> list = new ArrayList();
 	     PaymentprocesstellyslipModel paymentlist = new PaymentprocesstellyslipModel();
@@ -5023,7 +5038,8 @@ public class InsertDataController
 	            {
 	        	    tno = tally[i];
 	        	    paymentlist = this.verifyTallySlipService.getdataforExcelSheet(tno);
-		            tnoemail = tno.replace("\"","");
+	        	    System.err.println("get data for exel for tally = "+tno);
+		            tnoemail = tno.replace("\'","");
 		            jciref = paymentlist.getDpc_name()+"-"+tnoemail+"-"+paymentlist.getFarmerreg_no();
 		            tno = "";
 	                PaymentprocesstellyslipModel createpayment = new PaymentprocesstellyslipModel();
@@ -5044,9 +5060,11 @@ public class InsertDataController
 	                //System.out.println("create payment controller = "+createpayment.toString());
 	                try {
 		                   verifyTallySlipService.savedata(createpayment);
-		                }catch (Exception e)
+		                   System.err.println("Row created in jcitallyslippayment");
+		                }
+	                catch (Exception e)
 	                  {
-						System.out.println("controlelr exc = "+e.getLocalizedMessage());
+						System.out.println("payment process createpayment controlelr exc = "+e.getLocalizedMessage());
 			          }
 	                
 	                Row row = sheet.createRow(rownum++);
@@ -5078,6 +5096,7 @@ public class InsertDataController
 		          workbook.write(fileOut); 
 		          fileOut.close();
 		          workbook.close();
+		          System.err.println("Sheet created locally");
 		          String subject = "NEFT Advice Sheet: "+usrname+"-Rs."+totalamount;
 		          String toEmail = "";
 		          String FA_approver_email = this.verifyTallySlipService.getEmailby_tally(tnoemail);
@@ -5085,35 +5104,36 @@ public class InsertDataController
 		          {
 		        	  //mail to RM-Finance(fa approver) and RM(Regional Manager(jo login kiya h))
 		        	//  toEmail = FA_approver_email+","+usermail;
-		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com"),new InternetAddress("saumyadeep@jcimail.in")};
 		        	  toEmail =  FA_approver_email+", "+usermail+", vishal.vishwakarma@cyfuture.com, animesh.anand@cyfuture.com";
-		        	  
-		        	  System.out.println("tomail = "+toEmail);
-		        	  SendMail sendMail = new SendMail();
 		              //String subject = "Invoice Generated";
+		        	  SendMail sendMail = new SendMail();
 		              String body = "PFA This is your payment details . ";
-		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              //sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              System.err.println("Mail sent succesfully by RO = "+toEmail);
 		          }
 		          else if(roho.equalsIgnoreCase("HO"))
 		          {
 		        	  //mail to HO Finance (Finance Official of HO) and RM(Regional Manager)
 		        	  toEmail = "vishal.vishwakarma@cyfuture.com,animesh.anand@cyfuture.com";
-		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com"),new InternetAddress("saumyadeep@jcimail.in")};
 			        	 
 		        	  SendMail sendMail = new SendMail();
 		             // String subject = "Invoice Generated";
 		              String body = "PFA This is your payment details . ";
 		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              System.err.println("Mail sent succesfully by HO = "+toEmail);
 		          }
 		          else if(roho.equalsIgnoreCase("ZMHO"))
 		          {
 		        	  //Mail to ZM (jo login kiya h), HO Finance , RM
 		        	  toEmail = "vishal.vishwakarma@cyfuture.com,animesh.anand@cyfuture.com";
-		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com"),new InternetAddress("saumyadeep@jcimail.in")};
 		        	  SendMail sendMail = new SendMail();
 		              //String subject = "Invoice Generated";
 		              String body = "PFA This is your payment details . ";
 		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              System.err.println("Mail sent succesfully by ZMHO = "+toEmail);
 		          }
 	             
 		    	 
@@ -5123,7 +5143,7 @@ public class InsertDataController
 		        {  
 	            //something wrong to send mail then set status to rmzm and payment status 0 	
 	            this.verifyTallySlipService.updatestatustoRMZM(tallyno);
-		        	System.out.println("email send failed");
+	            System.err.println("Payment process exception in last = "+ e.getLocalizedMessage());
 		              e.printStackTrace();  
 		              
 		         } 
@@ -5563,7 +5583,7 @@ public class InsertDataController
                    }
                    pathurl = file.getAbsolutePath();
                    final String path = url = "bankdoc_" +farmerRegModel.getF_REG_NO()+"_"+ F_BANK_DOC.getOriginalFilename();
-                   System.out.println("F_BANK_DOC =========    "+path);
+                   //System.out.println("F_BANK_DOC =========    "+path);
                    farmerRegModel.setF_BANK_DOC(url);
                }
             
@@ -5582,7 +5602,7 @@ public class InsertDataController
                    }
                    pathurl = file.getAbsolutePath();
                    final String path = url = "idproof_" +farmerRegModel.getF_REG_NO()+"_"+ F_ID_PROF.getOriginalFilename();
-                   System.out.println("F_ID_PROF =========    "+path);
+                   //System.out.println("F_ID_PROF =========    "+path);
                    farmerRegModel.setF_ID_PROF(url);
                }else if(id_proof != null) {
                      farmerRegModel.setF_ID_PROF(id_proof);
@@ -5600,7 +5620,7 @@ public class InsertDataController
                    
                    pathurl = file.getAbsolutePath();
                    final String path = url = "regform_" +farmerRegModel.getF_REG_NO()+"_"+ F_REG_FORM.getOriginalFilename();
-                   System.out.println("F_REG_FORM =========    "+path);
+                  // System.out.println("F_REG_FORM =========    "+path);
                    farmerRegModel.setF_REG_FORM(url);
                   
                }
@@ -5633,23 +5653,31 @@ public class InsertDataController
 	    public String setholdstatus(final HttpServletRequest request) {
 	        final Gson gson = new Gson();
 	        String tno =  request.getParameter("tallyno");
-	        this.verifyTallySlipService.setholdstatus(tno);
+	        String status = request.getParameter("status");
+	        String placeofp = request.getParameter("placeofp");
+	        this.verifyTallySlipService.setholdstatus(tno,status,placeofp);
 	        return gson.toJson((Object)tno);
 	    }
 	    
 	    
 	    @RequestMapping({ "verifiedHoldTallySlipList" })
-        public ModelAndView verifiedHoldTallySlipList(final HttpServletRequest request) {
+        public ModelAndView verifiedHoldTallySlipList(final HttpServletRequest request, RedirectAttributes red) {
            String username =(String)request.getSession().getAttribute("usrname");
            ModelAndView mv = new ModelAndView("verifiedHoldTallySlipList");
-           if(username == null) {
+           if(username == null)
+           {
                return mv = new ModelAndView("index");
-              }
+           }
+           String pagename = "verifiedHoldTallySlipList";
+           int i = checkprivileges(pagename);
+           if(i != 1)
+           {
+           	 red.addFlashAttribute("errorMessage","Access denied");
+   			   return mv=new ModelAndView("Home");
+           }
            try {
-
-        	   String role_type = (String)request.getSession().getAttribute("roletype");
+        	String role_type = (String)request.getSession().getAttribute("roletype");
             String region =(String)request.getSession().getAttribute("region"); 
-         //   System.out.println("region = "+region);
             final List<VerifyTallySlip> verifyList = (List<VerifyTallySlip>)this.verifyTallySlipService.getAllHold(region, role_type);
             mv.addObject("verifyHoldTallySliList", (Object)verifyList);   
            } 
@@ -5755,5 +5783,61 @@ public class InsertDataController
 	        return gson.toJson((Object)flagvalue);
 			
 		}
+	    
+	    @RequestMapping({ "downloadexcel" })
+        public ModelAndView downloadexcel(final HttpServletRequest request, RedirectAttributes red) {
+           String username =(String)request.getSession().getAttribute("usrname");
+           ModelAndView mv = new ModelAndView("downloadAllExcelSheet");
+           if(username == null)
+              {
+                  return mv = new ModelAndView("index");
+              }
+           try 
+           {
+        	   String pagename = "downloadexcel";
+   	        int i = checkprivileges(pagename);
+   	        if(i != 1)
+   	        {
+   	        	 red.addFlashAttribute("errorMessage","Access denied");
+   				   return mv=new ModelAndView("Home");
+   	        } 
+        	   
+           } 
+           catch(Exception e) {
+        	   e.printStackTrace();
+           }
+            return mv;
+        }
+	    
+	    @RequestMapping(value = { "downloadexcels" }, method = { RequestMethod.GET })
+	    public ResponseEntity<byte[]> downloadExcelFile() throws IOException {
+	        String EXCEL_FOLDER_PATH = "E:/Program Files/Apache Software Foundation/Tomcat 8.5/webapps/TallySlipPayments";
+	       // String EXCEL_FOLDER_PATH = "D:/JCI/AllExcel";
 
+
+	       String fileName =  request.getParameter("filename");
+	        File excelFile = new File(EXCEL_FOLDER_PATH, fileName);
+
+	        // Set up HTTP headers for the response
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	        headers.setContentDispositionFormData("attachment", fileName);
+
+	        // Convert the Excel file to a byte array
+	        byte[] excelBytes = FileUtils.readFileToByteArray(excelFile);
+
+	        return new ResponseEntity<>(excelBytes, headers, org.springframework.http.HttpStatus.OK);
+	    }
+	    @RequestMapping({ "PurchaseRegisterlist" })
+	    public ModelAndView PurchaseRegisterlist(final HttpServletRequest request,RedirectAttributes red) {
+	    	String username =(String)request.getSession().getAttribute("usrname");
+	    	ModelAndView mv = new ModelAndView("PurchaseRegisterList");
+	    	if(username == null) {
+	        	return new ModelAndView("index");
+	            }
+	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase();
+	        mv.addObject("purchaselist", (Object)purchaselist);
+	        
+	        return mv;
+	    }
 }

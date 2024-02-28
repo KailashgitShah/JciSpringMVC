@@ -95,9 +95,9 @@ public class RawJuteProcurementAndPaymentServiceImpl implements RawJuteProcureme
 	}
 
 	@Override
-	public boolean updateProcurement(String status, int verified, String tallyno) {
+	public boolean updateProcurement(String status, int verified, String tallyno,String placeofp) {
 		// TODO Auto-generated method stub
-		return rawJuteProcurementAndPaymentDao.updateProcurement(status, verified,tallyno);
+		return rawJuteProcurementAndPaymentDao.updateProcurement(status, verified,tallyno,placeofp);
 	}
 
 	@Override
@@ -107,9 +107,9 @@ public class RawJuteProcurementAndPaymentServiceImpl implements RawJuteProcureme
 	}
 
 	@Override
-	public boolean updateProcurementerror(String status, int verified, String tallyno, String error,String region) {
+	public boolean updateProcurementerror(String status, int verified, String tallyno, String error,String region,String placeofp) {
 
-		return rawJuteProcurementAndPaymentDao.updateProcurementerror(status, verified,tallyno, error,region);
+		return rawJuteProcurementAndPaymentDao.updateProcurementerror(status, verified,tallyno, error,region,placeofp);
 	}
 
 	@Override 
@@ -133,9 +133,9 @@ public class RawJuteProcurementAndPaymentServiceImpl implements RawJuteProcureme
 	}
 
 	@Override
-	public boolean updateStatus(String tally) {
+	public boolean updateStatus(String tally,String placeofp) {
 		// TODO Auto-generated method stub
-		return rawJuteProcurementAndPaymentDao.updateStatus(tally);
+		return rawJuteProcurementAndPaymentDao.updateStatus(tally,placeofp);
 	}
 
 	@Override
@@ -145,9 +145,9 @@ public class RawJuteProcurementAndPaymentServiceImpl implements RawJuteProcureme
 	}
 
 	@Override
-	public boolean updateStatusDPCW(String tally) {
+	public boolean updateStatusDPCW(String tally,String placeofp) {
 		// TODO Auto-generated method stub
-		return rawJuteProcurementAndPaymentDao.updateStatusDPCW(tally);
+		return rawJuteProcurementAndPaymentDao.updateStatusDPCW(tally,placeofp);
 	}
 
 	@Override

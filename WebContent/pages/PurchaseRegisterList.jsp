@@ -1,7 +1,7 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
-<%@page import="com.jci.model.BatchIdentificationModel"%>
+<%@page import="com.jci.model.PurchaseRegisterDTO"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,10 +50,10 @@ tr:nth-child(even) {background-color: #f2f2f2;}
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Procurement List</h1>
+                <h1 class="page-title">Purchase Register List</h1>
             </div>
 			<%
-				 List <BatchIdentificationModel>  batch = (List <BatchIdentificationModel>) request.getAttribute("batch");
+				 List <PurchaseRegisterDTO>  batch = (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
 			%>
                    <div class="table-responsive">                    
                         <table id="farmerVerific" class="table table-striped table-bordered table-hover" cellspacing="0" >
@@ -72,17 +72,17 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 								<tbody>
 								<%
 								int i= 1;
-								for(BatchIdentificationModel batchh : batch){
+								for(PurchaseRegisterDTO batchh : batch){
 									%>
 									<tr role="row" class="odd">
 										<td class="sorting_1"><%=i%></td>
-										<td><%=batchh.getDpcnames()%></td>
-										<td><%=batchh.getCropyr()%></td> 
-										<td><%=batchh.getBinnumber()%></td>
-										<td><%=batchh.getBasis()%></td>
-										<td><%=batchh.getJutevariety()%></td>
-										<td><%=batchh.getCarryoverlossqty()%></td>
-										<td><%=batchh.getCarryropeqty()%></td>
+										<td></td>
+										<td></td> 
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
 											
 										
 										<%-- <td><a href="editProcurement.obj?id=<%=procurementLists.getPtsid()%>"/>Edit</a></td>

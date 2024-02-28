@@ -26,16 +26,16 @@ public interface RawJuteProcurementAndPaymentService {
 	public List<String> getfarmerno( String dpc);
 	public List <RawJuteProcurementAndPayment>farmerDetailsList();
 	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId);
-	public boolean updateProcurement(String status, int verified,String tallyno);
-	public boolean updateProcurementerror(String status, int verified,String tallyno,String error,String region);
+	public boolean updateProcurement(String status, int verified,String tallyno, String placeofp);
+	public boolean updateProcurementerror(String status, int verified,String tallyno,String error,String region, String placeofp);
  
 	public List <RawJuteProcurementAndPayment> jutelistbystatus(String status, HttpServletRequest request);
  
 	public boolean validateTally(String tally, String ro);
 	public String getbinno(String binno);
-	boolean updateStatus(String tally);
+	boolean updateStatus(String tally, String placeofp);
 	//Search tally by animesh
 	public JSONArray searchTally(String tallyno);
-	public boolean updateStatusDPCW(String tally);
+	public boolean updateStatusDPCW(String tally, String placeofp);
 	public List<RawJuteProcurementAndPayment> delayedenteredtallylist(String string, String string2,HttpServletRequest request);
 }

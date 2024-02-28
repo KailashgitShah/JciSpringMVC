@@ -221,11 +221,11 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 	
 
 	@Override
-	public boolean updateProcurement(String statuss, int verified,String tallyno) {
+	public boolean updateProcurement(String statuss, int verified,String tallyno,String placeofp) {
 		Session session = sessionFactory.getCurrentSession();
 		boolean returnStatus=false;
 		try {
-			Query q=session.createQuery("update RawJuteProcurementAndPayment set status ='"+statuss+"', is_varified ="+verified+" where tallyslipno='"+tallyno+"'");
+			Query q=session.createQuery("update RawJuteProcurementAndPayment set status ='"+statuss+"', is_varified ="+verified+" where tallyslipno='"+tallyno+"' and placeofpurchase ='"+placeofp+"' ");
 			int status=q.executeUpdate();
 			if(status>=1) {
 				returnStatus =true;
@@ -241,12 +241,12 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 	}
 
 	@Override
-	public boolean updateProcurementerror(String statuss, int verified,String tallyno,String error,String region) {
+	public boolean updateProcurementerror(String statuss, int verified,String tallyno,String error,String region,String placeofp) {
 		 
 		Session session = sessionFactory.getCurrentSession();
 		boolean returnStatus=false;
 		try {
-			Query q=session.createQuery("update  RawJuteProcurementAndPayment set status ='"+statuss+"', is_varified ="+verified+" , reason = '"+error+"' where tallyslipno='"+tallyno+"' and regionId = '"+region+"'");
+			Query q=session.createQuery("update  RawJuteProcurementAndPayment set status ='"+statuss+"', is_varified ="+verified+" , reason = '"+error+"' where tallyslipno='"+tallyno+"' and regionId = '"+region+"' and placeofpurchase ='"+placeofp+"' ");
 			int status=q.executeUpdate();
 			if(status>=1) {
 				returnStatus =true;
@@ -325,18 +325,19 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 		 String dpcid = (String)request.getSession().getAttribute("dpcId");
 		 String roletype =(String) request.getSession().getAttribute("roletype");
 		 String regionid = (String) request.getSession().getAttribute("regionId");
+		 
 		 String queryStr = "";
 		 if(roletype.equalsIgnoreCase("RO")) {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"' and regionId = '"+regionid+"'";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"' and regionId = '"+regionid+"'";
 		 }
 		 else if (roletype.equalsIgnoreCase("HO")) {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"'";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"'";
 		 }
 		 else if (roletype.equalsIgnoreCase("DPC")) {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"' and placeofpurchase = '"+dpcid+"'";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"' and placeofpurchase = '"+dpcid+"'";
 		 }
 		 else {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"'";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status ='"+status+"'";
 		 }
 		
 		List<RawJuteProcurementAndPayment> result = new ArrayList<>();
@@ -366,6 +367,7 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 				String dateofentry = (String)o[16];
 				int ptsid = (int)o[12];
 				String tallyslip =  (String)o[13];
+				String placeofp = (String)o[17];
 				
 				raw.setFarmerregno(farmer);
 				raw.setDatepurchase(datepurchase);
@@ -382,7 +384,10 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 				raw.setPtsid(ptsid);
 				raw.setTallyslipno(tallyslip);
 				raw.setDateof_entry(dateofentry);
+				//raw.setPlaceofpurchase(placeofp);
 				raw.setNetquantity(netqty.doubleValue());
+				//in setcreatedfrom the value is placeofpurchases code
+				raw.setCreatedfrom(placeofp);
 				result.add(raw);
 				//System.out.println("farmer  ====== "+farmer);
 			}
@@ -435,9 +440,9 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 	
 	
 	@Override
-	public boolean updateStatus(String tally) {
+	public boolean updateStatus(String tally,String placeofp) {
 		boolean returnStatus=false;
-		String querystr = "update jciprocurement set status= 'ROV' where tallyslipno = '" +tally+"'";
+		String querystr = "update jciprocurement set status= 'ROV' where tallyslipno = '" +tally+"' and placeofpurchase ='" +placeofp+"' ";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -499,9 +504,9 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 	}
 	
 	@Override
-	public boolean updateStatusDPCW(String tally) {
+	public boolean updateStatusDPCW(String tally,String placeofp) {
 		boolean returnStatus=false;
-		String querystr = "update jciprocurement set status= 'DPCW' where tallyslipno = '" +tally+"'";
+		String querystr = "update jciprocurement set status= 'DPCW' where tallyslipno = '" +tally+"' and placeofpurchase = '" +placeofp+"'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -526,16 +531,16 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 		 String regionid = (String) request.getSession().getAttribute("regionId");
 		 String queryStr = "";
 		 if(roletype.equalsIgnoreCase("RO")) {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where (p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )) and regionId = '"+regionid+"'";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where (p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )) and regionId = '"+regionid+"'";
 		 }
 		 else if (roletype.equalsIgnoreCase("HO")) {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )";
 		 }
 		 else if (roletype.equalsIgnoreCase("DPC")) {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where (p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )) and placeofpurchase = '"+dpcid+"'";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where (p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )) and placeofpurchase = '"+dpcid+"'";
 		 }
 		 else {
-			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )";
+			 queryStr=" select farmerregno,datepurchase,basis,cropyr,c.centername,rateslipno,binno,jutevariety,grossquantity,deductionquantity,grasatrate,amountpayable, ptsid,tallyslipno, slip_image,netquantity,dateof_entry,placeofpurchase from jciprocurement p left join jcipurchasecenter c on p.placeofpurchase = c.CENTER_CODE where p.status = 'RMA' OR  (p.status = 'DPC' AND DATEDIFF(D, CONVERT(date, datepurchase, 105), GETDATE()) > 2 )";
 		 }
 		
 		List<RawJuteProcurementAndPayment> result = new ArrayList<>();
@@ -565,6 +570,7 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 				String dateofentry = (String)o[16];
 				int ptsid = (int)o[12];
 				String tallyslip =  (String)o[13];
+				String placeofp = (String)o[17];
 				
 				raw.setFarmerregno(farmer);
 				raw.setDatepurchase(datepurchase);
@@ -582,6 +588,8 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 				raw.setTallyslipno(tallyslip);
 				raw.setDateof_entry(dateofentry);
 				raw.setNetquantity(netqty.doubleValue());
+				//set placeofpurchases in createdfrom
+				raw.setCreatedfrom(placeofp);
 				result.add(raw);
 				//System.out.println("farmer  ====== "+farmer);
 			}

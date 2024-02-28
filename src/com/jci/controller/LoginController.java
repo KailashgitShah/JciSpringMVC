@@ -158,6 +158,11 @@ public class LoginController {
                    if(email != null && password != null) {
                    String dpcId = request.getParameter("dpcId");
                    String ifExist =  userRegService.checkLogin(email, password);
+                   if(ifExist == "inactive")
+                   {
+                       mv.addObject("msg", "<div class=\"alert alert-danger\"><b>Failure !</b> Inactive User.</div> \r\n");
+                       return mv;
+                   }
                    //String flag =  userRegService.checkConcurrentlogin(email);
                    String username =(String)request.getSession().getAttribute("usrname");
                      if(ifExist!=null && ifExist.equalsIgnoreCase("mobile")) { 

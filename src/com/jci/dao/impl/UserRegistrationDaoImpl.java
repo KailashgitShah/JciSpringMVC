@@ -144,12 +144,18 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
 		List<Object[]> rows = query.list();
-
+		System.err.println("check status"+rows.get(0)[8].toString());
+		String isactive = rows.get(0)[8].toString();
+		if(! rows.get(0)[8].toString().equalsIgnoreCase("1"))
+		{
+			return "inactive";
+		}
 		boolean isPresent = rows.isEmpty();
 		if (isPresent) {
 			return null;
 		}
 
+		
 		else if (rows.get(0)[16].toString().equalsIgnoreCase("Mobile User")) {
 			return "mobile";
 		}
@@ -450,7 +456,7 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 		Session session = sessionFactory.getCurrentSession();
 		SQLQuery query = session.createSQLQuery(querystr);
 		String password = (String)query.uniqueResult();
-		System.err.println("flag"+password);
+		//System.err.println("flag"+password);
 		return password;
 	}
 
@@ -458,7 +464,7 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 	public void updateFlagInDatabase(String flag,String email) {
 		// TODO Auto-generated method stub
 		try {
-			System.out.println("repo"+flag+""+email);
+			//System.out.println("repo"+flag+""+email);
 			String hql = "update checkConcurrentlogin set flag = 'logout' where email ='"+email+"'";
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 			

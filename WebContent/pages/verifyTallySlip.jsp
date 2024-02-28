@@ -395,6 +395,8 @@ button#turn {
 			String region = (String) session.getAttribute("region");
 			//String tally = (String)request.getAttribute("tally");
 			String tally = (String) request.getAttribute("tallyslip");
+			String placeofp = (String) request.getAttribute("placeofp");
+
 			%>
 
 
@@ -473,7 +475,7 @@ button#turn {
 												<label>Place of Purchase</label> <span class="text-danger">*
 												</span>&nbsp; <span id="errplaceOfPurchase"
 													name="errplaceOfPurchase" class="text-danger"> </span> <input
-													class="form-control" type="text" name="placeOfPurchase"
+													class="form-control" type="number" name="placeOfPurchase"
 													id="placeOfPurchase" placeholder="Place of Purhase"
 													onkeyup="deleteErrorMsg()"> <input
 													class="form-control" type="hidden" name="popname"
@@ -885,6 +887,8 @@ button#turn {
 													id="enq_submit"
 													style="margin-left: 15px; width: 120px; background: mediumseagreen; color: white;">Verify</button>
 											</div>
+											<input class="form-control" type="hidden" name="placeofp"
+													id="placeofp" value="<%=placeofp%>">
 </form>
 										</div>
 									
@@ -1167,10 +1171,12 @@ button#turn {
 		 tallyNo = document.forms["myForm"]["tallyNo"].value;
 		 if (tallyNo.length >= 3) {
             var reg = '<%=region%>';
+            var placeofp ='<%=placeofp%>'; 
+            //alert(placeofp);
 			 $.ajax({
 						type : "GET",
 						url : "transectionDetails.obj",
-						data : jQuery.param({"tallyslipNo" : tallyNo,"region" : reg}),
+						data : jQuery.param({"tallyslipNo" : tallyNo,"region" : reg,"placeofp":placeofp}),
 						success : function(result) {
 						if(result)
 						  {

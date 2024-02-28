@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.jci.model.ImageVerificationModel;
 import com.jci.model.PaymentprocesstellyslipModel;
+import com.jci.model.PurchaseRegisterDTO;
 import com.jci.model.VerifyTallySlip;
 public interface VerifyTallySlipService {
 	public void create(VerifyTallySlip VerifyTallySlip);
@@ -14,9 +15,9 @@ public interface VerifyTallySlipService {
 	public VerifyTallySlip find(int id);
 	public List<VerifyTallySlip> getAll(String status, String region, String role_type);
 	public boolean submitform(VerifyTallySlip VerifyTallySlip);
-	public String GettransectionDetails(String tallyNo, String region);
+	public String GettransectionDetails(String tallyNo, String region, String placeofp);
 //	public VerifyTallySlip findByTally(String tallyslipno);
-	public boolean updatebyTally(String status, int verified,String tallyno);
+	public boolean updatebyTally(String status, int verified,String tallyno, String DPCpop, String dEOpop);
 	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno);
 	public void savedata(PaymentprocesstellyslipModel createpayment);
 	public void updatefastatus(String tno);
@@ -27,8 +28,9 @@ public interface VerifyTallySlipService {
 	public List<VerifyTallySlip> getAllforZM(String string, String region_zone);
 	public void updateexceldata(String jciref, String utrno, String date);
 	public void updatestatusPD(String tallyno);
-	public void setholdstatus(String tno);
+	public void setholdstatus(String tno, String status, String placeofp);
 	public List<VerifyTallySlip> getAllHold(String region, String role_type);
 	public void updatestatustoPP(String tallyslipno);
 	public void updatestatustoRMZM(String tallyno);
+	public List<PurchaseRegisterDTO> getAllPurchase();
 }

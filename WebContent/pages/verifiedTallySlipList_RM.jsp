@@ -78,6 +78,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
+		$(".loader").hide();
+		
 		$('body').on('click', '#selectAll', function() {
 			//alert("ani");
 			if ($(this).hasClass('allChecked')) {
@@ -88,30 +90,6 @@
 			$(this).toggleClass('allChecked');
 		});
 
-
-	/* 	$('#submit').click(function() {
-			
-			$("input[name='checkbox']:checked").each(function() {
-				array.push($(this).val());
-			});
-			if (Array.isArray(array) && array.length) {
-				$("#kycmodal").modal('show');
-			} else {
-				alert("CheckBox Not Selected !..Please Select");
-				return false;
-			}
-		       $.ajax({
-		              type:'POST',
-		              url:'update_paymentstatus.obj',
-		              data:{"tallyno":JSON.stringify(array)},
-		              success:function(result){
-							alert("hello"+result);
-		 	 				 
-						}	
-		       });
-		       alert("Invoice Generated,Mail has been sent to your gmail account!!!");
-		       location.reload();
-		}); */
 		
 	
 	});
@@ -123,7 +101,7 @@
 			array.push($(this).val());
 		});
 		if (Array.isArray(array) && array.length) {
-			$("#kycmodal").modal('show');
+			 alert("Are you sure to process "+array.length+" tally slip?");
 		} else {
 			alert("CheckBox Not Selected !..Please Select");
 			return false;
@@ -137,20 +115,20 @@
 					alert("hello"+result);
 				}	
        }); */
-		 
+       $(".loader").show();
 		 $.ajax({
 				type:"GET",
 				url:"update_paymentstatus.obj",
 				data:{"tallyno":JSON.stringify(array),"roho":roho},
+				//async: false,
 				success:function(result)
 				{
-					//alert();
+					$(".loader").hide();
+					 alert("Payment Advice sheet Generated, Mail has been sent to you and your AFM Accounts!!!");
 				     location.reload();
 				}
 		 });
-		  alert("Payment Advice sheet Generated, Mail has been sent to your and your AFM Accounts!!!");
-		  location.reload();
-          location.reload();
+		 
       // window.location.href = "viewVerifiedTallySlipList_RM.obj";
 	}
 	</script>
@@ -160,6 +138,9 @@
 </head>
 
 <body class="fixed-navbar">
+ <div class="loader">
+	<img src="assets/img/1488.gif">
+</div>
     <div class="page-wrapper">
         <!-- START HEADER-->
          <%@ include file="header.jsp"%>
@@ -204,7 +185,7 @@
 									int i= 1;
 							for(VerifyTallySlip verificationlists : verificationList){
 								
-								 if(i<=200){  
+								  
 							%>
 									<tr>
 									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>" ></td>
@@ -233,7 +214,7 @@
 
 									</tr>
 									<% 
-								  }  
+								    
 							i++; }
 							
 							%>
