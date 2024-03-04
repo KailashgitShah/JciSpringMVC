@@ -312,7 +312,7 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								Payment Realization / Disbursal Details</b></a></li>
 
-					<li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
+					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment instrument</b></a></li>
 					<li data-pre="42" id="o42"><a href="HOdispatch.obj"><i
@@ -323,11 +323,11 @@ body {
 					<li data-pre="44" id="o44"><a href="uploadingreceipt.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								receipt</b></a></li>
-								
+								 -->
 
 				</ul></li>
 				
-				<li><a href="javascript:void(0);"><i
+			<!-- 	<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
 					class="fa fa-angle-left arrow"></i></a>
@@ -406,7 +406,7 @@ body {
 					<li  data-pre="" id=""><a href="listofFactorsinvolvedinCommercialPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Factors involved commercial</b></a></li>					
 					<li  data-pre="" id=""><a href="Creation_of_Bid_Offering.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Creation of Bid Offering</b></a></li>					
 				  </ul>
-				</li>
+				</li> -->
 	</div>
 
 

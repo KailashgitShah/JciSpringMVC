@@ -82,8 +82,8 @@
       <!-- CORE SCRIPTS-->
       <script src="assets/js/app.js" type="text/javascript"></script>
       <!-- PAGE LEVEL SCRIPTS-->
-            <script>
-    /*   $(document).on('click' , '#submitBtn' , function(){
+  <script>
+   /*     $(document).on('click' , '#submitBtn' , function(){
       var response = grecaptcha.getResponse();
       
       if(response.length === 0){
@@ -92,7 +92,7 @@
       }
       
       })  */ 
-      </script>
+   </script>
       
       <script type="text/javascript">
             $(function() {
