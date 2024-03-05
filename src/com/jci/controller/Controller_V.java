@@ -92,6 +92,7 @@ import com.jci.model.FinancialConcurenceModel;
 import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenrationDEmandDto;
 import com.jci.model.GenrationDemandNoteModel;
+import com.jci.model.JciDIHoModel;
 import com.jci.model.MillRecieptModel;
 import com.jci.model.OperationAndTransportCostModel;
 import com.jci.model.OperationCostModel;
@@ -115,6 +116,7 @@ import com.jci.service_phase2.FinancialConcurenceService;
 import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
 import com.jci.service_phase2.GenrationCashDocumentService;
+import com.jci.service_phase2.HOInstService;
 import com.jci.service_phase2.MillRecieptService;
 import com.jci.service_phase2.OperationAndTransportCostService;
 import com.jci.service_phase2.OperationCostService;
@@ -136,6 +138,9 @@ import java.util.Calendar;
 @Repository
 @Controller
 public class Controller_V {
+	@Autowired
+    HOInstService hoInstService;
+
 
 	private final PdfGenerator_K pdfGenerator;
 
@@ -3135,6 +3140,279 @@ public class Controller_V {
 
 		return mv;
 	}
+	@RequestMapping("HOdispatchInst")
+    public ModelAndView HODispatchInstructionModel(HttpServletRequest request) {
+           String username = (String) request.getSession().getAttribute("usrname");
+           List<String> contractList = (List<String>) hoInstService.getContract();
+
+           System.err.println(contractList);
+           ModelAndView mv = new ModelAndView("HOdispatchinstruction");
+           mv.addObject("ContractList", contractList);
+           if (username == null) {
+                  mv = new ModelAndView("index");
+           }
+
+           List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
+           System.err.println(ronameList);
+           mv.addObject("ronameList", ronameList);
+
+           return mv;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "HoDispatch", method = RequestMethod.GET)
+    public String hoDispatchIn(@RequestParam("contract") String ContractNo) {
+           System.err.println(ContractNo);
+           List<String> contractDetList = (List<String>) hoInstService.getDetails(ContractNo);
+
+           Gson gson = new Gson();
+           String jsonResponse = gson.toJson(contractDetList);
+
+           return jsonResponse;
+    }
+
+    @ResponseBody
+    @RequestMapping({ "findDpc" })
+    public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
+
+           String username = (String) request.getSession().getAttribute("usrname");
+           final Gson gson = new Gson();
+           return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
+
+    }
+
+    @ResponseBody
+    @RequestMapping({ "countHo" })
+    public String countHo(@RequestParam("reg") String reg, HttpServletRequest request) {
+
+           final Gson gson = new Gson();
+           return gson.toJson((Object) this.hoInstService.getCount(reg));
+
+    }
+
+    @RequestMapping(value = "savehodispatchInst", method = RequestMethod.POST)
+    public ModelAndView hoDispatchInstruction(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+           String username = (String) request.getSession().getAttribute("usrname");
+           try {
+                  
+                  /*
+                  * String juteString = request.getParameter("jutevariety");//
+                  * System.err.println("++++++++++++"); System.err.println("++++++++++++");
+                  * System.err.println("++++++++++++"); System.err.println("++++++++++++");
+                  * System.err.println("++++++++++++"); System.err.println(juteString);
+                  * System.err.println(juteString); System.err.println(juteString);
+                  * System.err.println(juteString); System.err.println(juteString);
+                  * System.err.println(juteString);
+                  */
+                  
+                  String[] variety = request.getParameterValues("jutevariety");
+                  
+                  for(String st: variety) {
+                        System.err.println(st);
+                        System.err.println(st);
+                        Integer usId = (Integer) request.getSession().getAttribute("userId");//
+                        System.err.println(usId);
+                        String user = Integer.toString(usId);
+                        System.err.println(user);
+                        String contNo = request.getParameter("fullcontractno");//
+                        System.err.println(contNo);
+                        String crpyrString = request.getParameter("cropyear");//
+                        System.err.println(crpyrString);
+                        String contqtyString = request.getParameter("contractquantity");//
+                        System.err.println(contqtyString);
+                        Double cQtyDouble = Double.parseDouble(contqtyString);//
+                        System.err.println(cQtyDouble);
+                        String dIString = request.getParameter("dateofdi");//
+                        
+                        String dateStr = request.getParameter("dateofdi");
+                       SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                       Date result = formater.parse(dateStr);
+                       SimpleDateFormat newFormater = new SimpleDateFormat("dd-MM-yyyy");
+                      
+                        
+                        
+                        System.err.println(dIString);
+                        String fcString = request.getParameter("FC_Ref_No");//
+                        System.err.println(fcString);
+                        String diNoString = request.getParameter("uniqueno");//
+                        System.err.println(diNoString);
+                        String contDateString = request.getParameter("contractdate");//
+                        System.err.println(contDateString);
+                        String allowQty = request.getParameter("qty");//
+                        System.err.println(allowQty);
+                        Double qtyDouble = Double.parseDouble(allowQty);
+                        System.err.println(qtyDouble);
+                        String regOfficeString = request.getParameter("region");//
+                        System.err.println(regOfficeString);
+                        String[] dpcString = request.getParameterValues("dpc_name");
+                        System.err.println(dpcString);
+                        String lastShipString = request.getParameter("lastdateofshipment");//
+                        
+                        String dateStr1 = request.getParameter("lastdateofshipment");
+                       SimpleDateFormat formater1 = new SimpleDateFormat("yyyy-MM-dd");
+                       Date result1 = formater1.parse(dateStr1);
+                       SimpleDateFormat newFormater1 = new SimpleDateFormat("dd-MM-yyyy");
+                        System.err.println(lastShipString);
+                        JciDIHoModel diHo = new JciDIHoModel();
+                               String gprice0 = request.getParameter(st+"0");
+                               if (gprice0 == null) {
+                                      gprice0 = "0";
+                               }
+                               Double g0 = Double.parseDouble(gprice0);
+                               String gprice1 = request.getParameter(st+"1");
+                               if (gprice1 == null) {
+                                      gprice1 = "0";
+                               }
+                               Double g1 = Double.parseDouble(gprice1);
+                               
+                               String gprice2 = request.getParameter(st+"2");
+                                if (gprice2 == null) {
+                                      gprice2 = "0";
+                               }
+                               Double g2 = Double.parseDouble(gprice2);
+                               
+                               String gprice3 = request.getParameter(st+"3");
+                               if (gprice3 == null) {
+                                      gprice3 = "0";
+                               }
+                               Double g3 = Double.parseDouble(gprice3);
+                               
+                               String gprice4 = request.getParameter(st+"4");
+                               if (gprice4 == null) {
+                                      gprice4 = "0";
+                               }
+                               Double g4 = Double.parseDouble(gprice4);
+                               
+                               String gprice5 = request.getParameter(st+"5");
+                               if (gprice5 == null) {
+                                      gprice5 = "0";
+                               }
+                               Double g5 = Double.parseDouble(gprice5);
+                               
+                               String gprice6 = request.getParameter(st+"6");
+                               if (gprice6 == null) {
+                                      gprice6 = "0";
+                               }
+                               Double g6 = Double.parseDouble(gprice6);
+                               
+                               String gprice7 = request.getParameter(st+"7");
+                               if (gprice7 == null) {
+                                      gprice7 = "0";
+                               }
+                               Double g7 = Double.parseDouble(gprice7);
+                               
+                               
+                               
+                               String remString = request.getParameter("remarks");
+                               System.err.println(remString);
+                               Date date = new Date(); // your Date object
+                               SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                               String formattedDate = formatter.format(date);
+                               System.err.println(date);
+                               diHo.setContracted_Qty(cQtyDouble);
+                               diHo.setContract_No(contNo);
+                               diHo.setFC_Ref_No(fcString);
+                               diHo.setContract_Date(contDateString);
+                               diHo.setDI_Date(newFormater.format(result));
+                               diHo.setDI_no(diNoString);
+                               diHo.setAllowed_qty(qtyDouble);
+                               diHo.setRegional_office(regOfficeString);
+                               String s = "";
+                               /* int n = dpcString.length; */
+                               if (dpcString != null) {
+                               int n = dpcString.length;
+                               for (int i = 0; i < dpcString.length; i++) {
+                                      if (i == n - 1) {
+                                             s += dpcString[i];
+                                      } else
+                                             s += dpcString[i] + ",";
+                                      System.err.println(s);
+                               }
+                               }
+                               else s="";
+                               diHo.setDPC(s);
+                               diHo.setLast_date_of_Shipment(newFormater1.format(result1));
+                               diHo.setJute_variety(st);
+                               diHo.setRemarks(remString);
+                               
+                                 diHo.setGr1_qty(g0); 
+                                 diHo.setGr2_qty(g1);
+                                 diHo.setGr3_qty(g2);
+                                 diHo.setGr4_qty(g3);
+                                 diHo.setGr5_qty(g4); 
+                                 diHo.setGr6_qty(g5);
+                                 diHo.setGr7_qty(g6); 
+                                 diHo.setGr8_qty(g7);
+                               
+                               diHo.setCreated_by(user);
+                                diHo.setCrop_year(crpyrString);
+                               diHo.setCreation_date(formattedDate);
+                               this.hoInstService.create(diHo);
+                        
+                  }
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  redirectAttributes.addFlashAttribute("msg",
+                               "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+
+           } catch (Exception e) {
+                  System.out.println("++++++++++++++" + e);
+                  e.printStackTrace();
+
+           }
+           if (username == null) {
+                  return new ModelAndView("index");
+           }
+           return new ModelAndView(new RedirectView("HOdispatchInst.obj"));
+    }
+
+    @RequestMapping("jcilist")
+    public String jciHoList(Model model) {
+
+           List<JciDIHoModel> AllList = (List<JciDIHoModel>) hoInstService.getAll();
+           model.addAttribute("AllList", AllList);
+
+           return "ViewJCIHO";
+    }
+    
+    @RequestMapping({"deleteHO"})
+    public ModelAndView deleteHO(final HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
+           ModelAndView mv = new ModelAndView("ViewJCIHO");
+             try {
+               String id = request.getParameter("id");
+               String string = hoInstService.getContractNo(id);
+               String flag = hoInstService.check(string);
+               
+               System.err.println(flag); // Assuming these print statements are for debugging
+               
+               if ("0".equals(flag)) {
+                 List<JciDIHoModel> allList = hoInstService.getAll();
+                 mv.addObject("AllList",allList);
+                 redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>");
+               } else if ("1".equals(flag)) {
+                 hoInstService.delete(Integer.parseInt(id));
+                 List<JciDIHoModel> allList = hoInstService.getAll();
+                 mv.addObject("AllList",allList);
+                 redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>");
+               }
+             } catch (Exception e) {
+               System.out.println("Error in deleting ruling market: " + e.getMessage());
+               redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\"><b>Error!</b> An unexpected error occurred. Please try again.</div>");
+             }
+             return new ModelAndView(new RedirectView("jcilist.obj"));
+           }
+
+
+           
+    
+    
+
 
 }
 

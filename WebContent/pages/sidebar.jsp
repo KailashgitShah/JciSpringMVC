@@ -256,7 +256,7 @@ body {
 					<li data-pre="" id=""><a href="entryderivativepricelist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Derivative
 								Price List</b></a></li>
-				<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
+					<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Grade Composition</b></a></li> -->
 					<li data-pre="" id=""><a href="entrygradecompositionlist.obj"><i
@@ -274,7 +274,7 @@ body {
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation List</b></a></li>
-<!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
+					<!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>MSP Grades
 								Combination</b></a></li> -->
 
@@ -312,6 +312,14 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								Payment Realization / Disbursal Details</b></a></li>
 
+					<li data-pre="" id=""><a href="HOdispatchInst.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>HO Dispatch
+								Instruction</b></a></li>
+
+					<li data-pre="" id=""><a href="jcilist.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View HO Dispatch
+								</b></a></li>
+
 					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment instrument</b></a></li>
@@ -326,7 +334,7 @@ body {
 								 -->
 
 				</ul></li>
-				
+
 			<!-- 	<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
