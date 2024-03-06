@@ -29,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jci.model.RawJuteProcurementAndPayment;
+import com.jci.model.RoDetailsModel;
 import com.jci.model.JbaModel;
 import com.jci.model.AreaDetailCode;
 import java.text.DateFormat;
@@ -50,6 +51,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.model.SalesModel;
 import java.time.temporal.TemporalAccessor;
 import java.time.LocalDateTime;
@@ -88,8 +90,11 @@ import com.jci.service.BalePrepareService;
 import com.jci.service.PoliceStationService;
 import com.jci.service.blockService;
 import com.jci.service.Impl.SendMail;
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -5847,63 +5852,84 @@ public class InsertDataController
 	            }
 	    	Map<String,String> dpcnameid = new HashMap<String, String>();
 	    	dpcnameid = purchaseCenterService.getdpcbyregionid(regionid);
+	    	List<RoDetailsModel> Regions = roService.getAll();
 	       // final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase();
-	        mv.addObject("dpcnameid",(Object)dpcnameid);
-	        
+	        //mv.addObject("dpcnameid",(Object)dpcnameid);
+	        mv.addObject("Regions",(Object)Regions);
 	        return mv;
 	    }
 	    
 	    @RequestMapping({ "purchaseslisting" })
-	    public ModelAndView purchaseslisting(final HttpServletRequest request,HttpServletResponse response) throws ParseException, IOException {
+	    public ModelAndView purchaseslisting(final HttpServletRequest request,HttpServletResponse response,final RedirectAttributes redirectAttributes) throws ParseException, IOException {
 	    	String cropyear = request.getParameter("cropyear");
-	    	String Placeofp = request.getParameter("Placeofp");
+	    	String Placeofp = request.getParameter("dpc");
 	    	String basis = request.getParameter("basis");
-	    	String pdate = request.getParameter("purchasesdate");
+	    	String pdateFrom = request.getParameter("purchasesdatefrom");
+	    	String pdateTo = request.getParameter("purchasesdateto");
 	    	SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
-	        Date date = sdfInput.parse(pdate);
-		    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		    String purchasesdate = formatter.format(date);
+	        Date date = sdfInput.parse(pdateFrom);
+	        Date date1 = sdfInput.parse(pdateTo);
+		    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		    String purchasesdateFrom = formatter.format(date);
+		    String purchasesdateTo = formatter.format(date1);
 	    	ModelAndView mv = new ModelAndView("PurchaseRegisterList");
 
-	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase(cropyear,Placeofp,basis,purchasesdate);
+	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase(cropyear,Placeofp,basis,purchasesdateFrom,purchasesdateTo);
 
-	    	if(purchaselist !=null)
+	    	if(purchaselist ==null)
 	    	{
-		    	//model.addAttribute("purchaselist",purchaselist);
+                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+                return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
 	    	}
 	    	response.setContentType("application/pdf");
-	        response.setHeader("Content-Disposition", "attachment; filename=generatedPdf.pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=Purchase Report.pdf");
 
 	        try {
-	            Document document = new Document();
+	            Document document = new Document(PageSize.A2);
 	            PdfWriter.getInstance(document, response.getOutputStream());
 	            document.open();
-
-	            // Sample list of models
-	            //List<PurchaseRegisterDTO> modelList = getYourModelList(); // Implement this method to fetch your data
+	            Date date2 = new Date();
+	            DateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
+			    String dateforreport = formatter1.format(date2);
+	           
+	            Paragraph heading = new Paragraph("Purchase Register Report "+dateforreport);
+	            heading.setAlignment(Element.ALIGN_CENTER);
+	            document.add(heading);
+	            document.add(Chunk.NEWLINE);	            // Sample list of models
 
 	            // Create PDF table with 10 columns
-	            PdfPTable table = new PdfPTable(9);
+	            PdfPTable table = new PdfPTable(15);
 
 	            table.setWidthPercentage(100);
 	           // table.setWidths(new float[]{100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f});
 	            // Add table headers
 	            //addTableHeader(table);
-	            table.addCell(createCell("Purchase Date", 40f));
+	            table.addCell(createCell("Farmer name", 40f));
+	            table.addCell(createCell("Farmer no", 40f));
+	            table.addCell(createCell("Tally slip", 40f));
+	            table.addCell(createCell("Rate slip", 40f));
+	            table.addCell(createCell("Tally status", 40f));
+	            table.addCell(createCell("Purchase date", 40f));
 	            table.addCell(createCell("Place of purchases", 40f));
-	            table.addCell(createCell("Jute Verity", 40f));
-	            table.addCell(createCell("Gross Quentity", 40f));
-	            table.addCell(createCell("Deduction Quentity", 40f));
-	            table.addCell(createCell("Net Quentity", 40f));
+	            table.addCell(createCell("Jute verity", 40f));
+	            table.addCell(createCell("Gross quentity", 40f));
+	            table.addCell(createCell("Deduction quentity", 40f));
+	            table.addCell(createCell("Net quentity", 40f));
 	            table.addCell(createCell("Amount", 40f));
-	            table.addCell(createCell("Garset Rate", 40f));
-	            table.addCell(createCell("Bin No", 40f));
+	            table.addCell(createCell("Garset rate", 40f));
+	            table.addCell(createCell("Bin no", 40f));
+	            table.addCell(createCell("Region", 40f));
 
 	            // Add model data to the table
 	            for (PurchaseRegisterDTO list : purchaselist) {
 	                //addRow(table, model);
+	            	table.addCell(list.getF_name());
+	            	table.addCell(list.getFarmerregno());
+	            	table.addCell(list.getTallyslipno());
+	            	table.addCell(String.valueOf(list.getRate_slipno()));
+	            	table.addCell(list.getTally_status());
 	                table.addCell(list.getDatepurchase());
-		            table.addCell(list.getPlaceofpurchase());
+		            table.addCell(list.getCentername());
 		            table.addCell(list.getJutevariety());
 		            table.addCell(String.valueOf(list.getGross_qty()));
 		            table.addCell(String.valueOf(list.getDeduc_qty()));
@@ -5911,6 +5937,7 @@ public class InsertDataController
 		            table.addCell(String.valueOf(list.getAmountpayable()));
 		            table.addCell(String.valueOf(list.getGarsat()));
 		            table.addCell(String.valueOf(list.getBinno()));
+		            table.addCell(list.getRegionId());
 	            }
 
 	            document.add(table);

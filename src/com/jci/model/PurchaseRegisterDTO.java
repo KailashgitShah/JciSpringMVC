@@ -28,7 +28,22 @@ public class PurchaseRegisterDTO {
 	private double garsat;
 	private String td_base;
 	private int binno;
+	private String F_name;
+	private int rate_slipno;
 	private String tally_status;
+	
+	public String getF_name() {
+		return F_name;
+	}
+	public void setF_name(String f_name) {
+		F_name = f_name;
+	}
+	public int getRate_slipno() {
+		return rate_slipno;
+	}
+	public void setRate_slipno(int rate_slipno) {
+		this.rate_slipno = rate_slipno;
+	}
 	public String getRegionId() {
 		return regionId;
 	}
@@ -131,19 +146,22 @@ public class PurchaseRegisterDTO {
 	public void setTally_status(String tally_status) {
 		this.tally_status = tally_status;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "PurchaseRegisterDTO [regionId=" + regionId + ", centername=" + centername + ", tallyslipno="
 				+ tallyslipno + ", datepurchase=" + datepurchase + ", farmerregno=" + farmerregno + ", placeofpurchase="
 				+ placeofpurchase + ", cropyr=" + cropyr + ", basis=" + basis + ", jutevariety=" + jutevariety
 				+ ", gross_qty=" + gross_qty + ", deduc_qty=" + deduc_qty + ", net_qty=" + net_qty + ", amountpayable="
-				+ amountpayable + ", garsat=" + garsat + ", td_base=" + td_base + ", binno=" + binno + ", tally_status="
-				+ tally_status + "]";
+				+ amountpayable + ", garsat=" + garsat + ", td_base=" + td_base + ", binno=" + binno + ", F_name="
+				+ F_name + ", rate_slipno=" + rate_slipno + ", tally_status=" + tally_status + "]";
 	}
+	
 	public PurchaseRegisterDTO(String regionId, String centername, String tallyslipno, String datepurchase,
 			String farmerregno, String placeofpurchase, String cropyr, String basis, String jutevariety,
 			double gross_qty, double deduc_qty, double net_qty, double amountpayable, double garsat, String td_base,
-			int binno, String tally_status) {
+			int binno, String f_name, int rate_slipno, String tally_status) {
 		super();
 		this.regionId = regionId;
 		this.centername = centername;
@@ -161,6 +179,8 @@ public class PurchaseRegisterDTO {
 		this.garsat = garsat;
 		this.td_base = td_base;
 		this.binno = binno;
+		F_name = f_name;
+		this.rate_slipno = rate_slipno;
 		this.tally_status = tally_status;
 	}
 	public PurchaseRegisterDTO() {

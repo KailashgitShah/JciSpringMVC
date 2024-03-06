@@ -33,5 +33,5 @@ public interface VerificationTallySlipDao {
 	public List<VerifyTallySlip> getAllHold(String region, String role_type);
 	public void updatestatustoPP(String tallyslipno);
 	public void updatestatustoRMZM(String tallyno);
-	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis, String purchasesdate);
+	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis, String purchasesdateFrom, String purchasesdateTo);
 }

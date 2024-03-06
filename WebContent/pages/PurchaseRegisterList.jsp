@@ -3,7 +3,7 @@
 <%@page import="java.io.File"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
-<%@page import="com.jci.model.PurchaseRegisterDTO"%>
+<%@page import="com.jci.model.RoDetailsModel"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,11 +55,12 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                 <h1 class="page-title">Purchase Register List</h1>
             </div>
 			<%
-				 List <PurchaseRegisterDTO>  batch = null; //= (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
+				 //List <PurchaseRegisterDTO>  batch = null; //= (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
 			%>
 <div class="page-content fade-in-up">
 	<div class="row">
 		<div class="col-md-11">
+		<span>${msg}</span>
 			<div class="ibox">	
 			<form action="purchaseslisting.obj" method="POST">		
 			<div class="row">
@@ -73,22 +74,28 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 					</select>
 				</div>
 				<div class="col-sm-3 form-group">
-					<label class="required">Place of Purchases</label>
+					<label class="required">Region</label>
 		    <%
-				Map<String,String> dpcidname = (Map<String,String>)request.getAttribute("dpcnameid");
+				List<RoDetailsModel> Regions = (List<RoDetailsModel>)request.getAttribute("Regions");
 			%>
-                   <select class="form-control" name="Placeofp" id="Placeofp">
+                   <select class="form-control" name="region" id="region">
 					<option disabled selected value>-Select-</option>
 					<%
-					 for (Map.Entry<String, String> entry : dpcidname.entrySet()) {
+					 for (RoDetailsModel region : Regions) {
 					%>
-					<option value="<%=entry.getKey()%>"><%=entry.getValue()%></option>
+					<option value="<%=region.getRocode()%>"><%=region.getRoname()%></option>
 					<%
 						}
 					%>
 				</select>	
 		 </div>
 				
+				<div class="col-sm-3 form-group">
+				<label id="dpclabel" class="required">DPC</label>
+				<select class="form-control" name="dpc" id="dpc">
+					<option disabled selected value>-Select-</option>
+				</select>
+			   </div>
 				
 				<div class="col-sm-3 form-group">
 					<label class="required">Basis</label>
@@ -98,14 +105,20 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                           <option value="Commercial">Commercial</option>
 					</select>
 				</div>
-				<div class="col-sm-3 form-group">
-					<label class="required">Date of Purchases</label>
-					<input class="form-control" name="purchasesdate" id="purchasesdate" type="Date">
-				</div>
 		    </div>
 		    <div class="row">
+		        <div class="col-sm-3 form-group">
+					<label class="required">Date of Purchases From</label>
+					<input class="form-control" name="purchasesdatefrom" id="purchasesdatefrom" type="Date">
+				</div>
+				<div class="col-sm-3 form-group">
+					<label class="required">Date of Purchases To</label>
+					<input class="form-control" name="purchasesdateto" id="purchasesdateto" type="Date">
+				</div>
+		     </div>
+		    <div class="row">
 			    <div class="col-sm-12 form-group">
-					 <input type="submit" value="Find" id="" class="btn btn-primary">
+					 <input type="submit" value="Generate Report" id="submit" class="btn btn-primary">
 				</div>
 		    </div>
 		    </form>
@@ -157,24 +170,42 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 $(document).ready(function(){
 	 $("#submit").click(function(){
 		 var cropyear = $("#cropyear").val();
-		 var Placeofp = $("#Placeofp").val();
+		 var region = $("#region").val();
+		 var dpc = $("#dpc").val();
 		 var basis = $("#basis").val();
-		 var purchasesdate = $("#purchasesdate").val();
+		 var datefrom = $("#purchasesdatefrom").val();
+		 var dateto = $("#purchasesdateto").val();
+		 
+		 if(cropyear == "" || region == "" || dpc == "" || basis == "" || datefrom == "" || dateto == "")
+			 {
+			   alert("All Fields Are Mandatory");
+			   return false;
+			 }
 		 
 		 //alert(purchasesdate);
 		 //return false;
-		 $.ajax({
-				type:"GET",
-				url:"purchaseslisting.obj",
-				data:jQuery.param({"cropyear":cropyear ,"Placeofp" :Placeofp, "basis":basis,"purchasesdate":purchasesdate}),
-				success:function(result){
-	 				 alert(result);
-				}			
-			});
-		 
 	 });
 });
-	 
+
+				$("#region").on("change", function() {
+					var id = (this.value);	
+					if(id!=null){
+						$.ajax({
+							type:"GET",
+							url:"findDpcByRegion.obj",
+							data:{"id":id},
+							success:function(result){
+				 				   var data= jQuery.parseJSON(result);
+					 					 var html = "<option disabled selected value>-Select-</option>";
+				 				     for (var i = 0; i< data.length; i++){
+				 					 html += "<option value=" +data[i].split("-")[0]+ ">"+data[i].split("-")[1]+"</option>"
+				 				  } 
+				 				$("#dpc").html(html);
+							}			
+						});
+					} 
+				});
+					 
 </script>
 </body>
 
