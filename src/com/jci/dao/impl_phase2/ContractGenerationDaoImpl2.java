@@ -1,4 +1,5 @@
 package com.jci.dao.impl_phase2;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.ContractGenerationDao2;
 import com.jci.model.Contractgeneration;
 import com.jci.model.PcsoDateModel;
@@ -41,15 +43,17 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		String sqlQueryToGetHighestPriceOfMilldelivery = "select top 1 grade1, grade2, grade3, grade4, grade5, grade6 from jcientry_derivative_price where grade1 + grade2 + grade3 + grade4 + grade5 + grade6 = (select Max(grade1+grade2+grade3+grade4+grade5+grade6) as SumGrades from jcientry_derivative_price where state_name='Assam' and crop_year='"
 				+ cropYear + "'and delivery_type='Mill-Delivery')";
 
-		List<Object[]> listOfGradesMillDelivery = currentSession().createSQLQuery(sqlQueryToGetHighestPriceOfMilldelivery).list();
-		List<Object[]> listOfGradesExGodown = currentSession().createSQLQuery(sqlQueryToGetHighestPriceOfExGodown).list();
+		List<Object[]> listOfGradesMillDelivery = currentSession()
+				.createSQLQuery(sqlQueryToGetHighestPriceOfMilldelivery).list();
+		List<Object[]> listOfGradesExGodown = currentSession().createSQLQuery(sqlQueryToGetHighestPriceOfExGodown)
+				.list();
 		List<Object[]> combinedResult = new ArrayList<>(listOfGradesMillDelivery);
 		combinedResult.addAll(listOfGradesExGodown);
 
 		for (Object[] gradeP : combinedResult) {
 			System.err.println("**********");
 			System.err.println("******Grade prices****");
-			
+
 			System.err.println(((BigDecimal) gradeP[0]).doubleValue());
 			System.err.println(((BigDecimal) gradeP[1]).doubleValue());
 			System.err.println(((BigDecimal) gradeP[2]).doubleValue());
@@ -57,7 +61,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			System.err.println(((BigDecimal) gradeP[4]).doubleValue());
 			System.err.println(((BigDecimal) gradeP[5]).doubleValue());
 
-			
 			System.err.println("**********");
 			System.err.println("**********");
 
@@ -77,19 +80,16 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		return list;
 	}
 
-	
-	
-	
 	@Override
 	public ModelAndView pcso_details(List<String> pcsoDates, List<String> gradeComp) {
 
 		pg.clear();
-		//gc.clear();
-	
+		// gc.clear();
+
 		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 
 		List<Object[]> rows = new ArrayList<>();
-		
+
 		StringBuilder querystr = new StringBuilder("SELECT  mill_name, mill_code,");
 		pcsoDates.forEach(date -> {
 			querystr.append("SUM(CASE WHEN pcso_date =" + date + "THEN Allocated_qty ELSE 0 END) AS " + date + ",");
@@ -106,20 +106,17 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		SQLQuery query = currentSession().createSQLQuery(querystr.toString());
 		rows = query.list();
-	
 
 		int i = 0;
-		for (String price: gradeComp) {
-			//gc.add((Double) price);
+		for (String price : gradeComp) {
+			// gc.add((Double) price);
 			System.out.println("Grade" + i + " " + price + " ");
 			i++;
 		}
-		
-	
 
 		List<Object[]> listOfGradesPrice = getListOfGradesPrice(currCropYear);
 
-		//System.out.println(listOfGradesPrice.size());
+		// System.out.println(listOfGradesPrice.size());
 
 		for (Object[] gradeP : listOfGradesPrice) {
 			// pg.add(gradeP.);
@@ -152,9 +149,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			int sizeOfComponents = pg.size() / 2;
 			Double contractedValueForPerticularMill = 0.0;
 			for (int j = 0; j < sizeOfComponents; j++) {
-				 System.out.println(Double.parseDouble(gradeComp.get(j))/100 + "<->" + totalAllocatedToMill +"<->"
-				 +pg.get(j));
-				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100) * (totalAllocatedToMill * pg.get(j));
+				System.out.println(
+						Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
+				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
+						* (totalAllocatedToMill * pg.get(j));
 			}
 			System.out.println("-------------------------------------------");
 			System.out.println(contractedValueForPerticularMill);
@@ -198,25 +196,23 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_date, Contract_qty, SortingId  from jcicontract order by SortingId ASC";
 
-		  List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
-		  
-		  List<Contractgeneration> list = new ArrayList<>();
-		  
-		  for(Object[] eleObject : contracts) {
-		   Contractgeneration contractgeneration = new Contractgeneration();
-		   
-		   contractgeneration.setContract_identification_no((String)eleObject[0]);
-		   contractgeneration.setPcso_date((String)eleObject[1]);
-		   contractgeneration.setContract_date((String)eleObject[2]);
-		   contractgeneration.setContract_qty((String)eleObject[3]);
-		    
-		   
-		   
-		   list.add(contractgeneration);
-			  
-		  }
-		  
-		  return list;
+		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+
+		List<Contractgeneration> list = new ArrayList<>();
+
+		for (Object[] eleObject : contracts) {
+			Contractgeneration contractgeneration = new Contractgeneration();
+
+			contractgeneration.setContract_identification_no((String) eleObject[0]);
+			contractgeneration.setPcso_date((String) eleObject[1]);
+			contractgeneration.setContract_date((String) eleObject[2]);
+			contractgeneration.setContract_qty((String) eleObject[3]);
+
+			list.add(contractgeneration);
+
+		}
+
+		return list;
 
 	}
 
@@ -226,19 +222,19 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		int i = deliveryType.equals("Ex-Godown") ? 6 : 0;
 		int totalAllocatedToMill = Integer.parseInt(totalQtyOfMill);
 		int updatedContractedValue = 0;
-		
+
 		System.err.println("updated function called in i value starts from " + i + "---");
-		
+
 		System.err.println(gc.size() + " " + pg.size());
 
 		for (int j = 0; j < gc.size(); j++) {
 
 			updatedContractedValue += (gc.get(j) / 100) * (totalAllocatedToMill * pg.get(i));
 			System.err.println(gc.get(j) + " *********** " + pg.get(i));
-			System.err.println("j = "+j + " " + "i = "+ i);
+			System.err.println("j = " + j + " " + "i = " + i);
 			i++;
 		}
-		
+
 		System.err.println(updatedContractedValue);
 
 		return updatedContractedValue;
@@ -247,26 +243,34 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public List<Contractgeneration> getContractFullDetails(String contractidn) {
-String sql = "select * from jcicontract where Contract_identification_no = '"+ contractidn + "'";
-		
+		String sql = "select * from jcicontract where Contract_identification_no = '" + contractidn + "'";
+
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
-		
+
 		List<Contractgeneration> listOfContract = new ArrayList<>();
-		
-		for(Object[] eleObjects : list) {
+
+		for (Object[] eleObjects : list) {
 			Contractgeneration model = new Contractgeneration();
-			model.setContract_acceptance_doc((String)eleObjects[2]);
-			model.setGrade_composition((String)eleObjects[15]);
-			model.setMill_code((String)eleObjects[18]);
-			model.setMill_name((String)eleObjects[19]);
-			model.setMill_qty((double)eleObjects[20]);
-			model.setPcso_date((String)eleObjects[22]);
-			model.setDelivery_type((String)eleObjects[14]);
-			
+			model.setContract_acceptance_doc((String) eleObjects[2]);
+			model.setGrade_composition((String) eleObjects[15]);
+			model.setMill_code((String) eleObjects[18]);
+			model.setMill_name((String) eleObjects[19]);
+			model.setMill_qty((double) eleObjects[20]);
+			model.setPcso_date((String) eleObjects[22]);
+			model.setDelivery_type((String) eleObjects[14]);
+
 			listOfContract.add(model);
 		}
-		
+
 		return listOfContract;
+	}
+
+	@Override
+	public List<Object> getFullAddressByMillName(String millNameString) {
+		String sql = "select client_address1 , client_address2 , client_location , client_pin from jcimilldetailmaster where client_name = '"
+				+ millNameString + "'";
+		return (List<Object>) currentSession().createSQLQuery(sql).list();
+
 	}
 
 }

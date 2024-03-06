@@ -16,4 +16,5 @@ public interface ContractGenerationService2 {
 	ModelAndView pcso_details(List<String> pcso,List<String> gradeArray);
 	public int updateContractedValue(String deliveryType, String totalQtyOfMill);
 	public List<Contractgeneration> getContractFullDetails(String contractidn);
+	public List<Object> getFullAddressByMillName(String millNameString);
 }

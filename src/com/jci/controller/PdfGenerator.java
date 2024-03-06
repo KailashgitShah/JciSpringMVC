@@ -39,9 +39,10 @@ import com.lowagie.text.pdf.GrayColor;
 
 public class PdfGenerator {
 
-	public void generatePdf(String jciRefNo, String millNameString, String millCode, Double qty, String cropyear,
-			List<Object[]> priceList, List<String> compList,List<String> varietyArray, String fileName, String deliveryType,
-			String contractDate, String filePath, String letterHeadPath) throws DocumentException, IOException {
+	public void generatePdfOfContractLetter(String jciRefNo, String millNameString, String millCode, Double qty,
+			String cropyear, List<Object[]> priceList, List<String> compList, List<String> varietyArray,
+			String fileName, String deliveryType, String contractDate, String filePath, String letterHeadPath,
+			List<Object> fullAddress) throws DocumentException, IOException {
 
 		PdfWriter pdfWriter = new PdfWriter(filePath);
 		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
@@ -59,10 +60,20 @@ public class PdfGenerator {
 		float widthOfThreeCoulmn[] = { columnWidth60, columnWidth20, columnWidth20 };
 		float widthOfThreeEqualCoulmn[] = { equalThreeColumWidth, equalThreeColumWidth, equalThreeColumWidth };
 
+		String add1 = "";
+		String add2 = "";
+		String areaAndpincode = "";
+
+		for (Object details : fullAddress) {
+			Object[] row = (Object[]) details;
+			add1 = row[0] + "";
+			add2 = row[1] + "";
+			areaAndpincode = row[2] + "-" + row[3];
+		}
+
 		Table table = new Table(widthOfTwoColumn);
 
 		Image letterHead = new Image(ImageDataFactory.create(letterHeadPath));
-
 
 		table.addCell(new Cell().add(new Paragraph().add(new Text("No, ").setBold()).add(new Text(jciRefNo)))
 				.setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
@@ -71,11 +82,12 @@ public class PdfGenerator {
 				.setBorder(Border.NO_BORDER)).setTextAlignment(TextAlignment.RIGHT);
 
 		Color grayColor = new DeviceGray(0.5f);
+		Color Black = new DeviceGray(0f);
 
 		table.addCell(new Cell()
-				.add(new Paragraph().add(new Text("To, ").setBold())
-						.add(new Text(millNameString).setFontColor(grayColor)))
-				.setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
+				.add(new Paragraph().add(new Text("To, ").setBold().setFontColor(Black)).add(new Text(millNameString)).add("\n")
+						.add(new Text(add1)).add("\n").add(new Text(add2)).add("\n").add(new Text(areaAndpincode)).setFontColor(grayColor))
+				.add(new Paragraph()).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
 
 		Paragraph subHeading = new Paragraph(new Text("Sub : ").setBold())
 				.add(new Text("Sale of raw jute under B.Twill Linkage sale").setUnderline())
@@ -90,7 +102,6 @@ public class PdfGenerator {
 						+ " quintals of raw jute / Mesta under linkage of " + cropyear
 						+ " Crop of the following variety and grades at prices and terms and conditions specified .")
 				.add("\n").add("The details of sale is as under : ");
- 
 
 		Paragraph innerParagraph = new Paragraph().add(new Text(deliveryType).setBold())
 				.setBorderBottom(new SolidBorder(1)).setWidth(columnWidth20).setTextAlignment(TextAlignment.CENTER);
@@ -115,7 +126,7 @@ public class PdfGenerator {
 
 			int compositionInt = (int) Math.round(composition);
 			totalCompositionInt += compositionInt;
-			distributionTable.addCell(new Cell().add(varietyArray.get(i)+"")).setTextAlignment(TextAlignment.CENTER);
+			distributionTable.addCell(new Cell().add(varietyArray.get(i) + "")).setTextAlignment(TextAlignment.CENTER);
 			distributionTable.addCell(new Cell().add(compositionInt + "").setTextAlignment(TextAlignment.CENTER));
 
 			distributionTable.addCell(new Cell().add("##.##").setTextAlignment(TextAlignment.CENTER));
@@ -194,47 +205,17 @@ public class PdfGenerator {
 		float columnWidth20 = fullWidth * 0.20f;
 		float widthOfTwoColumn[] = { columnHalfWidth, columnHalfWidth };
 		float widthOfHeader[] = { columnWidth20, columnWidth60, columnWidth20 };
-      
+
 		Image letterHead = new Image(ImageDataFactory.create(letterHeadPath));
 		Image signature = new Image(ImageDataFactory.create(signaturePath));
-		
+
 		signature.setWidth(140);
 		signature.setHeight(60);
-		signature.setRelativePosition(25,0,0,0);
+		signature.setRelativePosition(25, 0, 0, 0);
 
 		// Setting font of the text
 
 		Table table = new Table(widthOfTwoColumn);
-
-//		Table headerTable = new Table(widthOfHeader);
-//		Image jcilogoImage = new Image(ImageDataFactory
-//				.create("C:\\Users\\pradeep.rathor\\Desktop\\Backup\\JCI-CMS\\WebContent\\assets\\img\\logo5.png"));
-//
-//		Image g20logoImage = new Image(ImageDataFactory
-//				.create("C:\\Users\\pradeep.rathor\\Desktop\\Backup\\JCI-CMS\\WebContent\\assets\\img\\g20Logo.png"));
-//		
-//		Image letterHead = new Image(ImageDataFactory
-//				.create("C:\\Users\\pradeep.rathor\\Desktop\\Backup\\JCI-CMS\\WebContent\\assets\\img\\letterHead.png"));
-//		letterHead.setWidth(250);
-//		letterHead.setHeight(100);
-//		jcilogoImage.setWidth(100);
-//		jcilogoImage.setHeight(100);
-//		g20logoImage.setWidth(80);
-//		g20logoImage.setHeight(80);
-//		
-//		Paragraph headerParagraph = new Paragraph()
-//				.add(letterHead).add("\n")
-//				//.add(new Text("The Jute Corporation Of India").setBold().setFontSize(13)).add("\n")
-//				.add(new Text("Regd. & Head Office : 15N, Nellie Sengupta Sarani").setFontSize(9)).add("\n")
-//				.add(new Text("7th Floor, Kolkata - 700 087").setFontSize(9)).add("\n")
-//				.add(new Text("Corporate Identification Number : U17232WB1971GOI027958").setFontSize(9))
-//				.setTextAlignment(TextAlignment.CENTER).setMargin(2f);
-//
-//		headerTable.addCell(new Cell().add(jcilogoImage).setBorder(Border.NO_BORDER)
-//				.setTextAlignment(TextAlignment.LEFT).setPadding(0));
-//		headerTable.addCell(new Cell().add(headerParagraph).setBorder(Border.NO_BORDER).setPadding(0));
-//		headerTable.addCell(
-//				new Cell().add(g20logoImage).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT));
 
 		table.addCell(new Cell().add(new Paragraph().add(new Text("Ref.No. ").setBold()).add(new Text(jciRefNo)))
 				.setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
@@ -267,7 +248,7 @@ public class PdfGenerator {
 
 		Table tableForSignature = new Table(widthOfTwoColumn);
 		Paragraph signatueParagraph = new Paragraph().add("Yours faithfully,\n").add(signature)
-				.add( "\n ( Kalyan Mazumdar ) \n").add("General Manager (Operation & Marketing)")
+				.add("\n ( Kalyan Mazumdar ) \n").add("General Manager (Operation & Marketing)")
 				.setTextAlignment(TextAlignment.CENTER);
 
 		tableForSignature.addCell(new Cell().add("").setBorder(Border.NO_BORDER));

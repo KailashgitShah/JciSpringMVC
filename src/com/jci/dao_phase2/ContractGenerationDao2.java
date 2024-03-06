@@ -17,5 +17,6 @@ public interface ContractGenerationDao2 {
 	List<Object[]> getListOfGradeComposition(String gradeComp);
 	int updateContractedValue(String deliveryType, String totalQtyOfMill);
 	List<Contractgeneration> getContractFullDetails(String contractidn);
+	List<Object> getFullAddressByMillName(String millNameString);
 
 }

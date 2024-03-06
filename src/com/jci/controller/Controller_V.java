@@ -838,11 +838,17 @@ public class Controller_V {
 		///
 
 		for (Map<String, String> millDetail : millDetails) {
+			
+			
+			
 			Contractgeneration contractgeneration = new Contractgeneration();
 
 			Double juteValue = Double.parseDouble(millDetail.get("juteValue"));
 			String millCode = millDetail.get("millCode");
 			String millNameString = millDetail.get("millName");
+			
+			List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
+			
 			Double millQty = Double.parseDouble(millDetail.get("Qty"));
 			String deliveryType = millDetail.get("delivery_type");
 			String finalGeneratedContractNo = "JCI/" + millCode + "/" + cropYear + "/" + contractIdn;
@@ -852,8 +858,12 @@ public class Controller_V {
 			contractgeneration.setContract_date(contractdate);
 			contractgeneration.setDelivery_type(deliveryType);
 			contractgeneration.setContract_no(finalGeneratedContractNo);
-			// contract value = 110% of jute value
-			contractgeneration.setContract_value(juteValue * 1.1);
+			
+			// contract value = 105% of jute value
+			contractgeneration.setContract_value(juteValue * 1.05);
+			// contract value LC = 110% of jute value
+			contractgeneration.setContractValueLc(juteValue * 1.1);
+			
 			contractgeneration.setCreated_date(new Date());
 			contractgeneration.setCreated_by(refId);
 			contractgeneration.setGrade_composition(lableName);
@@ -887,8 +897,8 @@ public class Controller_V {
 
 			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
 
-			pdfGenerator.generatePdf(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
-					GradePriceList, gradeArray , varietyArray, fileName, deliveryType, contractdate, filePath, letterHeadPath);
+			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
+					GradePriceList, gradeArray , varietyArray, fileName, deliveryType, contractdate, filePath, letterHeadPath , fullAddress);
 
 			// send email
 			String body = "Please find below attachment to get full details of contract grade wise..";
