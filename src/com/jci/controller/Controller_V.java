@@ -117,6 +117,7 @@ import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
 import com.jci.service_phase2.GenrationCashDocumentService;
 import com.jci.service_phase2.HOInstService;
+import com.jci.service_phase2.MillAccept;
 import com.jci.service_phase2.MillRecieptService;
 import com.jci.service_phase2.OperationAndTransportCostService;
 import com.jci.service_phase2.OperationCostService;
@@ -140,6 +141,9 @@ import java.util.Calendar;
 public class Controller_V {
 	@Autowired
     HOInstService hoInstService;
+
+	@Autowired
+	MillAccept millacct;
 
 
 	private final PdfGenerator_K pdfGenerator;
@@ -3408,8 +3412,137 @@ public class Controller_V {
              return new ModelAndView(new RedirectView("jcilist.obj"));
            }
 
+// List Mill Acceptence 
 
-           
+    @RequestMapping("viewmillAcc")
+	public String ViewMillAcceptance1(Model model, HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("listMillAcceptence");
+
+		if (username == null) {
+
+			return "index";
+
+		}
+		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
+		System.out.println(AllList + "allistttttttttttttt");
+		model.addAttribute("AllList", AllList);
+		return "listMillAcceptence";
+	}
+
+	
+
+	@RequestMapping("saveMillAcceptenceFile")
+	public ModelAndView millaccept(HttpServletRequest request, RedirectAttributes redirectAttributes,
+			 HttpSession s)
+			throws IllegalStateException, IOException {
+
+        String  contractId= request.getParameter("contract_id"); 
+    
+        millacct.updatemillacceptflag(contractId);
+		 redirectAttributes.addFlashAttribute("msg",
+					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Contract Accepted.</div>\r\n");
+		
+		
+
+		return new ModelAndView(new RedirectView("viewmillAcc.obj"));
+
+	}
+	@RequestMapping("downloadSupportingDocumententMillAccept")
+
+	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+		String imageDirectory = "C:\\Users\\Mansi.Gupta\\Documents\\millAcceptFile"; // Replace with your image
+																						// directory path
+
+		String imagePath = imageDirectory + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+
+		if (imageFile.exists()) {
+
+			try {
+
+				// Set the content type based on the file type
+
+				String contentType = determineContentType(filename);
+
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+
+				response.setContentLength((int) imageFile.length());
+
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+
+				int bytesRead;
+
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+					responseOutputStream.write(buffer, 0, bytesRead);
+
+				}
+
+				fileInputStream.close();
+
+				responseOutputStream.close();
+
+			} catch (IOException e) {
+
+				// Handle IO exception
+
+				e.printStackTrace();
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
+
+		} else {
+
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		}
+
+	}
+
+	// Utility method to determine content type based on filename
+
+	private String determineContentType2(String filename) {
+
+		if (filename.endsWith(".pdf")) {
+
+			return "application/pdf";
+
+		} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+
+			return "image/jpeg";
+
+		} else if (filename.endsWith(".png")) {
+
+			return "image/png";
+
+		} else {
+
+			return "application/octet-stream"; // Default to binary data if content type is unknown
+
+		}
+
+	}
+
     
     
 

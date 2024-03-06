@@ -93,6 +93,10 @@ public class Contractgeneration {
 
 	@Column(name = "Jute_value")
 	private double Jute_value;
+	
+	@Column(name = "Contract_value_lc")
+	private double contractValueLc;
+
 
 
 	public Long getContract_id() {
@@ -305,59 +309,125 @@ public class Contractgeneration {
 	public void setJute_value(double jute_value) {
 		Jute_value = jute_value;
 	}
+	
 
-	@Override
+	public double getContractValueLc() {
+		return contractValueLc;
+	}
+
+	public void setContractValueLc(double contractValueLc) {
+		this.contractValueLc = contractValueLc;
+	}
+	
+	
+
+@Override
 	public String toString() {
 		return "Contractgeneration [contract_id=" + contract_id + ", Pcso_date=" + Pcso_date
 				+ ", Contract_identification_no=" + Contract_identification_no + ", Contract_no=" + Contract_no
 				+ ", Contract_date=" + Contract_date + ", Contract_qty=" + Contract_qty + ", Contract_value="
-				+ Contract_value + ", Jute_value=" + Jute_value + ", Mill_code=" + Mill_code + ", Mill_name="
-				+ Mill_name + ", Mill_qty=" + Mill_qty + ", Delivery_type=" + Delivery_type + ", Grade_composition="
-				+ Grade_composition + ", Payment_duedate=" + Payment_duedate + ", Contract_cancellation_flag="
-				+ Contract_cancellation_flag + ", Contract_cancel_date=" + Contract_cancel_date
-				+ ", Contract_acceptance_flag=" + Contract_acceptance_flag + ", Contract_acceptance_date="
-				+ Contract_acceptance_date + ", Contract_acceptance_doc=" + Contract_acceptance_doc
-				+ ", Intial_Payment_date=" + Intial_Payment_date + ", Intial_Payment_flag=" + Intial_Payment_flag
-				+ ", Contract_status=" + Contract_status + ", Created_date=" + Created_date + ", cropYear=" + cropYear
-				+ ", Created_by=" + Created_by + ", SortingId=" + SortingId + "]";
+				+ Contract_value + ", Mill_code=" + Mill_code + ", Mill_name=" + Mill_name + ", Mill_qty=" + Mill_qty
+				+ ", Delivery_type=" + Delivery_type + ", Grade_composition=" + Grade_composition + ", Payment_duedate="
+				+ Payment_duedate + ", Contract_cancellation_flag=" + Contract_cancellation_flag
+				+ ", Contract_cancel_date=" + Contract_cancel_date + ", Contract_acceptance_flag="
+				+ Contract_acceptance_flag + ", Contract_acceptance_date=" + Contract_acceptance_date
+				+ ", Contract_acceptance_doc=" + Contract_acceptance_doc + ", Intial_Payment_date="
+				+ Intial_Payment_date + ", Intial_Payment_flag=" + Intial_Payment_flag + ", Contract_status="
+				+ Contract_status + ", Created_date=" + Created_date + ", cropYear=" + cropYear + ", Created_by="
+				+ Created_by + ", SortingId=" + SortingId + ", Jute_value=" + Jute_value + ", contractValueLc="
+				+ contractValueLc + "]";
 	}
+
 
 	public Contractgeneration(Long contract_id, String pcso_date, String contract_identification_no, String contract_no,
-			String contract_date, String contract_qty, double contract_value, double jute_value, String mill_code,
-			String mill_name, double mill_qty, String delivery_type, String grade_composition, String payment_duedate,
-			int contract_cancellation_flag, String contract_cancel_date, int contract_acceptance_flag,
-			String contract_acceptance_date, String contract_acceptance_doc, String intial_Payment_date,
-			int intial_Payment_flag, String contract_status, Date created_date, String cropYear, int created_by,
-			int sortingId) {
-		super();
-		this.contract_id = contract_id;
-		Pcso_date = pcso_date;
-		Contract_identification_no = contract_identification_no;
-		Contract_no = contract_no;
-		Contract_date = contract_date;
-		Contract_qty = contract_qty;
-		Contract_value = contract_value;
-		Jute_value = jute_value;
-		Mill_code = mill_code;
-		Mill_name = mill_name;
-		Mill_qty = mill_qty;
-		Delivery_type = delivery_type;
-		Grade_composition = grade_composition;
-		Payment_duedate = payment_duedate;
-		Contract_cancellation_flag = contract_cancellation_flag;
-		Contract_cancel_date = contract_cancel_date;
-		Contract_acceptance_flag = contract_acceptance_flag;
-		Contract_acceptance_date = contract_acceptance_date;
-		Contract_acceptance_doc = contract_acceptance_doc;
-		Intial_Payment_date = intial_Payment_date;
-		Intial_Payment_flag = intial_Payment_flag;
-		Contract_status = contract_status;
-		Created_date = created_date;
-		this.cropYear = cropYear;
-		Created_by = created_by;
-		SortingId = sortingId;
-	}
+		String contract_date, String contract_qty, double contract_value, String mill_code, String mill_name,
+		double mill_qty, String delivery_type, String grade_composition, String payment_duedate,
+		int contract_cancellation_flag, String contract_cancel_date, int contract_acceptance_flag,
+		String contract_acceptance_date, String contract_acceptance_doc, String intial_Payment_date,
+		int intial_Payment_flag, String contract_status, Date created_date, String cropYear, int created_by,
+		int sortingId, double jute_value, double contractValueLc) {
+	super();
+	this.contract_id = contract_id;
+	Pcso_date = pcso_date;
+	Contract_identification_no = contract_identification_no;
+	Contract_no = contract_no;
+	Contract_date = contract_date;
+	Contract_qty = contract_qty;
+	Contract_value = contract_value;
+	Mill_code = mill_code;
+	Mill_name = mill_name;
+	Mill_qty = mill_qty;
+	Delivery_type = delivery_type;
+	Grade_composition = grade_composition;
+	Payment_duedate = payment_duedate;
+	Contract_cancellation_flag = contract_cancellation_flag;
+	Contract_cancel_date = contract_cancel_date;
+	Contract_acceptance_flag = contract_acceptance_flag;
+	Contract_acceptance_date = contract_acceptance_date;
+	Contract_acceptance_doc = contract_acceptance_doc;
+	Intial_Payment_date = intial_Payment_date;
+	Intial_Payment_flag = intial_Payment_flag;
+	Contract_status = contract_status;
+	Created_date = created_date;
+	this.cropYear = cropYear;
+	Created_by = created_by;
+	SortingId = sortingId;
+	Jute_value = jute_value;
+	this.contractValueLc = contractValueLc;
+}
 
+	//	@Override
+//	public String toString() {
+//		return "Contractgeneration [contract_id=" + contract_id + ", Pcso_date=" + Pcso_date
+//				+ ", Contract_identification_no=" + Contract_identification_no + ", Contract_no=" + Contract_no
+//				+ ", Contract_date=" + Contract_date + ", Contract_qty=" + Contract_qty + ", Contract_value="
+//				+ Contract_value + ", Jute_value=" + Jute_value + ", Mill_code=" + Mill_code + ", Mill_name="
+//				+ Mill_name + ", Mill_qty=" + Mill_qty + ", Delivery_type=" + Delivery_type + ", Grade_composition="
+//				+ Grade_composition + ", Payment_duedate=" + Payment_duedate + ", Contract_cancellation_flag="
+//				+ Contract_cancellation_flag + ", Contract_cancel_date=" + Contract_cancel_date
+//				+ ", Contract_acceptance_flag=" + Contract_acceptance_flag + ", Contract_acceptance_date="
+//				+ Contract_acceptance_date + ", Contract_acceptance_doc=" + Contract_acceptance_doc
+//				+ ", Intial_Payment_date=" + Intial_Payment_date + ", Intial_Payment_flag=" + Intial_Payment_flag
+//				+ ", Contract_status=" + Contract_status + ", Created_date=" + Created_date + ", cropYear=" + cropYear
+//				+ ", Created_by=" + Created_by + ", SortingId=" + SortingId + "]";
+//	}
+//
+//	public Contractgeneration(Long contract_id, String pcso_date, String contract_identification_no, String contract_no,
+//			String contract_date, String contract_qty, double contract_value, double jute_value, String mill_code,
+//			String mill_name, double mill_qty, String delivery_type, String grade_composition, String payment_duedate,
+//			int contract_cancellation_flag, String contract_cancel_date, int contract_acceptance_flag,
+//			String contract_acceptance_date, String contract_acceptance_doc, String intial_Payment_date,
+//			int intial_Payment_flag, String contract_status, Date created_date, String cropYear, int created_by,
+//			int sortingId) {
+//		super();
+//		this.contract_id = contract_id;
+//		Pcso_date = pcso_date;
+//		Contract_identification_no = contract_identification_no;
+//		Contract_no = contract_no;
+//		Contract_date = contract_date;
+//		Contract_qty = contract_qty;
+//		Contract_value = contract_value;
+//		Jute_value = jute_value;
+//		Mill_code = mill_code;
+//		Mill_name = mill_name;
+//		Mill_qty = mill_qty;
+//		Delivery_type = delivery_type;
+//		Grade_composition = grade_composition;
+//		Payment_duedate = payment_duedate;
+//		Contract_cancellation_flag = contract_cancellation_flag;
+//		Contract_cancel_date = contract_cancel_date;
+//		Contract_acceptance_flag = contract_acceptance_flag;
+//		Contract_acceptance_date = contract_acceptance_date;
+//		Contract_acceptance_doc = contract_acceptance_doc;
+//		Intial_Payment_date = intial_Payment_date;
+//		Intial_Payment_flag = intial_Payment_flag;
+//		Contract_status = contract_status;
+//		Created_date = created_date;
+//		this.cropYear = cropYear;
+//		Created_by = created_by;
+//		SortingId = sortingId;
+//	}
+////
 	public Contractgeneration() {
 		super();
 		// TODO Auto-generated constructor stub
