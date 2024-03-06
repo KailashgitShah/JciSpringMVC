@@ -41,8 +41,8 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
                 @Override
                 public List<String> getContract() {
-
-                                String sqlString =" SELECT fc.Contractno  "
+                				//For getting Contract No from jcifinancialconcurrence which has not met the required criteria
+                                String sqlString =" SELECT Distinct fc.Contractno  "
                                                                 + "  FROM jcifinancial_concurrence fc  "
                                                                 + "  LEFT JOIN ("
                                                                 + "  SELECT ho.Contract_No, SUM(ho.Gr1_qty + ho.Gr2_qty + ho.Gr3_qty + ho.Gr4_qty + ho.Gr5_qty + ho.Gr6_qty + ho.Gr7_qty + ho.Gr8_qty) AS TotalQty, MAX(ho.Allowed_qty) AS MaxAllowedQty  "
@@ -101,13 +101,14 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 
                                 result.add(strDate);
                                 System.err.println(result.get(4));
+                                //Get composition and combination from jcigrade_composition
                                 String sqlString4 = "select Jute_combination,System_composition from jcigrade_composition where Label_name='"
                                                                 + result.get(4) + "'";// Composition + percentage allowed.
                                 List<String> list4 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString4).list();
                                 result.addAll(list4);
                                 String userRole = (String) request.getSession().getAttribute("rolename");
                                 String userRoname = (String) request.getSession().getAttribute("zonename");
-
+                                //To display sum of each grade for given contract no.
                                 String sqlString9 = "SELECT   "+
                                                    "   SUM(Gr1_qty) AS Total_Grade1,"+
                                                    "   SUM(Gr2_qty) AS Total_Grade2,"+
@@ -122,7 +123,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 
                                 List<String> list9 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString9).list();
                                 result.addAll(list9);
-                                
+                                //To get latest payment details 
                                 //Payment mode 
                                 String sqlString10 = "SELECT TOP 1 Payment_type from jcipayment_arrangement where Contract_No = '"+contractNo+"'  Order by Created_date DESC;";
                                 List<String> list10 =  this.sessionFactory.getCurrentSession().createSQLQuery(sqlString10).list();
@@ -130,7 +131,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 
                                 
                                 System.err.println(result);//
-                                
+                                //To get latest instrument date
                                 String sqString5 = "select Top 1 Instrument_Date from jcipayment_arrangement where Contract_No ='" + contractNo + "' Order by Created_date DESC; ";
                                 Date list5 = (Date) this.sessionFactory.getCurrentSession().createSQLQuery(sqString5).uniqueResult();
 
@@ -170,7 +171,8 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
                                 return result;
                 }
-
+                
+                //Get RO name and Ro code  for listing
                 @Override
                 public List<Object[]> getRoname() {
 
@@ -179,7 +181,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
                                 return list;
                 }
-
+                //To get Count of previous DI issued for particular RO code.
                 @Override
                 public Object getCount(String reg) {
                                 // TODO Auto-generated method stub
@@ -188,7 +190,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
                                 return list3;
                 }
-
+                //Save HO_DI
                 @Override
                 public void save(JciDIHoModel hodispatch) {
                                 // TODO Auto-generated method stub
@@ -198,7 +200,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 currentSession().createSQLQuery(sqlString).executeUpdate();// for setting values only
                                 return;
                 }
-
+                //For Listing 
                 @Override
                 public List<JciDIHoModel> getAll() {
                                 Criteria c = this.sessionFactory.getCurrentSession().createCriteria(JciDIHoModel.class);
@@ -207,7 +209,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 List<JciDIHoModel> ll = c.list();
                                 return ll;
                 }
-
+                //Delete query
                 @Override
                 public void delete(int parseInt) {
                                 String sqlString = "DELETE FROM jciDI_ho WHERE DI_HO_ID ='"+parseInt+"'";
@@ -216,7 +218,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 return;
                                 
                 }
-
+                //Get contract no. for the given DI_HO_ID
                 @Override
                 public String getContractNo(String id) {
                                 // TODO Auto-generated method stub
@@ -225,7 +227,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                 return string;
                                 
                 }
-
+                //Checking for DI Contract No exist in bill of Supply
                 @Override
                 public String check(String string) {
                                 String string2 ="SELECT CASE"

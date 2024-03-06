@@ -450,16 +450,6 @@ if (bale.get(7) != null)
 											});
 						});
 	</script>
-
-
-
-
-
-
-
-
-
-
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
 	<script src="./assets/vendors/jquery/dist/jquery.min.js"
@@ -479,17 +469,6 @@ if (bale.get(7) != null)
 
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
-
-
-	<!--  	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>  -->
-
-
-
-
 	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
 		type="text/javascript"></script>
 	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"

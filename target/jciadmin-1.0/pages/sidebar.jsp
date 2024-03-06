@@ -256,9 +256,9 @@ body {
 					<li data-pre="" id=""><a href="entryderivativepricelist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Derivative
 								Price List</b></a></li>
-					<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
+					<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-								Grade Composition</b></a></li>
+								Grade Composition</b></a></li> -->
 					<li data-pre="" id=""><a href="entrygradecompositionlist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>List of Grade
 								Composition</b></a></li>
@@ -274,7 +274,7 @@ body {
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation List</b></a></li>
-<!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
+					<!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>MSP Grades
 								Combination</b></a></li> -->
 
@@ -312,7 +312,15 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								Payment Realization / Disbursal Details</b></a></li>
 
-					<li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
+					<li data-pre="" id=""><a href="HOdispatchInst.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>HO Dispatch
+								Instruction</b></a></li>
+
+					<li data-pre="" id=""><a href="jcilist.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View HO Dispatch
+								</b></a></li>
+
+					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment instrument</b></a></li>
 					<li data-pre="42" id="o42"><a href="HOdispatch.obj"><i
@@ -323,11 +331,11 @@ body {
 					<li data-pre="44" id="o44"><a href="uploadingreceipt.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								receipt</b></a></li>
-								
+								 -->
 
 				</ul></li>
-				
-				<li><a href="javascript:void(0);"><i
+
+			<!-- 	<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
 					class="fa fa-angle-left arrow"></i></a>
@@ -406,7 +414,7 @@ body {
 					<li  data-pre="" id=""><a href="listofFactorsinvolvedinCommercialPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Factors involved commercial</b></a></li>					
 					<li  data-pre="" id=""><a href="Creation_of_Bid_Offering.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Creation of Bid Offering</b></a></li>					
 				  </ul>
-				</li>
+				</li> -->
 	</div>
 
 

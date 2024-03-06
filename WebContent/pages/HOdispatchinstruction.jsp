@@ -325,9 +325,10 @@ input[type="radio"] {
                     tableHTML += "<th style='font-weight: bold;'>" + variety + "</th>";
                     for (var j = 0; j < columns - 1; j++) {
                              if ((variety === "Mesta" || variety === "Bimli") && j > 5) {
-                               tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0.00'  readonly/></td>";
+                            	 tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
+
                              } else {
-                               tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0.00' /></td>";
+                               tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0' /></td>";
                              }
                            }
 
@@ -454,7 +455,7 @@ input[type="radio"] {
                                                                      + d[2] + "</span></p>";
 
                                                        contentToDisplay += "<h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Contract Quantity</h1><br>";
-                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%;'>Jute Variety Grade</th><th style='border: 1px solid black;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%;'>Balance Qty (Qtls.)</th></tr>";
+                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";
 
                                                        for (var i = 8; i <= 13; i++) {
                                                               var no = (+(d[i][1] * d[2] / 100)  - +d[14][i-8]).toFixed(2);
@@ -486,15 +487,15 @@ input[type="radio"] {
                                                                      + formattedDate + "</span></p>";
 
                                                        contentToDisplay += "<br><h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>DI's Against this Contract</h1><br>";
-                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;'>Previous HO DI's</th><th style='border: 1px solid black; width: 20%;'>Issue Date</th><th style='border: 1px solid black; width: 20%;'>To</th><th style='border: 1px solid black; width: 40%;'>Quantity(Qtls)</th></tr>";
+                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;  text-align: center;'>Previous HO DI's</th><th style='border: 1px solid black; width: 20%;  text-align: center;'>Issue Date</th><th style='border: 1px solid black; width: 20%;  text-align: center;'>To</th><th style='border: 1px solid black; width: 40%;  text-align: center;'>Quantity(Qtls)</th></tr>";
                                                        //alert(d[16][4]);
                                                        var total = 0;
                                                        var size = 18 + +d[17];
                                                        //alert(size);
                                                        for (var i = 18; i < size; i++) {
-                                                              contentToDisplay += "<tr><td style='border: 1px solid black;'><span style='color: blue; width: 50%;'>"
+                                                              contentToDisplay += "<tr><td style='border: 1px solid black;width:50%;'><span style='color: blue; '>"
                                                                            + d[i][0]
-                                                                           + "</span></td><td style='border: 1px solid black;'><span style='color: blue;'>"
+                                                                           + "</span></td><td style='border: 1px solid black;width:30%;'><span style='color: blue;'>"
                                                                            + d[i][1]
                                                                            + "</span></td><td style='border: 1px solid black;'><span style='color: green;'>"
                                                                            + d[i][2]
@@ -513,7 +514,7 @@ input[type="radio"] {
                                                        
                                                        document.getElementById("IssQty").value=total;//Issued QTY
                                                        contentToDisplay += "<br><h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Last Five DI's for the Particular Mill</h1><br>";
-                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;'>DI No.</th><th style='border: 1px solid black; width: 20%;'>To</th></tr>";
+                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%; text-align: center;'>DI No.</th><th style='border: 1px solid black; width: 20%; text-align: center;'>To</th></tr>";
                                                        //alert(parseInt(d[16 + parseInt(d[15])])
                                                                      //+ parseInt(16 + parseInt(d[15])));
                                                        //alert(size + 2);

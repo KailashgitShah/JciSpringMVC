@@ -1,3 +1,4 @@
+<%@page import="com.jci.controller.LoginController"%>
 <%@page import="com.jci.model.EntryofpcsoModel"%>
 <%@page import="java.util.List"%>
 
@@ -18,13 +19,10 @@
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
+<link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
-
-<script src="./assets/vendors/DataTables/datatables.min.js"
-	type="text/javascript"></script>
 
 <!-- PAGE LEVEL STYLES-->
 <style>
@@ -61,8 +59,13 @@
 			<%
 			List<EntryofpcsoModel> pcsoList = (List<EntryofpcsoModel>) request.getAttribute("pcsolist");
 			List<String> refNos = (List<String>) request.getAttribute("refNos");
+	
 			%>
 			<div class="page-content fade-in-up">
+				<div class="ibox-head">
+					<span id="flashMessage">${msg}</span>
+				</div>
+				<!--  way to show drill down listing  -->
 				<div class="accordion" id="accordionExample">
 					<%
 					int i = 1;
@@ -90,6 +93,8 @@
 					</div>
 					<%
 					i++;
+				
+					
 					}
 					%>
 				</div>
@@ -106,8 +111,7 @@
 
 		<!-- END PAGA BACKDROPS-->
 		<!-- CORE PLUGINS-->
-		<script src="./assets/vendors/jquery/dist/jquery.min.js"
-			type="text/javascript"></script>
+	
 		<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
 			type="text/javascript"></script>
 		<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
@@ -118,20 +122,17 @@
 			src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
 			type="text/javascript"></script>
 		<!-- PAGE LEVEL PLUGINS-->
-		<script src="./assets/vendors/DataTables/datatables.min.js"
-			type="text/javascript"></script>
+	
 		<!-- CORE SCRIPTS-->
 		<script src="assets/js/app.min.js" type="text/javascript"></script>
+	
 		<!-- PAGE LEVEL SCRIPTS-->
 		<script type="text/javascript">
-			/* 	$(function() {
-					$('#example-table').DataTable({
+			setTimeout(function() {
+				document.getElementById('flashMessage').style.display = 'none';
+			}, 1500);
 
-						fixedHeader : true
-
-					});
-				}) */
-
+		
 			function findDetails(refNo, id) {
 
 				$
@@ -143,8 +144,11 @@
 							},
 							success : function(result) {
 								var data = jQuery.parseJSON(result);
+								
+							<%-- 	console.log(encrypter.encrypt("32", '<%=key%>')); --%>
+								
 								var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";
-
+                                 
 								tableData += "<thead><tr>" + "<th>S.N.</th>"
 										+ "<th>JCI letter Ref.</th>"
 										+ "<th>PCO Requested Date</th>"
@@ -164,7 +168,7 @@
 
 									tableData += "<td>" + data[i].letterRef
 											+ "</td>";
-							
+
 									tableData += "<td>" + data[i].pcso_req_date
 											+ "</td>";
 									tableData += "<td>" + data[i].pcsoReqQty

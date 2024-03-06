@@ -2,9 +2,7 @@
 <%@page import="com.jci.model.PCSORequestLetter"%>
 <%@page import="java.util.List"%>
 <%@page import="java.net.URLEncoder"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
-
-
+<%@ page import="javax.servlet.http.HttpServletRequest"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +12,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -26,6 +23,14 @@
 	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 
 <!-- PAGE LEVEL STYLES-->
@@ -43,21 +48,6 @@
 	text-decoration: none;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		alert();
-		var table = $('#example-table').DataTable({
-			scrollY : "300px",
-			scrollX : true,
-			scrollCollapse : true,
-			paging : false,
-			fixedColumns : {
-				left : 1,
-				right : 1
-			}
-		});
-	});
-</script>
 </head>
 
 <body class="fixed-navbar">
@@ -78,15 +68,14 @@
 			%>
 			<div class="page-content fade-in-up">
 				<div class="ibox">
-
 					<div class="ibox-head">
-						<span>${msg}</span>
+						<span id="flashMessage">${msg}</span>
 					</div>
 
 					<div class="ibox-body">
 						<div class="scrollmenu">
-							<table class="table table-striped table-bordered table-hover"
-								id="example-table" cellspacing="0" width="100%">
+							<table id="example-table"
+								class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>SN.</th>
@@ -95,13 +84,15 @@
 										<th>Crop Year</th>
 										<th>Requested Qty.</th>
 										<th>Uncontracted Qty.</th>
+										<th></th>
+										<th></th>
 								</thead>
 								<tbody>
 									<%
 									int i = 1;
 									for (PCSORequestLetter requestEl : requestList) {
 										//String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
-									
+
 										String fullFilePath = requestEl.getLetter_path();
 										String date = requestEl.getReqGenDate();
 										String encodedFilePath = URLEncoder.encode(fullFilePath, "UTF-8");
@@ -127,13 +118,15 @@
 										if (emailStatus == 0) {
 										%>
 										<td><button class="btn btn-outline-warning"
-												onclick="acknowlegeRequest('<%=refNo%>','<%=date%>','<%=cropYear%>','<%=qty%>','<%=id%>')">Send Mail</button></td>
+												onclick="acknowlegeRequest('<%=refNo%>','<%=date%>','<%=cropYear%>','<%=qty%>','<%=id%>')">Send
+												Mail</button></td>
 										<%
 										} else {
 										%>
 
-										<td><button class="btn btn-outline-secondary" disabled>Email
-												Sent</button></td>
+										<td><button class="btn btn-outline-secondary" disabled>
+												Email Sent on
+												<%=requestEl.getEmailSentOn()%></button></td>
 										<%
 										}
 										%>
@@ -160,9 +153,44 @@
 	<!-- END THEME CONFIG PANEL-->
 	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
+	<script type="text/javascript">
+		setTimeout(function() {
+			document.getElementById('flashMessage').style.display = 'none';
+		}, 1500);
+	</script>
+	<script>
+		function openLinkInNewTab(url) {
+			window.open(url, '_blank');
+		}
 
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
+		//send mail funtion
+		function acknowlegeRequest(refNo, date, cropYear, qty, id) {
+			if (confirm("do you want to approve this request , send mail to JC office")) {
+
+				$.ajax({
+					url : "sendThankYouEmailToJC.obj",
+					type : "GET",
+					data : {
+						"refNo" : refNo,
+						"date" : date,
+						"cropYear" : cropYear,
+						"qty" : qty,
+						"id" : id
+					},
+					success : function(result) {
+
+						location.reload();
+						//window.location.href = "entryofpcso.obj";
+
+					}
+				})
+			} else {
+				console.log("rejected");
+			}
+
+		}
+	</script>
+
 	<script src="./assets/vendors/jquery/dist/jquery.min.js"
 		type="text/javascript"></script>
 	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
@@ -193,43 +221,19 @@
 			    { "data": "salary" }
 			]*/
 			});
-		});
-	</script>
-	<script>
-		function openLinkInNewTab(url) {
-			window.open(url, '_blank');
-		}
-
-		function acknowlegeRequest(refNo, date, cropYear, qty, id) {
-
-			console.log(refNo, date, cropYear, qty);
-
-			if (confirm("do you want to approve this request , send mail to JC office")) {
-
-				$.ajax({
-					url : "sendThankYouEmailToJC.obj",
-					type : "GET",
-					data : {
-						"refNo" : refNo,
-						"date" : date,
-						"cropYear" : cropYear,
-						"qty" : qty,
-						"id" : id
-					},
-					success : function(result) {
-					 
-					   location.reload();
-						//window.location.href = "entryofpcso.obj";
-						
-					}
-				})
-			} else {
-				console.log("rejected");
-			}
-
-		}
+		})
 	</script>
 
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
