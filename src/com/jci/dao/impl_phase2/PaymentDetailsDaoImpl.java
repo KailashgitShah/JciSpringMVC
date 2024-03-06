@@ -87,14 +87,14 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	 
 	
 	@Override
-	 public void update1(String cont_no,int paymentId) {
+	 public void update1(String cont_no,int paymentId,String remark) {
 			Date date= new Date();
 			 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		     String dateString = dateFormat.format(date);
-		    String hql = "UPDATE jcipayment_arrangement set Fc_status = 2,Fc_remarks='Rejected', Fc_action_date = '" + dateString + "'  where Contract_No = '" + cont_no + "' and  Payment_id = '" + paymentId + "' ";
+		    String hql = "UPDATE jcipayment_arrangement set Fc_status = 2,Fc_remarks='Rejected', Fc_action_date = '" + dateString + "',Remarks='" + remark + "'  where Contract_No = '" + cont_no + "' and  Payment_id = '" + paymentId + "' ";
 
 		    
-		    String hql1 = "UPDATE jcicontract set contract_status='Approved by Finance' where Contract_no = '" + cont_no + "' ";
+		    String hql1 = "UPDATE jcicontract set contract_status='Rejected by Finance' where Contract_no = '" + cont_no + "' ";
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
 	        this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 		}
@@ -125,34 +125,37 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	        return (EntryPaymentDetailsModel) sessionFactory.getCurrentSession().get(EntryPaymentDetailsModel.class, id);
 	    }
 
+	 
+//		String sql="    SELECT  c.Contract_no  FROM (SELECT  a.Contract_no, a.Contract_value, SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) AS Total_Instrument_Value\r\n"
+//				+ "    FROM jcicontract AS a  LEFT JOIN jcipayment_arrangement AS b  ON   a.Contract_no = b.Contract_No\r\n"
+//				+ "    GROUP BY a.Contract_no,a.Contract_value) AS d  LEFT JOIN  jcicontract AS c ON  c.Contract_no = d.Contract_no WHERE  d.Contract_value > d.Total_Instrument_Value or  d.Total_Instrument_Value is NULL \r\n"
+//				;
+	 
+	 
+	 
 	@Override
 	public List<Object> ContractNo() {
-		String sql="select  Contract_no from  jcicontract";
+		String sql=" SELECT c.Contract_no, d.Difference  \r\n"
+				+ "FROM (\r\n"
+				+ "    SELECT a.Contract_no, a.Contract_value, COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value, \r\n"
+				+ "           (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference\r\n"
+				+ "    FROM jcicontract AS a  \r\n"
+				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No\r\n"
+				+ "    GROUP BY a.Contract_no, a.Contract_value\r\n"
+				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL\r\n"
+				+ ") AS d  \r\n"
+				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no \r\n"
+				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;\r\n"
+				;
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
 	}
 
 	@Override
 	public void contratTable(String cont_no) {
-		
-		
 	
-		Date dateTime = new Date();
-		
-//	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
-//	        String strDate = dateFormat.format(dateTime); 
-//	        
-//	        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-//	        Date instdate1 = null;
-//			try {
-//				instdate1 = formatter1.parse(strDate);
-//			} catch (ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-	       
-		// TODO Auto-generated method stub
-		 String hql = "UPDATE jcicontract set intial_payment_flag = 1 ,intial_payment_date= '" + dateTime + "', contract_status='Payment Done' where Contract_no = '" + cont_no + "' ";
+	Date dateTime = new Date();
+    String hql = "UPDATE jcicontract set intial_payment_flag = 1 ,intial_payment_date= '" + dateTime + "', contract_status='Payment Done' where Contract_no = '" + cont_no + "' ";
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	}
 
@@ -178,6 +181,36 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
      }
+	
+	@Override
+	public  List<Object[]>PreviousNo(String st) {
+		String sql="SELECT Contract_No, Instrument_value, Instrument_Date FROM jcipayment_arrangement where Contract_No='" + st + "'";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+     }
+
+	@Override
+	public List<Object> getsumofInstrumentValue(String instValue) {
+		String sql=" select  Instrument_value from jcipayment_arrangement WHERE  Contract_No='JCI/190/2023-2024/BT003'";
+		 List<Object>resultListofsum= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    return resultListofsum;
+	}
+	
+	@Override
+	public void remark(String remark ,String  con_No,int id) {
+		 String hql = "UPDATE  jcipayment_arrangement set Remarks =  '" + remark + "'  where Contract_No = '" + con_No + "' and Payment_id= '" + id + "' ";
+		
+	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+
+	}
+
+	@Override
+	public List<Object> PreviousInstruValue(String st) {
+		String sql=" select  Instrument_value from jcipayment_arrangement WHERE  Contract_No='" + st + "' ";
+		 List<Object>resultListofsum= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    return resultListofsum;
+	}
+
 	
 	
 	

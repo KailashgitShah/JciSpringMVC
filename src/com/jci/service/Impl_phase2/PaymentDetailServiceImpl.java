@@ -58,8 +58,8 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		return paymentDetailsdao.find(id);
 	}
     @Override
-	public void update1(String cont_no,int paymentId) {
-    	 this.paymentDetailsdao.update1(cont_no,paymentId);
+	public void update1(String cont_no,int paymentId,String remark) {
+    	 this.paymentDetailsdao.update1(cont_no,paymentId,remark);
 	}
     @Override
 	public void update2(String cont_no) {
@@ -87,9 +87,28 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		
 		return  paymentDetailsdao.gradewiseqty(st,contractqty);
 	}
+	@Override
+	public List<Object> getsumofInstrumentValue(String instValue) {
 	
-//	@Override
-//	public  List<Object[]> paymentdetails(String st) {
-//		return paymentDetailsdao.paymentdetails(st);
-//	}
+		return this.paymentDetailsdao.getsumofInstrumentValue(instValue);
+	}
+	@Override
+	public void remark(String remark,String  con_No,int id) {
+		paymentDetailsdao.remark(remark,con_No,id);
+		
+	}
+	
+	@Override
+	public List<Object[]>PreviousNo(String st) {
+		
+		return  paymentDetailsdao.PreviousNo(st);
+	}
+	@Override
+	public List<Object> PreviousInstruValue(String st) {
+
+		return  paymentDetailsdao.PreviousInstruValue(st);
+	
+	}
+	
+
 }

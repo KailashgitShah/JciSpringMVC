@@ -10,6 +10,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Locale" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,27 +64,36 @@
 		    String Cont_qty = (String) request.getAttribute("parsedstring2");
 		    String issuedate = (String) request.getAttribute("parsed");
 		    String paymentDueDate = (String) request.getAttribute("paymentDueDate");
-		    String paymentType = (String) request.getAttribute("paymentType");
-		    String instrumentvalue = (String) request.getAttribute("instrumentvalue");
-		    String ContractValue = (String) request.getAttribute("CntractValue");
+		    Object instrumentvalue =request.getAttribute("instrumentvalue");
+		    Object instrumentDateObject = request.getAttribute("instrumentDate");
+		    
+		    Date instrumentDate1 = (Date) instrumentDateObject;
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy"); // Change the format as needed
+	        String formattedInstrumentDate = dateFormat.format(instrumentDate1);
+	        
+		    String ContractValue = (String) request.getAttribute("ContractValue");
 		    Double qtyallowed = (Double) request.getAttribute("qtyallowed");
-		    Date instrumentDate = (Date) request.getAttribute("instrumentDate");
-		    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); // Choose your desired date format
-	        String instrumentDate1 = sdf.format(instrumentDate);
+		    int Payment_id = (int) request.getAttribute("Payment_id");
+		  
+		    
+		  
+           out.println(instrumentvalue);
+            out.println(instrumentDate1); 
+           
+           
 		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
 		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
-		/*     out.println(charge);
-		    out.println(instrumentDate1);
-		    out.println(paymentType);
-		    out.println(instrumentDate);
-		    out.println(instrumentvalue);
-		    out.println(ContractValue); */
+		    out.println(Payment_id);
+		    
+		
 		    
 		    
 		   
 		  
-		    BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
-		    BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue));
+		     BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
+		     BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue)); 
+		   
+
 
 		    BigDecimal qtdsub = contractValueBigInt.subtract(instrumentValueBigInt);
 
@@ -92,7 +102,7 @@
 		  
 		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP); 
 		    
-	 	   
+	 	    
 	 	    
 			%>
             <div class="page-content fade-in-up">
@@ -142,38 +152,43 @@
 				                                            <span class="text-danger">* </span>&nbsp; <span id="Contract_PaymentDue_Date " name="Contract_PaymentDue_Date " class="text-danger" >   </span>
 															 <input class="form-control taxtbox" name="Contract_PaymentDue_Date" id ="Contract_PaymentDue_Date"  value=<%= paymentDueDate %>  placeholder="Contract_PaymentDue_Date" readonly="true">
 				                                     </div>
-				                                      <div class="col-sm-4 form-group">
+				                                  <%--    <div class="col-sm-4 form-group">
 				                                            <label>Instrument type </label> 
 				                                            <span class="text-danger">* </span>&nbsp; <span id="Instrument_type" name="Instrument_type" class="text-danger" > </span>
 															 <input class="form-control taxtbox" name="Instrument_type" id ="Instrument_type"  value=<%= paymentType %> placeholder="Instrument_type"  readonly="true" >
-				                                     </div>
-				                                      <div class="col-sm-4 form-group">
+				                                     </div>  --%>
+				                                       <div class="col-sm-4 form-group">
 				                                            <label>Instrument Date </label> 
 				                                            <span class="text-danger">* </span>&nbsp; <span id="Instrument_Date" name="Instrument_Date " class="text-danger" > </span>
-															 <input class="form-control taxtbox" name="Instrument_Date" id ="Instrument_Date"  value=<%= instrumentDate1 %> placeholder="Instrument_Date"  readonly="true" >
-				                                     </div>
+															 <input class="form-control taxtbox" name="Instrument_Date" id ="Instrument_Date"  value=<%= formattedInstrumentDate %> placeholder="Instrument_Date"  readonly="true" >
+				                                     </div>  
+				                                       <div class="col-sm-4 form-group">
+					                                            <label>Remarks</label> 
+					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
+																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
+					                                     </div>
 				                                     
 			
                                                 </div>
 				                                      
 			                                    <div class="row">
 			                                    
-			                                    	        <div class="col-sm-4 form-group">
-				                                            <label> Days Difference  </label> 
-				                                            <span class="text-danger">* </span>&nbsp; <span class="text-danger" > </span>
-															 <input class="form-control taxtbox" name="Days_Diffrence" id ="DaysDiffrencetotal" value="<%= charge %>"  max=35 placeholder="Days_Diffrence" onchange="calculateGST()">
-				                                     </div>
-			                                    
+			                                    	       <div class="col-sm-4 form-group">
+															    <label>Days Difference</label>
+															    <span class="text-danger">*</span>&nbsp;<span class="text-danger"></span>
+															    <input class="form-control taxtbox" name="Days_Diffrence" id="DaysDiffrencetotal" value="<%= charge %>" placeholder="Days_Diffrence">
+															    <span id="error-message" class="text-danger"></span>
+															</div>
 				                                            <div class="col-sm-4 form-group">
 					                                            <label>Contracted Qty</label> 
 					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
 																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0" type="double" placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
 					                                     </div>
 					                       						<div class="col-sm-4 form-group">
-																	    <label>Qty. Allowed ( max Allowed = <%=qtdivtotal %>)</label>
+																	    <label>Qty. Allowed ( max Allowed =  <%=qtdivtotal %> )</label>
 																	    <span class="text-danger">*</span>
 																	    <span id="Shipment_Value" class="text-danger"></span>
-																	    <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
+																	    <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" type ="number" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
 																	    <div id="errorMessage" style="color: red; display: none;">Amount exceeds the allowed limit!</div>
 																	</div>
 																
@@ -183,6 +198,7 @@
 			                                    
 				                                    </div>
 				                      				    <div class="row">
+				                      				    
 				                          
 				                          							<div class="col-sm-4 form-group">
 																	    
@@ -198,6 +214,14 @@
 																			<!-- <label>Carrying cost Charged</label> --> <input
 																				class="form-control taxtbox" name="SGST_Amt1" id="SGST_Amt"
 																				min=0 step=0.01 placeholder="Carrying cost Charged">
+																		</div> 
+																		
+																		
+																		<div class="col-sm-15" "
+																			style="display: none;">
+																			 <input
+																				class="form-control taxtbox" name="Payment_id" id="Payment_id"
+																				value=<%=Payment_id %> placeholder="Carrying cost Charged">
 																		</div> 
 																		</div>
 																		</div>
@@ -274,6 +298,22 @@
 					    }
 					});
 					</script>
+					
+					
+					<script>
+    window.onload = function() {
+        document.getElementById("submit").addEventListener("click", function(event) {
+            var daysDifferenceValue = parseInt(document.getElementById("DaysDiffrencetotal").value);
+
+            if (daysDifferenceValue > 35) {
+                // Show error message or take any other action
+                alert("Days Difference should not exceed 35.");
+                event.preventDefault(); // Prevent form submission
+            }
+            calculateGST();
+        });
+    };
+</script>
 
 				
 	   <script>
@@ -307,7 +347,7 @@
 	function validateAmount() {
 	    var inputValue = parseFloat(document.getElementById("Shipment_Value12").value);
 	  
-	    var maxAllowedAmount = <%=qtdivtotal%>; 
+	     var maxAllowedAmount = <%=qtdivtotal%>; 
 
 	    var errorMessageElement = document.getElementById("errorMessage");
 
@@ -365,6 +405,13 @@
 				    });
 				  });
 				</script> 
+				
+				
+				
+
+				
+				
+				
 							
 							
 							<script>

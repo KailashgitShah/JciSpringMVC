@@ -125,6 +125,7 @@ import com.jci.service_phase2.RoDispatchService;
 import com.lowagie.text.DocumentException;
 
 import java.util.Calendar;
+import java.time.LocalDate;
 
 @Transactional
 @Repository
@@ -1736,6 +1737,9 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
+		
+		
+		//List<Object> getsumofInstrumentValue = this.paymentDetailService.getsumofInstrumentValue();
 		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
 
 		mv.addObject("getcontractList1", getcontractList1);
@@ -1800,11 +1804,13 @@ public class Controller_V {
 			calendar.set(Calendar.SECOND, 0);
 			calendar.set(Calendar.MILLISECOND, 0);
 
+			//Date instdateWithoutTime = calendar.getTime();
 			Date instdateWithoutTime = calendar.getTime();
 
-			entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
-
+			//entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
+			entryPaymentDetailsModel.setInstdate(instdate1);
 			entryPaymentDetailsModel.setPayment(payment);
+			//int  instruValue= Integer.parseInt(InstrumentValue);
 			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
 			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
 			entryPaymentDetailsModel.setSupportingDocument(filename);
@@ -1813,10 +1819,16 @@ public class Controller_V {
 			Date date3 = new Date();
 			Double flag = 0.0;
 		
+			
+			 Calendar cal = Calendar.getInstance();
+			    cal.setTime(instdate1);
+			   cal.add(Calendar.DAY_OF_MONTH, 30);
+			    Date newDate = cal.getTime();
 			if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
 				autorevolvingamount = "0";
 				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				entryPaymentDetailsModel.setDateofship(date3);
+				entryPaymentDetailsModel.setDateofship(newDate);
+				
 				entryPaymentDetailsModel.setDateofexpiry(date3);
 
 				entryPaymentDetailsModel.setIFSC(IFSC);
@@ -1827,7 +1839,7 @@ public class Controller_V {
 
 				autorevolvingamount = "0";
 				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				entryPaymentDetailsModel.setDateofship(date3);
+				entryPaymentDetailsModel.setDateofship(newDate);
 				entryPaymentDetailsModel.setDateofexpiry(date3);
 
 				entryPaymentDetailsModel.setIFSC(IFSC);
@@ -1960,8 +1972,8 @@ public class Controller_V {
 			return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 		}
 		try {
-			this.financialConcurenceservice.remark(remarks, contractNo);
-			this.paymentDetailService.update1(contractNo,paymentId);
+			this.financialConcurenceservice.remark(remarks, contractNo,paymentId);
+			this.paymentDetailService.update1(contractNo,paymentId,remarks);
 
 			EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(paymentId);
 			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
@@ -2039,12 +2051,16 @@ public class Controller_V {
 			String Contracted_Qty = request.getParameter("Contracted_Qty.");
 			String QtyAllowed = request.getParameter("Shipment_Value1");
 			String carryingCostParam = request.getParameter("SGST_Amt1");
+			String Payment_id = request.getParameter("Payment_id");
+			int id= Integer.parseInt(Payment_id);
+			String remarks = request.getParameter("Remarks1");
+			this.paymentDetailService.remark(remarks,fullcontractno ,id);
 			BigInteger Carrying_Cost_Charged =  BigInteger.ZERO; // Default value if the parameter is not present or cannot be parsed
 
 			if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
 	            try {
 	            	double carryingCostDouble = Double.parseDouble(carryingCostParam);
-	                // Convert the double value to a BigInteger (assuming you want to work with integers)
+	              
 	            	Carrying_Cost_Charged = BigInteger.valueOf((long) carryingCostDouble);
 	            } catch (NumberFormatException e) {
 	            	 e.printStackTrace();
@@ -2071,7 +2087,7 @@ public class Controller_V {
 			Date date = new Date();
 			// Date currdate = date.toString();
 			financialConcurenceModel.setCreated_date(date);
-			financialConcurenceModel.setRemarks("Not any");
+			financialConcurenceModel.setRemarks(remarks);
 			System.out.print(financialConcurenceModel);
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			redirectAttributes.addFlashAttribute("msg",
@@ -2123,6 +2139,23 @@ public class Controller_V {
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 
+	
+	//ajax call for previos data of instvalue
+	@ResponseBody
+	@RequestMapping(value = "PreviousEntry", method = RequestMethod.GET)
+	public String PreviousEntry(@RequestParam("contractno") String contractno) {
+		System.err.println("resultList++++++++++" );
+		List<Object[]> paymentDetailsdto = (List<Object[]>) paymentDetailService.PreviousNo(contractno);
+		System.err.println("resultList++++++++++" + paymentDetailsdto);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(paymentDetailsdto);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	
+	
+	
+	
 	
 	//save controller for mill reciept form 
 	@RequestMapping("saveentryofMillreciept")

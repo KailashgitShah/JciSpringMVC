@@ -131,6 +131,7 @@ th {
 										<th>QtyAllowed</th>
 										<th>Carrying_Cost_Charged</th>
 										<th>Created_date</th>
+										<th>Remarks</th>
 										
 									
 
@@ -152,6 +153,7 @@ th {
 										<td><%=financialConcurenceModel.getQtyAllowed()%></td>
 										<td><%=financialConcurenceModel.getCarrying_Cost_Charged()%></td>
 										<td><%=financialConcurenceModel.getCreated_date()%></td>
+										<td><%=financialConcurenceModel.getRemarks()%></td>
 										
 
 

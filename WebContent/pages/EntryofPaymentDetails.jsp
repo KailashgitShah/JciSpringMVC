@@ -53,12 +53,19 @@
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
                 <h1 class="page-title">Entry of Payment Details</h1>
+                
+                  <%--  for (Object row : getcontractList1) {
+													       String field1 = (String)row;
+													    %>
+													    <option value="<%= field1 %>"><%= field1 %></option>
+													    <%
+													    }
+													    %> --%>
             </div>
             
              <% 
             List<Object>getcontractList1=(List<Object>)request.getAttribute("getcontractList1");
-         
-            %>
+         	%>
          
          
          
@@ -79,13 +86,15 @@
 	                                        		
 													    <option value="select">-Select-</option>
 													    <%
-													    for (Object row : getcontractList1) {
-													       String field1 = (String)row;
-													    %>
-													    <option value="<%= field1 %>"><%= field1 %></option>
-													    <%
-													    }
-													    %>
+													   for (Object row : getcontractList1) {
+														            Object[] rowData = (Object[]) row;
+														            String contractNo = (String) rowData[0];
+														            String difference = String.valueOf(rowData[1]);
+														    %>
+														    <option value="<%= contractNo %>" data-difference="<%= difference %>"><%= contractNo %></option>
+														    <%
+														        }
+														    %>
 													</select>
 	                                        		
 	                                        
@@ -145,9 +154,11 @@
                                     
                                     
                                             <div class="col-sm-4 form-group">
-	                                            <label>Instrument Value </label> 
+	                                            <label   id="differenceLabel">Instrument Value  </label> 
 	                                            <span class="text-danger">* </span>&nbsp; <span id="InstrumentValue " name="InstrumentValue " class="text-danger" type="double"> </span>
-												 <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required>
+												<!--  <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required> -->
+												 <input class="form-control taxtbox" name="InstrumentValue" id="InstrumentValue12"  min="0" step="1" pattern="\d+" placeholder="Instrument Value" required oninput="validateAmount();">
+										         <div id="errorMessage" style="color: red; display: none;">Amount exceeds the allowed limit!</div>
 	                                     </div>
 	                                       
 	                                    
@@ -237,11 +248,7 @@
 	                                     
 	                                       </div>
 	                                       
-	                                      <!--  <div class="col-sm-4 form-group">
-	                                             <label >GradeComposition</label>
-	                                             <input class="form-control taxtbox" id="GradeComposition2" value="" readonly="readonly" >
-	                                       </div>
-	                                        -->
+	                                    
 	                                    
 												<div class="row" id="gradesDiv">
 												    <div class="col-sm-15">
@@ -307,6 +314,53 @@
 												  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
 											   </div> -->
 									          </div>
+									          
+									           
+              
+	                                       
+											                                 
+										
+										   
+										  	<div class="row" id="dataofHistory" style="display: none;" >
+												    <div class="col-sm-15">
+												        <table class="table" id="dataTable">
+												            <thead>
+												                <tr>
+												                    <th id="Contarct-NO1">Contract_No</th>
+												                    <th id="Instrument-NO1">Instrument value</th>
+												                    <th id="Instrument-value1">Instrument date</th>
+												                  <!--   <th id="Paid"> Qty paid</th>
+												                    <th id="remaining"> Qty remaining</th> -->
+												                </tr>
+												            </thead>
+												            <tbody id="tableBody">
+												               <tr>
+																   
+																    <td><input type="text" id="Contarct-NO" name="g11" readonly="readonly" value="" style="width: 300px; height: 30px;"></td>
+																    <td><input type="text" id="Instrument-NO" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+																    <td><input type="text" id="Instrument-value" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+																  <!--   <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+																    <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td> -->
+																</tr>
+
+												           
+												            </tbody>
+												            
+												        </table>
+												    </div>
+												</div>  
+									 	
+					
+										
+							             </div>
+
+												
+	                                       
+	                                       
+                                  
+									          
+									          
+									          
                                    </div>
                                 </form>
                             </div>
@@ -392,6 +446,32 @@
 		
 	</script> 
 	
+<script>
+    document.getElementById("contractno12").addEventListener("change", function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var difference = parseFloat(selectedOption.getAttribute("data-difference"));
+
+        document.getElementById("differenceLabel").textContent = "Instrument Value (max Allowed = " + difference + ")";
+
+        // Store difference in a global variable for later use
+        window.difference = difference;
+    });
+
+    function validateAmount() {
+        var difference = window.difference; // Access difference from the global variable
+
+        var inputValue1 = parseFloat(document.getElementById("InstrumentValue12").value);
+
+        var errorMessageElement = document.getElementById("errorMessage");
+
+        if (inputValue1 > difference) {
+            errorMessageElement.style.display = "block";
+        } else {
+            errorMessageElement.style.display = "none";
+        }
+    }
+</script>
+
 	
 	<script>
     $(document).ready(function(){
@@ -461,15 +541,25 @@
     
     
     
-    
-    
+ 
+             
 <script type="text/javascript">
       //getting details of grade composition and contract table
  $(document).ready(function() {
 	    $('#contractno12').on('change', function() {
 	    var field2Value = $(this).val();
+	    
+	 
+  
 	   if(field2Value==="select"){
 		   document.getElementById("gradesDiv").style.setProperty("display",'none'); 
+		   document.getElementById("dataofHistory").style.setProperty("display",'none'); 
+		   $('#GradeComposition2').val('');
+		    $('#Contract_date1').val('');
+		    $('#contract_Value1').val('');
+		    $('#payment_dueDate1').val('');
+		    $('#Mill_name1').val('');
+		    $('#ContracQty1').val('');
 	   }
 	   else {
 		   $.ajax({
@@ -561,6 +651,68 @@
 	        	           
 	        	   }
 	          });
+		   
+		   $.ajax({
+		        type: 'GET',
+		        url: 'PreviousEntry.obj',
+		        data: { "contractno": field2Value },
+		        success: function(data) {
+		       
+		            var data1 = JSON.parse(data);
+		            if (data1 && data1.length > 0) {
+		                var tableBody = $('#tableBody');
+		                tableBody.empty();
+		        
+		                data1.forEach(function(rowData) {
+		                  
+		                    var newRow = $('<tr>');
+		                    
+		                    var contractNoCell = $('<td>').appendTo(newRow);
+		                    $('<input>').attr({
+		                        type: 'text',
+		                        id: 'Contarct-NO',
+		                        name: 'g11',
+		                        readonly: 'readonly',
+		                        value: rowData[0],
+		                        style: 'width: 300px; height: 30px;'
+		                    }).appendTo(contractNoCell);
+
+		                    var instrumentNoCell = $('<td>').appendTo(newRow);
+		                    $('<input>').attr({
+		                        type: 'text',
+		                        id: 'Instrument-NO',
+		                        name: 'g12',
+		                        readonly: 'readonly',
+		                        value: rowData[1],
+		                        style: 'width: 200px; height: 30px;'
+		                    }).appendTo(instrumentNoCell);
+
+		                    var instrumentValueCell = $('<td>').appendTo(newRow);
+		                    var date = new Date(rowData[2]);
+		                    var formattedDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+		                    $('<input>').attr({
+		                        type: 'text',
+		                        id: 'Instrument-value',
+		                        name: 'g12',
+		                        readonly: 'readonly',
+		                        value: formattedDate,
+		                        style: 'width: 200px; height: 30px;'
+		                    }).appendTo(instrumentValueCell);
+
+		                   
+		                    tableBody.append(newRow);
+		                });
+		                document.getElementById("dataofHistory").style.setProperty("display",'block');
+		            }
+		            else {
+		                document.getElementById("dataofHistory").style.setProperty("display",'none');
+		            }
+		        }
+		    });
+		   
+		   
+		   
+		   
 	   }
 	      
 	    });
@@ -569,6 +721,7 @@
       
       </script> 
     
+
    
     <script>
     function deleteErrorMsg(){
@@ -605,6 +758,7 @@
          	  $("#IFSC1").hide();  
          	  $("#BankName1").hide();
        	  $("#Branch1").hide();  
+         
         	
         	
         	// Your code to be executed when the page loads goes here

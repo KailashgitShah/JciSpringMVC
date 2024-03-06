@@ -14,10 +14,14 @@ public interface PaymentDetailsDao {
 		   EntryPaymentDetailsModel getById(int id);
 	 
 		public EntryPaymentDetailsModel find(int id);
-		public void update1(String cont_no,int paymentId);
+		public void update1(String cont_no,int paymentId,String remark);
 		public void update2(String cont_no);
 		public void contratTable(String cont_no);
 		public List<Object> ContractNo();
+		public List<Object> getsumofInstrumentValue(String instValue);
 		  public  List<Object[]>paymentdetails(String  st);
 		  public  List<Object[]>gradewiseqty(String st,String contractqty);
+		  public  List<Object[]>PreviousNo(String st);
+		  public  List<Object>PreviousInstruValue(String st);
+		  public void remark(String remark,String  con_No,int id);
 }

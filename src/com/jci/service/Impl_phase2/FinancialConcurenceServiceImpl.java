@@ -64,8 +64,8 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 		return financialConcurencedao.calculateCharges(id,contno);
 	}
 	@Override
-	public void remark(String remark,String  con_No) {
-		financialConcurencedao.remark(remark,con_No);
+	public void remark(String remark,String  con_No,int paymentId) {
+		financialConcurencedao.remark(remark,con_No,paymentId);
 		
 	}
 	@Override

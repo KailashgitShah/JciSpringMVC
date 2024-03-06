@@ -5857,11 +5857,6 @@ public class InsertDataController
 			ModelAndView mv = new ModelAndView("EntryofFinancialConcurence");
 			if (request.getParameter("id") != null) {
 				 final int id = Integer.parseInt(request.getParameter("id")); 
-				
-				//final String  contno=request.getParameter("contno");
-				
-			
-				
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -5873,27 +5868,29 @@ public class InsertDataController
 				String Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
 				List<Object> datesconcur = (List<Object>) this.fiannacialConcurenceService.dataofdates(Con_no,Payment_id);
 				
-				 for (Object obj : datesconcur) {
-		                Object[] row = (Object[]) obj;
-		             
-		                Object paymentDueDate = row[0];
-		                Object paymentType = row[1];
-		                Object instrumentDate = row[2];
-		                Object instrumentvalue = row[3];
-		                Object CntractValue = row[4];
-		                
-		               
-		                
-		                mv.addObject("paymentDueDate",paymentDueDate );
-		                mv.addObject("paymentType",paymentType );
-		                mv.addObject("instrumentDate",instrumentDate );
-		                mv.addObject("instrumentvalue",instrumentvalue );
-		                mv.addObject("CntractValue",CntractValue );
-		              
-		               
-		               
-		            }
-			 	   
+				for (Object obj : datesconcur) {
+				    if (obj instanceof Object[]) {
+				        Object[] row = (Object[]) obj;
+				        if (row.length >= 4) {
+				            Object paymentDueDate = row[0];
+				            Object instrumentDate = row[1];
+				            Object instrumentvalue = row[2];
+				            Object ContractValue = row[3];
+				       
+				            System.err.println(instrumentDate);
+				            System.err.println(instrumentDate);
+				            mv.addObject("paymentDueDate", paymentDueDate);
+				            mv.addObject("instrumentDate", instrumentDate);
+				            mv.addObject("instrumentvalue", instrumentvalue);
+				            mv.addObject("ContractValue", ContractValue);
+				        } else {
+				          
+				        }
+				    } else {
+				      
+				    }
+				}
+
 				
 				 FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 				
@@ -5905,7 +5902,7 @@ public class InsertDataController
 				mv.addObject("parsedstring",Con_no  );
 				mv.addObject("parsedstring2",Contrated_quanity  );
 				mv.addObject("parsed",parsed  );
-				mv.addObject("datesconcur",datesconcur);
+				mv.addObject("Payment_id",Payment_id);
 				int cost= this.fiannacialConcurenceService.calculateCharges(Payment_id,Con_no);
 				BigInteger bigIntValue = new BigInteger(String.valueOf(cost));
 				 financialConcurenceModel.setCarrying_Cost_Charged(bigIntValue);

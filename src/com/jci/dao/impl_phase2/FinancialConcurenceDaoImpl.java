@@ -65,12 +65,12 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 		return (FinancialConcurenceModel) currentSession().get(FinancialConcurenceModel.class, id);
 		}
 		@Override
-		public void remark(String remark ,String  con_No) {
+		public void remark(String remark ,String  con_No,int paymentId) {
 			 String hql = "UPDATE  jcifinancial_concurrence set Remarks =  '" + remark + "'  where Contractno = '" + con_No + "' ";
-			
+			 String hql1 = "UPDATE jcipayment_arrangement set  Remarks='" + remark + "'  where Contract_No = '" + con_No + "' and  Payment_id = '" + paymentId + "' ";
+            this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-	
-		}
+	      }
 		
 		@Override
 		public int calculateCharges(int Payment_id,String cont_no) {
@@ -162,8 +162,12 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 
 		@Override
 		public 	List<Object> dataofdates(String con_no,int Payment_id) {
-			 String hql1 = " Select PaymentDue_date,Payment_type,Instrument_Date,Instrument_value,Contract_value from jcipayment_arrangement where Contract_no ='" + con_no + "' and Payment_id ='" + Payment_id + "'";
-	         return  (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(hql1).list();
+			// String hql1 = " Select PaymentDue_date,Payment_type,Instrument_Date,Instrument_value,Contract_value from jcipayment_arrangement where Contract_no ='" + con_no + "' and Payment_id ='" + Payment_id + "'";
+	        
+			String hql1 = "SELECT PaymentDue_date, MAX(Instrument_Date) AS Latest_Instrument_Date, SUM(CAST(Instrument_value AS DECIMAL(10,2))) AS Total_Instrument_Value,Contract_value FROM jcipayment_arrangement"
+					+ " WHERE Contract_no =  '" + con_no + "' GROUP BY  PaymentDue_date,Contract_value";
+					
+			return  (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(hql1).list();
 
 		}
 

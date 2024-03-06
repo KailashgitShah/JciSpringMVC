@@ -19,7 +19,7 @@ public interface FinancialConcurenceService {
 //		 public  void updatePaymentInstrument(FinancialConcurenceModel financialConcurenceModel);
 		public FinancialConcurenceModel find(int id);
 	 public int calculateCharges(int  id, String contno);
-	 public void remark(String cont_no,String  con_No);
+	 public void remark(String cont_no,String  con_No,int paymentId);
 	 public String ContractedQty(String cont_no);
 	 public List<Object> dataofdates(String Con_no,int Payment_id);
 	 

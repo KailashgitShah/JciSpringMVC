@@ -129,7 +129,7 @@ th {
 										
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
-								id="example-table" cellspacing="0" width="100%">
+								id="example-table1" cellspacing="0" width="100%">
 
 
 								<thead>
@@ -257,41 +257,6 @@ th {
 
 
  
-<!-- <script>
-    function openRejectModal(contractNo) {
-     
-        $('#rejectModalButton').data('contractNo', contractNo);
-        $('#rejectModal').modal('show');
-    }
-
-    function closeRejectModal() {
-        $('#rejectModal').modal('hide');
-    }
-
-    function rejectRecord() {
-        var remarks = $('#remarks').val().trim();
-        var contractNo = $('#rejectModalButton').data('contractNo');
-       
-        if (remarks === "") {
-          
-            return;
-        }
-        $('#rejectModal').one('hidden.bs.modal', function (e) {
-            $.ajax({
-                type: 'GET',
-                url: 'saveRemarks.obj',
-                data: {
-                    "remarks": remarks,
-                    "con_no": contractNo
-                },
-                success: function (data) {
-                   
-                    location.reload();
-                },
-            });
-        }).modal('hide');
-    }
-</script>  -->
  
 <script>
     function openRejectModal(contractNo) {
@@ -372,7 +337,7 @@ th {
 	<!-- PAGE LEVEL SCRIPTS-->
 	<script type="text/javascript">
 		$(function() {
-			$('#example-table').DataTable({
+			$('#example-table1').DataTable({
 
 				fixedHeader : true
 

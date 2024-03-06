@@ -22,7 +22,7 @@ public interface FinancialConcurenceDao {
 		//public FinancialConcurenceModel find(int id);
 	 public int calculateCharges(int id, String contno);
 	 public FinancialConcurenceModel find(int id);
-	 public void remark(String remark,String  con_No);
+	 public void remark(String remark,String  con_No,int paymentId);
 	 public String ContractedQty(String cont_no);
 	 public int paymentid(String cont_no);
 	public List<Object> dataofdates(String con_no,int Payment_id);
