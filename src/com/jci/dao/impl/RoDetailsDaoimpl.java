@@ -3,6 +3,7 @@ package com.jci.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao.RoDetailsDao;
 import com.jci.model.RoDetailsModel;
+import com.jci.model.ZoneModel;
 
 @Transactional
 @Repository
@@ -58,7 +60,9 @@ public class RoDetailsDaoimpl implements RoDetailsDao {
 	@Override
 	public List<RoDetailsModel> getAll() {
 		// TODO Auto-generated method stub
-		return null;
+		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(RoDetailsModel.class);
+		List<RoDetailsModel> ll=c.list();
+		return ll;
 	}
 
 	@Override

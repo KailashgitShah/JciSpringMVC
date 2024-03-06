@@ -1,6 +1,7 @@
 package com.jci.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jci.model.RoDetailsModel;
 
@@ -16,5 +17,6 @@ public interface PurchaseCenterDao {
 	public List<String> dpcbyid(String dpc);
 	public List<String> getAllDpc();
 	public String findDpcname(String dpccode);
+	public Map<String, String> getdpcbyregionid(String regionid);
 
 }

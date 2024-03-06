@@ -237,7 +237,6 @@ var hasError2 = false;
 														<div class="row">
 								<div class="col-sm-12 form-group">
 								 <input type="submit" value="Submit" id="submit" class="btn btn-primary">
-									<!-- <input class="btn btn-primary" type="submit" id="enq_submit">Submit</button> -->
 								</div>
 							</div>
 								</form>

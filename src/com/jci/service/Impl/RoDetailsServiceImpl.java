@@ -47,7 +47,7 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 	@Override
 	public List<RoDetailsModel> getAll() {
 		// TODO Auto-generated method stub
-		return null;
+		return roDao.getAll();
 	}
 
 	@Override

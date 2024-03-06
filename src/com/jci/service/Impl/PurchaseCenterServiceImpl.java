@@ -1,6 +1,7 @@
 package com.jci.service.Impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,12 @@ public class PurchaseCenterServiceImpl implements PurchaseCenterService {
 	public String findDpcname(String dpccode) {
 		// TODO Auto-generated method stub
 		return purchaseCenterDao.findDpcname(dpccode);
+	}
+
+	@Override
+	public Map<String, String> getdpcbyregionid(String regionid) {
+		// TODO Auto-generated method stub
+		return purchaseCenterDao.getdpcbyregionid(regionid);
 	}
 
 //	@Override

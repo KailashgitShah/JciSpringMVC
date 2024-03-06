@@ -1,6 +1,8 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.jci.model.PurchaseRegisterDTO"%>
 
 <!DOCTYPE html>
@@ -53,49 +55,66 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                 <h1 class="page-title">Purchase Register List</h1>
             </div>
 			<%
-				 List <PurchaseRegisterDTO>  batch = (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
+				 List <PurchaseRegisterDTO>  batch = null; //= (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
 			%>
+<div class="page-content fade-in-up">
+	<div class="row">
+		<div class="col-md-11">
+			<div class="ibox">	
+			<form action="purchaseslisting.obj" method="POST">		
+			<div class="row">
+				<div class="col-sm-3 form-group">
+					<label class="required">Crop Year</label>
+					<select class="form-control" name="cropyear" id="cropyear">
+					    <option disabled selected value>-Select-</option>
+					      <option value="2023-2024">2023-2024</option>
+					      <option value="2022-2023">2022-2023</option>
+					       
+					</select>
+				</div>
+				<div class="col-sm-3 form-group">
+					<label class="required">Place of Purchases</label>
+		    <%
+				Map<String,String> dpcidname = (Map<String,String>)request.getAttribute("dpcnameid");
+			%>
+                   <select class="form-control" name="Placeofp" id="Placeofp">
+					<option disabled selected value>-Select-</option>
+					<%
+					 for (Map.Entry<String, String> entry : dpcidname.entrySet()) {
+					%>
+					<option value="<%=entry.getKey()%>"><%=entry.getValue()%></option>
+					<%
+						}
+					%>
+				</select>	
+		 </div>
+				
+				
+				<div class="col-sm-3 form-group">
+					<label class="required">Basis</label>
+					<select class="form-control" name="basis" id="basis">
+					    <option disabled selected value>-Select-</option>
+					      <option value="MSP">MSP</option>
+                          <option value="Commercial">Commercial</option>
+					</select>
+				</div>
+				<div class="col-sm-3 form-group">
+					<label class="required">Date of Purchases</label>
+					<input class="form-control" name="purchasesdate" id="purchasesdate" type="Date">
+				</div>
+		    </div>
+		    <div class="row">
+			    <div class="col-sm-12 form-group">
+					 <input type="submit" value="Find" id="" class="btn btn-primary">
+				</div>
+		    </div>
+		    </form>
                    <div class="table-responsive">                    
-                        <table id="farmerVerific" class="table table-striped table-bordered table-hover" cellspacing="0" >
-								<thead>
-									<tr>
-										<th>Sl.No</th>
-										<th>Dpc Name</th>
-										<th>Crop Year</th>
-										<th>Bin Number</th>
-										<th>Basis</th>
-										<th>Jute Variety</th>
-										<th>Carry Loose</th>
-								        <th>Carry Rope</th> 
-									
-								</thead>
-								<tbody>
-								<%
-								int i= 1;
-								for(PurchaseRegisterDTO batchh : batch){
-									%>
-									<tr role="row" class="odd">
-										<td class="sorting_1"><%=i%></td>
-										<td></td>
-										<td></td> 
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-											
-										
-										<%-- <td><a href="editProcurement.obj?id=<%=procurementLists.getPtsid()%>"/>Edit</a></td>
-										<!-- <td><a href="editFarmerReg.obj?id=3">Edit</a></td> --> --%>
-										
-										</tr>
-									<%
-									i++; 
-								}
-								%>
-									</tbody>
-                        </table>
-                </div>
+                        </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
             <!-- END PAGE CONTENT-->
             <%@ include file="footer.jsp"%>
         </div>
@@ -125,6 +144,38 @@ tr:nth-child(even) {background-color: #f2f2f2;}
             });
           }); 
     </script>
+     <script type="text/javascript">
+        $(document).ready(function () {
+        	var x = document.getElementById("farmerVerific");
+        	// x.style.display = "block";
+        	 x.setAttribute("hidden", "hidden");
+        	alert(x);
+        }); 
+        </script>
+        
+        <script type="text/javascript">
+$(document).ready(function(){
+	 $("#submit").click(function(){
+		 var cropyear = $("#cropyear").val();
+		 var Placeofp = $("#Placeofp").val();
+		 var basis = $("#basis").val();
+		 var purchasesdate = $("#purchasesdate").val();
+		 
+		 //alert(purchasesdate);
+		 //return false;
+		 $.ajax({
+				type:"GET",
+				url:"purchaseslisting.obj",
+				data:jQuery.param({"cropyear":cropyear ,"Placeofp" :Placeofp, "basis":basis,"purchasesdate":purchasesdate}),
+				success:function(result){
+	 				 alert(result);
+				}			
+			});
+		 
+	 });
+});
+	 
+</script>
 </body>
 
 </html>

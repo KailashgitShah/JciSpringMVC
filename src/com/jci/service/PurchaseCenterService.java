@@ -1,6 +1,7 @@
 package com.jci.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jci.model.PurchaseCenterModel;
 import com.jci.model.RoDetailsModel;
@@ -18,4 +19,5 @@ public interface PurchaseCenterService {
 	public List<String> getAllDpc();
 	public String findDpcname(String dpccode);
 //	public List<PurchaseCenterModel>getCenterCodeByCode(int rocode);
+	public Map<String, String> getdpcbyregionid(String regionid);
 }

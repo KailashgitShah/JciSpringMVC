@@ -619,13 +619,13 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	}
 
 	@Override
-	public List<PurchaseRegisterDTO> getAllPurchase() {
-		// TODO Auto-generated method stub
+	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis,
+			String purchasesdate) {	// TODO Auto-generated method stub
 		List<PurchaseRegisterDTO> r = new ArrayList<>();
 		List<Object[]> result = new ArrayList<>();
 		try {
 			String querystr = "";
-			querystr = "SELECT j1.regionId,j2.centername,j1.tallyslipno,j1.datepurchase,j1.farmerregno,j1.placeofpurchase,j1.cropyr,j1.basis,j1.jutevariety,j1.grossquantity/100 as gross_qty,j1.deductionquantity/100 as deduc_qty,j1.netquantity/100 as net_qty,j1.amountpayable,j1.grasatrate as garsat,j1.td_base,j1.binno,CASE WHEN j1.status='PP'THEN'Payment Initiated'WHEN j1.[status]='ROV'THEN'Pending at DEO End' WHEN j1.status='RMD'THEN'Pending at RM End - Disputed Entry'WHEN j1.status='RMA'THEN'Pending at RM End - Delayed Entry'WHEN j1.status='RMZM'THEN'Pending at RM End - Payment Approval'WHEN j1.status='DPC'THEN'Pending at DPCM End - Confirmation'WHEN j1.status='DPCW'THEN'Pending at DPCM End - Correction' WHEN j1.status='FA'THEN'Pending at RO F&A End'ELSE'Contact IT Helpdesk'END tally_status FROM jciprocurement j1,jcipurchasecenter j2 WHERE j1.placeofpurchase=j2.CENTER_CODE ORDER BY j1.regionId, j1.placeofpurchase,CONVERT(DATETIME,j1.datepurchase,105)"; 
+			querystr = "SELECT j1.regionId,j2.centername,j1.tallyslipno,j1.datepurchase,j1.farmerregno,j1.placeofpurchase,j1.cropyr,j1.basis,j1.jutevariety,j1.grossquantity/100 as gross_qty,j1.deductionquantity/100 as deduc_qty,j1.netquantity/100 as net_qty,j1.amountpayable,j1.grasatrate as garsat,j1.td_base,j1.binno,CASE WHEN j1.status='PP'THEN'Payment Initiated'WHEN j1.[status]='ROV'THEN'Pending at DEO End' WHEN j1.status='RMD'THEN'Pending at RM End - Disputed Entry'WHEN j1.status='RMA'THEN'Pending at RM End - Delayed Entry'WHEN j1.status='RMZM'THEN'Pending at RM End - Payment Approval'WHEN j1.status='DPC'THEN'Pending at DPCM End - Confirmation'WHEN j1.status='DPCW'THEN'Pending at DPCM End - Correction' WHEN j1.status='FA'THEN'Pending at RO F&A End'ELSE'Contact IT Helpdesk'END tally_status FROM jciprocurement j1,jcipurchasecenter j2 WHERE j1.cropyr = '"+cropyear+"' and j1.basis = '"+basis+"' and j1.placeofpurchase = '"+placeofp+"' and j1.datepurchase = '"+purchasesdate+"' and j1.placeofpurchase=j2.CENTER_CODE ORDER BY j1.regionId, j1.placeofpurchase,CONVERT(DATETIME,j1.datepurchase,105)"; 
             Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
 			SQLQuery query = session.createSQLQuery(querystr);
@@ -652,7 +652,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 					purchaseRegister.setTd_base((String) row[14]);
 					purchaseRegister.setBinno((int) row[15]);
 					purchaseRegister.setTally_status((String) row[16]);
-					System.err.println("purchaseRegister___________"+purchaseRegister);
+					//System.err.println("purchaseRegister___________"+purchaseRegister);
 					r.add(purchaseRegister);
 				}
 
@@ -666,5 +666,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 		}
 	
 	}
+
+
 
 }

@@ -1,6 +1,7 @@
 
 package com.jci.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +39,12 @@ import com.jci.service.UserActionService;
 import com.jci.service.UserPriviligeService;
 import com.jci.service.UserRoleService;
 import com.jci.service.labelGenerationService;
+import com.lowagie.text.Element;
+import com.lowagie.text.pdf.PdfPCell;
 import com.google.gson.Gson;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.layout.element.Paragraph;
 import com.jci.model.EntryofSaleModel;
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.HODispatchInstructionModel;
@@ -720,5 +726,7 @@ public class InsertDataController_2 {
 		 // System.out.println(arr.toString());
          return arr.toString();
       }
+	  
+	
 	 
 }

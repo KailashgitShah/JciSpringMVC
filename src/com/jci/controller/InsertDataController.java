@@ -63,6 +63,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.ImageVerificationModel;
@@ -73,6 +74,7 @@ import com.jci.model.PincodeModel;
 import com.jci.model.PoliceStationModel;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -86,6 +88,12 @@ import com.jci.service.BalePrepareService;
 import com.jci.service.PoliceStationService;
 import com.jci.service.blockService;
 import com.jci.service.Impl.SendMail;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import com.jci.service.CommercialJuteVarietyGradesPriceService;
 import com.jci.service.MSPPriceCalculationService;
 import com.jci.service.RulingMarketService;
@@ -123,6 +131,7 @@ import org.springframework.http.ResponseEntity;
 import com.jci.service.PincodeService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
@@ -5831,13 +5840,93 @@ public class InsertDataController
 	    @RequestMapping({ "PurchaseRegisterlist" })
 	    public ModelAndView PurchaseRegisterlist(final HttpServletRequest request,RedirectAttributes red) {
 	    	String username =(String)request.getSession().getAttribute("usrname");
+	    	String regionid =(String)request.getSession().getAttribute("regionId");
 	    	ModelAndView mv = new ModelAndView("PurchaseRegisterList");
 	    	if(username == null) {
 	        	return new ModelAndView("index");
 	            }
-	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase();
-	        mv.addObject("purchaselist", (Object)purchaselist);
+	    	Map<String,String> dpcnameid = new HashMap<String, String>();
+	    	dpcnameid = purchaseCenterService.getdpcbyregionid(regionid);
+	       // final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase();
+	        mv.addObject("dpcnameid",(Object)dpcnameid);
 	        
 	        return mv;
+	    }
+	    
+	    @RequestMapping({ "purchaseslisting" })
+	    public ModelAndView purchaseslisting(final HttpServletRequest request,HttpServletResponse response) throws ParseException, IOException {
+	    	String cropyear = request.getParameter("cropyear");
+	    	String Placeofp = request.getParameter("Placeofp");
+	    	String basis = request.getParameter("basis");
+	    	String pdate = request.getParameter("purchasesdate");
+	    	SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
+	        Date date = sdfInput.parse(pdate);
+		    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		    String purchasesdate = formatter.format(date);
+	    	ModelAndView mv = new ModelAndView("PurchaseRegisterList");
+
+	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase(cropyear,Placeofp,basis,purchasesdate);
+
+	    	if(purchaselist !=null)
+	    	{
+		    	//model.addAttribute("purchaselist",purchaselist);
+	    	}
+	    	response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=generatedPdf.pdf");
+
+	        try {
+	            Document document = new Document();
+	            PdfWriter.getInstance(document, response.getOutputStream());
+	            document.open();
+
+	            // Sample list of models
+	            //List<PurchaseRegisterDTO> modelList = getYourModelList(); // Implement this method to fetch your data
+
+	            // Create PDF table with 10 columns
+	            PdfPTable table = new PdfPTable(9);
+
+	            table.setWidthPercentage(100);
+	           // table.setWidths(new float[]{100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f});
+	            // Add table headers
+	            //addTableHeader(table);
+	            table.addCell(createCell("Purchase Date", 40f));
+	            table.addCell(createCell("Place of purchases", 40f));
+	            table.addCell(createCell("Jute Verity", 40f));
+	            table.addCell(createCell("Gross Quentity", 40f));
+	            table.addCell(createCell("Deduction Quentity", 40f));
+	            table.addCell(createCell("Net Quentity", 40f));
+	            table.addCell(createCell("Amount", 40f));
+	            table.addCell(createCell("Garset Rate", 40f));
+	            table.addCell(createCell("Bin No", 40f));
+
+	            // Add model data to the table
+	            for (PurchaseRegisterDTO list : purchaselist) {
+	                //addRow(table, model);
+	                table.addCell(list.getDatepurchase());
+		            table.addCell(list.getPlaceofpurchase());
+		            table.addCell(list.getJutevariety());
+		            table.addCell(String.valueOf(list.getGross_qty()));
+		            table.addCell(String.valueOf(list.getDeduc_qty()));
+		            table.addCell(String.valueOf(list.getNet_qty()));
+		            table.addCell(String.valueOf(list.getAmountpayable()));
+		            table.addCell(String.valueOf(list.getGarsat()));
+		            table.addCell(String.valueOf(list.getBinno()));
+	            }
+
+	            document.add(table);
+	            document.close();
+	        } catch (DocumentException e) {
+	            e.printStackTrace();
+	        }
+	        return mv;
+	    }
+	    private static PdfPCell createCell(String content, float height) {
+	        PdfPCell cell = new PdfPCell();
+	        cell.setFixedHeight(height);
+	        // Apply regular font to the content
+	        Paragraph paragraph = new Paragraph(content);
+	        cell.addElement(paragraph);
+
+	        return cell;
 	    }
 }

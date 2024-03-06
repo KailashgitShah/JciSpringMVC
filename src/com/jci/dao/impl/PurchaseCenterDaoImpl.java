@@ -1,7 +1,9 @@
 package com.jci.dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -137,5 +139,24 @@ public class PurchaseCenterDaoImpl implements PurchaseCenterDao {
 		String result = (String)rows.get(0);
 		
 		return result;
+	}
+
+	@Override
+	public Map<String, String> getdpcbyregionid(String regionid) {
+		// TODO Auto-generated method stub
+
+		Map<String,String> result = new HashMap<>();
+		String querystr = "select CENTER_CODE,centername from jcipurchasecenter where rocode = '"+regionid+"'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object[]> rows = query.list();
+		for(Object[] row : rows){
+			//result.add(row[0].toString()+"-"+row[1].toString());
+			result.put(row[0].toString(), row[1].toString());
+		}
+		System.out.println("Map result"+result);
+		return result;
+	
 	}
 }

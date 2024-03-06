@@ -157,10 +157,12 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 
 	}
 
+
 	@Override
-	public List<PurchaseRegisterDTO> getAllPurchase() {
+	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis,
+			String purchasesdate) {
 		// TODO Auto-generated method stub
-		return VerificationTallySlipDao.getAllPurchase();
+		return VerificationTallySlipDao.getAllPurchase(cropyear,placeofp,basis,purchasesdate);
 	}
 
 
