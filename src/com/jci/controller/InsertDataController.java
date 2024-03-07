@@ -5875,12 +5875,17 @@ public class InsertDataController
 	    	ModelAndView mv = new ModelAndView("PurchaseRegisterList");
 
 	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase(cropyear,Placeofp,basis,purchasesdateFrom,purchasesdateTo);
-
+	        String roname = "";
+	        String centername = "";
 	    	if(purchaselist ==null)
 	    	{
                 redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
                 return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
 	    	}
+	    	 for (PurchaseRegisterDTO Plist : purchaselist) {
+	        	 centername = Plist.getCentername();
+	        	 roname = Plist.getRegionId();
+	        }
 	    	response.setContentType("application/pdf");
 	        response.setHeader("Content-Disposition", "attachment; filename=Purchase Report.pdf");
 
@@ -5897,6 +5902,10 @@ public class InsertDataController
 	            document.add(heading);
 	            document.add(Chunk.NEWLINE);	            // Sample list of models
 
+	            Paragraph heading1 = new Paragraph("Region = "+roname+", Place of Purchase = "+centername+", Crop Year = "+cropyear+", Basis = "+basis+", Date From "+purchasesdateFrom+" To "+purchasesdateTo);
+	            heading1.setAlignment(Element.ALIGN_LEFT);
+	            document.add(heading1);
+	            document.add(Chunk.NEWLINE);
 	            // Create PDF table with 10 columns
 	            PdfPTable table = new PdfPTable(15);
 
@@ -5904,40 +5913,40 @@ public class InsertDataController
 	           // table.setWidths(new float[]{100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f});
 	            // Add table headers
 	            //addTableHeader(table);
+	            table.addCell(createCell("Purchase date", 40f));
+	            table.addCell(createCell("Gross quantity", 40f));
+	            table.addCell(createCell("Deduction quantity", 40f));
+	            table.addCell(createCell("Net quantity", 40f));
+	            table.addCell(createCell("Garsat rate", 40f));
+	            table.addCell(createCell("Amount", 40f));
+	            table.addCell(createCell("Place of purchases", 40f));
+	            table.addCell(createCell("Region", 40f));
+	            table.addCell(createCell("Jute variety", 40f));
+	            table.addCell(createCell("Bin no", 40f));
 	            table.addCell(createCell("Farmer name", 40f));
 	            table.addCell(createCell("Farmer no", 40f));
 	            table.addCell(createCell("Tally slip", 40f));
 	            table.addCell(createCell("Rate slip", 40f));
 	            table.addCell(createCell("Tally status", 40f));
-	            table.addCell(createCell("Purchase date", 40f));
-	            table.addCell(createCell("Place of purchases", 40f));
-	            table.addCell(createCell("Jute verity", 40f));
-	            table.addCell(createCell("Gross quentity", 40f));
-	            table.addCell(createCell("Deduction quentity", 40f));
-	            table.addCell(createCell("Net quentity", 40f));
-	            table.addCell(createCell("Amount", 40f));
-	            table.addCell(createCell("Garset rate", 40f));
-	            table.addCell(createCell("Bin no", 40f));
-	            table.addCell(createCell("Region", 40f));
 
 	            // Add model data to the table
 	            for (PurchaseRegisterDTO list : purchaselist) {
 	                //addRow(table, model);
+	            	table.addCell(list.getDatepurchase());
+	            	table.addCell(String.valueOf(list.getGross_qty()));
+			        table.addCell(String.valueOf(list.getDeduc_qty()));
+			        table.addCell(String.valueOf(list.getNet_qty()));
+			        table.addCell(String.valueOf(list.getGarsat()));
+			        table.addCell(String.valueOf(list.getAmountpayable()));
+			        table.addCell(list.getCentername());
+			        table.addCell(list.getRegionId());
+			        table.addCell(list.getJutevariety());
+			        table.addCell(String.valueOf(list.getBinno()));
 	            	table.addCell(list.getF_name());
 	            	table.addCell(list.getFarmerregno());
 	            	table.addCell(list.getTallyslipno());
 	            	table.addCell(String.valueOf(list.getRate_slipno()));
 	            	table.addCell(list.getTally_status());
-	                table.addCell(list.getDatepurchase());
-		            table.addCell(list.getCentername());
-		            table.addCell(list.getJutevariety());
-		            table.addCell(String.valueOf(list.getGross_qty()));
-		            table.addCell(String.valueOf(list.getDeduc_qty()));
-		            table.addCell(String.valueOf(list.getNet_qty()));
-		            table.addCell(String.valueOf(list.getAmountpayable()));
-		            table.addCell(String.valueOf(list.getGarsat()));
-		            table.addCell(String.valueOf(list.getBinno()));
-		            table.addCell(list.getRegionId());
 	            }
 
 	            document.add(table);

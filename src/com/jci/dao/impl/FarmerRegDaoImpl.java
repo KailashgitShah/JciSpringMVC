@@ -108,18 +108,18 @@ public class FarmerRegDaoImpl implements FarmerRegDao{
 
 		if(roletypes.equalsIgnoreCase("HO")){
 		
-			querystr = "Select top 100 a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id where a.IS_VERIFIED = 0 order by a.Mandate_flag desc";
+			querystr = "Select top 100 a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id order by a.Mandate_flag desc";
 		}	
 		else if(roletypes.equalsIgnoreCase("ZO"))
 		  { 
-			  querystr = "Select  a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id left join [jcipurchasecenter] e on a.dpc_id = e.CENTER_CODE left join [jcirodetails] f on e.rocode = f.rocode where f.zonecode ='"+zone+"' and a.IS_VERIFIED = 0 order by a.Mandate_flag desc"; 
+			  querystr = "Select  a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id left join [jcipurchasecenter] e on a.dpc_id = e.CENTER_CODE left join [jcirodetails] f on e.rocode = f.rocode where f.zonecode ='"+zone+"' order by a.Mandate_flag desc"; 
 		  } 
 		else if(roletypes.equalsIgnoreCase("RO")) 
 		  { 
 			  querystr = "Select  a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id left join [jcipurchasecenter] e on a.dpc_id = e.CENTER_CODE where e.rocode='" +region+"' and a.IS_VERIFIED = 0 order by a.Mandate_flag desc";
 		  }
 		else {
-		 querystr = "Select  a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id where a.dpc_id='"+dpcid+"' and a.IS_VERIFIED = 0 order by a.Mandate_flag desc";
+		 querystr = "Select  a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id where a.dpc_id='"+dpcid+"' order by a.Mandate_flag desc";
 			
 		}
 		Session session = sessionFactory.getCurrentSession();
