@@ -93,6 +93,7 @@ import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenrationDEmandDto;
 import com.jci.model.GenrationDemandNoteModel;
 import com.jci.model.JciDIHoModel;
+import com.jci.model.JciEntryTdsModel;
 import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.MillRecieptModel;
 import com.jci.model.OperationAndTransportCostModel;
@@ -112,6 +113,7 @@ import com.jci.service_phase2.ContractGenerationService2;
 import com.jci.service_phase2.CreditNoteGenerationService;
 import com.jci.service_phase2.EntryDerivativePriceService2;
 import com.jci.service_phase2.EntryofGradeCompositionService;
+import com.jci.service_phase2.EntryofTdsService;
 import com.jci.service_phase2.FactorssInvolvedCommercialService;
 import com.jci.service_phase2.FinancialConcurenceService;
 import com.jci.service_phase2.GenerationofBillService;
@@ -146,6 +148,9 @@ public class Controller_V {
 
 	@Autowired
 	MillAccept millacct;
+	
+	@Autowired
+	EntryofTdsService entryofTdsService;
 	
 	@Autowired
 	NominalOfficialService nominalOfficialService;
@@ -3871,6 +3876,227 @@ public class Controller_V {
     
 
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------
+//Entry of tds 
+//---------------------------------------------------------
+
+@RequestMapping("entryoftds")
+public ModelAndView EntryofTDSForm(HttpServletRequest request) {
+
+	String username = (String) request.getSession().getAttribute("usrname");
+
+	ModelAndView mv = new ModelAndView("EntryofTds");
+
+	if (username == null) {
+
+		mv = new ModelAndView("index");
+
+	}
+
+	// Adding the Mill Name as a Drop Down List In Entry Of TDS Form
+
+	List<String> Mill = entryofTdsService.MillName();
+
+	mv.addObject("Mill", Mill);
+
+	return mv;
+
+}
+
+// Handling the Ajax Call URL For FEtching Financial Year Based On Mill Name
+// Saving the Entry of TDS Data
+
+@RequestMapping("saveentryoftds")
+
+public ModelAndView saveEntryOfTds(HttpServletRequest request, RedirectAttributes redirectAttributes,
+		@RequestParam("SupportingDocument") final MultipartFile SupportingDocument, HttpSession s)
+		throws IllegalStateException, IOException {
+
+
+
+	String username = (String) request.getSession().getAttribute("usrname");
+
+	String Mill = request.getParameter("Mill");
+
+	String DateofIntimation = request.getParameter("DateofIntimation");
+
+	String Financialyear = request.getParameter("Financialyear");
+
+	// String SupportingDocument = request.getParameter("SupportingDocument");
+
+	final File theDir = new File("C:\\Users\\Mansi.Gupta\\Downloads\\upload\\millAcceptence");
+
+	if (!theDir.exists()) {
+
+		theDir.mkdirs();
+
+	}
+
+	final String filename = SupportingDocument.getOriginalFilename();
+
+	File serverFile = new File(theDir, filename);
+
+	SupportingDocument.transferTo(serverFile);
+
+	// Creating object of
+
+	JciEntryTdsModel jciEntryTdsModel = new JciEntryTdsModel();
+
+	jciEntryTdsModel.setMill(Mill);
+
+	jciEntryTdsModel.setFinancial_year(Financialyear);
+
+	jciEntryTdsModel.setDate_of_Intimation(DateofIntimation);
+
+	jciEntryTdsModel.setSupporting_document(filename);
+      System.err.println(filename);
+	// setting Static Value for Remaining
+
+	entryofTdsService.create(jciEntryTdsModel);
+
+	redirectAttributes.addFlashAttribute("msg",
+			(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+
+	return new ModelAndView(new RedirectView("viewentryoftds.obj"));
+
+}
+
+@RequestMapping("viewentryoftds")
+
+public String ViewEntryofTds(Model model) {
+
+	List<JciEntryTdsModel> AllList = (List<JciEntryTdsModel>) entryofTdsService.getAll();
+
+	model.addAttribute("AllList", AllList);
+
+	return "ViewEntryOfTds";
+
+}
+
+
+
+@RequestMapping("downloadSupportingDocumententrytds")
+
+public void downloadDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+	String imageDirectory = "C:\\Users\\Mansi.Gupta\\Downloads\\upload\\millAcceptence"; // Replace with your image
+																					// directory path
+
+	String imagePath = imageDirectory + File.separator + filename;
+
+	File imageFile = new File(imagePath);
+
+	// Check if the file exists
+
+	if (imageFile.exists()) {
+
+		try {
+
+			// Set the content type based on the file type
+
+			String contentType = determineContentType(filename);
+
+			response.setContentType(contentType);
+
+			// Set the content length and attachment disposition
+
+			response.setContentLength((int) imageFile.length());
+
+			// response.setHeader("Content-Disposition", "attachment; filename=" +
+			// filename);
+
+			response.setHeader("Content-Disposition", "");
+
+			// Stream the file content to the response
+
+			FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+			OutputStream responseOutputStream = response.getOutputStream();
+
+			byte[] buffer = new byte[1024];
+
+			int bytesRead;
+
+			while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+				responseOutputStream.write(buffer, 0, bytesRead);
+
+			}
+
+			fileInputStream.close();
+
+			responseOutputStream.close();
+
+		} catch (IOException e) {
+
+			// Handle IO exception
+
+			e.printStackTrace();
+
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+		}
+
+	} else {
+
+		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+	}
+
+}
+
+// Utility method to determine content type based on filename
+
+private String determineContentType3(String filename) {
+
+	if (filename.endsWith(".pdf")) {
+
+		return "application/pdf";
+
+	} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+
+		return "image/jpeg";
+
+	} else if (filename.endsWith(".png")) {
+
+		return "image/png";
+
+	} else {
+
+		return "application/octet-stream"; // Default to binary data if content type is unknown
+
+	}
+
+}
+
+// For Handling AJax Url
+
+@ResponseBody
+
+@RequestMapping(value = "finacialyear", method = RequestMethod.GET)
+
+public String fetchFContractIdentifcation_jcicontract(@RequestParam("Mill") String Mill)
+{
+
+	
+
+	String contractIdentication = (String) entryofTdsService.contractIdentification(Mill);
+
+	System.out.println(contractIdentication);
+
+	// Convert the a JSON in string
+
+	Gson gson = new Gson();
+
+	String jsonResponse = gson.toJson(contractIdentication);
+
+	return jsonResponse;
+
+}
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

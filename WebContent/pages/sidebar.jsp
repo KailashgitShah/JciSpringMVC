@@ -428,9 +428,17 @@ body {
 								Officials for Claim Settlement</b></a></li>
 			<li data-pre="52" id="o52"><a href="viewlistnominal.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
-								Nomination of Officials for Claim Settlement</b></a></li>	 			 
+								Nomination of Officials for Claim Settlement</b></a></li>	
+								<li data-pre="52" id="o52"><a href="entryoftds.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b> Entry of TDS
+								U/s 194Q Declaration </b></a></li>
+					<li data-pre="52" id="o52"><a href="viewentryoftds.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b> View Entry
+								of TDS U/s 194Q Declaration </b></a></li> 			 
 				  </ul>
 				</li>
+				
+				
 	</div>
 
 
