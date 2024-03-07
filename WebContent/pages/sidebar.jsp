@@ -410,7 +410,7 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>MSP Grades
 								Combination</b></a></li>
 
-				</ul></li>
+				</ul></li>-->
 				
 				<li>
 				    <a href="javascript:void(0);"><i
@@ -418,13 +418,19 @@ body {
 						class="nav-label">9.&nbsp;Commercial Sales</span> <i class="fa fa-angle-left arrow"></i>
 				   </a>
 				   <ul class="nav-2-level">
-					<li  data-pre="" id=""><a href="entry_of_transportation_and_operation_cost.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Transportation & Operation Cost</b></a></li>					
+					<!-- <li  data-pre="" id=""><a href="entry_of_transportation_and_operation_cost.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Transportation & Operation Cost</b></a></li>					
 					<li  data-pre="" id=""><a href="view_transportation_and_operation_cost.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Transportation & Operation Cost</b></a></li>					
 					<li  data-pre="" id=""><a href="Factors_involved_in_Commercial_Price.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Factors involved in Commercial Price</b></a></li>					
 					<li  data-pre="" id=""><a href="listofFactorsinvolvedinCommercialPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Factors involved commercial</b></a></li>					
-					<li  data-pre="" id=""><a href="Creation_of_Bid_Offering.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Creation of Bid Offering</b></a></li>					
+					<li  data-pre="" id=""><a href="Creation_of_Bid_Offering.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Creation of Bid Offering</b></a></li>					 -->
+				 <li data-pre="52" id="o52"><a href="viewmnominalform.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Nomination of
+								Officials for Claim Settlement</b></a></li>
+			<li data-pre="52" id="o52"><a href="viewlistnominal.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Nomination of Officials for Claim Settlement</b></a></li>	 			 
 				  </ul>
-				</li> -->
+				</li>
 	</div>
 
 
