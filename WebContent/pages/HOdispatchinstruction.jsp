@@ -23,8 +23,8 @@
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
 <link href="assets/css/main.min.css" rel="stylesheet" />
- <link rel="stylesheet" href="assets/css/docsupport/style.css">
-<link rel="stylesheet" href="assets/css/docsupport/prism.css"> 
+  <link rel="stylesheet" href="assets/css/docsupport/style.css">
+<link rel="stylesheet" href="assets/css/docsupport/prism.css">  
 <link rel="stylesheet" href="assets/css/chosen.css"> 
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
       type="text/javascript"></script>
@@ -50,6 +50,7 @@ input[type="radio"] {
 #l1, #r1 {
   margin-left: 10px; /* Adjust margin values as needed */
   margin-right:0px;
+  
 }
 
 #r1 {
@@ -298,53 +299,93 @@ input[type="radio"] {
               });
 
        </script>
-       
        <script>
-
        $(document).ready(function() {
-           $("#jutevariety").on("change", function() {
-               var selectedValue = $(this).val(); // Get the selected value
-           
-               console.log(selectedValue);
-               
-                var row = selectedValue.length;
-               console.log(row); 
-               var col=8;
-               displayTable(row+1,col+1,selectedValue,"small-cell");
-               
-           });
-       });
-            function displayTable(rows, columns,selectedValue) {
-               console.log(selectedValue);
-               if (selectedValue.length > 0) {
-               var tableHTML = "<table border='1'>";
-              tableHTML+= "<tr><th style='width:100px; font-weight: bold;'>Jute Variety</th><td style='font-weight: bold;'>Grade1</td><td style='font-weight: bold;'>Grade2</td><td style='font-weight: bold;'>Grade3</td><td style='font-weight: bold;'>Grade4</td><td style='font-weight: bold;'>Grade5</td><td style='font-weight: bold;'>Grade6</td><td style='font-weight: bold;'>Grade7</td><td style='font-weight: bold;'>Grade8</td></tr>";
-               for (var i = 0; i < rows-1; i++) {
-                    var variety = selectedValue[i];
-                    tableHTML += "<tr>";
-                    tableHTML += "<th style='font-weight: bold;'>" + variety + "</th>";
-                    for (var j = 0; j < columns - 1; j++) {
-                             if ((variety === "Mesta" || variety === "Bimli") && j > 5) {
-                            	 tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
+    	    $("#jutevariety").on("change", function() {
+    	        var selectedValue = $(this).val();
+    	        var row = selectedValue.length;
+    	        var col = 8;
+    	        displayTable(row + 1, col + 1, selectedValue);
+    	    });
+    	});
 
-                             } else {
-                               tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0' /></td>";
-                             }
-                           }
+    	function displayTable(rows, columns, selectedValue) {
+    	    if (selectedValue.length > 0) {
+    	        var tableHTML = "<table border='1'>";
+    	        tableHTML += "<tr><th style='width:100px; font-weight: bold;'>Jute Variety</th>";
 
-                    tableHTML += "</tr>";
+    	        for (var j = 1; j <= columns - 1; j++) {
+    	            tableHTML += "<th style='font-weight: bold;'>Grade" + j + "</th>";
+    	        }
 
-               }
-               tableHTML += "</table>";
-               // Place the table inside the div with id "form2"
-               $("#form2").html(tableHTML);
-               }
-               else {
-                         $("#form2").empty(); // Clear the content of the "form2" element if juteVariety is empty
-                       }
-           } 
+    	        tableHTML += "<th style='font-weight: bold;'>Total</th></tr>";
 
-       </script>
+    	        for (var i = 0; i < rows - 1; i++) {
+    	            var variety = selectedValue[i];
+    	            tableHTML += "<tr><th style='font-weight: bold;'>" + variety + "</th>";
+
+    	            var rowTotal = 0;
+
+    	            for (var j = 1; j <= columns - 1; j++) {
+    	            	if ((variety === "Mesta" || variety === "Bimli") && j > 6) {
+                       	 tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
+    	            	}
+    	            	else
+    	                tableHTML += "<td><input class='cell-input' type='number' min='0' name='" + selectedValue[i] + "-grade" + j + "' value='0' /></td>";
+    	            }
+
+    	            tableHTML += "<td id='total-" + i + "' class='row-total'><strong><span>     0</span></strong></td></tr>";
+    	        }
+
+    	        // Add the "Grand Total" row outside the loop
+    	        tableHTML += "<tr><td colspan='" + (columns) + "' style='text-align: right; font-weight: bold;'>Grand Total:</td>";
+    	        
+    	        // Declare the grandTotal variable
+    	        var grandTotal = 0;
+
+    	        tableHTML += "<td id='grand-total' class='grand-total'><strong><span>" + grandTotal + "</span></strong></td>";
+
+    	        tableHTML += "</tr></table>";
+
+    	        $("#form2").html(tableHTML);
+
+    	        $(".cell-input").on("input", function() {
+    	            updateTotals();
+    	            updateGrandTotal();
+    	        });
+
+    	        function updateTotals() {
+    	            $(".row-total").each(function(index) {
+    	                var rowTotal = 0;
+    	                $(this).closest("tr").find("input.cell-input").each(function() {
+    	                    rowTotal += parseInt($(this).val()) || 0;
+    	                });
+    	                $(this).html("<strong>" + rowTotal + "</strong>");
+    	            });
+    	        }
+
+    	        function updateGrandTotal() {
+    	            grandTotal = 0;
+
+    	            for (var k = 1; k <= columns - 1; k++) {
+    	                $(".cell-input[name$='-grade" + k + "']").each(function () {
+    	                    var inputValue = $(this).val();
+    	                    if (!isNaN(inputValue) && inputValue !== "") {
+    	                        grandTotal += parseInt(inputValue, 10);
+    	                    }
+    	                });
+    	            }
+
+    	            // Update the grand total cell
+    	            $("#grand-total").html("<strong>" + grandTotal + "</strong>");
+    	        }
+    	    } else {
+    	        $("#form2").empty();
+    	    }
+    	}
+
+
+</script>
        
        <script>if (hasData) {
                 document.getElementById("l1").classList.add("has-data");
@@ -666,48 +707,43 @@ input[type="radio"] {
                      });
               });
        </script>
-
+	<script>
+	</script>
 
 
        
        <script>
        function myFunc() {
-              
-              
-                 var allow = parseInt(document.getElementById("qty").value);
-                // alert(allow);
-                var issued = parseInt(document.getElementById("IssQty").value);
-                //alert(issued);
-                var selectedValue = $("#jutevariety").val();
-                var n = selectedValue.length;
-                //alert(n);
-                var total = 0;
-              
-                for (var i = 0; i < n; i++) {
-                       var variety = selectedValue[i];
-                       for (var j = 0; j < 8; j++) {
-                         console.log(parseInt($("input[name='" + selectedValue[i] + j + "']").val()));
-                         var inputValue = parseInt($("input[name='" + selectedValue[i] + j + "']").val()) || 0;
-                         total += inputValue;
-                       }
-                     }
+    	    var allow = parseInt(document.getElementById("qty").value);
+    	    var issued = parseInt(document.getElementById("IssQty").value);
+    	    var selectedValue = $("#jutevariety").val();
+    	    var n = selectedValue.length;
 
-              //alert(total);
-                console.log("issued: " + issued);
-                console.log("total: " + total);
-                console.log("allow: " + allow);
-                if(total == 0)return false;
-                 if (issued + total <= allow) {
-                  return true; // Proceed with form submission
-                } else {
-                       document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
-                           document.getElementById("misQty").style.color = "red";
-                  return false; // Prevent form submission
-                }  
-               
-              
-       }
+    	    var total = 0;
 
+    	    for (var i = 0; i < n; i++) {
+    	        var variety = selectedValue[i];
+    	        for (var j = 1; j <= 8; j++) {
+    	            var inputName = variety + (variety === "Mesta" || variety === "Bimli" ? "" : "-grade") + j;
+    	            var inputValue = parseInt($("input[name='" + inputName + "']").val()) || 0;
+    	            total += inputValue;
+    	        }
+    	    }
+
+    	    console.log("issued: " + issued);
+    	    console.log("total: " + total);
+    	    console.log("allow: " + allow);
+
+    	    if (total === 0) return false;
+
+    	    if (issued + total <= allow) {
+    	        return true; // Proceed with form submission
+    	    } else {
+    	        document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
+    	        document.getElementById("misQty").style.color = "red";
+    	        return false; // Prevent form submission
+    	    }
+    	}
        </script>
 
        

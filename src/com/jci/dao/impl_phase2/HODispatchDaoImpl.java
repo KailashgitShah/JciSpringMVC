@@ -212,8 +212,9 @@ public class HODispatchDaoImpl implements DispatchHODao {
                 //Delete query
                 @Override
                 public void delete(int parseInt) {
-                                String sqlString = "DELETE FROM jciDI_ho WHERE DI_HO_ID ='"+parseInt+"'";
-                                currentSession().createSQLQuery(sqlString).executeUpdate();
+                				String sql1 ="DELETE FROM jciDI_ho WHERE DI_no = (SELECT DI_no FROM jciDI_ho WHERE DI_HO_ID ='"+parseInt+"')";
+                				
+                                currentSession().createSQLQuery(sql1).executeUpdate();
                                 
                                 return;
                                 

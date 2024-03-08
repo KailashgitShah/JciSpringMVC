@@ -106,7 +106,7 @@ tr:nth-child(even) {
                                                 <th>S.No</th>
                                                 <th>Contract No.</th>
 
-                                                <th>Allowed Quantity</th>
+                                              
                                                 <th>Regional Office</th>
 
 
@@ -143,7 +143,7 @@ tr:nth-child(even) {
                                                 <tr>
                                                        <td class="sorting_1" style="text-align: center"><%=i%></td>
                                                        <td style="text-align: center">${item.getContract_No()}</td>
-                                                       <td style="text-align: center">${item.getAllowed_qty()}</td>
+                                                       
                                                        <td style="text-align: center">${item.getRegional_office()}</td>
                                                        <td style="text-align: center">${item.getLast_date_of_Shipment()}</td>
                                                        <td style="text-align: center">${item.getDI_no()}</td>
