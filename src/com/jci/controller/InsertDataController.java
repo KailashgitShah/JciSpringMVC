@@ -5896,16 +5896,54 @@ public class InsertDataController
 	            Date date2 = new Date();
 	            DateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
 			    String dateforreport = formatter1.format(date2);
-	           
+	            
 	            Paragraph heading = new Paragraph("Purchase Register Report "+dateforreport);
 	            heading.setAlignment(Element.ALIGN_CENTER);
 	            document.add(heading);
 	            document.add(Chunk.NEWLINE);	            // Sample list of models
-
-	            Paragraph heading1 = new Paragraph("Region = "+roname+", Place of Purchase = "+centername+", Crop Year = "+cropyear+", Basis = "+basis+", Date From "+purchasesdateFrom+" To "+purchasesdateTo);
-	            heading1.setAlignment(Element.ALIGN_LEFT);
-	            document.add(heading1);
+	            
+	            PdfPTable headerTable = new PdfPTable(3);
+	            headerTable.setWidthPercentage(100);
+	            headerTable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+	            
+	            PdfPCell cell1 = new PdfPCell(new Paragraph("Region: "+roname));
+	            cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+	            cell1.setBorder(PdfPCell.NO_BORDER);
+	            headerTable.addCell(cell1);
+	            
+	            PdfPCell cell2 = new PdfPCell(new Paragraph("Crop Year: "+cropyear));
+	            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell2.setBorder(PdfPCell.NO_BORDER);
+	            headerTable.addCell(cell2);
+	            
+	            PdfPCell cell3 = new PdfPCell(new Paragraph("Period of Report: "+purchasesdateFrom+" To "+purchasesdateTo));
+	            cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+	            cell3.setBorder(PdfPCell.NO_BORDER);
+	            headerTable.addCell(cell3);
+	            document.add(headerTable);
+	            //document.add(Chunk.NEWLINE);
+	            
+	            PdfPTable headerTable1 = new PdfPTable(3);
+	            headerTable1.setWidthPercentage(100);
+	            headerTable1.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+	            
+	            PdfPCell cell4 = new PdfPCell(new Paragraph("DPC: "+centername));
+	            cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+	            cell4.setBorder(PdfPCell.NO_BORDER);
+	            headerTable1.addCell(cell4);
+	            
+	            PdfPCell cell5 = new PdfPCell(new Paragraph("Basis: "+basis));
+	            cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell5.setBorder(PdfPCell.NO_BORDER);
+	            headerTable1.addCell(cell5);
+	            
+	            PdfPCell cell6 = new PdfPCell(new Paragraph(""));
+	            cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell6.setBorder(PdfPCell.NO_BORDER);
+	            headerTable1.addCell(cell6);
+	            document.add(headerTable1);
 	            document.add(Chunk.NEWLINE);
+	            
 	            // Create PDF table with 10 columns
 	            PdfPTable table = new PdfPTable(15);
 
@@ -5924,7 +5962,7 @@ public class InsertDataController
 	            table.addCell(createCell("Jute variety", 40f));
 	            table.addCell(createCell("Bin no", 40f));
 	            table.addCell(createCell("Farmer name", 40f));
-	            table.addCell(createCell("Farmer no", 40f));
+	            table.addCell(createCell("Farmer no", 45f));
 	            table.addCell(createCell("Tally slip", 40f));
 	            table.addCell(createCell("Rate slip", 40f));
 	            table.addCell(createCell("Tally status", 40f));
