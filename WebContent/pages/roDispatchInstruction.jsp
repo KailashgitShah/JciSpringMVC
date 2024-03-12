@@ -105,7 +105,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 										<div class="col-sm-4 form-group">
 											<label>HO DI No.</label> <select name="hoDiNo" id="hoDiNo"
 												class="form-control" required>
-												<option value="">-Select-</option>
+												<option readonly value="">-Select-</option>
 												<%
 												for (String no : allHoDiNo) {
 												%>
@@ -285,7 +285,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 											$("#contractDate").val(contract[2]);
 											$("#contractNo").val(contract[3]);
 											$("#cropYear").val(contract[7]);
-											$("#roDiNo").val(val + "/" + count);
+											$("#roDiNo").val(val + "/00" + count);
 
 											const unFormatedDate = contract[21]
 													.split("-");

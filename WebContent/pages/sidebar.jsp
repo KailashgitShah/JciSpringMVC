@@ -209,10 +209,6 @@ body {
 
 				</ul></li>
 
-
-
-
-
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;BIN Performance Calculation</span> <i
@@ -274,9 +270,9 @@ body {
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation List</b></a></li>
-					<!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>MSP Grades
-								Combination</b></a></li> -->
+					<li data-pre="94" id="o94"><a
+						href="authorization.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Authorization</b></a></li>
 
 				</ul></li>
 
@@ -419,11 +415,9 @@ body {
 
 
 	<script>
-
-		$(document).ready(function() {
-			
-			var passuser = '<%=userpass%>
-		';
+	$(document).ready(function() {
+	
+			var passuser = '<%=userpass%>';
 							//alert(passuser);
 							$.ajax({
 								url : "checksessionpass.obj",
@@ -436,14 +430,13 @@ body {
 									}
 								}
 							});
-							for (var i = 1; i <= 90; i++) {
+							for (var i = 1; i <= 100; i++) {
 								$("#o" + i).hide();
+							
 
 							}
 							//alert("yes");
-							var roleid =
-	<%=(int) request.getSession().getAttribute("roleId")%>
-		;
+							var roleid =<%=(int) request.getSession().getAttribute("roleId")%>;
 							//alert(roleid);
 							var userAction = new Array();
 							var allActions = new Array();
@@ -454,7 +447,7 @@ body {
 												roleId : roleid
 											},
 											function(responseText) {
-												  alert(responseText);
+												/*    alert(responseText); */
 												var text = responseText
 														.replace("[", "")
 														.replace("]", "");
@@ -500,7 +493,7 @@ body {
 																					//	console.log("values "+values);
 
 																					for (var j = 0; j < userAction.length; j++) {
-																						for (var i = 0; i <= 58; i++) {
+																						for (var i = 0; i <= 100; i++) {
 																							if ($(
 																									"#o"
 																											+ i)
