@@ -150,11 +150,12 @@ input[type="file"] {
 									<tr>
 
                                         <th>Mill name</th>
-										<th>Contract No.</th>
-										<th>Contract Date</th>
+										 <th>Contract No.</th>
+										
 										<th>Crop Year</th>
 										<th>Contract Quantity</th>				    
-									    <th>Intially Payment Date</th>
+									   <!--  <th>Intially Payment Date</th> -->
+									   <th>Contract Date</th>
 										<th>Payment Due Date</th>
 										<th>Fibre Value</th>
 										<th>Contract Value (In Case of Non Lc)</th>
@@ -173,13 +174,15 @@ input[type="file"] {
 										    <td>${item. getContract_identification_no()}</td>
 
 											<%-- <td>${item.getContract_no()}</td> --%>
+												 <td>${item.getCropYear()}</td> 
+												 	<td>${item.getContract_qty()}</td>
 											<td>${item.getContract_date()}</td>
-											 <td>${item.getCropYear()}</td> 
-											<td>${item.getContract_qty()}</td>
-											 
+										
+										
+											 <td>${item. getPayment_duedate()}</td>
+										<%--  <td>${item.getIntial_Payment_date()}</td>  --%>
+										<%--  <td>${item.getContract_no()}</td> --%>
 											
-											 <td>${item.getIntial_Payment_date()}</td>
-											<td>${item. getPayment_duedate()}</td>
 											<td>${item.getJute_value()}</td> 
 											
 											<td>${item.getContract_value()}</td>
@@ -192,31 +195,7 @@ input[type="file"] {
 
 											<form action="saveMillAcceptenceFile.obj" method="POST"
 												enctype="multipart/form-data">
-												<%-- <td><c:choose>
-														<c:when test="${item.getContract_value_lc() != 0.0}">
-															<div class="col-sm-10 form-group">
-																<input class="form-control taxtbox"
-																	value="${item.getContract_value_lc()}"
-																	id="Contract_value_lc" name="Contract_value_lc"
-																	type="number" readonly="readonly">
-															</div>
-														</c:when>
-														<c:otherwise>
-															<div class="col-sm-10 form-group">
-																<input class="form-control taxtbox"
-																	value="${item.getContract_value_lc()}"
-																	id="Contract_value_lc" name="Contract_value_lc"
-																	type="number" step="any">
-															</div>
-														</c:otherwise>
-													</c:choose></td> --%>
-												<%-- <td>
-												<input  type="file" value="${item.getAcceptance_doc_path()}"										
-												name="Acceptance_doc_path" id="Acceptance_doc_path" >
-												<br> ${item.getAcceptance_doc_path()} 
-												
-																						
-												</td>  --%>
+											
 												<input type="hidden" value="${item.contract_id}"
 													name="contract_id" >
 												<td><c:choose>
@@ -285,8 +264,6 @@ input[type="file"] {
 			});
 		})
 	</script>
-
-
 
 
 

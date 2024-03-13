@@ -73,7 +73,7 @@
 
 										<div class="col-sm-4 form-group">
 											<label>Mill </label> <select name="Mill" id="Mill"
-												class="form-control taxtbox" required>
+												class="form-control taxtbox" required onchange="setFinancialYear()">
 
 												<option value="">-Select-</option>
 
@@ -168,9 +168,9 @@ function f(){
 	   var file = fileInput.files[0];
 	   alert("file"+file)
 }
-</script>
+ </script>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		// Wait for the document to be ready
 
 		$(document).ready(function() {
@@ -230,7 +230,7 @@ function f(){
 			});
 
 		});
-	</script>
+	</script> -->
 
 
 
@@ -238,94 +238,28 @@ function f(){
 
 
 
-	<!--  <script type="text/javascript">
-       // Wait for the document to be ready
-       $(document).ready(function() {
-           // Add an event listener for the change event on the dropdown
-           $('#Mill_name').on('change', function() {
-               // Get the selected option value
-               var selectedOption = $('#Mill_name').val();
+	<script type="text/javascript">
+	function getCurrentFinancialYear() {
+        var fiscalyear = "";
+        var today = new Date();
+        if ((today.getMonth() + 1) <= 3) {
+            fiscalyear = (today.getFullYear() - 1) + "-" + today.getFullYear();
+        } else {
+            fiscalyear = today.getFullYear() + "-" + (today.getFullYear() + 1);
+        }
+        return fiscalyear;
+    }
 
-               // Make an AJAX call to fetch data based on the selected value
-               $.ajax({
-                   type: 'GET',
-                   url: 'financialyear.obj',
-                   data: { Mill: selectedOption },
-                   success: function(data) {
-                   	alert("kkkkkkkkkkk alert");
-                       // Handle the response data and display it in the 'result' div
-                       alert(data);
-                       // Assuming 'data' contains the financial year, update the Financialyear input
-                       document.getElementById('Financialyear').value = data;
-                   },
-                   error: function(err) {
-                       // Handle errors here
-                       console.error('AJAX request failed: ' + err);
-                   }
-               });
-           });
-       });
-       
-   </script>  -->
+    function setFinancialYear() {
+        var fiscalYear = getCurrentFinancialYear();
+        document.getElementById("Financialyear").value = fiscalYear;
+    }
 
-	<!-- <script type="text/javascript">
+    // Initially set the financial year when the page loads
+    setFinancialYear();
+
 	
-	// Wait for the document to be ready
-	 $(document).ready(function() {
-	  // Add an event listener for the change event on the dropdown
-	  $('#Mill').on('change', function() {
-	    // Get the selected option value
-	    var selectedOption = $('#Mill').val();
-	    //alert(selectedOption);
-	   
-
-	    // Make an AJAX call to fetch data based on the selected value
-	    $.ajax({
-	      type: 'GET',  // You can adjust the HTTP method as needed (e.g., POST)
-	      url: 'financialyear.obj', // Replace with the actual API endpoint
-	      data: { Mill: selectedOption }, // Pass the selected option to the server
-	      success: function(data) {
-	        // Handle the response data and display it in the 'result' div
-	        
-	        alert(data);
-	     
-	        
-	      },
-	      error: function(err) {
-	        // Handle errors here
-	        console.error('AJAX request failed: ' + err);
-	      }
-	    });
-	  });
-	}); 
 	</script>
-	 -->
-
-
-
-
-	<!-- <script>
-     
-            // Create a Date object for the current date
-            var currentDate = new Date();
-
-            // Get the year, month, and day components
-            var year = currentDate.getFullYear();
-            var startYear = currentDate.getMonth() >= 3 ? year : year - 1;
-            var endYear = startYear + 1;
-            /* var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-            var day = String(currentDate.getDate()).padStart(2, '0'); */
-
-            // Format the financial year as 'YYYY-YYYY'
-            var formattedDate = startYear + '-' + endYear;
-           /*  var formattedDate = year + '-' + month + '-' + day; */
-
-            // Set the formatted date as the input's value
-            document.getElementById('Financialyear').value = formattedDate;
-            
-    
-     
-    </script> -->
 
 
 
