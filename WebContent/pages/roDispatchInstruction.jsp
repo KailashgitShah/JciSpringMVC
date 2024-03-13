@@ -207,7 +207,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 											for (int i = 1; i <= 8; i++) {
 											%>
 											<input class="form-control" name="Gr<%=i%>_qty"
-												id="Gr<%=i%>_qty" type="number" readonly>
+												id="Gr<%=i%>_qty" type="number" readonly value="0.0">
 											<%
 											}
 											%>
@@ -218,7 +218,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 											for (int i = 1; i <= 8; i++) {
 											%>
 											<input class="validation form-control" name="gr<%=i%>Qty"
-												id="gr<%=i%>Qty" min="0" type="number" required>
+												id="gr<%=i%>Qty" min="0" type="number" required value="0.0">
 											<%
 											}
 											%>
@@ -278,15 +278,18 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 										},
 										success : function(result) {
 											var data = jQuery.parseJSON(result);
-
+											console.log(data);
+											
+											var numberOfContractDetails = data.contractDetails.length;
+											//alert(numberOfContractDetails);//Number of entries for particular DI 
 											var contract = data.contractDetails[0];
 											var count = data.count + 1;
 
 											$("#contractDate").val(contract[2]);
 											$("#contractNo").val(contract[3]);
 											$("#cropYear").val(contract[7]);
-											$("#roDiNo").val(val + "/" + count);
-
+											$("#roDiNo").val(val + "/0" + count);
+											//alert(contract[21]); Last date ship date
 											const unFormatedDate = contract[21]
 													.split("-");
 											
@@ -300,16 +303,17 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 													+ "-"
 													+ unFormatedDate[1]
 													+ "-" + unFormatedDate[0];
+											$("#lastDateOfShipment").val(lastDateOfShipment);
 											$("#lastDateOfShipment").attr({
 												"max" : lastDateOfShipment,
 												"min" : minDateOfShipment
 											});
 											
-
+											
 											$("#juteVariety").val(contract[20]);
 											$("#GVariety").val(contract[12]);
 											$("#allowedQty").val(contract[1]);
-											$("#allowedQty").val(contract[1]);
+											
 											
 											/* console.log(minDateOfShipment);
 											console.log(lastDateOfShipment); */

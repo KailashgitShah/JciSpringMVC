@@ -334,7 +334,7 @@ input[type="radio"] {
     	                tableHTML += "<td><input class='cell-input' type='number' min='0' name='" + selectedValue[i] + "-grade" + j + "' value='0' /></td>";
     	            }
 
-    	            tableHTML += "<td id='total-" + i + "' class='row-total'><strong><span>     0</span></strong></td></tr>";
+    	            tableHTML += "<td id='total-" + i + "' class='row-total' style='text-align: center;''><strong><span>0</span></strong></td></tr>";
     	        }
 
     	        // Add the "Grand Total" row outside the loop
@@ -343,7 +343,7 @@ input[type="radio"] {
     	        // Declare the grandTotal variable
     	        var grandTotal = 0;
 
-    	        tableHTML += "<td id='grand-total' class='grand-total'><strong><span>" + grandTotal + "</span></strong></td>";
+    	        tableHTML += "<td id='grand-total' class='grand-total' style='text-align: center;''><strong><span>" + grandTotal + "</span></strong></td>";
 
     	        tableHTML += "</tr></table>";
 
@@ -499,6 +499,9 @@ input[type="radio"] {
                                                        contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";
 
                                                        for (var i = 8; i <= 13; i++) {
+                                                    	   if(d[14][i-8]==null){
+                                                    		   d[14][i-8]=0;
+                                                    	   }
                                                               var no = (+(d[i][1] * d[2] / 100)  - +d[14][i-8]).toFixed(2);
                                                               console.log(parseInt(d[i][1] * d[2] / 100)  - parseInt(d[14][i-8]));
                                                               contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>"
@@ -518,8 +521,8 @@ input[type="radio"] {
                                                                      + d[2] + "</span></p>";
                                                        contentToDisplay += "<p>Allowed Qty: <span style='color: blue;'>"
                                                                      + d[6] + "</span></p>";
-                                                       contentToDisplay += "<p>Date of Issue: <span style='color: blue;'>"
-                                                                     + d[16] + "</span></p>";
+                                                      /*  contentToDisplay += "<p>Date of Issue: <span style='color: blue;'>"
+                                                                     + d[16] + "</span></p>"; */
                                                        var dateParts = document.getElementById("instdate").value.split("-");
                                                 
                                                        var formattedDate = dateParts[2] + "-"
@@ -721,10 +724,19 @@ input[type="radio"] {
 
     	    var total = 0;
 
+    	    // Function to check for total
     	    for (var i = 0; i < n; i++) {
     	        var variety = selectedValue[i];
     	        for (var j = 1; j <= 8; j++) {
-    	            var inputName = variety + (variety === "Mesta" || variety === "Bimli" ? "" : "-grade") + j;
+    	            var inputName;
+
+    	            // Adjust inputName for Bimli and Mesta
+    	            if ((variety === "Mesta" || variety === "Bimli") && j > 6) {
+    	                inputName = variety + j;
+    	            } else {
+    	                inputName = variety + "-grade" + j;
+    	            }
+
     	            var inputValue = parseInt($("input[name='" + inputName + "']").val()) || 0;
     	            total += inputValue;
     	        }
@@ -734,16 +746,24 @@ input[type="radio"] {
     	    console.log("total: " + total);
     	    console.log("allow: " + allow);
 
-    	    if (total === 0) return false;
-
+    	   
     	    if (issued + total <= allow) {
+    	       // alert("Form submitted successfully!");
     	        return true; // Proceed with form submission
-    	    } else {
-    	        document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
-    	        document.getElementById("misQty").style.color = "red";
-    	        return false; // Prevent form submission
-    	    }
+    	    }  else {
+   	    	 document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
+	    	    document.getElementById("misQty").style.color = "red";
+	    	  
+	    	    // Set a timer to make the message vanish after 5 seconds (5000 milliseconds)
+	    	    setTimeout(function() {
+	    	        document.getElementById("misQty").innerText = "";
+	    	    }, 8000);
+
+	    	    return false; // Prevent form submission
+	    }
+
     	}
+
        </script>
 
        
