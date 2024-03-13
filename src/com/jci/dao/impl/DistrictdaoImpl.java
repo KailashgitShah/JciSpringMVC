@@ -118,22 +118,22 @@ public class DistrictdaoImpl implements DistrictDao {
 		String sqlForExistingDistrictsInDatabase = "select DISTINCT  district_id from jcientry_derivative_price where crop_year ='"
 				+ crop_year + "' AND state ='" + state_code + "' AND delivery_type ='" + delivery_type
 				+ "'";
-		System.out.println(sqlForExistingDistrictsInDatabase + "this is the query for the result");
+	 
 
 		Query firstQuery = this.sessionFactory.getCurrentSession().createSQLQuery(sqlForExistingDistrictsInDatabase);
 		Object listOfIds = firstQuery.list();
-		System.out.println(listOfIds + " WWWWWWWWWWW");
+	 
 		String idsWithBounderies = listOfIds.toString();
 		String idsWithoutBounderies = idsWithBounderies.substring(1, idsWithBounderies.length()-1);
-		System.out.println("ListOfIds" + idsWithoutBounderies + " ");
+	 
 
 		String hql;
 		
 		if (idsWithoutBounderies != "") {
-		hql = "select id, dist_name, new_dist_code from tbl_districts_new where state_code ='" + state_code + "' AND id not in ("
+		hql = "select id, dist_name, dist_code from tbl_districts_new where state_code ='" + state_code + "' AND id not in ("
 				+ idsWithoutBounderies + ")";
 	} else {
-		hql = "select id, dist_name, new_dist_code from tbl_districts_new where state_code ='" + state_code + "'";
+		hql = "select id, dist_name, dist_code from tbl_districts_new where state_code ='" + state_code + "'";
 	}
 
 		System.out.println(state_code + "state_code<<<<<<<<<<<<<<<<<<<<<");

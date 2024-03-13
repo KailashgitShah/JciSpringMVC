@@ -478,7 +478,7 @@ var count = 0;
 						  var millName = $(cells[1]).text();
 						  var millCode = $(cells[0]).text();
 						  var contractedValue = $("#contractedValue"+index).val();
-						  var Qty = $(cells[cells.length - 2]).text(); // Assuming Quantity is in the last cell
+						  var Qty = $(cells[cells.length - 3]).text(); // Assuming Quantity is in the third last cell
 						  var delivery_type = $("#deliveryType"+index).val(); // Assuming Quantity is in the last cell
 						  millDetails.push({
 							  "millCode" : millCode,
@@ -490,7 +490,7 @@ var count = 0;
 
 						})
 						
-						//console.log(millDetails,"millDetails");
+						console.log(millDetails,"millDetails");
 						
 						var data = {
 								"pcsoDate" : jsonPcsoDates,

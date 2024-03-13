@@ -194,7 +194,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	@Override
 	public List<Contractgeneration> getAllContract() {
 
-		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_date, Contract_qty, SortingId  from jcicontract order by SortingId ASC";
+		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_date, Contract_qty, SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
 
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -243,7 +243,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public List<Contractgeneration> getContractFullDetails(String contractidn) {
-		String sql = "select * from jcicontract where Contract_identification_no = '" + contractidn + "'";
+		String sql = "select * from jcicontract where Contract_identification_no = '" + contractidn + "' and Authorize_Status = 1";
 
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
 
@@ -271,6 +271,42 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 				+ millNameString + "'";
 		return (List<Object>) currentSession().createSQLQuery(sql).list();
 
+	}
+
+	@Override
+	public List<Contractgeneration> getAllUnAuthorizedContract() {
+		
+		String roleName = (String)request.getSession().getAttribute("rolename");
+		
+		String sql = "select * from jcicontract where Authorized_By ='" + roleName + "' and Authorize_Status = 0";
+		List<Object[]> list = currentSession().createSQLQuery(sql).list();
+
+		List<Contractgeneration> listOfContract = new ArrayList<>();
+
+		for (Object[] eleObjects : list) {
+			Contractgeneration model = new Contractgeneration();
+			model.setContract_acceptance_doc((String) eleObjects[2]);
+			model.setGrade_composition((String) eleObjects[15]);
+			model.setMill_code((String) eleObjects[18]);
+			model.setMill_name((String) eleObjects[19]);
+			model.setMill_qty((double) eleObjects[20]);
+			model.setPcso_date((String) eleObjects[22]);
+			model.setDelivery_type((String) eleObjects[14]);
+			model.setContract_identification_no((String) eleObjects[7]);
+			model.setMill_qty((double) eleObjects[20]);
+			model.setContract_no( (String)eleObjects[8]);
+
+			listOfContract.add(model);
+		}
+
+		return listOfContract;
+	}
+
+	@Override
+	public void setContractAuthrizeStatus(String contractNo) {
+		String sqlString = "update jcicontract set Authorize_Status = 1 , Contract_date = FORMAT(GETDATE(), 'dd-MM-yyyy') where Contract_no in (" + contractNo + ")";
+
+		currentSession().createSQLQuery(sqlString).executeUpdate();	
 	}
 
 }

@@ -208,7 +208,7 @@
 
 							for (var i = 0; i < data.length; i++) {
 								var count = i + 1;
-								var filePath = path
+								var fileName = path
 										+ data[i].Contract_acceptance_doc;
 
 								tableData += "<tr><td>" + count + "</td>";
@@ -227,7 +227,7 @@
 										+ "</td>";
 
 								tableData += "<td><a target='_blank' href='downloadContractLetter.obj?imagePath="
-										+ encodeURIComponent(filePath)
+										+ encodeURIComponent(fileName)
 										+ "' class='btn btn-success'><i class='fa fa-download' aria-hidden='true';'></i></a></td>";
 
 								tableData += "</tr>";

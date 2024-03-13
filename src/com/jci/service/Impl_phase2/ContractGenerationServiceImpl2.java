@@ -63,6 +63,17 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	 return contractGenerationDao2.getFullAddressByMillName(millNameString);
 	}
 
+	@Override
+	public List<Contractgeneration> getAllUnAuthorizedContract() {
+		return contractGenerationDao2.getAllUnAuthorizedContract();
+	}
+
+	@Override
+	public void setContractAuthrizeStatus(String contractNOString) {
+		 contractGenerationDao2.setContractAuthrizeStatus(contractNOString);
+		
+	}
+
  
 
 }

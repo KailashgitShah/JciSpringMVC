@@ -18,5 +18,9 @@ public interface ContractGenerationDao2 {
 	int updateContractedValue(String deliveryType, String totalQtyOfMill);
 	List<Contractgeneration> getContractFullDetails(String contractidn);
 	List<Object> getFullAddressByMillName(String millNameString);
+	public List<Contractgeneration> getAllUnAuthorizedContract();
+	public void setContractAuthrizeStatus(String contactNo);
+	
+
 
 }

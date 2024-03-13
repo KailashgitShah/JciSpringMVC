@@ -17,4 +17,6 @@ public interface ContractGenerationService2 {
 	public int updateContractedValue(String deliveryType, String totalQtyOfMill);
 	public List<Contractgeneration> getContractFullDetails(String contractidn);
 	public List<Object> getFullAddressByMillName(String millNameString);
+	public List<Contractgeneration> getAllUnAuthorizedContract();
+	public void setContractAuthrizeStatus(String contractNOString);
 }

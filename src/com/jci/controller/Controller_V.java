@@ -51,6 +51,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.bouncycastle.jce.provider.BrokenJCEBlockCipher.BrokePBEWithMD5AndDES;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -425,7 +426,7 @@ public class Controller_V {
 	public void downloadContractLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
 		String fullPath = contractLetterJava + File.separator + fileName;
-		System.err.println(fullPath);
+
 		File imageFile = new File(fullPath);
 
 		if (imageFile.exists()) {
@@ -766,6 +767,7 @@ public class Controller_V {
 	public String saveContractGenerationPcsoWise(HttpServletRequest request,
 			@RequestBody Map<String, Object> requestBody)
 			throws IOException, ParseException, DocumentException, AddressException {
+		
 
 		String cropYear = (String) request.getSession().getAttribute("currCropYear");
 		ModelAndView mv = new ModelAndView("contractgeneration");
@@ -835,12 +837,10 @@ public class Controller_V {
 			idx++;
 		}
 
-		///
+	 
 
 		for (Map<String, String> millDetail : millDetails) {
-			
-			
-			
+ 
 			Contractgeneration contractgeneration = new Contractgeneration();
 
 			Double juteValue = Double.parseDouble(millDetail.get("juteValue"));
@@ -859,9 +859,9 @@ public class Controller_V {
 			contractgeneration.setDelivery_type(deliveryType);
 			contractgeneration.setContract_no(finalGeneratedContractNo);
 			
-			// contract value = 105% of jute value
+			// contract value = 105% of jute value or fiberValue
 			contractgeneration.setContract_value(juteValue * 1.05);
-			// contract value LC = 110% of jute value
+			// contract value LC = 110% of jute value or fiberValue
 			contractgeneration.setContractValueLc(juteValue * 1.1);
 			
 			contractgeneration.setCreated_date(new Date());
@@ -883,13 +883,10 @@ public class Controller_V {
 
 			PdfGenerator pdfGenerator = new PdfGenerator();
 			List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
-			// List<Object[]> GradeCompList =
-			// contractGenerationService2.getListOfGradeComposition(gradeComp);
+		 
 
 			String filePath = contractLetterPath + File.separator + contractIdn;
-
-			// System.err.println(filePath);
-
+ 
 			File parentDir = new File(filePath);
 			if (!parentDir.exists()) {
 				parentDir.mkdirs();
@@ -900,21 +897,29 @@ public class Controller_V {
 			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
 					GradePriceList, gradeArray , varietyArray, fileName, deliveryType, contractdate, filePath, letterHeadPath , fullAddress);
 
-			// send email
-			String body = "Please find below attachment to get full details of contract grade wise..";
-			String sub = "Contract Details";
-			final String filePathDir = filePath;
-			SendMail sendMail = new SendMail();
-			InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
-					new InternetAddress("pradeepcyf24@gmail.com") };
-
-			CompletableFuture.runAsync(() -> {
-				try {
-					sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+//			// send email
+//			String body = "Please find below attachment to get full details of contract grade wise..";
+//			String sub = "Contract Details";
+//			final String filePathDir = filePath;
+//			SendMail sendMail = new SendMail();
+//			InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+//					new InternetAddress("pradeepcyf24@gmail.com") };
+//
+//			CompletableFuture.runAsync(() -> {
+//				try {
+//					sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			});
+			
+			// Authorization allotment
+			
+			if(juteValue > 40000000) {
+				contractgeneration.setAuthorizedBy("HO Operation");
+			}else {
+				contractgeneration.setAuthorizedBy("HO Manager");
+			}
 
 			contractGenerationService2.create(contractgeneration);
 		}
@@ -949,14 +954,7 @@ public class Controller_V {
 
 	}
 
-//
-//	@ResponseBody
-//	@RequestMapping(value = "pcsoDates", method = RequestMethod.GET)
-//	public List<String> pcsoDates(final HttpServletRequest request) {
-//		List<String> pcso = pcsoentryservice.getAllDates();
-//		return pcso;
-//	}
-//
+ 
 
 	@ResponseBody
 	@RequestMapping(value = "pcso_details", method = RequestMethod.GET)
@@ -993,11 +991,96 @@ public class Controller_V {
 
 		return updatedVal + "";
 	}
+	
+	//listing of the Contract list for the authorization
+	
+	@RequestMapping("authorization")
+	public ModelAndView contractAuthorization(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("ContractAuthorization");
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
 
-	//////////////////////////////////////////////////////////////////
-	// Pradeep code Starts
-	//////////////////////////////////////////////////////////////////
+		List<Contractgeneration> listOfAllUnAuthorizedContract = contractGenerationService2.getAllUnAuthorizedContract();
+		mv.addObject("contracts", listOfAllUnAuthorizedContract);
+		return mv;
+	}
+	
+	//function generates JCI/870/2023-2024/BT-03,JCI/870/2023-2024/BT-04 to 'JCI/870/2023-2024/BT-03','JCI/870/2023-2024/BT-04',
+	
+	public String quoteContractNo(String contract) {
+		String[] contractNos = contract.split(",");
+		String qutoedAns = "";
+		 for(String no : contractNos) {
+			 qutoedAns += "'" + no + "',";
+		 }
+		 
+		 return qutoedAns;
+	}
+	
+	//contract authorization
+	@ResponseBody
+	@RequestMapping(value = "contractAuthorizationByIdnNo", method = RequestMethod.GET)
+	public void Authorize(HttpServletRequest request, RedirectAttributes redirectAttributes)
+			throws AddressException {
+		
+		String contractNOString = request.getParameter("contractNo");
+		String[] contractNos = contractNOString.split(",");
+		
+		try {
+			String quotedContractString = quoteContractNo(contractNOString);
+			quotedContractString = quotedContractString.substring(0, quotedContractString.length() - 1);
+			
+			contractGenerationService2.setContractAuthrizeStatus(quotedContractString);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		for(String contract : contractNos) {
+			String[] contractNo = contract.split("/");
+			 
+			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";;
+			
+			String filePath = contractNo[3] + File.separator + fileName;	 
+			
+			try {
+				// send email
+				String body = "Please find below attachment to get full details of contract grade wise..";
+				String sub = "Contract Details";
+				final String filePathDir  = contractLetterPath + File.separator + filePath;
+						SendMail sendMail = new SendMail();
+				InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+						new InternetAddress("pradeepcyf24@gmail.com") };
 
+				CompletableFuture.runAsync(() -> {
+					try {
+						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+				
+				
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+	
+		
+		
+		 
+//		return new ResponseEntity<>("{\"redirect\": \"pcsoRequestLetterList.obj\"}", HttpStatus.OK);
+		// return new ModelAndView("pcsoRequestLetterList.obj");
+
+	}
+	
+	
+	
+	
 	// ---------------------------------------------------------
 	// Entry Of Derivative Price
 	// ---------------------------------------------------------
