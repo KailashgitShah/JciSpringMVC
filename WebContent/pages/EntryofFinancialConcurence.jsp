@@ -74,12 +74,13 @@
 		    String ContractValue = (String) request.getAttribute("ContractValue");
 		    Double qtyallowed = (Double) request.getAttribute("qtyallowed");
 		    int Payment_id = (int) request.getAttribute("Payment_id");
+		    String  fcref_no2 = (String) request.getAttribute("fcref_no1");
 		  
 		    
 		  
-           out.println(instrumentvalue);
+        /*    out.println(instrumentvalue);
             out.println(instrumentDate1); 
-           
+            */
            
 		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
 		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
@@ -127,7 +128,7 @@
 			                                         <div class="col-sm-4 form-group">
 															<label>FC Ref No. </label> 
 															<span class="text-danger">* </span>&nbsp; <span id="FC_Ref_No. " name=FC_Ref_No. class="text-danger"> </span>
-															<input class="form-control" name="FC_Ref_No." id="FC_Ref_No." type="Number" required
+															<input class="form-control" name="FC_Ref_No." id="FC_Ref_No." value="<%=fcref_no2 %>" readonly ="readonly" required
 													
 															>
 													</div> 
@@ -373,8 +374,8 @@
 			        textInput = textInput.replace(/[^A-Za-z ]+$/gm, ""); 
 			        element.value = textInput; 
 			    }
-			</script>
-						<script>
+		</script>
+						<!-- <script>
 			    // Generate a random number between 0 and 999999 (inclusive)
 			    var num = Math.floor(Math.random() * 1000000);
 			
@@ -382,29 +383,61 @@
 			    var inputField = document.getElementById("FC_Ref_No.");
 			        inputField.value = num;
 			</script>
-			
+			  -->
 			
 			
 		
 			
 			
-				<script>
+			<!-- 	<script>
 				
-				  $(document).ready(function() {
+				$(document).ready(function() {
 				    // Get references to the checkbox and form group elements
 				    const checkbox = $('#inlineFormCheck');
 				    const carryingCostFormGroup = $('#carryingCostFormGroup');
-				    
+
 				    // Add an event listener to the checkbox
 				    checkbox.change(function() {
-				      if (checkbox.is(':checked')) {
-				        carryingCostFormGroup.show();
-				      } else {
-				        carryingCostFormGroup.hide();
-				      }
+				        // Assuming DaysDiffrencetotal is defined somewhere else
+				        if (checkbox.is(':checked')) {
+				            carryingCostFormGroup.show();
+				        } else {
+				            carryingCostFormGroup.hide();
+				        }
 				    });
-				  });
-				</script> 
+				});
+
+				</script>  -->
+				
+				<script>
+				
+				$(document).ready(function() {
+				   
+				    const checkbox = $('#inlineFormCheck');
+				    const carryingCostFormGroup = $('#carryingCostFormGroup');
+				    const carryingCostInput = $('#SGST_Amt');
+
+				    checkbox.change(function() {
+				        if (checkbox.is(':checked')) {
+				            
+				            let calculatedValue = calculateValue(); 
+				            
+				            carryingCostInput.val(calculatedValue);
+				            carryingCostFormGroup.show();
+				        } else {
+				         
+				            carryingCostFormGroup.hide();
+				        }
+				    });
+
+				  
+				    function calculateValue() {
+				      
+				        return 10; 
+				    }
+				});
+
+				</script>
 				
 				
 				

@@ -2,6 +2,8 @@ package com.jci.controller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.Console;
@@ -1741,8 +1743,10 @@ public class Controller_V {
 		
 		//List<Object> getsumofInstrumentValue = this.paymentDetailService.getsumofInstrumentValue();
 		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
+		List<Object> getcontractList2 = this.paymentDetailService.Millname();
 
 		mv.addObject("getcontractList1", getcontractList1);
+		mv.addObject("getcontractList2", getcontractList2);
 		return mv;
 
 	}
@@ -1760,10 +1764,13 @@ public class Controller_V {
 			theDir.mkdirs();
 		}
 		final ModelAndView mv = new ModelAndView();
+		
+		
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
-
-			String contractno = request.getParameter("fullcontractno");
+			String[] selectedContracts = request.getParameterValues("contract");
+		    for(String st: selectedContracts) {
+			String millname65 = request.getParameter("millname65");
 			String Instrument = request.getParameter("Instrument");
 			String instdate = request.getParameter("instdate");
 			String IFSC = request.getParameter("IFSC");
@@ -1777,24 +1784,39 @@ public class Controller_V {
 			String contrcat_value23 = request.getParameter("contrcat_value23");
 			String autorevolvingamount = request.getParameter("autorevolvingamount");
 			// String QtyAllowed = request.getParameter("QtyAllowed");
-			final String filename = SupportingDocument.getOriginalFilename();
-			File serverFile = new File(theDir, filename);
-			SupportingDocument.transferTo(serverFile);
+			String originalFilename = SupportingDocument.getOriginalFilename();
+			
+			
+//            String uniqueFilename = generateUniqueFilename(originalFilename);
+//            File serverFile = new File(theDir, uniqueFilename);
+			//SupportingDocument.transferTo(serverFile);
+			
+			
+		 // Create unique identifier based on contract details
+		    String uniqueFilename = generateUniqueFilename(originalFilename);
+		    File serverFile = new File(theDir, uniqueFilename);
 
 			// Conditionally set autorevolvingamount based on payment type
 
 			EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
-			entryPaymentDetailsModel.setContractno(contractno);
+			
+			
 			entryPaymentDetailsModel.setInstrumentno(Instrument);
+			entryPaymentDetailsModel.setMillname(millname65);
+			entryPaymentDetailsModel.setContractno(st);
+			
 			entryPaymentDetailsModel.setPaymentDue_date(Pyamentduedate);
 			entryPaymentDetailsModel.setContract_value(contrcat_value23);
 //			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 //			Date instdate1 = formatter1.parse(instdate);
 //			entryPaymentDetailsModel.setInstdate(instdate1);
 
-			
+//			
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date instdate1 = formatter1.parse(instdate);
+//			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//			String instdate3 = formatter2.format(instdate2);
+//			Date instdate1 = formatter2.parse(instdate3);
 
 			// Set the time portion to midnight
 			Calendar calendar = Calendar.getInstance();
@@ -1813,7 +1835,7 @@ public class Controller_V {
 			//int  instruValue= Integer.parseInt(InstrumentValue);
 			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
 			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
-			entryPaymentDetailsModel.setSupportingDocument(filename);
+			entryPaymentDetailsModel.setSupportingDocument(originalFilename);
 			entryPaymentDetailsModel.setFc_status(0);
 
 			Date date3 = new Date();
@@ -1867,11 +1889,12 @@ public class Controller_V {
 
 			this.paymentDetailService.create(entryPaymentDetailsModel);
 
-			this.paymentDetailService.contratTable(contractno);
+			this.paymentDetailService.contratTable(st);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
-		} catch (Exception e) {
+		} 
+		}catch (Exception e) {
 
 			e.printStackTrace();
 		}
@@ -1880,6 +1903,10 @@ public class Controller_V {
 		}
 
 		return new ModelAndView(new RedirectView("EntryofPaymentDetails.obj"));
+	}
+	String generateUniqueFilename(String originalFilename) {
+	    String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	    return timestamp + "_"  + originalFilename;
 	}
 
 	
@@ -2136,6 +2163,28 @@ public class Controller_V {
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(millRecieptModelt1);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
+	public String contractlistfetch1(@RequestParam("contractno") String contractno) {
+		System.err.println("contractlistfetch");
+		List<Object[]> contractRecieptModelt1 = paymentDetailService.contractlistfetchdata(contractno);
+		System.err.println("resultList++++++++++" + contractRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractRecieptModelt1);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "millnamebasedcontract", method = RequestMethod.GET)
+	public String millnamebasedcontract(@RequestParam("contractno") String millname) {
+
+		List<Object[]> millnamecontract = (List<Object[]>) paymentDetailService.millnamecontractvise(millname);
+		System.err.println("resultList++++++++++" + millnamecontract);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millnamecontract);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 

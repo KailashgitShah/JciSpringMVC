@@ -109,6 +109,19 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		return  paymentDetailsdao.PreviousInstruValue(st);
 	
 	}
+	@Override
+	public List<Object> Millname() {
+		return paymentDetailsdao.Millname();
+	}
+	@Override
+	public List<Object[]> millnamecontractvise(String st) {
+	
+		return  paymentDetailsdao.millnamecontractvise(st);
+	}
+	@Override
+	public List<Object[]> contractlistfetchdata(String st) {
+		return  paymentDetailsdao.contractlistfetchdata(st);
+	}
 	
 
 }

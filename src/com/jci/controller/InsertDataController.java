@@ -5843,7 +5843,10 @@ public class InsertDataController
 			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
 					.getAllPaymentInstruments();
 			mv.addObject("allUserRegistration", allUserRegistration);
-			
+//			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
+//					.getAllPaymentInstrumentsentry();
+//			mv.addObject("entryPaymentDetailsModel", allUserRegistration);
+//			
 
 			return mv;
 		}
@@ -5861,7 +5864,7 @@ public class InsertDataController
 				
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date=entryPaymentDetailsModel.getCreated_date();
-				
+			
 				String  Con_no = entryPaymentDetailsModel.getContractno();
 				int  Payment_id = entryPaymentDetailsModel.getPayment_id();
 				this.paymentDetailService.update2(Con_no);
@@ -5909,9 +5912,32 @@ public class InsertDataController
 				 mv.addObject("cost",bigIntValue);
 				 System.err.println(cost);
 			    }
+			
+			int allIndiaSerialNo = 000001;
+//			/* int stateSerialNo = 1; */
+			 String fcref_no1 = GenerateFCNO(request.getSession(),allIndiaSerialNo);
+			    mv.addObject("fcref_no1", fcref_no1);
 
 			return mv;
 		}
+		
+		private String GenerateFCNO(HttpSession session, int allIndiaSerialNo) {
+	     if (session.getAttribute("allIndiaSerialNo") != null) {
+	            allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
+	            allIndiaSerialNo++;
+	        }
+	        session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+
+	        String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
+	        String status=this.fiannacialConcurenceService.fcref_nocheck(formattedAllIndiaSerialNo);
+	       if ("1".equals(status)) {
+	          
+	           return GenerateFCNO(session, allIndiaSerialNo + 1);
+	       } else {
+	           
+	           return formattedAllIndiaSerialNo;
+	       }
+	    }
 		@RequestMapping({ "updatefcstatus" })
 		public ModelAndView bnaDeletepay( HttpServletRequest request, RedirectAttributes redirectAttributes) {
 			final ModelAndView mv = new ModelAndView("viewFCpaymentlist");

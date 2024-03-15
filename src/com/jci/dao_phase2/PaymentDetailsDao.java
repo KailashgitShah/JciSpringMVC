@@ -18,10 +18,13 @@ public interface PaymentDetailsDao {
 		public void update2(String cont_no);
 		public void contratTable(String cont_no);
 		public List<Object> ContractNo();
+		public List<Object> Millname();
 		public List<Object> getsumofInstrumentValue(String instValue);
 		  public  List<Object[]>paymentdetails(String  st);
 		  public  List<Object[]>gradewiseqty(String st,String contractqty);
 		  public  List<Object[]>PreviousNo(String st);
+		  public  List<Object[]>contractlistfetchdata(String st);
+		  public  List<Object[]>millnamecontractvise(String st);
 		  public  List<Object>PreviousInstruValue(String st);
 		  public void remark(String remark,String  con_No,int id);
 }

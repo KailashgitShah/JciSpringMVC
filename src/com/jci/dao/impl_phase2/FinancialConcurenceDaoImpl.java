@@ -171,5 +171,17 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 
 		}
 
-}
+		@Override
+		public String fcref_nocheck(String fcref_no) {
+			String sql = "SELECT  count(*) FROM jcifinancial_concurrence WHERE FC_Ref_No = '" + fcref_no + "' ";
+			int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+			
+			
+			if(total>0)
+				return "1";
+			else 
+				return "0";
 
+		}
+
+}

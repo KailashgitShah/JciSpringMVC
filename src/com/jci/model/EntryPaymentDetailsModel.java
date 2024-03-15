@@ -31,7 +31,7 @@ public class EntryPaymentDetailsModel {
 	private String contractno;
 	
 	@Column(name = "Instrument_Date")
-	@Temporal(value=TemporalType.TIMESTAMP)
+//	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date instdate;
 	
 	@Column(name = "ifsc")
@@ -80,11 +80,23 @@ public class EntryPaymentDetailsModel {
 	
 	@Column(name = "Remarks")
 	private String Remarks ;
+	
+
+	@Column(name = "Millname")
+	private String Millname ;
 
 	@Column(name = "PaymentDue_date")
 	private String PaymentDue_date ;
 	
 	
+	public String getMillname() {
+		return Millname;
+	}
+
+	public void setMillname(String millname) {
+		Millname = millname;
+	}
+
 	@Column(name = "Contract_value")
 	private String Contract_value ;
 

@@ -135,17 +135,17 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	 
 	@Override
 	public List<Object> ContractNo() {
-		String sql=" SELECT c.Contract_no, d.Difference  \r\n"
-				+ "FROM (\r\n"
-				+ "    SELECT a.Contract_no, a.Contract_value, COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value, \r\n"
-				+ "           (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference\r\n"
-				+ "    FROM jcicontract AS a  \r\n"
-				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No\r\n"
-				+ "    GROUP BY a.Contract_no, a.Contract_value\r\n"
-				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL\r\n"
-				+ ") AS d  \r\n"
-				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no \r\n"
-				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;\r\n"
+		String sql=" SELECT c.Contract_no, d.Difference "
+				+ "FROM ("
+				+ "    SELECT a.Contract_no, a.Contract_value, COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,"
+				+ "           (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference"
+				+ "    FROM jcicontract AS a  "
+				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No"
+				+ "    GROUP BY a.Contract_no, a.Contract_value"
+				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL"
+				+ ") AS d "
+				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no "
+				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;"
 				;
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
@@ -209,6 +209,29 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		String sql=" select  Instrument_value from jcipayment_arrangement WHERE  Contract_No='" + st + "' ";
 		 List<Object>resultListofsum= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultListofsum;
+	}
+
+	@Override
+	public List<Object> Millname() {
+		
+		String sql="SELECT DISTINCT Mill_name FROM jcicontract;";
+		 List<Object>millNamelist= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return millNamelist;
+	}
+
+	@Override
+	public List<Object[]> millnamecontractvise(String st) {
+		String sql="SELECT  Contract_no from jcicontract where Mill_name='" + st + "'";
+		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return millnamelist;
+		
+	}
+
+	@Override
+	public List<Object[]> contractlistfetchdata(String st) {
+		String sql="SELECT  Contract_no,Contract_qty,Contract_value,Contract_date,Payment_duedate from jcicontract where Contract_no='" + st + "'";
+		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return millnamelist;
 	}
 
 	

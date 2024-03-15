@@ -16,7 +16,7 @@ public interface FinancialConcurenceDao {
 		//public void delete(int id);
 		//public List <PaymentInstrumentModel> getAll();
 //		PaymentInstrumentModel find(int id);
-		//public PaymentInstrumentModel paymentInstrumentProfile(int eopiid);
+		//public PaymentInstrumentModel paymentInstrumentProfile(int eopiidfcref_no);
 		//FinancialConcurenceModel getById(int id);
 		  //public   void update(PaymentInstrumentModel paymentInstrument);
 		//public FinancialConcurenceModel find(int id);
@@ -24,6 +24,7 @@ public interface FinancialConcurenceDao {
 	 public FinancialConcurenceModel find(int id);
 	 public void remark(String remark,String  con_No,int paymentId);
 	 public String ContractedQty(String cont_no);
+	 public String fcref_nocheck(String fcref_no);
 	 public int paymentid(String cont_no);
 	public List<Object> dataofdates(String con_no,int Payment_id);
 }
