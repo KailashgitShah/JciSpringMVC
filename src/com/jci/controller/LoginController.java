@@ -189,9 +189,6 @@ public class LoginController {
 						
 							String currCropYear = currentyear + "-" + nextyear;
 							
-
-                    	 
-                    	 
                     	        useremail1 = email;
                     	        String set0 = "0";
                                 userRegService.updateConcurrentlogin(email,set0);

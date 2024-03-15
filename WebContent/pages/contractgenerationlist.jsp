@@ -27,9 +27,12 @@
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- PAGE LEVEL STYLES-->
@@ -46,10 +49,10 @@
 	padding: 14px;
 	text-decoration: none;
 }
-  .hover{
-  color : blue;
-}
 
+.hover {
+	color: blue;
+}
 </style>
 <script>
 	$(document).ready(function() {
@@ -87,15 +90,15 @@
 				<table class="w-100 text-center">
 					<thead>
 						<tr class="row p-3">
-							<th class="col-sm-3 text-center">S.N.</th>
-							<th class="col-sm-3 text-center">Contract Identification No</th>
-							<th class="col-sm-3 text-center">Contract Date</th>
-							<th class="col-sm-3 text-center">Contracted Qty</th>
-							<!-- <th class="col-sm-3 text-center">Contracted Value</th> -->
+							<th class="col-sm-1 text-center">S.N.</th>
+							<th class="col-sm-2 text-center">Contract Identification No</th>
+							<th class="col-sm-7 text-center">Pco Date</th>
+							<!-- <th class="col-sm-2 text-center">Contract Date</th> -->
+							<th class="col-sm-2 text-center">Contracted Qty</th>
 						</tr>
 					</thead>
 				</table>
-			<!--drill down listing -->
+				<!--drill down listing -->
 				<div class="accordion" id="accordionExample">
 					<%
 					int i = 1;
@@ -111,10 +114,11 @@
 									aria-expanded="false" aria-controls="collapse<%=i%>">
 
 									<div class="row hover">
-										<div class="col-sm-3"><%=i%></div>
-										<div class="col-sm-3"><%=contract.getContract_identification_no()%></div>
-										<div class="col-sm-3"><%=contract.getContract_date()%></div>
-										<div class="col-sm-3"><%=contract.getContract_qty()%></div>
+										<div class="col-sm-1"><%=i%></div>
+										<div class="col-sm-2"><%=contract.getContract_identification_no()%></div>
+										<div class="col-sm-7"><%=contract.getPcso_date()%></div>
+										<%-- <div class="col-sm-2"><%=contract.getContract_date()%></div> --%>
+										<div class="col-sm-2"><%=contract.getContract_qty()%></div>
 									</div>
 
 								</button>
@@ -127,121 +131,127 @@
 						</div>
 
 					</div>
-				<%
-				i++;
-				}
-				%>
+					<%
+					i++;
+					}
+					%>
+				</div>
 			</div>
+			<!-- END PAGE CONTENT-->
+			<%@ include file="footer.jsp"%>
 		</div>
-		<!-- END PAGE CONTENT-->
-		<%@ include file="footer.jsp"%>
-	</div>
-	<!-- BEGIN THEME CONFIG PANEL-->
+		<!-- BEGIN THEME CONFIG PANEL-->
 
-	<!-- END THEME CONFIG PANEL-->
-	<!-- BEGIN PAGA BACKDROPS-->
-	<div class="sidenav-backdrop backdrop"></div>
+		<!-- END THEME CONFIG PANEL-->
+		<!-- BEGIN PAGA BACKDROPS-->
+		<div class="sidenav-backdrop backdrop"></div>
 
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
-	<script type="text/javascript">
-		$(function() {
-			$('#example-table').DataTable({
-				pageLength : 10,
-			//"ajax": './assets/demo/data/table_data.json',
-			/*"columns": [
-			    { "S": "name" },
-			    { "data": "office" },
-			    { "data": "extn" },
-			    { "data": "start_date" },
-			    { "data": "salary" }
-			]*/
-			});
-		})
-	</script>
+		<!-- END PAGA BACKDROPS-->
+		<!-- CORE PLUGINS-->
+		<script src="./assets/vendors/jquery/dist/jquery.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+			type="text/javascript"></script>
+		<script
+			src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+			type="text/javascript"></script>
+		<!-- PAGE LEVEL PLUGINS-->
+		<script src="./assets/vendors/DataTables/datatables.min.js"
+			type="text/javascript"></script>
+		<!-- CORE SCRIPTS-->
+		<script src="assets/js/app.min.js" type="text/javascript"></script>
+		<!-- PAGE LEVEL SCRIPTS-->
+		<script type="text/javascript">
+			$(function() {
+				$('#example-table').DataTable({
+					pageLength : 10,
+				//"ajax": './assets/demo/data/table_data.json',
+				/*"columns": [
+				    { "S": "name" },
+				    { "data": "office" },
+				    { "data": "extn" },
+				    { "data": "start_date" },
+				    { "data": "salary" }
+				]*/
+				});
+			})
+		</script>
 
-	<script type="text/javascript">
-	
-	//get conract details on the basis of the contractno
-		function findDetails(contractId, id) {
+		<script type="text/javascript">
+			//get conract details on the basis of the contractno
+			function findDetails(contractId, id) {
 
-			$
-					.ajax({
-						type : "GET",
-						url : "getAllContractDetails.obj",
-						data : {
-							"contract" : contractId
-						},
-						success : function(result) {
-							var data = jQuery.parseJSON(result);
-							var path = contractId + "\\";
+				$
+						.ajax({
+							type : "GET",
+							url : "getAllContractDetails.obj",
+							data : {
+								"contract" : contractId
+							},
+							success : function(result) {
+								var data = jQuery.parseJSON(result);
+								console.log(data);
+								var path = contractId + "\\";
 
-							var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";
+								var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";
 
-							tableData += "<thead><tr>" + "<th>S.N.</th>"
-									+ "<th>Mill Code</th>"
-									+ "<th>Mill Name</th>"
-									+ "<th>Allocated Qty(Qtls.)</th>"
-									+ "<th>Grade Composition</th>"
-									+ "<th>PCSO Date</th>"
-									+ "<th>Delivery Period</th>"
-									+ "</tr></thead>";
+								tableData += "<thead><tr>" + "<th>S.N.</th>"
+										+ "<th>Mill Code</th>"
+										+ "<th>Mill Name</th>"
+										+ "<th>Contracted Date</th>"
+										+ "<th>Contracted Qty(Qtls.)</th>"
+										+ "<th>Delivery Type</th>"
+										+ "<th>Payment Due Date</th>"
+										+ "<th>Payment Status</th>"
+										+ "</tr></thead>";
 
-							tableData += "<tbody id='tbody'>";
+								tableData += "<tbody id='tbody'>";
 
-							for (var i = 0; i < data.length; i++) {
-								var count = i + 1;
-								var fileName = path
-										+ data[i].Contract_acceptance_doc;
+								for (var i = 0; i < data.length; i++) {
+									var count = i + 1;
+									var fileName = path
+											+ data[i].Contract_acceptance_doc;
 
-								tableData += "<tr><td>" + count + "</td>";
+									tableData += "<tr><td>" + count + "</td>";
 
-								tableData += "<td>" + data[i].Mill_code
-										+ "</td>";
-								tableData += "<td>" + data[i].Mill_name
-										+ "</td>";
-								tableData += "<td>" + data[i].Mill_qty
-										+ "</td>";
-								tableData += "<td>" + data[i].Grade_composition
-										+ "</td>";
-								tableData += "<td>" + data[i].Pcso_date
-										+ "</td>";
-								tableData += "<td>" + data[i].Delivery_type
-										+ "</td>";
+									tableData += "<td>" + data[i].Mill_code
+											+ "</td>";
+									tableData += "<td>" + data[i].Mill_name
+											+ "</td>";
+									tableData += "<td>" + data[i].Contract_date
+											+ "</td>";
+									tableData += "<td>" + data[i].Mill_qty
+											+ "</td>";
 
-								tableData += "<td><a target='_blank' href='downloadContractLetter.obj?imagePath="
-										+ encodeURIComponent(fileName)
-										+ "' class='btn btn-success'><i class='fa fa-download' aria-hidden='true';'></i></a></td>";
+									tableData += "<td>" + data[i].Delivery_type
+											+ "</td>";
 
-								tableData += "</tr>";
+									tableData += "<td>"
+											+ data[i].Payment_duedate + "</td>";
+
+									tableData += "<td>"
+											+ data[i].Intial_Payment_flag
+											+ "</td>";
+
+									tableData += "<td><a target='_blank' href='downloadContractLetter.obj?imagePath="
+											+ encodeURIComponent(fileName)
+											+ "' class='btn btn-success'><i class='fa fa-download' aria-hidden='true';'></i></a></td>";
+
+									tableData += "</tr>";
+								}
+
+								tableData += "</tbody></table>";
+								$("#table" + id).html(tableData);
+
 							}
+						})
 
-							tableData += "</tbody></table>";
-							$("#table" + id).html(tableData);
-
-						}
-					})
-
-		}
-	</script>
-
+			}
+		</script>
 </body>
 
 </html>

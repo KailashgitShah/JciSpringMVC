@@ -255,9 +255,9 @@ body {
 					<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Grade Composition</b></a></li> -->
-					<li data-pre="" id=""><a href="entrygradecompositionlist.obj"><i
+					<!-- <li data-pre="" id=""><a href="entrygradecompositionlist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>List of Grade
-								Composition</b></a></li>
+								Composition</b></a></li> -->
 					<li data-pre="38" id="o38"><a
 						href="contractgenerationPCSOWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract

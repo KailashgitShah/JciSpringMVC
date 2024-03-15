@@ -70,6 +70,14 @@ public class PdfGenerator {
 			add2 = row[1] + "";
 			areaAndpincode = row[2] + "-" + row[3];
 		}
+		
+		System.err.println(add1);
+		System.err.println(add2);
+		System.err.println(areaAndpincode);
+		
+		System.err.println(add1);
+		System.err.println(add2);
+		System.err.println(areaAndpincode);
 
 		Table table = new Table(widthOfTwoColumn);
 
@@ -91,7 +99,7 @@ public class PdfGenerator {
 
 		Paragraph subHeading = new Paragraph(new Text("Sub : ").setBold())
 				.add(new Text("Sale of raw jute under B.Twill Linkage sale").setUnderline())
-				.setTextAlignment(TextAlignment.CENTER).setMarginTop(45);
+				.setTextAlignment(TextAlignment.CENTER).setMarginTop(15);
 
 		Paragraph RefParagraph = new Paragraph(new Text("Ref No : ").setBold()).add(new Text(
 				"Jute(Mktg)/42/2004 dt. 01-12-2022, 07-12-2022 and 09-12-2022 of Dy. Director (Mktg), Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. 01-12-2022, 05-12-2022 and 09-12-2022")
@@ -158,12 +166,12 @@ public class PdfGenerator {
 		letterHead.setRelativePosition(-23, 0, 0, 0);
 
 		document.add(letterHead);
-		document.add(new Paragraph("\n"));
+		/* document.add(new Paragraph("\n")); */
 		document.add(table);
 		document.add(subHeading);
-		document.add(new Paragraph("\n"));
+		/* document.add(new Paragraph("\n")); */
 		document.add(RefParagraph);
-		document.add(new Paragraph("\n"));
+		/* document.add(new Paragraph("\n")); */
 		document.add(messageParagraph);
 		document.add(deliveryTypeParagraph);
 		document.add(distributionTable);

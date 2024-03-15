@@ -194,7 +194,8 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	@Override
 	public List<Contractgeneration> getAllContract() {
 
-		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_date, Contract_qty, SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
+//		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_date, Contract_qty, SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
+		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_qty, SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
 
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -205,8 +206,8 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 			contractgeneration.setContract_identification_no((String) eleObject[0]);
 			contractgeneration.setPcso_date((String) eleObject[1]);
-			contractgeneration.setContract_date((String) eleObject[2]);
-			contractgeneration.setContract_qty((String) eleObject[3]);
+			/* contractgeneration.setContract_date((String) eleObject[2]); */
+			contractgeneration.setContract_qty((String) eleObject[2]);
 
 			list.add(contractgeneration);
 
@@ -258,6 +259,9 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			model.setMill_qty((double) eleObjects[20]);
 			model.setPcso_date((String) eleObjects[22]);
 			model.setDelivery_type((String) eleObjects[14]);
+			model.setContract_date((String) eleObjects[6]);
+			model.setPayment_duedate((String) eleObjects[21]);
+			model.setIntial_Payment_flag((int)eleObjects[17]);
 
 			listOfContract.add(model);
 		}
@@ -294,6 +298,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			model.setDelivery_type((String) eleObjects[14]);
 			model.setContract_identification_no((String) eleObjects[7]);
 			model.setMill_qty((double) eleObjects[20]);
+			model.setJute_value((double) eleObjects[25]);
 			model.setContract_no( (String)eleObjects[8]);
 
 			listOfContract.add(model);

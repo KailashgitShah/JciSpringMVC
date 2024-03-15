@@ -90,6 +90,7 @@ String contractNos ="";
 										<th>Mill Code</th>
 										<th>Mill Name</th>
 										<th>Allocated Qty(Qtls.)</th>
+										<th>Jute Value</th>
 										<th>Grade Composition</th>
 										<th>PCSO Date</th>
 										<th>Delivery Period</th>
@@ -112,6 +113,7 @@ String contractNos ="";
 										<td><%=requestEl.getMill_code()%></td>
 										<td><%=requestEl.getMill_name()%></td>
 										<td><%=requestEl.getMill_qty()%></td>
+										<td><%=requestEl.getJute_value()%></td>
 										<td><%=requestEl.getGrade_composition()%></td>
 										<td><%=requestEl.getPcso_date()%></td>
 										<td><%=requestEl.getDelivery_type()%></td>
@@ -128,6 +130,7 @@ String contractNos ="";
 									}
 									%>
 									<tr>
+										<td></td>
 										<td></td>
 										<td></td>
 										<td></td>
@@ -171,6 +174,11 @@ String contractNos ="";
 	var selectAllStatus = 1;
 		//send mail funtion
 		function Authorize(contractNo) {
+			
+		if(	!confirm("Do you want to Authorize this contract")){
+			return false;
+		}
+			
 				$.ajax({
 					url : "contractAuthorizationByIdnNo.obj",
 					type : "GET",
@@ -206,6 +214,12 @@ String contractNos ="";
 		}
 		
 		function authorizedAll(){
+			
+			if(	!confirm("Do you want to Authorize All the contracts together..")){
+				return false;
+			}
+				
+			
 			var allContractNos = '<%=contractNos%>';
 
 			

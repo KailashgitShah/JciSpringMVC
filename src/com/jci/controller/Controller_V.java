@@ -78,6 +78,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
@@ -1012,18 +1019,15 @@ public class Controller_V {
 	public String quoteContractNo(String contract) {
 		String[] contractNos = contract.split(",");
 		String qutoedAns = "";
-		 for(String no : contractNos) {
-			 qutoedAns += "'" + no + "',";
-		 }
-		 
-		 return qutoedAns;
+		for(String no : contractNos) qutoedAns += "'" + no + "',";
+		return qutoedAns;
 	}
 	
 	//contract authorization
 	@ResponseBody
 	@RequestMapping(value = "contractAuthorizationByIdnNo", method = RequestMethod.GET)
 	public void Authorize(HttpServletRequest request, RedirectAttributes redirectAttributes)
-			throws AddressException {
+			throws AddressException, IOException {
 		
 		String contractNOString = request.getParameter("contractNo");
 		String[] contractNos = contractNOString.split(",");
@@ -1042,7 +1046,6 @@ public class Controller_V {
 			String[] contractNo = contract.split("/");
 			 
 			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";;
-			
 			String filePath = contractNo[3] + File.separator + fileName;	 
 			
 			try {
@@ -1067,6 +1070,21 @@ public class Controller_V {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
+			
+//			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
+//			String deString = "C:/Users/pradeep.rathor/Desktop/NewVisitor";
+//			PdfWriter writer = new PdfWriter(contractLetterPath + File.separator + filePath);
+//			PdfDocument pdfDoc = new PdfDocument(reader, writer);
+//			
+//			  PdfPTable table = new PdfPTable(2);
+//			    table.getDefaultCell().setPadding(5f); // Code 1
+//			    table.setHorizontalAlignment(Element.ALIGN_LEFT);
+//			    PdfPCell cell; 
+//			   table.addCell("Age");
+//			
+//			pdfDoc.close();
+			
+			
 		}
 		
 	
