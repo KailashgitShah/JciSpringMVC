@@ -168,6 +168,7 @@ input[type="radio"] {
 
                                                                      <input type="radio" name="opt" value="head" id="regId" checked>
                                                                      Region <input type="radio" name="opt" value="bod"> DPC
+                                                                     
                                                                      <div class="row">
                                                                            <div class="col-sm-4 form-group">
                                                                                   <label>Regional Office </label> <span class="text-danger">*
@@ -182,7 +183,7 @@ input[type="radio"] {
                                                                                          }
                                                                                          %>
                                                                                   </select>
-
+																		<a href="#" style="color: blue;">Inventory Region Wise</a>
 
                                                                            </div>
                                                                            <div class="col-sm-4 form-group" id="dpc_div">

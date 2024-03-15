@@ -94,23 +94,11 @@ tr:nth-child(even) {
 						<tr>
 							<th>S.No</th>
 							<th>Contract No.</th>
-
-
 							<th>Regional Office</th>
-
-
-
-							<th>Last date of Shipment</th>
-
+ 							<th>Last date of Shipment</th>
 							<th>DI No</th>
-
-
-
 							<th>DI Date</th>
-
 							<th>Jute Variety</th>
-
-
 							<!-- <th>Grade Wise Allocation</th> -->
 							<th>Grade-1</th>
 							<th>Grade-2</th>
@@ -120,8 +108,7 @@ tr:nth-child(even) {
 							<th>Grade-6</th>
 							<th>Grade-7</th>
 							<th>Grade-8</th>
-							<th>Edit</th>
-
+							<th>Delete</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -132,7 +119,6 @@ tr:nth-child(even) {
 							<tr>
 								<td class="sorting_1" style="text-align: center"><%=i%></td>
 								<td style="text-align: center">${item.getContract_No()}</td>
-
 								<td style="text-align: center">${item.getRegional_office()}</td>
 								<td style="text-align: center">${item.getLast_date_of_Shipment()}</td>
 								<td style="text-align: center">${item.getDI_no()}</td>

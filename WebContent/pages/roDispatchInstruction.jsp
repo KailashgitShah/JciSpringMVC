@@ -72,6 +72,7 @@ input[type="radio"] {
 <%
 List<String> allDpc = (List<String>) request.getAttribute("loadAllDpc");
 List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
+List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooperativesList");
 //int count = (int) request.getAttribute("count") + 1; //valid for next entry
 %>
 
@@ -105,7 +106,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 										<div class="col-sm-4 form-group">
 											<label>HO DI No.</label> <select name="hoDiNo" id="hoDiNo"
 												class="form-control" required>
-												<option value="">-Select-</option>
+												<option value="-1" selected disabled>-Select-</option>
 												<%
 												for (String no : allHoDiNo) {
 												%>
@@ -141,15 +142,24 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 											<label>Crop year </label> <input class="form-control"
 												id="cropYear" name="CropYear" type="text" readonly>
 										</div>
-										<div class="col-sm-4 form-group" id="dpc">
+										<div class="col-sm-4 form-group">
 											<label>DPC</label> <select name="dpc" id="dpc"
 												class="form-control" required>
-												<option value="">-Select-</option>
+												<option value="-1" disabled>-Select-</option>
+												<%
+												for (String no : allCooperative) {
+												%>
+												<option value="<%=no%>"><%=no%></option>
+												<%
+												}
+												%>
 											</select>
+											<a href="#" style="color: blue;">Inventory DPC Wise</a>
 										</div>
+									
 
 									</div>
-
+									
 
 									<div class="row">
 
@@ -180,14 +190,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 											<label>Remarks </label> <input class="form-control"
 												name="Remarks" type="text" required>
 
-											<!--  <select name="juteVariety"
-												id="juteVariety" class="form-control" required>
-												<option value="">-Select-</option>
-												<option value="Tossa (New)">Tossa (New)</option>
-												<option value="White (New)">White (New)</option>
-												<option value="Mesta">Mesta</option>
-												<option value="Bimli">Bimli</option>
-											</select> -->
+
 										</div>
 										<div class="col-sm-1 mt-2 form-group">
 											<label></label>
@@ -253,14 +256,14 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 		//get todays date in string format 
 		const currentDate = new Date();
 		const day = String(currentDate.getDate()).padStart(2, '0');
-		const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+		const month = String(currentDate.getMonth()).padStart(2, '0'); // Months are zero-based
 		const year = String(currentDate.getFullYear());
 		const formattedDate = day + "-" + month + "-" + year;
 		const minDateOfShipment = year + "-" + month + "-" + day;
 
 		//   alert(minDateOfShipment , formattedDate);
 
-		$('#hoDiDate').val(formattedDate);
+		/* $('#hoDiDate').val(formattedDate); */
 		$('#roDiDate').val(formattedDate);
 
 		$("#hoDiNo")
@@ -279,69 +282,83 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 										success : function(result) {
 											var data = jQuery.parseJSON(result);
 											console.log(data);
-											
+
 											var numberOfContractDetails = data.contractDetails.length;
 											//alert(numberOfContractDetails);//Number of entries for particular DI 
 											var contract = data.contractDetails[0];
 											var count = data.count + 1;
+											//alert(contract[10]);
+											 var contractData = data.contractDetails[0][10];
+        var dataArray = contractData.split(',');
+        
+        var dpcDropdown = $('#dpc');
+        var allOptions = [];
 
-											$("#contractDate").val(contract[2]);
+        // Add the options from contractData to the allOptions array
+        dataArray.forEach(function(value) {
+            allOptions.push(value);
+        });
+        //console.log(allOptions);
+        // Add the existing options from allCooperative to the allOptions array
+        <% for (String no : allCooperative) { %>
+        allOptions.push("<%=no%>");
+        <% } %>
+        //console.log(allOptions);
+        // Clear any existing options before populating the dropdown
+        dpcDropdown.empty();
+//console.log(allOptions);
+        // Populate the dropdown with all options
+        allOptions.forEach(function(value) {
+            dpcDropdown.append($('<option>', {
+                value: value,
+                text: value
+            }));
+        });
+
+        console.log("Options added successfully.");
+    
+											  
+										$("#contractDate").val(contract[2]);
 											$("#contractNo").val(contract[3]);
 											$("#cropYear").val(contract[7]);
-											$("#roDiNo").val(val + "/0" + count);
+											$("#roDiNo")
+													.val(val + "/0" + count);
 											//alert(contract[21]); Last date ship date
 											const unFormatedDate = contract[21]
 													.split("-");
-											
-											console.log(contract[21]);
-											
-											
-											
-											/* 	const d = "10-10-2023";
-												const unFormatedDate = d.split("-"); */
 											const lastDateOfShipment = unFormatedDate[2]
 													+ "-"
 													+ unFormatedDate[1]
 													+ "-" + unFormatedDate[0];
-											$("#lastDateOfShipment").val(lastDateOfShipment);
+											const today = new Date();
+											const day = today.getDate();
+											const month = today.getMonth() + 1; // Months are zero indexed
+											const year = today.getFullYear();
+											const todayDate = year + "-"
+													+ (month < 10 ? '0' : '')
+													+ month + "-"
+													+ (day < 10 ? '0' : '')
+													+ day;
+
+											$("#lastDateOfShipment").val(
+													lastDateOfShipment);
 											$("#lastDateOfShipment").attr({
 												"max" : lastDateOfShipment,
-												"min" : minDateOfShipment
+												"min" : todayDate
 											});
-											
-											
+
 											$("#juteVariety").val(contract[20]);
 											$("#GVariety").val(contract[12]);
 											$("#allowedQty").val(contract[1]);
+											$('#hoDiDate')
+													.val(
+															contract[6]
+																	.substring(
+																			0,
+																			contract[6].length - 8));
 											
 											
-											/* console.log(minDateOfShipment);
-											console.log(lastDateOfShipment); */
 											
-											var allDps = contract[10]
-													.split(",");
-
-											//console.log(allDps);
-
-											var html = "<label id='dpclabel' class='required'>DPC</label> <select data-placeholder='Choose Dps...' class='chosen-select form-control' name='dpc'  multiple tabindex='3'  id='centerordpc'>";
-
-											for (var i = 0; i < allDps.length; i++) {
-												html += ('<option value="'
-										+ allDps[i]+'">'
-														+ allDps[i] + '</option>');
-											}
-											html += "</select>"
-											$("#dpc").html(html);
-											$("#centerordpc").chosen();
-											$("#centerordpc").addClass("chosen-select");
-
-											$('#centerordpc option').prop('selected',
-													true);
-											$('#centerordpc').trigger('chosen:updated');
-
-											/* 	var tableElement = allDps.map(ele => {
-													return "<option></option>";
-												}); */
 
 											for (i = 1; i <= 8; i++) {
 												no = 11 + i;

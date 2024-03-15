@@ -73,5 +73,14 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 			return ll;
 	
 	}
+	
+
+	@Override
+	public List<String> getCooperative(String regionIdString) {
+		String sqlString ="Select centername from jcipurchasecenter where rocode='"+regionIdString+"';";
+		List<String> list = currentSession().createSQLQuery(sqlString).list();
+		// TODO Auto-generated method stub
+		return list;
+	}
 
 }

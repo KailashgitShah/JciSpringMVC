@@ -94,7 +94,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		}
 
 		result.add(strDate);
-		System.err.println(result.get(4));
+		/* System.err.println(result.get(4)); */
 		// Get composition and combination from jcigrade_composition
 		String sqlString4 = "select Jute_combination,Proposed_composition from jcigrade_composition where Label_name='"
 				+ result.get(4) + "'";// Composition + percentage allowed.
@@ -118,7 +118,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		List<String> list10 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString10).list();
 		result.addAll(list10);
 
-		System.err.println(result);//
+		
 		// To get latest instrument date
 		String sqString5 = "select Top 1 Instrument_Date from jcipayment_arrangement where Contract_No ='" + contractNo
 				+ "' Order by Created_date DESC; ";
@@ -140,10 +140,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		result.add(String.valueOf(list6.size()));
 		result.addAll(list6);
 
-		System.err.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + result.get(3));
-		System.err.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + result.get(3));
-		System.err.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + result.get(3));
-		System.err.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + result.get(3));
+		
 
 		String sqlString8 = "SELECT TOP 5 jcidispatch_details.DI_No, jcirodetails.roname FROM jcidispatch_details INNER JOIN jcirodetails ON jcidispatch_details.Regional_Office = jcirodetails.rocode WHERE Mill_name = '"
 				+ result.get(3) + "' ORDER BY Dientry_id DESC          ;";

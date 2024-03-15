@@ -1446,26 +1446,7 @@ public class Controller_V {
 	// ---------------------------------------------------------
 
 	//ro dispatch view page
-	@RequestMapping("roDispatchInstruction")
-	public ModelAndView viewRoDispatcher(HttpServletRequest request) throws FileNotFoundException {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-		List<String> loadAllDpc = roDispatchService.loadAllDpc();
-		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
-		// int countAvaiResult = roDispatchService.getCountOfAvailableEntries();
-		ModelAndView mv = new ModelAndView("roDispatchInstruction");
-		mv.addObject("loadAllDpc", loadAllDpc);
-		mv.addObject("loadAllDiNo", loadAllDiNo);
-		// mv.addObject("count",countAvaiResult);
-
-		///// generated new file /////////////////////////
-
-		///////////////////////////////////////////////////////////
-
-		return mv;
-	}
+	
 
 	//save ro dispatch instruction
 	@RequestMapping("saveRoDi")
@@ -3134,6 +3115,8 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+	
 	@RequestMapping("HOdispatchInst")
     public ModelAndView HODispatchInstructionModel(HttpServletRequest request) {
            String username = (String) request.getSession().getAttribute("usrname");
@@ -3392,7 +3375,39 @@ public class Controller_V {
              }
              return new ModelAndView(new RedirectView("jcilist.obj"));
            }
+// Vishwdeep RO
+    @ResponseBody
+    @RequestMapping(value = "getCooperative", method = RequestMethod.GET)
+    public List<String> getList( HttpSession session){
+    	String regionIdString =(String) session.getAttribute("region");
+    	
+    	return  roDispatchService.getCooperative(regionIdString);
+    	
+    	
+    }
+    @RequestMapping("roDispatchInstruction")
+	public ModelAndView viewRoDispatcher(HttpServletRequest request, HttpSession session) throws FileNotFoundException {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String regionIdString =(String) session.getAttribute("region");
+		List<String> loadAllDpc = roDispatchService.loadAllDpc();
+		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
+		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
+		// int countAvaiResult = roDispatchService.getCountOfAvailableEntries();
+		ModelAndView mv = new ModelAndView("roDispatchInstruction");
+		mv.addObject("loadAllDpc", loadAllDpc);
+		mv.addObject("loadAllDiNo", loadAllDiNo);
+		mv.addObject("loadAllCooperativesList",loadAllCooperativesList);
+		// mv.addObject("count",countAvaiResult);
 
+		///// generated new file /////////////////////////
+
+		///////////////////////////////////////////////////////////
+
+		return mv;
+	}
 
            
     
