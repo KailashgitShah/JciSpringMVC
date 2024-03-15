@@ -24,8 +24,10 @@ void delete(int parseInt) ;
 public String   getContractNo(String id);
 
 String check(String string);
+
+List<String> getJuteVariety();
                 
-                // TODO Auto-generated method stub
+               
                 
 
    

@@ -90,6 +90,7 @@ input[type="radio"] {
                      %>
                      <%
                      List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
+    				List<String> juteVariety =(List<String>) request.getAttribute("juteVariety");
                      %>
                      <div class="page-content fade-in-up">
                            <div class="row">
@@ -234,10 +235,13 @@ input[type="radio"] {
                                                                                   </span> <select name="jutevariety" id="jutevariety"
                                                                                          class="form-control" required style="width:200px;" multiple>
                                                                                          <!-- <option value="0" disabled selected>Select</option> -->
-                                                                                         <option value="Bimli">Bimli</option>
-                                                                                         <option value="Mesta">Mesta</option>
-                                                                                         <option value="Tossa">Tossa</option>
-                                                                                         <option value="White">White</option>
+                                                                                        <%
+                                                                                         for (String ro : juteVariety) {
+                                                                                         %>
+                                                                                         <option value="<%=ro%>"><%=ro%></option>
+                                                                                         <%
+                                                                                         }
+                                                                                         %>
                                                                                   </select>
                                                                            </div>
 

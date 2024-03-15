@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao.HoDispatchdao;
 import com.jci.dao_phase2.DispatchHODao;
 import com.jci.model.HODispatchInstructionModel;
@@ -226,6 +227,14 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
 		String str = (String) this.sessionFactory.getCurrentSession().createSQLQuery(string2).uniqueResult();
 		return str;
+	}
+
+	@Override
+	public List<String> juteVariety() {
+		// TODO Auto-generated method stub
+		String sqlString ="select distinct jutevariety from jcijutevariety where basis='1';";
+		List<String> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		return list;
 	}
 
 }

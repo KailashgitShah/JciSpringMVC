@@ -72,4 +72,10 @@ public class HODispachServiceImpl implements HOInstService{
                                 // TODO Auto-generated method stub
                                 return dispatchHODao.check(string);
                 }
+
+				@Override
+				public List<String> getJuteVariety() {
+					// TODO Auto-generated method stub
+					return dispatchHODao.juteVariety();
+				}
 }

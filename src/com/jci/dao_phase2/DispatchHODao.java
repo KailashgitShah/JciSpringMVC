@@ -25,4 +25,6 @@ String getContractNo(String id);
 
 String check(String string);
 
+List<String> juteVariety();
+
 }

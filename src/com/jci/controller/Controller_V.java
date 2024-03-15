@@ -3130,8 +3130,10 @@ public class Controller_V {
            }
 
            List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
+           List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
            System.err.println(ronameList);
            mv.addObject("ronameList", ronameList);
+           mv.addObject("juteVariety",juteVariety);
 
            return mv;
     }
