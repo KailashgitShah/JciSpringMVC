@@ -194,7 +194,7 @@
 							},
 							success : function(result) {
 								var data = jQuery.parseJSON(result);
-								console.log(data);
+			
 								var path = contractId + "\\";
 
 								var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";

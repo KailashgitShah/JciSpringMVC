@@ -85,7 +85,6 @@
 
 										String fullFilePath = requestEl.getLetter_path();
 										String date = requestEl.getReqGenDate();
-										String encodedFilePath = URLEncoder.encode(fullFilePath, "UTF-8");
 										String refNo = requestEl.getReference_no();
 										//String date = requestEl.getReqGenDate();
 										String cropYear = requestEl.getCropYear();
@@ -102,8 +101,9 @@
 										<td><%=qty%></td>
 										<td><%=availQty%></td>
 
-										<td><button class="btn btn-outline-success"
-												onclick="openLinkInNewTab('downloadRequestLetter.obj?imagePath=<%=encodedFilePath%>')">View</button></td>
+										<td><a class="btn btn-success"  target="_blank"
+												<%-- onclick="openLinkInNewTab('downloadRequestLetter.obj?imagePath=<%=encodedFilePath%>')">View</button></td> --%>
+												href='downloadRequestLetter.obj?imagePath=<%=fullFilePath%>'>View</a></td>
 										<%
 										if (emailStatus == 0) {
 										%>
@@ -149,9 +149,7 @@
 		}, 1500);
 	</script>
 	<script>
-		function openLinkInNewTab(url) {
-			window.open(url, '_blank');
-		}
+		
 
 		//send mail funtion
 		function acknowlegeRequest(refNo, date, cropYear, qty, id) {
