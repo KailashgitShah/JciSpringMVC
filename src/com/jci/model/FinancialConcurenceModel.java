@@ -1,5 +1,6 @@
 package com.jci.model;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -35,7 +36,7 @@ public class FinancialConcurenceModel {
 	private String QtyAllowed;
 	
 	@Column(name = "Carrying_Cost_Charged")
-	private double Carrying_Cost_Charged;
+	private BigInteger Carrying_Cost_Charged;
 	
 	@Column(name = "Created_date")
 	private Date Created_date;
@@ -91,11 +92,11 @@ public class FinancialConcurenceModel {
 		QtyAllowed = qtyAllowed;
 	}
 
-	public double getCarrying_Cost_Charged() {
+	public BigInteger getCarrying_Cost_Charged() {
 		return Carrying_Cost_Charged;
 	}
 
-	public void setCarrying_Cost_Charged(double carrying_Cost_Charged) {
+	public void setCarrying_Cost_Charged(BigInteger carrying_Cost_Charged) {
 		Carrying_Cost_Charged = carrying_Cost_Charged;
 	}
 
@@ -116,7 +117,7 @@ public class FinancialConcurenceModel {
 	}
 
 	public FinancialConcurenceModel(int fc_id, String fullcontractno, Date fC_Issue_Date, String fC_Ref_No,
-			String contracted_Qty, String qtyAllowed, double carrying_Cost_Charged, Date created_date, String remarks) {
+			String contracted_Qty, String qtyAllowed, BigInteger carrying_Cost_Charged, Date created_date, String remarks) {
 		super();
 		Fc_id = fc_id;
 		this.fullcontractno = fullcontractno;

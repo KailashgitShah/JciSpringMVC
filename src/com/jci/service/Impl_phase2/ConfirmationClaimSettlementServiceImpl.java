@@ -39,8 +39,8 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 	}
 	
 	@Override
-	public  List<Object> gradecomposition( String st) {
-		return confirmationClaimSettlementDao.gradecomposition(st);
+	public  List<Object[]> gradecfetchingdata1omposition( String st) {
+		return confirmationClaimSettlementDao.gradecfetchingdata1omposition(st);
 	}
 	
 

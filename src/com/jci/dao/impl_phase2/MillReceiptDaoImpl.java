@@ -103,7 +103,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		   resultList.setDate_shipment((Date)row[1]);
 		   resultList.setVehicle_no((String)row[2]);
 		   resultList.setBale_mark((String)row[3]);
-		//   resultList.set((String)row[4]);
+ 
 		   resultList.setCrop_year((String)row[5]);
 		   resultList.setHo_date((Date)row[6]);
 		   resultList.setChallan_qty((Double)row[7]);
@@ -146,8 +146,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		     
 		     
 		     for(  Object[] element:list) {
-		    	 System.out.println("KKKKKKKKKKKKK"+element[1]);
-			      System.out.println("SSSSSSSSSSSSS"+element[0]);
+		    	
 			      
 			      
 
@@ -160,7 +159,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 					 * resultList1.setActual_qty((String)element[0]);
 					 * resultList1.setShort_qty((String)element[1]);
 					 */
-		      System.out.println("bbbbbbbbbbbbbbb"+resultList1.getActual_qty());
+		    
 		      
 		    }
 		  }

@@ -35,6 +35,7 @@ import java.text.ParseException;
 import com.jci.model.BalePreparation;
 import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.jci.model.FarmerRegModel;
@@ -5842,7 +5843,10 @@ public class InsertDataController
 			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
 					.getAllPaymentInstruments();
 			mv.addObject("allUserRegistration", allUserRegistration);
-			
+//			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
+//					.getAllPaymentInstrumentsentry();
+//			mv.addObject("entryPaymentDetailsModel", allUserRegistration);
+//			
 
 			return mv;
 		}
@@ -5856,21 +5860,44 @@ public class InsertDataController
 			ModelAndView mv = new ModelAndView("EntryofFinancialConcurence");
 			if (request.getParameter("id") != null) {
 				 final int id = Integer.parseInt(request.getParameter("id")); 
-				
-				final String  contno=request.getParameter("contno");
-				
-				this.paymentDetailService.update2(contno);
-				
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date=entryPaymentDetailsModel.getCreated_date();
-				
+			
 				String  Con_no = entryPaymentDetailsModel.getContractno();
+				int  Payment_id = entryPaymentDetailsModel.getPayment_id();
+				this.paymentDetailService.update2(Con_no);
+				String Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
+				List<Object> datesconcur = (List<Object>) this.fiannacialConcurenceService.dataofdates(Con_no,Payment_id);
+				
+				for (Object obj : datesconcur) {
+				    if (obj instanceof Object[]) {
+				        Object[] row = (Object[]) obj;
+				        if (row.length >= 4) {
+				            Object paymentDueDate = row[0];
+				            Object instrumentDate = row[1];
+				            Object instrumentvalue = row[2];
+				            Object ContractValue = row[3];
+				       
+				            System.err.println(instrumentDate);
+				            System.err.println(instrumentDate);
+				            mv.addObject("paymentDueDate", paymentDueDate);
+				            mv.addObject("instrumentDate", instrumentDate);
+				            mv.addObject("instrumentvalue", instrumentvalue);
+				            mv.addObject("ContractValue", ContractValue);
+				        } else {
+				          
+				        }
+				    } else {
+				      
+				    }
+				}
+
 				
 				 FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 				
-				String Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
+	
 				System.err.println(Contrated_quanity);
 				String parsed = date.toString().split(" ")[0];
 			    mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
@@ -5878,13 +5905,39 @@ public class InsertDataController
 				mv.addObject("parsedstring",Con_no  );
 				mv.addObject("parsedstring2",Contrated_quanity  );
 				mv.addObject("parsed",parsed  );
-				 double cost= this.fiannacialConcurenceService.calculateCharges(id,Con_no);
-				 financialConcurenceModel.setCarrying_Cost_Charged(cost);
-				 mv.addObject("cost",cost);
+				mv.addObject("Payment_id",Payment_id);
+				int cost= this.fiannacialConcurenceService.calculateCharges(Payment_id,Con_no);
+				BigInteger bigIntValue = new BigInteger(String.valueOf(cost));
+				 financialConcurenceModel.setCarrying_Cost_Charged(bigIntValue);
+				 mv.addObject("cost",bigIntValue);
+				 System.err.println(cost);
 			    }
+			
+			int allIndiaSerialNo = 000001;
+//			/* int stateSerialNo = 1; */
+			 String fcref_no1 = GenerateFCNO(request.getSession(),allIndiaSerialNo);
+			    mv.addObject("fcref_no1", fcref_no1);
 
 			return mv;
 		}
+		
+		private String GenerateFCNO(HttpSession session, int allIndiaSerialNo) {
+	     if (session.getAttribute("allIndiaSerialNo") != null) {
+	            allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
+	            allIndiaSerialNo++;
+	        }
+	        session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+
+	        String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
+	        String status=this.fiannacialConcurenceService.fcref_nocheck(formattedAllIndiaSerialNo);
+	       if ("1".equals(status)) {
+	          
+	           return GenerateFCNO(session, allIndiaSerialNo + 1);
+	       } else {
+	           
+	           return formattedAllIndiaSerialNo;
+	       }
+	    }
 		@RequestMapping({ "updatefcstatus" })
 		public ModelAndView bnaDeletepay( HttpServletRequest request, RedirectAttributes redirectAttributes) {
 			final ModelAndView mv = new ModelAndView("viewFCpaymentlist");
@@ -5896,7 +5949,7 @@ public class InsertDataController
 				if (request.getParameter("id") != null) {
 				final int id = Integer.parseInt(request.getParameter("id")); 
 				final String  contno=request.getParameter("contno");
-				this.paymentDetailService.update1(contno);
+				//this.paymentDetailService.update1(contno);
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
 			}

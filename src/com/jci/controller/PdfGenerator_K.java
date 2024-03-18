@@ -179,6 +179,7 @@ public class PdfGenerator_K {
 		cell11.setBorderTop(new SolidBorder(borderWidth));
 		cell11.setFont(boldFont);
 		contentTable.addCell(cell11);
+		 
 
 //		Cell cell12 = createCell("DETAILS OF  BILL OF SUPPLY", Border.NO_BORDER, TextAlignment.RIGHT);
 //		cell12.setBorderLeft(new SolidBorder(borderWidth));

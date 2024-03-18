@@ -31,7 +31,7 @@ public class EntryPaymentDetailsModel {
 	private String contractno;
 	
 	@Column(name = "Instrument_Date")
-	@Temporal(value=TemporalType.TIMESTAMP)
+//	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date instdate;
 	
 	@Column(name = "ifsc")
@@ -76,6 +76,56 @@ public class EntryPaymentDetailsModel {
 	
 	@Column(name = "Created_date")
 	private Date Created_date ;
+	
+	
+	@Column(name = "Remarks")
+	private String Remarks ;
+	
+
+	@Column(name = "Millname")
+	private String Millname ;
+
+	@Column(name = "PaymentDue_date")
+	private String PaymentDue_date ;
+	
+	
+	public String getMillname() {
+		return Millname;
+	}
+
+	public void setMillname(String millname) {
+		Millname = millname;
+	}
+
+	@Column(name = "Contract_value")
+	private String Contract_value ;
+
+
+	
+
+	public String getContract_value() {
+		return Contract_value;
+	}
+
+	public void setContract_value(String contract_value) {
+		Contract_value = contract_value;
+	}
+
+	public String getPaymentDue_date() {
+		return PaymentDue_date;
+	}
+
+	public void setPaymentDue_date(String paymentDue_date) {
+		PaymentDue_date = paymentDue_date;
+	}
+
+	public String getRemarks() {
+		return Remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		Remarks = remarks;
+	}
 
 	public int getPayment_id() {
 		return Payment_id;

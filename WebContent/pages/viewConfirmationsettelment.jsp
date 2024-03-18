@@ -1,5 +1,6 @@
-<%@page import="com.jci.model.PaymentInstrumentModel"%>
-<%@page import="com.jci.model.FinancialConcurenceModel"%>
+
+<%@page import="com.jci.model.ConfirmationClaimSettlementModel"%>
+
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
@@ -7,7 +8,7 @@
 <%@page import="com.jci.model.ZoneModel"%>
 <%@page isELIgnored="false"%>
 
-<%@page import="com.jci.model.PaymentInstrumentModel"%>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -102,18 +103,18 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View Financial Concurence</h1>
+				<h1 class="page-title">View Payment Details List</h1>
 
 			</div>
 
 			<%
-			List<FinancialConcurenceModel> allUserRegistration = (List<FinancialConcurenceModel>) request.getAttribute("financialConcurenceModel");
-			
+			List<ConfirmationClaimSettlementModel> allUserRegistration = (List<ConfirmationClaimSettlementModel>) request.getAttribute("confirmationClaim");
+		 
 			%>
 			
 			<div class="page-content fade-in-up">
 				<div class="ibox">
-					<span id="flashMessage">${msg}</span>
+					<span>${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
 							<table
@@ -124,55 +125,46 @@ th {
 								<thead>
 									<tr>
 										<th>Sl.No</th>
-										<th>Contract no</th>
-										<th>FC_Issue_Date </th>
-										<th>FC_Ref_No</th>
-										<th>Contracted_Qty</th>
-										<th>QtyAllowed</th>
-										<th>Carrying_Cost_Charged</th>
-										<th>Created_date</th>
-										<th>Remarks</th>
+										<th>Settlement Id.</th>
+										<th>Date of inspection</th>
+										<th>Contract No.</th>
+										<th>Challan No</th>
 										
-									
+										<th>Quality Settlement</th>
+										<th>Moisture Settlement</th>
+										<th>NCV Settlement</th>
+										<th>Claim Amount</th>
+										<th>Settlement Amount </th>
+										<th>Inspection by</th>
+										<th>Supporting Document</th>
+										
 
 									</tr>
 								</thead>
 								<tbody>
 									<%
 									int i = 1;
-									for (FinancialConcurenceModel financialConcurenceModel : allUserRegistration) {
+									for (ConfirmationClaimSettlementModel  confirmationClaimSettlementModel : allUserRegistration) {
 
 										if (i <= 200) {
 									%>
 									<tr>
 										<td><%=i%></td>
-										<td><%=financialConcurenceModel.getFullcontractno()%></td>
-										<td><%=financialConcurenceModel.getFC_Issue_Date()%></td>
-										<td><%=financialConcurenceModel.getFC_Ref_No()%></td>
-										<td><%=financialConcurenceModel.getContracted_Qty()%></td>
-										<td><%=financialConcurenceModel.getQtyAllowed()%></td>
-										<td><%=financialConcurenceModel.getCarrying_Cost_Charged()%></td>
-										<td><%=financialConcurenceModel.getCreated_date()%></td>
-										<td><%=financialConcurenceModel.getRemarks()%></td>
-										
+										<td><%= confirmationClaimSettlementModel.getSettlement_id() %></td>
+										<td><%= confirmationClaimSettlementModel.getDate_of_Inspection() %></td>
+										<td><%= confirmationClaimSettlementModel.getContract_No() %></td>
+										<td><%= confirmationClaimSettlementModel.getChallan_No()%></td>
+										<td><%= confirmationClaimSettlementModel.getQuality_settlement() %></td>
+										<td><%= confirmationClaimSettlementModel.getMoisture_settlement() %></td>
+										<td><%= confirmationClaimSettlementModel.getNcv_settlement() %></td>
+										<td><%= confirmationClaimSettlementModel.getClaim_Amount() %></td>
+										<td><%= confirmationClaimSettlementModel.getSettlement_amt() %></td>
+										<td><%= confirmationClaimSettlementModel.getInspection_by()%></td>
+										<td><%= confirmationClaimSettlementModel.getSupporting_doc() %></td>
+								
+                                     
 
-
-
-									
-
-
-										<%-- <td><a
-											href="editPaymentInstrument.obj?id=<%=financialConcurenceModel.getFc_id()%>">
-												<button class="btn btn-primary btn-sm" type="button">Issue FC / Edit</button>
-										</a></td>
-
-										<td><a
-											href="bnaDeletePay.obj?id=<%=financialConcurenceModel.getFc_id()%>"
-											class="btn btn-danger btn-sm btn-block"
-											onclick="return confirm('Are you sure you want to delete this record')">Reject</a></td>
-
-
-									</tr> --%>
+									</tr>
 									<%
 									}
 									i++;
@@ -190,15 +182,6 @@ th {
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
-	
-		<script>
-    $(document).ready(function(){
-      
-        setTimeout(function(){
-            $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
-    });
-</script>
 	<!-- BEGIN THEME CONFIG PANEL-->
 
 	<!-- END THEME CONFIG PANEL-->

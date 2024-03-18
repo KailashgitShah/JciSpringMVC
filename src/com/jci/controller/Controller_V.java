@@ -2,6 +2,9 @@ package com.jci.controller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+
+import java.util.UUID;
+import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
@@ -141,6 +144,7 @@ import com.lowagie.text.DocumentException;
 import antlr.TokenWithIndex;
 
 import java.util.Calendar;
+import java.time.LocalDate;
 
 @Transactional
 @Repository
@@ -2021,6 +2025,8 @@ public class Controller_V {
 	}
 
 	// kailash
+	
+	//Entry controller of payment details page
 	@RequestMapping("EntryofPaymentDetails")
 	public ModelAndView EntryofpiModelDetails(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2028,25 +2034,38 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
+		
+		
+		//List<Object> getsumofInstrumentValue = this.paymentDetailService.getsumofInstrumentValue();
 		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
+		List<Object> getcontractList2 = this.paymentDetailService.Millname();
 
 		mv.addObject("getcontractList1", getcontractList1);
+		mv.addObject("getcontractList2", getcontractList2);
 		return mv;
 
 	}
-
+	
+	//Initiate payment document path
+	@Value("${upload.PaymentDocument}")
+	String PaymentDocument;
+	
+	//save the data of payment  detail data
 	@RequestMapping("saveentryofpaymentinstrumentDetails")
 	public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("upload.Imagedownload");
+		final File theDir = new File("PaymentDocument");
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
 		final ModelAndView mv = new ModelAndView();
+		
+		
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
-
-			String contractno = request.getParameter("fullcontractno");
+			String[] selectedContracts = request.getParameterValues("contract");
+		    for(String st: selectedContracts) {
+			String millname65 = request.getParameter("millname65");
 			String Instrument = request.getParameter("Instrument");
 			String instdate = request.getParameter("instdate");
 			String IFSC = request.getParameter("IFSC");
@@ -2056,34 +2075,77 @@ public class Controller_V {
 			String InstrumentValue = request.getParameter("InstrumentValue");
 			String dateofexpiry = request.getParameter("dateofexpiry");
 			String dateofship = request.getParameter("dateofship");
+			String Pyamentduedate = request.getParameter("payment_dueDate12");
+			String contrcat_value23 = request.getParameter("contrcat_value23");
 			String autorevolvingamount = request.getParameter("autorevolvingamount");
 			// String QtyAllowed = request.getParameter("QtyAllowed");
-			final String filename = SupportingDocument.getOriginalFilename();
-			File serverFile = new File(theDir, filename);
-			SupportingDocument.transferTo(serverFile);
+			String originalFilename = SupportingDocument.getOriginalFilename();
+			
+			
+//            String uniqueFilename = generateUniqueFilename(originalFilename);
+//            File serverFile = new File(theDir, uniqueFilename);
+			//SupportingDocument.transferTo(serverFile);
+			
+			
+		 // Create unique identifier based on contract details
+		    String uniqueFilename = generateUniqueFilename(originalFilename);
+		    File serverFile = new File(theDir, uniqueFilename);
 
 			// Conditionally set autorevolvingamount based on payment type
 
 			EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
-			entryPaymentDetailsModel.setContractno(contractno);
+			
+			
 			entryPaymentDetailsModel.setInstrumentno(Instrument);
+			entryPaymentDetailsModel.setMillname(millname65);
+			entryPaymentDetailsModel.setContractno(st);
+			
+			entryPaymentDetailsModel.setPaymentDue_date(Pyamentduedate);
+			entryPaymentDetailsModel.setContract_value(contrcat_value23);
+//			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//			Date instdate1 = formatter1.parse(instdate);
+//			entryPaymentDetailsModel.setInstdate(instdate1);
+
+//			
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date instdate1 = formatter1.parse(instdate);
-			entryPaymentDetailsModel.setInstdate(instdate1);
+//			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//			String instdate3 = formatter2.format(instdate2);
+//			Date instdate1 = formatter2.parse(instdate3);
 
+			// Set the time portion to midnight
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(instdate1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+
+			//Date instdateWithoutTime = calendar.getTime();
+			Date instdateWithoutTime = calendar.getTime();
+
+			//entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
+			entryPaymentDetailsModel.setInstdate(instdate1);
 			entryPaymentDetailsModel.setPayment(payment);
+			//int  instruValue= Integer.parseInt(InstrumentValue);
 			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
 			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
-			entryPaymentDetailsModel.setSupportingDocument(filename);
+			entryPaymentDetailsModel.setSupportingDocument(originalFilename);
 			entryPaymentDetailsModel.setFc_status(0);
 
 			Date date3 = new Date();
 			Double flag = 0.0;
+			
+			 Calendar cal = Calendar.getInstance();
+			    cal.setTime(instdate1);
+			   cal.add(Calendar.DAY_OF_MONTH, 30);
+			    Date newDate = cal.getTime();
 
 			if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
 				autorevolvingamount = "0";
 				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				entryPaymentDetailsModel.setDateofship(date3);
+				entryPaymentDetailsModel.setDateofship(newDate);
+				
 				entryPaymentDetailsModel.setDateofexpiry(date3);
 
 				entryPaymentDetailsModel.setIFSC(IFSC);
@@ -2094,7 +2156,7 @@ public class Controller_V {
 
 				autorevolvingamount = "0";
 				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				entryPaymentDetailsModel.setDateofship(date3);
+				entryPaymentDetailsModel.setDateofship(newDate);
 				entryPaymentDetailsModel.setDateofexpiry(date3);
 
 				entryPaymentDetailsModel.setIFSC(IFSC);
@@ -2122,11 +2184,12 @@ public class Controller_V {
 
 			this.paymentDetailService.create(entryPaymentDetailsModel);
 
-			this.paymentDetailService.contratTable(contractno);
+			this.paymentDetailService.contratTable(st);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
-		} catch (Exception e) {
+		} 
+		}catch (Exception e) {
 
 			e.printStackTrace();
 		}
@@ -2136,11 +2199,20 @@ public class Controller_V {
 
 		return new ModelAndView(new RedirectView("EntryofPaymentDetails.obj"));
 	}
+	String generateUniqueFilename(String originalFilename) {
+	    String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	    return timestamp + "_"  + originalFilename;
+	}
 
+	
+
+	
+	//download the  support document which upload
+	
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imageDirectory = "upload.Imagedownload"; // Replace with your image directory path
-		String imagePath = imageDirectory + File.separator + filename;
+		//String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
+		String imagePath = PaymentDocument + File.separator + filename;
 
 		File imageFile = new File(imagePath);
 
@@ -2191,6 +2263,10 @@ public class Controller_V {
 		}
 	}
 
+	
+	
+	
+	// entry Controller of the financial concurence page 
 	@RequestMapping("EntryofFinancialConcurence")
 	public ModelAndView EntryofFinancialConcurence(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2203,6 +2279,9 @@ public class Controller_V {
 		return mv;
 	}
 
+	
+	
+	 //ajax  remark for approval and selection after fc rejection
 	@ResponseBody
 	@RequestMapping("saveRemarks")
 	public ResponseEntity<String> saveRemarks(@RequestParam("remarks") String remarks,
@@ -2215,19 +2294,12 @@ public class Controller_V {
 			return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 		}
 		try {
-			this.financialConcurenceservice.remark(remarks, contractNo);
-			this.paymentDetailService.update1(contractNo);
+			this.financialConcurenceservice.remark(remarks, contractNo,paymentId);
+			this.paymentDetailService.update1(contractNo,paymentId,remarks);
 
 			EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(paymentId);
 			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
 
-////				request.getSession().setAttribute("myModel", entryPaymentDetailsModel);
-//////
-////				redirectAttributes.addFlashAttribute("contractNo", entryPaymentDetailsModel.getContractno());
-////				redirectAttributes.addFlashAttribute("paymentId", entryPaymentDetailsModel.getPayment_id());
-//
-//				//String modelQueryString = "contractNo=" + entryPaymentDetailsModel.getContractno() + "&paymentType="
-////						+ entryPaymentDetailsModel.getPayment_id();
 
 			redirectAttributes.addFlashAttribute("entryPaymentDetailsModel", entryPaymentDetailsModel);
 
@@ -2240,6 +2312,9 @@ public class Controller_V {
 			return new ResponseEntity<>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	//ajax remarks  for bill of supply form 
+	
 
 	@ResponseBody
 	@RequestMapping("saveRemarksofbill")
@@ -2269,6 +2344,9 @@ public class Controller_V {
 		}
 	}
 
+
+	// save the data of FC after issuing the fc and modfied data.
+
 	@RequestMapping("saveFinancialConcurence")
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2278,21 +2356,29 @@ public class Controller_V {
 			String FC_Issue_Date = request.getParameter("FC_Issue_Date");
 			String FC_Ref_No = request.getParameter("FC_Ref_No.");
 			String Contracted_Qty = request.getParameter("Contracted_Qty.");
-			String QtyAllowed = request.getParameter("QtyAllowed");
-			String carryingCostParam = request.getParameter("Carrying_cost");
-			double Carrying_Cost_Charged = 0.0; // Default value if the parameter is not present or cannot be parsed
+			String QtyAllowed = request.getParameter("Shipment_Value1");
+			String carryingCostParam = request.getParameter("SGST_Amt1");
+			String Payment_id = request.getParameter("Payment_id");
+			int id= Integer.parseInt(Payment_id);
+			String remarks = request.getParameter("Remarks1");
+			this.paymentDetailService.remark(remarks,fullcontractno ,id);
+			BigInteger Carrying_Cost_Charged =  BigInteger.ZERO; // Default value if the parameter is not present or cannot be parsed
 
 			if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
-				try {
-					Carrying_Cost_Charged = Double.parseDouble(carryingCostParam);
-				} catch (NumberFormatException e) {
-				}
-			}
+	            try {
+	            	double carryingCostDouble = Double.parseDouble(carryingCostParam);
+	              
+	            	Carrying_Cost_Charged = BigInteger.valueOf((long) carryingCostDouble);
+	            } catch (NumberFormatException e) {
+	            	 e.printStackTrace();
+	         
+	            }
+	        }
 
 			// double Carrying_Cost_Charged = request.getParameter("Carrying_cost");
 
 			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
-			System.out.print(financialConcurenceModel);
+			
 			financialConcurenceModel.setFullcontractno(fullcontractno);
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date contdate = formatter1.parse(FC_Issue_Date);
@@ -2302,11 +2388,14 @@ public class Controller_V {
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
+			System.err.println("++++++++++++++" + Carrying_Cost_Charged);
+			
 
 			Date date = new Date();
 			// Date currdate = date.toString();
 			financialConcurenceModel.setCreated_date(date);
-			financialConcurenceModel.setRemarks("Not any");
+			financialConcurenceModel.setRemarks(remarks);
+			System.out.print(financialConcurenceModel);
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -2321,6 +2410,10 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
 	}
 
+	
+	
+	
+	// entry controller of mill receipt
 	@RequestMapping("EntryofMillreceipt")
 	public ModelAndView EntryofMillreceipt(HttpServletRequest request)
 
@@ -2339,6 +2432,9 @@ public class Controller_V {
 		return mv;
 	}
 
+	
+	
+	//ajax controller for mill reciept service
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
 	public String hodinofetch(@RequestParam("contractno") String contractno) {
@@ -2349,7 +2445,48 @@ public class Controller_V {
 		String resultString = new Gson().toJson(millRecieptModelt1);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
+	public String contractlistfetch1(@RequestParam("contractno") String contractno) {
+		System.err.println("contractlistfetch");
+		List<Object[]> contractRecieptModelt1 = paymentDetailService.contractlistfetchdata(contractno);
+		System.err.println("resultList++++++++++" + contractRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractRecieptModelt1);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "millnamebasedcontract", method = RequestMethod.GET)
+	public String millnamebasedcontract(@RequestParam("contractno") String millname) {
 
+		List<Object[]> millnamecontract = (List<Object[]>) paymentDetailService.millnamecontractvise(millname);
+		System.err.println("resultList++++++++++" + millnamecontract);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millnamecontract);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	
+	//ajax call for previos data of instvalue
+	@ResponseBody
+	@RequestMapping(value = "PreviousEntry", method = RequestMethod.GET)
+	public String PreviousEntry(@RequestParam("contractno") String contractno) {
+		System.err.println("resultList++++++++++" );
+		List<Object[]> paymentDetailsdto = (List<Object[]>) paymentDetailService.PreviousNo(contractno);
+		System.err.println("resultList++++++++++" + paymentDetailsdto);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(paymentDetailsdto);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	
+	
+	
+	
+	
+	//save controller for mill reciept form 
 	@RequestMapping("saveentryofMillreciept")
 	public ModelAndView saveentryofMR(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -2493,6 +2630,10 @@ public class Controller_V {
 		return mv;
 	}
 
+	
+	
+	
+	//ajax url for genrated demand note service to fetch data
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatatocontractno", method = RequestMethod.GET)
 	public String fetchingdatatocontractnoq(@RequestParam("contractno") String contractno) {
@@ -2503,6 +2644,8 @@ public class Controller_V {
 		return resultString;
 	}
 
+	
+	//entry controller of generation demand note
 	@RequestMapping("EntryofGenrationDeamandNote")
 	public ModelAndView EntryofGenrationDemand(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2522,7 +2665,7 @@ public class Controller_V {
 		// GenrationDEmandDto cotract_No =
 		// this.genratedDemandNoteService.fetchContract_no();
 
-//			System.out.println("cotract_No>>>>>>>>>>>>>"+cotract_No);
+//			
 //			Date date =cotract_No.getContract_date();
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 //			String formattedDate = dateFormat.format(date);
@@ -2533,7 +2676,7 @@ public class Controller_V {
 		return mv;
 	}
 
-//		
+		
 	// private String generateDemandNoteNumber()
 	private String generateDemandNoteNumber(HttpSession session, int lastSerialNumber) {
 		Date currentDate = new Date();
@@ -2555,6 +2698,8 @@ public class Controller_V {
 
 	}
 
+	
+	//save entry of geration demand note form field
 	@RequestMapping("saveentryofGenrationDeamandNote")
 	public ModelAndView saveentryofGDN(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -2625,6 +2770,8 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofGenrationDeamandNote.obj"));
 	}
 
+	
+	//entry page confirmation form 
 	@RequestMapping("entryofConfirationSettelment")
 	public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2648,16 +2795,17 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getcontractddownlist);
 		return resultString;
 	}
-
-	@ResponseBody
-	@RequestMapping(value = "gradecomposition", method = RequestMethod.GET)
-	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
-		List<Object> gradecmposition = confirmationofClaimSettlementService.gradecomposition(ContractNo);
-		Gson gson = new Gson();
-		String jsonResponse = gson.toJson(gradecmposition);
-		return jsonResponse;
-
-	}
+//
+//	@ResponseBody
+//	@RequestMapping(value = "gradefetchingdata", method = RequestMethod.GET)
+//	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
+//		List<Object[]> gradecmposition = confirmationofClaimSettlementService.gradecfetchingdata1omposition(ContractNo);
+//		Gson gson = new Gson();
+//		String jsonResponse = gson.toJson(gradecmposition);
+//		return jsonResponse;
+//
+//	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
@@ -2668,6 +2816,9 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getsettlementlist);
 		return resultString;
 	}
+
+	// entrt page of genration bill
+
 
 	@RequestMapping("EntryofGenerationBillsupply")
 	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request) {
@@ -2712,26 +2863,28 @@ public class Controller_V {
 		session.setAttribute("stateSerialNo", stateSerialNo);
 
 		String formattedStateSerialNo = String.format("%05d", stateSerialNo);
-
-		String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
-		String status = this.generationofBillService.billofsupplyno(laString);
-		if ("1".equals(status)) {
-
-			return generateBillOfSupplyNumber(session, allIndiaSerialNo + 1, stateSerialNo + 1);
-		} else {
-
-			return laString;
-		}
-	}
+ 
+        String  laString= prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
+       String status=this.generationofBillService.billofsupplyno(laString);
+       if ("1".equals(status)) {
+          
+           return generateBillOfSupplyNumber(session, allIndiaSerialNo + 1, stateSerialNo + 1);
+       } else {
+           
+           return laString;
+       }
+    }
+	@Value("${upload.Confirmationsettlement}")
+	String Confirmationsettlement;
 
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
 	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
-			RedirectAttributes redirectAttributes,
-			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("upload.Imagedownload");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
+			RedirectAttributes redirectAttributes,@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
+		 final File theDir = new File("Confirmationsettlement");
+		    if (!theDir.exists()) {
+		        theDir.mkdirs();
+		    }
+
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
@@ -2851,15 +3004,39 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("entryofConfirationSettelment.obj"));
 	}
 
-	@RequestMapping("saveentryofGenrationbill")
-	public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
-		final ModelAndView mv = new ModelAndView();
+	// view page of confirmation settelment form
+
+	@RequestMapping({ "ViewConfirmationsettelment" })
+	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
-		try {
+		ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
+				.getAll();
+		mv.addObject("confirmationClaim", confirmationClaim);
+
+		return mv;
+	}
+	
+	
+	// save page of generation bill of supply
+	
+	@Value("${upload.Genrationofbill}")
+	String Genrationofbill;
+	 @RequestMapping("saveentryofGenrationbill") 
+	  public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes
+		       ) {
+		    final File theDir = new File("Genrationofbill");
+		    if (!theDir.exists()) {
+		        theDir.mkdirs();
+		    }
+		    final ModelAndView mv = new ModelAndView();
+		    String username = (String) request.getSession().getAttribute("usrname");
+		    try {
+
 
 			String Challan_No1 = request.getParameter("Challan_No1");
 			String Challan_Date1 = request.getParameter("Challan_Date1");
@@ -2956,43 +3133,83 @@ public class Controller_V {
 
 		} catch (Exception e) {
 
-			e.printStackTrace();
-		}
-		if (username == null) {
-			return new ModelAndView("index");
-		}
+		        e.printStackTrace();
+		    }
+		    if (username == null) {
+		        return new ModelAndView("index");
+		    }
+		    
+		    
+		    // Starting Email Sender
+          
+           EmailSender email=new EmailSender();
+           InternetAddress[] toAddresses=null;
+           String subject="Bill of Supply attachement";
+           String body = "In this All information regarding Bill of supply . ";
+             String filename="Genrationofbill";
+             
+             
+             //String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
+             String username1="";
+             try {
+                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+           toAddresses = new InternetAddress[]{
+                                new InternetAddress("shahkailash2000@gmail.com"),
+                                new InternetAddress("kailashshahsha81@gmail.com")
+                            };
+           } catch (AddressException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+           }
+           email.sendEmail( toAddresses ,  body , subject, filename, username1);
+////           
+//          
 
-		// Starting Email Sender
-
-		EmailSender email = new EmailSender();
-		InternetAddress[] toAddresses = null;
-
-		String subject = "Bill of Supply attachement";
-
-		String body = "In this All information regarding Bill of supply . ";
-
-		String filename = "C:\\Users\\kailash.shah\\Downloads\\website.jpg";
-		// String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
-		String username1 = "";
-		try {
-			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
-			// InternetAddress("animesh.anand@cyfuture.com")};
-
-			toAddresses = new InternetAddress[] { new InternetAddress("shahkailash2000@gmail.com"),
-					new InternetAddress("kailashshahsha81@gmail.com") };
-
-		} catch (AddressException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		email.sendEmail(toAddresses, body, subject, filename, username1);
-
-		// End Email
-
+		    
+		    // End Email
+		    
+		    
 //
-		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
-	}
+		    return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
+
+		}
+
+
+ 
+//	 //download document of BOS
+//    @RequestMapping("downloadPDF")
+//		 public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
+//  	 // String imageDirectory = "C:\\Users\\kailash.shah\\documentimage";
+//  	 
+//		    String imagePath = Genrationofbill + File.separator + filename;
+//
+//
+//		String subject = "Bill of Supply attachement";
+//
+//		String body = "In this All information regarding Bill of supply . ";
+//
+//		String filename = "C:\\Users\\kailash.shah\\Downloads\\website.jpg";
+//		// String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
+//		String username1 = "";
+//		try {
+//			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
+//			// InternetAddress("animesh.anand@cyfuture.com")};
+//
+//			toAddresses = new InternetAddress[] { new InternetAddress("shahkailash2000@gmail.com"),
+//					new InternetAddress("kailashshahsha81@gmail.com") };
+//
+//		} catch (AddressException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		email.sendEmail(toAddresses, body, subject, filename, username1);
+//
+//		// End Email
+//
+////
+//		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
+//	}
 
 	@RequestMapping("downloadPDF")
 	public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
@@ -3045,7 +3262,7 @@ public class Controller_V {
 			return "application/octet-stream";
 		}
 	}
-//			 
+ 
 
 	@RequestMapping({ "ViewofGenerationBillsupply" })
 	public ModelAndView viewBillofSupplyReciept(final HttpServletRequest request) {
@@ -3073,6 +3290,19 @@ public class Controller_V {
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 
+	
+	@ResponseBody
+	@RequestMapping(value = "paymentdetailsforshow", method = RequestMethod.GET)
+	public String paymentdetails(@RequestParam("contractno") String contractno1) {
+
+		List<Object[]> paymentdetails = paymentDetailService.paymentdetails(contractno1);
+		System.err.println("resultList++++++++++" + paymentdetails);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(paymentdetails);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+
 	@ResponseBody
 	@RequestMapping(value = "fetchingdataforbill", method = RequestMethod.GET)
 	public String fetchingdatanominactionclaimforbill(@RequestParam("contractno") String contractno) {
@@ -3082,6 +3312,18 @@ public class Controller_V {
 		String resultString = new Gson().toJson(millRecieptModelt1);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "greadewiseqty", method = RequestMethod.GET)
+	public String greadewiseqtypayment(@RequestParam("contractno") String  contractno,@RequestParam("contractqty") String  contractqty) {
+		List<Object[]>Graedewiseqty = paymentDetailService.gradewiseqty(contractno,contractqty);
+	    System.err.println("resultList++++++++++"+Graedewiseqty);
+	    Gson gson = new Gson();
+	    String resultString =  new Gson().toJson(Graedewiseqty);
+	    return resultString;//gson.toJson((Object)millRecieptModelt1);
+	}
+	
 
 	@RequestMapping("entry_of_transportation_and_operation_cost")
 	public ModelAndView entry_of_transportation_and_operation_cost(HttpServletRequest request) {

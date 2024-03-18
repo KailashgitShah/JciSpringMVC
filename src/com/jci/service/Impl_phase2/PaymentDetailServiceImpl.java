@@ -58,8 +58,8 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		return paymentDetailsdao.find(id);
 	}
     @Override
-	public void update1(String cont_no) {
-    	 this.paymentDetailsdao.update1(cont_no);
+	public void update1(String cont_no,int paymentId,String remark) {
+    	 this.paymentDetailsdao.update1(cont_no,paymentId,remark);
 	}
     @Override
 	public void update2(String cont_no) {
@@ -77,4 +77,51 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		// TODO Auto-generated method stub
 		this.paymentDetailsdao.contratTable(cont_no);
 	}
+	@Override
+	public List<Object[]>paymentdetails(String st) {
+		
+		return paymentDetailsdao.paymentdetails(st);
+	}
+	@Override
+	public List<Object[]>gradewiseqty(String st,String contractqty) {
+		
+		return  paymentDetailsdao.gradewiseqty(st,contractqty);
+	}
+	@Override
+	public List<Object> getsumofInstrumentValue(String instValue) {
+	
+		return this.paymentDetailsdao.getsumofInstrumentValue(instValue);
+	}
+	@Override
+	public void remark(String remark,String  con_No,int id) {
+		paymentDetailsdao.remark(remark,con_No,id);
+		
+	}
+	
+	@Override
+	public List<Object[]>PreviousNo(String st) {
+		
+		return  paymentDetailsdao.PreviousNo(st);
+	}
+	@Override
+	public List<Object> PreviousInstruValue(String st) {
+
+		return  paymentDetailsdao.PreviousInstruValue(st);
+	
+	}
+	@Override
+	public List<Object> Millname() {
+		return paymentDetailsdao.Millname();
+	}
+	@Override
+	public List<Object[]> millnamecontractvise(String st) {
+	
+		return  paymentDetailsdao.millnamecontractvise(st);
+	}
+	@Override
+	public List<Object[]> contractlistfetchdata(String st) {
+		return  paymentDetailsdao.contractlistfetchdata(st);
+	}
+	
+
 }

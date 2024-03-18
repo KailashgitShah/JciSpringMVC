@@ -136,7 +136,7 @@ th {
 										<th>Date of Expiry</th>
 										<th>Last Shipment date</th>
 										<th>Auto Revolving Amount</th>
-										<th>Qty. Allowed</th>
+										<th>Remarks</th>
 										<th>Supporting Document</th>
 										
 
@@ -162,6 +162,7 @@ th {
 										<td><%= entryPaymentDetailsModel.getDateofexpiry() %></td>
 										<td><%= entryPaymentDetailsModel.getDateofship() %></td>
 										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
+										<td><%= entryPaymentDetailsModel.getRemarks() %></td>
 									<%-- 	<td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
 									<%-- 	<td><%= entryPaymentDetailsModel.getSupportingDocument() %></td> --%>
                                          <td>
