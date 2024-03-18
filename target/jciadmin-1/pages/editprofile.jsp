@@ -71,21 +71,21 @@
 										
 											<span id = "erroldPass" class="text-danger"></span>
 											<span id = "errPass" class="text-danger"></span>
-                                        	<input  type ="text" class="form-control"  id="password" name="password" placeholder="current password" onblur = "return matchPreviousPassword()" >
+                                        	<input  type ="password" class="form-control"  id="password" name="password" placeholder="current password" onblur = "return matchPreviousPassword()" >
 										</div>
 											</div>
 											<div class="row">
 										<div class="col-sm-4 form-group">
 											<label>New password</label>&nbsp; &nbsp;&nbsp;
 											<span id = "errorPass" class="text-danger"></span>
-                                        	<input  type ="text" class="form-control"  id="newpassword" name="newpassword" placeholder="new password" onblur = "return matchpassword()" >
+                                        	<input  type ="password" class="form-control"  id="newpassword" name="newpassword" placeholder="new password" onblur = "return matchpassword()" >
 										</div>
 									
 									
 										<div class="col-sm-4 form-group">
 											<label>Re Enter New password</label>&nbsp; &nbsp;&nbsp;
 											<span id = "errorRepass" class="text-danger"></span>
-                                        	<input  type ="text" class="form-control"  id="repassword" name="repassword" placeholder="new password" onblur = "return matchpassword()" >
+                                        	<input  type ="password" class="form-control"  id="repassword" name="repassword" placeholder="new password" onblur = "return matchpassword()" >
 										</div>
                                             </div>
                                              <div class="row">              

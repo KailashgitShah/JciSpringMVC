@@ -109,6 +109,7 @@ com\jci\model\RulingMarket.class
 com\jci\service\Impl\UserActionServiceImpl.class
 com\jci\model\MarketArrivalModel.class
 com\jci\dao\EntryDerivativePriceDao.class
+com\jci\model\PurchaseRegisterDTO.class
 com\jci\dao\impl\EntryDerivativePriceDaoImpl.class
 com\jci\dao\impl\MarketArrivalDaoImpl.class
 com\jci\dao\impl\PoliceStationDaoImpl.class

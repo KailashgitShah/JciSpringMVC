@@ -99,6 +99,15 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+
 import com.jci.service.CommercialJuteVarietyGradesPriceService;
 import com.jci.service.MSPPriceCalculationService;
 import com.jci.service.RulingMarketService;
@@ -5886,112 +5895,33 @@ public class InsertDataController
 	        	 centername = Plist.getCentername();
 	        	 roname = Plist.getRegionId();
 	        }
-	    	response.setContentType("application/pdf");
-	        response.setHeader("Content-Disposition", "attachment; filename=Purchase Report.pdf");
+	    
+		        try {
+		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
+                    Map<String, Object> parameters = new HashMap<String, Object>();
+                    // Prepare data sources
+                    JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(purchaselist);
 
-	        try {
-	            Document document = new Document(PageSize.A2);
-	            PdfWriter.getInstance(document, response.getOutputStream());
-	            document.open();
-	            Date date2 = new Date();
-	            DateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
-			    String dateforreport = formatter1.format(date2);
-	            
-	            Paragraph heading = new Paragraph("Purchase Register Report "+dateforreport);
-	            heading.setAlignment(Element.ALIGN_CENTER);
-	            document.add(heading);
-	            document.add(Chunk.NEWLINE);	            // Sample list of models
-	            
-	            PdfPTable headerTable = new PdfPTable(3);
-	            headerTable.setWidthPercentage(100);
-	            headerTable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-	            
-	            PdfPCell cell1 = new PdfPCell(new Paragraph("Region: "+roname));
-	            cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-	            cell1.setBorder(PdfPCell.NO_BORDER);
-	            headerTable.addCell(cell1);
-	            
-	            PdfPCell cell2 = new PdfPCell(new Paragraph("Crop Year: "+cropyear));
-	            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	            cell2.setBorder(PdfPCell.NO_BORDER);
-	            headerTable.addCell(cell2);
-	            
-	            PdfPCell cell3 = new PdfPCell(new Paragraph("Period of Report: "+purchasesdateFrom+" To "+purchasesdateTo));
-	            cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-	            cell3.setBorder(PdfPCell.NO_BORDER);
-	            headerTable.addCell(cell3);
-	            document.add(headerTable);
-	            //document.add(Chunk.NEWLINE);
-	            
-	            PdfPTable headerTable1 = new PdfPTable(3);
-	            headerTable1.setWidthPercentage(100);
-	            headerTable1.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-	            
-	            PdfPCell cell4 = new PdfPCell(new Paragraph("DPC: "+centername));
-	            cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
-	            cell4.setBorder(PdfPCell.NO_BORDER);
-	            headerTable1.addCell(cell4);
-	            
-	            PdfPCell cell5 = new PdfPCell(new Paragraph("Basis: "+basis));
-	            cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
-	            cell5.setBorder(PdfPCell.NO_BORDER);
-	            headerTable1.addCell(cell5);
-	            
-	            PdfPCell cell6 = new PdfPCell(new Paragraph(""));
-	            cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
-	            cell6.setBorder(PdfPCell.NO_BORDER);
-	            headerTable1.addCell(cell6);
-	            document.add(headerTable1);
-	            document.add(Chunk.NEWLINE);
-	            
-	            // Create PDF table with 10 columns
-	            PdfPTable table = new PdfPTable(15);
+                    // Fill JasperPrints
+                    JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
 
-	            table.setWidthPercentage(100);
-	           // table.setWidths(new float[]{100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f, 100f});
-	            // Add table headers
-	            //addTableHeader(table);
-	            table.addCell(createCell("Purchase date", 40f));
-	            table.addCell(createCell("Gross quantity", 40f));
-	            table.addCell(createCell("Deduction quantity", 40f));
-	            table.addCell(createCell("Net quantity", 40f));
-	            table.addCell(createCell("Garsat rate", 40f));
-	            table.addCell(createCell("Amount", 40f));
-	            table.addCell(createCell("Place of purchases", 40f));
-	            table.addCell(createCell("Region", 40f));
-	            table.addCell(createCell("Jute variety", 40f));
-	            table.addCell(createCell("Bin no", 40f));
-	            table.addCell(createCell("Farmer name", 40f));
-	            table.addCell(createCell("Farmer no", 45f));
-	            table.addCell(createCell("Tally slip", 40f));
-	            table.addCell(createCell("Rate slip", 40f));
-	            table.addCell(createCell("Tally status", 40f));
 
-	            // Add model data to the table
-	            for (PurchaseRegisterDTO list : purchaselist) {
-	                //addRow(table, model);
-	            	table.addCell(list.getDatepurchase());
-	            	table.addCell(String.valueOf(list.getGross_qty()));
-			        table.addCell(String.valueOf(list.getDeduc_qty()));
-			        table.addCell(String.valueOf(list.getNet_qty()));
-			        table.addCell(String.valueOf(list.getGarsat()));
-			        table.addCell(String.valueOf(list.getAmountpayable()));
-			        table.addCell(list.getCentername());
-			        table.addCell(list.getRegionId());
-			        table.addCell(list.getJutevariety());
-			        table.addCell(String.valueOf(list.getBinno()));
-	            	table.addCell(list.getF_name());
-	            	table.addCell(list.getFarmerregno());
-	            	table.addCell(list.getTallyslipno());
-	            	table.addCell(String.valueOf(list.getRate_slipno()));
-	            	table.addCell(list.getTally_status());
-	            }
 
-	            document.add(table);
-	            document.close();
-	        } catch (DocumentException e) {
-	            e.printStackTrace();
-	        }
+                 response.setContentType("application/pdf");
+                 response.setHeader("Content-Disposition", "attachment; filename=DPCReport.pdf");
+                 try (OutputStream out = response.getOutputStream()) {
+                     JRPdfExporter exporter = new JRPdfExporter();
+                     exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+                  //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+                     exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+                     exporter.exportReport();
+                 }
+             }catch (Exception e) {
+                    e.printStackTrace();
+                    response.getWriter().write("Error generating the report");
+
+             }
+
 	        return mv;
 	    }
 	    private static PdfPCell createCell(String content, float height) {

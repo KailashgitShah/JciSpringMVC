@@ -1,9 +1,0 @@
-package com.jci.dao;
-
-import com.jci.model.CommercialJuteVarietyModel;
-
-public interface CommercialJuteVarietyGradesPriceDao {
-
-	void create(CommercialJuteVarietyModel commercialJuteVarietyModel);
-
-}

@@ -397,7 +397,7 @@ button#turn {
 			String middlename = "";
 			String lastname = "";
 			String fname = "";
-			String[] farmerName = new  String[3];
+			String[] farmerName = new  String[4];
 			farmerName = farmerModel.getF_NAME().split(" ");
 			if(farmerName.length == 1){
 			firstname = farmerModel.getF_NAME().split(" ")[0];
@@ -417,6 +417,22 @@ button#turn {
 					 fname = firstname+" "+lastname;
 				else
 				 fname = firstname +" "+middlename+" "+lastname;
+				}
+			else if(farmerName.length > 3){
+				firstname = farmerModel.getF_NAME().split(" ")[0];
+				middlename = farmerModel.getF_NAME().split(" ")[1];
+				int j = 1;
+				for(int i = 0; i<farmerName.length; i++)	
+				{
+					if(j>2)
+					{
+						lastname += farmerModel.getF_NAME().split(" ")[i]+" ";
+					}
+					j++;
+				}
+				fname = firstname +" "+middlename+" "+lastname;
+				//if (middlename.equalsIgnoreCase("NA"))
+				//	middlename = "";
 				}
 			%>
 
@@ -609,20 +625,17 @@ button#turn {
 		var facNo = '<%=farmerModel.getF_AC_NO()%>';
 		//alert(facNo);
 		var fName = '<%=fname%>';
-	//	fName =  fName.trim();
-		//alert(fName);
+		fName = fName.trim();
+		fName = fName.split(" ").join("");
+		//alert("fName++"+fName);
 		<%-- var fidProofType = <%=farmerModel.getF_ID_PROF_TYPE()%>;
 		var fidProofNo = <%=farmerModel.getF_ID_PROF_NO()%>; --%>
 		var ifsc_code = document.getElementById("ifsc_code").value;
-	//	alert(ifsc_code+" "+fIfsc);
 		var ac_no = document.getElementById("ac_no").value;
-		//alert(ac_no==facNo);
 		var farmer_name = document.getElementById("farmer_name").value;
 		farmer_name = farmer_name.trim();
-		//alert(farmer_name+"12"+fName+"23");
+		farmer_name = farmer_name.split(" ").join("");
 		//remove proof id n dtype by animesh - 28 june 23
-	//	var idProofType = document.getElementById("idProofType").value;
-	//	var identityProofNo = document.getElementById("identityProofNo").value;
 	
 		if(fIfsc!==ifsc_code){
 		  //  alert("if fifs");

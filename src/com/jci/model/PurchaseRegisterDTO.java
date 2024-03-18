@@ -29,8 +29,18 @@ public class PurchaseRegisterDTO {
 	private String td_base;
 	private int binno;
 	private String F_name;
+	private String farmername;
 	private int rate_slipno;
 	private String tally_status;
+	
+	
+	public String getFarmername() {
+		return farmername;
+	}
+	public void setFarmername(String farmername) {
+		this.farmername = farmername;
+	}
+	
 	
 	public String getF_name() {
 		return F_name;
@@ -148,6 +158,8 @@ public class PurchaseRegisterDTO {
 	}
 	
 	
+	
+	
 	@Override
 	public String toString() {
 		return "PurchaseRegisterDTO [regionId=" + regionId + ", centername=" + centername + ", tallyslipno="
@@ -155,13 +167,14 @@ public class PurchaseRegisterDTO {
 				+ placeofpurchase + ", cropyr=" + cropyr + ", basis=" + basis + ", jutevariety=" + jutevariety
 				+ ", gross_qty=" + gross_qty + ", deduc_qty=" + deduc_qty + ", net_qty=" + net_qty + ", amountpayable="
 				+ amountpayable + ", garsat=" + garsat + ", td_base=" + td_base + ", binno=" + binno + ", F_name="
-				+ F_name + ", rate_slipno=" + rate_slipno + ", tally_status=" + tally_status + "]";
+				+ F_name + ", farmername=" + farmername + ", rate_slipno=" + rate_slipno + ", tally_status="
+				+ tally_status + "]";
 	}
 	
 	public PurchaseRegisterDTO(String regionId, String centername, String tallyslipno, String datepurchase,
 			String farmerregno, String placeofpurchase, String cropyr, String basis, String jutevariety,
 			double gross_qty, double deduc_qty, double net_qty, double amountpayable, double garsat, String td_base,
-			int binno, String f_name, int rate_slipno, String tally_status) {
+			int binno, String f_name, String farmername, int rate_slipno, String tally_status) {
 		super();
 		this.regionId = regionId;
 		this.centername = centername;
@@ -180,6 +193,7 @@ public class PurchaseRegisterDTO {
 		this.td_base = td_base;
 		this.binno = binno;
 		F_name = f_name;
+		this.farmername = farmername;
 		this.rate_slipno = rate_slipno;
 		this.tally_status = tally_status;
 	}

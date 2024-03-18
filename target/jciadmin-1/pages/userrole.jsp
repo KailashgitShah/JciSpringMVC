@@ -30,6 +30,7 @@
     <!-- PAGE LEVEL PLUGINS-->
     <!-- CORE SCRIPTS-->
     <script src="assets/js/app.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/js/CommanInputValidation.js">
     <!-- PAGE LEVEL SCRIPTS-->
 </head>
 
@@ -129,7 +130,7 @@ $(document).ready(function () {
                                             <input class="form-control" type="date" name="datejba" placeholder="JaBA Date" required> -->
                                         
                                            <label>Role Name</label><span id="errrole" name="errrole" class="text-danger"></span>
-                                         <input type="text" name="rolename" id="rolename" onkeyup="return validateRole();" class="form-control" placeholder="Role Name" oninput="allow_alphabets(this)"  required/>
+                                         <input type="text" name="rolename" id="rolename" onkeyup="return validateRole();" class="form-control stringValidation" placeholder="Role Name" oninput="allow_alphabets(this)"  required/>
                                        <!--  <input readonly class="form-control" id="datejba" type=date name="datejba" placeholder="JaBA Date" required> -->
                                         </div>
                                    
@@ -203,7 +204,7 @@ function validateRole(form) {
             var textInput = $('#rolename').val();
             
             // Remove characters that are not alphabets
-            var cleanedInput = textInput.replace(/[^A-Za-z]/g, "");
+            var cleanedInput = textInput.replace(/[^A-Za-z\s]/g, "");
 
             // You can also display an alert or perform additional validation if needed
             if (textInput !== cleanedInput) {

@@ -651,7 +651,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 					purchaseRegister.setGarsat(((BigDecimal) row[13]).doubleValue());
 					purchaseRegister.setTd_base((String) row[14]);
 					purchaseRegister.setBinno((int) row[15]);
-					purchaseRegister.setF_name((String) row[16]);
+					purchaseRegister.setFarmername((String) row[16]);
 					purchaseRegister.setRate_slipno((int) row[17]);
 					purchaseRegister.setTally_status((String) row[18]);
 					//System.err.println("purchaseRegister___________"+purchaseRegister);

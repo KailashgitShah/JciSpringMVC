@@ -21,6 +21,7 @@
     <link href="assets/css/main.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="assets/js/CommanInputValidation.js">
     <!-- PAGE LEVEL STYLES-->
 </head>
 
@@ -108,7 +109,7 @@ $(document).ready(function () {
                                             <input class="form-control" type="date" name="datejba" placeholder="JaBA Date" required> -->
                                         
                                            <label>Action Name</label>
-                                         <input type="text" name="actionname" id="actionname" class="form-control" placeholder="Action Name" oninput="allow_alphabets(this)"  required/>
+                                         <input type="text" name="actionname" id="actionname" class="form-control stringValidation" placeholder="Action Name" oninput="allow_alphabets(this)"  required/>
                                        <!--  <input readonly class="form-control" id="datejba" type=date name="datejba" placeholder="JaBA Date" required> -->
                                         </div>
                                        <div class="col-sm-4 form-group">

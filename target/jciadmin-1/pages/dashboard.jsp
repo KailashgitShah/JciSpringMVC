@@ -12,7 +12,7 @@
     <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-bO5pIFiiOq9ATKxIep9tiCxN7D5h/W/g5lZx3H+6EE1X1uUq1hYFF4XfcMufj+Il" crossorigin="anonymous"></script>
     <!-- PLUGINS STYLES-->
     <link href="./assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
     <!-- THEME STYLES-->
@@ -24,49 +24,9 @@
 <body class="fixed-navbar">
     <div class="page-wrapper">
         <!-- START HEADER-->
-        <header class="header">
-            <div class="page-brand">
-                <a class="link" href="index.html">
-                    <span class="brand">Admin
-                        <span class="brand-tip">CAST</span>
-                    </span>
-                    <span class="brand-mini">AC</span>
-                </a>
-            </div>
-                  	<%
-					UserRegistrationModel userProfile = (UserRegistrationModel)request.getAttribute("profile");
-					
-				%>
-            
-            <div class="flexbox flex-1">
-                <!-- START TOP-LEFT TOOLBAR-->
-                <ul class="nav navbar-toolbar">
-                    <li>
-                        <a class="nav-link sidebar-toggler js-sidebar-toggler"><i class="ti-menu"></i></a>
-                    </li>
-                </ul>
-                <!-- END TOP-LEFT TOOLBAR-->
-                <!-- START TOP-RIGHT TOOLBAR-->
-                 <ul class="nav navbar-toolbar ">
-                    <li class="bell"><i class="fa fa-bell-o"></i>
-                        <span>10</span>
-                    </li>
-                    <li class="dropdown dropdown-user">
-                        <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                            <img src="./assets/img/admin-avatar.png">
-                              <% String name =(String)request.getSession().getAttribute("rolename");
-                              int refid =(int)request.getSession().getAttribute("refId");%>
-                            <span></span><% out.println(name);%><i class="fa fa-angle-down m-l-5"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="userProfile.obj"><i class="fa fa-user"></i>Profile</a>
-                            <li class="dropdown-divider"></li>
-                            <a class="dropdown-item" href="index.obj"><i class="fa fa-power-off"></i>Logout</a>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- END TOP-RIGHT TOOLBAR-->
-            </div>
-        </header>
+       <!-- START HEADER-->
+		<%@ include file="header.jsp"%>
+		<!-- END HEADER-->
         <!-- END HEADER-->
         
         <!-- START SIDEBAR-->
@@ -129,13 +89,13 @@
                                 <li>
                                     <a href="#">
                                         <span><img src="assets/img/farm-icon6.png"></span>
-                                       <p>Despatch Instruction</p>
+                                       <p>Dispatch Instruction</p>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
                                         <span><img src="assets/img/farm-icon7.png"></span>
-                                        <p>Despatch of Raw Jute</p>
+                                        <p>Dispatch of Raw Jute</p>
                                     </a>
                                 </li>
                             </ul>
@@ -190,9 +150,6 @@
     </div>
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
-    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL PLUGINS-->

@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="com.jci.controller.InsertDataController"%>
+
 <html lang="en">
 <head>
 <script src="./assets/vendors/jquery/dist/jquery.min.js"
@@ -7,7 +9,7 @@
 	type="text/javascript"></script>
 <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
 	type="text/javascript"></script>
-<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+<script src="./assets/vendors/metisMenu/dist/metisMenu.miR.js"
 	type="text/javascript"></script>
 
 </head>
@@ -45,10 +47,9 @@ body {
 	<div class="font-strong">Welcome <br>
 	<span style="color: #ffc107;">
 	<%
+	    String userpass = (String)request.getSession().getAttribute("userpass");
 		String Email=(String)request.getSession().getAttribute("usrname");
-	
 		out.println(Email);
-		
 		if(Email==null){
 			//String redirectURL = "http://49.50.79.121:8080/jcicms/index.obj";
 		    String redirectURL = "http://localhost:8080/jciadmin/index.obj";
@@ -117,20 +118,21 @@ body {
 					<li data-pre="14" id="o14"><a href="commercialPriceCalculation.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Commercial Ceiling Price Intimation </b></a></li>
 <!-- 					<li data-pre="15" id="o15"><a href="rawJutePaymentAndProcurement.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Raw Jute Procurement & Payment</b></a></li>	 -->			
 <!-- 					<li data-pre="16" id="o16"><a href="dailyPurchaseConf.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase Confirmation</b></a></li> -->
-					<li data-pre="17" id="o17"><a href="Distributionoftallyslips.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Distribution of tally Slip</b></a></li>
+					<li data-pre="17" id="o15"><a href="Distributionoftallyslips.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Distribution of tally Slip</b></a></li>
 				  	<li data-pre="18" id="o18"><a href="mspGradesPriceList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View MSP </b></a></li>
 					<li data-pre="19" id="o19"><a href="viewCommercialCeilingPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Commercial Ceiling Price Intimation</b></a></li>
 					<li data-pre="20" id="o20"><a href="tallyapproval.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Verification of Tally Slip</b></a></li>
-					<li data-pre="21" id="o21"><a href="viewVerifiedTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RO Finance Verification of Tally Slip</b></a></li>
+					<li data-pre="74" id="o74"><a href="viewVerifiedTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RO Finance Verification of Tally Slip</b></a></li>
 					<li data-pre="53" id="o53"><a href="viewVerifiedTallySlipList_RM.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RM Payment Process of Tally Slip</b></a></li>
 					<li data-pre="54" id="o54"><a href="viewVerifiedTallySlipList_ZM.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>HO Payment Process of Tally Slip</b></a></li>
 					<li data-pre="22" id="o22"><a href="disputedtallyslip.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Disputed Tally Slip</b></a></li>					
 					<li data-pre="55" id="o55"><a href="tallyListRMA.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>RM Purchase Date Approval- Tally Slip</b></a></li>
 					<li data-pre="23" id="o23"><a href="dailyPurchaseList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase List</b></a></li>				
 					<li data-pre="24" id="o24"><a href="viewDistributionoftallyslips.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Distribution of Tally Slip</b></a></li>
-                    <li data-pre="59" id="o59"><a href="SearchTally.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Tally Slip Status</b></a></li>
-					<li data-pre="58" id="o58"><a href="verifiedHoldTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>F & A Hold Tally Slip List</b></a></li>
-					<li  data-pre="" id=""><a href="uploadexcelsheet.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Upload Payment Excel Sheet</b></a></li>
+                    <li data-pre="75" id="o75"><a href="SearchTally.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Tally Slip Status</b></a></li>
+					<li data-pre="92" id="o92"><a href="verifiedHoldTallySlipList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>F & A Hold Tally Slip List</b></a></li>
+					<li data-pre="76" id="o76"><a href="uploadexcelsheet.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Upload Payment Excel Sheet</b></a></li>
+					<li data-pre="93" id="o93"><a href="downloadexcel.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Download Excel of Payment</b></a></li>
 				</ul> </li> 
 			 <li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
@@ -158,15 +160,15 @@ body {
 					<li  data-pre="31" id="o31"><a href="binPurchasemapping.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>BIN Purchase Mapping</b></a></li>				
 					<li  data-pre="32" id="o32"><a href="fingain.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>FinGainAnd WeightGain</b></a></li>
 					<li  data-pre="33" id="o33"><a href="BinListfromDb.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>BIN Gain List</b></a></li>
-
+					<li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register list</b></a></li>				
 				</ul> </li> 
-				<li><a href="javascript:void(0);"><i
+				<!-- <li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">6.&nbsp;Contract</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level">
 					<li  data-pre="34" id="o34"><a href="entryofpcso.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of PCSO</b> </a></li>
-					<!-- <li  data-pre="35" id="o35"><a href="pcsolist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>PCSO List</b></a></li> -->
+					<li  data-pre="35" id="o35"><a href="pcsolist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>PCSO List</b></a></li>
 					<li  data-pre="36" id="o36"><a href="entry_derivativeprice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Derivative Price</b></a></li>
 					<li  data-pre="37" id="o37"><a href="entryderivativepricelist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Derivative Price List</b></a></li>
 					<li  data-pre="38" id="o38"><a href="contractgenerationPCSOWise.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Contract Generation PCSO Wise</b></a></li>
@@ -203,7 +205,7 @@ body {
 					<li  data-pre="50" id="o50"><a href="viewcontractgenerationcommercial.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Contract Generation Commercial List</b></a></li>
 					<li  data-pre="52" id="o52"><a href="MSPgradesCombination.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>MSP Grades Combination</b></a></li>
 				
-				</ul></li>
+				</ul></li> -->
 		
 	</div>
 
@@ -211,7 +213,22 @@ body {
 	<script>
 
 		$(document).ready(function() {
-		for(var i=1; i<=58;i++){
+			
+			var passuser = '<%= userpass %>';
+			//alert(passuser);
+			$.ajax({
+				url : "checksessionpass.obj",
+				type : "GET",
+				async:false,
+				success : function(result) {
+					var updatedpass = jQuery.parseJSON(result);
+					if(updatedpass != passuser)
+						{
+						window.location.href = "index.obj";	
+					    }
+				}
+			});
+		for(var i=1; i<=100;i++){
 			$("#o"+i).hide();
 			
 			}
@@ -244,14 +261,17 @@ $.ajax({
 				//	console.log("values "+values);
 
 
-					for(var j=0;j<userAction.length;j++){
-						for(var i=0;i<=58; i++){
-					if($("#o"+i).data("pre") == userAction[j]){
-					//console.log(userAction[j]);
-						$("#o"+i).show();
-							}
-						}
-					}	 
+					for(var j=0;j<userAction.length;j++)
+					{
+						for(var i=0;i<=100; i++)
+						  {
+					         if($("#o"+i).data("pre") == userAction[j])
+					            {
+					               //console.log(userAction[j]);
+						            $("#o"+i).show();
+							     }
+						   }
+					 }	 
 					
 				});
 			}
@@ -266,7 +286,7 @@ $.ajax({
 });
 
 
-</script>
+</script>	
 	<!-- <div class="foter-bottom">
 		<div>
 			<img src="assets/img/icon1.png" class="sidebar-item-icon"><span>Logout</span>

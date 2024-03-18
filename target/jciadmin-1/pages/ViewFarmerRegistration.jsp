@@ -7,6 +7,7 @@
 <%@page import="com.jci.model.StateList"%>
 <%@page import="com.jci.controller.LoginController"%>
 <%@page import="com.jci.common.Encry"%>
+<%@page import="java.net.URLEncoder"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +46,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
  <script type="text/javascript">
 	$(document).ready(function ()  
 	{  
@@ -74,6 +76,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 				 List <FarmerRegModelDTO>  allFarmersList = (List <FarmerRegModelDTO>) request.getAttribute("allFarmersList");
 			%>
 			<form action ="findByDpc.obj" onsubmit ="return findByDpc()">
+			<span>${msg}</span>
 			<div class="row">
 				<div class="col-sm-3 form-group">
 											<label id="zoneLabel" class="required">Zone</label>  &nbsp;&nbsp;&nbsp; <span id="errZone" name="errZone" class="text-danger"> </span>
@@ -137,12 +140,20 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 									
 									int i = 1;
 									for(FarmerRegModelDTO farmerRegModelList : allFarmersList){
-										String firstname = "";
+										/*String firstname = "";
 										String middlename = "";
 										String lastname = "";
 										String fname = "";
+										String nfname = "";
 										String[] farmerName = new  String[3];
 										farmerName = farmerRegModelList.getF_NAME().split(" ");
+										
+									    for(int k = 0; k< farmerName.length ; k++)
+									    {
+									    	String farmername = farmerName[k];
+									    	nfname = nfname+farmername+" ";
+									    }
+									 	
 										if(farmerName.length == 1){
 										firstname = farmerRegModelList.getF_NAME().split(" ")[0];
 										fname = firstname;
@@ -163,12 +174,14 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 											 if(middlename.equalsIgnoreCase("NA"))
 												 middlename = "";
 											 fname = firstname +" "+middlename+" "+lastname;
-											}
+											} */
+     						           //String encryptedid = Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()),key);
+     						          String encryptedid = URLEncoder.encode(Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()), key), "UTF-8");
 								%>
 									<tr role="row" class="odd">
 									<td class="sorting_1"><%=i%></td>
-									<td><a href = "viewFarmerReg.obj?id=<%=farmerRegModelList.getF_ID()%>" ><u><%=farmerRegModelList.getRegno() %></u></a></td>
-									<td><%=fname %></td> 
+									<td><a href = "viewFarmerReg.obj?id=<%=encryptedid%>" ><u><%=farmerRegModelList.getRegno() %></u></a></td>
+									<td><%=farmerRegModelList.getF_NAME() %></td> 
 									<td><%=farmerRegModelList.getF_MOBILE() %></td>
 									<td><%=farmerRegModelList.getState() %></td>
 									<td><%=farmerRegModelList.getDistrict() %></td>
@@ -179,16 +192,19 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 											out.print("Not Verified");
 										}else{
 											out.print("Verified");
+											//ss
 										}
-        						           String encryptedid = Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()),key);
 										%>
 										</td>
 										<%-- <td><%=farmerRegModelList.getF_REG_BY() %></td> --%>
 										<% if(farmerRegModelList.getF_DOC_Mandate()==null || farmerRegModelList.getF_DOC_Mandate().equalsIgnoreCase("null") ){
+											if(farmerRegModelList.getMandate_flag() == 0)
+											{
 											%>
-											<td><a href="editFarmerReg.obj?id=<%=encryptedid%>"class="btn btn-danger btn-sm btn-block" style="background: darkgreen;">Update Mandate</a></td>
+											<td><a href="editFarmerReg.obj?id=<%=farmerRegModelList.getF_ID()%>"class="btn btn-danger btn-sm btn-block" style="background: darkgreen;">Update Mandate</a></td>
 									<% 
-										}
+											}
+											}
 										else{
 											if(farmerRegModelList.getIS_VERIFIED()==0)
 											{
@@ -340,6 +356,13 @@ function findByDpc(){
 	}
 }
 </script>
+<script>
+      $(document).ready(function() {
+          $('body').bind('cut copy', function(e) {
+              e.preventDefault();
+            });
+        });
+    </script>
 </body>
 
 </html>

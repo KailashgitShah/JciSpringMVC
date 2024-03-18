@@ -296,10 +296,12 @@ color: red;
 $(document).ready(function(){
 	 $("#approve").click(function(){
 		 var tally = $("#approve").val();
+		var DPCpop = '<%=raw.getPlaceofpurchase() %>';
+		var DEOpop = '<%=vrf.getPlaceOfPurchase() %>';
 		 $.ajax({
 				type:"GET",
 				url:"rmapproval.obj",
-				data:jQuery.param({"tallyno":tally ,"status" :"FA", "verified":1}),
+				data:jQuery.param({"tallyno":tally ,"status" :"FA", "verified":1,"DPCpop":DPCpop,"DEOpop":DEOpop}),
 				success:function(result){
 					if(result=="true")
 						{
@@ -329,10 +331,12 @@ $(document).ready(function(){
 $(document).ready(function(){
 	 $("#decline").click(function(){
 		 var tally = $("#decline").val();
+		 var DPCpop = '<%=raw.getPlaceofpurchase() %>';
+		 var DEOpop = '<%=vrf.getPlaceOfPurchase() %>';
 		 $.ajax({
 				type:"GET",
 				url:"rmapproval.obj",
-				data:jQuery.param({"tallyno":tally ,"status" :"DPCW", "verified":0}),
+				data:jQuery.param({"tallyno":tally ,"status" :"DPCW", "verified":0,"DPCpop":DPCpop,"DEOpop":DEOpop}),
 				success:function(result){
 					if(result=="true")
 						{
