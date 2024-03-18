@@ -94,7 +94,7 @@
       })    */
       </script>
       
-      <script type="text/javascript">
+     <!--  <script type="text/javascript">
             $(function() {
                   $('#login-form').validate({
                         errorClass : "help-block",
@@ -115,7 +115,7 @@
                         },
                   });
             });
-      </script>
+      </script> -->
 </body>
 
 </html>

@@ -1561,26 +1561,7 @@ public class Controller_V {
 	// ---------------------------------------------------------
 
 	//ro dispatch view page
-	@RequestMapping("roDispatchInstruction")
-	public ModelAndView viewRoDispatcher(HttpServletRequest request) throws FileNotFoundException {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-		List<String> loadAllDpc = roDispatchService.loadAllDpc();
-		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
-		// int countAvaiResult = roDispatchService.getCountOfAvailableEntries();
-		ModelAndView mv = new ModelAndView("roDispatchInstruction");
-		mv.addObject("loadAllDpc", loadAllDpc);
-		mv.addObject("loadAllDiNo", loadAllDiNo);
-		// mv.addObject("count",countAvaiResult);
-
-		///// generated new file /////////////////////////
-
-		///////////////////////////////////////////////////////////
-
-		return mv;
-	}
+	
 
 	//save ro dispatch instruction
 	@RequestMapping("saveRoDi")
@@ -3414,13 +3395,7 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		// final List<RoDetailsModel> RegionList =
-		// (List<RoDetailsModel>)this.roDetailsservice.getAll();
-		// final List<OperationCostModel> operationcostlist =
-		// (List<OperationCostModel>)this.operationcostservice.getAll();
-
-		// mv.addObject("RegionList", (Object)RegionList);
-		// mv.addObject("operationcostlist", (Object)operationcostlist);
+		
 		return mv;
 	}
 
@@ -3493,6 +3468,8 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+	
 	@RequestMapping("HOdispatchInst")
     public ModelAndView HODispatchInstructionModel(HttpServletRequest request) {
            String username = (String) request.getSession().getAttribute("usrname");
@@ -3506,8 +3483,10 @@ public class Controller_V {
            }
 
            List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
+           List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
            System.err.println(ronameList);
            mv.addObject("ronameList", ronameList);
+           mv.addObject("juteVariety",juteVariety);
 
            return mv;
     }
@@ -3547,16 +3526,7 @@ public class Controller_V {
     public ModelAndView hoDispatchInstruction(HttpServletRequest request, RedirectAttributes redirectAttributes) {
            String username = (String) request.getSession().getAttribute("usrname");
            try {
-                  
-                  /*
-                  * String juteString = request.getParameter("jutevariety");//
-                  * System.err.println("++++++++++++"); System.err.println("++++++++++++");
-                  * System.err.println("++++++++++++"); System.err.println("++++++++++++");
-                  * System.err.println("++++++++++++"); System.err.println(juteString);
-                  * System.err.println(juteString); System.err.println(juteString);
-                  * System.err.println(juteString); System.err.println(juteString);
-                  * System.err.println(juteString);
-                  */
+                 
                   
                   String[] variety = request.getParameterValues("jutevariety");
                   
@@ -3607,48 +3577,48 @@ public class Controller_V {
                        SimpleDateFormat newFormater1 = new SimpleDateFormat("dd-MM-yyyy");
                         System.err.println(lastShipString);
                         JciDIHoModel diHo = new JciDIHoModel();
-                               String gprice0 = request.getParameter(st+"0");
+                               String gprice0 = request.getParameter(st+"-grade"+"1");
                                if (gprice0 == null) {
                                       gprice0 = "0";
                                }
                                Double g0 = Double.parseDouble(gprice0);
-                               String gprice1 = request.getParameter(st+"1");
+                               String gprice1 = request.getParameter(st+"-grade"+"2");
                                if (gprice1 == null) {
                                       gprice1 = "0";
                                }
                                Double g1 = Double.parseDouble(gprice1);
                                
-                               String gprice2 = request.getParameter(st+"2");
+                               String gprice2 = request.getParameter(st+"-grade"+"3");
                                 if (gprice2 == null) {
                                       gprice2 = "0";
                                }
                                Double g2 = Double.parseDouble(gprice2);
                                
-                               String gprice3 = request.getParameter(st+"3");
+                               String gprice3 = request.getParameter(st+"-grade"+"4");
                                if (gprice3 == null) {
                                       gprice3 = "0";
                                }
                                Double g3 = Double.parseDouble(gprice3);
                                
-                               String gprice4 = request.getParameter(st+"4");
+                               String gprice4 = request.getParameter(st+"-grade"+"5");
                                if (gprice4 == null) {
                                       gprice4 = "0";
                                }
                                Double g4 = Double.parseDouble(gprice4);
                                
-                               String gprice5 = request.getParameter(st+"5");
+                               String gprice5 = request.getParameter(st+"-grade"+"6");
                                if (gprice5 == null) {
                                       gprice5 = "0";
                                }
                                Double g5 = Double.parseDouble(gprice5);
                                
-                               String gprice6 = request.getParameter(st+"6");
+                               String gprice6 = request.getParameter(st+"-grade"+"7");
                                if (gprice6 == null) {
                                       gprice6 = "0";
                                }
                                Double g6 = Double.parseDouble(gprice6);
                                
-                               String gprice7 = request.getParameter(st+"7");
+                               String gprice7 = request.getParameter(st+"-grade"+"8");
                                if (gprice7 == null) {
                                       gprice7 = "0";
                                }
@@ -3760,7 +3730,39 @@ public class Controller_V {
              }
              return new ModelAndView(new RedirectView("jcilist.obj"));
            }
+// Vishwdeep RO
+    @ResponseBody
+    @RequestMapping(value = "getCooperative", method = RequestMethod.GET)
+    public List<String> getList( HttpSession session){
+    	String regionIdString =(String) session.getAttribute("region");
+    	
+    	return  roDispatchService.getCooperative(regionIdString);
+    	
+    	
+    }
+    @RequestMapping("roDispatchInstruction")
+	public ModelAndView viewRoDispatcher(HttpServletRequest request, HttpSession session) throws FileNotFoundException {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String regionIdString =(String) session.getAttribute("region");
+		List<String> loadAllDpc = roDispatchService.loadAllDpc();
+		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
+		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
+		// int countAvaiResult = roDispatchService.getCountOfAvailableEntries();
+		ModelAndView mv = new ModelAndView("roDispatchInstruction");
+		mv.addObject("loadAllDpc", loadAllDpc);
+		mv.addObject("loadAllDiNo", loadAllDiNo);
+		mv.addObject("loadAllCooperativesList",loadAllCooperativesList);
+		// mv.addObject("count",countAvaiResult);
 
+		///// generated new file /////////////////////////
+
+		///////////////////////////////////////////////////////////
+
+		return mv;
+	}
 
            
     

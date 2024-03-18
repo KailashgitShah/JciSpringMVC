@@ -174,7 +174,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 									</div>
 									<div class="row">
 										<div class="col-sm-4 form-group">
-[]											<label>Jute Variety</label> <input class="form-control mb-3"
+											<label>Jute Variety</label> <input class="form-control mb-3"
 												type="text" name="juteVariety" id="juteVariety" readonly>
 
 											<label>Remarks </label> <input class="form-control"
@@ -290,6 +290,8 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 											const unFormatedDate = contract[21]
 													.split("-");
 											
+											console.log(contract[21]);
+											
 											
 											
 											/* 	const d = "10-10-2023";
@@ -302,6 +304,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 												"max" : lastDateOfShipment,
 												"min" : minDateOfShipment
 											});
+											
 
 											$("#juteVariety").val(contract[20]);
 											$("#GVariety").val(contract[12]);

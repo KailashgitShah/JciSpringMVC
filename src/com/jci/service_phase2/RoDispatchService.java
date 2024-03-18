@@ -15,4 +15,5 @@ public interface RoDispatchService {
  public int getCountOfAvailableEntries(String hoNo);
  public void create(RoDispatchModel roDispatchModel);
  public List<RoDispatchModel> getAllRoDi();
+public List<String> getCooperative(String regionIdString);
 }

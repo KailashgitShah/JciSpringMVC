@@ -23,8 +23,8 @@
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
 <link href="assets/css/main.min.css" rel="stylesheet" />
- <link rel="stylesheet" href="assets/css/docsupport/style.css">
-<link rel="stylesheet" href="assets/css/docsupport/prism.css"> 
+  <link rel="stylesheet" href="assets/css/docsupport/style.css">
+<link rel="stylesheet" href="assets/css/docsupport/prism.css">  
 <link rel="stylesheet" href="assets/css/chosen.css"> 
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
       type="text/javascript"></script>
@@ -50,6 +50,7 @@ input[type="radio"] {
 #l1, #r1 {
   margin-left: 10px; /* Adjust margin values as needed */
   margin-right:0px;
+  
 }
 
 #r1 {
@@ -89,6 +90,7 @@ input[type="radio"] {
                      %>
                      <%
                      List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
+    				List<String> juteVariety =(List<String>) request.getAttribute("juteVariety");
                      %>
                      <div class="page-content fade-in-up">
                            <div class="row">
@@ -167,6 +169,7 @@ input[type="radio"] {
 
                                                                      <input type="radio" name="opt" value="head" id="regId" checked>
                                                                      Region <input type="radio" name="opt" value="bod"> DPC
+                                                                     
                                                                      <div class="row">
                                                                            <div class="col-sm-4 form-group">
                                                                                   <label>Regional Office </label> <span class="text-danger">*
@@ -181,7 +184,7 @@ input[type="radio"] {
                                                                                          }
                                                                                          %>
                                                                                   </select>
-
+																		<a href="#" style="color: blue;">Inventory Region Wise</a>
 
                                                                            </div>
                                                                            <div class="col-sm-4 form-group" id="dpc_div">
@@ -232,10 +235,13 @@ input[type="radio"] {
                                                                                   </span> <select name="jutevariety" id="jutevariety"
                                                                                          class="form-control" required style="width:200px;" multiple>
                                                                                          <!-- <option value="0" disabled selected>Select</option> -->
-                                                                                         <option value="Bimli">Bimli</option>
-                                                                                         <option value="Mesta">Mesta</option>
-                                                                                         <option value="Tossa">Tossa</option>
-                                                                                         <option value="White">White</option>
+                                                                                        <%
+                                                                                         for (String ro : juteVariety) {
+                                                                                         %>
+                                                                                         <option value="<%=ro%>"><%=ro%></option>
+                                                                                         <%
+                                                                                         }
+                                                                                         %>
                                                                                   </select>
                                                                            </div>
 
@@ -298,52 +304,93 @@ input[type="radio"] {
               });
 
        </script>
-       
        <script>
-
        $(document).ready(function() {
-           $("#jutevariety").on("change", function() {
-               var selectedValue = $(this).val(); // Get the selected value
-           
-               console.log(selectedValue);
-               
-                var row = selectedValue.length;
-               console.log(row); 
-               var col=8;
-               displayTable(row+1,col+1,selectedValue,"small-cell");
-               
-           });
-       });
-            function displayTable(rows, columns,selectedValue) {
-               console.log(selectedValue);
-               if (selectedValue.length > 0) {
-               var tableHTML = "<table border='1'>";
-              tableHTML+= "<tr><th style='width:100px; font-weight: bold;'>Jute Variety</th><td style='font-weight: bold;'>Grade1</td><td style='font-weight: bold;'>Grade2</td><td style='font-weight: bold;'>Grade3</td><td style='font-weight: bold;'>Grade4</td><td style='font-weight: bold;'>Grade5</td><td style='font-weight: bold;'>Grade6</td><td style='font-weight: bold;'>Grade7</td><td style='font-weight: bold;'>Grade8</td></tr>";
-               for (var i = 0; i < rows-1; i++) {
-                    var variety = selectedValue[i];
-                    tableHTML += "<tr>";
-                    tableHTML += "<th style='font-weight: bold;'>" + variety + "</th>";
-                    for (var j = 0; j < columns - 1; j++) {
-                             if ((variety === "Mesta" || variety === "Bimli") && j > 5) {
-                               tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0.00'  readonly/></td>";
-                             } else {
-                               tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0.00' /></td>";
-                             }
-                           }
+    	    $("#jutevariety").on("change", function() {
+    	        var selectedValue = $(this).val();
+    	        var row = selectedValue.length;
+    	        var col = 8;
+    	        displayTable(row + 1, col + 1, selectedValue);
+    	    });
+    	});
 
-                    tableHTML += "</tr>";
+    	function displayTable(rows, columns, selectedValue) {
+    	    if (selectedValue.length > 0) {
+    	        var tableHTML = "<table border='1'>";
+    	        tableHTML += "<tr><th style='width:100px; font-weight: bold;'>Jute Variety</th>";
 
-               }
-               tableHTML += "</table>";
-               // Place the table inside the div with id "form2"
-               $("#form2").html(tableHTML);
-               }
-               else {
-                         $("#form2").empty(); // Clear the content of the "form2" element if juteVariety is empty
-                       }
-           } 
+    	        for (var j = 1; j <= columns - 1; j++) {
+    	            tableHTML += "<th style='font-weight: bold;'>Grade" + j + "</th>";
+    	        }
 
-       </script>
+    	        tableHTML += "<th style='font-weight: bold;'>Total</th></tr>";
+
+    	        for (var i = 0; i < rows - 1; i++) {
+    	            var variety = selectedValue[i];
+    	            tableHTML += "<tr><th style='font-weight: bold;'>" + variety + "</th>";
+
+    	            var rowTotal = 0;
+
+    	            for (var j = 1; j <= columns - 1; j++) {
+    	            	if ((variety === "Mesta" || variety === "Bimli") && j > 6) {
+                       	 tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
+    	            	}
+    	            	else
+    	                tableHTML += "<td><input class='cell-input' type='number' min='0' name='" + selectedValue[i] + "-grade" + j + "' value='0' /></td>";
+    	            }
+
+    	            tableHTML += "<td id='total-" + i + "' class='row-total' style='text-align: center;''><strong><span>0</span></strong></td></tr>";
+    	        }
+
+    	        // Add the "Grand Total" row outside the loop
+    	        tableHTML += "<tr><td colspan='" + (columns) + "' style='text-align: right; font-weight: bold;'>Grand Total:</td>";
+    	        
+    	        // Declare the grandTotal variable
+    	        var grandTotal = 0;
+
+    	        tableHTML += "<td id='grand-total' class='grand-total' style='text-align: center;''><strong><span>" + grandTotal + "</span></strong></td>";
+
+    	        tableHTML += "</tr></table>";
+
+    	        $("#form2").html(tableHTML);
+
+    	        $(".cell-input").on("input", function() {
+    	            updateTotals();
+    	            updateGrandTotal();
+    	        });
+
+    	        function updateTotals() {
+    	            $(".row-total").each(function(index) {
+    	                var rowTotal = 0;
+    	                $(this).closest("tr").find("input.cell-input").each(function() {
+    	                    rowTotal += parseInt($(this).val()) || 0;
+    	                });
+    	                $(this).html("<strong>" + rowTotal + "</strong>");
+    	            });
+    	        }
+
+    	        function updateGrandTotal() {
+    	            grandTotal = 0;
+
+    	            for (var k = 1; k <= columns - 1; k++) {
+    	                $(".cell-input[name$='-grade" + k + "']").each(function () {
+    	                    var inputValue = $(this).val();
+    	                    if (!isNaN(inputValue) && inputValue !== "") {
+    	                        grandTotal += parseInt(inputValue, 10);
+    	                    }
+    	                });
+    	            }
+
+    	            // Update the grand total cell
+    	            $("#grand-total").html("<strong>" + grandTotal + "</strong>");
+    	        }
+    	    } else {
+    	        $("#form2").empty();
+    	    }
+    	}
+
+
+</script>
        
        <script>if (hasData) {
                 document.getElementById("l1").classList.add("has-data");
@@ -454,9 +501,12 @@ input[type="radio"] {
                                                                      + d[2] + "</span></p>";
 
                                                        contentToDisplay += "<h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Contract Quantity</h1><br>";
-                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%;'>Jute Variety Grade</th><th style='border: 1px solid black;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%;'>Balance Qty (Qtls.)</th></tr>";
+                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";
 
                                                        for (var i = 8; i <= 13; i++) {
+                                                    	   if(d[14][i-8]==null){
+                                                    		   d[14][i-8]=0;
+                                                    	   }
                                                               var no = (+(d[i][1] * d[2] / 100)  - +d[14][i-8]).toFixed(2);
                                                               console.log(parseInt(d[i][1] * d[2] / 100)  - parseInt(d[14][i-8]));
                                                               contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>"
@@ -476,8 +526,8 @@ input[type="radio"] {
                                                                      + d[2] + "</span></p>";
                                                        contentToDisplay += "<p>Allowed Qty: <span style='color: blue;'>"
                                                                      + d[6] + "</span></p>";
-                                                       contentToDisplay += "<p>Date of Issue: <span style='color: blue;'>"
-                                                                     + d[16] + "</span></p>";
+                                                      /*  contentToDisplay += "<p>Date of Issue: <span style='color: blue;'>"
+                                                                     + d[16] + "</span></p>"; */
                                                        var dateParts = document.getElementById("instdate").value.split("-");
                                                 
                                                        var formattedDate = dateParts[2] + "-"
@@ -486,15 +536,15 @@ input[type="radio"] {
                                                                      + formattedDate + "</span></p>";
 
                                                        contentToDisplay += "<br><h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>DI's Against this Contract</h1><br>";
-                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;'>Previous HO DI's</th><th style='border: 1px solid black; width: 20%;'>Issue Date</th><th style='border: 1px solid black; width: 20%;'>To</th><th style='border: 1px solid black; width: 40%;'>Quantity(Qtls)</th></tr>";
+                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;  text-align: center;'>Previous HO DI's</th><th style='border: 1px solid black; width: 20%;  text-align: center;'>Issue Date</th><th style='border: 1px solid black; width: 20%;  text-align: center;'>To</th><th style='border: 1px solid black; width: 40%;  text-align: center;'>Quantity(Qtls)</th></tr>";
                                                        //alert(d[16][4]);
                                                        var total = 0;
                                                        var size = 18 + +d[17];
                                                        //alert(size);
                                                        for (var i = 18; i < size; i++) {
-                                                              contentToDisplay += "<tr><td style='border: 1px solid black;'><span style='color: blue; width: 50%;'>"
+                                                              contentToDisplay += "<tr><td style='border: 1px solid black;width:50%;'><span style='color: blue; '>"
                                                                            + d[i][0]
-                                                                           + "</span></td><td style='border: 1px solid black;'><span style='color: blue;'>"
+                                                                           + "</span></td><td style='border: 1px solid black;width:30%;'><span style='color: blue;'>"
                                                                            + d[i][1]
                                                                            + "</span></td><td style='border: 1px solid black;'><span style='color: green;'>"
                                                                            + d[i][2]
@@ -513,7 +563,7 @@ input[type="radio"] {
                                                        
                                                        document.getElementById("IssQty").value=total;//Issued QTY
                                                        contentToDisplay += "<br><h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Last Five DI's for the Particular Mill</h1><br>";
-                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;'>DI No.</th><th style='border: 1px solid black; width: 20%;'>To</th></tr>";
+                                                       contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%; text-align: center;'>DI No.</th><th style='border: 1px solid black; width: 20%; text-align: center;'>To</th></tr>";
                                                        //alert(parseInt(d[16 + parseInt(d[15])])
                                                                      //+ parseInt(16 + parseInt(d[15])));
                                                        //alert(size + 2);
@@ -665,47 +715,59 @@ input[type="radio"] {
                      });
               });
        </script>
-
+	<script>
+	</script>
 
 
        
        <script>
        function myFunc() {
-              
-              
-                 var allow = parseInt(document.getElementById("qty").value);
-                // alert(allow);
-                var issued = parseInt(document.getElementById("IssQty").value);
-                //alert(issued);
-                var selectedValue = $("#jutevariety").val();
-                var n = selectedValue.length;
-                //alert(n);
-                var total = 0;
-              
-                for (var i = 0; i < n; i++) {
-                       var variety = selectedValue[i];
-                       for (var j = 0; j < 8; j++) {
-                         console.log(parseInt($("input[name='" + selectedValue[i] + j + "']").val()));
-                         var inputValue = parseInt($("input[name='" + selectedValue[i] + j + "']").val()) || 0;
-                         total += inputValue;
-                       }
-                     }
+    	    var allow = parseInt(document.getElementById("qty").value);
+    	    var issued = parseInt(document.getElementById("IssQty").value);
+    	    var selectedValue = $("#jutevariety").val();
+    	    var n = selectedValue.length;
 
-              //alert(total);
-                console.log("issued: " + issued);
-                console.log("total: " + total);
-                console.log("allow: " + allow);
-                if(total == 0)return false;
-                 if (issued + total <= allow) {
-                  return true; // Proceed with form submission
-                } else {
-                       document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
-                           document.getElementById("misQty").style.color = "red";
-                  return false; // Prevent form submission
-                }  
-               
-              
-       }
+    	    var total = 0;
+
+    	    // Function to check for total
+    	    for (var i = 0; i < n; i++) {
+    	        var variety = selectedValue[i];
+    	        for (var j = 1; j <= 8; j++) {
+    	            var inputName;
+
+    	            // Adjust inputName for Bimli and Mesta
+    	            if ((variety === "Mesta" || variety === "Bimli") && j > 6) {
+    	                inputName = variety + j;
+    	            } else {
+    	                inputName = variety + "-grade" + j;
+    	            }
+
+    	            var inputValue = parseInt($("input[name='" + inputName + "']").val()) || 0;
+    	            total += inputValue;
+    	        }
+    	    }
+
+    	    console.log("issued: " + issued);
+    	    console.log("total: " + total);
+    	    console.log("allow: " + allow);
+
+    	   
+    	    if (issued + total <= allow) {
+    	       // alert("Form submitted successfully!");
+    	        return true; // Proceed with form submission
+    	    }  else {
+   	    	 document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
+	    	    document.getElementById("misQty").style.color = "red";
+	    	  
+	    	    // Set a timer to make the message vanish after 5 seconds (5000 milliseconds)
+	    	    setTimeout(function() {
+	    	        document.getElementById("misQty").innerText = "";
+	    	    }, 8000);
+
+	    	    return false; // Prevent form submission
+	    }
+
+    	}
 
        </script>
 
