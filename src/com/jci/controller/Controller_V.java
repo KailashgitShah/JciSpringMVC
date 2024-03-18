@@ -3466,12 +3466,16 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("viewmillAcc.obj"));
 
 	}
+	
+			
+	@Value("${upload.millAcceptDownolad}")
+	String millAcceptDownolad;
 	@RequestMapping("downloadSupportingDocumententMillAccept")
 
 	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 
-		String imageDirectory = "C:\\Users\\Mansi.Gupta\\Documents\\millAcceptFile"; // Replace with your image
-																						// directory path
+		//String imageDirectory = "C:\\Users\\Mansi.Gupta\\Documents\\millAcceptFile"; // Replace with your image
+		String imageDirectory =millAcceptDownolad;												// directory path
 
 		String imagePath = imageDirectory + File.separator + filename;
 
@@ -3641,7 +3645,12 @@ public class Controller_V {
 		return jsonResponse;
 
 	}
-
+	@Value("${upload.OMOofficialDocumentDownload}")
+	String OmoOfficialDocumentDownload;
+	@Value("${upload.FAofficialDocumentDownload}")
+	String FAofficialDocumentDownload;
+	@Value("${upload.MillDocumentDownload}")
+	String MillDocumentDownload;
 	@RequestMapping("savenominal")
 	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -3775,7 +3784,8 @@ public class Controller_V {
 
 		String body = "This is the Body of the Email for om official . ";
 
-		String filename = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+		//String filename = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+		String filename = OmoOfficialDocumentDownload;
 		String username1 = "";
 
 		String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
@@ -3784,7 +3794,7 @@ public class Controller_V {
 
 			// toAddresses = new InternetAddress[]{new InternetAddress(userEmailOmo) };
 
-			toAddresses = new InternetAddress[] { new InternetAddress("shristijb007@gmail.com")
+			toAddresses = new InternetAddress[] { new InternetAddress("mansigupta7867@gmail.com")
 
 			};
 
@@ -3803,8 +3813,9 @@ public class Controller_V {
 		String subjectfa = "This is the  EMail Subject of view!!";
 
 		String bodyfa = "This is the Body of the Email for fa official. ";
-
-		String filenamefa = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+		String filenamefa =FAofficialDocumentDownload;
+		//String filenamefa = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+				
 		String usernamefa = "";
 		String userEmailFA = nominalOfficialService.getEmailForFA(FAofficial);
 
@@ -3815,7 +3826,7 @@ public class Controller_V {
 
 			toAddresses = new InternetAddress[] {
 
-					new InternetAddress("mansigupta7867@gmail.com")
+					new InternetAddress("guptamansi7867@gmail.com")
 
 			};
 
@@ -3824,6 +3835,7 @@ public class Controller_V {
 			e.printStackTrace();
 		}
 
+//		email.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
 		email.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
 
 		// 3- These email is for MILL
@@ -3833,7 +3845,8 @@ public class Controller_V {
 
 		String bodyMill = "This is the Body of the Email for Mill . ";
 
-		String filenameMill = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+		//String filenameMill = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+		String filenameMill = MillDocumentDownload;
 		String usernameMill = "";
 
 		String userEmailMill = nominalOfficialService.getEmaiformills(Mill);
@@ -3843,7 +3856,7 @@ public class Controller_V {
 
 			// toAddresses = new InternetAddress[]{ new InternetAddress(userEmailMill)};
 
-			toAddresses = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
+			toAddresses = new InternetAddress[] { new InternetAddress("mansi1.gupta@cyfuture.com")
 //						   
 			};
 //			  
@@ -3909,6 +3922,9 @@ public ModelAndView EntryofTDSForm(HttpServletRequest request) {
 
 // Handling the Ajax Call URL For FEtching Financial Year Based On Mill Name
 // Saving the Entry of TDS Data
+@Value("${upload.EntryTdsSupportingDocument}")
+String EntryTdsSupportingDocument;
+
 
 @RequestMapping("saveentryoftds")
 
@@ -3925,10 +3941,11 @@ public ModelAndView saveEntryOfTds(HttpServletRequest request, RedirectAttribute
 	String DateofIntimation = request.getParameter("DateofIntimation");
 
 	String Financialyear = request.getParameter("Financialyear");
+	String fullPath = EntryTdsSupportingDocument;
 
-	// String SupportingDocument = request.getParameter("SupportingDocument");
+	final File theDir = new File(fullPath);
 
-	final File theDir = new File("C:\\Users\\Mansi.Gupta\\Downloads\\upload\\millAcceptence");
+//	final File theDir = new File("C:\\Users\\Mansi.Gupta\\Downloads\\upload\\millAcceptence");
 
 	if (!theDir.exists()) {
 
@@ -3978,12 +3995,13 @@ public String ViewEntryofTds(Model model) {
 }
 
 
-
+@Value("${upload.EntryOfTdsDownolad}")
+String EntryOfTdsDownload;
 @RequestMapping("downloadSupportingDocumententrytds")
 
 public void downloadDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
 
-	String imageDirectory = "C:\\Users\\Mansi.Gupta\\Downloads\\upload\\millAcceptence"; // Replace with your image
+	String imageDirectory = EntryOfTdsDownload; // Replace with your image
 																					// directory path
 
 	String imagePath = imageDirectory + File.separator + filename;

@@ -73,7 +73,7 @@
 
 										<div class="col-sm-4 form-group">
 											<label>Mill </label> <select name="Mill" id="Mill"
-												class="form-control taxtbox" required onchange="setFinancialYear()">
+												class="form-control taxtbox" required onchange="setFinancialYear()" onclick="DateFunction()">
 
 												<option value="">-Select-</option>
 
@@ -91,8 +91,13 @@
 
 											<label>Date of Intimation</label> <input
 												class="form-control textbox" name="DateofIntimation" placeholder="dd-mm-yyyy"
-												id="DateofIntimation" required readonly>
+												id="Task_Start_date" required readonly>
 										</div>
+										<!-- <label for="due_date">Task Start Date<span
+									class="text-danger">*</span></label> <input type="text"
+									class="form-control" id="Task_Start_date"
+									placeholder="dd-mm-yyyy" name="Task_Start_date" readonly> -->
+										
 
 
 									</div>
@@ -162,13 +167,39 @@
 </script> 
 <script>
 function f(){
-	 alert(document.getElementsByName("SupportingDocument"))
+	// alert(document.getElementsByName("SupportingDocument"))
 	 var fileInput = document.getElementByName("SupportingDocument");
-	 alert(fileInput);
+	// alert(fileInput);
 	   var file = fileInput.files[0];
-	   alert("file"+file)
+	 //  alert("file"+file)
 }
  </script>
+ 
+ <script>
+	function DateFunction() {
+		// Get current date
+		var currentDate = new Date();
+
+		// Format the date as dd-mm-yyyy
+		var day = currentDate.getDate();
+		var month = currentDate.getMonth() + 1; // Month is zero-based
+		var year = currentDate.getFullYear();
+
+		if (day < 10) {
+			day = '0' + day;
+		}
+
+		if (month < 10) {
+			month = '0' + month;
+		}
+
+		var formattedDate = day + '-' + month + '-' + year;
+
+		// Set the formatted date to the Task Start Date input field
+		document.getElementById('Task_Start_date').value = formattedDate;
+	}
+</script>
+ 
 
 	<!-- <script type="text/javascript">
 		// Wait for the document to be ready
