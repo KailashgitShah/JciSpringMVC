@@ -61,7 +61,7 @@
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Entry Generation of Bill of Supply</h1>
+				<h1 class="page-title">Generation of Bill of Supply</h1>
 			</div>
 
 			<%
@@ -126,7 +126,7 @@
 												</span>&nbsp; <span id="Shipment_Details" name=Shipment_Details
 													class="text-danger"> </span> <input class="form-control"
 													name="Shipment_Details" id="Shipment_Details1"
-													placeholder="Shipment Details" required>
+													placeholder="Shipment Details"  readonly="readonly"required>
 											</div>
 
 
@@ -144,20 +144,26 @@
 													class="text-danger"> </span> <input
 													class="form-control taxtbox" name="Shipment_Value1" min="0"
 													step="1" pattern="\d+" placeholder="Shipment_Value"
-													required oninput="calculateGST()">
+													required oninput="calculateGST()" readonly="readonly">
+											</div>
+											
+												<div class="col-sm-4 form-group">
+												<label>Contarct no</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Contarct_no" name="Contarct_no"
+													class="text-danger"> </span> <input class="form-control"
+													name="Contarct_no" id="Contarctno" value=""
+													readonly="readonly">
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Financial year</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
+													class="text-danger"> </span> <input class="form-control"
+													name="Financial_year2" id="Financial_year1" value=""
+													readonly="readonly">
 											</div>
 
 
-											<div class="col-sm-4 form-group">
-												<label>SGST Amt</label> <input class="form-control taxtbox"
-													name="SGST_Amt" id="SGST_Amt" min=0 step=0.01
-													placeholder="SGST_Amt" readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>CGST Amt</label> <input class="form-control taxtbox"
-													name="CGST_Amt" id="CGST_Amt" min=0 step=0.01
-													placeholder="CGST_Amt" readonly="readonly">
-											</div>
+										
 
 
 
@@ -170,20 +176,19 @@
 											<div class="col-sm-4 form-group">
 												<label>IGST Amt</label> <input class="form-control taxtbox"
 													name="IGST_Amt" min="0" step="0.01" pattern="[0-9]*"
-													id="IGST_Amt" placeholder="IGST_Amt">
+													id="IGST_Amt" placeholder="IGST_Amt" readonly ="readonly">
+											</div>
+											
+											<div class="col-sm-4 form-group">
+												<label>SGST Amt</label> <input class="form-control taxtbox"
+													name="SGST_Amt" id="SGST_Amt" min=0 step=0.01
+													placeholder="SGST_Amt" readonly="readonly">
 											</div>
 											<div class="col-sm-4 form-group">
-												<label>TCS Amt</label> <input class="form-control taxtbox"
-													name="TCS_Amt" min="0" step="0.01" pattern="[0-9]*"
-													id="TCS_Amt" placeholder="TCS_Amt">
+												<label>CGST Amt</label> <input class="form-control taxtbox"
+													name="CGST_Amt" id="CGST_Amt" min=0 step=0.01
+													placeholder="CGST_Amt" readonly="readonly">
 											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>TDS Amt</label> <input class="form-control taxtbox"
-													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*"
-													id="TDS_Amt" placeholder="TDS_Amt">
-											</div>
-
 
 
 
@@ -222,7 +227,58 @@
 
 										</div>
 
+									
+
 										<div class="row">
+
+											<div class="col-sm-4 form-group">
+												<label>Recipient Name</label> <input
+													class="form-control taxtbox" name="Recipient_Name"
+													id="Recipient_Name" placeholder="Recipient_Name" readonly="readonly">
+											</div>
+
+											<div class="col-sm-4 form-group">
+												<label>Recipient GSTN </label> <input
+													class="form-control taxtbox" name="Recipient_GSTN"
+													id="Recipient_GSTN" placeholder="Recipient_GSTN" readonly="readonly">
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Recipient Address</label> <input
+													class="form-control taxtbox" name="Recipient_Address"
+													id="Recipient_Address" placeholder="Recipient_Address" readonly="readonly">
+
+											</div>
+
+
+
+
+
+										</div>
+
+										<div class="row">
+
+											<div class="col-sm-4 form-group">
+												<label>Consignee Name</label> <input
+													class="form-control taxtbox" name="Consignee_Name"
+													id="Consignee_Name" placeholder="Consignee_Name" readonly="readonly">
+											</div>
+
+											<div class="col-sm-4 form-group">
+												<label>Consignee GSTN </label> <input
+													class="form-control taxtbox" name="Consignee_GSTN"
+													id="Consignee_GSTN" placeholder="Consignee_GSTN" readonly="readonly">
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Consignee Address</label> <input
+													class="form-control taxtbox" name="Consignee_Address"
+													id="Consignee_Address" placeholder="Consignee_Address" readonly="readonly">
+											</div>
+
+
+
+
+										</div>
+											<div class="row">
 											<div class="col-sm-4 form-group">
 												<label>Supplier Name</label> <input
 													class="form-control taxtbox" name="Supplier_Name"
@@ -245,63 +301,19 @@
 
 
 										</div>
-
 										<div class="row">
-
+										
+											
 											<div class="col-sm-4 form-group">
-												<label>Recipient Name</label> <input
-													class="form-control taxtbox" name="Recipient_Name"
-													id="Recipient_Name" placeholder="Recipient_Name">
+												<label>TCS Amt</label> <input class="form-control taxtbox"
+													name="TCS_Amt" min="0" step="0.01" pattern="[0-9]*"
+													id="TCS_Amt" placeholder="TCS_Amt">
 											</div>
 
 											<div class="col-sm-4 form-group">
-												<label>Recipient GSTN </label> <input
-													class="form-control taxtbox" name="Recipient_GSTN"
-													id="Recipient_GSTN" placeholder="Recipient_GSTN">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Recipient Address</label> <input
-													class="form-control taxtbox" name="Recipient_Address"
-													id="Recipient_Address" placeholder="Recipient_Address">
-
-											</div>
-
-
-
-
-
-										</div>
-
-										<div class="row">
-
-											<div class="col-sm-4 form-group">
-												<label>Consignee Name</label> <input
-													class="form-control taxtbox" name="Consignee_Name"
-													id="Consignee_Name" placeholder="Consignee_Name">
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>Consignee GSTN </label> <input
-													class="form-control taxtbox" name="Consignee_GSTN"
-													id="Consignee_GSTN" placeholder="Consignee_GSTN">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Consignee Address</label> <input
-													class="form-control taxtbox" name="Consignee_Address"
-													id="Consignee_Address" placeholder="Consignee_Address">
-											</div>
-
-
-
-
-										</div>
-										<div class="row">
-											<div class="col-sm-4 form-group">
-												<label>Contarct no</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Contarct_no" name="Contarct_no"
-													class="text-danger"> </span> <input class="form-control"
-													name="Contarct_no" id="Contarctno" value=""
-													readonly="readonly">
+												<label>TDS Amt</label> <input class="form-control taxtbox"
+													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*"
+													id="TDS_Amt" placeholder="TDS_Amt">
 											</div>
 											<div class="col-sm-2 form-group" style="display: none;">
 												<label "display:none;">Clientstate </label> <span

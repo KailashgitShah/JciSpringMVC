@@ -46,6 +46,13 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 and Fc_status = 1 ";
 	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0,1)";
+//	    String sql = " SELECT *,\r\n"
+//	    		+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
+//	    		+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
+//	    		+ "       CONVERT(varchar(10), Last_shipment_date, 105) AS formatted_last_shipment_date\r\n"
+//	    		+ "FROM jcipayment_arrangement\r\n"
+//	    		+ "WHERE Fc_status IN (0, 1)";
+	    		
 	    List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession()
 	            .createSQLQuery(sql)
 	            .addEntity(EntryPaymentDetailsModel.class)
@@ -57,6 +64,11 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		
 		
 	    String sql = "SELECT * FROM jcipayment_arrangement";
+//				     String sql = " SELECT *,\r\n"
+//			+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
+//			+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
+//			+ "       CONVERT(varchar(10), Last_shipment_date, 105) AS formatted_last_shipment_date\r\n"
+//			+ "FROM jcipayment_arrangement\r\n";
 	    List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession()
 	            .createSQLQuery(sql)
 	            .addEntity(EntryPaymentDetailsModel.class)
@@ -111,13 +123,6 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	    this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
         this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	}
-	
-
-	
-	
-	
-	
-
 	
 
 	 @Override
@@ -221,7 +226,20 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 
 	@Override
 	public List<Object[]> millnamecontractvise(String st) {
-		String sql="SELECT  Contract_no from jcicontract where Mill_name='" + st + "'";
+		
+		
+		//String sql="SELECT  Contract_no from jcicontract where Mill_name='" + st + "'";
+		String sql="SELECT c.Contract_no  FROM (SELECT  a.Contract_no, a.Contract_value, \r\n"
+				+ "        COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,\r\n"
+				+ "        (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference\r\n"
+				+ "    FROM jcicontract AS a  \r\n"
+				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No\r\n"
+				+ "    WHERE a.Mill_name = '" + st + "' \r\n"
+				+ "    GROUP BY a.Contract_no, a.Contract_value\r\n"
+				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL\r\n"
+				+ ") AS d \r\n"
+				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no \r\n"
+				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;";
 		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millnamelist;
 		
@@ -233,6 +251,8 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millnamelist;
 	}
+
+
 
 	
 	

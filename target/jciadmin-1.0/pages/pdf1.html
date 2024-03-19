@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>IGL PDF</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    table {
+      font-family: arial;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table cellpadding="0" cellspacing="0" width="100%">
+    {% if data %}
+    <tr>
+      <td align="center" style="padding:0px">
+
+        <!--inner table1 start-->
+        <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;" border="1">
+          <tr>
+            <!-- top td start-->
+            <td>
+              <!-- top table start-->
+              <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                <tr>
+                  {% load static %}
+                  <td width="33%" style="background-color:#e0e0e0;border-right:1px solid #000;"><img
+                      src="C:/igl-python/portal/static/portal/images/logo1.png" alt="logo" width="100%" /></td>
+                  <td width="33%" style="border-right:1px solid #000;padding:10px;" valign="top"><strong>PNG
+                      INSTALLATION COMPLETION REPORT</strong></td>
+                  <td style="padding:10px;" valign="top" align="center"><strong>F04 (PNG-P-01)</strong></td>
+                </tr>
+
+              </table>
+              <!-- top table over-->
+            </td>
+            <!-- top td over-->
+          </tr>
+          <tr>
+            <td align="right" style="padding:5px 10px;"><strong> REVISION N0. 01</strong></td>
+          </tr>
+          <tr>
+            <td align="center" style="font-size: 20px;padding:5px 10px;"><strong>{{data.1}} Copy</strong></td>
+          </tr>
+          <tr>
+            <td>
+              <table cellpadding="5" cellspacing="0" width="100%"
+                style="border-left: none;border-right: none;border-top:none;border-bottom: none;" border="1">
+                <tr>
+                  <td width="25%">JMR No.</td>
+                  <td width="25%">{{data.0.jmr_no}}</td>
+                  <td width="25%">CA No.</td>
+                  <td>{{data.0.ca_no}}</td>
+                </tr>
+                <tr>
+                  <td>BP No.</td>
+                  <td>{{data.0.bp_no}}</td>
+                  <td>Meter Type</td>
+                  <td>{{data.2}}</td>
+                </tr>
+                <tr>
+                  <td>Meter No.</td>
+                  <td>{{data.0.meter_no}}</td>
+                  <td>Meter Make</td>
+                  <td>{{data.0.meter_make}}</td>
+                </tr>
+                <tr>
+                  <td>Customer Name</td>
+                  <td>{{data.0.customer_name}}</td>
+                  <td>Initial Reading</td>
+                  <td>{{data.0.initial_reading|floatformat:2}}</td>
+                </tr>
+                <tr>
+                  <td>Burner Details</td>
+                  <td>{{data.0.burner_details}}</td>
+                  <td>Mobile No.</td>
+                  <td>{{data.0.mobile_no}}</td>
+                </tr>
+                <tr>
+                  <td>Print Date</td>
+                  <td>{{data.0.print_date}}</td>
+                  <td>RFC Date</td>
+                  <td>{{data.0.rfc_date}}</td>
+                </tr>
+                <tr>
+                  <td>Conversion Date</td>
+                  <td>{{data.0.conversion_date}}</td>
+                  <td>Amount to be charged</td>
+                  <td>Rs. {{data.0.amount_charged|floatformat:2}}</td>
+                </tr>
+                <tr>
+                  <td style="height: 100px;" colspan="4">EXTRA AMOUNT (PER BURNER COST OF RS.81/- FOR DELHI, UP AND
+                    GURUGRAM & PER BURNER COST OF <br> RS. 82/- FOR REWARI & KARNAL)</td>
+                </tr>
+                <tr>
+                  <td valign="top">Customer Address</td>
+                  <td colspan="3" align="left"><b>House No.: </b>{{data.0.house_no}}, <b>Floor: , Block/Qtr:
+                    </b>{{data.0.block_qtr}},<br> <b>Street/Gali/Road: </b>{{data.0.street}}, <b>Society:
+                    </b>{{data.0.society}}, <b>Landmark: </b>{{data.0.landmark}},
+                    <br><b>Area: </b>{{data.0.area}},<b> City: </b>{{data.0.city}}, <b>Pin Code:<br> </b>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Remarks </td>
+                  <td colspan="3"></td>
+                </tr>
+                <tr>
+                  {% if data.0.customer_sign %}
+                  <td colspan="2" align="center" valign="bottom" height="80">
+                    <img src="{{ data.0.customer_sign.url }}" height="80px" width="auto">
+                    <br>
+                    <b>Customer Signature</b>
+                  </td>
+                  {% endif %}
+                  {% if data.0.executive_sign %}
+                  <td colspan="2" align="center" valign="bottom">
+                    <img src="{{ data.0.executive_sign.url }}" height="80px" width="auto">
+                    <br>
+                    <b>Executive Signature</b>
+                  </td>
+                  {% endif %}
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <!-- inner table1 over-->
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table cellpadding="10" cellspacing="0" width="100%" style="font-family:monospace;">
+          <tr>
+            {% if data.0.home_address %}
+            <td colspan="1" align="center" valign="bottom">
+              <img src="{{ data.0.home_address.url }}" height="200px" width="450px">
+            </td>
+            {% endif %}
+            {% if data.0.meter_photo %}
+            <td colspan="1" align="center" valign="bottom">
+              <img src="{{ data.0.meter_photo.url }}" height="200px" width="450px">
+            </td>
+            {% endif %}
+          </tr>
+          <tr>
+            {% if data.0.service_photo %}
+            <td colspan="1" align="center" valign="bottom">
+              <img src="{{ data.0.service_photo.url }}" height="200px" width="450px">
+            </td>
+            {% endif %}
+            {% if data.0.installation_photo %}
+            <td colspan="1" align="center" valign="bottom">
+              <img src="{{ data.0.installation_photo.url }}" height="200px" width="450px">
+            </td>
+            {% endif %}
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <!-- bottom td start-->
+      <td>
+        <table cellpadding="0" cellspacing="0" width="100%" style="font-family:monospace;">
+          <tr>
+            <td align="center" style="font-family:ui-sans-serif;font-size:15px;"><b>PNG SAFETY TIPS & CONDITIONS FOR
+                CUSTOMER</b></td>
+          </tr>
+        </table>
+        <!-- bottom table start-->
+        <table cellpadding="0" cellspacing="0" width="100%" style="font-family:monospace;">
+          <tr>
+            <td height="10"></td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">1.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Don't cover/conceal any part
+              (Meter/Regulator/Pipe/Fitting) of Installation
+              either in balcony or inside the house.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">2.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">PNG should always be used in proper ventilated area,
+              so that PNG can be
+              dispersed in atmosphere. So, please do not cover the ventilation in future.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">3.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Avoid storing combustible articles/ heating emitting
+              devices close to PNG
+              installation which includes Appliance/ stove, regulator, meter, GI Pipe etc.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">4.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Do not light any fire or burn garbage, dry vegetation
+              near gas pipeline,
+              meter, riser or regulator.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">5.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Ensure that Rubber Tube must be of approved quality
+              (Wire braided SURAKSHA
+              Hose) and maximum length should be about 1.5 meters.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">6.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Keep rubber tube away from heat, water & electrical
+              wire and make sure it does
+              not get heated by the burner, or is looped/ twisted.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">7.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">If you smell gas/ leakage- (a) Do not operate
+              electricalswitches. (b) Ensure
+              that stove knobs are in OFF position. (c) Do not light a matchstick even to detect the leakage of PNG and
+              (d) Open all doors and windows.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">8.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">If the smell persists, immediately close appliance
+              valve & isolation valve
+              installed before meter and call Emergency No-155216 or 1800-111-817 and your area PNG control room as :-
+              (Central Delhi -8130995001, South Delhi-8130995002, West Delhi-8130995003, North Delhi-8130995004, East
+              Delhi- 8130995005, Greater Noida -8130995006, Ghaziabad -8130995007 and Noida-8130995008).</td>
+          </tr>
+
+          <tr>
+            <td colspan="1" valign="top">9.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Never try to Repair, modify, Adjust or inspect any
+              part of the IGL
+              Installation or allow unauthorized mechanics to do so. Allow authorized IGL technician to inspect the
+              installation by calling our 24X7 customer care number-1800-1025-109.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">10.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Always keep the appliance valve (connecting gas supply
+              through rubber tube)
+              closed after use or Never leave the appliance value in ON position after cooking is over or during Night.
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">11.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Never leave the cooking appliance (stove) unattended
+              when in use and if the
+              gas supply shut-offsuddenly then close the appliance value, call customer care/Emergency Contact No. of
+              your area.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">12.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">Take permission from IGL before doing any excavation
+              or digging work near IGL
+              Gas Pipeline. Please call 155216 or 1800-111-817 incase of Emergency (For information related to digging
+              activity in the periphery of IGL Pipeline Network or
+              information of gas leakage inside etc.</td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">13.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">The request for disconnection of gas connection shall
+              be entertained on
+              working days between 10:00 am and 5:00 pm only. The consumer shall inform the date and time of
+              disconnection 48 hours in advance to IGL's Customer Care Centre. The NOC will be issued on working days
+              between 10:00 am and 5:00 pm only and the issue of NOC for CPWD Flats willrequire at least 04 days
+              notice.
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" valign="top">14.</td>
+            <td colspan="20" valign="top" style="font-size:12px;">I {{data.0.customer_name}} have read and
+              understood the above
+              mentioned PNG SAFETY TIPS & CONDITIONS and PNG Operating procedures are explained to me and hereby agree
+              to abide by the same.</td>
+          </tr>
+          {% if data.0.customer_sign %}
+          <tr>
+            <td colspan="2" align="center" valign="bottom" height="80">
+              <br>
+              <img src="{{ data.0.customer_sign.url }}" height="80px" width="auto">
+              <br>
+              <b>Customer Signature</b>
+            </td>
+          </tr>
+          {% endif %}
+        </table>
+        <!-- bottom table over-->
+      </td>
+      <!-- bottom td over-->
+    </tr>
+    {% endif %}
+  </table>
+</body>
+
+</html>

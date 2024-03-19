@@ -1769,7 +1769,25 @@ public class Controller_V {
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
 			String[] selectedContracts = request.getParameterValues("contract");
-		    for(String st: selectedContracts) {
+			String[] contractValue2 = request.getParameterValues("contractValue[]");
+			String[] paymentDueDate2 = request.getParameterValues("paymentDueDate[]");
+			
+			String ratiosJson = request.getParameter("ratios");
+			double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
+			for (int i = 0; i < selectedContracts.length; i++) {
+		        String st = selectedContracts[i];
+		        double ratio = ratios[i];
+		        String contractvalueajax= contractValue2[i];
+		        String paymentDueDateajax= paymentDueDate2[i];
+		        System.out.println(ratio);
+		
+		        String InstrumentValue = request.getParameter("InstrumentValue");
+		        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
+		        double instvalue=ratio*InstrumentValue1;
+		        String instvalue1 = String.valueOf(instvalue);
+		        
+		        //List<Object[]>paymentandContvalue =paymentDetailService.contvalue(st);
+		        
 			String millname65 = request.getParameter("millname65");
 			String Instrument = request.getParameter("Instrument");
 			String instdate = request.getParameter("instdate");
@@ -1777,7 +1795,8 @@ public class Controller_V {
 			String Branch = request.getParameter("Branch");
 			String BankName = request.getParameter("BankName");
 			String payment = request.getParameter("paymenttype");
-			String InstrumentValue = request.getParameter("InstrumentValue");
+			
+			
 			String dateofexpiry = request.getParameter("dateofexpiry");
 			String dateofship = request.getParameter("dateofship");
 			String Pyamentduedate = request.getParameter("payment_dueDate12");
@@ -1805,8 +1824,8 @@ public class Controller_V {
 			entryPaymentDetailsModel.setMillname(millname65);
 			entryPaymentDetailsModel.setContractno(st);
 			
-			entryPaymentDetailsModel.setPaymentDue_date(Pyamentduedate);
-			entryPaymentDetailsModel.setContract_value(contrcat_value23);
+			entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
+			entryPaymentDetailsModel.setContract_value(contractvalueajax);
 //			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 //			Date instdate1 = formatter1.parse(instdate);
 //			entryPaymentDetailsModel.setInstdate(instdate1);
@@ -1833,7 +1852,7 @@ public class Controller_V {
 			entryPaymentDetailsModel.setInstdate(instdate1);
 			entryPaymentDetailsModel.setPayment(payment);
 			//int  instruValue= Integer.parseInt(InstrumentValue);
-			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
+			entryPaymentDetailsModel.setInstrumentValue(instvalue1);
 			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
 			entryPaymentDetailsModel.setSupportingDocument(originalFilename);
 			entryPaymentDetailsModel.setFc_status(0);
@@ -1893,7 +1912,8 @@ public class Controller_V {
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
-		} 
+		     }
+		    
 		}catch (Exception e) {
 
 			e.printStackTrace();
@@ -2957,6 +2977,11 @@ public class Controller_V {
 			            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			        }
 			    }
+    
+    
+    
+    
+    
 			 private String determineContentType1(String filePath) {
 			        if (filePath.endsWith(".pdf")) {
 			            return "application/pdf";

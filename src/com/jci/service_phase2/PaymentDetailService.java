@@ -28,6 +28,7 @@ public interface PaymentDetailService {
 		  public  List<Object[]>paymentdetails(String  st);
 		  public  List<Object[]>gradewiseqty(String  st,String contractqty);
 		  public  List<Object[]>PreviousNo(String  st);
+		
 		  public  List<Object[]>contractlistfetchdata(String  st);
 		  public  List<Object[]>millnamecontractvise(String  st);
 		  public  List<Object>PreviousInstruValue(String  st);

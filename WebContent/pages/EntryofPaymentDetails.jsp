@@ -277,6 +277,14 @@ letest code of entry payment
 													type="hidden" class="form-control" name="Contarctqty"
 													id="Contarctqty2" value="" readonly="readonly">
 											</div>
+												<div class="col-sm-2 form-group" style="display: none;">
+												    <label>Ratio</label>
+												    <span class="text-danger">*</span>
+												    &nbsp;
+												    <span id="Ratio" name="Ratio" class="text-danger"></span>
+												    <input type="hidden" id="ratiosInput" name="ratios" value="">
+												</div>
+
 
 
 
@@ -413,8 +421,9 @@ letest code of entry payment
 											        <!-- Rows will be dynamically added here -->
 											    </tbody>
 											</table>
-
-										  
+											<input type="hidden" id="contractValueInput" name="contractValue">
+                                            <input type="hidden" id="paymentDueDateInput" name="paymentDueDate">
+    
                                 
 
 
@@ -495,6 +504,15 @@ letest code of entry payment
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$('#contractTable').hide();
+    // Define total contract value and ratios globally
+    var totalContractValue = 0;
+    var ratios = [];
+    var contractValues = [];
+    var paymentDueDates = [];
+  
+
+
     $('#millname12').on('change', function() {
         $('#contractTable tbody').empty();
         var field2Value = $(this).val();
@@ -550,11 +568,15 @@ $(document).ready(function() {
             }
         });
     }
-    var totalContractValue = 0;
-    
+    var contractValuesMap = {};
     function updateTableWithData(data) {
         var rowData = JSON.parse(data);
         if (Array.isArray(rowData) && rowData.length > 0) {
+        	$('#contractTable').show();
+            // Clear existing table rows
+          
+
+            // Calculate total contract value and update table rows
             rowData.forEach(function(row) {
                 var newRow = $('<tr>');
                 newRow.append('<td>' + row[0] + '</td>');
@@ -563,30 +585,71 @@ $(document).ready(function() {
                 newRow.append('<td>' + row[3] + '</td>');
                 newRow.append('<td>' + row[4] + '</td>');
                 $('#contractTable tbody').append(newRow);
-                totalContractValue += parseFloat(row[2]);
-                $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
                 
+                $('#contractValueInput').append('<input type="hidden" name="contractValue[]" value="' + row[2] + '">');
+                $('#paymentDueDateInput').append('<input type="hidden" name="paymentDueDate[]" value="' + row[4] + '">');
+                contractValuesMap[row[0]] = parseFloat(row[2]);
+                totalContractValue += parseFloat(row[2]);
+                
+              
             });
+           
+            // Update the total contract value label
+            $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
+           
+            // Recalculate ratios
+            recalculateRatios();
         } else {
-            $('#contractTable tbody').append('<tr><td colspan="4">No data available</td></tr>');
+            // If no data is available, display a message
+            $('#contractTable').hide();
+            $('#contractTable tbody').append('<tr><td colspan="5">No data available</td></tr>');
+            $('#differenceLabel').text('Instrument Value max = 0');
+           
         }
     }
 
     // Function to remove table entry
     function removeTableEntry(contractNo) {
+    	
         $('#contractTable tbody tr').each(function() {
             var rowContractNo = $(this).find('td:first').text();
             if (rowContractNo === contractNo) {
-                var contractValue = parseFloat($(this).find('td:eq(2)').text()); // Get the contract value from the row
-                totalContractValue -= contractValue; // Subtract contract value from totalContractValue
+                var contractValue = parseFloat($(this).find('td:eq(2)').text()); 
+                totalContractValue -= contractValue; 
+                if (totalContractValue < 0) {
+                    totalContractValue = 0; // Set it to zero
+                }
                 $(this).remove();
-                $('#differenceLabel').text('Instrument Value max = ' + totalContractValue); // Update the displayed totalContractValue
-                return false; // Stop the loop once the entry is removed
+                $('#differenceLabel').text('Instrument Value max = ' + totalContractValue); //
+             
+                recalculateRatios();
+                return false; 
             }
         });
+        if ($('#contractTable tbody tr').length === 0) {
+            $('#contractTable').hide(); 
+        }
+    }
+
+    // Function to recalculate ratios
+    function recalculateRatios() {
+        ratios = []; // Clear existing ratios
+        $('#contractTable tbody tr').each(function() {
+            var contractValue = parseFloat($(this).find('td:eq(2)').text());
+            var ratio = contractValue / totalContractValue;
+            ratios.push(ratio); // Store ratio for later use if needed
+            console.log("Ratio for row " + ": " + ratio);
+        });
+        var ratiosJson = JSON.stringify(ratios);
+
+        // Set the JSON string as the value of the hidden input field
+        $('#ratiosInput').val(ratiosJson);
+        $('#Ratio').text(ratiosJson);
+       /*  $('#Ratio').closest('.form-group').show(); // Show the parent div
+        $('#Ratio').closest('.form-group').fadeOut(2000); // Hide the parent div after 2000 milliseconds
+     */
     }
 });
-
 
 </script>
 

@@ -5709,6 +5709,9 @@ public class InsertDataController
 
 			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
 					.getAllPaymentInstrumentsentry();
+			System.out.println(allUserRegistration);
+			System.err.println(allUserRegistration);
+			
 			mv.addObject("entryPaymentDetailsModel", allUserRegistration);
 			
 

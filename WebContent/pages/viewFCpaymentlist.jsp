@@ -101,6 +101,7 @@
                            <tbody>
 									<%
 									int i = 1;
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (EntryPaymentDetailsModel  entryPaymentDetailsModel : allUserRegistration) {
 
 										if (i <= 200) {
@@ -110,14 +111,14 @@
 										<td><%=i%></td>
 										<td><%= entryPaymentDetailsModel.getContractno() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
-										<td><%= entryPaymentDetailsModel.getInstdate() %></td>
+										 <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
 										<td><%= entryPaymentDetailsModel.getIFSC() %></td>
 										<td><%= entryPaymentDetailsModel.getBankName() %></td>
 										<td><%= entryPaymentDetailsModel.getBranch() %></td>
 										<td><%= entryPaymentDetailsModel.getPayment() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
-										<td><%= entryPaymentDetailsModel.getDateofexpiry() %></td>
-										<td><%= entryPaymentDetailsModel.getDateofship() %></td>
+											 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
+										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
 										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
 									 	
                                         <td>

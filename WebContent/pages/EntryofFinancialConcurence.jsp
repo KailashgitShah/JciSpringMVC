@@ -84,7 +84,7 @@
            
 		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
 		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
-		    out.println(Payment_id);
+		    
 		    
 		
 		    
@@ -255,14 +255,7 @@
 			    <div class="sidenav-backdrop backdrop"></div>
 			    
 			    
-			    <!-- <script type="text/javascript">
-			    function calculate(refid)
-			    {
-			    	alert(refid);
-			    	
-			    }
-			    
-			    </script> -->
+			  
 			     <script type="text/javascript">
 					$(document).ready(function(){
 					    function validateForm() {
@@ -339,6 +332,10 @@
 				
 				
 			}
+			else {
+		        
+		        document.getElementById("SGST_Amt").value = 0;
+		    }
 			return true; 
 		}
 	</script>
@@ -389,27 +386,27 @@
 		
 			
 			
-			<!-- 	<script>
+				<script>
 				
 				$(document).ready(function() {
-				    // Get references to the checkbox and form group elements
+					
 				    const checkbox = $('#inlineFormCheck');
 				    const carryingCostFormGroup = $('#carryingCostFormGroup');
-
-				    // Add an event listener to the checkbox
+				    
+				    carryingCostFormGroup.hide();
 				    checkbox.change(function() {
-				        // Assuming DaysDiffrencetotal is defined somewhere else
-				        if (checkbox.is(':checked')) {
+				       if (checkbox.is(':checked')) {
 				            carryingCostFormGroup.show();
 				        } else {
 				            carryingCostFormGroup.hide();
+				            document.getElementById("SGST_Amt").value = 0;
 				        }
 				    });
 				});
 
-				</script>  -->
+				</script>  
 				
-				<script>
+				<!-- <script>
 				
 				$(document).ready(function() {
 				   
@@ -420,9 +417,7 @@
 				    checkbox.change(function() {
 				        if (checkbox.is(':checked')) {
 				            
-				            let calculatedValue = calculateValue(); 
-				            
-				            carryingCostInput.val(calculatedValue);
+				         
 				            carryingCostFormGroup.show();
 				        } else {
 				         
@@ -431,13 +426,9 @@
 				    });
 
 				  
-				    function calculateValue() {
-				      
-				        return 10; 
-				    }
 				});
 
-				</script>
+				</script> -->
 				
 				
 				

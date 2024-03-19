@@ -60,6 +60,7 @@ com\jci\service_phase2\FactorssInvolvedCommercialService.class
 com\jci\service\MSPPriceCalculationService.class
 com\jci\common\Encry.class
 com\jci\dao\StateDao.class
+com\jci\service\Impl_phase2\GenrationCashDocumentServiceImpl.class
 com\jci\service\Impl\EntryofsaleServiceImpl.class
 com\jci\service\Impl_phase2\PcsoentryServiceImpl.class
 com\jci\service\PoliceStationService.class
@@ -229,6 +230,7 @@ com\jci\dao\impl\ContractgenerationcommercialDaoImpl.class
 com\jci\model\MillreceiptDto.class
 com\jci\securityfilters\OptionsFilter.class
 com\jci\dao_phase2\ConfirmationClaimSettlementDao.class
+com\jci\dao_phase2\GenrationCashDocumentDao.class
 com\jci\model\PCSORequestLetter.class
 com\jci\dao\impl_phase2\ConfirmationClaimSettlementDaoImpl.class
 com\jci\service\Impl\RoleMasterServiceImpl.class
@@ -243,6 +245,7 @@ com\jci\service\ZoneService.class
 com\jci\service\BatchIdentificationService.class
 com\jci\service\Impl_phase2\CreditNoteGenerationServiceImpl.class
 com\jci\model\UpdatedContractQtyDTO.class
+com\jci\dao\impl_phase2\GenrationCashDocumentDaoImpl.class
 com\jci\dao\BatchDao.class
 com\jci\service\Impl\PaymentInstrumentServiceImpl.class
 com\jci\dao\impl\RulingMarketDaoImpl.class
@@ -345,6 +348,8 @@ com\jci\service\RulingMarketService.class
 com\jci\securityfilters\XFrameOptionsFilter.class
 com\jci\service\Impl\UserPriviligeServiceImpl.class
 com\jci\dao\impl\UserPriviligeDaoImpl.class
+com\jci\model\PaymentModelDTO.class
 com\jci\service\Impl\CommercialJuteVarietyGradesPriceServiceImpl.class
+com\jci\service_phase2\GenrationCashDocumentService.class
 com\jci\controller\InsertDataController.class
 com\jci\dao_phase2\PCSOReqLetterDao.class
