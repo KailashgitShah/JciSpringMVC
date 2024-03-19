@@ -4998,9 +4998,9 @@ public class InsertDataController
 	    	String tallyno = "";
 	    try {
 	    	String username =(String)request.getSession().getAttribute("usrname");
-	    	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
+	    //	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
 	    //	String path1 ="/Users/apple/Documents/Bob/";
-	    //	String path1 ="C:\\Users\\vishal.vishwakarma\\Downloads\\";
+	    	String path1 ="C:\\Users\\vishal.vishwakarma\\Downloads\\";
 	    	//generating crop year
 	    	String cropyear = "";
 			Calendar cal = new GregorianCalendar();
