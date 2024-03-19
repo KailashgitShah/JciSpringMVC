@@ -1,3 +1,4 @@
+\
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
@@ -94,7 +95,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
-							    <span>${msg}</span>
+							    <span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveuploadPaymentRealizationDisDetails.obj" method="POST" enctype="multipart/form-data">
 									<div class="row">
@@ -138,15 +139,20 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	    	return false;	
 	    }
 	    	else {
-	    	alert("Please select excel file only..")
+	    	alert("Please select excel file only..");
 	        inputFile.value = '';
 	        return false;
 	    }
 	})
 	
 	</script>
-
-
+	
+	    <script>
+	    //for hide the displayed message
+            setTimeout(function() {
+                document.getElementById('flashMessage').style.display = 'none';
+            }, 1500);
+        </script>
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->

@@ -256,9 +256,15 @@ body {
 					<li data-pre="" id=""><a href="entryderivativepricelist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Derivative
 								Price List</b></a></li>
+<<<<<<< HEAD
 					<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Grade Composition</b></a></li>
+=======
+					<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								Grade Composition</b></a></li> -->
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 					<li data-pre="" id=""><a href="entrygradecompositionlist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>List of Grade
 								Composition</b></a></li>
@@ -274,7 +280,11 @@ body {
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation List</b></a></li>
+<<<<<<< HEAD
 <!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
+=======
+					<!-- 					<li data-pre="56" id="o56"><a href="MSPgradesCombination.obj"><i
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 							class="sidebar-item-icon fa fa-th-large"></i><b>MSP Grades
 								Combination</b></a></li> -->
 
@@ -312,6 +322,7 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								Payment Realization / Disbursal Details</b></a></li>
 
+<<<<<<< HEAD
 					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment instrument</b></a></li> -->
@@ -329,11 +340,38 @@ body {
 				</ul></li>
 				
 				<li><a href="javascript:void(0);"><i
+=======
+					<li data-pre="" id=""><a href="HOdispatchInst.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>HO Dispatch
+								Instruction</b></a></li>
+
+					<li data-pre="" id=""><a href="jcilist.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View HO Dispatch
+								</b></a></li>
+
+					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								payment instrument</b></a></li>
+					<li data-pre="42" id="o42"><a href="HOdispatch.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>HO Dispatch
+								Instruction</b></a></li>
+					<li data-pre="43" id="o43"><a href="entryofsale.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Sale</b></a></li>
+					<li data-pre="44" id="o44"><a href="uploadingreceipt.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
+								receipt</b></a></li>
+								 -->
+
+				</ul></li>
+
+			<!-- 	<li><a href="javascript:void(0);"><i
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 				
+<<<<<<< HEAD
 				<li  data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of payment Details</b></a></li>
  				<li  data-pre="" id=""><a href="viewPaymentEntryDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Payment list</b></a></li>
 				<li  data-pre="" id=""><a href="viewPaymentForFC.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View FC  Payment list</b></a></li>
@@ -347,6 +385,30 @@ body {
 				 <li  data-pre="" id=""><a href="entryofConfirationSettelment.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Confirmation of Claim Settlement Report </b></a></li>
                  <li  data-pre="" id=""><a href="ViewConfirmationsettelment.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Confirmation of Claim Settlement Report </b></a></li>
                  </ul></li>
+=======
+				<li  data-pre="41" id="o41"><a href="EntryofPaymentDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of payment Details</b></a></li>
+ 								<li  data-pre="44" id="o44"><a href="viewPaymentEntryDetails.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Payment of  Detail list</b></a></li>
+				
+				    <li  data-pre="44" id="o44"><a href="viewPaymentForFC.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Payment   Detail list</b></a></li>
+                    <li  data-pre="44" id="o44"><a href="EntryofFinancialConcurence.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Financial Concurence</b></a></li>
+				    <li  data-pre="44" id="o44"><a href="viewFinancialConcurence.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Financial Concuerence list</b></a></li>
+					
+					
+					<li  data-pre="44" id="o44"><a href="EntryofMillreceipt.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill Receipt</b></a></li>
+                    <li  data-pre="44" id="o44"><a href="viewMillReciept.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Mill Receipt</b></a></li>
+                   
+                   
+                      <li  data-pre="" id=""><a href="EntryofGenrationDeamandNote.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Generation demand Note</b></a></li>
+				   <li  data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Generation demand Note list</b></a></li>
+				  <li  data-pre="" id=""><a href="EntryofGenerationBillsupply.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Generation Bill of supply</b></a></li>
+				<li  data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View of Generation Bill of supply</b></a></li>
+				
+				
+				<li  data-pre="44" id="o44"><a href="entryofConfirationSettelment.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Confirmation of Claim Settlement Report </b></a></li>
+                  
+
+				</ul></li>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
  	
 				
 				
@@ -354,7 +416,11 @@ body {
 				
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
+<<<<<<< HEAD
 					class="nav-label">9.&nbsp;Commercial / Daily Sales / Free
+=======
+					class="nav-label">8.&nbsp;Commercial / Daily Sales / Free
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 						Sale</span> <i class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level">
 
@@ -389,7 +455,11 @@ body {
 				<li>
 				    <a href="javascript:void(0);"><i
 						class="sidebar-item-icon fa fa-th-large"></i> <span
+<<<<<<< HEAD
 						class="nav-label">10.&nbsp;Commercial Sales</span> <i class="fa fa-angle-left arrow"></i>
+=======
+						class="nav-label">9.&nbsp;Commercial Sales</span> <i class="fa fa-angle-left arrow"></i>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 				   </a>
 				   <ul class="nav-2-level">
 					<li  data-pre="" id=""><a href="entry_of_transportation_and_operation_cost.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Transportation & Operation Cost</b></a></li>					
@@ -398,7 +468,11 @@ body {
 					<li  data-pre="" id=""><a href="listofFactorsinvolvedinCommercialPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Factors involved commercial</b></a></li>					
 					<li  data-pre="" id=""><a href="Creation_of_Bid_Offering.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Creation of Bid Offering</b></a></li>					
 				  </ul>
+<<<<<<< HEAD
 				</li>
+=======
+				</li> -->
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	</div>
 
 
@@ -406,7 +480,12 @@ body {
 
 		$(document).ready(function() {
 			
+<<<<<<< HEAD
 			var passuser = '<%=userpass%>';
+=======
+			var passuser = '<%=userpass%>
+		';
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 							//alert(passuser);
 							$.ajax({
 								url : "checksessionpass.obj",

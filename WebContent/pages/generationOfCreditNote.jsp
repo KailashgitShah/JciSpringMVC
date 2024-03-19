@@ -12,55 +12,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
-<!-- PLUGINS STYLES-->
-<!-- THEME STYLES-->
-<link href="assets/css/main.min.css" rel="stylesheet" />
-<link
-	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-<link
-	href="<%=request.getContextPath()%>/resources/css/styleUserReg.css"
-	rel="stylesheet">
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src='./resources/js/responsivevoice.js'></script>
-<script type="text/javascript"
-	src='<%=request.getContextPath()%>/resources/js/custom.js'></script>
-<script type="text/javascript"
-	src='<%=request.getContextPath()%>/resources/js/jquery.mCustomScrollbar.concat.min.js'></script>
-<script type="text/javascript"
-	src='<%=request.getContextPath()%>/resources/js/jquery.validate.min.js'></script>
-<script src="./assets/vendors/jquery/dist/jquery.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-	type="text/javascript"></script>
-<script
-	src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-	type="text/javascript"></script>
-<!-- PAGE LEVEL PLUGINS-->
-<!-- CORE SCRIPTS-->
-<script src="assets/js/app.min.js" type="text/javascript"></script>
-
-<!-- PAGE LEVEL STYLES-->
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="assets/css/main.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
 .field-icon {
 	float: right;
@@ -83,6 +45,7 @@
 input[type="radio"] {
 	display: inline;
 }
+
 </style>
 </head>
 
@@ -92,6 +55,7 @@ input[type="radio"] {
 	String shipmentDetails = (String) request.getSession().getAttribute("shipmentDetails");
 	String ContractNo = (String) request.getSession().getAttribute("ContractNo");
 	String roId = (String) request.getSession().getAttribute("roId");
+	String ChallanNo = (String) request.getSession().getAttribute("ChallanNo");
 	int Count = (int) request.getSession().getAttribute("Count") + 1;
 	Double nominalWt = (Double) request.getSession().getAttribute("nominalWeight");
 
@@ -107,6 +71,27 @@ input[type="radio"] {
 	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
 	String indiaSerialNo = "001640";
 	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+	
+	//default data for testing
+/* 	String shipmentDetails = "";
+	String ContractNo ="";
+	String roId = "";
+	String ChallanNo ="";
+	int Count = 1;
+	Double nominalWt = 0.0;
+
+	Double actualWt = 0.0;
+	Double invoiceVal =0.0;
+	Double shortQty = nominalWt - actualWt;
+
+	Double price = 0.0;
+	int crnAmount = 0;
+
+	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+	//generation of credit Note No.
+	String lastDigitOfCropYear ="";
+	String indiaSerialNo = "001640";
+	String creditNoteIdnNo = "sdfb"; */
 	%>
 
 	<div class="page-wrapper">
@@ -191,6 +176,11 @@ input[type="radio"] {
 												name="shipment" id="shipment" type="text"
 												value="<%=shipmentDetails%>" readonly>
 										</div>
+										
+										 <input class="form-control "
+												name="ChallanNo" id="ChallanNo" type="hidden"
+												value="<%=ChallanNo%>" readonly>
+									
 										<div class="col-sm-4 form-group" for="formFile">
 											<label>File Upload </label> <input class="form-control"
 												name="file" id="formFile" type="file">
@@ -224,13 +214,15 @@ input[type="radio"] {
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
-	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script src="assets/css/docsupport/prism.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="assets/css/docsupport/init.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
+	    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
 
 </body>
 </html>

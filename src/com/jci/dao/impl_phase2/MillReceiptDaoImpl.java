@@ -103,7 +103,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		   resultList.setDate_shipment((Date)row[1]);
 		   resultList.setVehicle_no((String)row[2]);
 		   resultList.setBale_mark((String)row[3]);
-		  // resultList.setJute_variety((String)row[4]);
+ 
 		   resultList.setCrop_year((String)row[5]);
 		   resultList.setHo_date((Date)row[6]);
 		   resultList.setChallan_qty((Double)row[7]);

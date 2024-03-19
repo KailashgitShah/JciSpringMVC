@@ -35,7 +35,7 @@ public class Contractgeneration {
 
 	@Column(name = "Contract_value", nullable = false)
 	private double Contract_value;
-
+	
 	@Column(name = "Mill_code", nullable = false)
 	private String Mill_code;
 
@@ -89,209 +89,313 @@ public class Contractgeneration {
 	
 	@Column(name = "SortingId")
 	private int SortingId;
+	
+
+	@Column(name = "Jute_value")
+	private double Jute_value;
+	
+
+	@Column(name = "Contract_value_lc")
+	private double contractValueLc;
+	
+	
+	@Column(name = "Authorized_By")
+	private String authorizedBy;
+	
+	
+	@Column(name = "Authorize_Status")
+	private int authorizedStatus = 0;
+
 
 	public Long getContract_id() {
 		return contract_id;
 	}
 
+
 	public void setContract_id(Long contract_id) {
 		this.contract_id = contract_id;
 	}
+
 
 	public String getPcso_date() {
 		return Pcso_date;
 	}
 
+
 	public void setPcso_date(String pcso_date) {
 		Pcso_date = pcso_date;
 	}
+
 
 	public String getContract_identification_no() {
 		return Contract_identification_no;
 	}
 
+
 	public void setContract_identification_no(String contract_identification_no) {
 		Contract_identification_no = contract_identification_no;
 	}
+
 
 	public String getContract_no() {
 		return Contract_no;
 	}
 
+
 	public void setContract_no(String contract_no) {
 		Contract_no = contract_no;
 	}
+
 
 	public String getContract_date() {
 		return Contract_date;
 	}
 
+
 	public void setContract_date(String contract_date) {
 		Contract_date = contract_date;
 	}
+
 
 	public String getContract_qty() {
 		return Contract_qty;
 	}
 
+
 	public void setContract_qty(String contract_qty) {
 		Contract_qty = contract_qty;
 	}
+
 
 	public double getContract_value() {
 		return Contract_value;
 	}
 
+
 	public void setContract_value(double contract_value) {
 		Contract_value = contract_value;
 	}
+
 
 	public String getMill_code() {
 		return Mill_code;
 	}
 
+
 	public void setMill_code(String mill_code) {
 		Mill_code = mill_code;
 	}
+
 
 	public String getMill_name() {
 		return Mill_name;
 	}
 
+
 	public void setMill_name(String mill_name) {
 		Mill_name = mill_name;
 	}
+
 
 	public double getMill_qty() {
 		return Mill_qty;
 	}
 
+
 	public void setMill_qty(double mill_qty) {
 		Mill_qty = mill_qty;
 	}
 
+
 	public String getDelivery_type() {
 		return Delivery_type;
 	}
+
 
 	public void setDelivery_type(String delivery_type) {
 		Delivery_type = delivery_type;
 	}
 
 
-
 	public String getGrade_composition() {
 		return Grade_composition;
 	}
+
 
 	public void setGrade_composition(String grade_composition) {
 		Grade_composition = grade_composition;
 	}
 
+
 	public String getPayment_duedate() {
 		return Payment_duedate;
 	}
+
 
 	public void setPayment_duedate(String payment_duedate) {
 		Payment_duedate = payment_duedate;
 	}
 
+
 	public int getContract_cancellation_flag() {
 		return Contract_cancellation_flag;
 	}
+
 
 	public void setContract_cancellation_flag(int contract_cancellation_flag) {
 		Contract_cancellation_flag = contract_cancellation_flag;
 	}
 
+
 	public String getContract_cancel_date() {
 		return Contract_cancel_date;
 	}
+
 
 	public void setContract_cancel_date(String contract_cancel_date) {
 		Contract_cancel_date = contract_cancel_date;
 	}
 
+
 	public int getContract_acceptance_flag() {
 		return Contract_acceptance_flag;
 	}
+
 
 	public void setContract_acceptance_flag(int contract_acceptance_flag) {
 		Contract_acceptance_flag = contract_acceptance_flag;
 	}
 
+
 	public String getContract_acceptance_date() {
 		return Contract_acceptance_date;
 	}
+
 
 	public void setContract_acceptance_date(String contract_acceptance_date) {
 		Contract_acceptance_date = contract_acceptance_date;
 	}
 
+
 	public String getContract_acceptance_doc() {
 		return Contract_acceptance_doc;
 	}
+
 
 	public void setContract_acceptance_doc(String contract_acceptance_doc) {
 		Contract_acceptance_doc = contract_acceptance_doc;
 	}
 
+
 	public String getIntial_Payment_date() {
 		return Intial_Payment_date;
 	}
+
 
 	public void setIntial_Payment_date(String intial_Payment_date) {
 		Intial_Payment_date = intial_Payment_date;
 	}
 
+
 	public int getIntial_Payment_flag() {
 		return Intial_Payment_flag;
 	}
+
 
 	public void setIntial_Payment_flag(int intial_Payment_flag) {
 		Intial_Payment_flag = intial_Payment_flag;
 	}
 
+
 	public String getContract_status() {
 		return Contract_status;
 	}
+
 
 	public void setContract_status(String contract_status) {
 		Contract_status = contract_status;
 	}
 
+
 	public Date getCreated_date() {
 		return Created_date;
 	}
+
 
 	public void setCreated_date(Date created_date) {
 		Created_date = created_date;
 	}
 
-	public int getCreated_by() {
-		return Created_by;
-	}
 
-	public void setCreated_by(int created_by) {
-		Created_by = created_by;
-	}
-	  
-	
 	public String getCropYear() {
 		return cropYear;
 	}
 
+
 	public void setCropYear(String cropYear) {
 		this.cropYear = cropYear;
 	}
-	
+
+
+	public int getCreated_by() {
+		return Created_by;
+	}
+
+
+	public void setCreated_by(int created_by) {
+		Created_by = created_by;
+	}
+
+
 	public int getSortingId() {
 		return SortingId;
 	}
 
+
 	public void setSortingId(int sortingId) {
 		SortingId = sortingId;
 	}
+
+
+	public double getJute_value() {
+		return Jute_value;
+	}
+
+
+	public void setJute_value(double jute_value) {
+		Jute_value = jute_value;
+	}
+
+
+	public double getContractValueLc() {
+		return contractValueLc;
+	}
+
+
+	public void setContractValueLc(double contractValueLc) {
+		this.contractValueLc = contractValueLc;
+	}
+
+
+	public String getAuthorizedBy() {
+		return authorizedBy;
+	}
+
+
+	public void setAuthorizedBy(String authorizedBy) {
+		this.authorizedBy = authorizedBy;
+	}
+
+
+	public int getAuthorizedStatus() {
+		return authorizedStatus;
+	}
+
+
+	public void setAuthorizedStatus(int authorizedStatus) {
+		this.authorizedStatus = authorizedStatus;
+	}
+
 
 	@Override
 	public String toString() {
@@ -306,10 +410,62 @@ public class Contractgeneration {
 				+ ", Contract_acceptance_doc=" + Contract_acceptance_doc + ", Intial_Payment_date="
 				+ Intial_Payment_date + ", Intial_Payment_flag=" + Intial_Payment_flag + ", Contract_status="
 				+ Contract_status + ", Created_date=" + Created_date + ", cropYear=" + cropYear + ", Created_by="
-				+ Created_by + ", SortingId=" + SortingId + "]";
+				+ Created_by + ", SortingId=" + SortingId + ", Jute_value=" + Jute_value + ", contractValueLc="
+				+ contractValueLc + ", authorizedBy=" + authorizedBy + ", authorizedStatus=" + authorizedStatus + "]";
 	}
 
+
+	public Contractgeneration(Long contract_id, String pcso_date, String contract_identification_no, String contract_no,
+			String contract_date, String contract_qty, double contract_value, String mill_code, String mill_name,
+			double mill_qty, String delivery_type, String grade_composition, String payment_duedate,
+			int contract_cancellation_flag, String contract_cancel_date, int contract_acceptance_flag,
+			String contract_acceptance_date, String contract_acceptance_doc, String intial_Payment_date,
+			int intial_Payment_flag, String contract_status, Date created_date, String cropYear, int created_by,
+			int sortingId, double jute_value, double contractValueLc, String authorizedBy, int authorizedStatus) {
+		super();
+		this.contract_id = contract_id;
+		Pcso_date = pcso_date;
+		Contract_identification_no = contract_identification_no;
+		Contract_no = contract_no;
+		Contract_date = contract_date;
+		Contract_qty = contract_qty;
+		Contract_value = contract_value;
+		Mill_code = mill_code;
+		Mill_name = mill_name;
+		Mill_qty = mill_qty;
+		Delivery_type = delivery_type;
+		Grade_composition = grade_composition;
+		Payment_duedate = payment_duedate;
+		Contract_cancellation_flag = contract_cancellation_flag;
+		Contract_cancel_date = contract_cancel_date;
+		Contract_acceptance_flag = contract_acceptance_flag;
+		Contract_acceptance_date = contract_acceptance_date;
+		Contract_acceptance_doc = contract_acceptance_doc;
+		Intial_Payment_date = intial_Payment_date;
+		Intial_Payment_flag = intial_Payment_flag;
+		Contract_status = contract_status;
+		Created_date = created_date;
+		this.cropYear = cropYear;
+		Created_by = created_by;
+		SortingId = sortingId;
+		Jute_value = jute_value;
+		this.contractValueLc = contractValueLc;
+		this.authorizedBy = authorizedBy;
+		this.authorizedStatus = authorizedStatus;
+	}
+
+
+	public Contractgeneration() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	
+	
+
+
 
 	
 }

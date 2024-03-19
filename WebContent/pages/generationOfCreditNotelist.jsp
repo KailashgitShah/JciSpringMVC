@@ -1,4 +1,4 @@
-
+\
 <%@page import="com.jci.model.EntryDerivativePrice"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -46,6 +46,7 @@
 
 /* EncodeId encodeId = new EncodeId();
 SecretKey secretKey = encodeId.generateAESKey(128); */
+String username = (String) request.getSession().getAttribute("usrname");
  
 %>
 
@@ -95,6 +96,7 @@ $(document).ready(function() {
 										<th>Sl.No</th>
 										<th>Bill No</th>
 										<th>Contract No</th>
+										<th>Challan No</th>
 										<th>Invoice Amount</th>
 										<th>Shipment Details</th>
 										<th>Nominal Weight</th>
@@ -117,12 +119,10 @@ $(document).ready(function() {
 										<td><%=ele[4]%></td>
 										<td><%=ele[5]%></td>
 										<td><%=ele[6]%></td>
-									
-									 
-																		
+										<td><%=ele[7]%></td>														
 							 
 									 <%-- <td><a href="editentryderivativeprice.obj?der_id=<%=codid%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-                                     <td><a onclick="saveCreditNote('<%=ele[1]%>','<%=ele[2]%>','<%=ele[3]%>','<%=ele[4]%>','<%=ele[5]%>','<%=ele[6]%>')" class="btn btn-warning btn-sm btn-block">Generate credit Note </a></td>  
+                                     <td><a onclick="saveCreditNote('<%=ele[1]%>','<%=ele[2]%>','<%=ele[3]%>','<%=ele[4]%>','<%=ele[5]%>','<%=ele[6]%>','<%=ele[7]%>')" class="btn btn-warning btn-sm btn-block">Generate credit Note </a></td>  
 									
 									</tr>
 									<% 
@@ -174,22 +174,25 @@ $(document).ready(function() {
         })
         
         
-      function saveCreditNote(contractNo,invoiceVal , shipmentDetails , nominalWeight , ActualWeight , roId ){
+      function saveCreditNote(contractNo,ChallanNo,invoiceVal , shipmentDetails , nominalWeight , ActualWeight , roId ){
         	
         
          $.ajax({
         		type : "POST",
         		url : "generateCrn.obj",
+        	
         		data : {
         			"contractNo":contractNo,
         			"shipmentDetails":shipmentDetails,
         			"nominalWeight" : nominalWeight,
         			"ActualWeight" : ActualWeight,
+        			"ChallanNo" : ChallanNo,
         			"roId" : roId,
         			"invoiceValue" : invoiceVal
+        			
         		},
         		success : function(){
-        			window.location.href = "creditNoteForm.obj"
+        			window.location.href = "creditNoteForm.obj";
         		}
         	})
         }

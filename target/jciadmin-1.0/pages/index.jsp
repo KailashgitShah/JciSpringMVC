@@ -66,7 +66,11 @@
       <div class="sidenav-backdrop backdrop"></div>
       <div class="preloader-backdrop">
             <div class="page-preloader">Loading</div>
+<<<<<<< HEAD
       </div>
+=======
+      </div> 
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
       <!-- END PAGA BACKDROPS-->
       <!-- CORE PLUGINS -->
       <script src="./assets/vendors/jquery/dist/jquery.min.js"
@@ -83,7 +87,11 @@
       <script src="assets/js/app.js" type="text/javascript"></script>
       <!-- PAGE LEVEL SCRIPTS-->
             <script>
+<<<<<<< HEAD
    /*    $(document).on('click' , '#submitBtn' , function(){
+=======
+        $(document).on('click' , '#submitBtn' , function(){
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
       var response = grecaptcha.getResponse();
       
       if(response.length === 0){
@@ -91,7 +99,11 @@
             return false;
       }
       
+<<<<<<< HEAD
       }) */
+=======
+      })   
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
       </script>
       
       <script type="text/javascript">

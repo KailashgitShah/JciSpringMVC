@@ -62,7 +62,11 @@
                 <div class="row">
                     <div class="col-md-11">
                         <div class="ibox">
+<<<<<<< HEAD
                           <span id="flashMessage">${msg}</span>
+=======
+                          <span>${msg}</span>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
                             <div class="ibox-body">
                        <form action="saveConfirmationOfClaimSettelment.obj" method="POST" name ="myForm" enctype="multipart/form-data">
                            <div class="child-checkbox" id="disableform">
@@ -249,6 +253,7 @@
                                     </div>  
                                      
                                      <!--  For Showing the grade wise jute variety -->
+<<<<<<< HEAD
                                                           
 												<div class="row">
 												    <div class="col-sm-15">
@@ -305,6 +310,90 @@
 												</div>
 												
 											
+=======
+                                                           <div class="row">
+
+                                                                  <span style="font-size: 15px"> Jute Variety Grade wise</span>
+
+                                                           </div>
+
+                                                           <div class="row">
+
+                                                                  <div class="col-sm-3 form-group ">
+
+
+
+                                                                        <div class="input-container">
+                                                                               <label for="field1">grade 1:</label> <input type="text"
+                                                                                     id="g1" name="g1">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="field2">grade 2:</label> <input type="text"
+                                                                                     id="g2" name="g2">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="field3">grade 3:</label> <input type="text"
+                                                                                     id="g3" name="g3">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="field4">grade 4:</label> <input type="text"
+                                                                                     id="g4" name="g4">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="field5">grade 5:</label> <input type="text"
+                                                                                     id="g5" name="g5">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="field6">grade 6:</label> <input type="text"
+                                                                                     id="g6" name="g6">
+                                                                        </div>
+
+                                                                  </div>
+
+
+                                                                  <div class="col-sm-4 form-group">
+
+                                                                        <div class="input-container">
+                                                                               <label for="q1">Qty 1:</label> <input type="text" id="q1"
+                                                                                     name="q1">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="q2">Qty 2:</label> <input type="text" id="q2"
+                                                                                     name="q2">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="q3">Qty 3:</label> <input type="text" id="q3"
+                                                                                     name="q3">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="q4">Qty 4:</label> <input type="text" id="q4"
+                                                                                     name="q4">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="q5">Qty 5:</label> <input type="text" id="q5"
+                                                                                     name="q5">
+                                                                        </div>
+
+                                                                        <div class="input-container">
+                                                                               <label for="q6">Qty 6:</label> <input type="text" id="q6"
+                                                                                     name="q6">
+                                                                        </div>
+
+
+
+                                                                  </div>
+
+                                                           </div>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
                                                            <!-- End the grade wise -->
 
@@ -360,6 +449,7 @@
 	 });
 		
 	</script> 
+<<<<<<< HEAD
 	
 	      
       	<script type="text/javascript">
@@ -408,6 +498,8 @@
 
       
       </script> 
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	<script type="text/javascript">
       
  $(document).ready(function() {
@@ -450,6 +542,7 @@
       
       </script>
       
+<<<<<<< HEAD
       <script>
     $(document).ready(function(){
       
@@ -561,6 +654,8 @@
       </script> 
     
       
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
        <script>
     function deleteErrorMsg(){
     	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
@@ -582,7 +677,11 @@
 </script>
       <!--  For Fetching the Grade_Composition based on Contract Number -->
 
+<<<<<<< HEAD
       <!--  <script type="text/javascript">
+=======
+       <script type="text/javascript">
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
              $(document).ready(function() {
                   
                     $('#fullcontractno1').on('change', function() {
@@ -597,7 +696,10 @@
                                        ContractNo : selectedOption
                                  },
                                  success : function(data) {
+<<<<<<< HEAD
                                 	 alert(data);
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										  var response = JSON.parse(data);
 										  var innerArray1 = response[0];
 	                                       var innerArray2 = response[1];
@@ -652,11 +754,63 @@
                     });
              });
        </script>
+<<<<<<< HEAD
  -->
        	<script type="text/javascript">
       
 
 
+=======
+
+       
+      
+      	<script type="text/javascript">
+      
+ $(document).ready(function() {
+	    $('#SettlementId1').on('change', function() {
+	    var field2Value = $(this).val();
+	    alert(field2Value);
+	     
+	    $.ajax({
+	        type: 'GET',
+	        url: 'fetchingdatanominactionclaim.obj',
+	        data: { "contractno": field2Value },
+	        success: function(data) {
+	           alert(data);
+	           data = data.replace(/^\[|\]$/g, '');
+	           data = data.replace(/^\[|\]$/g, '');
+	           var valuesArray = data.split(',');
+	           for (var i = 0; i < valuesArray.length; i++) {
+	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
+	        	}
+	           
+	               // Set the value of the <select> element
+	               $('#Quality_Settlement1').val(valuesArray[0]);
+	               $('#Moisture_Settlement1').val(valuesArray[1]);
+	               $('#NCV_Settlement1').val(valuesArray[2]);
+	               $('#SettlementAmount1').val(valuesArray[3]); 
+	               $('#ClaimAmount1').val(valuesArray[4]);
+	        
+	               var dateParts = valuesArray[5].split("-");
+	               var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+	               $('#Dateofinspection12').val(formattedDate);
+	             
+	               $('#Supportingdocument1').val(valuesArray[6]);
+	              
+	           
+
+	        },
+	        error: function(error) {
+	            alert("Error: " + error);
+	        }
+	    });
+
+	    });
+	});
+
+      
+      </script> 
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	
 
     

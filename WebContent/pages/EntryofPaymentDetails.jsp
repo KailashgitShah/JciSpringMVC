@@ -134,6 +134,7 @@ letest code of entry payment
 												</select>
 											</div>
 
+ 
 										<!-- 	<div class="col-sm-4 form-group">
 												<label id="ContracQty2">Contract_Qty </label> <input
 													class="form-control" id="ContracQty1" value=""
@@ -399,6 +400,7 @@ letest code of entry payment
 													id="submit" onclick="">
 											</div>
 											<!--  <div class="clear">
+ 
 												  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
 											   </div> -->
 										</div>

@@ -2,9 +2,13 @@
 <%@page import="com.jci.model.PCSORequestLetter"%>
 <%@page import="java.util.List"%>
 <%@page import="java.net.URLEncoder"%>
+<<<<<<< HEAD
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 
 
+=======
+<%@ page import="javax.servlet.http.HttpServletRequest"%>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +18,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
+<<<<<<< HEAD
 <!-- GLOBAL MAINLY STYLES-->
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -27,6 +34,17 @@
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 
+<<<<<<< HEAD
+=======
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 <!-- PAGE LEVEL STYLES-->
 <style>
@@ -43,6 +61,7 @@
 	text-decoration: none;
 }
 </style>
+<<<<<<< HEAD
 <script>
 	$(document).ready(function() {
 		alert();
@@ -58,6 +77,8 @@
 		});
 	});
 </script>
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 </head>
 
 <body class="fixed-navbar">
@@ -78,15 +99,25 @@
 			%>
 			<div class="page-content fade-in-up">
 				<div class="ibox">
+<<<<<<< HEAD
 
 					<div class="ibox-head">
 						<span>${msg}</span>
+=======
+					<div class="ibox-head">
+						<span id="flashMessage">${msg}</span>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 					</div>
 
 					<div class="ibox-body">
 						<div class="scrollmenu">
+<<<<<<< HEAD
 							<table class="table table-striped table-bordered table-hover"
 								id="example-table" cellspacing="0" width="100%">
+=======
+							<table id="example-table"
+								class="table table-striped table-bordered table-hover">
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 								<thead>
 									<tr>
 										<th>SN.</th>
@@ -95,14 +126,26 @@
 										<th>Crop Year</th>
 										<th>Requested Qty.</th>
 										<th>Uncontracted Qty.</th>
+<<<<<<< HEAD
+=======
+										<th></th>
+										<th></th>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 								</thead>
 								<tbody>
 									<%
 									int i = 1;
 									for (PCSORequestLetter requestEl : requestList) {
+<<<<<<< HEAD
 										String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
 									
 										String fullFilePath = requestEl.getLetter_path();
+=======
+										//String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
+
+										String fullFilePath = requestEl.getLetter_path();
+										String date = requestEl.getReqGenDate();
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										String encodedFilePath = URLEncoder.encode(fullFilePath, "UTF-8");
 										String refNo = requestEl.getReference_no();
 										//String date = requestEl.getReqGenDate();
@@ -121,18 +164,33 @@
 										<td><%=availQty%></td>
 
 										<td><button class="btn btn-outline-success"
+<<<<<<< HEAD
 												onclick="openLinkInNewTab('downloadRequestLetter.obj?imagePath=<%=encodedFilePath%>')">Download</button></td>
+=======
+												onclick="openLinkInNewTab('downloadRequestLetter.obj?imagePath=<%=encodedFilePath%>')">View</button></td>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										<%
 										if (emailStatus == 0) {
 										%>
 										<td><button class="btn btn-outline-warning"
+<<<<<<< HEAD
 												onclick="acknowlegeRequest('<%=refNo%>','<%=date%>','<%=cropYear%>','<%=qty%>','<%=id%>')">Acknowledge</button></td>
+=======
+												onclick="acknowlegeRequest('<%=refNo%>','<%=date%>','<%=cropYear%>','<%=qty%>','<%=id%>')">Send
+												Mail</button></td>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										<%
 										} else {
 										%>
 
+<<<<<<< HEAD
 										<td><button class="btn btn-outline-secondary" disabled>Email
 												Sent</button></td>
+=======
+										<td><button class="btn btn-outline-secondary" disabled>
+												Email Sent on
+												<%=requestEl.getEmailSentOn()%></button></td>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										<%
 										}
 										%>
@@ -159,9 +217,50 @@
 	<!-- END THEME CONFIG PANEL-->
 	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
+<<<<<<< HEAD
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
+=======
+	<script type="text/javascript">
+		setTimeout(function() {
+			document.getElementById('flashMessage').style.display = 'none';
+		}, 1500);
+	</script>
+	<script>
+		function openLinkInNewTab(url) {
+			window.open(url, '_blank');
+		}
+
+		//send mail funtion
+		function acknowlegeRequest(refNo, date, cropYear, qty, id) {
+			if (confirm("do you want to approve this request , send mail to JC office")) {
+
+				$.ajax({
+					url : "sendThankYouEmailToJC.obj",
+					type : "GET",
+					data : {
+						"refNo" : refNo,
+						"date" : date,
+						"cropYear" : cropYear,
+						"qty" : qty,
+						"id" : id
+					},
+					success : function(result) {
+
+						location.reload();
+						//window.location.href = "entryofpcso.obj";
+
+					}
+				})
+			} else {
+				console.log("rejected");
+			}
+
+		}
+	</script>
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	<script src="./assets/vendors/jquery/dist/jquery.min.js"
 		type="text/javascript"></script>
 	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
@@ -192,6 +291,7 @@
 			    { "data": "salary" }
 			]*/
 			});
+<<<<<<< HEAD
 		});
 	</script>
 	<script>
@@ -227,8 +327,24 @@
 			}
 
 		}
+=======
+		})
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	</script>
 
 </body>
 
 </html>
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9

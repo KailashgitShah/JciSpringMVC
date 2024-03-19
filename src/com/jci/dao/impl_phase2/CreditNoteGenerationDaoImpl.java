@@ -26,7 +26,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public List<Object[]> getAllVerifiedWeighment() {
-		String sqlString = "select a.Bill_of_supply_no ,a.Contract_no  , a.Invoice_value,a.Shipment_details , b.Nominal_wt , b.Dpc_actual_wt, b.Ro_id from "
+		String sqlString = "select a.Bill_of_supply_no ,a.Contract_no ,a.Challan_No, a.Invoice_value,a.Shipment_details , b.Nominal_wt , b.Dpc_actual_wt, b.Ro_id from "
 				+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no";
 
 		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();

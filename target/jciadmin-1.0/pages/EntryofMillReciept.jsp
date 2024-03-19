@@ -73,7 +73,11 @@
                 <div class="row">
                     <div class="col-md-11">
                         <div class="ibox">
+<<<<<<< HEAD
                           <span id="flashMessage">${msg}</span>
+=======
+                          <span>${msg}</span>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
                             <div class="ibox-body">
                        <form action="saveentryofMillreciept.obj" method="POST">
                            <div class="child-checkbox" id="disableform">
@@ -384,6 +388,7 @@ $(document).ready(function() {
 });
 </script>
 
+<<<<<<< HEAD
 <script>
     $(document).ready(function(){
       
@@ -393,6 +398,8 @@ $(document).ready(function() {
     });
 </script>
 
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 
 		   -->

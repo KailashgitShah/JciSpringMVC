@@ -42,11 +42,12 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	@Override
 	public List<String> loadAllDiNo() {
 		String regionCode = (String) request.getSession().getAttribute("region");
-		String sqlString = "select DI_no from jciDI_ho where Regional_office='" + regionCode + "'";
+
+		String sqlString = "select Distinct DI_no from jciDI_ho where Regional_office='" + regionCode + "' and  DPC <> '';";
 		List<String> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 	}
-	
+	//Returns object of all DI details 
 	@Override
 	public List<Object> loadAllContractDetails(String diNo) {
 		String sqlString = "select * from jciDI_ho where DI_no='"+diNo+"'";
@@ -72,6 +73,15 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		List<RoDispatchModel> ll = c.list();
 			return ll;
 	
+	}
+	
+
+	@Override
+	public List<String> getCooperative(String regionIdString) {
+		String sqlString ="Select centername from jcipurchasecenter where rocode='"+regionIdString+"';";
+		List<String> list = currentSession().createSQLQuery(sqlString).list();
+		// TODO Auto-generated method stub
+		return list;
 	}
 
 }

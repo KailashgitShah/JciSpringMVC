@@ -23,6 +23,15 @@
     <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
     <!-- THEME STYLES-->
     <link href="assets/css/main.min.css" rel="stylesheet" />
+<<<<<<< HEAD
+=======
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
      
 
     <!-- PAGE LEVEL STYLES-->
@@ -43,8 +52,12 @@
 </style>
 <script>
 
+<<<<<<< HEAD
 $(document).ready(function() {
 	alert();
+=======
+/* $(document).ready(function() {
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
     var table = $('#example-table').DataTable( {
         scrollY:        "300px",
         scrollX:        true,
@@ -55,7 +68,11 @@ $(document).ready(function() {
             right: 1
         }
     } );
+<<<<<<< HEAD
 } );
+=======
+} ); */
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 </script>
 </head>
 

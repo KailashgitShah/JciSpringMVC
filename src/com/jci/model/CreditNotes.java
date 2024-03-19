@@ -27,6 +27,11 @@ public class CreditNotes {
 	    @Column(name = "Credit_note_no",length = 255)
 	    @NotNull
 	    private String crnNo; 
+	    
+	    
+	    @Column(name = "ChallanNo",length = 255)
+	    @NotNull
+	    private String ChallanNo; 
 
 	    @Column(name = "Shipment_details",length = 255)
 	    @NotNull
@@ -184,6 +189,16 @@ public class CreditNotes {
 
 		public void setContractNo(String contractNo) {
 			this.contractNo = contractNo;
+		}
+		
+		
+
+		public String getChallanNo() {
+			return ChallanNo;
+		}
+
+		public void setChallanNo(String challanNo) {
+			ChallanNo = challanNo;
 		}
 
 		@Override

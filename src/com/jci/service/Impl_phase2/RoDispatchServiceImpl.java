@@ -49,5 +49,10 @@ public class RoDispatchServiceImpl implements RoDispatchService{
 		List<RoDispatchModel> list = (List<RoDispatchModel>) this.roDispatchDao.getAllRoDi();
 		return list;
 	}
+	@Override
+	public List<String> getCooperative(String regionIdString) {
+		// TODO Auto-generated method stub
+		return roDispatchDao.getCooperative(regionIdString);
+	}
 
 }

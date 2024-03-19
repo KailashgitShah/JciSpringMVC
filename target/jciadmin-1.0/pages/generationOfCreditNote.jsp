@@ -12,6 +12,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
+<<<<<<< HEAD
 <!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
@@ -61,6 +62,19 @@
 <script src="assets/js/app.min.js" type="text/javascript"></script>
 
 <!-- PAGE LEVEL STYLES-->
+=======
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="assets/css/main.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <style>
 .field-icon {
 	float: right;
@@ -83,6 +97,10 @@
 input[type="radio"] {
 	display: inline;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 </style>
 </head>
 
@@ -92,6 +110,10 @@ input[type="radio"] {
 	String shipmentDetails = (String) request.getSession().getAttribute("shipmentDetails");
 	String ContractNo = (String) request.getSession().getAttribute("ContractNo");
 	String roId = (String) request.getSession().getAttribute("roId");
+<<<<<<< HEAD
+=======
+	String ChallanNo = (String) request.getSession().getAttribute("ChallanNo");
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	int Count = (int) request.getSession().getAttribute("Count") + 1;
 	Double nominalWt = (Double) request.getSession().getAttribute("nominalWeight");
 
@@ -107,6 +129,30 @@ input[type="radio"] {
 	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
 	String indiaSerialNo = "001640";
 	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+<<<<<<< HEAD
+=======
+	
+	//default data for testing
+/* 	String shipmentDetails = "";
+	String ContractNo ="";
+	String roId = "";
+	String ChallanNo ="";
+	int Count = 1;
+	Double nominalWt = 0.0;
+
+	Double actualWt = 0.0;
+	Double invoiceVal =0.0;
+	Double shortQty = nominalWt - actualWt;
+
+	Double price = 0.0;
+	int crnAmount = 0;
+
+	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+	//generation of credit Note No.
+	String lastDigitOfCropYear ="";
+	String indiaSerialNo = "001640";
+	String creditNoteIdnNo = "sdfb"; */
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	%>
 
 	<div class="page-wrapper">
@@ -191,6 +237,14 @@ input[type="radio"] {
 												name="shipment" id="shipment" type="text"
 												value="<%=shipmentDetails%>" readonly>
 										</div>
+<<<<<<< HEAD
+=======
+										
+										 <input class="form-control "
+												name="ChallanNo" id="ChallanNo" type="hidden"
+												value="<%=ChallanNo%>" readonly>
+									
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										<div class="col-sm-4 form-group" for="formFile">
 											<label>File Upload </label> <input class="form-control"
 												name="file" id="formFile" type="file">
@@ -224,6 +278,7 @@ input[type="radio"] {
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
+<<<<<<< HEAD
 	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 	<script src="assets/css/docsupport/prism.js" type="text/javascript"
 		charset="utf-8"></script>
@@ -231,6 +286,17 @@ input[type="radio"] {
 		charset="utf-8"></script>
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
+=======
+	    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 </body>
 </html>

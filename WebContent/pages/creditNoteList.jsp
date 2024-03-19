@@ -15,50 +15,36 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
-<!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
-	rel="stylesheet" />
-<!-- THEME STYLES-->
-<link href="assets/css/main.min.css" rel="stylesheet" />
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="assets/css/main.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+     
 
-
-<!-- PAGE LEVEL STYLES-->
-<style>
+    <!-- PAGE LEVEL STYLES-->
+    <style>
 .scrollmenu {
-	overflow: auto;
-	white-space: nowrap;
+
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .scrollmenu a {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 14px;
-	text-decoration: none;
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		alert();
-		var table = $('#example-table').DataTable({
-			scrollY : "300px",
-			scrollX : true,
-			scrollCollapse : true,
-			paging : false,
-			fixedColumns : {
-				left : 1,
-				right : 1
-			}
-		});
-	});
-</script>
+
 </head>
 
 <%
@@ -76,9 +62,7 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">
-					Credit Note List
-					<h1>
+				<h1 class="page-title">Credit Note List</h1>
 			</div>
 
 			<div class="page-content fade-in-up">
@@ -118,7 +102,7 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 										<td><%=crn.getShortQty()%></td>
 										<td><%=crn.getCrnAmount()%></td>
 										<td><a
-										onclick="return confirm('Are you sure you want to cancle this Credit Note?');"
+											onclick="return confirm('Are you sure you want to cancle this Credit Note?');"
 											href="changeCrnStatus.obj?crnId=<%=crn.getCrnId()%>"
 											class="btn btn-danger btn-sm btn-block"> <i
 												class="fa fa-trash" aria-hidden="true"
@@ -151,22 +135,15 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
 	<!-- PAGE LEVEL SCRIPTS-->
 	<script type="text/javascript">
 		$(function() {

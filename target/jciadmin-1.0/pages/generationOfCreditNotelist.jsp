@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 
+=======
+\
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <%@page import="com.jci.model.EntryDerivativePrice"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -46,6 +50,10 @@
 
 /* EncodeId encodeId = new EncodeId();
 SecretKey secretKey = encodeId.generateAESKey(128); */
+<<<<<<< HEAD
+=======
+String username = (String) request.getSession().getAttribute("usrname");
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
  
 %>
 
@@ -95,6 +103,10 @@ $(document).ready(function() {
 										<th>Sl.No</th>
 										<th>Bill No</th>
 										<th>Contract No</th>
+<<<<<<< HEAD
+=======
+										<th>Challan No</th>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										<th>Invoice Amount</th>
 										<th>Shipment Details</th>
 										<th>Nominal Weight</th>
@@ -117,12 +129,19 @@ $(document).ready(function() {
 										<td><%=ele[4]%></td>
 										<td><%=ele[5]%></td>
 										<td><%=ele[6]%></td>
+<<<<<<< HEAD
 									
 									 
 																		
 							 
 									 <%-- <td><a href="editentryderivativeprice.obj?der_id=<%=codid%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
                                      <td><a onclick="saveCreditNote('<%=ele[1]%>','<%=ele[2]%>','<%=ele[3]%>','<%=ele[4]%>','<%=ele[5]%>','<%=ele[6]%>')" class="btn btn-warning btn-sm btn-block">Generate credit Note </a></td>  
+=======
+										<td><%=ele[7]%></td>														
+							 
+									 <%-- <td><a href="editentryderivativeprice.obj?der_id=<%=codid%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
+                                     <td><a onclick="saveCreditNote('<%=ele[1]%>','<%=ele[2]%>','<%=ele[3]%>','<%=ele[4]%>','<%=ele[5]%>','<%=ele[6]%>','<%=ele[7]%>')" class="btn btn-warning btn-sm btn-block">Generate credit Note </a></td>  
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 									
 									</tr>
 									<% 
@@ -174,22 +193,40 @@ $(document).ready(function() {
         })
         
         
+<<<<<<< HEAD
       function saveCreditNote(contractNo,invoiceVal , shipmentDetails , nominalWeight , ActualWeight , roId ){
+=======
+      function saveCreditNote(contractNo,ChallanNo,invoiceVal , shipmentDetails , nominalWeight , ActualWeight , roId ){
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
         	
         
          $.ajax({
         		type : "POST",
         		url : "generateCrn.obj",
+<<<<<<< HEAD
+=======
+        	
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
         		data : {
         			"contractNo":contractNo,
         			"shipmentDetails":shipmentDetails,
         			"nominalWeight" : nominalWeight,
         			"ActualWeight" : ActualWeight,
+<<<<<<< HEAD
         			"roId" : roId,
         			"invoiceValue" : invoiceVal
         		},
         		success : function(){
         			window.location.href = "creditNoteForm.obj"
+=======
+        			"ChallanNo" : ChallanNo,
+        			"roId" : roId,
+        			"invoiceValue" : invoiceVal
+        			
+        		},
+        		success : function(){
+        			window.location.href = "creditNoteForm.obj";
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
         		}
         	})
         }

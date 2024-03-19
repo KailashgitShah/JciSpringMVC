@@ -22,17 +22,17 @@ public class EntryofpcsoModel {
 	@Column(name = "pcsorefid")
 	private int pcsorefid;
 
-	@Column(name = "reference_no",length = 256)
+	@Column(name = "Jc_reference_no",length = 256)
 	@NotNull
 	private String reference_no;
-
-	@Column(name = "reference_date",length = 256)
-	@Nullable
-	private String reference_date;
 
 	@Column(name = "pcso_date")
 	@NotNull
 	private String pcso_date;
+	
+	@Column(name = "pcso_req_date")
+	@NotNull
+	private String pcso_req_date;
 
 	@Column(name = "letter_ref",length = 256)
 	@NotNull
@@ -43,9 +43,9 @@ public class EntryofpcsoModel {
 	private String juteRatio;
 
 
-	@Column(name = "Delivery_period" , length = 256)
+	@Column(name = "dispatch_period" , length = 256)
 	@NotNull
-	private String deliveryPeriod;
+	private String dispatch_period;
 
 	@Column(name = "Letter_path" , length = 256)
 	@NotNull
@@ -67,6 +67,11 @@ public class EntryofpcsoModel {
 	@Column(name = "pcso_qty")
 	@NotNull
 	private Double pcsoQty = 0.0;
+	
+	
+	@Column(name = "pcso_req_qty")
+	@NotNull
+	private Double pcsoReqQty = 0.0;
 
 	@Column(name = "created_date")
 	private Date created_date;
@@ -90,20 +95,20 @@ public class EntryofpcsoModel {
 		this.reference_no = reference_no;
 	}
 
-	public String getReference_date() {
-		return reference_date;
-	}
-
-	public void setReference_date(String reference_date) {
-		this.reference_date = reference_date;
-	}
-
 	public String getPcso_date() {
 		return pcso_date;
 	}
 
 	public void setPcso_date(String pcso_date) {
 		this.pcso_date = pcso_date;
+	}
+
+	public String getPcso_req_date() {
+		return pcso_req_date;
+	}
+
+	public void setPcso_req_date(String pcso_req_date) {
+		this.pcso_req_date = pcso_req_date;
 	}
 
 	public String getLetterRef() {
@@ -122,12 +127,12 @@ public class EntryofpcsoModel {
 		this.juteRatio = juteRatio;
 	}
 
-	public String getDeliveryPeriod() {
-		return deliveryPeriod;
+	public String getDispatch_period() {
+		return dispatch_period;
 	}
 
-	public void setDeliveryPeriod(String deliveryPeriod) {
-		this.deliveryPeriod = deliveryPeriod;
+	public void setDispatch_period(String dispatch_period) {
+		this.dispatch_period = dispatch_period;
 	}
 
 	public String getLetterPath() {
@@ -170,6 +175,14 @@ public class EntryofpcsoModel {
 		this.pcsoQty = pcsoQty;
 	}
 
+	public Double getPcsoReqQty() {
+		return pcsoReqQty;
+	}
+
+	public void setPcsoReqQty(Double pcsoReqQty) {
+		this.pcsoReqQty = pcsoReqQty;
+	}
+
 	public Date getCreated_date() {
 		return created_date;
 	}
@@ -186,31 +199,24 @@ public class EntryofpcsoModel {
 		this.pcsoContractFlag = pcsoContractFlag;
 	}
 
-	@Override
-	public String toString() {
-		return "EntryofpcsoModel [pcsorefid=" + pcsorefid + ", reference_no=" + reference_no + ", reference_date="
-				+ reference_date + ", pcso_date=" + pcso_date + ", letterRef=" + letterRef + ", juteRatio=" + juteRatio
-				+ ", deliveryPeriod=" + deliveryPeriod + ", letterPath=" + letterPath + ", mill_code=" + mill_code
-				+ ", mill_name=" + mill_name + ", allocatedQty=" + allocatedQty + ", pcsoQty=" + pcsoQty
-				+ ", created_date=" + created_date + ", pcsoContractFlag=" + pcsoContractFlag + "]";
-	}
-
-	public EntryofpcsoModel(int pcsorefid, String reference_no, String reference_date, String pcso_date,
-			String letterRef, String juteRatio, String deliveryPeriod, String letterPath, String mill_code,
-			String mill_name, Double allocatedQty, Double pcsoQty, Date created_date, int pcsoContractFlag) {
+	public EntryofpcsoModel(int pcsorefid, String reference_no, String pcso_date, String pcso_req_date,
+			String letterRef, String juteRatio, String dispatch_period, String letterPath, String mill_code,
+			String mill_name, Double allocatedQty, Double pcsoQty, Double pcsoReqQty, Date created_date,
+			int pcsoContractFlag) {
 		super();
 		this.pcsorefid = pcsorefid;
 		this.reference_no = reference_no;
-		this.reference_date = reference_date;
 		this.pcso_date = pcso_date;
+		this.pcso_req_date = pcso_req_date;
 		this.letterRef = letterRef;
 		this.juteRatio = juteRatio;
-		this.deliveryPeriod = deliveryPeriod;
+		this.dispatch_period = dispatch_period;
 		this.letterPath = letterPath;
 		this.mill_code = mill_code;
 		this.mill_name = mill_name;
 		this.allocatedQty = allocatedQty;
 		this.pcsoQty = pcsoQty;
+		this.pcsoReqQty = pcsoReqQty;
 		this.created_date = created_date;
 		this.pcsoContractFlag = pcsoContractFlag;
 	}
@@ -219,5 +225,19 @@ public class EntryofpcsoModel {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public String toString() {
+		return "EntryofpcsoModel [pcsorefid=" + pcsorefid + ", reference_no=" + reference_no + ", pcso_date="
+				+ pcso_date + ", pcso_req_date=" + pcso_req_date + ", letterRef=" + letterRef + ", juteRatio="
+				+ juteRatio + ", dispatch_period=" + dispatch_period + ", letterPath=" + letterPath + ", mill_code="
+				+ mill_code + ", mill_name=" + mill_name + ", allocatedQty=" + allocatedQty + ", pcsoQty=" + pcsoQty
+				+ ", pcsoReqQty=" + pcsoReqQty + ", created_date=" + created_date + ", pcsoContractFlag="
+				+ pcsoContractFlag + "]";
+	}
+
+	
+	
+	
 }
 

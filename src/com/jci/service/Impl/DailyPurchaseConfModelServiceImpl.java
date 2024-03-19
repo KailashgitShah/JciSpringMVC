@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao.DailyPurchaseConfDao;
 import com.jci.model.DailyPurchaseConfModel;
 import com.jci.service.DailyPurchaseModelConfService;
@@ -63,10 +64,33 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 		}
 
 	@Override
-	public void firstLevel(String cropyr, String basis) {
-		dailyPurchaseConfDao.firstLevel(cropyr, basis);
+	public List<Double> firstLeveljute(String cropyr, String basis) {
+		return dailyPurchaseConfDao.firstLeveljute(cropyr, basis);
 		
 	}
+	@Override
+	public List<Integer> firstLevelbale(String cropyr, String basis) {
+		return dailyPurchaseConfDao.firstLevelbale(cropyr, basis);
+		
+	}
+	@Override
+	public List<Object[]> firstLeveljuteRegionwise(String cropyr, String basis) {
+		return dailyPurchaseConfDao.firstLeveljuteRegionwise(cropyr, basis);
+		
+	}
+	@Override
+	public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
+		return dailyPurchaseConfDao.firstLevelbaleRegionwise(cropyr, basis);
+}
 
+	@Override
+	public List<Object[]> firstLeveljutedpcwise(String cropyr, String basis, String region) {
+		return dailyPurchaseConfDao.firstLeveljutedpcwise(cropyr, basis, region);
+	}
+
+	@Override
+	public List<String> getCropYear() {
+	    return dailyPurchaseConfDao.getCropYear();
+	}
 
 }

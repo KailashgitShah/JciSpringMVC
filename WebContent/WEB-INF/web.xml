@@ -82,6 +82,12 @@
     <param-value>classpath:applicationContext.xml</param-value>
   </context-param>
   
+ <!--  for disable xss -->
+  <context-param>
+    <param-name>defaultHtmlEscape</param-name>
+    <param-value>true</param-value>
+</context-param>
+  
   <filter>
         <filter-name>optionsFilter</filter-name>
         <filter-class>com.jci.securityfilters.OptionsFilter</filter-class>

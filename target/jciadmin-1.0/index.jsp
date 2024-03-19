@@ -82,8 +82,13 @@
       <!-- CORE SCRIPTS-->
       <script src="assets/js/app.js" type="text/javascript"></script>
       <!-- PAGE LEVEL SCRIPTS-->
+<<<<<<< HEAD
             <script>
    /*    $(document).on('click' , '#submitBtn' , function(){
+=======
+  <script>
+        $(document).on('click' , '#submitBtn' , function(){
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
       var response = grecaptcha.getResponse();
       
       if(response.length === 0){
@@ -91,8 +96,13 @@
             return false;
       }
       
+<<<<<<< HEAD
       }) */
       </script>
+=======
+      })  
+   </script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
       
       <script type="text/javascript">
             $(function() {

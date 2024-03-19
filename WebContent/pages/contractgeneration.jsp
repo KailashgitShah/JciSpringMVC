@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-
-
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.*"%>
 <%@page import="java.io.File"%>
 
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -20,24 +17,13 @@
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/chosen.css">
-<script src="./assets/vendors/jquery/dist/jquery.min.js"
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"
 	type="text/javascript"></script>
-<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-	type="text/javascript"></script>
-<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-	type="text/javascript"></script>
-<script
-	src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-	type="text/javascript"></script>
-<!-- PAGE LEVEL PLUGINS-->
-<!-- CORE SCRIPTS-->
-<script src="assets/js/app.min.js" type="text/javascript"></script>
-
 <!-- PAGE LEVEL STYLES-->
 <style>
 .required:after {
@@ -46,12 +32,13 @@
 }
 </style>
 
-
 </head>
-
 <%
 String cropYear = (String) request.getSession().getAttribute("currCropYear");
 int count = (int) request.getAttribute("count") + 1;
+List<Object> allJuteVariety = (List<Object>) request.getAttribute("allJuteVariety");
+int sizeOfJuteVariey = allJuteVariety.size();
+String contactIdnNo = "BT-" + count;
 %>
 
 <body class="fixed-navbar">
@@ -78,117 +65,163 @@ int count = (int) request.getAttribute("count") + 1;
 								<form method="POST">
 
 									<div class="row">
-
-										<!-- 	<div class="col-sm-4 form-group">
-											<label>Delivery Type</label> <select
-												class="form-control pcso" name="deliveryType"
-												id="deliveryType" required>
-												<option disabled selected>-Select-</option>
-												<option value="Ex-Godown">Ex-Godown</option>
-												<option value="Mill-Delivery">Mill Delivery</option>
-
-											</select>
-										</div> -->
-
-
-										<div class="col-sm-4 form-group">
+										<div class="col-sm-5 form-group">
 											<label>Crop Year</label> <input class="form-control"
 												name="crop_year" id="crop_year" value="<%=cropYear%>"
 												readonly>
 										</div>
 
-
-										<div class="col-sm-4 form-group">
-											<label>Grade Composition</label> <select
-												class="form-control pcso" name="gradeComp" id="gradeComp"
-												required>
-												<option disabled selected>-Select-</option>
-												<%
-												List<String> gradeCompositionLable = (List<String>) request.getAttribute("gradeCompositionLable");
-												for (String s : gradeCompositionLable) {
-												%>
-												<option><%=s%></option>
-												<%
-												}
-												%>
-
-
-											</select>
-										</div>
-										<div class="col-sm-4 form-group">
-											<label class="required">PCSO Date</label>
-
-											<%
-											List<Date> pcsoDates = (List<Date>) request.getAttribute("pcsoDates");
-											%>
-											<select data-placeholder='Choose Dates..'
-												class='chosen-select form-control pcso' multiple
-												tabindex='3' name="pcso_date" id="pcso_date" required>
-												<option disabled>-Select-</option>
-												<%
-												for (int i = 0; i < pcsoDates.size(); i++) {
-												%>
-												<option value="<%=pcsoDates.get(i)%>"><%=pcsoDates.get(i)%>
-												</option>
-												<%
-												}
-												%>
-											</select>
-										</div>
-
-
-
-									</div>
-
-
-									<div class="row">
-										<div class="col-sm-3 form-group">
+										<div class="col-sm-5 form-group">
 											<label class="required">Contract identification No.</label> <input
 												class="form-control" name="contractIdn" id="contractIdn"
-												type="text" placeholder="Contract identification No."
-												value="BT00<%=count%>" required readonly> <span
-												id="contractIdnMsg" class="text-danger"></span>
+												type="text" value="<%=contactIdnNo%>" readonly>
 
 										</div>
-
-										<div class="col-sm-3 form-group">
-
-											<label class="required">Contact Date</label> <input
-												class="form-control" name="contractDate" id="contactDate"
-												type="text" readonly
-												value="<%=new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())%>">
-										</div>
-
-										<div class="col-sm-3 form-group">
-											<label class="required">Contract Qty.</label> <input
-												class="form-control" name="contract_qty" id="contract_qty"
-												type="number" readonly>
-										</div>
-										<div class="col-sm-3 form-group">
-											<label class="required">Contract Value</label> <input
-												class="form-control" name="contractValue" id="contractValue"
-												type="number" readonly>
-										</div>
-
 
 									</div>
+
+									<div class="ibox-body" id="gradeCompostion">
+
+										<div class="row">
+
+											<div class="col-sm-4 form-group">
+												<label>Available Qty</label> <input name="available_qty"
+													id="available_qty" type="number" class="form-control"
+													 />
+											</div>
+
+											<div class="col-sm-4 form-group">
+												<label>Label Name</label> <input name="labelname"
+													id="labelname" type="text" class="form-control"
+													value="<%=contactIdnNo%>/<%=cropYear%>" readonly />
+											</div>
+										</div>
+
+										<div class="row table-responsive-sm m-4">
+											<table>
+												<thead>
+													<tr class="row">
+														<th class="col-sm-6" scope="col">Variety</th>
+														<th class="col-sm-2" scope="col">System
+															Composition(%)</th>
+														<th class="col-sm-2" scope="col">Proposed
+															Composition(%)</th>
+														<th class="col-sm-2" scope="col">Remarks</th>
+													</tr>
+												</thead>
+												<tbody>
+
+													<%
+													int i = 1;
+													for (Object row : allJuteVariety) {
+														Object[] rowData = (Object[]) row; // Cast each row to an Object array
+														// Access individual columns by their index (0-based)
+														Object variety = rowData[1];
+														Object rate = rowData[2];
+													%>
+
+													<tr class="row">
+														<td class="col-sm-6"><input class="form-control"
+															name="variety<%=i%>" value="<%=variety%>"
+															id="variety<%=i%>" /></td>
+														<td class="col-sm-2"><input
+															class="clrSys form-control" name="system<%=i%>"
+															value="<%=rate%>" readonly /></td>
+														<td class="col-sm-2"><input type="number"
+															name="proposed<%=i%>" id="grade<%=i%>" step="any"
+															class="clrPro form-control" data-decimal="2" min="0"
+															required /></td>
+
+														<%
+														if (i == 1) {
+														%>
+														<td class="col-sm-2"><textarea name="remark"
+																id="remark" class="form-control" ></textarea></td>
+														<%
+														}
+														%>
+
+													</tr>
+													<%
+													i++;
+													}
+													%>
+													<tr class="row">
+														<td class="col-sm-6"></td>
+														<td class="col-sm-2"></td>
+														<td class="col-sm-2"><small id="error"
+															class="text-danger"></small></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+										<input type="hidden" name="size" value="<%=sizeOfJuteVariey%>">
+
+									</div>
+
+
+									<div class="ibox-body" id="contractgeneration">
+
+								<div class="row">
+											<div class="col-sm-4 form-group">
+												<label class="required">PCSO Date</label>
+
+												<%
+												List<Date> pcsoDates = (List<Date>) request.getAttribute("pcsoDates");
+												%>
+												<select data-placeholder='Choose Dates..'
+													class='chosen-select form-control pcso' multiple
+													tabindex='3' name="pcso_date" id="pcso_date" required>
+													<option disabled>-Select-</option>
+													<%
+													for (int p = 0; p < pcsoDates.size(); p++) {
+													%>
+													<option value="<%=pcsoDates.get(p)%>"><%=pcsoDates.get(p)%>
+													</option>
+													<%
+													}
+													%>
+												</select>
+											</div>
+								
+
+											<div class="col-sm-3 form-group">
+
+												<label class="required">Contact Date</label> <input
+													class="form-control" name="contractDate" id="contactDate"
+													type="text" readonly
+													value="<%=new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())%>">
+											</div>
+
+											<div class="col-sm-3 form-group">
+												<label class="required">Contract Qty.</label> <input
+													class="form-control" name="contract_qty" id="contract_qty"
+													type="number" readonly>
+											</div>
+									</div>
+
+										
+										<div id="list"></div>
+										<div>
+											<button class="btn btn-success float-right submit" type="submit">Submit</button>
+										</div>
+									</div>
+
 
 									<div class="row">
 										<input class="form-control" type="hidden" name="count"
 											id="count">
-										<div class=" col-sm-4 form-group">										 
-											<button class="btn btn-success" type="submit" value="Submit"
-												id="submit">Submit</button>
-												
+										<div class=" col-sm-4 form-group">
+											<button class="btn btn-warning" type="button" id="toggle">Next</button>
 										</div>
 									</div>
 								</form>
 
-								<div id="list"></div>
+
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<!-- END PAGE CONTENT-->
@@ -196,76 +229,178 @@ int count = (int) request.getAttribute("count") + 1;
 		</div>
 	</div>
 
+
 	<div class="sidenav-backdrop backdrop"></div>
-
-
-
+  <div class="preloader-backdrop" id="loader">
+            <div class="page-preloader">Loading</div>
+      </div> 
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+			type="text/javascript"></script>
+		<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+			type="text/javascript"></script>
+		<script
+			src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+			type="text/javascript"></script>
+		<!-- PAGE LEVEL PLUGINS-->
+	
+		<!-- CORE SCRIPTS-->
+		<script src="assets/js/app.min.js" type="text/javascript"></script>
 
+<script>
+$("#pcso_date").chosen();
+$("#pcso_date").addClass("chosen-select");
+
+
+
+async function loader(val) {
+    await new Promise((resolve) => {
+        document.getElementById("loader").style.setProperty('display', val);
+        setTimeout(resolve, 100); // Resolves the promise after 100ms
+    });
+}
+
+
+var flag = 1; //user for show and hide the content
+$("#toggle").on("click" ,async () => {
+	
+	var avaQty =$('#available_qty').val();
+	var remark = $('#remark').val();
+	
+	if(avaQty.length == 0){
+		alert("Please fill Available Qty");
+		return false;
+	}
+	
+	if(remark.length == 0){
+		alert("Please add Remarks..");
+		return false;
+	}
+	
+	
+	//grade composition validations
+	let totel = 0;
+	for (var i = 1; i <='<%=sizeOfJuteVariey%>'; i++) {
+		let temp = $('#grade' + i).val();
+		let variety = $('#variety' + i).val();
+		if (temp == '') temp = 0; 
+		totel += parseFloat(temp);
+	}
+	
+	
+	if ((+totel != 100)) {
+		document.getElementById("error").innerHTML = "total should be equal to 100 !";
+	 	return false;
+	} else {
+		document.getElementById("error").innerHTML = "";
+	}
+	
+	
+	
+	
+	//display properties
+    flag = flag == 1 ? 0 : 1;
+	document.getElementById("toggle").innerHTML = flag == 1 ? "Next" : "Prev";
+	
+	document.getElementById("gradeCompostion").style.setProperty('display',flag==1 ? 'block' : 'none');
+	//document.getElementById("contractgeneration").style.setProperty('visibility',flag==1 ? 'visible' : 'hidden');
+	document.getElementById("contractgeneration").style.setProperty('display',flag==1 ? 'none' : 'block');
+	
+ 
+})
+
+
+	document.getElementById("gradeCompostion").style.setProperty('display',flag==1 ? 'block' : 'none');
+	//document.getElementById("contractgeneration").style.setProperty('visibility',flag==1 ? 'visible' : 'hidden');
+	document.getElementById("contractgeneration").style.setProperty('display',flag==1 ? 'none' : 'block');
+
+</script>
 
 
 <script>
+document.getElementById("loader").style.setProperty('display','none' );
 var contractedValueMillWise = [];
 var listOfTotalQty = [];
 $("#pcso_date").chosen();
 $("#pcso_date").addClass("chosen-select");
-var parsedArray = null;
+var parsedArray = [];
+var jsonGrades = [];
+var jsonPcsoDates = [];
 var count = 0;
 
 	$(".pcso")
 			.on(
 					"change",
-					function() {					
-						var array = [];
-						listOfTotalQty = [];
+					function() {
+						
 						contractedValueMillWise = [];
+						listOfTotalQty = [];
+						parsedArray = [];
+						jsonPcsoDates = []
+						jsonGrades = [];
+						listOfTotalQty = [];
 						
+						var array = [];
+						var gradeArray = [];
+					
 						
-						var gradeComp = $("#gradeComp").val();
+						for(var i=1 ; i<= 6 ;i++){
+							var grade = $("#grade"+i).val();
+							if(grade != '') gradeArray.push(+grade);
+							else  gradeArray.push(0);
+						}
+						
+						/* console.log(gradeArray,"gradeArray"); */
+						 
 						//var deliveryType = $("#deliveryType").val();
 
 						$("#pcso_date").find("option:selected").each(function() {
 							array.push($(this).val());
 						});
+						
+					/* 	console.log(array , "Array"); */
 
-						var jsonArray = JSON.stringify(array);
-					
-						parsedArray = JSON.parse(jsonArray);
-					    var lastIndex = parsedArray.length - 1;
+						 jsonPcsoDates = JSON.stringify(array);
+						 jsonGrades = JSON.stringify(gradeArray);
+			
+					/* 	console.log(jsonPcsoDates , "jsonPcsoDates");
+						console.log(jsonGrades , "jsonGrades"); */
+						
+					    var lastIndex = array.length-1;
 					    
-					    if(parsedArray.length == 0){
-					    	
+					    if(array.length == 0){
 					    	$("#list").html("<div></div>");
 					    	$("#contract_qty").val(0);
-							
-							$("#contractValue").val(0.0);
 					    	return;
 					    }
 					    
-					    if(gradeComp != null && parsedArray.length != 0 ){
-					    	
+					    if(array.length != 0){	
 					   
 						 $
 								.ajax({
 									type : 'GET',
 									url : 'pcso_details.obj',
 									data : {
-										"pcso_dates" : jsonArray,
-										"gradeComp":gradeComp
+										"pcso_dates" : jsonPcsoDates,
+										"grades" : jsonGrades
 										//"deliveryType":deliveryType
 									},
 									success : function(result) {
 										var data1 = jQuery.parseJSON(result).model;
+										parsedArray = JSON.parse(jsonPcsoDates);
 										var List = data1.List;
 										var TotelContractedValue = data1.totelContractedValue;
 									     contractedValueMillWise = data1.contractedValueMillWise;
-										 count = List.length;
+									     
+										count = List.length;
 										
 										var sizeOfSingleResultArray = List[0].length; 
 										
-								 	    var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped">';
+								 	    var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped" style="margin-top:16px">';
 										var sum = 0;
 										var dateStringAsColumnName = parsedArray.map(ele => {
 											return '<th style="text-align:center">'+ ele + '</th>';
@@ -273,11 +408,11 @@ var count = 0;
 										
 									
 										
-										htmlTable += '<tr><th style="text-align:center">Mill code</th><th style="text-align:center">Mill Name</th>'+dateStringAsColumnName+'<th style="text-align:center">Total allocation</th><th style="text-align:center">Delivery Type</th></tr>';
+										htmlTable += '<thead><tr><th style="text-align:center">Mill code</th><th style="text-align:center">Mill Name</th>'+dateStringAsColumnName+'<th style="text-align:center">Total allocation</th><th style="text-align:center">Jute Value</th><th style="text-align:center">Delivery Type</th></tr></thead>';
 									
 										htmlTable += '<tbody id="body">';
 										for (i = 0; i < List.length; i++) {
-											
+											 
 											listOfTotalQty.push(List[i][sizeOfSingleResultArray-1]);
 											
 											htmlTable += '<tr border="2px"><td id="code'+i+'" style="text-align:center">'
@@ -292,7 +427,7 @@ var count = 0;
 													
 									   htmlTable +=	'<td id="allocated'+i+'" style="text-align:center">'
 													+ List[i][sizeOfSingleResultArray-1]
-													+ '</td><td><select onchange={updateOnChange('+i+')} class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
+													+ '</td><td style="text-align:center">' +contractedValueMillWise[i]+'</td><td><select onchange={updateOnChange('+i+')} class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
 													
 									   htmlTable +="<input type='hidden' id='contractedValue"+i+"' value='"+contractedValueMillWise[i]+"'>";
 													
@@ -303,11 +438,11 @@ var count = 0;
 // 													+ sum + '</td></tr>';
 										htmlTable += '</tbody></table>';
 									 htmlTable += '<br><h4> Total Allocation = ' + sum + '</h6>';
-										
+									
 										$("#list").html(htmlTable); 
 										$("#contract_qty").val(sum);
 										$("#count").val(count);
-										$("#contractValue").val(TotelContractedValue);
+										//$("#contractValue").val(TotelContractedValue);
 								
 									}
 								});
@@ -315,18 +450,26 @@ var count = 0;
 
 					});
 
- $("#submit")
+ $(".submit")
 			.click(
-					function() {
-
+					async () => {
+						
+						//loader active 
+						await loader("block");
+										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
 						var contractdate = $("#contactDate").val();
 						var contractQty = $("#contract_qty").val();
-						var gradeComp = $("#gradeComp").val();
-						
-						
+						var labelName = $("#labelname").val();
+						var availableQty = $("#available_qty").val();
+						var remarks = $("#remark").val();						
 						var millDetails = [];
+						
+						if(pcsoDate.length == 0){
+							alert("Please select PCSO Date");
+							return false;
+						}
 				
 						// Loop through the rows of the table (skipping the header row)
 						$('#table_r #body tr').each(function(index, row) {
@@ -335,43 +478,47 @@ var count = 0;
 						  var millName = $(cells[1]).text();
 						  var millCode = $(cells[0]).text();
 						  var contractedValue = $("#contractedValue"+index).val();
-						  var Qty = $(cells[cells.length - 2]).text(); // Assuming Quantity is in the last cell
+						  var Qty = $(cells[cells.length - 3]).text(); // Assuming Quantity is in the third last cell
 						  var delivery_type = $("#deliveryType"+index).val(); // Assuming Quantity is in the last cell
 						  millDetails.push({
 							  "millCode" : millCode,
 							  "millName" : millName,
-							  "contractedValue" : contractedValue,
+							  "juteValue" : contractedValue,
 							  "Qty" : Qty,
 							  "delivery_type" : delivery_type
 						  })
 
 						})
 						
-						//console.log(millDetails,"millDetails");
+						console.log(millDetails,"millDetails");
 						
 						var data = {
-								"pcsoDate" : pcsoDate,
+								"pcsoDate" : jsonPcsoDates,
 								"contractIdn" : contractIdn,
 								"contractdate" : contractdate,
 								"contractQty" : contractQty,
-								"gradeComp" : gradeComp,
+								"gradeComp" : jsonGrades,
 								"millDetails":millDetails,	
-								"SortingId": '<%=count%>'
+								"SortingId": '<%=count%>',
+								"labelName": labelName,
+								"availableQty": availableQty,
+								"remarks": remarks
 						 };
-						 
-						//console.log(data);
 						
-						
-                if(gradeComp != null){
+					
+                 if(jsonPcsoDates.length > 4){
+                	 
 				   $.ajax({
 							type : "POST",
 							url : "contractgenerationPcsoWiseSave.obj",
 							data :JSON.stringify(data),
 							async: false,
 							contentType: "application/json",
-							success : function(result) {
-								// alert("mid");
-								//window.location.href = "viewcontractgeneration.obj";
+							success : async (result) => {
+							  
+							  	window.location.href = "viewcontractgeneration.obj";
+							  	//loader hide
+								await loader("none");
 								// window.open("viewcontractgeneration.obj");
 								
 							},
@@ -418,43 +565,6 @@ console.log(contractedValueMillWise);
 
 	
 }
-</script>
-
-
-
-
-<script>
-$("#contractIdn")
-.on(
-		"blur",
-		function() {
-			var val = $(this).val();
-
-			$
-					.ajax({
-						type : "GET",
-						url : "isValid_Identification_No.obj",
-						data : {
-							"contractIdn" : val
-						},
-						success : function(result){
-							//console.log(result , "result");
-
-							if (result === 'true') {
-								document
-										.getElementById("contractIdnMsg").innerHTML = "Contract Identification Number is already exist";
-								
-							}
-
-							else {
-								document
-										.getElementById("contractIdnMsg").innerHTML = "";
-							
-							}
-						}
-
-					});
-		});
 </script>
 
 

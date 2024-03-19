@@ -688,12 +688,7 @@ public class InsertDataController_2 {
 	
 	 return new ModelAndView(new RedirectView("MSPgradesCombination.obj")); }
 	  
-	  @RequestMapping(value = "inventory")
-	  public void firstLevel(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
-		  ModelAndView mv = new ModelAndView("Inventory");
-		  dailyPurchaseModelConfService.firstLevel("2022-2023", "msp");
-	  }
-	  
+	 
 	  
 	  @RequestMapping(value = "SearchTally")
 	  public ModelAndView searchTally(HttpServletRequest request,HttpSession session, RedirectAttributes red) {
@@ -722,5 +717,57 @@ public class InsertDataController_2 {
 		 // System.out.println(arr.toString());
          return arr.toString();
       }
+	  
+	  
+		///////////// inventory////////////////////////
+
+		@RequestMapping(value = "inventory")
+		public ModelAndView firstLevel(HttpServletRequest request, RedirectAttributes redirectAttributes,
+				HttpSession session) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
+				return new ModelAndView("index");
+			} else {
+
+				ModelAndView mv = new ModelAndView("Inventory");
+				List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2022-2023", "msp");
+				List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2022-2023", "msp");
+				mv.addObject("jute", jute);
+				mv.addObject("bale", bale);
+
+				return mv;
+			}
+		}
+
+		@ResponseBody
+		@RequestMapping(value = { "inventoryjute" }, method = { RequestMethod.GET })
+		public String inventoryjute(HttpServletRequest request, RedirectAttributes redirectAttributes,
+				HttpSession session) {
+
+			String cropyr = request.getParameter("cropyr");
+			String basis = request.getParameter("basis");
+
+			List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr, basis);
+			final Gson gson = new Gson();
+			return gson.toJson((Object) (jute));
+
+		}
+
+		@ResponseBody
+		@RequestMapping(value = { "inventorybale" }, method = { RequestMethod.GET })
+		public String inventorybale(HttpServletRequest request, RedirectAttributes redirectAttributes,
+				HttpSession session) {
+
+			String cropyr = request.getParameter("cropyr");
+			String basis = request.getParameter("basis");
+			List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis);
+			final Gson gson = new Gson();
+			return gson.toJson((Object) (bale));
+
+		}
+
+
+		/////////////////////////////////////////////////
+
 	 
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <%@page import="com.jci.model.EntryDerivativePrice"%>
+=======
+ <%@page import="com.jci.model.EntryDerivativePrice"%>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
@@ -21,6 +25,13 @@
     <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
     <!-- THEME STYLES-->
     <link href="assets/css/main.min.css" rel="stylesheet" />
+<<<<<<< HEAD
+=======
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
      
 
     <!-- PAGE LEVEL STYLES-->
@@ -39,6 +50,7 @@
   text-decoration: none;
 }
 </style>
+<<<<<<< HEAD
 <script>
 
 <%
@@ -62,6 +74,9 @@ $(document).ready(function() {
     } );
 } );
 </script>
+=======
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 </head>
 
 <body class="fixed-navbar">
@@ -185,6 +200,14 @@ $(document).ready(function() {
             });
         })
     </script>
+<<<<<<< HEAD
 </body>
 
 </html>
+=======
+ 
+</body>
+
+</html>
+ 
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9

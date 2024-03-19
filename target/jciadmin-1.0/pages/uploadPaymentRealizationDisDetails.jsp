@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+\
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
@@ -94,7 +98,11 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
+<<<<<<< HEAD
 							    <span>${msg}</span>
+=======
+							    <span id="flashMessage">${msg}</span>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 							<div class="ibox-body">
 								<form action="saveuploadPaymentRealizationDisDetails.obj" method="POST" enctype="multipart/form-data">
 									<div class="row">
@@ -138,15 +146,29 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	    	return false;	
 	    }
 	    	else {
+<<<<<<< HEAD
 	    	alert("Please select excel file only..")
+=======
+	    	alert("Please select excel file only..");
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	        inputFile.value = '';
 	        return false;
 	    }
 	})
 	
 	</script>
+<<<<<<< HEAD
 
 
+=======
+	
+	    <script>
+	    //for hide the displayed message
+            setTimeout(function() {
+                document.getElementById('flashMessage').style.display = 'none';
+            }, 1500);
+        </script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->

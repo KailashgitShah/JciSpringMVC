@@ -79,7 +79,11 @@
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
+<<<<<<< HEAD
 							<span id="flashMessage">${msg}</span>
+=======
+							<span>${msg}</span>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 							<div class="ibox-body">
 								<form action="saveentryofGenrationbill.obj" method="POST"
 									name="myForm" enctype="multipart/form-data">
@@ -479,6 +483,181 @@
 
 
 
+<<<<<<< HEAD
+=======
+<!-- 
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							function formatDate(date) {
+								var day = date.getDate().toString().padStart(2,
+										'0');
+								var month = (date.getMonth() + 1).toString()
+										.padStart(2, '0');
+								var year = date.getFullYear();
+								return day + '/' + month + '/' + year;
+							}
+							$('#Challan_No1')
+									.on(
+											'change',
+											function() {
+												var field2Value = $(this).val();
+
+												$
+														.ajax({
+															type : 'GET',
+															url : 'fetchingdata1.obj',
+															data : {
+																"contractno" : field2Value
+															},
+															success : function(
+																	data) {
+																alert(data);
+
+																try {
+																	var dataArray = JSON
+																			.parse(data);
+
+																	if (dataArray
+																			&& dataArray.length > 0) {
+																		var contractNo = dataArray[0][0];
+																		var creationDateStr = dataArray[0][1];
+																		var millcode = dataArray[0][2];
+																		var creationDate = new Date(
+																				creationDateStr);
+																		console
+																				.log(
+																						"Creation Date as Date object: ",
+																						creationDate);
+
+																		$(
+																				'#Contarctno')
+																				.val(
+																						contractNo);
+																		$(
+																				'#ChallanDate1')
+																				.val(
+																						formatDate(creationDate));
+																		$(
+																				'#Millcode')
+																				.val(
+																						millcode);
+
+																		$
+																				.ajax({
+																					type : 'GET',
+																					url : 'fetchingdataforbill.obj',
+																					data : {
+																						"contractno" : millcode
+																					},
+																					success : function(
+																							secondData) {
+																						alert(secondData);
+																						try {
+																							var dataArray = JSON
+																									.parse(secondData);
+
+																							if (dataArray
+																									&& dataArray.length > 0) {
+																								var unit_name = dataArray[0][1];
+																								var unit_address1 = dataArray[0][2];
+																								var unit_state = dataArray[0][3];
+																								var unit_state_location = dataArray[0][4];
+																								var client_gstin = dataArray[0][5];
+																								var client_pan = dataArray[0][6];
+																								var client_state = dataArray[0][7];
+																								var client_address1 = dataArray[0][8];
+																								var client_name = dataArray[0][9];
+
+																								$(
+																										'#Recipient_Name')
+																										.val(
+																												unit_name);
+																								$(
+																										'#Recipient_GSTN')
+																										.val(
+																												client_gstin);
+																								$(
+																										'#Recipient_Address')
+																										.val(
+																												unit_address1);
+																								$(
+																										'#Consignee_Name')
+																										.val(
+																												client_name);
+																								$(
+																										'#Consignee_GSTN')
+																										.val(
+																												client_gstin);
+																								$(
+																										'#Consignee_Address')
+																										.val(
+																												client_address1);
+																								$(
+																										'#Clientstate')
+																										.val(
+																												client_state);
+																								$(
+																										'#Clientcode')
+																										.val(
+																												unit_state);
+																								$(
+																										'#ClientPan')
+																										.val(
+																												client_pan);
+																							}
+																						} catch (error) {
+																							console
+																									.error("Error parsing JSON: "
+																											+ error);
+																						}
+
+																					},
+																					error : function(
+																							error) {
+																						console
+																								.error(
+																										'Second Ajax call error:',
+																										error);
+																					}
+																				});
+																	}
+																} catch (error) {
+																	console
+																			.error("Error parsing JSON: "
+																					+ error);
+																}
+
+																var formattedDate = formatDate(ChallanDate1);
+																$('#Contarctno')
+																		.val(
+																				data1.Contract_No);
+																$(
+																		'#ChallanDate1')
+																		.val(
+																				formattedDate);
+
+															}
+
+														});
+											});
+
+						});
+	</script>
+
+
+
+
+
+
+
+
+
+
+	<script> -->
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	
 	
     <script type="text/javascript">
@@ -580,8 +759,11 @@
 
          
          </script>
+<<<<<<< HEAD
          
          <script>
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 		function calculateGST() {
 			// Retrieve the shipment value entered by the user
 			var shipmentValue = parseFloat(document
@@ -590,7 +772,11 @@
 			// Check if the entered value is a valid number
 			if (!isNaN(shipmentValue)) {
 				// Calculate SGST and CGST amounts (assuming 18% GST rate)
+<<<<<<< HEAD
 				var gstRate = 0.0;
+=======
+				var gstRate = 0.18;
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 				var sgstAmt = (gstRate / 2) * shipmentValue;
 				var cgstAmt = (gstRate / 2) * shipmentValue;
 				var totalGstAmt = sgstAmt + cgstAmt;
@@ -604,6 +790,7 @@
 			}
 		}
 	</script>
+<<<<<<< HEAD
 	<script>
     $(document).ready(function(){
       
@@ -612,6 +799,9 @@
         }, 3000); ded
     });
 </script>
+=======
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 
 

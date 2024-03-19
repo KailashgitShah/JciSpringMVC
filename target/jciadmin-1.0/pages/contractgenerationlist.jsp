@@ -27,6 +27,13 @@
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 
+<<<<<<< HEAD
+=======
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 <!-- PAGE LEVEL STYLES-->
 <style>
@@ -42,10 +49,20 @@
 	padding: 14px;
 	text-decoration: none;
 }
+<<<<<<< HEAD
 </style>
 <script>
 	$(document).ready(function() {
 		alert();
+=======
+  .hover{
+  color : blue;
+}
+
+</style>
+<script>
+	$(document).ready(function() {
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 		var table = $('#example-table').DataTable({
 			scrollY : "300px",
 			scrollX : true,
@@ -88,6 +105,10 @@
 						</tr>
 					</thead>
 				</table>
+<<<<<<< HEAD
+=======
+			<!--drill down listing -->
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 				<div class="accordion" id="accordionExample">
 					<%
 					int i = 1;
@@ -102,7 +123,11 @@
 									data-toggle="collapse" data-target="#collapse<%=i%>"
 									aria-expanded="false" aria-controls="collapse<%=i%>">
 
+<<<<<<< HEAD
 									<div class="row">
+=======
+									<div class="row hover">
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										<div class="col-sm-3"><%=i%></div>
 										<div class="col-sm-3"><%=contract.getContract_identification_no()%></div>
 										<div class="col-sm-3"><%=contract.getContract_date()%></div>
@@ -170,6 +195,11 @@
 	</script>
 
 	<script type="text/javascript">
+<<<<<<< HEAD
+=======
+	
+	//get conract details on the basis of the contractno
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 		function findDetails(contractId, id) {
 
 			$

@@ -32,7 +32,7 @@ public class PCSORequestLetter {
 	@Column(name = "creation_date", length = 30)
 	private Date creation_date;
 	
-	@Column(name = "RequestGenreationDate", length = 30)
+	@Column(name = "ReqGenDate", length = 30)
 	private String reqGenDate;
 	
 	@Column(name = "crop_year", length = 255)
@@ -43,6 +43,9 @@ public class PCSORequestLetter {
 	
 	@Column(name = "emailStatus")
 	private int emailStatus = 0;
+	
+	@Column(name = "emailSentOn",length = 255)
+	private String emailSentOn;
 	
 
 	public int getReqId() {
@@ -115,5 +118,15 @@ public class PCSORequestLetter {
 
 	public void setEmailStatus(int emailStatus) {
 		this.emailStatus = emailStatus;
+	}
+
+	public String getEmailSentOn() {
+		return emailSentOn;
+	}
+
+	public void setEmailSentOn(String emailSentOn) {
+		this.emailSentOn = emailSentOn;
 	}	
+	
+	
 }

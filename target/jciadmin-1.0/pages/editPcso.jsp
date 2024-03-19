@@ -77,9 +77,15 @@
 												value="<%=pcsoEl.getReference_no()%>" readonly>
 										</div>
 										<div class="col-sm-4 form-group">
+<<<<<<< HEAD
 											<label class="required">Reference Date</label> <input
 												class="form-control" name="referencedate" id="referencedate"
 												value="<%=pcsoEl.getReference_date()%>" readonly>
+=======
+											<label class="required">PCO Requested Date</label> <input
+												class="form-control" name="referencedate" id="referencedate"
+												value="<%=pcsoEl.getPcso_req_date()%>" readonly>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 										</div>
 
@@ -88,7 +94,11 @@
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
+<<<<<<< HEAD
 											<label class="required">PCSO Date</label> <input
+=======
+											<label class="required">PCO Date</label> <input
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 												class="form-control" name="pcsodate" id="pcsodate"
 												value="<%=pcsoEl.getPcso_date()%>" readonly>
 
@@ -111,7 +121,11 @@
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
+<<<<<<< HEAD
 											<label class="required">PCSO Qty.</label> <input
+=======
+											<label class="required">PCO Qty.</label> <input
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 												class="form-control" name="pscoQty" type="number"
 												id="pscoQty" readonly value="<%=pcsoEl.getPcsoQty()%>">
 										</div>

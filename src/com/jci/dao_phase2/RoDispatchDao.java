@@ -17,4 +17,6 @@ public interface RoDispatchDao {
 	public void create(RoDispatchModel roDispatchModel);
 
 	public List<RoDispatchModel> getAllRoDi();
+
+	public List<String> getCooperative(String regionIdString);
 }

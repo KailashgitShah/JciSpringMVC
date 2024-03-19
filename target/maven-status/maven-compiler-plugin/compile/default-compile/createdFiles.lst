@@ -126,10 +126,12 @@ com\jci\service_phase2\ConfirmationofClaimSettlementService.class
 com\jci\dao_phase2\GenrationDemandNoteDao.class
 com\jci\model\DistributionoftallyslipModel.class
 com\jci\service_phase2\PaymentDetailService.class
+com\jci\dao\impl_phase2\HODispatchDaoImpl.class
 com\jci\model\PaymentprocesstellyslipModel.class
 com\jci\dao\impl\PCSODaoImpl.class
 com\jci\model\blockModel.class
 com\jci\dao\impl\CommercialJuteVarietyGradesPriceDaoImpl.class
+com\jci\service_phase2\HOInstService.class
 com\jci\common\Constants.class
 com\jci\dao\impl\DailyPurchaseConfDaoImpl.class
 com\jci\service\ContractgenerationService.class
@@ -175,6 +177,7 @@ com\jci\model\PoliceStationModel.class
 com\jci\service\DistrictService.class
 com\jci\model\DailyPurchaseConfModel.class
 com\jci\dao\JbaDao.class
+com\jci\service\Impl_phase2\HODispachServiceImpl.class
 com\jci\dao_phase2\GenerationofBillDao.class
 com\jci\service\PaymentInstrumentService.class
 com\jci\dao_phase2\FactorssInvolvedCommercialDao.class
@@ -224,6 +227,7 @@ com\jci\dao\impl\UploadRecieptDaoImpl.class
 com\jci\service\VerifyFarmerService.class
 com\jci\dao\MSPPriceCalculationDao.class
 com\jci\dao_phase2\ContractGenerationDao2.class
+com\jci\dao_phase2\DispatchHODao.class
 com\jci\service\Impl\JBAServiceImpl.class
 com\jci\service\Impl\ProgOfAssortmentServiceImpl.class
 com\jci\dao\impl\ContractgenerationcommercialDaoImpl.class
@@ -231,6 +235,10 @@ com\jci\model\MillreceiptDto.class
 com\jci\securityfilters\OptionsFilter.class
 com\jci\dao_phase2\ConfirmationClaimSettlementDao.class
 com\jci\dao_phase2\GenrationCashDocumentDao.class
+<<<<<<< HEAD
+=======
+com\jci\model\JciDIHoModel.class
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 com\jci\model\PCSORequestLetter.class
 com\jci\dao\impl_phase2\ConfirmationClaimSettlementDaoImpl.class
 com\jci\service\Impl\RoleMasterServiceImpl.class

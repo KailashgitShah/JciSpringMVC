@@ -10,7 +10,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
+<<<<<<< HEAD
 <!-- GLOBAL MAINLY STYLES-->
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -18,6 +21,7 @@
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- PLUGINS STYLES-->
+<<<<<<< HEAD
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/chosen.css">
@@ -30,6 +34,13 @@
 <link
 	href="<%=request.getContextPath()%>/resources/css/styleUserReg.css"
 	rel="stylesheet">
+=======
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
+<!-- THEME STYLES-->
+<link href="assets/css/main.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/chosen.css">
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -37,6 +48,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<<<<<<< HEAD
 <script type="text/javascript" src='./resources/js/responsivevoice.js'></script>
 <script type="text/javascript"
 	src='<%=request.getContextPath()%>/resources/js/custom.js'></script>
@@ -60,6 +72,9 @@
 <script src="assets/js/app.min.js" type="text/javascript"></script>
 
 <!-- PAGE LEVEL STYLES-->
+=======
+
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <style>
 .field-icon {
 	float: right;
@@ -163,6 +178,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 										</div>
 									</div>
 
+<<<<<<< HEAD
 
 									<!-- <div class="col-sm-4 form-group">
 											<label>Jute Variety</label> <select name="jute_variety"
@@ -172,6 +188,8 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 										</div> -->
 
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 									<div class="row">
 										<div class="col-sm-10 form-group">
 
@@ -275,10 +293,20 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 									<div class="row">
 
+<<<<<<< HEAD
 										<div class="form-group">
 
 											<button class="btn btn-success" id="submit" type="submit">Submit</button>
 										</div>
+=======
+										<div class="form-group col-sm-1">
+											<button class="btn btn-success" id="submit" type="submit">Submit</button>
+										</div>
+										<div class="form-group col-sm-1">
+											<a class="btn btn-primary"
+												href="entryderivativepricelist.obj">Check Price List</a>
+										</div>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 									</div>
 								</form>
 							</div>
@@ -294,6 +322,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+<<<<<<< HEAD
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
@@ -303,17 +332,25 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	<script src="assets/css/docsupport/init.js" type="text/javascript"
 		charset="utf-8"></script>
 
+=======
+	<script defer src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	<script>
 		$(".chosen-select").chosen({
 			no_results_text : "Oops, nothing found!"
 		})
 	</script>
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	<script>
 		function validOptions() {
 			var val = $('#ParentMenuID').val();
 			var cropYear = $("#crop_year").val();
 			var delivery_type = $("#delibry_type").val();
+<<<<<<< HEAD
 			//$('#child').html("<option disabled>-Select-</option>");
 			//alert(val);
 			// console.log(val , cropYear , delivery_type);
@@ -321,6 +358,13 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 			if (val != null && val != '' && cropYear != null && cropYear != ""
 					&& delivery_type != '' && delivery_type != null) {
 				// console.log("i am in boy")
+=======
+			var html = "<label id='dpclabel' class='required'>District</label> <select data-placeholder='Choose District...' class='chosen-select form-control' name='district'  multiple tabindex='3' id = 'centerordpc'>";
+			if (val != null && val != '' && cropYear != null && cropYear != ""
+					&& delivery_type != '' && delivery_type != null) {
+		
+				//get the data based on delivery type and crop year and district
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 				$
 						.ajax({
 							type : "GET",
@@ -370,6 +414,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	</script>
 
 	<script>
+<<<<<<< HEAD
 		//grades validation
 		/* 	 	let tgrIds = ['#tgr1','#tgr2','#tgr3','#tgr4','#tgr5'];
 				let wgrIds = ['#wgr1','#wgr2','#wgr3','#wgr4','#wgr5'];
@@ -448,6 +493,10 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 			}; */
 
 		// 		*************************************************************
+=======
+		
+		//input validation
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 		$(".validation").on(
 				"keydown",
 				function() {
@@ -458,6 +507,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 				})
 
+<<<<<<< HEAD
 
 	
 			
@@ -486,11 +536,18 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 		} */
 
 		// 		******************************************************************
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	</script>
 
 	<script>
 		$("#submit").click(function(){
+<<<<<<< HEAD
 			
+=======
+ 
+			// grade validations...
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
  
 			let groupIDs = {
 			  t: ['#tgr1', '#tgr2', '#tgr3', '#tgr4', '#tgr5'],
@@ -526,6 +583,29 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 			return flag;
 		})
 	</script>
+<<<<<<< HEAD
 
 </body>
 </html>
+=======
+	<script src="./assets/vendors/jquery/dist/jquery.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script
+		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- PAGE LEVEL PLUGINS-->
+	<script src="./assets/vendors/DataTables/datatables.min.js"
+		type="text/javascript"></script>
+	<!-- CORE SCRIPTS-->
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	<!-- PAGE LEVEL SCRIPTS-->
+
+</body>
+</html>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9

@@ -47,7 +47,7 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 	@Override
 	public List<Object[]> getAlldata() {
 		// TODO Auto-generated method stub
-		String querystr = "select client_unit_code,unit_name from jcimilldetailchild";
+		String querystr = "select client_unit_code,unit_name from jcimilldetailchild order by unit_name";
 
 		List<Object[]> millsList = currentSession().createSQLQuery(querystr).list();
 
@@ -66,7 +66,7 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 
 	@Override
 	public void delete(int id) {
-		// String refNo = pcso.getReference_no();
+		// String refNo = pcso.getJc_reference_no();
 //		String dAll = pcso.getTotal_allocation();
 //		String sTAll = pcso.getSumof_totalallocation();
 //		int delAllocation = Integer.parseInt(dAll.substring(0, dAll.length() - 4));
@@ -80,7 +80,7 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 		String queryStr1 = "DELETE FROM dbo.jcientryof_pcso WHERE pcsorefid = :id";
 		this.sessionFactory.getCurrentSession().createSQLQuery(queryStr1).setParameter("id", id).executeUpdate();
 
-//		String queryStr2 = "UPDATE jcientryofpcso SET sumof_totalallocation = :sTAll, created_date = :cDate WHERE reference_no = :refNo";
+//		String queryStr2 = "UPDATE jcientryofpcso SET sumof_totalallocation = :sTAll, created_date = :cDate WHERE Jc_reference_no = :refNo";
 //		this.sessionFactory.getCurrentSession().createSQLQuery(queryStr2).setParameter("sTAll", newSum)
 //				.setParameter("cDate", cDate).setParameter("refNo", refNo).executeUpdate();
 	}
@@ -103,14 +103,14 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 //
 ////		int tAll = Integer.parseInt(entryofpcso.getTotal_allocation());
 ////		int sTAll = Integer.parseInt(entryofpcso.getSumof_totalallocation());
-//		String refNo = entryofpcso.getReference_no();
+//		String refNo = entryofpcso.getJc_reference_no();
 //
 //		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 //		LocalDateTime now = LocalDateTime.now();
 //		String cDate = dtf.format(now);
 //
-//		String querystr1 = "UPDATE jcientryofpcso SET sumof_totalallocation = :sTAll, created_date = :cDate WHERE reference_no = :refNo";
-//		String querystr2 = "UPDATE jcientryofpcso SET total_allocation = :tAll, sumof_totalallocation = :sTAll, created_date = :cDate WHERE reference_no = :refNo AND pcsorefid = :refId";
+//		String querystr1 = "UPDATE jcientryofpcso SET sumof_totalallocation = :sTAll, created_date = :cDate WHERE Jc_reference_no = :refNo";
+//		String querystr2 = "UPDATE jcientryofpcso SET total_allocation = :tAll, sumof_totalallocation = :sTAll, created_date = :cDate WHERE Jc_reference_no = :refNo AND pcsorefid = :refId";
 //
 //		Session session = sessionFactory.getCurrentSession();
 //
@@ -158,14 +158,14 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 
 	@Override
 	public List<String> getUniqueRefNos() {
-		String sql = "select distinct reference_no from jcientryof_pcso";
+		String sql = "select distinct Jc_reference_no from jcientryof_pcso";
 		List<String> list = currentSession().createSQLQuery(sql).list();
 		return list;
 	}
 
 	@Override
 	public List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo) {
-		String sql = "select * from jcientryof_pcso where reference_no = '"+ refNo + "'";
+		String sql = "select * from jcientryof_pcso where Jc_reference_no = '"+ refNo + "'";
 		
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
 		
@@ -173,15 +173,21 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 		
 		for(Object[] eleObjects : list) {
 			EntryofpcsoModel model = new EntryofpcsoModel();
-			model.setReference_no((String)eleObjects[12]);
+			
+			model.setReference_no((String)eleObjects[14]);
+			model.setPcso_req_date((String)eleObjects[13]);
 			model.setLetterRef((String)eleObjects[6]);
-			model.setPcso_date((String)eleObjects[11]);
+			model.setPcso_date((String)eleObjects[12]);
 			model.setPcsoQty((double)eleObjects[10]);
-			model.setDeliveryPeriod((String)eleObjects[3]);
+			model.setPcsoReqQty((double)eleObjects[11]);
+			model.setDispatch_period((String)eleObjects[3]);
 			model.setMill_code((String)eleObjects[7]);
 			model.setMill_name((String)eleObjects[8]);
 			model.setAllocatedQty((double)eleObjects[1]);
 			model.setPcsorefid((int)eleObjects[0]);
+			System.err.println(model.toString());
+			System.err.println(model.toString());
+			System.err.println(model.toString());
 			listOfPcso.add(model);
 		}
 		

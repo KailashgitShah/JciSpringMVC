@@ -62,6 +62,7 @@
 
 			<%
 			List<EntryofpcsoModel> allentryofpcsolist = (List<EntryofpcsoModel>) request.getAttribute("entryofpcso");
+<<<<<<< HEAD
 			String referencedate = (String) request.getAttribute("referencedate");
 			String pcsodate = (String) request.getAttribute("pcsodate");
 			String referenceNo = (String) request.getAttribute("referenceno");
@@ -70,6 +71,11 @@
 		/* 	for(EntryofpcsoModel e : allentryofpcsolist){
 				System.out.println(e.toString());
 			} */
+=======
+			String pcsodate = (String) request.getAttribute("pcsoDate");
+			String pcsoReqDate = (String) request.getAttribute("pcsoReqDate");
+			String referenceNo = (String) request.getAttribute("referenceno");
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 		
 			String deliveryPeriod = (String)request.getAttribute("deliveryPeriod");
 			String juteRatio = (String)request.getAttribute("juteRatio");
@@ -89,12 +95,17 @@
 
 									<div class="row">
 										<div class="col-sm-4 form-group">
+<<<<<<< HEAD
 											<label>Reference.No.</label> <input class="form-control"
+=======
+											<label>JC Ref No</label> <input class="form-control"
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 												type="text" value="<%=referenceNo%>" readonly
 												name="referenceno">
 										</div>
 
 										<div class="col-sm-4 form-group">
+<<<<<<< HEAD
 											<label>Reference Date</label> <input class="form-control"
 												type="text" value="<%=referencedate%>" readonly
 												name="referencedate">
@@ -103,6 +114,16 @@
 										<div class="col-sm-4 form-group">
 											<label>PCSO Date</label> <input class="form-control"
 												type="text" name="pcsodate" value="<%=pcsodate%>" readonly>
+=======
+											<label>PCO Date</label> <input class="form-control"
+												type="text"  name="pcsoDate" value="<%=pcsodate%>" readonly
+												>
+										</div>
+
+										<div class="col-sm-4 form-group">
+											<label>PCO Request Date</label> <input class="form-control"
+												type="text" name="pcsoReqDate" value="<%=pcsoReqDate%>" readonly>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										</div>
 									</div>
 									<div class="row">
@@ -112,8 +133,13 @@
 										</div>
 
 										<div class="col-sm-3 form-group">
+<<<<<<< HEAD
 											<label>Delivery Period</label> <input class="form-control"
 												name="deliveryPeriod" id="deliveryPeriod" value="<%=deliveryPeriod %>" readonly
+=======
+											<label>Dispatch Period</label> <input class="form-control"
+												name="dispatchPeriod" id="dispatchPeriod" value="<%=deliveryPeriod %>" readonly
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 												 >
 										</div>
 
@@ -123,10 +149,22 @@
 												>
 										</div>
 										<div class="col-sm-3 form-group">
+<<<<<<< HEAD
 											<label>PCSO Qty</label> <input class="form-control"
 												 name="pcsoQty" id="pcsoQty" readonly value="<%=pcsoQty%>"
 												>
 										</div>
+=======
+											<label>PCO Qty</label> <input class="form-control"
+												 name="pcsoQty" id="pcsoQty" readonly value="<%=pcsoQty%>"
+												>
+										</div>
+										<div class="col-sm-3 form-group">
+											<label>PCO Requested Qty</label> <input class="form-control"
+												 name="pcsoReqQty" id="pcsoReqQty" readonly value="<%=pcsoQty%>"
+												>
+										</div>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 									</div>
 
 									<br>
@@ -138,7 +176,11 @@
 											<label>Mill Name</label>
 										</div>
 										<div class="col-sm-4 form-group">
+<<<<<<< HEAD
 											<label>Total allocation</label>
+=======
+											<label>Total allocation (M. T.)</label>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										</div>
 									</div>
 
@@ -195,7 +237,11 @@
 										</button> -->
 										<button class="btn btn-default" type="submit" id="submit">Submit</button>
 										<button class="btn btn-default" type="submit" id="reset"
+<<<<<<< HEAD
 											formaction="entryofpcso.obj">Reset</button>
+=======
+											formaction="entryofpcso.obj">Back</button>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 									</div>
 								</form>
 							</div>

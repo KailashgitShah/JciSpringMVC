@@ -1,16 +1,23 @@
+<<<<<<< HEAD
 <%@page import="java.util.List"%> 
 <%@page import="java.math.BigInteger"%> 
 <%@page import="java.math.BigDecimal"%> 
 <%@page import="java.math.RoundingMode"%> 
+=======
+<%-- <%@page import="java.util.List"%> --%>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="com.jci.model.EntryPaymentDetailsModel"%>
 <%@page import="com.jci.model.FinancialConcurenceModel"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
+<<<<<<< HEAD
 <%@ page import="java.util.Date" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Locale" %>
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,13 +63,18 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
+<<<<<<< HEAD
                 <h1 class="page-title">Issue of Financial Concurence</h1>
+=======
+                <h1 class="page-title">Entry of Financial Concurence</h1>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
             </div>
             <%
 			EntryPaymentDetailsModel entryPaymentDetailsModel  = (EntryPaymentDetailsModel) request.getAttribute("entryPaymentDetailsModel");
 		    String fetchCont_no = (String) request.getAttribute("parsedstring");
 		    String Cont_qty = (String) request.getAttribute("parsedstring2");
 		    String issuedate = (String) request.getAttribute("parsed");
+<<<<<<< HEAD
 		    String paymentDueDate = (String) request.getAttribute("paymentDueDate");
 		    Object instrumentvalue =request.getAttribute("instrumentvalue");
 		    Object instrumentDateObject = request.getAttribute("instrumentDate");
@@ -104,17 +116,38 @@
 		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP); 
 		    
 	 	    
+=======
+		    
+	 	     FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
+		    Double charge =(Double) (request.getAttribute("cost"));
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	 	    
 			%>
             <div class="page-content fade-in-up">
                 <div class="row">
                     <div class="col-md-11">
                         <div class="ibox">
+<<<<<<< HEAD
                           <span id="flashMessage">${msg}</span>
                             <div class="ibox-body">
                        <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" >
                            <div class="child-checkbox" id="disableform">
                                        
+=======
+                          <span>${msg}</span>
+                            <div class="ibox-body">
+                       <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" >
+                           <div class="child-checkbox" id="disableform">
+                                       <div class="col-4">
+											    <div class="form-check mb-4">
+											      <input class="form-check-input" type="checkbox" id="inlineFormCheck" >
+											      
+											       <label class="form-check-label" for="inlineFormCheck">
+											        Carrying cost
+											      </label> 
+											    </div>
+											  </div>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 			                                  <div class="row">
 			                                       <div class="col-sm-4 form-group">
 				                                             <label>Contract No.</label>
@@ -128,7 +161,11 @@
 			                                         <div class="col-sm-4 form-group">
 															<label>FC Ref No. </label> 
 															<span class="text-danger">* </span>&nbsp; <span id="FC_Ref_No. " name=FC_Ref_No. class="text-danger"> </span>
+<<<<<<< HEAD
 															<input class="form-control" name="FC_Ref_No." id="FC_Ref_No." value="<%=fcref_no2 %>" readonly ="readonly" required
+=======
+															<input class="form-control" name="FC_Ref_No." id="FC_Ref_No." type="Number" required
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 													
 															>
 													</div> 
@@ -143,12 +180,17 @@
 			                                    
 			                                  
 			                                    
+<<<<<<< HEAD
 			                                    
 			                                            <div class="row">
+=======
+			                                    <div class="row">
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 			                                    
 			                                    
 			                                    
 			                                            <div class="col-sm-4 form-group">
+<<<<<<< HEAD
 				                                            <label>Contract PaymentDue  Date </label> 
 				                                            <span class="text-danger">* </span>&nbsp; <span id="Contract_PaymentDue_Date " name="Contract_PaymentDue_Date " class="text-danger" >   </span>
 															 <input class="form-control taxtbox" name="Contract_PaymentDue_Date" id ="Contract_PaymentDue_Date"  value=<%= paymentDueDate %>  placeholder="Contract_PaymentDue_Date" readonly="true">
@@ -233,11 +275,35 @@
 										</div>
 			
 									
+=======
+				                                            <label>Contracted Qty.</label> 
+				                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
+															 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0" type="double" placeholder="Qty Allowed" value=<%= Cont_qty %> readonly="true" required>
+				                                     </div>
+			                                    
+			                                           <div class="col-sm-4 form-group">
+				                                            <label> Qty. Allowed</label> 
+				                                            <span class="text-danger">* </span>&nbsp; <span id="QtyAllowed " name="QtyAllowed " class="text-danger" type="double"> </span>
+															 <input class="form-control taxtbox" name="QtyAllowed" id ="QtyAllowed"  min="0" type="double" placeholder="Qty Allowed" required>
+				                                     </div>
+				                                    <div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;">
+														  <label>Carrying cost Charged</label>
+														  <span class="text-danger">*</span>&nbsp;
+														  <span id="Carrying_cost" name="Carrying_cost" class="text-danger"></span>
+														  <input class="form-control" name="Carrying_cost" id="Carrying_cost" type="number" min="0"  value= <%= charge %>  required>
+														</div> 
+				                                    </div> 
+				                                      
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 			                                       
 			                                        
 				                                     <div class="row"> 
 			                                                <div class="col-sm-12 form-group">
+<<<<<<< HEAD
 												             <input type="submit"  value="Submit"class="btn btn-primary" id="submit">
+=======
+												             <input type="submit" value="Submit"class="btn btn-primary" id="submit">
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 												            </div>
 												          </div>
 			                                   </div>
@@ -264,6 +330,7 @@
 			    
 			    </script> -->
 			     <script type="text/javascript">
+<<<<<<< HEAD
 					$(document).ready(function(){
 					    function validateForm() {
 					        var contractdate = $("#contractdate").val();
@@ -364,6 +431,34 @@
 	
 	
 	</script>
+=======
+			    
+				$(document).ready(function(){
+					 $("#submit").click(function(){
+					
+						  var contractdate = $("#contractdate").val();
+						  var instdate = $("#instdate").val();
+						  var paymenttype = $("#paymenttype").val();
+						  
+						  if(contractdate =="" || instdate =="")
+							  {
+							    alert("Please select mandatory Fields!");
+							  }
+						  if(paymenttype =="letterofcredit")
+							  {
+								  var dateofship = $("#dateofship").val();
+								  var dateofexpiry = $("#dateofexpiry").val();
+								  if(dateofship =="" || dateofexpiry =="")
+									  {
+									    alert("Please select mandatory Fields!");
+									  }
+							  }
+						  
+					    });
+				 });
+					
+				</script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 		
 			    <script>
 			   
@@ -374,8 +469,13 @@
 			        textInput = textInput.replace(/[^A-Za-z ]+$/gm, ""); 
 			        element.value = textInput; 
 			    }
+<<<<<<< HEAD
 		</script>
 						<!-- <script>
+=======
+			</script>
+						<script>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 			    // Generate a random number between 0 and 999999 (inclusive)
 			    var num = Math.floor(Math.random() * 1000000);
 			
@@ -383,6 +483,7 @@
 			    var inputField = document.getElementById("FC_Ref_No.");
 			        inputField.value = num;
 			</script>
+<<<<<<< HEAD
 			  -->
 			
 			
@@ -455,6 +556,29 @@
         }, 3000); ded
     });
 </script>
+=======
+			
+			
+			
+				<script>
+				
+				  $(document).ready(function() {
+				    // Get references to the checkbox and form group elements
+				    const checkbox = $('#inlineFormCheck');
+				    const carryingCostFormGroup = $('#carryingCostFormGroup');
+				    
+				    // Add an event listener to the checkbox
+				    checkbox.change(function() {
+				      if (checkbox.is(':checked')) {
+				        carryingCostFormGroup.show();
+				      } else {
+				        carryingCostFormGroup.hide();
+				      }
+				    });
+				  });
+				</script>
+							
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 					 	 
 
 					    

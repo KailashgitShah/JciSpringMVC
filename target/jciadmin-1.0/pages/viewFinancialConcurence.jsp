@@ -113,7 +113,11 @@ th {
 			
 			<div class="page-content fade-in-up">
 				<div class="ibox">
+<<<<<<< HEAD
 					<span id="flashMessage">${msg}</span>
+=======
+					<span>${msg}</span>
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 					<div class="ibox-body">
 						<div class="scrollmenu">
 							<table
@@ -131,7 +135,10 @@ th {
 										<th>QtyAllowed</th>
 										<th>Carrying_Cost_Charged</th>
 										<th>Created_date</th>
+<<<<<<< HEAD
 										<th>Remarks</th>
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										
 									
 
@@ -153,7 +160,10 @@ th {
 										<td><%=financialConcurenceModel.getQtyAllowed()%></td>
 										<td><%=financialConcurenceModel.getCarrying_Cost_Charged()%></td>
 										<td><%=financialConcurenceModel.getCreated_date()%></td>
+<<<<<<< HEAD
 										<td><%=financialConcurenceModel.getRemarks()%></td>
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 										
 
 
@@ -190,6 +200,7 @@ th {
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
+<<<<<<< HEAD
 	
 		<script>
     $(document).ready(function(){
@@ -199,6 +210,8 @@ th {
         }, 3000); ded
     });
 </script>
+=======
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 	<!-- BEGIN THEME CONFIG PANEL-->
 
 	<!-- END THEME CONFIG PANEL-->
