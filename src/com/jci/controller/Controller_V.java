@@ -3904,7 +3904,7 @@ public class Controller_V {
 
 		}
 		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
-		System.out.println(AllList + "allistttttttttttttt");
+	//	System.out.println(AllList + "allistttttttttttttt");
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}
