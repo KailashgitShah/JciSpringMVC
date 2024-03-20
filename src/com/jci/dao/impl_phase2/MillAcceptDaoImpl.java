@@ -87,7 +87,6 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        Double Jute_value = (Double)row[13];
 	        String Contract_identification_no =(String)row[14];
 	        
-
 	        Contractgeneration cm = new Contractgeneration();
 	        cm.setContract_no(Contract_no);
 	        cm.setContract_date(Contract_date);
@@ -108,7 +107,7 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        cm.setJute_value(Jute_value);
 	        cm.setContract_identification_no(Contract_identification_no);
 	        ll.add(cm);
-	        System.out.println(ll.toString() + "kkkkkkkkkkkkkkkk");
+	      //  System.out.println(ll.toString() + "kkkkkkkkkkkkkkkk");
 	    }
 
 	    return ll;
