@@ -310,35 +310,40 @@
 </script>
 
 				
-	   <script>
-		function calculateGST() {
-			
-			var shipmentValue = parseFloat(document
-					.getElementsByName("Shipment_Value1")[0].value);
-			 var charge = parseFloat(document.getElementById("DaysDiffrencetotal").value);
+	  <script>
+    function calculateGST() {
+   
+        var shipmentValueInput = document.getElementsByName("Shipment_Value1")[0];
+        var sgstAmtInput = document.getElementById("SGST_Amt");
+        var checkbox = $('#inlineFormCheck');
 
-			var contQty = <%= Cont_qty %>;
-              if(shipmentValue>contQty){
-            	  alert("Qty allowed exceed the limit of contracted qty");
-            	  return false;
-              }
-              
-			
-			if (!isNaN(shipmentValue)) {
-				
-			
-				var sgstAmt = (charge  * 70) * shipmentValue;
-				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
-				
-				
-			}
-			else {
-		        
-		        document.getElementById("SGST_Amt").value = 0;
-		    }
-			return true; 
-		}
-	</script>
+        if (!checkbox.is(':checked')) {
+            sgstAmtInput.value = 0;
+            return true;
+        }
+
+        var shipmentValue = parseFloat(shipmentValueInput.value);
+        var charge = parseFloat(document.getElementById("DaysDiffrencetotal").value);
+        var contQty = <%= Cont_qty %>;
+
+      
+        if (isNaN(shipmentValue)) {
+            sgstAmtInput.value = 0; 
+            return true; 
+        }
+
+        if (shipmentValue > contQty) {
+            alert("Qty allowed exceeds the limit of contracted qty");
+            return false; 
+        }
+
+       
+        var sgstAmt = (charge * 70) * shipmentValue;
+        sgstAmtInput.value = sgstAmt.toFixed(2); 
+        return true; 
+    }
+</script>
+
 	
 	<script>
 	
@@ -389,17 +394,24 @@
 				<script>
 				
 				$(document).ready(function() {
-					
 				    const checkbox = $('#inlineFormCheck');
 				    const carryingCostFormGroup = $('#carryingCostFormGroup');
+				    const sgstAmtInput = document.getElementById("SGST_Amt");
 				    
+				   
 				    carryingCostFormGroup.hide();
+				    
+				 
+				    if (!checkbox.is(':checked')) {
+				        sgstAmtInput.value = 0;
+				    }
+				    
 				    checkbox.change(function() {
-				       if (checkbox.is(':checked')) {
+				        if (checkbox.is(':checked')) {
 				            carryingCostFormGroup.show();
 				        } else {
 				            carryingCostFormGroup.hide();
-				            document.getElementById("SGST_Amt").value = 0;
+				            sgstAmtInput.value = 0; 
 				        }
 				    });
 				});

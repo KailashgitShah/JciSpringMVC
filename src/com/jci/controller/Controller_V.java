@@ -2076,8 +2076,7 @@ public class Controller_V {
 		        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
 		        double instvalue=ratio*InstrumentValue1;
 		        String instvalue1 = String.valueOf(instvalue);
-		        
-		        //List<Object[]>paymentandContvalue =paymentDetailService.contvalue(st);
+		       
 		        
 			String millname65 = request.getParameter("millname65");
 			String Instrument = request.getParameter("Instrument");
