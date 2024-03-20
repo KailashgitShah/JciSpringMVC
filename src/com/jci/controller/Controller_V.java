@@ -3895,16 +3895,11 @@ public class Controller_V {
     @RequestMapping("viewmillAcc")
 	public String ViewMillAcceptance1(Model model, HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
-
 		ModelAndView mv = new ModelAndView("listMillAcceptence");
-
 		if (username == null) {
-
 			return "index";
-
 		}
 		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
-		System.out.println(AllList + "allistttttttttttttt");
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}

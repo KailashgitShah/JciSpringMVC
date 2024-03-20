@@ -283,13 +283,18 @@ $("#toggle").on("click" ,async () => {
 	
 	
 	//grade composition validations
-	let totel = 0;
+	var totel = 0.0;
 	for (var i = 1; i <='<%=sizeOfJuteVariey%>'; i++) {
 		let temp = $('#grade' + i).val();
 		let variety = $('#variety' + i).val();
-		if (temp == '') temp = 0; 
+		if (temp == '') temp = 0.0; 
 		totel += parseFloat(temp);
 	}
+	
+	totel = totel.toFixed(5);
+	
+	//console.log(totel , totel == 100.00000);
+
 	
 	
 	if ((+totel != 100)) {
@@ -540,9 +545,9 @@ var count = 0;
 function updateOnChange(id){ 
 var prevQty = listOfTotalQty[id];
 
-console.log(contractedValueMillWise);
+console.log(contractedValueMillWise , listOfTotalQty ,prevQty, "inside change funtion");
 
-	 $.ajax({
+	/*  $.ajax({
 		type:"GET",
 		url:"updateContractedValue.obj",
 		data:{
@@ -558,7 +563,7 @@ console.log(contractedValueMillWise);
 			
 			$("#contractValue").val(currSum);
 		}
-	}) 
+	})  */
 	
 	var currSum = 0;
 	
