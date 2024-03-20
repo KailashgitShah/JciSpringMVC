@@ -82,12 +82,16 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
@@ -254,6 +258,20 @@ public class Controller_V {
 
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
+	
+	//convert yyyy-MM-dd to dd-MM-yyyy	
+	String formateDate(String date) throws ParseException {
+		
+		SimpleDateFormat simpleDateFormatyy = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat simpleDateFormatdd = new SimpleDateFormat("dd-MM-yyyy");
+
+		Date creationDateTime = new Date();
+		
+		Date convertFormattedDate = simpleDateFormatyy.parse(date);
+		String withFormatedd =  simpleDateFormatdd.format(convertFormattedDate);
+		
+		return withFormatedd;
+	}
  
 	
 // generation of pcso request letter form	
@@ -308,16 +326,20 @@ public class Controller_V {
 
 		String referenceno = request.getParameter("referenceno");
 		String reqDate = request.getParameter("reqDate");
+		
+		
 		String crop_year = request.getParameter("cropyr");
 		double system_qty = Double.parseDouble(request.getParameter("uncontractedQty"));
 		double req_qty = Double.parseDouble(request.getParameter("reqQty"));
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+		SimpleDateFormat simpleDateFormatdd = new SimpleDateFormat("dd-MM-yyyy");
 
 		Date creationDateTime = new Date();
-//		Date convertTodateDate = simpleDateFormat.parse(creationDateTime);
-//		requestLetter.setCreationDateTime(creationDateTime);
 
-		String creation_date = simpleDateFormat.format(creationDateTime);
+		
+		reqDate = formateDate(reqDate);
+
+		String creation_date = simpleDateFormatdd.format(creationDateTime);
 		requestLetter.setReference_no(referenceno);
 		requestLetter.setCropYear(crop_year);
 		requestLetter.setSys_avail_qty(system_qty);
@@ -405,7 +427,7 @@ public class Controller_V {
 	public void downloadRequestLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
 		String fullPath = requestLetterpath + File.separator + fileName;
-		System.err.println(fullPath);
+		 
 		File imageFile = new File(fullPath);
 
 		if (imageFile.exists()) {
@@ -446,12 +468,16 @@ public class Controller_V {
 	//get the contract letter path
 	@Value("${upload.contractLetterJava}")
 	String contractLetterJava;
+	
+	
+	@Value("${upload.authorizedContracts}")
+	String authorizedContracts;
 
 	//download contract letter
 	@RequestMapping(value = "downloadContractLetter", method = RequestMethod.GET)
 	public void downloadContractLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
-		String fullPath = contractLetterJava + File.separator + fileName;
+		String fullPath = authorizedContracts + File.separator + fileName;
 
 		File imageFile = new File(fullPath);
 
@@ -488,6 +514,54 @@ public class Controller_V {
 		}
 
 	}
+	
+	
+
+	//download Unauthorized contract letter
+	@RequestMapping(value = "downloadUnAuthContractLetter", method = RequestMethod.GET)
+	public void downloadUnAuthContractLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String fileName = request.getParameter("imagePath");
+		String fullPath = contractLetterPath + File.separator + fileName;
+
+		File imageFile = new File(fullPath);
+
+		if (imageFile.exists()) {
+			try {
+				// Set the content type based on the file type
+				response.setContentType("application/pdf");
+
+				// download
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// fileName);
+
+				// view
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					responseOutputStream.write(buffer, 0, bytesRead);
+				}
+				fileInputStream.close();
+				responseOutputStream.close();
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+
+	}
+	
+	
+	
+	
 
 	//delete pcso request
 	@RequestMapping("pcsoRequestDelete")
@@ -518,7 +592,7 @@ public class Controller_V {
 		ModelAndView mv = new ModelAndView("entryofpcso");
 		String referenceno = request.getParameter("referenceno");
 		if (referenceno != null) {
-			String pcsodate = request.getParameter("pcsodate");
+			String pcsodate = request.getParameter("pcsoDate");
 			String pcsoReqdate = request.getParameter("pcsoReqDate");
 			String pcsoQty = request.getParameter("pcsoQty");
 			String pcsoReqQty = request.getParameter("pcsoReqQty");
@@ -536,6 +610,7 @@ public class Controller_V {
 			mv.addObject("juteRatio", juteRatio);
 
 		}
+		
 		final List<Object[]> allentryofpcsolist = this.pcsoentryservice.getAlldata();
 		List<String> allRequestLetterRefNo = this.pcsoentryservice.getAllRequest();
 		mv.addObject("entryofpcsolist", allentryofpcsolist);
@@ -613,6 +688,8 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+
 
 	//save Entry of pcso
 	@RequestMapping("saveentryofpcsodata")
@@ -625,11 +702,16 @@ public class Controller_V {
 			String referenceno = request.getParameter("referenceno");
 			String pcsDate = request.getParameter("pcsoDate");
 			String pcsoReqdate = request.getParameter("pcsoReqDate");
-			String sumoftotalallocation = request.getParameter("sumoftotalallocation");
+			String dispatchPeriod = request.getParameter("dispatchPeriod");
+			
+			pcsDate = formateDate(pcsDate);
+			pcsoReqdate = formateDate(pcsoReqdate);
+			dispatchPeriod = formateDate(dispatchPeriod);
+			
+			
 			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
 
-			String dispatchPeriod = request.getParameter("dispatchPeriod");
 			String juteRatio = request.getParameter("juteRatio");
 			String letterRef = request.getParameter("letterRefNo");
 
@@ -675,10 +757,8 @@ public class Controller_V {
 	public ModelAndView pcsolist(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("pcsolist");
-		List<EntryofpcsoModel> pcso = pcsoentryservice.getAllPcso();
 		List<String> refNos = pcsoentryservice.getUniqueRefNos();
 		mv.addObject("refNos", refNos);
-		mv.addObject("pcsolist", pcso);
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
@@ -1046,7 +1126,7 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "contractAuthorizationByIdnNo", method = RequestMethod.GET)
 	public void Authorize(HttpServletRequest request, RedirectAttributes redirectAttributes)
-			throws AddressException, IOException {
+			throws AddressException, IOException, com.itextpdf.text.DocumentException {
 		
 		String contractNOString = request.getParameter("contractNo");
 		String[] contractNos = contractNOString.split(",");
@@ -1065,7 +1145,33 @@ public class Controller_V {
 			String[] contractNo = contract.split("/");
 			 
 			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";;
-			String filePath = contractNo[3] + File.separator + fileName;	 
+			String filePath = contractNo[3] + File.separator + fileName;	
+			
+
+			
+			String loginName = (String) request.getSession().getAttribute("loginName");
+			String completeFilePathForOutput = authorizedContracts + File.separator + filePath;
+			
+			File newOutputFile = new File(completeFilePathForOutput);
+			if (!newOutputFile.getParentFile().exists()) {
+			    newOutputFile.getParentFile().mkdirs(); // Create parent directories if they don't exist
+			}
+
+			OutputStream outputStream = new FileOutputStream(completeFilePathForOutput);
+
+			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
+			PdfStamper stamper = new PdfStamper(reader, outputStream);
+
+			// Add your new content
+			PdfContentByte content = stamper.getOverContent(1); // Page number where the new content needs to be added
+			//ColumnText.showTextAligned(content, Element.ALIGN_CENTER, new Phrase("This is a sample text line for pdf generation."), 300, 400, 0);
+
+			// Add "Authorized By" content at the bottom
+			ColumnText.showTextAligned(content, Element.ALIGN_CENTER, new Phrase("Authorized By: " + loginName), 300, 50, 0);
+
+			// Close the PdfStamper
+			stamper.close();
+ 
 			
 			try {
 				// send email

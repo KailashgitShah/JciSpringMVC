@@ -17,6 +17,12 @@
 	width: 100%;
 	height: 32px;
 }
+
+.required:after {
+	content: " *";
+	color: red;
+}
+
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -248,7 +254,7 @@ if (bale.get(7) != null)
 
 											<label class="required">Date</label> <input
 												class="form-control" name="reqDate" id="reqDate"
-												placeholder="dd-mm-yyyy" autocomplete="off" required>
+												autocomplete="off" type="date" min="" required>
 
 										</div>
 										<div class="col-sm-4 form-group">
@@ -290,15 +296,13 @@ if (bale.get(7) != null)
 	</div>
 
 
-	<script>
+	 <script>
 		$(document).ready(function() {
-			$("#reqDate").datepicker({
-				dateFormat : 'dd-mm-yy',
-				minDate : 0
-			});
+			 var currentDate = new Date();
+			  var formattedDate = currentDate.toISOString().split('T')[0];
+			  document.getElementById("reqDate").min = formattedDate;
 		});
 	</script>
-
 	<script type="text/javascript">
 		$(document).ready(
 
@@ -313,7 +317,7 @@ if (bale.get(7) != null)
 					// to set ref number to alphanumeric
 					refNo.on("input", function() {
 						var inputVal = $(this).val();
-						var refVal = inputVal.replace(/[^a-zA-Z0-9-/]/g, "");
+						var refVal = inputVal.replace(/[^a-zA-Z0-9-]/g, "");
 						$(this).val(refVal);
 					});
 
