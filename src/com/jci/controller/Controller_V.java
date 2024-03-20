@@ -2156,10 +2156,32 @@ public class Controller_V {
 	@RequestMapping("saveentryofpaymentinstrumentDetails")
 	public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("PaymentDocument");
+		
+		
+		
+		
+		
+		final File theDir = new File(PaymentDocument);
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
+		
+		String originalFilename = SupportingDocument.getOriginalFilename();
+	    String uniqueFilename = generateUniqueFilename(originalFilename);
+	    File serverFile = new File(theDir, uniqueFilename);
+	    
+	    // Check if the file has already been uploaded
+	    if (!serverFile.exists()) {
+	        try {
+				SupportingDocument.transferTo(serverFile);
+			} catch (IllegalStateException e) {
+				
+				e.printStackTrace();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+	    }
 		final ModelAndView mv = new ModelAndView();
 		
 		
@@ -2199,17 +2221,19 @@ public class Controller_V {
 			String contrcat_value23 = request.getParameter("contrcat_value23");
 			String autorevolvingamount = request.getParameter("autorevolvingamount");
 			// String QtyAllowed = request.getParameter("QtyAllowed");
-			String originalFilename = SupportingDocument.getOriginalFilename();
+			//String originalFilename = SupportingDocument.getOriginalFilename();
+			
+//		 	 String uniqueFilename = generateUniqueFilename(originalFilename);
+////            File serverFile = new File(theDir, uniqueFilename);
+////			SupportingDocument.transferTo(serverFile);
+//			
 			
 			
-//            String uniqueFilename = generateUniqueFilename(originalFilename);
-//            File serverFile = new File(theDir, uniqueFilename);
-			//SupportingDocument.transferTo(serverFile);
-			
-			
-		 // Create unique identifier based on contract details
-		    String uniqueFilename = generateUniqueFilename(originalFilename);
-		    File serverFile = new File(theDir, uniqueFilename);
+//			 // Create unique identifier based on contract details
+//		 	 String uniqueFilename = generateUniqueFilename(originalFilename); 
+//			 File serverFile = new File(theDir,uniqueFilename);
+//			 SupportingDocument.transferTo(serverFile);
+//			 
 
 			// Conditionally set autorevolvingamount based on payment type
 
@@ -2250,7 +2274,7 @@ public class Controller_V {
 			//int  instruValue= Integer.parseInt(InstrumentValue);
 			entryPaymentDetailsModel.setInstrumentValue(instvalue1);
 			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
-			entryPaymentDetailsModel.setSupportingDocument(originalFilename);
+			entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
 			entryPaymentDetailsModel.setFc_status(0);
 
 			Date date3 = new Date();
@@ -2330,58 +2354,61 @@ public class Controller_V {
 	
 	//download the  support document which upload
 	
+	
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
-		//String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
-		String imagePath = PaymentDocument + File.separator + filename;
+	    String imagePath = PaymentDocument + File.separator + filename;
+	    File imageFile = new File(imagePath);
+	    System.err.println(imagePath);
+    	System.err.println(imagePath);
+	    // Check if the file exists
+	    if (imageFile.exists()) {
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	        try {
+	            // Set the content type based on the file type
+	            String contentType = determineContentType(filename);
+	            response.setContentType(contentType);
 
-		File imageFile = new File(imagePath);
-
-		// Check if the file exists
-		if (imageFile.exists()) {
-			try {
-				// Set the content type based on the file type
-				String contentType = determineContentType(filename);
-				response.setContentType(contentType);
-
-				// Set the content length and attachment disposition
-				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
-				FileInputStream fileInputStream = new FileInputStream(imageFile);
-				OutputStream responseOutputStream = response.getOutputStream();
-
-				byte[] buffer = new byte[1024];
-				int bytesRead;
-				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-					responseOutputStream.write(buffer, 0, bytesRead);
-				}
-
-				fileInputStream.close();
-				responseOutputStream.close();
-			} catch (IOException e) {
-				// Handle IO exception
-				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			}
-		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
+	            // Set the content length and attachment disposition
+	            response.setContentLength((int) imageFile.length());
+	            //response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+	            response.setHeader("Content-Disposition", "");
+	            // Stream the file content to the response
+	            try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+	                 OutputStream responseOutputStream = response.getOutputStream()) {
+	                byte[] buffer = new byte[1024];
+	                int bytesRead;
+	                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+	                    responseOutputStream.write(buffer, 0, bytesRead);
+	                }
+	            }
+	        } catch (IOException e) {
+	            // Handle IO exception
+	            e.printStackTrace();
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        }
+	    } else {
+	        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	    }
 	}
 
 	// Utility method to determine content type based on filename
 	private String determineContentType(String filename) {
-		if (filename.endsWith(".pdf")) {
-			return "application/pdf";
-		} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
-			return "image/jpeg";
-		} else if (filename.endsWith(".png")) {
-			return "image/png";
-		} else {
-			return "application/octet-stream"; // Default to binary data if content type is unknown
-		}
+	    if (filename.endsWith(".pdf")) {
+	        return "application/pdf";
+	    } else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+	        return "image/jpeg";
+	    } else if (filename.endsWith(".png")) {
+	        return "image/png";
+	    } else {
+	        return "application/octet-stream"; // Default to binary data if content type is unknown
+	    }
 	}
 
 	

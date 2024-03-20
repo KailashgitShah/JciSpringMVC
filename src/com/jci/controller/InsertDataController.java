@@ -17,6 +17,7 @@ import com.jci.model.UserRegistrationModel;
 import com.jci.model.UserRoleModel;
 import com.jci.model.RoleMasterModel;
 import com.jci.model.ZoneModel;
+import com.jci.model.dispatchdetailModel;
 import com.jci.model.ProgOfAssortmentModel;
 import com.jci.model.DailyPurchaseConfModel;
 import com.jci.model.PurchaseCenterModel;
@@ -5834,6 +5835,26 @@ public class InsertDataController
 
 			return mv;
 		}
+		
+//		
+//		@RequestMapping({ "viewDispatchChallan" })
+//		public ModelAndView viewDispatchChallanList(final HttpServletRequest request) {
+//			String username = (String) request.getSession().getAttribute("usrname");
+//			ModelAndView mv = new ModelAndView("ViewDispatchlist");
+//			if (username == null) {
+//				mv = new ModelAndView("index");
+//			}
+//												
+//
+//			final List<dispatchdetailModel> allUserRegistration = (List<dispatchdetailModel>) this.fiannacialConcurenceService
+//					.getviewDispatchChallan();
+//			mv.addObject("viewDispatchChallan", allUserRegistration);
+//			
+//
+//			return mv;
+//		}
+		
+		
 		@RequestMapping({ "viewPaymentForFC" })
 		public ModelAndView viewpaymentforFC(final HttpServletRequest request) {
 			String username = (String) request.getSession().getAttribute("usrname");

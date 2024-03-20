@@ -23,23 +23,25 @@ letest code of entry payment
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
 <!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
-	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
-
+<!-- PAGE LEVEL STYLES-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="assets/css/chosen.css">
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
 
 <!-- CORE SCRIPTS-->
@@ -485,23 +487,21 @@ letest code of entry payment
 	<div class="sidenav-backdrop backdrop"></div>
 
 
-	<script defer src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
+		<script src="./assets/vendors/jquery/dist/jquery.min.js"
 		type="text/javascript"></script>
+		<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
 		type="text/javascript"></script>
 	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
 		type="text/javascript"></script>
-<!-- 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script> -->
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
 	<script
 		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
 		type="text/javascript"></script>
 	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
 	<!-- CORE SCRIPTS-->
-<script src="assets/js/app.min.js" type="text/javascript"></script>
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">
