@@ -2,6 +2,7 @@
 <%@page import="com.jci.model.EntryPaymentDetailsModel"%>
 
 <%@page import="java.util.HashMap"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
 <%@page import="com.jci.model.RoleMasterModel"%>
@@ -110,6 +111,7 @@ th {
 			<%
 			List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) request.getAttribute("entryPaymentDetailsModel");
 		 
+			
 			%>
 			
 			<div class="page-content fade-in-up">
@@ -145,6 +147,7 @@ th {
 								<tbody>
 									<%
 									int i = 1;
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (EntryPaymentDetailsModel  entryPaymentDetailsModel : allUserRegistration) {
 
 										if (i <= 200) {
@@ -153,15 +156,16 @@ th {
 										<td><%=i%></td>
 										<td><%= entryPaymentDetailsModel.getContractno() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
-										<td><%= entryPaymentDetailsModel.getInstdate() %></td>
+									
+										 <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
 										<td><%= entryPaymentDetailsModel.getIFSC() %></td>
 										<td><%= entryPaymentDetailsModel.getBankName() %></td>
 										<td><%= entryPaymentDetailsModel.getBranch() %></td>
 										<td><%= entryPaymentDetailsModel.getPayment() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
-										<td><%= entryPaymentDetailsModel.getDateofexpiry() %></td>
-										<td><%= entryPaymentDetailsModel.getDateofship() %></td>
-										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
+										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
+										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
+									   <td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
 										<td><%= entryPaymentDetailsModel.getRemarks() %></td>
 									<%-- 	<td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
 									<%-- 	<td><%= entryPaymentDetailsModel.getSupportingDocument() %></td> --%>
