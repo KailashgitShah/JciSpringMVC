@@ -32,8 +32,15 @@ public class PurchaseRegisterDTO {
 	private String farmername;
 	private int rate_slipno;
 	private String tally_status;
+	private String FDtoTD;
 	
 	
+	public String getFDtoTD() {
+		return FDtoTD;
+	}
+	public void setFDtoTD(String fDtoTD) {
+		FDtoTD = fDtoTD;
+	}
 	public String getFarmername() {
 		return farmername;
 	}
@@ -160,6 +167,8 @@ public class PurchaseRegisterDTO {
 	
 	
 	
+	
+	
 	@Override
 	public String toString() {
 		return "PurchaseRegisterDTO [regionId=" + regionId + ", centername=" + centername + ", tallyslipno="
@@ -168,13 +177,13 @@ public class PurchaseRegisterDTO {
 				+ ", gross_qty=" + gross_qty + ", deduc_qty=" + deduc_qty + ", net_qty=" + net_qty + ", amountpayable="
 				+ amountpayable + ", garsat=" + garsat + ", td_base=" + td_base + ", binno=" + binno + ", F_name="
 				+ F_name + ", farmername=" + farmername + ", rate_slipno=" + rate_slipno + ", tally_status="
-				+ tally_status + "]";
+				+ tally_status + ", FDtoTD=" + FDtoTD + "]";
 	}
 	
 	public PurchaseRegisterDTO(String regionId, String centername, String tallyslipno, String datepurchase,
 			String farmerregno, String placeofpurchase, String cropyr, String basis, String jutevariety,
 			double gross_qty, double deduc_qty, double net_qty, double amountpayable, double garsat, String td_base,
-			int binno, String f_name, String farmername, int rate_slipno, String tally_status) {
+			int binno, String f_name, String farmername, int rate_slipno, String tally_status, String fDtoTD) {
 		super();
 		this.regionId = regionId;
 		this.centername = centername;
@@ -196,6 +205,7 @@ public class PurchaseRegisterDTO {
 		this.farmername = farmername;
 		this.rate_slipno = rate_slipno;
 		this.tally_status = tally_status;
+		FDtoTD = fDtoTD;
 	}
 	public PurchaseRegisterDTO() {
 		super();

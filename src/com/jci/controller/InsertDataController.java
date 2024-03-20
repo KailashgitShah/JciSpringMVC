@@ -5891,13 +5891,15 @@ public class InsertDataController
                 redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
                 return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
 	    	}
+	    	String FDtoTD = purchasesdateFrom+" To "+purchasesdateTo;
 	    	 for (PurchaseRegisterDTO Plist : purchaselist) {
 	        	 centername = Plist.getCentername();
 	        	 roname = Plist.getRegionId();
+	        	 Plist.setFDtoTD(FDtoTD);
 	        }
 	    
 		        try {
-		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
+		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\PurchaseReport.jrxml");
                     Map<String, Object> parameters = new HashMap<String, Object>();
                     // Prepare data sources
                     JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(purchaselist);
@@ -5908,7 +5910,7 @@ public class InsertDataController
 
 
                  response.setContentType("application/pdf");
-                 response.setHeader("Content-Disposition", "attachment; filename=DPCReport.pdf");
+                 response.setHeader("Content-Disposition", "attachment; filename=PurchaseRegister.pdf");
                  try (OutputStream out = response.getOutputStream()) {
                      JRPdfExporter exporter = new JRPdfExporter();
                      exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
