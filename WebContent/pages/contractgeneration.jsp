@@ -85,8 +85,8 @@ String contactIdnNo = "BT-" + count;
 										<div class="row">
 
 											<div class="col-sm-4 form-group">
-												<label>Available Qty</label> <input name="available_qty"
-													id="available_qty" type="number" class="form-control"
+												<label  class="required">Available Qty</label> <input name="available_qty"
+													id="available_qty" type="number" class="form-control" min='0'
 													 />
 											</div>
 
@@ -106,7 +106,7 @@ String contactIdnNo = "BT-" + count;
 															Composition(%)</th>
 														<th class="col-sm-2" scope="col">Proposed
 															Composition(%)</th>
-														<th class="col-sm-2" scope="col">Remarks</th>
+														<th class="col-sm-2 required" scope="col">Remarks</th>
 													</tr>
 												</thead>
 												<tbody>

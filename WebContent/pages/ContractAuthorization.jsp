@@ -13,24 +13,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
-<!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
-	rel="stylesheet" />
-<!-- THEME STYLES-->
-<link href="assets/css/main.min.css" rel="stylesheet" />
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="assets/css/main.min.css" rel="stylesheet" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <style>
 .scrollmenu {
@@ -91,9 +84,10 @@ String contractNos ="";
 										<th>Mill Name</th>
 										<th>Allocated Qty(Qtls.)</th>
 										<th>Jute Value</th>
-										<th>Grade Composition</th>
+										<th>Contract No</th>
 										<th>PCSO Date</th>
 										<th>Delivery Period</th>
+										<th></th>
 										<th></th>
 									</tr>
 
@@ -106,6 +100,7 @@ String contractNos ="";
 										//String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
 										String encodedFilePath = URLEncoder.encode(fullFolder, "UTF-8");
 										contractNos += requestEl.getContract_no() + ",";
+										System.err.println(i);
 									%>
 									<tr>
 
@@ -114,11 +109,11 @@ String contractNos ="";
 										<td><%=requestEl.getMill_name()%></td>
 										<td><%=requestEl.getMill_qty()%></td>
 										<td><%=requestEl.getJute_value()%></td>
-										<td><%=requestEl.getGrade_composition()%></td>
+										<td><%=requestEl.getContract_no()%></td>
 										<td><%=requestEl.getPcso_date()%></td>
 										<td><%=requestEl.getDelivery_type()%></td>
 										<td class="text-center"><a target='_blank'
-											href="downloadContractLetter.obj?imagePath=<%=encodedFilePath%>"
+											href="downloadUnAuthContractLetter.obj?imagePath=<%=encodedFilePath%>"
 											class='btn btn-success'><i class='fa fa-download'
 												aria-hidden='true'></i></a></td>
 
@@ -193,13 +188,16 @@ String contractNos ="";
 			} 
 		
 		//select all functinality
+	
 		function selectAll(){
+			let i = 1;
 			if(selectAllStatus){
 				$(".selectId").attr('disabled' , 'disabled');
 				$(".selectId").removeClass("btn-outline-warning");
 				$("#authoriseAllBtn").removeClass("d-none");
 				$("#authoriseAllBtn").addClass("d-block");
 				document.getElementById("selectAllBtn").innerHTML = "Deselect";
+				console.log(i++);
 			}
 		
 			else {
@@ -238,38 +236,31 @@ String contractNos ="";
 		}
 	</script>
 
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-
-	<script type="text/javascript">
-		$(function() {
-			$('#example-table').DataTable({
-				pageLength : 10,
-			//"ajax": './assets/demo/data/table_data.json',
-			/*"columns": [
-			    { "S": "name" },
-			    { "data": "office" },
-			    { "data": "extn" },
-			    { "data": "start_date" },
-			    { "data": "salary" }
-			]*/
-			});
-		})
-	</script>
+ <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
+    
+     <script type="text/javascript">
+        $(function() {
+            $('#example-table').DataTable({
+                pageLength: 20,
+                //"ajax": './assets/demo/data/table_data.json',
+                /*"columns": [
+                    { "S": "name" },
+                    { "data": "office" },
+                    { "data": "extn" },
+                    { "data": "start_date" },
+                    { "data": "salary" }
+                ]*/
+            });
+        })
+    </script>
 </body>
 
 </html>
