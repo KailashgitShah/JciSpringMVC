@@ -128,8 +128,8 @@ String contactIdnNo = "BT-" + count;
 															class="clrSys form-control" name="system<%=i%>"
 															value="<%=rate%>" readonly /></td>
 														<td class="col-sm-2"><input type="number"
-															name="proposed<%=i%>" id="grade<%=i%>" step="any"
-															class="clrPro form-control" data-decimal="2" min="0"
+															name="proposed<%=i%>" id="grade<%=i%>" step="0.01"
+															class="clrPro form-control"  min="0"
 															required /></td>
 
 														<%
@@ -457,9 +457,9 @@ var count = 0;
  $(".submit")
 			.click(
 					async () => {
-						
+						//alert("async");
 						//loader active 
-						await loader("block");
+						//await loader("block");
 										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
@@ -508,11 +508,11 @@ var count = 0;
 								"availableQty": availableQty,
 								"remarks": remarks
 						 };
-						
+						//alert(data);
 						//console.log(data);
 					
                  if(jsonPcsoDates.length > 4){
-                	 
+                	// alert("true");
 				   $.ajax({
 							type : "POST",
 							url : "contractgenerationPcsoWiseSave.obj",
@@ -520,19 +520,23 @@ var count = 0;
 							async: false,
 							contentType: "application/json",
 							success : async (result) => {
-							  
-							  	window.location.href = "viewcontractgeneration.obj";
+							//  alert("result");
+							 	//window.location.href = "authorization.obj";
 							  	//loader hide
-								await loader("none");
-								// window.open("viewcontractgeneration.obj");
+								//await loader("none");
+								// window.open("authorization.obj");
+								alert("data saved successfully !");
+								window.location.href = "authorization.obj";
 								
 							},
 							error: function(xhr, status, error) {
+								alert("error");
 						        console.error("Error: " + error);
 						    }
 						}); 
 				 }
                   else{
+                	  alert("false");
                 	  return false;
                   }
 		 

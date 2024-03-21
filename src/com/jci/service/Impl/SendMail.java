@@ -42,6 +42,7 @@ public class SendMail {
 		Session session = Session.getInstance(props);
 
 		try {
+			Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
 			Message message = new MimeMessage(session);
 			message.setRecipients(Message.RecipientType.TO, toAddresses);
 			message.setFrom(new InternetAddress(username));
@@ -100,6 +101,7 @@ public class SendMail {
 
 		Session session = Session.getInstance(props);
 		try {
+			Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
 			Message message = new MimeMessage(session);
 			message.setRecipients(Message.RecipientType.TO, toAddresses);
 			message.setFrom(new InternetAddress(username));

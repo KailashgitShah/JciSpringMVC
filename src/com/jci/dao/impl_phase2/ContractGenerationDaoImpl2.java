@@ -49,21 +49,21 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		List<Object[]> combinedResult = new ArrayList<>(listOfGradesMillDelivery);
 		combinedResult.addAll(listOfGradesExGodown);
 
-		for (Object[] gradeP : combinedResult) {
-			System.err.println("**********");
-			System.err.println("******Grade prices****");
-
-			System.err.println(((BigDecimal) gradeP[0]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[1]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[2]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[3]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[4]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[5]).doubleValue());
-
-			System.err.println("**********");
-			System.err.println("**********");
-
-		}
+//		for (Object[] gradeP : combinedResult) {
+//			System.err.println("**********");
+//			System.err.println("******Grade prices****");
+//
+//			System.err.println(((BigDecimal) gradeP[0]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[1]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[2]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[3]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[4]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[5]).doubleValue());
+//
+//			System.err.println("**********");
+//			System.err.println("**********");
+//
+//		}
 
 		return combinedResult;
 
@@ -107,11 +107,11 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		rows = query.list();
 
 		int i = 0;
-		for (String price : gradeComp) {
-			// gc.add((Double) price);
-			System.out.println("Grade" + i + " " + price + " ");
-			i++;
-		}
+//		for (String price : gradeComp) {
+//			// gc.add((Double) price);
+//			System.out.println("Grade" + i + " " + price + " ");
+//			i++;
+//		}
 
 		List<Object[]> listOfGradesPrice = getListOfGradesPrice(currCropYear);
 
@@ -148,21 +148,21 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			int sizeOfComponents = pg.size() / 2;
 			Double contractedValueForPerticularMill = 0.0;
 			for (int j = 0; j < sizeOfComponents; j++) {
-				System.out.println(
-						Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
+//				System.out.println(
+//						Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
 				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
 						* (totalAllocatedToMill * pg.get(j));
 			}
-			System.out.println("-------------------------------------------");
-			System.out.println(contractedValueForPerticularMill);
-			System.out.println("-------------------------------------------");
+//			System.out.println("-------------------------------------------");
+//			System.out.println(contractedValueForPerticularMill);
+//			System.out.println("-------------------------------------------");
 			contractedValueForPerticularMill = Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
 			contractedValueList.add(contractedValueForPerticularMill);
-			System.out.println("temp : " + contractedValueForPerticularMill);
+			//System.out.println("temp : " + contractedValueForPerticularMill);
 			totalContractedValue += contractedValueForPerticularMill;
 		}
 		totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
-		System.err.println(totalContractedValue);
+	//	System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
@@ -223,19 +223,19 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		double totalAllocatedToMill = Double.parseDouble(totalQtyOfMill);
 		int updatedContractedValue = 0;
 
-		System.err.println("updated function called in i value starts from " + i + "---");
-
-		System.err.println(gradeArray.size() + " " + pg.size());
+//		System.err.println("updated function called in i value starts from " + i + "---");
+//
+//		System.err.println(gradeArray.size() + " " + pg.size());
 
 		for (int j = 0; j < gradeArray.size(); j++) {
 
 			updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100) * (totalAllocatedToMill * pg.get(i));
-			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
-			System.err.println("j = " + j + " " + "i = " + i);
+//			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
+//			System.err.println("j = " + j + " " + "i = " + i);
 			i++;
 		}
 
-		System.err.println(updatedContractedValue);
+		//System.err.println(updatedContractedValue);
 
 		return updatedContractedValue;
 

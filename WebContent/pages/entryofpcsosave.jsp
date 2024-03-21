@@ -183,7 +183,6 @@
 
 									num =  entryofpcsolist.getAllocatedQty();
 									sum += num;
-
 									}
 									%>
 									<div class="row">

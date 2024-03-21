@@ -3982,10 +3982,9 @@ public class Controller_V {
 	@RequestMapping("downloadSupportingDocumententMillAccept")
 	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 
-		//String imageDirectory = "C:\\Users\\Mansi.Gupta\\Documents\\millAcceptFile"; // Replace with your image
 		String imageDirectory =millAcceptDownolad;												// directory path
-
-		String imagePath = imageDirectory + File.separator + filename;
+		String idn = filename.split("C")[0];
+		String imagePath = imageDirectory + File.separator + idn + File.separator + filename;
 
 		File imageFile = new File(imagePath);
 
