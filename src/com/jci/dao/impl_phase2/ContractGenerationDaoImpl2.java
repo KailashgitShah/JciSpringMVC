@@ -33,8 +33,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	List<Double> pg = new ArrayList<>();
-	List<Double> gc = new ArrayList<>();
-
+	
 	@Override
 	public List<Object[]> getListOfGradesPrice(String cropYear) {
 		String sqlQueryToGetHighestPriceOfExGodown = "select top 1 grade1, grade2, grade3, grade4, grade5, grade6 from jcientry_derivative_price where grade1 + grade2 + grade3 + grade4 + grade5 + grade6 = (select Max(grade1+grade2+grade3+grade4+grade5+grade6) as SumGrades from jcientry_derivative_price where state_name='West Bengal' and crop_year='"
@@ -218,20 +217,20 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	@Override
-	public int updateContractedValue(String deliveryType, String totalQtyOfMill) {
+	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray) {
 
 		int i = deliveryType.equals("Ex-Godown") ? 6 : 0;
-		int totalAllocatedToMill = Integer.parseInt(totalQtyOfMill);
+		double totalAllocatedToMill = Double.parseDouble(totalQtyOfMill);
 		int updatedContractedValue = 0;
 
 		System.err.println("updated function called in i value starts from " + i + "---");
 
-		System.err.println(gc.size() + " " + pg.size());
+		System.err.println(gradeArray.size() + " " + pg.size());
 
-		for (int j = 0; j < gc.size(); j++) {
+		for (int j = 0; j < gradeArray.size(); j++) {
 
-			updatedContractedValue += (gc.get(j) / 100) * (totalAllocatedToMill * pg.get(i));
-			System.err.println(gc.get(j) + " *********** " + pg.get(i));
+			updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100) * (totalAllocatedToMill * pg.get(i));
+			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
 			System.err.println("j = " + j + " " + "i = " + i);
 			i++;
 		}
@@ -282,7 +281,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		
 		String roleName = (String)request.getSession().getAttribute("rolename");
 		
-		String sql = "select * from jcicontract where Authorized_By ='" + roleName + "' and Authorize_Status = 0";
+		String sql = "select * from jcicontract where Authorized_By ='" + roleName + "' and Authorize_Status = 0 order by created_date desc";
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
 
 		List<Contractgeneration> listOfContract = new ArrayList<>();

@@ -1090,10 +1090,13 @@ public class Controller_V {
 
 		String deliveryType = request.getParameter("deliveryType");
 		String totalQtyOfMill = request.getParameter("totalQtyOfMill");
+		String grades = request.getParameter("grades");
+		grades = grades.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		final List<String> gradeArray = Arrays.asList(grades.split(","));
 
 		System.err.println(deliveryType + " , " + totalQtyOfMill);
 
-		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill);
+		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill,gradeArray);
 
 		return updatedVal + "";
 	}

@@ -174,7 +174,7 @@
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">PCO Qty. (M.T)</label> <input class="form-control"
-													value="<%=pcsoQty%>" type="number" min="0" name="pcsoQty"
+													value="<%=pcsoQty%>" type="number" min="0" step="0.01" name="pcsoQty"
 													id="pcsoQty">
 											</div>
 											<div class="col-sm-3 form-group">
@@ -389,16 +389,19 @@
 												var sz = $("#count").val();
 												var pcoQty = $("#pcsoQty")
 														.val();
-												var sum = 0;
+												var sum = 0.0;
 												for (var i = 0; i < sz; i++) {
 													var ele =  $("#totalallocation"+ i).val();
-													if (ele) {
-														sum += parseFloat(ele);
+													
+												    if (ele !== null && ele !== '' && !isNaN(parseFloat(ele))) {
+												        console.log(ele);
+												        sum += parseFloat(ele);
 													}else{
-														 $("#totalallocation"+ i).value=0;
+														 $("#totalallocation" + i).val(0);
 													}
 												}
 												
+												sum = sum.toFixed(2);
 												
 												if (sum != pcoQty) {
 													document.getElementById("errMsg").innerHTML = "Current sum = "

@@ -49,8 +49,8 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	}
 
 	@Override
-	public int updateContractedValue(String deliveryType ,String totalQtyOfMill) {
-		return contractGenerationDao2.updateContractedValue(deliveryType,totalQtyOfMill);
+	public int updateContractedValue(String deliveryType ,String totalQtyOfMill, List<String> gradeArray) {
+		return contractGenerationDao2.updateContractedValue(deliveryType,totalQtyOfMill,gradeArray);
 	}
 
 	@Override
