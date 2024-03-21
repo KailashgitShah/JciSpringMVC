@@ -396,6 +396,16 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b> View Entry
 								of TDS U/s 194Q Declaration </b></a></li>
 				</ul></li>
+				
+				<li><a href="javascript:void(0);"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label">9.&nbsp;Dispatch Menu</span> <i
+					class="fa fa-angle-left arrow"></i></a>
+				<ul class="nav-2-level ">
+
+					<li data-pre="" id=""><a href="viewDispatchChallan.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Listing Of  Dispatch Details</b></a></li>
+								</ul></li>
 		</ul>
 
 	</div>

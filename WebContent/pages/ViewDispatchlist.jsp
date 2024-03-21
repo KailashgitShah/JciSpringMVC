@@ -1,7 +1,8 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@page import="org.apache.poi.util.SystemOutLogger"%>
-<%@page import="com.jci.model.EntryPaymentDetailsModel"%>
+
+<%@page import="com.jci.model.dispatchdetailModel"%>
 
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -62,12 +63,12 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             	<div class="page-heading">
-				<h1 class="page-title">View Payment Details List</h1>
+				<h1 class="page-title">Dispatch Detail List</h1>
 
 			</div>
 
 			<%
-			List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>)request.getAttribute("allUserRegistration");
+			List<dispatchdetailModel> allUserRegistration = (List<dispatchdetailModel>)request.getAttribute("viewDispatchChallan");
 	
 		%>
                   <div class="page-content fade-in-up">
@@ -82,70 +83,74 @@
                                <thead>
 									<tr>
 										<th>Sl.No</th>
-										<th>Contract No.</th>
-										<th>Instrument No</th>
-										<th>Instrument Date</th>
-										<th>IFSC</th>
-										<th>Bank</th>
-										<th>Branch</th>
-										<th>Payment Type</th>
-										<th>Instrument Value</th>
-										<th>Date of Expiry</th>
-										<th>Last Shipment date</th>
-										<th>Auto Revolving Amount</th>
-										<th>Supporting Document</th>
-										<th></th>
-										<th></th>
+										<th>BIN No.</th>
+										<th>Bale mark</th>
+										<th>Challan_no</th>
+										<th>Consignment_note</th>
+										<th>Contract_No</th>
+										<th>Contract_date</th>
+										<th>Creation_date</th>
+										<th>Crop_year</th>
+										<th>DI_Date</th>
+										<th>DI_No</th>
+										<th>Date_of_shipment</th>
+										<th>Di_status</th>
+										<th>Driver_contact</th>
+										<th>Driver_name</th>
+										<th>Jute_grade</th>
+										<th>Jute_value</th>
+										<th>Jute_variety</th>
+										<th>License_no</th>
+										<th>Mill_name</th>
+										<th>Mode_of_shipment</th>
+										<th>No_of_bales</th>
+										<th>Nominal_qty</th>
+										<th>Nominal_wt</th>
+										<th>Place_of_Shipment</th>
+											<th>Rate</th>
+										<th>Vehicle_no</th>
+										
 									</tr>
 								</thead>
                            <tbody>
 									<%
 									int i = 1;
-									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-									for (EntryPaymentDetailsModel  entryPaymentDetailsModel : allUserRegistration) {
+								
+									for (dispatchdetailModel  dispatchdetailentry : allUserRegistration) {
 
 										if (i <= 200) {
 											
 									%>
 									<tr>
 										<td><%=i%></td>
-										<td><%= entryPaymentDetailsModel.getContractno() %></td>
-										<td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
-										 <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
-										<td><%= entryPaymentDetailsModel.getIFSC() %></td>
-										<td><%= entryPaymentDetailsModel.getBankName() %></td>
-										<td><%= entryPaymentDetailsModel.getBranch() %></td>
-										<td><%= entryPaymentDetailsModel.getPayment() %></td>
-										<td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
-											 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
-										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
-										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
-									 	
-                                        <td>
-								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
-								              <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->
-								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>
-								        </td>
-
+										<td><%= dispatchdetailentry.getBIN_no() %></td>
+										<td><%= dispatchdetailentry.getBale_mark()%></td>
+										<td><%= dispatchdetailentry.getChallan_no()%></td>
+										<td><%= dispatchdetailentry.getConsignment_note()%></td>
+										<td><%= dispatchdetailentry.getContract_No() %></td>
+										<td><%= dispatchdetailentry.getContract_date() %></td>
+										<td><%= dispatchdetailentry.getCreation_date() %></td>
+										<td><%= dispatchdetailentry.getCrop_year()%></td>
+										<td><%= dispatchdetailentry.getDI_Date()%></td>
+										 <td><%=dispatchdetailentry.getDI_No() %></td>
+										<td><%= dispatchdetailentry.getDate_of_shipment() %></td>
+										<td><%= dispatchdetailentry.getDi_status()%></td>
+										<td><%= dispatchdetailentry.getDriver_contact()%></td>
+										 <td><%=dispatchdetailentry.getDriver_name() %></td>
+										<td><%= dispatchdetailentry.getJute_grade()%></td>
+										<td><%= dispatchdetailentry.getJute_value()%></td>
+										<td><%= dispatchdetailentry.getJute_variety() %></td>
+										<td><%= dispatchdetailentry.getLicense_no() %></td>
+										<td><%= dispatchdetailentry.getMill_name()%></td>
+									    <td><%= dispatchdetailentry.getMode_of_shipment()%></td>
+										 <td><%=dispatchdetailentry.getNo_of_bales() %></td>
+										<td><%= dispatchdetailentry.getNominal_qty() %></td>
+										<td><%= dispatchdetailentry.getNominal_wt() %></td>
+										<td><%= dispatchdetailentry.getPlace_of_Shipment()%></td>
+										 <td><%=dispatchdetailentry.getRate() %></td>
+										<td><%= dispatchdetailentry.getRegional_Office()%></td>
+										<td><%= dispatchdetailentry.getVehicle_no() %></td>
 								
-
-
-									<td>
-									    <a href="issuePaymentDetail.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>&contno=<%=entryPaymentDetailsModel.getContractno()%>">
-									        <button class="btn btn-primary custom-button" type="button">Issue FC</button>
-									    </a>
-									</td> 
-									
-						  
-									<!-- 	class="btn btn-danger custom-button" -->
-										
-										 <td>
-										    <a   onclick="rejectAndNavigate('<%=entryPaymentDetailsModel.getContractno()%>', '<%=entryPaymentDetailsModel.getPayment_id()%>')">
-										        <button class="btn btn-danger custom-button" type="button">Reject</button>
-										    </a>
-										</td> 
-
-
 									</tr>
 									<%
 										}
@@ -160,35 +165,7 @@
 
                         </table>
                         
-                        				<div class="modal fade" id="rejectModal" tabindex="-1"
-								role="dialog" aria-labelledby="rejectModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="rejectModalLabel">Reject
-												Confirmation</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<p>Are you sure you want to reject this record?</p>
-											<label for="remarks">Remarks:</label> <input
-												class="form-control" type="text" id="remarks" name="remarks">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-danger"
-												 id="rejectModalButton" onclick="rejectRecord()">Yes, Reject</button>
-
-										</div>
-									</div>
-								</div>
-							</div>
-                        
+                     
                      </div>
                    </div>
                  </div>

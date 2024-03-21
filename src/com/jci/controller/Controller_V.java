@@ -2359,17 +2359,10 @@ public class Controller_V {
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
 	    String imagePath = PaymentDocument + File.separator + filename;
 	    File imageFile = new File(imagePath);
-	    System.err.println(imagePath);
-    	System.err.println(imagePath);
+	 
 	    // Check if the file exists
 	    if (imageFile.exists()) {
-	    	System.err.println(imagePath);
-	    	System.err.println(imagePath);
-	    	System.err.println(imagePath);
-	    	System.err.println(imagePath);
-	    	System.err.println(imagePath);
-	    	System.err.println(imagePath);
-	    	System.err.println(imagePath);
+	    	
 	        try {
 	            // Set the content type based on the file type
 	            String contentType = determineContentType(filename);

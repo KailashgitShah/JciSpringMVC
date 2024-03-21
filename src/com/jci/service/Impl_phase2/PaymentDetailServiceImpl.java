@@ -122,6 +122,11 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 	public List<Object[]> contractlistfetchdata(String st) {
 		return  paymentDetailsdao.contractlistfetchdata(st);
 	}
+	@Override
+	public void deleteEntry(int id) {
+		paymentDetailsdao.deleteEntry(id);
+		
+	}
 	
 
 }

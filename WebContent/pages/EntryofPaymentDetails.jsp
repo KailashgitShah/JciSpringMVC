@@ -1,4 +1,4 @@
-letest code of entry payment
+
 <%@page import="com.mashape.unirest.http.options.Option"%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
