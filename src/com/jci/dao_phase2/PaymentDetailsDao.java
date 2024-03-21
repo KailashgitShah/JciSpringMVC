@@ -16,6 +16,7 @@ public interface PaymentDetailsDao {
 		public EntryPaymentDetailsModel find(int id);
 		public void update1(String cont_no,int paymentId,String remark);
 		public void update2(String cont_no);
+		public void deleteEntry(int id);
 		public void contratTable(String cont_no);
 		public List<Object> ContractNo();
 		public List<Object> Millname();

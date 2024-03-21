@@ -166,7 +166,15 @@ th {
 										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
 										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
 									   <td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
-										<td><%= entryPaymentDetailsModel.getRemarks() %></td>
+									   <td><%= entryPaymentDetailsModel.getRemarks() %></td>
+									   
+									   
+									   
+									   
+									    
+										
+										
+										
 									<%-- 	<td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
 									<%-- 	<td><%= entryPaymentDetailsModel.getSupportingDocument() %></td> --%>
                                          <td>
@@ -183,9 +191,9 @@ th {
 													class="btn btn-default" type="button">Edit</button></a></td> --%>
 
                                          <%
-											int fcStatus = (Integer)entryPaymentDetailsModel.getFc_status();
+											int fcStatus1 = (Integer)entryPaymentDetailsModel.getFc_status();
 											%>
-										 <% if (fcStatus == 2) { 
+										 <% if (fcStatus1 == 2) { 
 											 %> 
 										
 											  <td>

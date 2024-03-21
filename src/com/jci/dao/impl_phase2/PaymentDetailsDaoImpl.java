@@ -45,7 +45,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 and Fc_status = 1 ";
-	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0,1)";
+	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0)";
 //	    String sql = " SELECT *,\r\n"
 //	    		+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
 //	    		+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
@@ -159,13 +159,20 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	@Override
 	public void contratTable(String cont_no) {
 	
+		try {
 	Date dateTime = new Date();
     String hql = "UPDATE jcicontract set intial_payment_flag = 1 ,intial_payment_date= '" + dateTime + "', contract_status='Payment Done' where Contract_no = '" + cont_no + "' ";
 		    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-	}
+		}
+		catch(Exception e)
+		{
+			 e.printStackTrace();
+		}
+		}
 
 	@Override
 	public  List<Object[]> paymentdetails(String st) {
+		
 		String sql="select  Contract_qty,Contract_value ,Contract_date, Payment_duedate,Mill_name,Grade_composition from  jcicontract where  Contract_no='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
@@ -250,6 +257,14 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		String sql="SELECT  Contract_no,Contract_qty,Contract_value,Contract_date,Payment_duedate from jcicontract where Contract_no='" + st + "'";
 		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millnamelist;
+	}
+
+	@Override
+	public void deleteEntry(int id) {
+		String sql="delete from jcipayment_arrangement where Payment_id='" + id + "'";
+		  this.sessionFactory.getCurrentSession().createSQLQuery(sql).executeUpdate();
+		  
+		
 	}
 
 
