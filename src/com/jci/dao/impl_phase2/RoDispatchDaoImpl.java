@@ -82,5 +82,22 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		// TODO Auto-generated method stub
 		return list;
 	}
+	/*
+	 * @Override public List<String> getAllocated() { String sqlString
+	 * ="SELECT JUTE_Variety,   SUM(Gr1_qty) ,  SUM(Gr2_qty),	SUM(Gr3_qty) , SUM(Gr4_qty), SUM(Gr5_qty),   SUM(Gr6_qty) ,	SUM(Gr7_qty) ,  SUM(Gr8_qty) FROM jciDI_ro WHERE HO_DI_NO =   '2023-2024/07001' Group BY Jute_variety;"
+	 * ; List<String> list = currentSession().createSQLQuery(sqlString).list(); //
+	 * TODO Auto-generated method stub System.err.println(list); }
+	 */
+
+	@Override
+	public List<String> getDetails(String hOno) {
+		String sqlString="SELECT    SUM(Gr1_qty) AS T1 ,  SUM(Gr2_qty) AS T2,"
+				+ "			SUM(Gr3_qty) AS T3 , SUM(Gr4_qty) AS T4,"
+				+ "			  SUM(Gr5_qty) AS T5,   SUM(Gr6_qty) AS T6 ,"
+				+ "			SUM(Gr7_qty) AS T7,  SUM(Gr8_qty) AS T8"
+				+ "			 FROM jciDI_ro WHERE HO_DI_NO =   '"+hOno+"' Group BY Jute_variety;";
+		List<String> list = currentSession().createSQLQuery(sqlString).list();
+		return list;
+	}
 
 }

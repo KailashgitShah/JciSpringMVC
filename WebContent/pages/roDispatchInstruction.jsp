@@ -92,19 +92,23 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 			</div>
 
 			<%
-			// Author vishal
+			// Author viswdeep
 			%>
 			<div class="page-content fade-in-up">
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
-							<%--    <span>${msg}</span> --%>
+						<div id="successMessage" style="display: none; background-color: #d4edda; color: #155724; padding: 10px; margin-top: 10px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center;">
+    Data Saved Successfully
+</div>
+							   
 							<div class="ibox-body">
-								<form action="saveRoDi.obj" method="POST">
+								<!-- <form action="saveRoDi.obj" method="POST"> -->
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
-											<label>HO DI No.</label> <select name="hoDiNo" id="hoDiNo"
+											<label>HO DI No.</label><span class="text-danger">*
+                                                                                   </span>&nbsp; <select name="hoDiNo" id="hoDiNo"
 												class="form-control" required>
 												<option value="-1" selected disabled>-Select-</option>
 												<%
@@ -143,9 +147,10 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 												id="cropYear" name="CropYear" type="text" readonly>
 										</div>
 										<div class="col-sm-4 form-group">
-											<label>DPC</label> <select name="dpc" id="dpc"
+											<label>DPC</label> <span class="text-danger">*
+                                                                                   </span>&nbsp;<select name="dpc" id="dpc"
 												class="form-control" required>
-												<option value="-1" disabled>-Select-</option>
+												<option value="-1" disabled selected>-Select-</option>
 												<%
 												for (String no : allCooperative) {
 												%>
@@ -175,7 +180,8 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 										</div>
 
 										<div class="col-sm-4 form-group">
-											<label>Last date of Shipment </label> <input
+											<label>Last date of Shipment </label><span class="text-danger">*
+                                                                                   </span>&nbsp;<input
 												class="form-control" name="lastDateOfShipment"
 												id="lastDateOfShipment" type="date"
 												placeholder="last date of shipment" required />
@@ -184,53 +190,26 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 									</div>
 									<div class="row">
 										<div class="col-sm-4 form-group">
-											<label>Jute Variety</label> <input class="form-control mb-3"
-												type="text" name="juteVariety" id="juteVariety" readonly>
+											<!-- <label>Jute Variety</label> <input class="form-control mb-3"
+												type="text" name="juteVariety" id="juteVariety" readonly> -->
 
-											<label>Remarks </label> <input class="form-control"
+											<label>Remarks </label> <span class="text-danger">*
+                                                                                   </span>&nbsp;<input class="form-control" id="remarks"
 												name="Remarks" type="text" required>
 
 
 										</div>
-										<div class="col-sm-1 mt-2 form-group">
-											<label></label>
-
-											<%
-											for (int i = 1; i <= 8; i++) {
-											%>
-											<p>
-												Grade<%=i%></p>
-											<%
-											}
-											%>
-										</div>
-										<div class="col-sm-3 form-group">
-											<label>Grade Wise Allocated</label>
-											<%
-											for (int i = 1; i <= 8; i++) {
-											%>
-											<input class="form-control" name="Gr<%=i%>_qty"
-												id="Gr<%=i%>_qty" type="number" readonly value="0.0">
-											<%
-											}
-											%>
-										</div>
-										<div class="col-sm-3 form-group">
-											<label>Grade Wise Allocation</label>
-											<%
-											for (int i = 1; i <= 8; i++) {
-											%>
-											<input class="validation form-control" name="gr<%=i%>Qty"
-												id="gr<%=i%>Qty" min="0" type="number" required value="0.0">
-											<%
-											}
-											%>
-											<small id="error" name="error" class="text-danger"></small>
-										</div>
+										
+										
 
 										<input type="hidden" name="allowedQty" id="allowedQty" />
 
 									</div>
+									<div class="col-sm-4 form-group">
+                                                                                  <label id="lblName"></label>
+                                                                                  <div id="form2"></div>
+                                                                                  <span id="misQty"></span>
+                                                                           </div>
 									<br>
 									<div class="row">
 
@@ -239,7 +218,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 												id="submit">
 										</div>
 									</div>
-								</form>
+								<!-- </form> -->
 							</div>
 						</div>
 					</div>
@@ -251,129 +230,313 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
-
+	
 	<script>
-		//get todays date in string format 
-		const currentDate = new Date();
-		const day = String(currentDate.getDate()).padStart(2, '0');
-		const month = String(currentDate.getMonth()).padStart(2, '0'); // Months are zero-based
-		const year = String(currentDate.getFullYear());
-		const formattedDate = day + "-" + month + "-" + year;
-		const minDateOfShipment = year + "-" + month + "-" + day;
+	// Get today's date in string format
+	const currentDate = new Date();
+	const day = String(currentDate.getDate()).padStart(2, '0');
+	const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+	const year = String(currentDate.getFullYear());
+	const formattedDate = day + "-" + month + "-" + year;
+	const minDateOfShipment = year + "-" + month + "-" + day;
 
-		//   alert(minDateOfShipment , formattedDate);
+	$('#roDiDate').val(formattedDate);
 
-		/* $('#hoDiDate').val(formattedDate); */
-		$('#roDiDate').val(formattedDate);
+	$("#hoDiNo").on("change", function() {
+	    var val = $(this).val();
 
-		$("#hoDiNo")
-				.on(
-						"change",
-						function() {
-							var val = $(this).val();
+	    $.ajax({
+	        type: "GET",
+	        url: "getContractDetails.obj",
+	        data: {
+	            "diNo": val
+	        },
+	        success: function(result) {
+	            var data = jQuery.parseJSON(result);
 
-							$
-									.ajax({
-										type : "GET",
-										url : "getContractDetails.obj",
-										data : {
-											"diNo" : val
-										},
-										success : function(result) {
-											var data = jQuery.parseJSON(result);
-											console.log(data);
+	            var numberOfContractDetails = data.contractDetails.length;
+	            var contract = data.contractDetails[0];
+	            var count = data.count + 1;
 
-											var numberOfContractDetails = data.contractDetails.length;
-											//alert(numberOfContractDetails);//Number of entries for particular DI 
-											var contract = data.contractDetails[0];
-											var count = data.count + 1;
-											//alert(contract[10]);
-											 var contractData = data.contractDetails[0][10];
-        var dataArray = contractData.split(',');
-        
-        var dpcDropdown = $('#dpc');
-        var allOptions = [];
+	            var contractData = data.contractDetails[0][10];
+	            var dataArray = contractData.split(',');
 
-        // Add the options from contractData to the allOptions array
-        dataArray.forEach(function(value) {
-            allOptions.push(value);
-        });
-        //console.log(allOptions);
-        // Add the existing options from allCooperative to the allOptions array
-        <% for (String no : allCooperative) { %>
-        allOptions.push("<%=no%>");
-        <% } %>
-        //console.log(allOptions);
-        // Clear any existing options before populating the dropdown
-        dpcDropdown.empty();
-//console.log(allOptions);
-        // Populate the dropdown with all options
-        allOptions.forEach(function(value) {
-            dpcDropdown.append($('<option>', {
-                value: value,
-                text: value
-            }));
-        });
+	            var dpcDropdown = $('#dpc');
+	            var allOptions = [];
 
-        console.log("Options added successfully.");
-    
-											  
-										$("#contractDate").val(contract[2]);
-											$("#contractNo").val(contract[3]);
-											$("#cropYear").val(contract[7]);
-											$("#roDiNo")
-													.val(val + "/0" + count);
-											//alert(contract[21]); Last date ship date
-											const unFormatedDate = contract[21]
-													.split("-");
-											const lastDateOfShipment = unFormatedDate[2]
-													+ "-"
-													+ unFormatedDate[1]
-													+ "-" + unFormatedDate[0];
-											const today = new Date();
-											const day = today.getDate();
-											const month = today.getMonth() + 1; // Months are zero indexed
-											const year = today.getFullYear();
-											const todayDate = year + "-"
-													+ (month < 10 ? '0' : '')
-													+ month + "-"
-													+ (day < 10 ? '0' : '')
-													+ day;
+	            dataArray.forEach(function(value) {
+	                allOptions.push(value);
+	            });
 
-											$("#lastDateOfShipment").val(
-													lastDateOfShipment);
-											$("#lastDateOfShipment").attr({
-												"max" : lastDateOfShipment,
-												"min" : todayDate
-											});
+	            <% for (String no : allCooperative) { %>
+	            allOptions.push("<%=no%>");
+	            <% } %>
 
-											$("#juteVariety").val(contract[20]);
-											$("#GVariety").val(contract[12]);
-											$("#allowedQty").val(contract[1]);
-											$('#hoDiDate')
-													.val(
-															contract[6]
-																	.substring(
-																			0,
-																			contract[6].length - 8));
-											
-											
-											
+	            dpcDropdown.empty();
 
-											for (i = 1; i <= 8; i++) {
-												no = 11 + i;
-												if (contract[no] != null
-														&& contract[no] !== undefined) {
+	            allOptions.forEach(function(value) {
+	                dpcDropdown.append($('<option>', {
+	                    value: value,
+	                    text: value
+	                }));
+	            });
 
-													$("#Gr" + i + "_qty").val(
-															contract[no]);
-												}
-											}
-										}
-									})
-						})
+	            $("#contractDate").val(contract[2]);
+	            $("#contractNo").val(contract[3]);
+	            $("#cropYear").val(contract[7]);
+	            $("#roDiNo").val(val + "/0" + count);
+
+	            const unFormatedDate = contract[21].split("-");
+	            const lastDateOfShipment = unFormatedDate[2] + "-" + unFormatedDate[1] + "-" + unFormatedDate[0];
+
+	            const today = new Date();
+	            const year = today.getFullYear();
+	            const month = String(today.getMonth() + 1).padStart(2, '0');
+	            const day = String(today.getDate()).padStart(2, '0');
+	            const todayDate = year + "-" + month + "-" + day;
+
+	            $("#lastDateOfShipment").val(lastDateOfShipment).attr({
+	                "max": lastDateOfShipment,
+	                "min": todayDate
+	            });
+
+	            $('#hoDiDate').val(contract[6].substring(0, contract[6].length - 8));
+
+	            var juteArray = [];
+	            $("#form2").html("");
+	            var elementToUpdate = $("#form2");
+	            var contentToDisplay = "<table id='table_r' style='border-collapse: collapse;'>";
+	            var headerDisplayed = false;
+
+	            for (var k = 0; k < numberOfContractDetails; k++) {
+	                contentToDisplay += "<tr>";
+
+	                if (!headerDisplayed) {
+	                    contentToDisplay += "<th style='border: 1px solid black;'>Jute Variety</th><th style='border: 1px solid black;'>Specification</th><th style='border: 1px solid black;'>Grade 1</th><th style='border: 1px solid black;'>Grade 2</th><th style='border: 1px solid black;'>Grade 3</th><th style='border: 1px solid black;'>Grade 4</th><th style='border: 1px solid black;'>Grade 5</th><th style='border: 1px solid black;'>Grade 6</th><th style='border: 1px solid black;'>Grade 7</th><th style='border: 1px solid black;'>Grade 8</th><th style='border: 1px solid black;'>Total</th>";
+	                    headerDisplayed = true;
+	                    contentToDisplay += "</tr>";
+	                } else {
+	                    contentToDisplay += "<td style='border: 1px solid black;'> </td>";
+	                }
+
+	                contentToDisplay += "<tbody id='body'>";
+	                contentToDisplay += "<tr>";
+	                contentToDisplay += "<td rowspan='5' id='juteVariety' name='juteVariety' style='border: 1px solid black;'>" + data.contractDetails[k][20] + "</td>";
+
+	                juteArray.push(data.contractDetails[k][20]);
+
+	                contentToDisplay += "<td style='border: 1px solid black;'>DI Received</td>";
+	                var t1 = 0;
+
+	                for (var i = 1; i <= 8; i++) {
+	                    t1 += data.contractDetails[k][11 + i];
+	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseInt(data.contractDetails[k][11 + i]) + "' readonly></td>";
+
+	                }
+
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + t1 + "</td></tr>";
+	                contentToDisplay += "<tr>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>Allocated</td>";
+
+	                for (var i = 1; i <= 8; i++) {
+	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='alloc_" + k +""+ i+"' style='width: 70px;' value='0' readonly></td>";
+	                }
+	                contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='total_alloc' style='width: 70px;' value='0' readonly></td></tr>";
+	                contentToDisplay += "<tr>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>Balance</td>";
+
+	                for (var i = 1; i <= 8; i++) {
+	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='bal_" + k +""+ i+"' style='width: 70px;' value='0' readonly></td>";
+	                }
+
+	                contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='total_bal' style='width: 70px;' value='0' readonly></td></tr>";
+	                contentToDisplay += "<tr>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>Enter Value</td>";
+
+	                for (var i = 1; i <= 8; i++) {
+	                    if (data.contractDetails[k][20] == "Mesta" || data.contractDetails[k][20] == "Bimli") {
+	                        if (i >= 7) {
+	                        	contentToDisplay += "<td style='border: 1px solid black;' value='0'><input type='number' id='GR" + i + "_QTY' style='width: 70px;' value='0' disabled></td>";
+	                        } else {
+	                            contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='GR" + i + "_QTY' style='width: 70px;' value=0></td>";
+	                        }
+	                    } else {
+	                        contentToDisplay += "<td style='border: 1px solid black;'><input type='text' id='GR" + i + "_QTY' style='width: 70px;' value=0></td>";
+	                    }
+	                }
+
+	                contentToDisplay += "<td style='border: 1px solid black;'></td></tr>";
+	            }
+
+	            contentToDisplay += "</tbody>";
+	            contentToDisplay += "</table>";
+
+	            elementToUpdate.html(contentToDisplay);
+	            
+	           
+	            
+	            
+	          
+	        }
+	    });
+	  
+	    
+	   setTimeout(function(){
+		   $.ajax({type:"GET",
+				url:"fetchDetails.obj",
+				data:{
+					"diNo":val
+				},
+				success:function(result){
+					   var data = jQuery.parseJSON(result);
+					    //alert(data);
+					  //  alert(data[0]);
+					    //alert(data[0][0]);
+					  //  alert(data.length);
+					 
+					   var total =0;
+					   var total2=0;
+					   for (var i = 0; i < data.length; i++) {
+						   
+						    for (var j = 0; j < data[i].length; j++) {
+						        $("#form2 #alloc_" + i + (j + 1)).val(data[i][j]);
+						       ( $("#form2 #bal_" + i + (j + 1)).val( $("#form2 #DI_" + i + (j + 1)).val()-data[i][j]));
+						        total+=data[i][j];
+						        total2+=$("#form2 #DI_" + i + (j + 1)).val()-data[i][j];
+						    }
+						}
+					   $("#form2 #total_alloc").val(total);
+					   $("#form2 #total_bal").val(total2);
+					 // var newval = data[0][0];
+					  //alert(newval);
+					  console.log($("#form2 #alloc_01"));
+					 // $("#form2 #alloc_01").val(newval);
+					  //alert($("#alloc_01").value);
+					
+					  
+
+
+
+				}
+				});
+	   },3000);
+			
+	});
+
+
+	
+
+						
 	</script>
+<script>
+$(document).ready(function() {
+    // Define a function to gather data
+    function gatherData() {
+        var juteDetails = [];
+         var flag = 1;
+         var juteVarietyName = "";
+        $('#table_r tbody tr').each(function(index, row) {
+            var juteVar = $(row).find('td:first').text().trim();
+            if( juteVar =='Bimli' || juteVar == 'Mesta' || juteVar == 'White' || juteVar =='Tossa') juteVarietyName = juteVar;
+            
+            var values = [];
+       	 	console.log(juteVar);
+            // Check if the juteVar is not empty and not 'Allocated' or 'Balance'
+            if (juteVar == 'Enter Value') {
+                // Loop through each input field in the row
+                $(row).find('input').each(function(i, input) {
+                    var value = $(input).val() || '0'; // Use '0' if the value is not present
+                    values.push(value);
+                
+                });
+                
+                // Create a juteDetail object with jute variety and its values
+                var juteDetail = {
+                    "juteVar": juteVarietyName,
+                    "values": values
+                };
 
+                // Push the juteDetail object to the juteDetails array
+                juteDetails.push(juteDetail);
+                flag++;
+                juteVarietyName = "";
+            }
+        });
+
+        // Gather other form data
+        var hoDiNo = $("#hoDiNo").val();
+        var hoDiDate = $("#hoDiDate").val();
+        var contractNo = $("#contractNo").val();
+        var contractDate = $("#contractDate").val();
+        var cropYear = $("#cropYear").val();
+        var dpc = $("#dpc").val();
+        var roDiNo = $("#roDiNo").val();
+        var roDiDate = $("#roDiDate").val();
+        var lastDate = $("#lastDateOfShipment").val();
+        var remarksValue = $("#remarks").val();
+
+        // Create an object with all the data
+        var dataToSend = {
+            "hoDiNo": hoDiNo,
+            "hoDiDate": hoDiDate,
+            "contractNo": contractNo,
+            "contractDate": contractDate,
+            "cropYear": cropYear,
+            "dpc": dpc,
+            "roDiNo": roDiNo,
+            "roDiDate": roDiDate,
+            "lastDateOfShipment": lastDate,
+            "remarksValue": remarksValue,
+            "juteDetails": juteDetails
+        };
+
+        // Return the gathered data
+        return dataToSend;
+    }
+
+    // Call gatherData function when submit button is clicked
+    $("#submit").on("click", function(event) {
+        // Prevent default form submission behavior
+        event.preventDefault();
+
+        // Call the gatherData function
+        var gatheredData = gatherData();
+        
+        // Log the gathered data to the console
+        console.log(gatheredData);
+
+        // Perform AJAX request to save the data
+        $.ajax({
+            type: "POST",
+            url: "saveRoDi.obj",
+            data: JSON.stringify(gatheredData),
+            contentType: "application/json",
+            success: async (result) => {
+                // Redirect to another page after successful save
+                window.location.href = "roDispatchInstruction.obj";
+                
+               
+                await loader("none");
+                showSuccessMessage();
+               
+                
+            },
+            error: function(xhr, status, error) {
+                console.error("Error: " + error);
+            }
+        });
+        function showSuccessMessage() {
+            var successDiv = document.getElementById("successMessage");
+            if (successDiv) {
+                successDiv.style.display = "block"; // Show the success message
+            }
+        }
+ 
+    });
+});
+
+
+</script>
 	<script type="text/javascript">
 		$(".validation").on(
 				"keypress",
@@ -385,39 +548,17 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 				})
 	</script>
-
-	<script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-
-							$("#submit")
-									.click(
-											function() {
-												var allowedQty = $(
-														"#allowedQty").val();
-												var sum = 0;
-												for (i = 1; i <= 8; i++) {
-													sum += parseInt($(
-															"#gr" + i + "Qty")
-															.val());
-													//console.log(allowedQty ,  parseInt($("#gr" + i + "Qty").val()), "dateforminput")
-												}
-												/* 			console.log(allowedQty == sum , allowedQty , sum); */
-												if (!(allowedQty == sum)) {
-													document
-															.getElementById("error").innerHTML = "Total sum should be equal to "
-															+ allowedQty
-															+ " (allowed quantity)";
-
-												} else {
-													document
-															.getElementById("error").innerHTML = "";
-												}
-												return allowedQty == sum;
-											});
-						});
+<script>
+	$("#hoDiNo").on("change",function(){
+		var val = $(this).val();
+		//alert(val);
+		console.log(val);
+		
+		
+	});
+	
 	</script>
+
 
 
 	<!-- END PAGA BACKDROPS-->

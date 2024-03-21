@@ -1448,48 +1448,6 @@ public class Controller_V {
 	//ro dispatch view page
 	
 
-	//save ro dispatch instruction
-	@RequestMapping("saveRoDi")
-	public ModelAndView saveRoDispatch(HttpServletRequest request, @ModelAttribute RoDispatchModel roDispatchModel,
-			RedirectAttributes redirectAttributes) throws ParseException {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		Date date = new Date();
-		roDispatchModel.setCreationDate(date);
-		String lastDateOFShipmentString = request.getParameter("lastDateOfShipment");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat outPutDate = new SimpleDateFormat("dd-MM-yyyy");
-
-		Date fomatedDate = dateFormat.parse(lastDateOFShipmentString);
-		String finalStringDate = outPutDate.format(fomatedDate);
-		roDispatchModel.setLastDateOfShipment(finalStringDate);
-		System.out.println(roDispatchModel.toString());
-		this.roDispatchService.create(roDispatchModel);
-		redirectAttributes.addFlashAttribute("msg",
-				"<div class=\"alert alert-success\"><b>Success !</b>data successfully.</div>\r\n" + "");
-
-		return new ModelAndView(new RedirectView("roDispatchList.obj"));
-	}
-
-	//ro list
-	@RequestMapping("roDispatchList")
-	public ModelAndView roDiList(HttpServletRequest request) {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		List<RoDispatchModel> allDi = roDispatchService.getAllRoDi();
-
-		ModelAndView mv = new ModelAndView("diRoList");
-		mv.addObject("roDiList", allDi);
-		return mv;
-	}
 
 	// ---------------------------------------------------------
 	// Generation Of Credit Notes
@@ -3118,7 +3076,7 @@ public class Controller_V {
 	
 	
 	@RequestMapping("HOdispatchInst")
-    public ModelAndView HODispatchInstructionModel(HttpServletRequest request) {
+    public ModelAndView HODispatchInstructionModel(HttpServletRequest request,HttpSession session) {
            String username = (String) request.getSession().getAttribute("usrname");
            List<String> contractList = (List<String>) hoInstService.getContract();
 
@@ -3128,12 +3086,14 @@ public class Controller_V {
            if (username == null) {
                   mv = new ModelAndView("index");
            }
-
+           String regionIdString =(String) session.getAttribute("region");
            List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
            List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
+           List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
            System.err.println(ronameList);
            mv.addObject("ronameList", ronameList);
            mv.addObject("juteVariety",juteVariety);
+           mv.addObject("loadAllCooperativesList",loadAllCooperativesList);
 
            return mv;
     }
@@ -3409,6 +3369,138 @@ public class Controller_V {
 		///////////////////////////////////////////////////////////
 
 		return mv;
+	}
+	//save ro dispatch instruction
+    @ResponseBody
+	@RequestMapping(value = "saveRoDi", method = { RequestMethod.POST })
+	public String saveRoDispatch(HttpServletRequest request, 
+			@RequestBody Map<String, Object> requestBody, RedirectAttributes redirectAttributes) throws ParseException {
+    	List<Map<String, Object>> juteDetails = (List<Map<String, Object>>) requestBody.get("juteDetails");
+    	System.err.println(juteDetails.size());
+    	System.err.println(juteDetails);
+
+    	// Handle other fields from the request body
+    	String contractNoString = (String) requestBody.get("contractNo");
+    	System.err.println("Contract No: " + contractNoString);
+
+    	String hoDiNo = (String) requestBody.get("hoDiNo");
+    	System.err.println("HoDi No: " + hoDiNo);
+
+    	String hoDiDate = (String) requestBody.get("hoDiDate");
+    	System.err.println("HoDi Date: " + hoDiDate);
+
+    	String contractDate = (String) requestBody.get("contractDate");
+    	System.err.println("Contract Date: " + contractDate);
+
+    	String cropYear = (String) requestBody.get("cropYear");
+    	System.err.println("Crop Year: " + cropYear);
+
+    	String dpc = (String) requestBody.get("dpc");
+    	System.err.println("DPC: " + dpc);
+
+    	String roDiNo = (String) requestBody.get("roDiNo");
+    	System.err.println("RoDi No: " + roDiNo);
+
+    	String roDiDate = (String) requestBody.get("roDiDate");
+    	System.err.println("RoDi Date: " + roDiDate);
+
+    	String lastDateOfShipment = (String) requestBody.get("lastDateOfShipment");
+    	System.err.println("Last Date of Shipment: " + lastDateOfShipment);
+    	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+    	 SimpleDateFormat outPutDate = new  SimpleDateFormat("dd-MM-yyyy");
+    	Date fomatedDate = dateFormat.parse(lastDateOfShipment);
+    	String finalStringDate = outPutDate.format(fomatedDate);
+
+    	String remarksValue = (String) requestBody.get("remarksValue");
+    	System.err.println("Remarks Value: " + remarksValue);
+    	Date date = new Date();
+		SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateFormater = simpleDateTimeFormat.format(date);
+		Date created_Date = null;
+		created_Date = simpleDateTimeFormat.parse(dateFormater);
+		for (Map<String, Object> entry : juteDetails) {
+			RoDispatchModel roDispatchModel = new RoDispatchModel();
+            String juteVar = (String) entry.get("juteVar");
+            Object valuesObj = entry.get("values");
+            roDispatchModel.setJuteVariety(juteVar);
+            roDispatchModel.setContractDate(contractDate);
+            roDispatchModel.setContractNo(contractNoString);
+            roDispatchModel.setCreationDate(created_Date);
+            roDispatchModel.setCropYear(cropYear);
+      	  	roDispatchModel.setDpc(dpc);
+      	  	roDispatchModel.setHoDiDate(hoDiDate);
+      	  	roDispatchModel.setHoDiNo(hoDiNo);
+      	  	roDispatchModel.setLastDateOfShipment(finalStringDate);
+      	  	roDispatchModel.setRemarks(remarksValue);
+      	  	roDispatchModel.setRoDiDate(roDiDate);
+     	  	roDispatchModel.setRoDiNo(roDiNo);
+            
+            
+            if (valuesObj instanceof ArrayList) {
+                List<String> stringValues = (ArrayList<String>) valuesObj;
+                roDispatchModel.setGr1Qty(Double.parseDouble(stringValues.get(0)));
+                roDispatchModel.setGr2Qty(Double.parseDouble(stringValues.get(1)));
+                roDispatchModel.setGr3Qty(Double.parseDouble(stringValues.get(2)));
+                roDispatchModel.setGr4Qty(Double.parseDouble(stringValues.get(3)));
+                roDispatchModel.setGr5Qty(Double.parseDouble(stringValues.get(4)));
+                roDispatchModel.setGr6Qty(Double.parseDouble(stringValues.get(5)));
+                roDispatchModel.setGr7Qty(Double.parseDouble(stringValues.get(6)));
+                roDispatchModel.setGr8Qty(Double.parseDouble(stringValues.get(7)));
+                this.roDispatchService.create(roDispatchModel);
+               
+				
+
+                System.out.println("Jute Variety: " + juteVar);
+//                System.out.println("Double values: " + doubleValues);
+            } else {
+                System.err.println("Unexpected data type for 'values'.");
+                // Handle the unexpected data type situation accordingly
+            }
+        }
+		
+		
+		
+  
+		
+    	
+    	
+		 redirectAttributes.addFlashAttribute("msg",
+           		  "<div class=\"alert alert-success\"><b>Success !</b>data successfully.</div>\r\n"
+           		  + "");
+    	return "Saved";
+    	}
+
+	
+
+	//ro list
+	@RequestMapping("roDispatchList")
+	public ModelAndView roDiList(HttpServletRequest request) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
+		List<RoDispatchModel> allDi = roDispatchService.getAllRoDi();
+
+		ModelAndView mv = new ModelAndView("diRoList");
+		mv.addObject("roDiList", allDi);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="fetchDetails",method = RequestMethod.GET)
+	public String fetchDetails(@RequestParam("diNo") String HOno) {
+		System.err.println("Reached");
+		List<String> detailsList = (List<String>) roDispatchService.getDetails(HOno);
+
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(detailsList);
+
+        return jsonResponse;
+		
+		
 	}
 
            

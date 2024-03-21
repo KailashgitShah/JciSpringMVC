@@ -91,6 +91,7 @@ input[type="radio"] {
                      <%
                      List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
     				List<String> juteVariety =(List<String>) request.getAttribute("juteVariety");
+    				List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooperativesList");
                      %>
                      <div class="page-content fade-in-up">
                            <div class="row">
@@ -190,7 +191,8 @@ input[type="radio"] {
                                                                            <div class="col-sm-4 form-group" id="dpc_div">
                                                                                   <label id="dpclabel" class="required">DPC</label>
                                                                                   &nbsp;&nbsp;&nbsp;
-                                                                                  <div class="form-control" id="dpc_div" ></div>
+                                                                                  <div class="form-control" id="dpc_div" >
+                                                                                  </div>
 
 
                                                                            </div>

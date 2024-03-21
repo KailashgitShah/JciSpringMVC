@@ -55,4 +55,10 @@ public class RoDispatchServiceImpl implements RoDispatchService{
 		return roDispatchDao.getCooperative(regionIdString);
 	}
 
+	@Override
+	public List<String> getDetails(String hOno) {
+		// TODO Auto-generated method stub
+		return roDispatchDao.getDetails(hOno);
+	}
+
 }
