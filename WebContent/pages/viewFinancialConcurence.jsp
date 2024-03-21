@@ -1,4 +1,5 @@
 <%@page import="com.jci.model.PaymentInstrumentModel"%>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@page import="com.jci.model.FinancialConcurenceModel"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -140,6 +141,7 @@ th {
 								<tbody>
 									<%
 									int i = 1;
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (FinancialConcurenceModel financialConcurenceModel : allUserRegistration) {
 
 										if (i <= 200) {
@@ -147,7 +149,7 @@ th {
 									<tr>
 										<td><%=i%></td>
 										<td><%=financialConcurenceModel.getFullcontractno()%></td>
-										<td><%=financialConcurenceModel.getFC_Issue_Date()%></td>
+										 <td><%= sdf.format(financialConcurenceModel.getFC_Issue_Date()) %></td>
 										<td><%=financialConcurenceModel.getFC_Ref_No()%></td>
 										<td><%=financialConcurenceModel.getContracted_Qty()%></td>
 										<td><%=financialConcurenceModel.getQtyAllowed()%></td>

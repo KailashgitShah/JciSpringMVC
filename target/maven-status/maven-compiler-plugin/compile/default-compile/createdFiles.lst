@@ -235,7 +235,10 @@ com\jci\model\MillreceiptDto.class
 com\jci\securityfilters\OptionsFilter.class
 com\jci\dao_phase2\ConfirmationClaimSettlementDao.class
 com\jci\dao_phase2\GenrationCashDocumentDao.class
+<<<<<<< HEAD
+=======
 com\jci\model\JciDIHoModel.class
+>>>>>>> 8b90dcd314e47ac7172531e18ad935456d7e36f9
 com\jci\model\PCSORequestLetter.class
 com\jci\dao\impl_phase2\ConfirmationClaimSettlementDaoImpl.class
 com\jci\service\Impl\RoleMasterServiceImpl.class
@@ -353,6 +356,7 @@ com\jci\service\RulingMarketService.class
 com\jci\securityfilters\XFrameOptionsFilter.class
 com\jci\service\Impl\UserPriviligeServiceImpl.class
 com\jci\dao\impl\UserPriviligeDaoImpl.class
+com\jci\model\PaymentModelDTO.class
 com\jci\service\Impl\CommercialJuteVarietyGradesPriceServiceImpl.class
 com\jci\service_phase2\GenrationCashDocumentService.class
 com\jci\controller\InsertDataController.class

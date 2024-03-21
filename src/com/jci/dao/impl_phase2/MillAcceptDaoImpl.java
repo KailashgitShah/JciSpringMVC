@@ -107,7 +107,7 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        cm.setJute_value(Jute_value);
 	        cm.setContract_identification_no(Contract_identification_no);
 	        ll.add(cm);
-	        System.out.println(ll.toString() + "kkkkkkkkkkkkkkkk");
+	      //  System.out.println(ll.toString() + "kkkkkkkkkkkkkkkk");
 	    }
 
 	    return ll;

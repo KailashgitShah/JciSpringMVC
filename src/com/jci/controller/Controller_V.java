@@ -2159,17 +2159,56 @@ public class Controller_V {
 	@RequestMapping("saveentryofpaymentinstrumentDetails")
 	public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("PaymentDocument");
+		
+		
+		
+		
+		
+		final File theDir = new File(PaymentDocument);
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
+		
+		String originalFilename = SupportingDocument.getOriginalFilename();
+	    String uniqueFilename = generateUniqueFilename(originalFilename);
+	    File serverFile = new File(theDir, uniqueFilename);
+	    
+	    // Check if the file has already been uploaded
+	    if (!serverFile.exists()) {
+	        try {
+				SupportingDocument.transferTo(serverFile);
+			} catch (IllegalStateException e) {
+				
+				e.printStackTrace();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+	    }
 		final ModelAndView mv = new ModelAndView();
 		
 		
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
 			String[] selectedContracts = request.getParameterValues("contract");
-		    for(String st: selectedContracts) {
+			String[] contractValue2 = request.getParameterValues("contractValue[]");
+			String[] paymentDueDate2 = request.getParameterValues("paymentDueDate[]");
+			
+			String ratiosJson = request.getParameter("ratios");
+			double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
+			for (int i = 0; i < selectedContracts.length; i++) {
+		        String st = selectedContracts[i];
+		        double ratio = ratios[i];
+		        String contractvalueajax= contractValue2[i];
+		        String paymentDueDateajax= paymentDueDate2[i];
+		        System.out.println(ratio);
+		
+		        String InstrumentValue = request.getParameter("InstrumentValue");
+		        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
+		        double instvalue=ratio*InstrumentValue1;
+		        String instvalue1 = String.valueOf(instvalue);
+		       
+		        
 			String millname65 = request.getParameter("millname65");
 			String Instrument = request.getParameter("Instrument");
 			String instdate = request.getParameter("instdate");
@@ -2177,24 +2216,27 @@ public class Controller_V {
 			String Branch = request.getParameter("Branch");
 			String BankName = request.getParameter("BankName");
 			String payment = request.getParameter("paymenttype");
-			String InstrumentValue = request.getParameter("InstrumentValue");
+			
+			
 			String dateofexpiry = request.getParameter("dateofexpiry");
 			String dateofship = request.getParameter("dateofship");
 			String Pyamentduedate = request.getParameter("payment_dueDate12");
 			String contrcat_value23 = request.getParameter("contrcat_value23");
 			String autorevolvingamount = request.getParameter("autorevolvingamount");
 			// String QtyAllowed = request.getParameter("QtyAllowed");
-			String originalFilename = SupportingDocument.getOriginalFilename();
+			//String originalFilename = SupportingDocument.getOriginalFilename();
+			
+//		 	 String uniqueFilename = generateUniqueFilename(originalFilename);
+////            File serverFile = new File(theDir, uniqueFilename);
+////			SupportingDocument.transferTo(serverFile);
+//			
 			
 			
-//            String uniqueFilename = generateUniqueFilename(originalFilename);
-//            File serverFile = new File(theDir, uniqueFilename);
-			//SupportingDocument.transferTo(serverFile);
-			
-			
-		 // Create unique identifier based on contract details
-		    String uniqueFilename = generateUniqueFilename(originalFilename);
-		    File serverFile = new File(theDir, uniqueFilename);
+//			 // Create unique identifier based on contract details
+//		 	 String uniqueFilename = generateUniqueFilename(originalFilename); 
+//			 File serverFile = new File(theDir,uniqueFilename);
+//			 SupportingDocument.transferTo(serverFile);
+//			 
 
 			// Conditionally set autorevolvingamount based on payment type
 
@@ -2205,8 +2247,8 @@ public class Controller_V {
 			entryPaymentDetailsModel.setMillname(millname65);
 			entryPaymentDetailsModel.setContractno(st);
 			
-			entryPaymentDetailsModel.setPaymentDue_date(Pyamentduedate);
-			entryPaymentDetailsModel.setContract_value(contrcat_value23);
+			entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
+			entryPaymentDetailsModel.setContract_value(contractvalueajax);
 //			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 //			Date instdate1 = formatter1.parse(instdate);
 //			entryPaymentDetailsModel.setInstdate(instdate1);
@@ -2233,9 +2275,9 @@ public class Controller_V {
 			entryPaymentDetailsModel.setInstdate(instdate1);
 			entryPaymentDetailsModel.setPayment(payment);
 			//int  instruValue= Integer.parseInt(InstrumentValue);
-			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
+			entryPaymentDetailsModel.setInstrumentValue(instvalue1);
 			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
-			entryPaymentDetailsModel.setSupportingDocument(originalFilename);
+			entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
 			entryPaymentDetailsModel.setFc_status(0);
 
 			Date date3 = new Date();
@@ -2293,7 +2335,8 @@ public class Controller_V {
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
-		} 
+		     }
+		    
 		}catch (Exception e) {
 
 			e.printStackTrace();
@@ -2314,58 +2357,61 @@ public class Controller_V {
 	
 	//download the  support document which upload
 	
+	
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
-		//String imageDirectory = "C:\\Users\\kailash.shah\\documentimage"; // Replace with your image directory path
-		String imagePath = PaymentDocument + File.separator + filename;
+	    String imagePath = PaymentDocument + File.separator + filename;
+	    File imageFile = new File(imagePath);
+	    System.err.println(imagePath);
+    	System.err.println(imagePath);
+	    // Check if the file exists
+	    if (imageFile.exists()) {
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	    	System.err.println(imagePath);
+	        try {
+	            // Set the content type based on the file type
+	            String contentType = determineContentType(filename);
+	            response.setContentType(contentType);
 
-		File imageFile = new File(imagePath);
-
-		// Check if the file exists
-		if (imageFile.exists()) {
-			try {
-				// Set the content type based on the file type
-				String contentType = determineContentType(filename);
-				response.setContentType(contentType);
-
-				// Set the content length and attachment disposition
-				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
-				FileInputStream fileInputStream = new FileInputStream(imageFile);
-				OutputStream responseOutputStream = response.getOutputStream();
-
-				byte[] buffer = new byte[1024];
-				int bytesRead;
-				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-					responseOutputStream.write(buffer, 0, bytesRead);
-				}
-
-				fileInputStream.close();
-				responseOutputStream.close();
-			} catch (IOException e) {
-				// Handle IO exception
-				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			}
-		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
+	            // Set the content length and attachment disposition
+	            response.setContentLength((int) imageFile.length());
+	            //response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+	            response.setHeader("Content-Disposition", "");
+	            // Stream the file content to the response
+	            try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+	                 OutputStream responseOutputStream = response.getOutputStream()) {
+	                byte[] buffer = new byte[1024];
+	                int bytesRead;
+	                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+	                    responseOutputStream.write(buffer, 0, bytesRead);
+	                }
+	            }
+	        } catch (IOException e) {
+	            // Handle IO exception
+	            e.printStackTrace();
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        }
+	    } else {
+	        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	    }
 	}
 
 	// Utility method to determine content type based on filename
 	private String determineContentType(String filename) {
-		if (filename.endsWith(".pdf")) {
-			return "application/pdf";
-		} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
-			return "image/jpeg";
-		} else if (filename.endsWith(".png")) {
-			return "image/png";
-		} else {
-			return "application/octet-stream"; // Default to binary data if content type is unknown
-		}
+	    if (filename.endsWith(".pdf")) {
+	        return "application/pdf";
+	    } else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+	        return "image/jpeg";
+	    } else if (filename.endsWith(".png")) {
+	        return "image/png";
+	    } else {
+	        return "application/octet-stream"; // Default to binary data if content type is unknown
+	    }
 	}
 
 	
@@ -3335,6 +3381,7 @@ public class Controller_V {
 				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
 //			                //response.setHeader("Content-Disposition", "");
 
+
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 				OutputStream responseOutputStream = response.getOutputStream();
 //
@@ -3903,6 +3950,8 @@ public class Controller_V {
 			return "index";
 		}
 		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
+
+	//	System.out.println(AllList + "allistttttttttttttt")
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}
