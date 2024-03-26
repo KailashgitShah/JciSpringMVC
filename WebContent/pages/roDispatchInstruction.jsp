@@ -73,7 +73,6 @@ input[type="radio"] {
 List<String> allDpc = (List<String>) request.getAttribute("loadAllDpc");
 List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooperativesList");
-//int count = (int) request.getAttribute("count") + 1; //valid for next entry
 %>
 
 
@@ -98,123 +97,128 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
-						
-							   <div id='errorcontainer' style='display: none;  text-align: center;'></div>
+							<c:if test="${not empty msg}">
+    ${msg}
+</c:if>
+							<div id='errorcontainer'
+								style='display: none; text-align: center;'></div>
 							<div class="ibox-body">
 								<!-- <form action="saveRoDi.obj" method="POST"> -->
-									<div class="row">
+								<div class="row">
 
-										<div class="col-sm-4 form-group">
-											<label>HO DI No.</label><span class="text-danger">*
-                                                                                   </span>&nbsp; <select name="hoDiNo" id="hoDiNo"
-												class="form-control" required>
-												<option value="-1" selected disabled>-Select-</option>
-												<%
-												for (String no : allHoDiNo) {
-												%>
-												<option value="<%=no%>"><%=no%></option>
-												<%
-												}
-												%>
-											</select>
-										</div>
-
-
-										<div class="col-sm-4 form-group">
-											<label>HO DI Date</label> <input class="form-control"
-												name="hoDiDate" id="hoDiDate" type="text" value="" readonly>
-										</div>
-
-										<div class="col-sm-4 form-group">
-											<label>Contract No</label> <input class="form-control "
-												name="contractNo" id="contractNo" type="text" value=""
-												readonly>
-										</div>
+									<div class="col-sm-4 form-group">
+										<label>HO DI No.</label><span class="text-danger">* </span>&nbsp;
+										<select name="hoDiNo" id="hoDiNo" class="form-control"
+											required>
+											<option value="-1" selected disabled>-Select-</option>
+											<%
+											for (String no : allHoDiNo) {
+											%>
+											<option value="<%=no%>"><%=no%></option>
+											<%
+											}
+											%>
+										</select>
 									</div>
 
-									<div class="row">
 
-										<div class="col-sm-4 form-group">
-											<label>Contract Date</label> <input class="form-control"
-												name="contractDate" id="contractDate" type="text" value=""
-												readonly>
-										</div>
-
-										<div class="col-sm-4 form-group">
-											<label>Crop year </label> <input class="form-control"
-												id="cropYear" name="CropYear" type="text" readonly>
-										</div>
-										<div class="col-sm-4 form-group">
-											<label>DPC</label> <span class="text-danger">*
-                                                                                   </span>&nbsp;<select name="dpc" id="dpc"
-												class="form-control" required>
-												<option value="-1" disabled selected>-Select-</option>
-												<%
-												for (String no : allCooperative) {
-												%>
-												<option value="<%=no%>"><%=no%></option>
-												<%
-												}
-												%>
-											</select>
-											<a href="#" style="color: blue;">Inventory DPC Wise</a>
-										</div>
-									
-
+									<div class="col-sm-4 form-group">
+										<label>HO DI Date</label> <input class="form-control"
+											name="hoDiDate" id="hoDiDate" type="text" value="" readonly>
 									</div>
-									
 
-									<div class="row">
-
-
-										<div class="col-sm-4 form-group">
-											<label>RO DI No</label> <input class="form-control"
-												name="roDiNo" id="roDiNo" type="text" readonly>
-										</div>
-
-										<div class="col-sm-4 form-group">
-											<label>RO DI Date</label> <input class="form-control"
-												name="roDiDate" id="roDiDate" type="text" readonly>
-										</div>
-
-										<div class="col-sm-4 form-group">
-											<label>Last date of Shipment </label><span class="text-danger">*
-                                                                                   </span>&nbsp;<input
-												class="form-control" name="lastDateOfShipment"
-												id="lastDateOfShipment" type="date"
-												placeholder="last date of shipment" required />
-										</div>
-
+									<div class="col-sm-4 form-group">
+										<label>Contract No</label> <input class="form-control "
+											name="contractNo" id="contractNo" type="text" value=""
+											readonly>
 									</div>
-									<div class="row">
-										<div class="col-sm-4 form-group">
-											
+								</div>
 
-											<label>Remarks </label> <span class="text-danger">*
-                                                                                   </span>&nbsp<textarea class="form-control taxtbox" name="Remarks"
-															placeholder="Remarks" required maxlength="250" id="remarks"></textarea>
+								<div class="row">
 
+									<div class="col-sm-4 form-group">
+										<label>Contract Date</label> <input class="form-control"
+											name="contractDate" id="contractDate" type="text" value=""
+											readonly>
+									</div>
 
-										</div>
-										
-										
-
-										<input type="hidden" name="allowedQty" id="allowedQty" />
-
+									<div class="col-sm-4 form-group">
+										<label>Crop year </label> <input class="form-control"
+											id="cropYear" name="CropYear" type="text" readonly>
 									</div>
 									<div class="col-sm-4 form-group">
-                                                                                  <label id="lblName"></label>
-                                                                                  <div id="form2"></div>
-                                                                                  <span id="misQty"></span>
-                                                                           </div>
-									<br>
-									<div class="row">
-
-										<div class="col-sm-12 form-group">
-											<input type="submit" value="Submit" class="btn btn-primary"
-												id="submit">
-										</div>
+										<label>DPC</label> <span class="text-danger">* </span>&nbsp;<select
+											name="dpc" id="dpc" class="form-control" required>
+											<option value="-1" disabled selected>-Select-</option>
+											<%
+											for (String no : allCooperative) {
+											%>
+											<option value="<%=no%>"><%=no%></option>
+											<%
+											}
+											%>
+										</select> <a href="#" style="color: blue;">Inventory DPC Wise</a>
 									</div>
+
+
+								</div>
+
+
+								<div class="row">
+
+
+									<div class="col-sm-4 form-group">
+										<label>RO DI No</label> <input class="form-control"
+											name="roDiNo" id="roDiNo" type="text" readonly>
+									</div>
+
+									<div class="col-sm-4 form-group">
+										<label>RO DI Date</label> <input class="form-control"
+											name="roDiDate" id="roDiDate" type="text" readonly>
+									</div>
+
+									<div class="col-sm-4 form-group">
+										<label>Last date of Shipment </label><span class="text-danger">*
+										</span>&nbsp;<input class="form-control" name="lastDateOfShipment"
+											id="lastDateOfShipment" type="date"
+											placeholder="last date of shipment" required />
+									</div>
+
+								</div>
+								<div class="row">
+									<div class="col-sm-4 form-group">
+
+
+										<label>Remarks </label> <span class="text-danger">* </span>&nbsp
+										<textarea class="form-control taxtbox" name="Remarks"
+											placeholder="Remarks" required maxlength="250" id="remarks"></textarea>
+
+
+									</div>
+
+
+
+									<input type="hidden" name="allowedQty" id="allowedQty" />
+									<div class="col-sm-4 form-group">
+										<label id="lblName"></label>
+										<div id="form3"></div>
+										<span id="misQty"></span>
+									</div>
+
+								</div>
+								<div class="col-sm-4 form-group">
+									<label id="lblName"></label>
+									<div id="form2"></div>
+									<span id="misQty"></span>
+								</div>
+								<br>
+								<div class="row">
+
+									<div class="col-sm-12 form-group">
+										<input type="submit" value="Submit" class="btn btn-primary"
+											id="submit">
+									</div>
+								</div>
 								<!-- </form> -->
 							</div>
 						</div>
@@ -227,7 +231,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
-	
+
 	<script>
 	// Get today's date in string format
 	const currentDate = new Date();
@@ -266,9 +270,9 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	                allOptions.push(value);
 	            });
 
-	            <% for (String no : allCooperative) { %>
+	            <%for (String no : allCooperative) {%>
 	            allOptions.push("<%=no%>");
-	            <% } %>
+	            <%}%>
 
 	            dpcDropdown.empty();
 
@@ -328,7 +332,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 	                for (var i = 1; i <= 8; i++) {
 	                    t1 += data.contractDetails[k][11 + i];
-	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseInt(data.contractDetails[k][11 + i]) + "' readonly></td>";
+	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseFloat(data.contractDetails[k][11 + i]) + "' readonly></td>";
 
 	                }
 
@@ -444,7 +448,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 		    	   var sum = 0;
 		           for (var i = 1; i <= 8; i++) {
 		               var inputId = "#GR" + j + i + "_QTY";
-		               var inputValue = parseInt($(inputId).val()) || 0; // Parse input value to integer, default to 0 if NaN
+		               var inputValue = parseFloat($(inputId).val()) || 0; // Parse input value to integer, default to 0 if NaN
 		               sum += inputValue;
 		               console.log(sum)
 		           }
@@ -463,7 +467,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 						
 	</script>
 
-<script>
+	<script>
 $(document).ready(function() {
     // Define a function to gather data
     function gatherData() {
@@ -529,7 +533,7 @@ $(document).ready(function() {
         return dataToSend;
     }
 
-    // Call gatherData function when submit button is clicked
+    // Call gatherData function
     $("#submit").on("click", function(event) {
         // Prevent default form submission behavior
         event.preventDefault();
@@ -555,7 +559,7 @@ for (var i = 0; i < size.length; i++) {
     }
 }
 
-
+//To check if Remarks is empty or not
 if($("#remarks").val().length ==0){
 	 var errorMessage = " Fill all the marked fields" ;
      var errorDiv = $("<div>").text(errorMessage).css({
@@ -568,6 +572,7 @@ if($("#remarks").val().length ==0){
      }, 5000);
 	return false}
 	
+	//To check if allocations done or not
 var total = 0;
 //Loop through each row in the juteDetails array
 for (var i = 0; i < size.length; i++) {
@@ -580,23 +585,24 @@ for (var i = 0; i < size.length; i++) {
         // Loop through the values in the row
         for (var j = 0; j < size[i].values.length; j++) {
             // Convert each value to a number and add it to the total
-            total += parseInt(size[i].values[j], 10);
+            total += parseFloat(size[i].values[j], 10);
            
         }
         // If the total is zero, display an error message and return false to prevent form submission
-        if (total === 0) {
-            var errorMessage = "Please allocate the jute varities";
-            var errorDiv = $("<div>").text(errorMessage).css({
-                "color": "red",
-                "font-weight": "bold"
-            });
-            $("#errorCont").append(errorDiv).show(); // Show the error container
-            setTimeout(function() {
-                $("#errorCont").empty().hide(); // Clear and hide the error message after 5 seconds
-            }, 5000);
-            return false;
-        }
+        
     }
+}
+if (total === 0) {
+    var errorMessage = "Please allocate the jute varities";
+    var errorDiv = $("<div>").text(errorMessage).css({
+        "color": "red",
+        "font-weight": "bold"
+    });
+    $("#errorCont").append(errorDiv).show(); // Show the error container
+    setTimeout(function() {
+        $("#errorCont").empty().hide(); // Clear and hide the error message after 5 seconds
+    }, 5000);
+    return false;
 }
 
 
@@ -612,12 +618,13 @@ for (var i = 0; i < size.length; i++) {
             data: JSON.stringify(gatheredData),
             contentType: "application/json",
             success: async (result) => {
+            	
                 // Redirect to another page after successful save
-                window.location.href = "roDispatchInstruction.obj";
+               window.location.href = "roDispatchInstruction.obj"; 
                 
                
-                await loader("none");
-                showSuccessMessage();
+                 await loader("none"); 
+              
                
                 
             },
@@ -625,12 +632,7 @@ for (var i = 0; i < size.length; i++) {
                 console.error("Error: " + error);
             }
         });
-        function showSuccessMessage() {
-            var successDiv = document.getElementById("successMessage");
-            if (successDiv) {
-                successDiv.style.display = "block"; // Show the success message
-            }
-        }
+        
  
     });
 });
@@ -648,7 +650,48 @@ for (var i = 0; i < size.length; i++) {
 
 				})
 	</script>
+	<script>
+$("#hoDiNo").on("change", function() {
+	var val = $(this).val();
+	//alert(val);
+	
+	var hoNo = $("#hoDiNo").val();
+	$.ajax({
+		type:"GET",
+		url:"getdetails.obj",
+		data: {
+			"diNo":val
+		},
+        contentType: "application/json",
+        success: async (result) => {
+            // Redirect to another page after successful save
+        	 var data = jQuery.parseJSON(result);
+            console.log(data);
+            //alert(data.length);
+            $("#form3").html("");
+var elementToUpdate = $("#form3");
+var contentToDisplay="<h5 style='text-align: center; text-decoration: underline; font-weight: bold;'>Previous Issued DI</h5>";
+contentToDisplay+="<table id='table_r' style='border-collapse: collapse; width: 100%;'>";
+contentToDisplay+="<tr><th style='border: 1px solid black; text-align: center;'>S.no</th><th style='border: 1px solid black; text-align: center;'>RO DI no.</th><th style='border: 1px solid black; text-align: center;'>RO DI Date</th><th style='border: 1px solid black; text-align: center;'>Allocated Qty(Qtls)</th></tr> ";
+var totalAllocatedQty = 0; // Variable to store the total allocated quantity
 
+for(var i=0; i<data.length; i++){
+	 contentToDisplay += "<tr><td style='border: 1px solid black; text-align: center; color: blue;'>" + (i + 1) + "</td><td style='border: 1px solid black; text-align: center; width: 30%; color: blue;'>" + data[i][0] + "</td><td style='border: 1px solid black; text-align: center; width: 60%; color: blue;'>" + data[i][1] + "</td><td style='border: 1px solid black; text-align: center; color: green;'>" + data[i][2] + "</td></tr>";
+    totalAllocatedQty += parseFloat(data[i][2]); // Accumulate the allocated quantity for total calculation
+}
+
+contentToDisplay+="<tr><td colspan='3' style='text-align: right; border: 1px solid black; '>Total</td><td style='border: 1px solid black;  text-align: center;color: green;'>" + totalAllocatedQty + "</td></tr>"; // Adding the total row
+contentToDisplay+="</table>";
+elementToUpdate.html(contentToDisplay);
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + error);
+        }
+	});
+});
+</script>
 
 
 

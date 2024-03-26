@@ -119,7 +119,6 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		List<String> list10 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString10).list();
 		result.addAll(list10);
 
-		
 		// To get latest instrument date
 		String sqString5 = "select Top 1 Instrument_Date from jcipayment_arrangement where Contract_No ='" + contractNo
 				+ "' Order by Created_date DESC; ";
@@ -140,8 +139,6 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
 		result.add(String.valueOf(list6.size()));
 		result.addAll(list6);
-
-		
 
 		String sqlString8 = "SELECT TOP 5 jcidispatch_details.DI_No, jcirodetails.roname FROM jcidispatch_details INNER JOIN jcirodetails ON jcidispatch_details.Regional_Office = jcirodetails.rocode WHERE Mill_name = '"
 				+ result.get(3) + "' ORDER BY Dientry_id DESC          ;";
@@ -232,7 +229,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 	@Override
 	public List<String> juteVariety() {
 		// TODO Auto-generated method stub
-		String sqlString ="select distinct jutevariety from jcijutevariety where basis='1';";
+		String sqlString = "select distinct jutevariety from jcijutevariety where basis='1';";
 		List<String> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 		return list;
 	}

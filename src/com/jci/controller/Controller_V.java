@@ -139,8 +139,7 @@ import java.util.Calendar;
 @Controller
 public class Controller_V {
 	@Autowired
-    HOInstService hoInstService;
-
+	HOInstService hoInstService;
 
 	private final PdfGenerator_K pdfGenerator;
 
@@ -227,8 +226,7 @@ public class Controller_V {
 
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
- 
-	
+
 // generation of pcso request letter form	
 	@RequestMapping("pcsoRequestLetter")
 
@@ -237,8 +235,8 @@ public class Controller_V {
 		String cropYearString = (String) request.getSession().getAttribute("currCropYear");
 		double contractedQty = genReqLetterService.getTotalContractedQty(cropYearString);
 		ModelAndView mv = new ModelAndView("PCSORequestLetter");
-       
-		//get the inventory data
+
+		// get the inventory data
 		List<String> cropYearList = dailyPurchaseModelConfService.getCropYear();
 		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "msp");
 		List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2023-2024", "msp");
@@ -257,16 +255,15 @@ public class Controller_V {
 		return mv;
 	}
 
-	//get the letter head img path from config file
+	// get the letter head img path from config file
 	@Value("${upload.letterHeadPath}")
 	String letterHeadPath;
 
-	//get the signature img path from config file
+	// get the signature img path from config file
 	@Value("${upload.SignaturePdf}")
 	String SignaturePdf;
 
-	
-	//pcso request letter save controller
+	// pcso request letter save controller
 	@RequestMapping("generatePCSORequest")
 	public ModelAndView generatePCSORequestLetter(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException, DocumentException, IOException {
@@ -311,8 +308,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsoRequestLetterList.obj"));
 	}
 
-	
-	//listing page of pcso reuqest letters
+	// listing page of pcso reuqest letters
 	@RequestMapping("pcsoRequestLetterList")
 	public ModelAndView requestList() {
 		ModelAndView mv = new ModelAndView("PCSORequestLetterList");
@@ -322,13 +318,12 @@ public class Controller_V {
 
 		return mv;
 	}
-	
-	//get the dir where we have to store the generated pdf
+
+	// get the dir where we have to store the generated pdf
 	@Value("${upload.requestLetter}")
 	String requestLetterPath;
 
-	
-	//send thankyou mail to jc office
+	// send thankyou mail to jc office
 	@ResponseBody
 	@RequestMapping(value = "sendThankYouEmailToJC", method = RequestMethod.GET)
 	public void sendThankYouEmailToJC(HttpServletRequest request, RedirectAttributes redirectAttributes)
@@ -338,8 +333,8 @@ public class Controller_V {
 		String cropYear = request.getParameter("cropYear");
 		String qty = request.getParameter("qty");
 		int id = Integer.parseInt(request.getParameter("id"));
-		
-		String filePath = requestLetterpath + File.separator + refNo + ".pdf"; 
+
+		String filePath = requestLetterpath + File.separator + refNo + ".pdf";
 
 		String sub = "Expressing Gratitude for Contract Approval";
 		String body = "Dear Jute Commissioner Officer ,\n " + "Hope This email finds you well ,\n"
@@ -347,14 +342,14 @@ public class Controller_V {
 				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
 				+ "Thanks & Regards \n " + "Jute Corporation Of India";
 
-		InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+		InternetAddress[] toAddresses = { new InternetAddress("cyfuturetest@gmail.com"),
 				new InternetAddress("pradeepcyf24@gmail.com") };
 
 		SendMail sendMail = new SendMail();
 
 		CompletableFuture.runAsync(() -> {
 			try {
-				sendMail.sendEmail(toAddresses, body, sub, filePath , refNo+".pdf");
+				sendMail.sendEmail(toAddresses, body, sub, filePath, refNo + ".pdf");
 				// Your email sending code here
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -368,11 +363,10 @@ public class Controller_V {
 
 	}
 
-	//get file from the server
+	// get file from the server
 	@Value("${upload.requestLetter}")
 	String requestLetterpath;
-	
-  
+
 	// pcso letter download
 	@RequestMapping(value = "downloadRequestLetter", method = RequestMethod.GET)
 	public void downloadRequestLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -416,11 +410,11 @@ public class Controller_V {
 
 	}
 
-	//get the contract letter path
+	// get the contract letter path
 	@Value("${upload.contractLetterJava}")
 	String contractLetterJava;
 
-	//download contract letter
+	// download contract letter
 	@RequestMapping(value = "downloadContractLetter", method = RequestMethod.GET)
 	public void downloadContractLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
@@ -462,7 +456,7 @@ public class Controller_V {
 
 	}
 
-	//delete pcso request
+	// delete pcso request
 	@RequestMapping("pcsoRequestDelete")
 	public ModelAndView requestDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -483,8 +477,8 @@ public class Controller_V {
 	// ---------------------------------------------------------
 	// Entry Of PCSO
 	// ---------------------------------------------------------
-	
-	//form page of entryofPcso
+
+	// form page of entryofPcso
 	@RequestMapping("entryofpcso")
 	public ModelAndView EntryofpcsoModel(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -519,7 +513,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//disable screen with all prefield value
+	// disable screen with all prefield value
 	@RequestMapping("entryofpcsosave")
 	public ModelAndView saveUserMid(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -539,7 +533,6 @@ public class Controller_V {
 			String juteRatio = request.getParameter("juteRatio");
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
 			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
- 
 
 			for (int c = 0; c < count; c++) {
 
@@ -587,7 +580,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//save Entry of pcso
+	// save Entry of pcso
 	@RequestMapping("saveentryofpcsodata")
 	public ModelAndView entryofpcsosave(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -643,7 +636,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsolist.obj"));
 	}
 
-	//pcso listing page
+	// pcso listing page
 	@RequestMapping("pcsolist")
 	public ModelAndView pcsolist(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -658,8 +651,7 @@ public class Controller_V {
 		return mv;
 	}
 
-
-	//get mill details based on refno
+	// get mill details based on refno
 	@ResponseBody
 	@RequestMapping(value = { "getAllMillDetails" }, method = { RequestMethod.GET })
 	public String getAllMillDetails(final HttpServletRequest request) {
@@ -671,8 +663,7 @@ public class Controller_V {
 
 	}
 
-
-	//pcso delete
+	// pcso delete
 	@RequestMapping("pcsoDelete")
 	public ModelAndView pcsoDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -690,8 +681,7 @@ public class Controller_V {
 
 	}
 
-
-	//update pcso
+	// update pcso
 	@RequestMapping("updatePcso")
 	public ModelAndView updatePcso(HttpServletRequest request) throws ParseException {
 		int refId = Integer.parseInt(request.getParameter("pcsorefid"));
@@ -709,8 +699,7 @@ public class Controller_V {
 		return mv;
 	}
 
-
-	//updating pcso details
+	// updating pcso details
 	@RequestMapping("updatesavePcso")
 	public ModelAndView updatesavePcso(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -734,7 +723,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsolist.obj"));
 	}
 
-	//contract generation page
+	// contract generation page
 	@RequestMapping("contractgenerationPCSOWise")
 	public ModelAndView contractgenerationShow(HttpServletRequest req) {
 		String username = (String) req.getSession().getAttribute("usrname");
@@ -756,11 +745,12 @@ public class Controller_V {
 		return mv;
 	}
 
-	//get the contract letter path from config file
+	// get the contract letter path from config file
 	@Value("${upload.contractLetter}")
 	String contractLetterPath;
-    
-	//saving the grade composition and also generation of the contract letter of the mill, its also having func of pdg generation and sending email
+
+	// saving the grade composition and also generation of the contract letter of
+	// the mill, its also having func of pdg generation and sending email
 	@ResponseBody
 	@RequestMapping(value = "contractgenerationPcsoWiseSave", method = { RequestMethod.POST })
 	public String saveContractGenerationPcsoWise(HttpServletRequest request,
@@ -781,13 +771,13 @@ public class Controller_V {
 
 		String pcsoDate = (String) requestBody.get("pcsoDate");
 		String gradeComp = (String) requestBody.get("gradeComp");
-		//String juteVariety = (String) requestBody.get("juteVariety");
+		// String juteVariety = (String) requestBody.get("juteVariety");
 
 		pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 
 		final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
-		//final List<String> juteArray = Arrays.asList(juteVariety.split(","));
+		// final List<String> juteArray = Arrays.asList(juteVariety.split(","));
 //		
 //		for(String jutString : juteArray)
 //		System.err.println(jutString);
@@ -817,7 +807,7 @@ public class Controller_V {
 			Object[] rowData = (Object[]) row; // Cast each row to an Object array
 			// Access individual columns by their index (0-based)
 			Object variety = rowData[1];
-			varietyArray.add((String)variety);
+			varietyArray.add((String) variety);
 			Object systemComposition = rowData[2];
 			EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
 			Double ProposedValue = Double.parseDouble(gradeArray.get(idx));
@@ -888,14 +878,15 @@ public class Controller_V {
 			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
 
 			pdfGenerator.generatePdf(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
-					GradePriceList, gradeArray , varietyArray, fileName, deliveryType, contractdate, filePath, letterHeadPath);
+					GradePriceList, gradeArray, varietyArray, fileName, deliveryType, contractdate, filePath,
+					letterHeadPath);
 
 			// send email
 			String body = "Please find below attachment to get full details of contract grade wise..";
 			String sub = "Contract Details";
 			final String filePathDir = filePath;
 			SendMail sendMail = new SendMail();
-			InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+			InternetAddress[] toAddresses = { new InternetAddress("cyfuturetest@gmail.com"),
 					new InternetAddress("pradeepcyf24@gmail.com") };
 
 			CompletableFuture.runAsync(() -> {
@@ -912,7 +903,7 @@ public class Controller_V {
 		return "Saved";
 	}
 
-	//listing of the contract list
+	// listing of the contract list
 	@RequestMapping("viewcontractgeneration")
 	public ModelAndView viewContractGenerationList(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("contractgenerationlist");
@@ -926,7 +917,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//get details of the contract on the basis of the pcso dates
+	// get details of the contract on the basis of the pcso dates
 	@ResponseBody
 	@RequestMapping(value = { "getAllContractDetails" }, method = { RequestMethod.GET })
 	public String getAllContractDetails(final HttpServletRequest request) {
@@ -969,7 +960,7 @@ public class Controller_V {
 
 	}
 
-	//update price on the basis of delivery type
+	// update price on the basis of delivery type
 	@ResponseBody
 	@RequestMapping(value = "updateContractedValue", method = RequestMethod.GET)
 	public String updateContractedValue(final HttpServletRequest request) {
@@ -992,7 +983,7 @@ public class Controller_V {
 	// Entry Of Derivative Price
 	// ---------------------------------------------------------
 
-	//derivative price form
+	// derivative price form
 	@RequestMapping("entry_derivativeprice")
 	public ModelAndView ViewEDPrice(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1004,8 +995,8 @@ public class Controller_V {
 		}
 		return mv;
 	}
-	
-	//edit page of the derivative price
+
+	// edit page of the derivative price
 	@RequestMapping("editentryderivativeprice")
 	public ModelAndView editEDP(HttpServletRequest request) throws NumberFormatException, Exception {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1031,7 +1022,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//update the ED price
+	// update the ED price
 	@RequestMapping("updateEDPrice")
 	public ModelAndView updateEDC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1080,8 +1071,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("entryderivativepricelist.obj"));
 	}
 
-	
-	//listing of the price list
+	// listing of the price list
 	@RequestMapping("entryderivativepricelist")
 	public ModelAndView EntryDerivativePrice(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1094,7 +1084,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//delete controller
+	// delete controller
 	@RequestMapping("entryderivativepriceDelete")
 	public ModelAndView entryderivativepriceDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -1111,7 +1101,7 @@ public class Controller_V {
 
 	}
 
-	//save ed price
+	// save ed price
 	@RequestMapping("saveEDPrice")
 	public ModelAndView derivativePriceHandler(HttpServletRequest request) {
 
@@ -1288,7 +1278,7 @@ public class Controller_V {
 	// Entry Of Grade Composition
 	// ---------------------------------------------------------
 
-	//grade composition page
+	// grade composition page
 	@RequestMapping("entry_gradecomposition")
 	public ModelAndView ViewGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1302,7 +1292,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//save grade compo
+	// save grade compo
 	@RequestMapping("saveGradeComp")
 	public ModelAndView saveGradeComposition(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -1354,7 +1344,7 @@ public class Controller_V {
 		return mv;
 	}
 
-	//delete grades
+	// delete grades
 	@RequestMapping("entryofgradecompositiondelete")
 	public ModelAndView entryofgradecompositiondelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws ParseException {
@@ -1371,7 +1361,7 @@ public class Controller_V {
 
 	}
 
-	//listing of the grade composition 
+	// listing of the grade composition
 	@RequestMapping("entrygradecompositionlist")
 	public ModelAndView EntryGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1386,17 +1376,16 @@ public class Controller_V {
 		return mv;
 	}
 
-	//edit grade comp.
+	// edit grade comp.
 	@RequestMapping("editentryofgradecomposition")
 	public ModelAndView EditeEntryOfGradeComposition(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		List<Object> allJuteCombination = entryofGradeCompositionService.getAllJuteCombination();
-		
+
 		String key = LoginController.secretkey;
 		String decryptedString = request.getParameter("grade_id");
 		BigInteger gradeId = new BigInteger(Encry.decrypt(decryptedString, key));
-		
-		
+
 //		BigInteger gradeId = new BigInteger(request.getParameter("grade_id"));
 		EntryofGradeCompositionModel egc = (EntryofGradeCompositionModel) entryofGradeCompositionService.Edit(gradeId);
 
@@ -1409,8 +1398,7 @@ public class Controller_V {
 		return mv;
 	}
 
-
-	//update grade comp.
+	// update grade comp.
 	@RequestMapping("updateGradeComp")
 	public ModelAndView updateEGC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1445,15 +1433,13 @@ public class Controller_V {
 	// Ro Dispatch Instruction
 	// ---------------------------------------------------------
 
-	//ro dispatch view page
-	
-
+	// ro dispatch view page
 
 	// ---------------------------------------------------------
 	// Generation Of Credit Notes
 	// ---------------------------------------------------------
 
-	//listing page of the volunteer credit note generation form
+	// listing page of the volunteer credit note generation form
 	@RequestMapping("generationOfCreditNoteList")
 	public ModelAndView generationOfCreditNotes(HttpServletRequest request) {
 
@@ -1472,7 +1458,8 @@ public class Controller_V {
 
 	}
 
-	//set all the contract details in session and redirect to the generate credit note form page in the ajax response
+	// set all the contract details in session and redirect to the generate credit
+	// note form page in the ajax response
 	@ResponseBody
 	@RequestMapping(value = { "generateCrn" }, method = { RequestMethod.POST })
 	public ModelAndView generateCrn(final HttpServletRequest request, RedirectAttributes redirectAttributes,
@@ -1500,7 +1487,7 @@ public class Controller_V {
 		return mView;
 	}
 
-	//credit note form page
+	// credit note form page
 	@RequestMapping("creditNoteForm")
 	public ModelAndView creditNoteForm(HttpServletRequest request) {
 
@@ -1517,7 +1504,7 @@ public class Controller_V {
 	@Value("${upload.creditNoteDetails}")
 	String creditNoteDetails;
 
-	//save credit note
+	// save credit note
 	@ResponseBody
 	@RequestMapping(value = { "saveCreditNote" }, method = { RequestMethod.POST })
 	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request,
@@ -1579,7 +1566,7 @@ public class Controller_V {
 
 	}
 
-	//status update of credit note
+	// status update of credit note
 	@RequestMapping("changeCrnStatus")
 	public ModelAndView changeCrnStatusTo1(HttpServletRequest request, RedirectView redirectView) {
 
@@ -1595,7 +1582,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("creditNoteList.obj"));
 	}
 
-	//listing page of the credit note
+	// listing page of the credit note
 	@RequestMapping("creditNoteList")
 	public ModelAndView creditNoteList(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1617,7 +1604,7 @@ public class Controller_V {
 	// Settlement Of Credit and Debit notes
 	// ---------------------------------------------------------
 
-	//settlement page listing
+	// settlement page listing
 	@RequestMapping("settlementcndn")
 	public ModelAndView settlementcndn(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1633,7 +1620,7 @@ public class Controller_V {
 		return mView;
 	}
 
-	//redirected page of the settlement form
+	// redirected page of the settlement form
 	@RequestMapping("finalsettlementNoteJsp")
 	public ModelAndView finalsettlementNoteJsp(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1654,7 +1641,7 @@ public class Controller_V {
 		return mView;
 	}
 
-	//create the instance of the finalSettlelment 
+	// create the instance of the finalSettlelment
 	@RequestMapping("finalSettlement")
 	public ModelAndView finalSettlement(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1699,11 +1686,10 @@ public class Controller_V {
 		ModelAndView mView = new ModelAndView("uploadPaymentRealizationDisDetails");
 		return mView;
 	}
-	
 
 	@Value("${upload.PaymentRealizationDisDetails}")
 	String paymentRealDetailsPath;
-	
+
 	@RequestMapping("saveuploadPaymentRealizationDisDetails")
 	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request,
 			@RequestParam("excelFile") MultipartFile excelFile, RedirectAttributes redirectAttributes)
@@ -1767,7 +1753,7 @@ public class Controller_V {
 //				e.printStackTrace();
 //			}
 
-			 paymentRealizationService.create(originalFileNameString);
+			paymentRealizationService.create(originalFileNameString);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b> File Saved successfully.</b></div>\r\n" + "");
 
@@ -3000,7 +2986,7 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		
+
 		return mv;
 	}
 
@@ -3073,287 +3059,278 @@ public class Controller_V {
 
 		return mv;
 	}
-	
-	
+
 	@RequestMapping("HOdispatchInst")
-    public ModelAndView HODispatchInstructionModel(HttpServletRequest request,HttpSession session) {
-           String username = (String) request.getSession().getAttribute("usrname");
-           List<String> contractList = (List<String>) hoInstService.getContract();
+	public ModelAndView HODispatchInstructionModel(HttpServletRequest request, HttpSession session) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		List<String> contractList = (List<String>) hoInstService.getContract();
 
-           System.err.println(contractList);
-           ModelAndView mv = new ModelAndView("HOdispatchinstruction");
-           mv.addObject("ContractList", contractList);
-           if (username == null) {
-                  mv = new ModelAndView("index");
-           }
-           String regionIdString =(String) session.getAttribute("region");
-           List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
-           List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
-           List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
-           System.err.println(ronameList);
-           mv.addObject("ronameList", ronameList);
-           mv.addObject("juteVariety",juteVariety);
-           mv.addObject("loadAllCooperativesList",loadAllCooperativesList);
+		System.err.println(contractList);
+		ModelAndView mv = new ModelAndView("HOdispatchinstruction");
+		mv.addObject("ContractList", contractList);
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+		String regionIdString = (String) session.getAttribute("region");
+		List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
+		List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
+		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
+		System.err.println(ronameList);
+		mv.addObject("ronameList", ronameList);
+		mv.addObject("juteVariety", juteVariety);
+		mv.addObject("loadAllCooperativesList", loadAllCooperativesList);
 
-           return mv;
-    }
+		return mv;
+	}
 
-    @ResponseBody
-    @RequestMapping(value = "HoDispatch", method = RequestMethod.GET)
-    public String hoDispatchIn(@RequestParam("contract") String ContractNo) {
-           System.err.println(ContractNo);
-           List<String> contractDetList = (List<String>) hoInstService.getDetails(ContractNo);
+	@ResponseBody
+	@RequestMapping(value = "HoDispatch", method = RequestMethod.GET)
+	public String hoDispatchIn(@RequestParam("contract") String ContractNo) {
+		System.err.println(ContractNo);
+		List<String> contractDetList = (List<String>) hoInstService.getDetails(ContractNo);
 
-           Gson gson = new Gson();
-           String jsonResponse = gson.toJson(contractDetList);
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(contractDetList);
 
-           return jsonResponse;
-    }
+		return jsonResponse;
+	}
 
-    @ResponseBody
-    @RequestMapping({ "findDpc" })
-    public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
+	@ResponseBody
+	@RequestMapping({ "findDpc" })
+	public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
 
-           String username = (String) request.getSession().getAttribute("usrname");
-           final Gson gson = new Gson();
-           return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
+		String username = (String) request.getSession().getAttribute("usrname");
+		final Gson gson = new Gson();
+		return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
 
-    }
+	}
 
-    @ResponseBody
-    @RequestMapping({ "countHo" })
-    public String countHo(@RequestParam("reg") String reg, HttpServletRequest request) {
+	@ResponseBody
+	@RequestMapping({ "countHo" })
+	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request) {
 
-           final Gson gson = new Gson();
-           return gson.toJson((Object) this.hoInstService.getCount(reg));
+		final Gson gson = new Gson();
+		return gson.toJson((Object) this.hoInstService.getCount(reg));
 
-    }
+	}
 
-    @RequestMapping(value = "savehodispatchInst", method = RequestMethod.POST)
-    public ModelAndView hoDispatchInstruction(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-           String username = (String) request.getSession().getAttribute("usrname");
-           try {
-                 
-                  
-                  String[] variety = request.getParameterValues("jutevariety");
-                  
-                  for(String st: variety) {
-                        System.err.println(st);
-                        System.err.println(st);
-                        Integer usId = (Integer) request.getSession().getAttribute("userId");//
-                        System.err.println(usId);
-                        String user = Integer.toString(usId);
-                        System.err.println(user);
-                        String contNo = request.getParameter("fullcontractno");//
-                        System.err.println(contNo);
-                        String crpyrString = request.getParameter("cropyear");//
-                        System.err.println(crpyrString);
-                        String contqtyString = request.getParameter("contractquantity");//
-                        System.err.println(contqtyString);
-                        Double cQtyDouble = Double.parseDouble(contqtyString);//
-                        System.err.println(cQtyDouble);
-                        String dIString = request.getParameter("dateofdi");//
-                        
-                        String dateStr = request.getParameter("dateofdi");
-                       SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-                       Date result = formater.parse(dateStr);
-                       SimpleDateFormat newFormater = new SimpleDateFormat("dd-MM-yyyy");
-                      
-                        
-                        
-                        System.err.println(dIString);
-                        String fcString = request.getParameter("FC_Ref_No");//
-                        System.err.println(fcString);
-                        String diNoString = request.getParameter("uniqueno");//
-                        System.err.println(diNoString);
-                        String contDateString = request.getParameter("contractdate");//
-                        System.err.println(contDateString);
-                        String allowQty = request.getParameter("qty");//
-                        System.err.println(allowQty);
-                        Double qtyDouble = Double.parseDouble(allowQty);
-                        System.err.println(qtyDouble);
-                        String regOfficeString = request.getParameter("region");//
-                        System.err.println(regOfficeString);
-                        String[] dpcString = request.getParameterValues("dpc_name");
-                        System.err.println(dpcString);
-                        String lastShipString = request.getParameter("lastdateofshipment");//
-                        
-                        String dateStr1 = request.getParameter("lastdateofshipment");
-                       SimpleDateFormat formater1 = new SimpleDateFormat("yyyy-MM-dd");
-                       Date result1 = formater1.parse(dateStr1);
-                       SimpleDateFormat newFormater1 = new SimpleDateFormat("dd-MM-yyyy");
-                        System.err.println(lastShipString);
-                        JciDIHoModel diHo = new JciDIHoModel();
-                               String gprice0 = request.getParameter(st+"-grade"+"1");
-                               if (gprice0 == null) {
-                                      gprice0 = "0";
-                               }
-                               Double g0 = Double.parseDouble(gprice0);
-                               String gprice1 = request.getParameter(st+"-grade"+"2");
-                               if (gprice1 == null) {
-                                      gprice1 = "0";
-                               }
-                               Double g1 = Double.parseDouble(gprice1);
-                               
-                               String gprice2 = request.getParameter(st+"-grade"+"3");
-                                if (gprice2 == null) {
-                                      gprice2 = "0";
-                               }
-                               Double g2 = Double.parseDouble(gprice2);
-                               
-                               String gprice3 = request.getParameter(st+"-grade"+"4");
-                               if (gprice3 == null) {
-                                      gprice3 = "0";
-                               }
-                               Double g3 = Double.parseDouble(gprice3);
-                               
-                               String gprice4 = request.getParameter(st+"-grade"+"5");
-                               if (gprice4 == null) {
-                                      gprice4 = "0";
-                               }
-                               Double g4 = Double.parseDouble(gprice4);
-                               
-                               String gprice5 = request.getParameter(st+"-grade"+"6");
-                               if (gprice5 == null) {
-                                      gprice5 = "0";
-                               }
-                               Double g5 = Double.parseDouble(gprice5);
-                               
-                               String gprice6 = request.getParameter(st+"-grade"+"7");
-                               if (gprice6 == null) {
-                                      gprice6 = "0";
-                               }
-                               Double g6 = Double.parseDouble(gprice6);
-                               
-                               String gprice7 = request.getParameter(st+"-grade"+"8");
-                               if (gprice7 == null) {
-                                      gprice7 = "0";
-                               }
-                               Double g7 = Double.parseDouble(gprice7);
-                               
-                               
-                               
-                               String remString = request.getParameter("remarks");
-                               System.err.println(remString);
-                               Date date = new Date(); // your Date object
-                               SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                               String formattedDate = formatter.format(date);
-                               System.err.println(date);
-                               diHo.setContracted_Qty(cQtyDouble);
-                               diHo.setContract_No(contNo);
-                               diHo.setFC_Ref_No(fcString);
-                               diHo.setContract_Date(contDateString);
-                               diHo.setDI_Date(newFormater.format(result));
-                               diHo.setDI_no(diNoString);
-                               diHo.setAllowed_qty(qtyDouble);
-                               diHo.setRegional_office(regOfficeString);
-                               String s = "";
-                               /* int n = dpcString.length; */
-                               if (dpcString != null) {
-                               int n = dpcString.length;
-                               for (int i = 0; i < dpcString.length; i++) {
-                                      if (i == n - 1) {
-                                             s += dpcString[i];
-                                      } else
-                                             s += dpcString[i] + ",";
-                                      System.err.println(s);
-                               }
-                               }
-                               else s="";
-                               diHo.setDPC(s);
-                               diHo.setLast_date_of_Shipment(newFormater1.format(result1));
-                               diHo.setJute_variety(st);
-                               diHo.setRemarks(remString);
-                               
-                                 diHo.setGr1_qty(g0); 
-                                 diHo.setGr2_qty(g1);
-                                 diHo.setGr3_qty(g2);
-                                 diHo.setGr4_qty(g3);
-                                 diHo.setGr5_qty(g4); 
-                                 diHo.setGr6_qty(g5);
-                                 diHo.setGr7_qty(g6); 
-                                 diHo.setGr8_qty(g7);
-                               
-                               diHo.setCreated_by(user);
-                                diHo.setCrop_year(crpyrString);
-                               diHo.setCreation_date(formattedDate);
-                               this.hoInstService.create(diHo);
-                        
-                  }
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  redirectAttributes.addFlashAttribute("msg",
-                               "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+	@RequestMapping(value = "savehodispatchInst", method = RequestMethod.POST)
+	public ModelAndView hoDispatchInstruction(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		try {
 
-           } catch (Exception e) {
-                  System.out.println("++++++++++++++" + e);
-                  e.printStackTrace();
+			String[] variety = request.getParameterValues("jutevariety");
 
-           }
-           if (username == null) {
-                  return new ModelAndView("index");
-           }
-           return new ModelAndView(new RedirectView("HOdispatchInst.obj"));
-    }
+			for (String st : variety) {
+				System.err.println(st);
+				System.err.println(st);
+				Integer usId = (Integer) request.getSession().getAttribute("userId");//
+				System.err.println(usId);
+				String user = Integer.toString(usId);
+				System.err.println(user);
+				String contNo = request.getParameter("fullcontractno");//
+				System.err.println(contNo);
+				String crpyrString = request.getParameter("cropyear");//
+				System.err.println(crpyrString);
+				String contqtyString = request.getParameter("contractquantity");//
+				System.err.println(contqtyString);
+				Double cQtyDouble = Double.parseDouble(contqtyString);//
+				System.err.println(cQtyDouble);
+				String dIString = request.getParameter("dateofdi");//
 
-    @RequestMapping("jcilist")
-    public String jciHoList(Model model) {
+				String dateStr = request.getParameter("dateofdi");
+				SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+				Date result = formater.parse(dateStr);
+				SimpleDateFormat newFormater = new SimpleDateFormat("dd-MM-yyyy");
 
-           List<JciDIHoModel> AllList = (List<JciDIHoModel>) hoInstService.getAll();
-           model.addAttribute("AllList", AllList);
+				System.err.println(dIString);
+				String fcString = request.getParameter("FC_Ref_No");//
+				System.err.println(fcString);
+				String diNoString = request.getParameter("uniqueno");//
+				System.err.println(diNoString);
+				String contDateString = request.getParameter("contractdate");//
+				System.err.println(contDateString);
+				String allowQty = request.getParameter("qty");//
+				System.err.println(allowQty);
+				Double qtyDouble = Double.parseDouble(allowQty);
+				System.err.println(qtyDouble);
+				String regOfficeString = request.getParameter("region");//
+				System.err.println(regOfficeString);
+				String[] dpcString = request.getParameterValues("dpc_name");
+				System.err.println(dpcString);
+				String lastShipString = request.getParameter("lastdateofshipment");//
 
-           return "ViewJCIHO";
-    }
-    
-    @RequestMapping({"deleteHO"})
-    public ModelAndView deleteHO(final HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
-           ModelAndView mv = new ModelAndView("ViewJCIHO");
-             try {
-               String id = request.getParameter("id");
-               String string = hoInstService.getContractNo(id);
-               String flag = hoInstService.check(string);
-               
-               System.err.println(flag); // Assuming these print statements are for debugging
-               
-               if ("0".equals(flag)) {
-                 List<JciDIHoModel> allList = hoInstService.getAll();
-                 mv.addObject("AllList",allList);
-                 redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>");
-               } else if ("1".equals(flag)) {
-                 hoInstService.delete(Integer.parseInt(id));
-                 List<JciDIHoModel> allList = hoInstService.getAll();
-                 mv.addObject("AllList",allList);
-                 redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>");
-               }
-             } catch (Exception e) {
-               System.out.println("Error in deleting ruling market: " + e.getMessage());
-               redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\"><b>Error!</b> An unexpected error occurred. Please try again.</div>");
-             }
-             return new ModelAndView(new RedirectView("jcilist.obj"));
-           }
+				String dateStr1 = request.getParameter("lastdateofshipment");
+				SimpleDateFormat formater1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date result1 = formater1.parse(dateStr1);
+				SimpleDateFormat newFormater1 = new SimpleDateFormat("dd-MM-yyyy");
+				System.err.println(lastShipString);
+				JciDIHoModel diHo = new JciDIHoModel();
+				String gprice0 = request.getParameter(st + "-grade" + "1");
+				if (gprice0 == null) {
+					gprice0 = "0";
+				}
+				Double g0 = Double.parseDouble(gprice0);
+				String gprice1 = request.getParameter(st + "-grade" + "2");
+				if (gprice1 == null) {
+					gprice1 = "0";
+				}
+				Double g1 = Double.parseDouble(gprice1);
+
+				String gprice2 = request.getParameter(st + "-grade" + "3");
+				if (gprice2 == null) {
+					gprice2 = "0";
+				}
+				Double g2 = Double.parseDouble(gprice2);
+
+				String gprice3 = request.getParameter(st + "-grade" + "4");
+				if (gprice3 == null) {
+					gprice3 = "0";
+				}
+				Double g3 = Double.parseDouble(gprice3);
+
+				String gprice4 = request.getParameter(st + "-grade" + "5");
+				if (gprice4 == null) {
+					gprice4 = "0";
+				}
+				Double g4 = Double.parseDouble(gprice4);
+
+				String gprice5 = request.getParameter(st + "-grade" + "6");
+				if (gprice5 == null) {
+					gprice5 = "0";
+				}
+				Double g5 = Double.parseDouble(gprice5);
+
+				String gprice6 = request.getParameter(st + "-grade" + "7");
+				if (gprice6 == null) {
+					gprice6 = "0";
+				}
+				Double g6 = Double.parseDouble(gprice6);
+
+				String gprice7 = request.getParameter(st + "-grade" + "8");
+				if (gprice7 == null) {
+					gprice7 = "0";
+				}
+				Double g7 = Double.parseDouble(gprice7);
+
+				String remString = request.getParameter("remarks");
+				System.err.println(remString);
+				Date date = new Date(); // your Date object
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+				String formattedDate = formatter.format(date);
+				System.err.println(date);
+				diHo.setContracted_Qty(cQtyDouble);
+				diHo.setContract_No(contNo);
+				diHo.setFC_Ref_No(fcString);
+				diHo.setContract_Date(contDateString);
+				diHo.setDI_Date(newFormater.format(result));
+				diHo.setDI_no(diNoString);
+				diHo.setAllowed_qty(qtyDouble);
+				diHo.setRegional_office(regOfficeString);
+				String s = "";
+				/* int n = dpcString.length; */
+				if (dpcString != null) {
+					int n = dpcString.length;
+					for (int i = 0; i < dpcString.length; i++) {
+						if (i == n - 1) {
+							s += dpcString[i];
+						} else
+							s += dpcString[i] + ",";
+						System.err.println(s);
+					}
+				} else
+					s = "";
+				diHo.setDPC(s);
+				diHo.setLast_date_of_Shipment(newFormater1.format(result1));
+				diHo.setJute_variety(st);
+				diHo.setRemarks(remString);
+
+				diHo.setGr1_qty(g0);
+				diHo.setGr2_qty(g1);
+				diHo.setGr3_qty(g2);
+				diHo.setGr4_qty(g3);
+				diHo.setGr5_qty(g4);
+				diHo.setGr6_qty(g5);
+				diHo.setGr7_qty(g6);
+				diHo.setGr8_qty(g7);
+
+				diHo.setCreated_by(user);
+				diHo.setCrop_year(crpyrString);
+				diHo.setCreation_date(formattedDate);
+				this.hoInstService.create(diHo);
+
+			}
+
+			redirectAttributes.addFlashAttribute("msg",
+					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+
+		} catch (Exception e) {
+			System.out.println("++++++++++++++" + e);
+			e.printStackTrace();
+
+		}
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		return new ModelAndView(new RedirectView("HOdispatchInst.obj"));
+	}
+
+	@RequestMapping("jcilist")
+	public String jciHoList(Model model) {
+
+		List<JciDIHoModel> AllList = (List<JciDIHoModel>) hoInstService.getAll();
+		model.addAttribute("AllList", AllList);
+
+		return "ViewJCIHO";
+	}
+
+	@RequestMapping({ "deleteHO" })
+	public ModelAndView deleteHO(final HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
+		ModelAndView mv = new ModelAndView("ViewJCIHO");
+		try {
+			String id = request.getParameter("id");
+			String string = hoInstService.getContractNo(id);
+			String flag = hoInstService.check(string);
+
+			System.err.println(flag); // Assuming these print statements are for debugging
+
+			if ("0".equals(flag)) {
+				List<JciDIHoModel> allList = hoInstService.getAll();
+				mv.addObject("AllList", allList);
+				redirectAttributes.addFlashAttribute("msg",
+						"<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>");
+			} else if ("1".equals(flag)) {
+				hoInstService.delete(Integer.parseInt(id));
+				List<JciDIHoModel> allList = hoInstService.getAll();
+				mv.addObject("AllList", allList);
+				redirectAttributes.addFlashAttribute("msg",
+						"<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>");
+			}
+		} catch (Exception e) {
+			System.out.println("Error in deleting ruling market: " + e.getMessage());
+			redirectAttributes.addFlashAttribute("msg",
+					"<div class=\"alert alert-danger\"><b>Error!</b> An unexpected error occurred. Please try again.</div>");
+		}
+		return new ModelAndView(new RedirectView("jcilist.obj"));
+	}
+
 // Vishwdeep RO
-    @ResponseBody
-    @RequestMapping(value = "getCooperative", method = RequestMethod.GET)
-    public List<String> getList( HttpSession session){
-    	String regionIdString =(String) session.getAttribute("region");
-    	
-    	return  roDispatchService.getCooperative(regionIdString);
-    	
-    	
-    }
-    @RequestMapping("roDispatchInstruction")
+	@ResponseBody
+	@RequestMapping(value = "getCooperative", method = RequestMethod.GET)
+	public List<String> getList(HttpSession session) {
+		String regionIdString = (String) session.getAttribute("region");
+
+		return roDispatchService.getCooperative(regionIdString);
+
+	}
+
+	@RequestMapping("roDispatchInstruction")
 	public ModelAndView viewRoDispatcher(HttpServletRequest request, HttpSession session) throws FileNotFoundException {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-		String regionIdString =(String) session.getAttribute("region");
+		String regionIdString = (String) session.getAttribute("region");
 		List<String> loadAllDpc = roDispatchService.loadAllDpc();
 		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
 		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
@@ -3361,7 +3338,7 @@ public class Controller_V {
 		ModelAndView mv = new ModelAndView("roDispatchInstruction");
 		mv.addObject("loadAllDpc", loadAllDpc);
 		mv.addObject("loadAllDiNo", loadAllDiNo);
-		mv.addObject("loadAllCooperativesList",loadAllCooperativesList);
+		mv.addObject("loadAllCooperativesList", loadAllCooperativesList);
 		// mv.addObject("count",countAvaiResult);
 
 		///// generated new file /////////////////////////
@@ -3370,109 +3347,98 @@ public class Controller_V {
 
 		return mv;
 	}
-	//save ro dispatch instruction
-    @ResponseBody
+
+	// save ro dispatch instruction
+	@ResponseBody
 	@RequestMapping(value = "saveRoDi", method = { RequestMethod.POST })
-	public String saveRoDispatch(HttpServletRequest request, 
-			@RequestBody Map<String, Object> requestBody, RedirectAttributes redirectAttributes) throws ParseException {
-    	List<Map<String, Object>> juteDetails = (List<Map<String, Object>>) requestBody.get("juteDetails");
-    	System.err.println(juteDetails.size());
-    	System.err.println(juteDetails);
+	public String saveRoDispatch(HttpServletRequest request, @RequestBody Map<String, Object> requestBody,
+			RedirectAttributes redirectAttributes) throws ParseException {
+		List<Map<String, Object>> juteDetails = (List<Map<String, Object>>) requestBody.get("juteDetails");
+		System.err.println(juteDetails.size());
+		System.err.println(juteDetails);
 
-    	// Handle other fields from the request body
-    	String contractNoString = (String) requestBody.get("contractNo");
-    	System.err.println("Contract No: " + contractNoString);
+		// Handle other fields from the request body
+		String contractNoString = (String) requestBody.get("contractNo");
+		System.err.println("Contract No: " + contractNoString);
 
-    	String hoDiNo = (String) requestBody.get("hoDiNo");
-    	System.err.println("HoDi No: " + hoDiNo);
+		String hoDiNo = (String) requestBody.get("hoDiNo");
+		System.err.println("HoDi No: " + hoDiNo);
 
-    	String hoDiDate = (String) requestBody.get("hoDiDate");
-    	System.err.println("HoDi Date: " + hoDiDate);
+		String hoDiDate = (String) requestBody.get("hoDiDate");
+		System.err.println("HoDi Date: " + hoDiDate);
 
-    	String contractDate = (String) requestBody.get("contractDate");
-    	System.err.println("Contract Date: " + contractDate);
+		String contractDate = (String) requestBody.get("contractDate");
+		System.err.println("Contract Date: " + contractDate);
 
-    	String cropYear = (String) requestBody.get("cropYear");
-    	System.err.println("Crop Year: " + cropYear);
+		String cropYear = (String) requestBody.get("cropYear");
+		System.err.println("Crop Year: " + cropYear);
 
-    	String dpc = (String) requestBody.get("dpc");
-    	System.err.println("DPC: " + dpc);
+		String dpc = (String) requestBody.get("dpc");
+		System.err.println("DPC: " + dpc);
 
-    	String roDiNo = (String) requestBody.get("roDiNo");
-    	System.err.println("RoDi No: " + roDiNo);
+		String roDiNo = (String) requestBody.get("roDiNo");
+		System.err.println("RoDi No: " + roDiNo);
 
-    	String roDiDate = (String) requestBody.get("roDiDate");
-    	System.err.println("RoDi Date: " + roDiDate);
+		String roDiDate = (String) requestBody.get("roDiDate");
+		System.err.println("RoDi Date: " + roDiDate);
 
-    	String lastDateOfShipment = (String) requestBody.get("lastDateOfShipment");
-    	System.err.println("Last Date of Shipment: " + lastDateOfShipment);
-    	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
-    	 SimpleDateFormat outPutDate = new  SimpleDateFormat("dd-MM-yyyy");
-    	Date fomatedDate = dateFormat.parse(lastDateOfShipment);
-    	String finalStringDate = outPutDate.format(fomatedDate);
+		String lastDateOfShipment = (String) requestBody.get("lastDateOfShipment");
+		System.err.println("Last Date of Shipment: " + lastDateOfShipment);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat outPutDate = new SimpleDateFormat("dd-MM-yyyy");
+		Date fomatedDate = dateFormat.parse(lastDateOfShipment);
+		String finalStringDate = outPutDate.format(fomatedDate);
 
-    	String remarksValue = (String) requestBody.get("remarksValue");
-    	System.err.println("Remarks Value: " + remarksValue);
-    	Date date = new Date();
+		String remarksValue = (String) requestBody.get("remarksValue");
+		System.err.println("Remarks Value: " + remarksValue);
+		Date date = new Date();
 		SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String dateFormater = simpleDateTimeFormat.format(date);
 		Date created_Date = null;
 		created_Date = simpleDateTimeFormat.parse(dateFormater);
 		for (Map<String, Object> entry : juteDetails) {
 			RoDispatchModel roDispatchModel = new RoDispatchModel();
-            String juteVar = (String) entry.get("juteVar");
-            Object valuesObj = entry.get("values");
-            roDispatchModel.setJuteVariety(juteVar);
-            roDispatchModel.setContractDate(contractDate);
-            roDispatchModel.setContractNo(contractNoString);
-            roDispatchModel.setCreationDate(created_Date);
-            roDispatchModel.setCropYear(cropYear);
-      	  	roDispatchModel.setDpc(dpc);
-      	  	roDispatchModel.setHoDiDate(hoDiDate);
-      	  	roDispatchModel.setHoDiNo(hoDiNo);
-      	  	roDispatchModel.setLastDateOfShipment(finalStringDate);
-      	  	roDispatchModel.setRemarks(remarksValue);
-      	  	roDispatchModel.setRoDiDate(roDiDate);
-     	  	roDispatchModel.setRoDiNo(roDiNo);
-            
-            
-            if (valuesObj instanceof ArrayList) {
-                List<String> stringValues = (ArrayList<String>) valuesObj;
-                roDispatchModel.setGr1Qty(Double.parseDouble(stringValues.get(0)));
-                roDispatchModel.setGr2Qty(Double.parseDouble(stringValues.get(1)));
-                roDispatchModel.setGr3Qty(Double.parseDouble(stringValues.get(2)));
-                roDispatchModel.setGr4Qty(Double.parseDouble(stringValues.get(3)));
-                roDispatchModel.setGr5Qty(Double.parseDouble(stringValues.get(4)));
-                roDispatchModel.setGr6Qty(Double.parseDouble(stringValues.get(5)));
-                roDispatchModel.setGr7Qty(Double.parseDouble(stringValues.get(6)));
-                roDispatchModel.setGr8Qty(Double.parseDouble(stringValues.get(7)));
-                this.roDispatchService.create(roDispatchModel);
-               
-				
+			String juteVar = (String) entry.get("juteVar");
+			Object valuesObj = entry.get("values");
+			roDispatchModel.setJuteVariety(juteVar);
+			roDispatchModel.setContractDate(contractDate);
+			roDispatchModel.setContractNo(contractNoString);
+			roDispatchModel.setCreationDate(created_Date);
+			roDispatchModel.setCropYear(cropYear);
+			roDispatchModel.setDpc(dpc);
+			roDispatchModel.setHoDiDate(hoDiDate);
+			roDispatchModel.setHoDiNo(hoDiNo);
+			roDispatchModel.setLastDateOfShipment(finalStringDate);
+			roDispatchModel.setRemarks(remarksValue);
+			roDispatchModel.setRoDiDate(roDiDate);
+			roDispatchModel.setRoDiNo(roDiNo);
 
-                System.out.println("Jute Variety: " + juteVar);
+			if (valuesObj instanceof ArrayList) {
+				List<String> stringValues = (ArrayList<String>) valuesObj;
+				roDispatchModel.setGr1Qty(Double.parseDouble(stringValues.get(0)));
+				roDispatchModel.setGr2Qty(Double.parseDouble(stringValues.get(1)));
+				roDispatchModel.setGr3Qty(Double.parseDouble(stringValues.get(2)));
+				roDispatchModel.setGr4Qty(Double.parseDouble(stringValues.get(3)));
+				roDispatchModel.setGr5Qty(Double.parseDouble(stringValues.get(4)));
+				roDispatchModel.setGr6Qty(Double.parseDouble(stringValues.get(5)));
+				roDispatchModel.setGr7Qty(Double.parseDouble(stringValues.get(6)));
+				roDispatchModel.setGr8Qty(Double.parseDouble(stringValues.get(7)));
+				this.roDispatchService.create(roDispatchModel);
+
+				System.out.println("Jute Variety: " + juteVar);
 //                System.out.println("Double values: " + doubleValues);
-            } else {
-                System.err.println("Unexpected data type for 'values'.");
-                // Handle the unexpected data type situation accordingly
-            }
-        }
-		
-		
-		
-  
-		
-    	
-    	
-		 redirectAttributes.addFlashAttribute("msg",
-           		  "<div class=\"alert alert-success\"><b>Success !</b>data successfully.</div>\r\n"
-           		  + "");
-    	return "Saved";
-    	}
+			} else {
+				System.err.println("Unexpected data type for 'values'.");
+				// Handle the unexpected data type situation accordingly
+			}
+		}
+		roDispatchService.update(contractNoString);
+		redirectAttributes.addFlashAttribute("msg", "Data saved successfully.");
 
-	
+		return "redirect:/roDispatchInstruction.obj";
+	}
 
-	//ro list
+	// ro list
 	@RequestMapping("roDispatchList")
 	public ModelAndView roDiList(HttpServletRequest request) {
 
@@ -3487,26 +3453,28 @@ public class Controller_V {
 		mv.addObject("roDiList", allDi);
 		return mv;
 	}
-	
-	
+
 	@ResponseBody
-	@RequestMapping(value="fetchDetails",method = RequestMethod.GET)
+	@RequestMapping(value = "fetchDetails", method = RequestMethod.GET)
 	public String fetchDetails(@RequestParam("diNo") String HOno) {
 		System.err.println("Reached");
 		List<String> detailsList = (List<String>) roDispatchService.getDetails(HOno);
 
-        Gson gson = new Gson();
-        String jsonResponse = gson.toJson(detailsList);
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(detailsList);
 
-        return jsonResponse;
-		
-		
+		return jsonResponse;
+
 	}
 
-           
-    
-    
-
+	@ResponseBody
+	@RequestMapping(value = "getdetails", method = RequestMethod.GET)
+	public String getDetails(@RequestParam("diNo") String diNo) {
+		List<String> list = (List<String>) this.roDispatchService.getprevious(diNo);
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(list);
+		return jsonResponse;
+	}
 
 }
 
