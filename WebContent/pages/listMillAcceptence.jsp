@@ -148,13 +148,13 @@ input[type="file"] {
 
 								<thead>
 									<tr>
+									<th>Sl.NO</th>
 
                                         <th>Mill name</th>
 										 <th>Contract No.</th>
 										
 										<th>Crop Year</th>
-										<th>Contract Quantity</th>				    
-									   <!--  <th>Intially Payment Date</th> -->
+										<th>Contract Quantity</th>				  
 									   <th>Contract Date</th>
 										<th>Payment Due Date</th>
 										<th>Fibre Value</th>
@@ -165,11 +165,12 @@ input[type="file"] {
 									</tr>
 								    </thead>
 								    <tbody>
-
+                                   <%int i=1; %>
 									<c:forEach items="${AllList}" var="item">
 
 
 										<tr>
+										<td><%=i%></td>
 										    <td>${item.getMill_name()}</td>
 										    <td>${item. getContract_identification_no()}</td>
 
@@ -209,6 +210,7 @@ input[type="file"] {
 													</c:choose></td>
 											</form>
 										</tr>
+										<%i++; %>
 									</c:forEach>
 								</tbody>
 

@@ -121,12 +121,14 @@ th {
 
 								<thead>
 									<tr>
+									<th>Sl.NO</th>
 										<th>Mill</th>
 										<th>Contract No</th>
 										<th>Challan No</th>
+										<th>MR NO</th>
 										<!--  <th>Quality Claim</th> -->
-										<th>Moisture Content</th>
-										<th>NCV Percentage</th>
+										<!-- <th>Moisture Content</th>
+										<th>NCV Percentage</th> -->
 										<th>Claim Amount</th>
 										<th>O&M Official</th>
 
@@ -137,7 +139,7 @@ th {
 
 
 
-										<th>Settlement Id</th>
+									 <th>Settlement Id</th>
 
 
 
@@ -146,25 +148,28 @@ th {
 									</tr>
 								</thead>
 								<tbody>
+								<%int i=1; %>
 
 									<c:forEach items="${jciclaim_NominationModel}" var="item">
 
 
 										<tr>
-
-											<td>${item.getMill()}</td>
+										<td  class="sorting_1"><%=i%></td>
+                                               
+											<td >${item.getMill()}</td>
 											<td>${item.getContractNo()}
 											<td>${item.getChallanNo()}</td>
+											<td>${item.getMr_No()}</td>
 											<%-- <td>  ${item.getQuality_settlement()}</td> --%>
-											<td>${item.getMoisture_settlement()}</td>
-											<td>${item.getNcv_settlement()}</td>
+											<%-- <td>${item.getMoisture_settlement()}</td>
+											<td>${item.getNcv_settlement()}</td> --%>
 											<td>${item.getClaimAmount()}</td>
 											<td>${item.getOMOfficial()}</td>
 
 
 											<td>${item. getFAOfficial()}</td>
 											<td>${item.getDateofInspection()}</td>
-											<td>${item.getSettlement_id()}</td>
+											 <td>${item.getSettlement_id()}</td>
 
 
 
@@ -175,6 +180,7 @@ th {
 
 
 										</tr>
+										<%i++; %>
 									</c:forEach>
 
 

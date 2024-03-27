@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64.Encoder;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -3798,7 +3800,7 @@ public class Controller_V {
 
 		}
 		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
-		System.out.println(AllList + "allistttttttttttttt");
+		
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}
@@ -3941,7 +3943,7 @@ public class Controller_V {
 		// fetching the Contract No From JciContract Table
 		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
 		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
-		System.err.println("omname and fa name" + OM_official + FA_official);
+		//System.err.println("omname and fa name" + OM_official + FA_official);
 
 		List<String> contractno = nominalOfficialService.contractno_ContractTable();
 
@@ -3963,12 +3965,12 @@ public class Controller_V {
 	@RequestMapping(value = "fetchmillreceiptdata", method = RequestMethod.GET)
 	public String FetchDataMillReciept(@RequestParam("millid") String millid) {
 
-		System.out.println("Hello ---------------- ");
-		System.out.println("Hello--------------- ");
-		System.out.println("Hello ---------------- ");
-		System.out.println("Hello ---------------- ");
-
-		System.out.println("Hello---------------- ");
+//		System.out.println("Hello ---------------- ");
+//		System.out.println("Hello--------------- ");
+//		System.out.println("Hello ---------------- ");
+//		System.out.println("Hello ---------------- ");
+//
+//		System.out.println("Hello---------------- ");
 
 		List<Object> millReceiptData = nominalOfficialService.FetchMillReceiptData(millid);
 
@@ -3990,9 +3992,9 @@ public class Controller_V {
 
 		List<Object> gradecmposition = nominalOfficialService.gradecomposition(ContractNo);
 
-		System.out.println(gradecmposition);
-		System.out.println("Printing Grade Compostion");
-		
+//		System.out.println(gradecmposition);
+//		System.out.println("Printing Grade Compostion");
+//		
 		// Convert the a JSON in string
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(gradecmposition);
@@ -4007,12 +4009,12 @@ public class Controller_V {
 //	@Value("${upload.MillDocumentDownload}")
 //	String MillDocumentDownload;
 	@RequestMapping("savenominal")
-	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public ModelAndView saveNominalform(HttpServletRequest request , @RequestParam("Settlement_id") Long Settlement_id, RedirectAttributes redirectAttributes) {
 
 		String username = (String) request.getSession().getAttribute("usrname");
 
+		
 		String Mill = request.getParameter("Mill");
-
 		String ContractNo = request.getParameter("ContractNo");
 		String ChallanNo = request.getParameter("ChallanNo");
 		String MRNo = request.getParameter("MRNo");
@@ -4036,6 +4038,7 @@ public class Controller_V {
 		String q4 = request.getParameter("q4");
 		String q5 = request.getParameter("q5");
 		String q6 = request.getParameter("q6");
+		String Mr_NO = request.getParameter("Mr_No");
 
 		// end here
 
@@ -4049,12 +4052,10 @@ public class Controller_V {
 		double ClaimAmount = (Double) Double.parseDouble(request.getParameter("ClaimAmount"));
 		String omofficial = request.getParameter("omofficial");
 
-		System.err.println(omofficial + "omofficial");
 
 		String FAofficial = request.getParameter("FAomofficial");
 
-		System.err.println(FAofficial + "FAomofficial");
-
+		
 		String DateofInpection1 = request.getParameter("DateofInpection");
 
 	
@@ -4069,10 +4070,14 @@ public class Controller_V {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		Long SettlementId = (Long) Long.parseLong(request.getParameter("SettlementId"));
 
 		// Creating object of
 		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+		//int total = nominalOfficialService.CountRecord();
+		//Long SettlementId1 = (Long) Long.parseLong(request.getParameter("Settlement_id"));
+		
+		jciclaim_NominationModel.setSettlement_id(Settlement_id);
+		System.err.println(Settlement_id );
 		jciclaim_NominationModel.setMill(Mill);
 		jciclaim_NominationModel.setContractNo(ContractNo);
 		jciclaim_NominationModel.setChallanNo(ChallanNo);
@@ -4085,22 +4090,25 @@ public class Controller_V {
 		jciclaim_NominationModel.setOMOfficial(omofficial);
 		jciclaim_NominationModel.setFAOfficial(FAofficial);
 		jciclaim_NominationModel.setDateofInspection(DateofInpection2);
-		System.out.println(DateofInpection2 + "DateofInpection2");
-		jciclaim_NominationModel.setSettlement_id(SettlementId);
+		jciclaim_NominationModel.setMr_No(Mr_NO );
+		
+	//	System.out.println(DateofInpection2 + "DateofInpection2");
+		
+	//	jciclaim_NominationModel.setSettlement_id(SettlementId);
+		
+		
 
 		// date- created on
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		Date currentDate = new Date();
 		String formattedDate = sdf.format(currentDate);
-		System.err.println("dateeeeeeeeee" + formattedDate);
-		System.out.println(formattedDate);
+		
 		// Inspection date
 
 		SimpleDateFormat idf = new SimpleDateFormat("dd-MM-yyyy");
 		Date create_date = new Date();
 		String Inspection_date = idf.format(create_date);
 
-		System.out.println(Inspection_date);
 		jciclaim_NominationModel.setInspection_date(Inspection_date);
 		jciclaim_NominationModel.setCreated_on(formattedDate);
 
@@ -4127,6 +4135,9 @@ public class Controller_V {
 		jciclaim_NominationModel.setQty4(q4);
 		jciclaim_NominationModel.setQty5(q5);
 		jciclaim_NominationModel.setQty6(q6);
+		
+		
+		
 
 		// email is working for static and dynamic both
 
@@ -4137,7 +4148,7 @@ public class Controller_V {
 
 		String subject = "This is the  EMail Subject of view!!";
 
-		String body = "This is the Body of the Email for om official . ";
+		String body = " This is the Body of the Email for om official . ";
 
 		//String filename = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
 		String filename = OmoOfficialDocumentDownload;
@@ -4149,7 +4160,7 @@ public class Controller_V {
 
 			// toAddresses = new InternetAddress[]{new InternetAddress(userEmailOmo) };
 
-			toAddresses = new InternetAddress[] { new InternetAddress("test123@gmail.com")
+			toAddresses = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
 
 			};
 
@@ -4221,8 +4232,21 @@ public class Controller_V {
 //		}
 //
 //		email.sendEmail(toAddresses, bodyMill, subjectMill, filenameMill, usernameMill);
-
+		
+		///////////// here set setllemnt id for text generated from backend
+		
+		//jciclaim_NominationModel.setSettlement_id(Settlement_id);
+		System.err.println(Settlement_id );
 		nominalOfficialService.create(jciclaim_NominationModel);
+		
+		//////// It will change the contract_status on jci contract on form submit 
+		String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
+		nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
+		
+		/////// It will change claim status on Jcimill_receipt on form submit 
+		
+		
+		
 
 		redirectAttributes.addFlashAttribute("msg",
 				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
@@ -4234,15 +4258,15 @@ public class Controller_V {
 	@RequestMapping("viewlistnominal")
 	public String ViewNominal(Model model, HttpServletRequest request) {
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
+		// Collections.sort(AllList, Comparator.comparing(Jciclaim_NominationModel::getCreated_on).reversed());
+		Collections.reverse(AllList);
 		model.addAttribute("jciclaim_NominationModel", AllList);
 		String omofficial = request.getParameter("omofficial");
-		System.err.println("view" + omofficial);
+	//	System.err.println("view" + omofficial);
 
 		return "viewlistnominal";
 	}
-
-    
-
+	
 
 
 
@@ -4342,6 +4366,8 @@ public ModelAndView saveEntryOfTds(HttpServletRequest request, RedirectAttribute
 public String ViewEntryofTds(Model model) {
 
 	List<JciEntryTdsModel> AllList = (List<JciEntryTdsModel>) entryofTdsService.getAll();
+	Collections.reverse(AllList);
+	//.reverse(AllList);
 
 	model.addAttribute("AllList", AllList);
 

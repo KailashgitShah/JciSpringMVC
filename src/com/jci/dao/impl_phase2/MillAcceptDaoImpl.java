@@ -60,7 +60,6 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	    List<Contractgeneration> ll = new ArrayList<>();
 	    List<Object[]> rows = new ArrayList<>();
 	    String querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract";
-	  //  String querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc, Acceptance_doc_path  from jcicontract";
 	    
 	    Session session = sessionFactory.getCurrentSession();
 	    Transaction tx = session.beginTransaction();
@@ -108,7 +107,7 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        cm.setJute_value(Jute_value);
 	        cm.setContract_identification_no(Contract_identification_no);
 	        ll.add(cm);
-	        System.out.println(ll.toString() + "kkkkkkkkkkkkkkkk");
+	       
 	    }
 
 	    return ll;

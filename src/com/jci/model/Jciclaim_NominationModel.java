@@ -12,7 +12,8 @@ import javax.persistence.Table;
 public class Jciclaim_NominationModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Settlement_id")
 	private Long Settlement_id; // Primary key, assumed to be BigInt
 
@@ -106,6 +107,9 @@ public class Jciclaim_NominationModel {
 	
 	@Column(name = "qty6")
 	private String qty6;
+	
+	@Column(name = "Mr_No")
+	private String Mr_No;
 	
 	
 
@@ -347,6 +351,14 @@ public class Jciclaim_NominationModel {
 
 	public void setCreated_on(String created_on) {
 		Created_on = created_on;
+	}
+
+	public String getMr_No() {
+		return Mr_No;
+	}
+
+	public void setMr_No(String mr_No) {
+		Mr_No = mr_No;
 	}
 
 	
