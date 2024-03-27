@@ -33,6 +33,12 @@ public class PurchaseRegisterDTO {
 	private int rate_slipno;
 	private String tally_status;
 	private String FDtoTD;
+	private int SR_no;
+	private double grossT;
+	private double deducT;
+	private double netT;
+	private double amountT;
+	private double garsatT;
 	
 	
 	public String getFDtoTD() {
@@ -164,9 +170,42 @@ public class PurchaseRegisterDTO {
 		this.tally_status = tally_status;
 	}
 	
-	
-	
-	
+	public int getSR_no() {
+		return SR_no;
+	}
+	public void setSR_no(int sR_no) {
+		SR_no = sR_no;
+	}
+	public double getGrossT() {
+		return grossT;
+	}
+	public void setGrossT(double grossT) {
+		this.grossT = grossT;
+	}
+	public double getDeducT() {
+		return deducT;
+	}
+	public void setDeducT(double deducT) {
+		this.deducT = deducT;
+	}
+	public double getNetT() {
+		return netT;
+	}
+	public void setNetT(double netT) {
+		this.netT = netT;
+	}
+	public double getAmountT() {
+		return amountT;
+	}
+	public void setAmountT(double amountT) {
+		this.amountT = amountT;
+	}
+	public double getGarsatT() {
+		return garsatT;
+	}
+	public void setGarsatT(double garsatT) {
+		this.garsatT = garsatT;
+	}
 	
 	
 	@Override
@@ -177,13 +216,15 @@ public class PurchaseRegisterDTO {
 				+ ", gross_qty=" + gross_qty + ", deduc_qty=" + deduc_qty + ", net_qty=" + net_qty + ", amountpayable="
 				+ amountpayable + ", garsat=" + garsat + ", td_base=" + td_base + ", binno=" + binno + ", F_name="
 				+ F_name + ", farmername=" + farmername + ", rate_slipno=" + rate_slipno + ", tally_status="
-				+ tally_status + ", FDtoTD=" + FDtoTD + "]";
+				+ tally_status + ", FDtoTD=" + FDtoTD + ", SR_no=" + SR_no + ", grossT=" + grossT + ", deducT=" + deducT
+				+ ", netT=" + netT + ", amountT=" + amountT + ", garsatT=" + garsatT + "]";
 	}
 	
 	public PurchaseRegisterDTO(String regionId, String centername, String tallyslipno, String datepurchase,
 			String farmerregno, String placeofpurchase, String cropyr, String basis, String jutevariety,
 			double gross_qty, double deduc_qty, double net_qty, double amountpayable, double garsat, String td_base,
-			int binno, String f_name, String farmername, int rate_slipno, String tally_status, String fDtoTD) {
+			int binno, String f_name, String farmername, int rate_slipno, String tally_status, String fDtoTD, int sR_no,
+			double grossT, double deducT, double netT, double amountT, double garsatT) {
 		super();
 		this.regionId = regionId;
 		this.centername = centername;
@@ -206,6 +247,12 @@ public class PurchaseRegisterDTO {
 		this.rate_slipno = rate_slipno;
 		this.tally_status = tally_status;
 		FDtoTD = fDtoTD;
+		SR_no = sR_no;
+		this.grossT = grossT;
+		this.deducT = deducT;
+		this.netT = netT;
+		this.amountT = amountT;
+		this.garsatT = garsatT;
 	}
 	public PurchaseRegisterDTO() {
 		super();

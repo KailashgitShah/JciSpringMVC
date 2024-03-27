@@ -38,6 +38,7 @@ import java.text.ParseException;
 import com.jci.model.BalePreparation;
 import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -4998,9 +4999,9 @@ public class InsertDataController
 	    	String tallyno = "";
 	    try {
 	    	String username =(String)request.getSession().getAttribute("usrname");
-	    //	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
+	    	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
 	    //	String path1 ="/Users/apple/Documents/Bob/";
-	    	String path1 ="C:\\Users\\vishal.vishwakarma\\Downloads\\";
+	    //	String path1 ="C:\\Users\\vishal.vishwakarma\\Downloads\\";
 	    	//generating crop year
 	    	String cropyear = "";
 			Calendar cal = new GregorianCalendar();
@@ -5892,14 +5893,37 @@ public class InsertDataController
                 return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
 	    	}
 	    	String FDtoTD = purchasesdateFrom+" To "+purchasesdateTo;
+	    	int i = 1;
+	    	double grossT = 0;
+	    	double deducT = 0;
+	    	double netT = 0;
+	    	double amountT = 0;
+	    	double garsatT = 0;
 	    	 for (PurchaseRegisterDTO Plist : purchaselist) {
 	        	 centername = Plist.getCentername();
 	        	 roname = Plist.getRegionId();
 	        	 Plist.setFDtoTD(FDtoTD);
+	        	 Plist.setSR_no(i);
+	        	 i++;
+	        	 grossT += Plist.getGross_qty();
+	        	 deducT += Plist.getDeduc_qty();
+	        	 netT += Plist.getNet_qty();
+	        	 amountT += Plist.getAmountpayable();
+	        	 garsatT += Plist.getGarsat();
+	        	 Plist.setGrossT(BigDecimal.valueOf(grossT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	        	 Plist.setDeducT(BigDecimal.valueOf(deducT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	        	 Plist.setNetT(BigDecimal.valueOf(netT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	        	 Plist.setAmountT(BigDecimal.valueOf(amountT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	        	 Plist.setGarsatT(BigDecimal.valueOf(garsatT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 	        }
 	    
 		        try {
-		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\PurchaseReport.jrxml");
+		        	//local file location
+		        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
+		        	
+		        	//live file location
+		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
+		        	
                     Map<String, Object> parameters = new HashMap<String, Object>();
                     // Prepare data sources
                     JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(purchaselist);
@@ -5921,18 +5945,9 @@ public class InsertDataController
              }catch (Exception e) {
                     e.printStackTrace();
                     response.getWriter().write("Error generating the report");
-
+          		  return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
              }
 
-	        return mv;
-	    }
-	    private static PdfPCell createCell(String content, float height) {
-	        PdfPCell cell = new PdfPCell();
-	        cell.setFixedHeight(height);
-	        // Apply regular font to the content
-	        Paragraph paragraph = new Paragraph(content);
-	        cell.addElement(paragraph);
-
-	        return cell;
+		  return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
 	    }
 }
