@@ -3060,6 +3060,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	//To laod HO
 	@RequestMapping("HOdispatchInst")
 	public ModelAndView HODispatchInstructionModel(HttpServletRequest request, HttpSession session) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -3082,6 +3083,9 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+	
+	//To get ho Details
 
 	@ResponseBody
 	@RequestMapping(value = "HoDispatch", method = RequestMethod.GET)
@@ -3094,7 +3098,7 @@ public class Controller_V {
 
 		return jsonResponse;
 	}
-
+//DPC finding for Region
 	@ResponseBody
 	@RequestMapping({ "findDpc" })
 	public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
@@ -3104,7 +3108,8 @@ public class Controller_V {
 		return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
 
 	}
-
+	
+//To get count previous HO count dor DI no. for particular Region
 	@ResponseBody
 	@RequestMapping({ "countHo" })
 	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request) {
@@ -3122,20 +3127,19 @@ public class Controller_V {
 			String[] variety = request.getParameterValues("jutevariety");
 
 			for (String st : variety) {
-				System.err.println(st);
-				System.err.println(st);
+				
 				Integer usId = (Integer) request.getSession().getAttribute("userId");//
-				System.err.println(usId);
+				
 				String user = Integer.toString(usId);
-				System.err.println(user);
+				
 				String contNo = request.getParameter("fullcontractno");//
-				System.err.println(contNo);
+				
 				String crpyrString = request.getParameter("cropyear");//
-				System.err.println(crpyrString);
+			
 				String contqtyString = request.getParameter("contractquantity");//
-				System.err.println(contqtyString);
+				
 				Double cQtyDouble = Double.parseDouble(contqtyString);//
-				System.err.println(cQtyDouble);
+				
 				String dIString = request.getParameter("dateofdi");//
 
 				String dateStr = request.getParameter("dateofdi");
@@ -3143,28 +3147,28 @@ public class Controller_V {
 				Date result = formater.parse(dateStr);
 				SimpleDateFormat newFormater = new SimpleDateFormat("dd-MM-yyyy");
 
-				System.err.println(dIString);
+				
 				String fcString = request.getParameter("FC_Ref_No");//
-				System.err.println(fcString);
+			
 				String diNoString = request.getParameter("uniqueno");//
-				System.err.println(diNoString);
+				
 				String contDateString = request.getParameter("contractdate");//
-				System.err.println(contDateString);
+			
 				String allowQty = request.getParameter("qty");//
-				System.err.println(allowQty);
+			
 				Double qtyDouble = Double.parseDouble(allowQty);
-				System.err.println(qtyDouble);
+				
 				String regOfficeString = request.getParameter("region");//
-				System.err.println(regOfficeString);
+				
 				String[] dpcString = request.getParameterValues("dpc_name");
-				System.err.println(dpcString);
+				
 				String lastShipString = request.getParameter("lastdateofshipment");//
 
 				String dateStr1 = request.getParameter("lastdateofshipment");
 				SimpleDateFormat formater1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date result1 = formater1.parse(dateStr1);
 				SimpleDateFormat newFormater1 = new SimpleDateFormat("dd-MM-yyyy");
-				System.err.println(lastShipString);
+				
 				JciDIHoModel diHo = new JciDIHoModel();
 				String gprice0 = request.getParameter(st + "-grade" + "1");
 				if (gprice0 == null) {
@@ -3214,7 +3218,7 @@ public class Controller_V {
 				Double g7 = Double.parseDouble(gprice7);
 
 				String remString = request.getParameter("remarks");
-				System.err.println(remString);
+				
 				Date date = new Date(); // your Date object
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				String formattedDate = formatter.format(date);
@@ -3275,6 +3279,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("HOdispatchInst.obj"));
 	}
 
+	//View JCI
 	@RequestMapping("jcilist")
 	public String jciHoList(Model model) {
 
@@ -3284,6 +3289,7 @@ public class Controller_V {
 		return "ViewJCIHO";
 	}
 
+	//Delete DI for particular DI no.
 	@RequestMapping({ "deleteHO" })
 	public ModelAndView deleteHO(final HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 		ModelAndView mv = new ModelAndView("ViewJCIHO");
@@ -3315,6 +3321,8 @@ public class Controller_V {
 	}
 
 // Vishwdeep RO
+	
+	//To get Cooperatives list for particular RO
 	@ResponseBody
 	@RequestMapping(value = "getCooperative", method = RequestMethod.GET)
 	public List<String> getList(HttpSession session) {
@@ -3323,7 +3331,8 @@ public class Controller_V {
 		return roDispatchService.getCooperative(regionIdString);
 
 	}
-
+	
+	//To get Ro Form
 	@RequestMapping("roDispatchInstruction")
 	public ModelAndView viewRoDispatcher(HttpServletRequest request, HttpSession session) throws FileNotFoundException {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -3334,7 +3343,7 @@ public class Controller_V {
 		List<String> loadAllDpc = roDispatchService.loadAllDpc();
 		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
 		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
-		// int countAvaiResult = roDispatchService.getCountOfAvailableEntries();
+	
 		ModelAndView mv = new ModelAndView("roDispatchInstruction");
 		mv.addObject("loadAllDpc", loadAllDpc);
 		mv.addObject("loadAllDiNo", loadAllDiNo);
@@ -3348,42 +3357,38 @@ public class Controller_V {
 		return mv;
 	}
 
-	// save ro dispatch instruction
+	// Save RO Multiple
 	@ResponseBody
 	@RequestMapping(value = "saveRoDi", method = { RequestMethod.POST })
 	public String saveRoDispatch(HttpServletRequest request, @RequestBody Map<String, Object> requestBody,
 			RedirectAttributes redirectAttributes) throws ParseException {
 		List<Map<String, Object>> juteDetails = (List<Map<String, Object>>) requestBody.get("juteDetails");
-		System.err.println(juteDetails.size());
-		System.err.println(juteDetails);
+	
 
 		// Handle other fields from the request body
 		String contractNoString = (String) requestBody.get("contractNo");
-		System.err.println("Contract No: " + contractNoString);
-
+		
 		String hoDiNo = (String) requestBody.get("hoDiNo");
-		System.err.println("HoDi No: " + hoDiNo);
+	
 
 		String hoDiDate = (String) requestBody.get("hoDiDate");
-		System.err.println("HoDi Date: " + hoDiDate);
-
+		
 		String contractDate = (String) requestBody.get("contractDate");
-		System.err.println("Contract Date: " + contractDate);
+		
 
 		String cropYear = (String) requestBody.get("cropYear");
-		System.err.println("Crop Year: " + cropYear);
-
+		
 		String dpc = (String) requestBody.get("dpc");
-		System.err.println("DPC: " + dpc);
+		
 
 		String roDiNo = (String) requestBody.get("roDiNo");
-		System.err.println("RoDi No: " + roDiNo);
+		
 
 		String roDiDate = (String) requestBody.get("roDiDate");
-		System.err.println("RoDi Date: " + roDiDate);
+		
 
 		String lastDateOfShipment = (String) requestBody.get("lastDateOfShipment");
-		System.err.println("Last Date of Shipment: " + lastDateOfShipment);
+		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat outPutDate = new SimpleDateFormat("dd-MM-yyyy");
 		Date fomatedDate = dateFormat.parse(lastDateOfShipment);
@@ -3425,11 +3430,11 @@ public class Controller_V {
 				roDispatchModel.setGr8Qty(Double.parseDouble(stringValues.get(7)));
 				this.roDispatchService.create(roDispatchModel);
 
-				System.out.println("Jute Variety: " + juteVar);
+				
 //                System.out.println("Double values: " + doubleValues);
 			} else {
 				System.err.println("Unexpected data type for 'values'.");
-				// Handle the unexpected data type situation accordingly
+				
 			}
 		}
 		roDispatchService.update(contractNoString);
@@ -3438,7 +3443,8 @@ public class Controller_V {
 		return "redirect:/roDispatchInstruction.obj";
 	}
 
-	// ro list
+	
+	// RO List
 	@RequestMapping("roDispatchList")
 	public ModelAndView roDiList(HttpServletRequest request) {
 
@@ -3453,7 +3459,9 @@ public class Controller_V {
 		mv.addObject("roDiList", allDi);
 		return mv;
 	}
-
+	
+	
+	//Fetch details for DI
 	@ResponseBody
 	@RequestMapping(value = "fetchDetails", method = RequestMethod.GET)
 	public String fetchDetails(@RequestParam("diNo") String HOno) {
@@ -3466,7 +3474,9 @@ public class Controller_V {
 		return jsonResponse;
 
 	}
-
+	
+	
+	//To get the details of previous DIs
 	@ResponseBody
 	@RequestMapping(value = "getdetails", method = RequestMethod.GET)
 	public String getDetails(@RequestParam("diNo") String diNo) {

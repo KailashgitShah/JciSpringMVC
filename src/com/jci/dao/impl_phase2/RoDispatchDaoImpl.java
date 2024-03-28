@@ -29,7 +29,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
 	}
-
+	// Get purhcase center for particular Region
 	@Override
 	public List<String> loadAllDpc() {
 		String regionCode = (String) request.getSession().getAttribute("region");
@@ -38,6 +38,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		return list;
 	}
 
+	//To load all DI no. in RO form
 	@Override
 	public List<String> loadAllDiNo() {
 		String regionCode = (String) request.getSession().getAttribute("region");
@@ -55,18 +56,21 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		return list;
 	}
 
+	//To get count of RO entries for RO no. generation
 	@Override
 	public int getCountOfAvailableEntries(String hoNo) {
 		String sqlString = "select count(HO_DI_NO) from jciDI_ro where HO_DI_NO = '" + hoNo + "'";
 		return (int) this.currentSession().createSQLQuery(sqlString).uniqueResult();
 
 	}
+	//Create
 
 	@Override
 	public void create(RoDispatchModel roDispatchModel) {
 		this.currentSession().save(roDispatchModel);
 
 	}
+	//To get All RO
 
 	@Override
 	public List<RoDispatchModel> getAllRoDi() {
@@ -76,7 +80,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		return ll;
 
 	}
-
+//To get Cooperatives
 	@Override
 	public List<String> getCooperative(String regionIdString) {
 		String sqlString = "Select centername from jcipurchasecenter where rocode='" + regionIdString + "';";
@@ -84,13 +88,8 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		// TODO Auto-generated method stub
 		return list;
 	}
-	/*
-	 * @Override public List<String> getAllocated() { String sqlString
-	 * ="SELECT JUTE_Variety,   SUM(Gr1_qty) ,  SUM(Gr2_qty),	SUM(Gr3_qty) , SUM(Gr4_qty), SUM(Gr5_qty),   SUM(Gr6_qty) ,	SUM(Gr7_qty) ,  SUM(Gr8_qty) FROM jciDI_ro WHERE HO_DI_NO =   '2023-2024/07001' Group BY Jute_variety;"
-	 * ; List<String> list = currentSession().createSQLQuery(sqlString).list(); //
-	 * TODO Auto-generated method stub System.err.println(list); }
-	 */
-
+	
+//To get details for DI no.
 	@Override
 	public List<String> getDetails(String hOno) {
 		String sqlString = "SELECT    SUM(Gr1_qty) AS T1 ,  SUM(Gr2_qty) AS T2,"
@@ -101,7 +100,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		List<String> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 	}
-
+//TO get previous DI  for RO
 	@Override
 	public List<String> getprevious(String diNo) {
 		// TODO Auto-generated method stub
@@ -110,6 +109,9 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		List<String> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 	}
+	
+	
+	//To update contract status
 
 	@Override
 	public void update(String contractNoString) {

@@ -90,16 +90,16 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 				<h1 class="page-title">Dispatch Instruction (RO)</h1>
 			</div>
 
-			<%
-			// Author viswdeep
-			%>
+
 			<div class="page-content fade-in-up">
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
-							<c:if test="${not empty msg}">
-    ${msg}
-</c:if>
+							<div id='success'
+								style='display: none; text-align: center; background-color: #4CAF50; color: white;'>
+
+							</div>
+
 							<div id='errorcontainer'
 								style='display: none; text-align: center;'></div>
 							<div class="ibox-body">
@@ -189,7 +189,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 									<div class="col-sm-4 form-group">
 
 
-										<label>Remarks </label> <span class="text-danger">* </span>&nbsp
+										<label>Remarks </label> <span class="text-danger">* </span>
 										<textarea class="form-control taxtbox" name="Remarks"
 											placeholder="Remarks" required maxlength="250" id="remarks"></textarea>
 
@@ -314,62 +314,62 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	                contentToDisplay += "<tr>";
 
 	                if (!headerDisplayed) {
-	                    contentToDisplay += "<th style='border: 1px solid black;'>Jute Variety</th><th style='border: 1px solid black;'>Specification</th><th style='border: 1px solid black;'>Grade 1</th><th style='border: 1px solid black;'>Grade 2</th><th style='border: 1px solid black;'>Grade 3</th><th style='border: 1px solid black;'>Grade 4</th><th style='border: 1px solid black;'>Grade 5</th><th style='border: 1px solid black;'>Grade 6</th><th style='border: 1px solid black;'>Grade 7</th><th style='border: 1px solid black;'>Grade 8</th><th style='border: 1px solid black;'>Total</th>";
+	                    contentToDisplay += "<th style='border: 1px solid black;text-align: center;'>Jute Variety</th><th style='text-align: center; border: 1px solid black;'>Specification</th><th style='text-align: center; border: 1px solid black;'>Grade 1</th><th style='text-align: center; border: 1px solid black;'>Grade 2</th><th style='text-align: center; border: 1px solid black;'>Grade 3</th><th style='text-align: center; border: 1px solid black;'>Grade 4</th><th style='text-align: center; border: 1px solid black;'>Grade 5</th><th style='text-align: center; border: 1px solid black;'>Grade 6</th><th style='text-align: center; border: 1px solid black;'>Grade 7</th><th style='text-align: center; border: 1px solid black;'>Grade 8</th><th style='text-align: center; border: 1px solid black;'>Total</th>";
 	                    headerDisplayed = true;
 	                    contentToDisplay += "</tr>";
 	                } else {
-	                    contentToDisplay += "<td style='border: 1px solid black;'> </td>";
+	                    contentToDisplay += "<td style=' text-align: center;border: 1px solid black;'> </td>";
 	                }
 
 	                contentToDisplay += "<tbody id='body'>";
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td rowspan='5' id='juteVariety' name='juteVariety' style='border: 1px solid black;'>" + data.contractDetails[k][20] + "</td>";
+	                contentToDisplay += "<td rowspan='5' id='juteVariety' name='juteVariety' style='text-align: center; border: 1px solid black; color:'blue''> <span style='color: blue;'>"+ data.contractDetails[k][20]+"</span></td>";
 
 	                juteArray.push(data.contractDetails[k][20]);
 
-	                contentToDisplay += "<td style='border: 1px solid black;'>DI Received</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;text-align: center;'>DI Received</td>";
 	                var t1 = 0;
 
 	                for (var i = 1; i <= 8; i++) {
 	                    t1 += data.contractDetails[k][11 + i];
-	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseFloat(data.contractDetails[k][11 + i]) + "' readonly></td>";
+	                    contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseFloat(data.contractDetails[k][11 + i]) + "' readonly></td>";
 
 	                }
 
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + t1 + "</td></tr>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>" + t1 + "</td></tr>";
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td style='border: 1px solid black;'>Allocated</td>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>Allocated</td>";
 
 	                for (var i = 1; i <= 8; i++) {
-	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='alloc_" + k +""+ i+"' style='width: 70px;' value='0' readonly></td>";
+	                    contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='alloc_" + k +""+ i+"' style='width: 70px;' value='0' readonly></td>";
 	                }
-	                contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='total_alloc" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='total_alloc" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
 
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td style='border: 1px solid black;'>Balance</td>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>Balance</td>";
 
 	                for (var i = 1; i <= 8; i++) {
-	                    contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='bal_" + k +""+ i+"' style='width: 70px;' value='0' readonly></td>";
+	                    contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='bal_" + k +""+ i+"' style='width: 70px;' value='0' readonly></td>";
 	                }
 
-	                contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='total_bal" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='total_bal" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
 
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td style='border: 1px solid black;'>Enter Value</td>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>Enter Value</td>";
 
 	                for (var i = 1; i <= 8; i++) {
 	                    if (data.contractDetails[k][20] == "Mesta" || data.contractDetails[k][20] == "Bimli") {
 	                        if (i >= 7) {
-	                        	contentToDisplay += "<td style='border: 1px solid black;' value='0'><input type='number' id='GR" + i + "_QTY' style='width: 70px;' value='0' disabled min='0'></td>";
+	                        	contentToDisplay += "<td style='text-align: center; border: 1px solid black;' value='0'><input type='number' id='GR" + i + "_QTY' style='width: 70px;' value='0' disabled min='0'></td>";
 	                        } else {
-	                            contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='GR" + k+i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
+	                            contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" + k+i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
 	                        }
 	                    } else {
-	                        contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='GR" +k+ i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
+	                        contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" +k+ i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
 	                    }
 	                }
 
-	                contentToDisplay += "<td style='border: 1px solid black;'><input type='number' id='GR" +k + "'style='width: 70px;' value=0 min='0' readonly></td></tr>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" +k + "'style='width: 70px;' value=0 min='0' readonly></td></tr>";
 	            }
 
 	            contentToDisplay += "</tbody>";
@@ -394,11 +394,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 				},
 				success:function(result){
 					   var data = jQuery.parseJSON(result);
-					    //alert(data);
-					  //  alert(data[0]);
-					    //alert(data[0][0]);
-					  //  alert(data.length);
-					 
+				
 					   
 					   for (var i = 0; i < data.length; i++) {
 						   var total =0;
@@ -418,12 +414,9 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 							$("#form2 #total_bal"+i).val(total2);
 						}
 
-					  
-					 // var newval = data[0][0];
-					  //alert(newval);
-					  console.log($("#form2 #alloc_01"));
-					 // $("#form2 #alloc_01").val(newval);
-					  //alert($("#alloc_01").value);
+					
+					
+			
 					
 					  
 
@@ -567,6 +560,7 @@ if($("#remarks").val().length ==0){
          "font-weight": "bold"
      });
      $("#errorcontainer").append(errorDiv).show(); // Show the error container
+     window.scrollTo(0, 0);
      setTimeout(function() {
          $("#errorcontainer").empty().hide(); // Clear and hide the error message after 5 seconds
      }, 5000);
@@ -588,7 +582,7 @@ for (var i = 0; i < size.length; i++) {
             total += parseFloat(size[i].values[j], 10);
            
         }
-        // If the total is zero, display an error message and return false to prevent form submission
+       
         
     }
 }
@@ -599,6 +593,7 @@ if (total === 0) {
         "font-weight": "bold"
     });
     $("#errorCont").append(errorDiv).show(); // Show the error container
+  
     setTimeout(function() {
         $("#errorCont").empty().hide(); // Clear and hide the error message after 5 seconds
     }, 5000);
@@ -619,12 +614,21 @@ if (total === 0) {
             contentType: "application/json",
             success: async (result) => {
             	
-                // Redirect to another page after successful save
-               window.location.href = "roDispatchInstruction.obj"; 
-                
-               
-                 await loader("none"); 
-              
+            	 const successDiv = document.getElementById('success');
+                 successDiv.textContent = "Data saved successfully";
+                 successDiv.style.display = 'block'; // Show the success message
+                 window.scrollTo(0, 0);
+                 // Set timeout to hide the success message and redirect to the next page
+                 setTimeout(async function(){
+                     // Hide the success message
+                     successDiv.style.display = 'none';
+                     // Redirect to the next page
+                     window.location.href = "roDispatchInstruction.obj";
+                     // Hide loader if needed
+                     await loader("none");
+
+                    
+                 }, 2000);
                
                 
             },
@@ -669,20 +673,20 @@ $("#hoDiNo").on("change", function() {
             console.log(data);
             //alert(data.length);
             $("#form3").html("");
-var elementToUpdate = $("#form3");
-var contentToDisplay="<h5 style='text-align: center; text-decoration: underline; font-weight: bold;'>Previous Issued DI</h5>";
-contentToDisplay+="<table id='table_r' style='border-collapse: collapse; width: 100%;'>";
-contentToDisplay+="<tr><th style='border: 1px solid black; text-align: center;'>S.no</th><th style='border: 1px solid black; text-align: center;'>RO DI no.</th><th style='border: 1px solid black; text-align: center;'>RO DI Date</th><th style='border: 1px solid black; text-align: center;'>Allocated Qty(Qtls)</th></tr> ";
-var totalAllocatedQty = 0; // Variable to store the total allocated quantity
+     		    var elementToUpdate = $("#form3");
+ 			    var contentToDisplay="<h5 style='text-align: center; text-decoration: underline; font-weight: bold;'>Previous Issued DI</h5>";
+       		    contentToDisplay+="<table id='table_r' style='border-collapse: collapse; width: 100%;'>";
+             	contentToDisplay+="<tr><th style='border: 1px solid black; text-align: center;'>S.no</th><th style='border: 1px solid black; text-align: center;'>RO DI no.</th><th style='border: 1px solid black; text-align: center;'>RO DI Date</th><th style='border: 1px solid black; text-align: center;'>Allocated Qty(Qtls)</th></tr> ";
+				var totalAllocatedQty = 0; // Variable to store the total allocated quantity
 
-for(var i=0; i<data.length; i++){
-	 contentToDisplay += "<tr><td style='border: 1px solid black; text-align: center; color: blue;'>" + (i + 1) + "</td><td style='border: 1px solid black; text-align: center; width: 30%; color: blue;'>" + data[i][0] + "</td><td style='border: 1px solid black; text-align: center; width: 60%; color: blue;'>" + data[i][1] + "</td><td style='border: 1px solid black; text-align: center; color: green;'>" + data[i][2] + "</td></tr>";
-    totalAllocatedQty += parseFloat(data[i][2]); // Accumulate the allocated quantity for total calculation
-}
+			for(var i=0; i<data.length; i++){
+			 contentToDisplay += "<tr><td style='border: 1px solid black; text-align: center; color: blue;'>" + (i + 1) + "</td><td style='border: 1px solid black; text-align: center; width: 30%; color: blue;'>" + data[i][0] + "</td><td style='border: 1px solid black; text-align: center; width: 60%; color: blue;'>" + data[i][1] + "</td><td style='border: 1px solid black; text-align: center; color: green;'>" + data[i][2] + "</td></tr>";
+  			  totalAllocatedQty += parseFloat(data[i][2]); // Accumulate the allocated quantity for total calculation
+			}
 
-contentToDisplay+="<tr><td colspan='3' style='text-align: right; border: 1px solid black; '>Total</td><td style='border: 1px solid black;  text-align: center;color: green;'>" + totalAllocatedQty + "</td></tr>"; // Adding the total row
-contentToDisplay+="</table>";
-elementToUpdate.html(contentToDisplay);
+		contentToDisplay+="<tr><td colspan='3' style='text-align: right; border: 1px solid black; '>Total</td><td style='border: 1px solid black;  text-align: center;color: green;'>" + totalAllocatedQty + "</td></tr>"; // Adding the total row
+		contentToDisplay+="</table>";
+		elementToUpdate.html(contentToDisplay);
 
 
         },
