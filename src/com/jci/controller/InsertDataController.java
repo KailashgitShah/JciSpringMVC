@@ -5894,27 +5894,25 @@ public class InsertDataController
 	    	}
 	    	String FDtoTD = purchasesdateFrom+" To "+purchasesdateTo;
 	    	int i = 1;
-	    	double grossT = 0;
-	    	double deducT = 0;
-	    	double netT = 0;
-	    	double amountT = 0;
-	    	double garsatT = 0;
+	    	 BigDecimal grossT = BigDecimal.ZERO;
+	         BigDecimal deducT = BigDecimal.ZERO;
+	         BigDecimal netT = BigDecimal.ZERO;
+	         BigDecimal amountT = BigDecimal.ZERO;
 	    	 for (PurchaseRegisterDTO Plist : purchaselist) {
 	        	 centername = Plist.getCentername();
 	        	 roname = Plist.getRegionId();
 	        	 Plist.setFDtoTD(FDtoTD);
 	        	 Plist.setSR_no(i);
 	        	 i++;
-	        	 grossT += Plist.getGross_qty();
-	        	 deducT += Plist.getDeduc_qty();
-	        	 netT += Plist.getNet_qty();
-	        	 amountT += Plist.getAmountpayable();
-	        	 garsatT += Plist.getGarsat();
-	        	 Plist.setGrossT(BigDecimal.valueOf(grossT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-	        	 Plist.setDeducT(BigDecimal.valueOf(deducT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-	        	 Plist.setNetT(BigDecimal.valueOf(netT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-	        	 Plist.setAmountT(BigDecimal.valueOf(amountT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-	        	 Plist.setGarsatT(BigDecimal.valueOf(garsatT).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	        	 grossT = grossT.add(BigDecimal.valueOf(Plist.getGross_qty()));
+	             deducT = deducT.add(BigDecimal.valueOf(Plist.getDeduc_qty()));
+	             netT = netT.add(BigDecimal.valueOf(Plist.getNet_qty()));
+	             amountT = amountT.add(BigDecimal.valueOf(Plist.getAmountpayable()));
+	             
+	             Plist.setGrossT(grossT.setScale(2, BigDecimal.ROUND_HALF_UP));
+	             Plist.setDeducT(deducT.setScale(2, BigDecimal.ROUND_HALF_UP));
+	             Plist.setNetT(netT.setScale(2, BigDecimal.ROUND_HALF_UP));
+	             Plist.setAmountT(amountT.setScale(2, BigDecimal.ROUND_HALF_UP));
 	        }
 	    
 		        try {

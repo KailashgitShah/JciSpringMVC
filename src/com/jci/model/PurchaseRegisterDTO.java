@@ -1,5 +1,6 @@
 package com.jci.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,10 +35,10 @@ public class PurchaseRegisterDTO {
 	private String tally_status;
 	private String FDtoTD;
 	private int SR_no;
-	private double grossT;
-	private double deducT;
-	private double netT;
-	private double amountT;
+	private BigDecimal grossT;
+	private BigDecimal deducT;
+	private BigDecimal netT;
+	private BigDecimal amountT;
 	private double garsatT;
 	
 	
@@ -176,28 +177,28 @@ public class PurchaseRegisterDTO {
 	public void setSR_no(int sR_no) {
 		SR_no = sR_no;
 	}
-	public double getGrossT() {
+	public BigDecimal getGrossT() {
 		return grossT;
 	}
-	public void setGrossT(double grossT) {
+	public void setGrossT(BigDecimal grossT) {
 		this.grossT = grossT;
 	}
-	public double getDeducT() {
+	public BigDecimal getDeducT() {
 		return deducT;
 	}
-	public void setDeducT(double deducT) {
+	public void setDeducT(BigDecimal deducT) {
 		this.deducT = deducT;
 	}
-	public double getNetT() {
+	public BigDecimal getNetT() {
 		return netT;
 	}
-	public void setNetT(double netT) {
+	public void setNetT(BigDecimal netT) {
 		this.netT = netT;
 	}
-	public double getAmountT() {
+	public BigDecimal getAmountT() {
 		return amountT;
 	}
-	public void setAmountT(double amountT) {
+	public void setAmountT(BigDecimal amountT) {
 		this.amountT = amountT;
 	}
 	public double getGarsatT() {
@@ -224,7 +225,7 @@ public class PurchaseRegisterDTO {
 			String farmerregno, String placeofpurchase, String cropyr, String basis, String jutevariety,
 			double gross_qty, double deduc_qty, double net_qty, double amountpayable, double garsat, String td_base,
 			int binno, String f_name, String farmername, int rate_slipno, String tally_status, String fDtoTD, int sR_no,
-			double grossT, double deducT, double netT, double amountT, double garsatT) {
+			BigDecimal grossT, BigDecimal deducT, BigDecimal netT, BigDecimal amountT, double garsatT) {
 		super();
 		this.regionId = regionId;
 		this.centername = centername;
