@@ -151,7 +151,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //				System.out.println(
 //						Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
 				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
-						* (totalAllocatedToMill * pg.get(j));
+						* (totalAllocatedToMill* 10 * pg.get(j));
 			}
 //			System.out.println("-------------------------------------------");
 //			System.out.println(contractedValueForPerticularMill);
@@ -229,7 +229,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		for (int j = 0; j < gradeArray.size(); j++) {
 
-			updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100) * (totalAllocatedToMill * pg.get(i));
+			updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100) * (totalAllocatedToMill * 10 * pg.get(i));
 //			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
 //			System.err.println("j = " + j + " " + "i = " + i);
 			i++;

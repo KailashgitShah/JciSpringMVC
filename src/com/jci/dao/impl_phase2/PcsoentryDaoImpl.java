@@ -216,4 +216,17 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 		return (int)currentSession().createSQLQuery(sqString).uniqueResult();
 	}
 
+	@Override
+	public List<String> getMillCodeForPcoDate(String pcoDate) {
+		String sqString = "select mill_code from jcientryof_pcso where pcso_date = '"+pcoDate+"'";
+		List<Object> pcodates = currentSession().createSQLQuery(sqString).list();
+		List<String> pcsoDateString = new ArrayList<>();
+		
+		for(Object eleObjects : pcodates) {
+			pcsoDateString.add((String) eleObjects);
+		}
+		
+		return pcsoDateString;
+	}
+
 }

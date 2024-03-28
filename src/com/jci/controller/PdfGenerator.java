@@ -39,10 +39,10 @@ import com.lowagie.text.pdf.GrayColor;
 
 public class PdfGenerator {
 
-	public void generatePdfOfContractLetter(String jciRefNo, String millNameString, String millCode, Double qty,
+	public void generatePdfOfContractLetter(String jciRefNojciRefNo, String millNameString, String millCode, Double qty,
 			String cropyear, List<Object[]> priceList, List<String> compList, List<String> varietyArray,
 			String fileName, String deliveryType, String contractDate, String filePath, String letterHeadPath,
-			List<Object> fullAddress) throws DocumentException, IOException {
+			List<Object> fullAddress, String pcsoDates) throws DocumentException, IOException {
 
 		PdfWriter pdfWriter = new PdfWriter(filePath);
 		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
@@ -70,40 +70,42 @@ public class PdfGenerator {
 			add2 = row[1] + "";
 			areaAndpincode = row[2] + "-" + row[3];
 		}
-		
-		System.err.println(add1);
-		System.err.println(add2);
-		System.err.println(areaAndpincode);
-		
-		System.err.println(add1);
-		System.err.println(add2);
-		System.err.println(areaAndpincode);
+//		
+//		System.err.println(add1);
+//		System.err.println(add2);
+//		System.err.println(areaAndpincode);
+//		
+//		System.err.println(add1);
+//		System.err.println(add2);
+//		System.err.println(areaAndpincode);
 
 		Table table = new Table(widthOfTwoColumn);
 
 		Image letterHead = new Image(ImageDataFactory.create(letterHeadPath));
 
-		table.addCell(new Cell().add(new Paragraph().add(new Text("No, ").setBold()).add(new Text(jciRefNo)))
+		table.addCell(new Cell().add(new Paragraph().add(new Text("No, ").setBold()).add(new Text(jciRefNojciRefNo)))
 				.setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
 
-		table.addCell(new Cell().add(new Paragraph().add(new Text("Date : ")).add(contractDate)).setBold()
+		table.addCell(new Cell().add(new Paragraph().add(new Text("Date : "))).setBold()
 				.setBorder(Border.NO_BORDER)).setTextAlignment(TextAlignment.RIGHT);
 
 		Color grayColor = new DeviceGray(0.5f);
 		Color Black = new DeviceGray(0f);
 
 		table.addCell(new Cell()
-				.add(new Paragraph().add(new Text("To, ").setBold().setFontColor(Black)).add(new Text(millNameString)).add("\n")
-						.add(new Text(add1)).add("\n").add(new Text(add2)).add("\n").add(new Text(areaAndpincode)).setFontColor(grayColor))
+				.add(new Paragraph().add(new Text("To, ").setBold().setFontColor(Black)).add(new Text(millNameString))
+						.add("\n").add(new Text(add1)).add("\n").add(new Text(add2)).add("\n")
+						.add(new Text(areaAndpincode)).setFontColor(grayColor))
 				.add(new Paragraph()).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
 
 		Paragraph subHeading = new Paragraph(new Text("Sub : ").setBold())
 				.add(new Text("Sale of raw jute under B.Twill Linkage sale").setUnderline())
 				.setTextAlignment(TextAlignment.CENTER).setMarginTop(15);
 
-		Paragraph RefParagraph = new Paragraph(new Text("Ref No : ").setBold()).add(new Text(
-				"Jute(Mktg)/42/2004 dt. 01-12-2022, 07-12-2022 and 09-12-2022 of Dy. Director (Mktg), Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. 01-12-2022, 05-12-2022 and 09-12-2022")
-				.setUnderline()).setTextAlignment(TextAlignment.CENTER);
+		Paragraph RefParagraph = new Paragraph(new Text("Ref No : ").setBold()).add(new Text("Jute(Mktg)/42/2004 dt. "))
+				.add(pcsoDates)
+				.add(" of Dy. Director (Mktg), Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. ")
+				.add(pcsoDates).setUnderline().setTextAlignment(TextAlignment.CENTER);
 
 		Paragraph messageParagraph = new Paragraph().add("Dear Sir(s)").add("\n")
 				.add("We have this day sold to you " + (int) Math.round(qty)
@@ -128,7 +130,7 @@ public class PdfGenerator {
 			Double rObject1 = Double.parseDouble(compList.get(i));
 			Object[] rObject2 = priceList.get(0);
 
-			Double composition = (rObject1 / 100) * qty;
+			Double composition = (rObject1 / 100) * qty * 10; // Qty in Qtls
 			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
 			totalContractedprice += composition * priceDouble;
 

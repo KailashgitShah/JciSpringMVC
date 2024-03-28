@@ -33,4 +33,6 @@ public interface PcsoentryService {
 	List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo);
 
 	int getCountOfTotalEntries();
+
+	List<String> getMillCodeForPcoDate(String pcoDate);
 }

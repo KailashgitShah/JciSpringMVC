@@ -126,7 +126,7 @@ String contactIdnNo = "BT-" + count;
 															id="variety<%=i%>" /></td>
 														<td class="col-sm-2"><input
 															class="clrSys form-control" name="system<%=i%>"
-															value="<%=rate%>" readonly /></td>
+															value="<%=rate%>" id="system<%=i%>" readonly /></td>
 														<td class="col-sm-2"><input type="number"
 															name="proposed<%=i%>" id="grade<%=i%>" step="0.01"
 															class="clrPro form-control"  min="0"
@@ -270,7 +270,6 @@ $("#toggle").on("click" ,async () => {
 	
 	var avaQty =$('#available_qty').val();
 	var remark = $('#remark').val();
-	
 	if(avaQty.length == 0){
 		alert("Please fill Available Qty");
 		return false;
@@ -334,6 +333,10 @@ var parsedArray = [];
 var jsonGrades = [];
 var jsonPcsoDates = [];
 var count = 0;
+var array = [];
+var gradeArray = [];
+
+
 
 	$(".pcso")
 			.on(
@@ -347,8 +350,8 @@ var count = 0;
 						jsonGrades = [];
 						listOfTotalQty = [];
 						
-						var array = [];
-						var gradeArray = [];
+						 array = [];
+						 gradeArray = [];
 					
 						
 						for(var i=1 ; i<= 6 ;i++){
@@ -429,20 +432,22 @@ var count = 0;
 									   }
 													
 									   htmlTable += '<td id="allocated'+i+'" style="text-align:center">'
-							            + List[i][sizeOfSingleResultArray-1]
+							            + List[i][sizeOfSingleResultArray-1].toFixed(2)
 							            + '</td><td style="text-align:center" id="contractedValue'+i+'">' + contractedValueMillWise[i] + '</td><td><select onchange="updateOnChange('+i+')" class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
 
-													
-									 
-													
+
 											sum += List[i][sizeOfSingleResultArray-1];
 										}
+										
+										 sum = sum.toFixed(2);
 										
 // 										htmlTable += '<tr border="2px"><td style="text-align:center"></td><td style="text-align:center"> Total Allocation </td><td style="text-align:center">' 
 // 													+ sum + '</td></tr>';
 										htmlTable += '</tbody></table>';
 									 htmlTable += '<br><h4> Total Allocation = ' + sum + '</h6>';
-									
+										
+									   
+									 
 										$("#list").html(htmlTable); 
 										$("#contract_qty").val(sum);
 										$("#count").val(count);
@@ -469,6 +474,18 @@ var count = 0;
 						var availableQty = $("#available_qty").val();
 						var remarks = $("#remark").val();						
 						var millDetails = [];
+						
+						var juteGradesArray = [];
+						var sysComArry = [];
+
+						for(var i=1 ; i <= 6 ; i++){
+							var variety = $("#variety"+i).val();
+							var sysComp = $("#system"+i).val();
+							juteGradesArray.push(variety);
+							sysComArry.push(sysComp);
+						}
+						
+				
 						
 						if(pcsoDate.length == 0){
 							alert("Please select PCSO Date");
@@ -497,7 +514,7 @@ var count = 0;
 						//console.log(millDetails,"millDetails");
 						
 						var data = {
-								"pcsoDate" : jsonPcsoDates,
+								"pcsoDate" : array,
 								"contractIdn" : contractIdn,
 								"contractdate" : contractdate,
 								"contractQty" : contractQty,
@@ -506,7 +523,9 @@ var count = 0;
 								"SortingId": '<%=count%>',
 								"labelName": labelName,
 								"availableQty": availableQty,
-								"remarks": remarks
+								"remarks": remarks,
+		                        "juteGradesArray" : juteGradesArray,
+		                        "systemComp" : sysComArry
 						 };
 						//alert(data);
 						//console.log(data);

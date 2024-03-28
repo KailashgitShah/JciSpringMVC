@@ -87,8 +87,9 @@
 			<%
 			List<Object[]> allentryofpcsolist = (List<Object[]>) request.getAttribute("entryofpcsolist");
 			List<String> allRefNo = (List<String>) request.getAttribute("allRefNo");
+			int totalMills = allentryofpcsolist.size();
 
-			String referenceno = (String) request.getAttribute("referenceno");
+/* 			String referenceno = (String) request.getAttribute("referenceno");
 			String pcsoDate = (String) request.getAttribute("pcsodate");
 			
 			String pcsoReqdate = (String) request.getAttribute("pcsoReqdate");
@@ -108,7 +109,7 @@
 				letterRefNo = "";
 				referenceno = "";
 
-			}
+			} */
 
 			String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 			%>
@@ -130,12 +131,7 @@
 													<%
 													for (String ref : allRefNo) {
 													%>
-													<option value="<%=ref%>"
-														<%if (ref.equals(letterRefNo)) {
-	out.print("Selected");
-} else {
-	out.print("");
-}%>>
+													<option value="<%=ref%>">										
 														<%=ref%></option>
 
 													<%
@@ -145,18 +141,19 @@
 											</div>
 											<div class="col-sm-3 form-group">
 												<label>PCO Req. Date</label> <input class="form-control"
-													name="pcsoReqdate" id="pcsoReqdate"
-													placeholder="dd-mm-yyyy" value="<%=pcsoReqdate%>" type="date" readonly>
+													name="pcsoReqdate" id="pcsoReqdate" value=""
+													placeholder="dd-mm-yyyy"  type="date" readonly>
 											</div>
 											<div class="col-sm-3 form-group">
-												<label>PCO Req. Qty. (M.T)</label> <input
-													class="form-control" name="pcsoReqQty" id="pcsoReqQty"
-													value="<%=pcsoReqQty%>" readonly>
+												<label>PCO Req. Qty. (M.T)</label> <input value=""
+													class="form-control" name="pcsoReqQty" id="pcsoReqQty" 													 readonly>
+													 
+													
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">PCO Date</label> <input class="form-control"
 													name="pcsoDate" id="pcsoDate" placeholder="dd-mm-yyyy"
-													value="<%=pcsoDate%>" type="date" required>
+													 type="date" required>
 											</div>
 										</div>
 
@@ -164,24 +161,25 @@
 											<div class="col-sm-3 form-group">
 												<label class="required">JC Office Ref.No.</label> <input class="form-control"
 													type="text" name="referenceno" placeholder="Reference.No." autocomplete="off"
-													value="<%=referenceno%>" id="referenceno" required>
+													 id="referenceno" required>
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">JCI Linkage Percentage.</label> <input
 													class="form-control" type="number" name="juteRatio"
 													id="juteRatio" min="0" step="0.01" max="100"
-													value="<%=juteRatio%>" required>
+													 required>
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">PCO Qty. (M.T)</label> <input class="form-control"
-													value="<%=pcsoQty%>" type="number" min="0" step="0.01" name="pcsoQty"
+													 type="number" min="0" step="0.01" name="pcsoQty"
 													id="pcsoQty">
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">Dispatch Period</label> <input class="form-control"
-													name="dispatchPeriod" type="date" min=""
-													value="<%=dispatchPeriod%>" id="dispatchPeriod" required
+													name="dispatchPeriod" type="date" min="" placeholder="dd-mm-yyyy"
+													 id="dispatchPeriod" required
 													>
+													
 											</div>
 										</div>
 
@@ -251,18 +249,11 @@
 	<div class="sidenav-backdrop backdrop"></div>
 	<script>
 	$(document).ready(function() {
-		/* $("#pcsoDate").datepicker({
-			dateFormat : 'dd-mm-yy',
-			minDate : 0
-		});
-
-		$("#dispatchPeriod").datepicker({
-			dateFormat : 'dd-mm-yy',
-		}); */
+	 
 		
 		 var currentDate = new Date();
 		  var formattedDate = currentDate.toISOString().split('T')[0];
-		  document.getElementById("pcsoDate").min = formattedDate;
+		  document.getElementById("pcsoDate").max = formattedDate;
 		  $("#dispatchPeriod").prop("readonly", true);
 		  
 	});
@@ -303,11 +294,57 @@
 		$("#pcsoDate").on(
 				"change",
 				function() {
-					document.getElementById("dispatchPeriod").min = $(this).val();
+					var date = $(this).val();
+					document.getElementById("dispatchPeriod").min = date;
 					document.getElementById("dispatchPeriod").value = "";
 					 $("#dispatchPeriod").prop("readonly", false);
-					 console.log($(this).val() , "insidefuntion");
+					 
+						var pcsoDate = date.split("-");
+						var formattedDate = pcsoDate[2]+"-"+pcsoDate[1]+"-"+pcsoDate[0];
+					 
+						
+						 $.ajax({
+							type : "GET",
+							url : "getMillCodeForPcoDate.obj",
+							data : {
+								"pcoDate" : formattedDate
+							},
+							success : function(result) {
+								var millCodes = jQuery.parseJSON(result);
+                                
+							   //console.log(millCodes);
+							   var totalCountOfMills = '<%=totalMills%>'
+							   
+							   for(var j = 0 ; j < totalCountOfMills ; j++){
+								   var millCode =  $("#millcode" + j).val();
+								   
+								   if(millCodes.includes(millCode)){
+									   //console.log(millCode , "inside the function");
+									   $("#totalallocation" + j).prop('readonly', true); 
+								   }else{
+									   $("#totalallocation"+j).attr('readonly' , false); 
+								   }
+							 
+							   }
+							   
+							
+							}
+						})
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					 
 					})
+					
+					
+		
+					
+					
+					
 				//jute ratio validation
 				
 				
@@ -387,14 +424,13 @@
 												}
 
 												var sz = $("#count").val();
-												var pcoQty = $("#pcsoQty")
-														.val();
-												var sum = 0.0;
+												
+												var pcoQty = parseFloat($("#pcsoQty").val());
+												var sum = 0;
 												for (var i = 0; i < sz; i++) {
 													var ele =  $("#totalallocation"+ i).val();
 													
 												    if (ele !== null && ele !== '' && !isNaN(parseFloat(ele))) {
-												        console.log(ele);
 												        sum += parseFloat(ele);
 													}else{
 														 $("#totalallocation" + i).val(0);
@@ -402,6 +438,8 @@
 												}
 												
 												sum = sum.toFixed(2);
+												pcoQty = pcoQty.toFixed(2);
+												 
 												
 												if (sum != pcoQty) {
 													document.getElementById("errMsg").innerHTML = "Current sum = "

@@ -1,4 +1,5 @@
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="org.apache.poi.util.SystemOutLogger"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -184,6 +185,9 @@
 									num =  entryofpcsolist.getAllocatedQty();
 									sum += num;
 									}
+									
+									DecimalFormat df = new DecimalFormat("#.##");
+							        String formatedSum = df.format(sum);
 									%>
 									<div class="row">
 										<div class="col-sm-4 form-group"></div>
@@ -191,7 +195,7 @@
 										<div class="col-sm-4 form-group">
 											<input type="text" class="form-control myname" name="sumoftotalallocation"
 												id="sumoftotalallocation"
-												value="Sum of total allocation = <%=sum%> " readonly>
+												value="Sum of total allocation = <%=formatedSum%> " readonly>
 										</div>
 									</div>
 									<input name="count" id="count" type="hidden" value="<%=mill%>">
@@ -201,8 +205,11 @@
 											<a href="entryofpcso.obj">Reset</a>
 										</button> -->
 										<button class="btn btn-default" type="submit" id="submit">Submit</button>
-										<button class="btn btn-default" type="submit" id="reset"
-											formaction="entryofpcso.obj">Back</button>
+										<button class="btn btn-default" type="button"  onclick="history.go(-1)" 
+										>BackHi</button>
+										
+<!-- 										<button class="btn btn-default" type="submit" id="reset"
+											formaction="entryofpcso.obj">Back</button> -->
 									</div>
 								</form>
 							</div>

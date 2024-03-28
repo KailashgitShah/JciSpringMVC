@@ -100,7 +100,6 @@ String contractNos ="";
 										//String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
 										String encodedFilePath = URLEncoder.encode(fullFolder, "UTF-8");
 										contractNos += requestEl.getContract_no() + ",";
-										System.err.println(i);
 									%>
 									<tr>
 
