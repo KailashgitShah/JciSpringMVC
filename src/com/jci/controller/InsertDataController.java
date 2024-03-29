@@ -62,6 +62,7 @@ import java.util.GregorianCalendar;
 
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.FinancialConcurenceModel;
+import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenrationDemandNoteModel;
 import com.jci.model.ImageVerificationModel;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -85,6 +86,7 @@ import com.jci.service.blockService;
 import com.jci.service.Impl.SendMail;
 import com.jci.service_phase2.DispatchService;
 import com.jci.service_phase2.FinancialConcurenceService;
+import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
 import com.jci.service_phase2.PaymentDetailService;
 import com.jci.service.CommercialJuteVarietyGradesPriceService;
@@ -219,6 +221,8 @@ public class InsertDataController
     BalePrepareService balePrepareService;
     @Autowired
 	UserRoleService userroleService;
+	@Autowired
+	GenerationofBillService generationofBillService;
     
     @Autowired
 	private HttpServletRequest request;
@@ -5703,6 +5707,23 @@ public class InsertDataController
 			
 		}
 	    //kailash cont
+	    
+	    
+	    @RequestMapping({ "ViewofGenerationBillsupply" })
+		public ModelAndView viewBillofSupplyReciept(final HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView("viewGenerationBill");
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+
+			final List<GenerationOfBillSupplyModel> GenerationOfBill = (List<GenerationOfBillSupplyModel>) this.generationofBillService
+					.getAll();
+			mv.addObject("GenerationOfBill", GenerationOfBill);
+
+			return mv;
+		}
+	    
 	    @RequestMapping({ "viewPaymentEntryDetails" })
 		public ModelAndView viewpaymentofDetails(final HttpServletRequest request) {
 			String username = (String) request.getSession().getAttribute("usrname");
@@ -5768,71 +5789,7 @@ public class InsertDataController
 			return mv;
 		}
 		
-//		@RequestMapping({ "updatePaymentDetail" })
-//		public ModelAndView updatePaymentDetail(final HttpServletRequest request,
-//				final RedirectAttributes redirectAttributes,Model m) {
-//			String username = (String) request.getSession().getAttribute("usrname");
-//		//	final ModelAndView mv = new ModelAndView("viewPaymentInstrument.obj");
-//			if (username == null) {
-//				return new ModelAndView("index");
-//			}
-//		
-//			try {
-//				
-//				
-//				final String id = request.getParameter("Payment_id");
-//		
-//				final SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-//				final String fullcontractno = request.getParameter("fullcontractno");	
-//				final String Instrumentno = request.getParameter("instrument");
-//				final String instdate = request.getParameter("instdate");
-//				final Date date1 = formatter1.parse(instdate);
-//				final String IFSC = request.getParameter("IFSC");
-//				final String BankName = request.getParameter("BankName");
-//				final String Branch = request.getParameter("Branch");	
-//				final String InstrumentValue = request.getParameter("InstrumentValue");
-//				final String QtyAllowed = request.getParameter("QtyAllowed");
-//				final String paymenttype  = request.getParameter("paymenttype");
-//				final String SupportingDocument = request.getParameter("SupportingDocument");
-//				final String dateofshipment = request.getParameter("dateofship");
-//				final Date date3 = formatter1.parse(dateofshipment);
-//				final String dateofexpiry = request.getParameter("dateofexpiry");
-//				final Date date4 = formatter1.parse(dateofexpiry);
-//				final String autorevolvingamount  = request.getParameter("autorevolvingamount");
-//				final EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
-//				entryPaymentDetailsModel.setPayment_id(Integer.parseInt(id));
-//				entryPaymentDetailsModel.setContractno(fullcontractno);
-//				entryPaymentDetailsModel.setInstdate(date1);
-//				entryPaymentDetailsModel.setInstrumentno(Instrumentno);
-//				System.out.print("++++++++++++++++++++++++++++"+ entryPaymentDetailsModel);		
-//				entryPaymentDetailsModel.setIFSC(IFSC);
-//				entryPaymentDetailsModel.setBankName (BankName);
-//				entryPaymentDetailsModel.setBranch(Branch);
-//				//paymentInstrumentModel.setCreateddate(new Date());
-//				entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
-////				/* entryPaymentDetailsModel.setQtyAllowed(QtyAllowed); */
-//				entryPaymentDetailsModel.setPayment(paymenttype);
-//				entryPaymentDetailsModel.setSupportingDocument(SupportingDocument);
-//				
-//				entryPaymentDetailsModel.setDateofship(date3);
-//				entryPaymentDetailsModel.setDateofexpiry(date4);
-//				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-//				 Date date= new Date();
-//					// Date currdate = date.toString();
-//					 entryPaymentDetailsModel.setCreated_date(date);
-//				this.paymentDetailService.create(entryPaymentDetailsModel);
-//				
-//				redirectAttributes.addFlashAttribute("msg",
-//						(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record updated successfully.</div>\r\n");
-//
-//				return new ModelAndView((View) new RedirectView("viewPaymentEntryDetails.obj"));
-//				//return  new ModelAndView ("viewPaymentInstrument");
-//			} catch (Exception ex) {
-//				System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+ex);
-//				return new ModelAndView("EntryofPaymentDetails");
-//			}
-//		
-//		}
+
 		
 		@Value("${upload.PaymentDocument}")
 		String PaymentDocument;
@@ -6071,10 +6028,10 @@ public class InsertDataController
 			}
 												
 
-			final List<dispatchdetailModel> allUserRegistration = (List<dispatchdetailModel>) this.dispatchService
+			final List<Object[]> allUserRegistration = (List<Object[]>) this.dispatchService
 					.getviewDispatchChallan();
 			mv.addObject("viewDispatchChallan", allUserRegistration);
-			
+	
 
 			return mv;
 		}

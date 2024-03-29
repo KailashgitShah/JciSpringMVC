@@ -117,7 +117,7 @@ th {
 			
 			<div class="page-content fade-in-up">
 				<div class="ibox">
-					<span>${msg}</span>
+					<span id="flashMessage">${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
 							<table
@@ -149,6 +149,7 @@ th {
 										<th>Consignee Name</th>
 										<th>Consignee GSTN</th>
 										<th>Consignee Address</th>
+										<th></th>
 
 									</tr>
 								</thead>
@@ -179,7 +180,6 @@ th {
 										<td><%= generationOfBillSupplyModel.getRecipient_name() %></td>
 										<td><%= generationOfBillSupplyModel.getRecipient_gSTN() %></td>
 										<td><%= generationOfBillSupplyModel.getRecipient_address() %></td>
-										
 										<td><%= generationOfBillSupplyModel.getConsignee_name() %></td>
 										<td><%= generationOfBillSupplyModel.getConsignee_gSTN()%></td>
 										<td><%= generationOfBillSupplyModel.getConsignee_address() %></td>
@@ -247,6 +247,13 @@ th {
 			});
 		})
 	</script>
+	<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('#flashMessage').fadeOut('slow');
+        }, 3000);
+    });
+</script>
 </body>
 
 </html>

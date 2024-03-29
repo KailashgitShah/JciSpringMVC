@@ -25,7 +25,7 @@ public class GenerationOfBillSupplyModel {
 	@Column(name = "Challan_date", nullable = false)
 	private String Challan_date;
 
-	@Column(name = "Shipment_details", nullable = false)
+	@Column(name = "Shipment_details")
 	private String Shipment_details;
 
 	@Column(name = "Shipment_value", nullable = false)

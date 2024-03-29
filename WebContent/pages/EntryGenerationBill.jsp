@@ -67,7 +67,9 @@
 			<%
 			List<Object[]> getChallanlist = (List<Object[]>) request.getAttribute("getChallanlist");
 			String billOfSupplyNo = (String) request.getAttribute("billOfSupplyNo");
-
+			String challan_no = (String) request.getAttribute("challan_no");
+			String millname = (String) request.getAttribute("millname");
+			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String serverCurrentDate = dateFormat.format(new Date());
 			%>
@@ -88,7 +90,11 @@
 											<div class="col-sm-4 form-group">
 												<label>Challan No</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Challan_No" name="Challan_No"
-													class="text-danger"> </span> <select name="Challan_No1"
+													class="text-danger"> </span>
+													<input class="form-control"
+													name="Challan_No1" id=Challan_No1 value="<%= challan_no%>" required
+													readonly="readonly">
+													 <%-- <select name="Challan_No1"
 													id="Challan_No1" class="form-control taxtbox"
 													onChange="fun()" required>
 
@@ -106,7 +112,7 @@
 													<%
 													}
 													%>
-												</select>
+												</select> --%>
 
 
 											</div>
@@ -121,19 +127,62 @@
 
 
 
-											<div class="col-sm-4 form-group">
+										<!-- 	<div class="col-sm-4 form-group">
 												<label>Shipment Details</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Shipment_Details" name=Shipment_Details
 													class="text-danger"> </span> <input class="form-control"
 													name="Shipment_Details" id="Shipment_Details1"
 													placeholder="Shipment Details"  readonly="readonly"required>
+											</div> -->
+
+											<div class="col-sm-4 form-group">
+												<label>Contarct no</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Contarct_no" name="Contarct_no"
+													class="text-danger"> </span> <input class="form-control"
+													name="Contarct_no" id="Contarctno" value=""
+													readonly="readonly">
 											</div>
 
-
-
 										</div>
-
-
+												
+										 <table id="Shipmenttabel" class="table table-bordered">
+											  
+											    <thead class="thead-light">
+											   
+											    <tr>
+											            <th style="width: 200px;">SHIPMENT DETAILS</th>
+											       </tr>
+											        <tr>
+											            <th>Date_of_shipment</th>
+											            <th>Mode_of_shipment</th>
+											            <th>Vehicle_no</th>
+											            <th>Driver_name</th>
+											            <th>License_no</th>
+											            <th>Driver_contact</th>
+											            <th>SHIPMENT VALUE</th>
+											          
+											        </tr>
+											    </thead>
+											    <tbody>
+											        	<% 
+											        	
+											        	for (Object[] row : ShipmentDetails) {
+															%>
+															<tr>
+															<td><%= row[0] %></td>
+															<td><%= row[1] %></td>
+															<td><%= row[2] %></td>
+															<td><%= row[3] %></td>
+															<td><%= row[4] %></td>
+															<td><%= row[5] %></td>
+															<td><%= row[6] %></td>
+															<% 
+															}
+											        	%>
+			
+													
+											    </tbody>
+											</table>
 										<div class="row">
 
 
@@ -144,30 +193,13 @@
 													class="text-danger"> </span> <input
 													class="form-control taxtbox" name="Shipment_Value1" min="0"
 													step="1" pattern="\d+" placeholder="Shipment_Value"
-													required oninput="calculateGST()" readonly="readonly">
+													required oninput="calculateGST();calculateTCS();" >
 											</div>
 											
-												<div class="col-sm-4 form-group">
-												<label>Contarct no</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Contarct_no" name="Contarct_no"
-													class="text-danger"> </span> <input class="form-control"
-													name="Contarct_no" id="Contarctno" value=""
-													readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Financial year</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
-													class="text-danger"> </span> <input class="form-control"
-													name="Financial_year2" id="Financial_year1" value=""
-													readonly="readonly">
-											</div>
+										</div> 
 
 
-										
-
-
-
-										</div>
+									
 
 										<div class="row">
 
@@ -278,21 +310,22 @@
 
 
 										</div>
+									
 											<div class="row">
 											<div class="col-sm-4 form-group">
 												<label>Supplier Name</label> <input
 													class="form-control taxtbox" name="Supplier_Name"
-													id="Supplier_Name" placeholder="Supplier_Name">
+													id="Supplier_Name"  value="The Jute Corporation of India limited"placeholder="Supplier_Name">
 											</div>
 
 											<div class="col-sm-4 form-group">
 												<label>Supplier GSTN</label> <input class="form-control"
-													name="Supplier_GSTN" id="Supplier_GSTN"
+													name="Supplier_GSTN" id="Supplier_GSTN" value="19AABCT8820B1ZH"
 													placeholder="Supplier_GSTN">
 											</div>
 											<div class="col-sm-4 form-group">
 												<label>Supplier Address</label> <input class="form-control"
-													name="Supplier_Address" id="Supplier_Address"
+													name="Supplier_Address" id="Supplier_Address" VALUE =" Sribash Angan Ghat(South) Road,PO+Bloc-Nabadwip Sub Div Krishnanagar,Dist-Nadia,741302"
 													placeholder="Supplier_Address">
 											</div>
 
@@ -315,6 +348,13 @@
 													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*"
 													id="TDS_Amt" placeholder="TDS_Amt">
 											</div>
+											<div class="col-sm-4 form-group">
+												<label>Financial year</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
+													class="text-danger"> </span> <input class="form-control"
+													name="Financial_year2" id="Financial_year1" value=""
+													readonly="readonly">
+											</div>
 											<div class="col-sm-2 form-group" style="display: none;">
 												<label "display:none;">Clientstate </label> <span
 													class="text-danger">* </span>&nbsp; <span id="Contarct_no"
@@ -336,8 +376,18 @@
 													type="hidden" class="form-control" name="ClientPan"
 													id="ClientPan" value="" readonly="readonly">
 											</div>
+											
+											
+											
+											
+										
 										</div>
-										<div class="row">
+										
+										
+										
+								
+											
+											<div class="row">
 
 											<div class="col-sm-0.7 form-group">
 												<input type="submit" value="GenerateBILLSupply"
@@ -351,8 +401,8 @@
 												<!--   <input type='submit' name='submit' id='submitBtn' class='enableOnInput' disabled='disabled' /> -->
 
 												<button class="btn btn-primary custom-button" type="button"
-													id='submitBtn' disabled="true"
-													onclick="rejectAndNavigate()">Remove</button>
+													
+													onclick="rejectAndNavigate()">Cancel</button>
 
 											</div>
 										</div>
@@ -428,7 +478,7 @@
 
 
 
-	<script type='text/javascript'>
+<!-- 	<script type='text/javascript'>
 		function fun() {
 			if (document.getElementById("Challan_No1").value != "")
 				document.getElementById("submitBtn").disabled = false;
@@ -436,7 +486,7 @@
 				document.getElementById("submitBtn").disabled = true;
 
 		}
-	</script>
+	</script> -->
 
 
 	<script>
@@ -451,16 +501,16 @@
 
 		function rejectAndNavigate() {
 			openRejectModal()
-		   alert("tesst");
+		  
 			$('#rejectModalButton').off('click').on('click', function() {
 				var remarks = $('#remarks').val().trim();
-				alert("inside");
+		
 				
 				if (remarks === "") {
 					return;
 				}
 				var contno = document.getElementById('Contarctno').value;
-		        alert("KKKK" + contno);
+		      
 				$.ajax({
 					type : 'POST',
 					url : 'saveRemarksofbill.obj',
@@ -473,8 +523,10 @@
 						var responseData = JSON.parse(data);
 						if (responseData.redirect) {
 							
-							window.location.href = responseData.redirect;
-							
+							 window.history.back();
+ 
+ 
+ 
 						} else {
 
 						}
@@ -494,101 +546,117 @@
 	
 	
     <script type="text/javascript">
-    
     $(document).ready(function() {
-    	
-    	function formatDate(date) {
-	        var day = date.getDate().toString().padStart(2, '0');
-	        var month = (date.getMonth() + 1).toString().padStart(2, '0');
-	        var year = date.getFullYear();
-	        return day + '/' + month + '/' + year;
-	    }
-   	    $('#Challan_No1').on('change', function() {
-   	    var field2Value = $(this).val();
-   	   
-   	      $.ajax({
-   	            type: 'GET',
-   	            url: 'fetchingdata1.obj',
-   	            data: { "contractno": field2Value },
-   	            success: function(data) {
-   	            	alert(data);
-   	           
-   	           
-   	        try {
-   	            var dataArray = JSON.parse(data);
+        function formatDate(date) {
+            var day = date.getDate().toString().padStart(2, '0');
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var year = date.getFullYear();
+            return day + '/' + month + '/' + year;
+        }
 
-   	            if (dataArray && dataArray.length > 0) {
-   	                var contractNo = dataArray[0][0];
-   	                var creationDateStr = dataArray[0][1];
-   	                var millcode = dataArray[0][2];
-					 var creationDate = new Date(creationDateStr);
-   	                console.log("Creation Date as Date object: ", creationDate);
-   	                
-   	                
-   	                $('#Contarctno').val(contractNo);
-   	                $('#ChallanDate1').val(formatDate(creationDate));
-   	             $('#Millcode').val(millcode);
-   	             
-   	             
-   	             
-			   	          $.ajax({
-			                  type: 'GET',
-			                  url: 'fetchingdataforbill.obj',
-			                  data: { "contractno": millcode },
-			                  success: function(secondData) {
-			                      alert(secondData);
-			                      try { 
-			                      var dataArray = JSON.parse(secondData);
+        var field2Value = <%= challan_no %>;
+        console.log(field2Value);
 
-			       	              if (dataArray && dataArray.length > 0) {
-			       	                var unit_name = dataArray[0][1];
-			       	                var unit_address1 = dataArray[0][2];
-			       	                var unit_state = dataArray[0][3];
-			       	                var unit_state_location = dataArray[0][4];
-			       	                var client_gstin = dataArray[0][5];
-			       	                var client_pan = dataArray[0][6];
-			       	                var client_state = dataArray[0][7];
-			       	                var client_address1 = dataArray[0][8];
-			       	                var client_name = dataArray[0][9];
-			       	                
-			    					
-			       	                
-			       	                
-			       	                $('#Recipient_Name').val(unit_name);
-			       	                $('#Recipient_GSTN').val(client_gstin);
-			       	                $('#Recipient_Address').val(unit_address1);
-			       	                $('#Consignee_Name').val(client_name);
-			       	                $('#Consignee_GSTN').val(client_gstin);
-			       	                $('#Consignee_Address').val(client_address1);
-			       	                $('#Clientstate').val(client_state);
-			       	                $('#Clientcode').val(unit_state);
-			       	                $('#ClientPan').val(client_pan);
-			       	           }
-			             	        } catch (error) {
-			             	            console.error("Error parsing JSON: " + error);
-			             	        }
-			                      
-			                      
-			                  },
-			                  error: function(error) {
-			                      console.error('Second Ajax call error:', error);
-			                  }
-			              });
-   	            }
-   	        } catch (error) {
-   	            console.error("Error parsing JSON: " + error);
-   	        }
-   	           
-   	       var formattedDate = formatDate(ChallanDate1);
-   	                 $('#Contarctno').val(data1.Contract_No);
-   	                 $('#ChallanDate1').val(formattedDate);
-   	             
-   	                 
-   	            }
-   	             
-   	        }); 
-   	    });
-   	});
+        $.ajax({
+            type: 'GET',
+            url: 'fetchingdata1.obj',
+            data: { "contractno": field2Value },
+            success: function(data) {
+               
+                try {
+                    var dataArray = JSON.parse(data);
+
+                    if (dataArray && dataArray.length > 0) {
+                        var contractNo = dataArray[0][0];
+                        var creationDateStr = dataArray[0][1];
+                        var millcode = dataArray[0][2];
+                        var creationDate = new Date(creationDateStr);
+                        console.log("Creation Date as Date object: ", creationDate);
+
+                        $('#Contarctno').val(contractNo);
+                        $('#ChallanDate1').val(formatDate(creationDate));
+                    
+
+                        $.ajax({
+                            type: 'GET',
+                            url: 'contrcatnotomill.obj',
+                            data: { "contractno": contractNo },
+                            success: function(secondData) {
+                               
+                              
+                                console.log(secondData);
+                                var dataArray = JSON.parse(secondData);
+                              
+                                if (dataArray && dataArray.length > 0) {
+                                    var millcode = dataArray[0][0];
+                                    var cropyear = dataArray[0][1];
+                                    $('#Financial_year1').val(cropyear);
+                                  
+                                    $('#Millcode').val(millcode);
+                                    
+
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: 'fetchingdataforbill.obj',
+                                        data: { "contractno": millcode },
+                                       
+                                        success: function(thirdData) {
+                                           
+                                           
+                                            try {
+                                                var dataArray = JSON.parse(thirdData);
+                                                if (dataArray && dataArray.length > 0) {
+                                                    var unit_name = dataArray[0][0];
+                                                    var unit_address1 = dataArray[0][1];
+                                                    var unit_state = dataArray[0][2];
+                                                    var unit_state_location = dataArray[0][3];
+                                                    var client_gstin = dataArray[0][4];
+                                                    var client_pan = dataArray[0][5];
+                                                    var client_state = dataArray[0][6];
+                                                    var client_address1 = dataArray[0][7];
+                                                    var client_name = dataArray[0][8];
+                                                    $('#Recipient_Name').val(unit_name);
+                                                    $('#Recipient_GSTN').val(client_gstin);
+                                                    $('#Recipient_Address').val(unit_address1);
+                                                    $('#Consignee_Name').val(client_name);
+                                                    $('#Consignee_GSTN').val(client_gstin);
+                                                    $('#Consignee_Address').val(client_address1);
+                                                    $('#Clientstate').val(client_state);
+                                                    $('#Clientcode').val(unit_state);
+                                                    $('#ClientPan').val(client_pan);
+                                                }
+                                            } catch (error) {
+                                                console.error("Error parsing JSON: " + error);
+                                            }
+                                        },
+                                        error: function(error) {
+                                            console.error('Third Ajax call error:', error);
+                                        }
+                                    });
+                                    
+                                    
+
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Second Ajax call error:', error);
+                            }
+                        });
+
+                        var formattedDate = formatDate(creationDate);
+                        $('#Contarctno').val(contractNo);
+                        $('#ChallanDate1').val(formattedDate);
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON: " + error);
+                }
+            },
+            error: function(error) {
+                console.error('First Ajax call error:', error);
+            }
+        });
+    });
+
 
          
          </script>
@@ -611,11 +679,56 @@
 				// Set the calculated amounts to the respective input fields
 				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
 				document.getElementById("CGST_Amt").value = cgstAmt.toFixed(2);
+				document.getElementById("IGST_Amt").value = cgstAmt.toFixed(2);
 				document.getElementById("Invoice_Value").value = invoiceValue
 						.toFixed(2);
 			}
 		}
 	</script>
+	
+	
+	<script>
+    function calculateTCS() {
+     
+        var shipmentValue = parseFloat(document.getElementsByName("Shipment_Value1")[0].value);
+        
+       
+        var millname = '<%= millname %>';
+        
+        console.log("Millname:", millname);
+        
+        
+        if (!isNaN(shipmentValue)) {
+           
+            $.ajax({
+                type: 'GET',
+                url: 'fetchingdataMillname.obj',
+                data: { "millname": millname },
+                success: function(milldata) {
+                  
+                    console.log("Mill data:", milldata);
+                    
+                    if(milldata===millname){
+                    	 var tsccount = 0.0;	
+                    }
+                    else {
+                    	  var tsccount = 0.01;
+                    }
+                   
+                    var Tcsammount = (tsccount / 100) * shipmentValue;
+                    
+                 
+                    document.getElementById("TCS_Amt").value = Tcsammount.toFixed(2);
+                },
+                error: function(error) {
+                   
+                    console.error('Ajax call error:', error);
+                }
+            });
+        }
+    }
+</script>
+
 	<script>
     $(document).ready(function(){
       

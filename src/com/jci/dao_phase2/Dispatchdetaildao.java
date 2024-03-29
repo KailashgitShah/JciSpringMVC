@@ -7,5 +7,5 @@ import com.jci.model.dispatchdetailModel;
 
 public interface Dispatchdetaildao {
 
-	public List<dispatchdetailModel> getviewDispatchChallan();
+	public List<Object[]> getviewDispatchChallan();
 }

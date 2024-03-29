@@ -35,8 +35,8 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 	@Override
-	public List<Object[]>ChallanNo() {
-		return generationofBillDao.ChallanNo();
+	public List<Object[]>ChallanNo(String st) {
+		return generationofBillDao.ChallanNo(st);
 	}
 
 //	
@@ -44,10 +44,7 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	public  List<Object[]> contarctno( String st) {
 		return generationofBillDao.contarctno(st);
 	}
-//	@Override
-//	public  List<Object[]>contarctnoformaster( String st) {
-//		return generationofBillDao.contarctnoformaster(st);
-//	}
+
 	@Override
 	public  List<Object[]> Dispatchentry( String st) {
 		return generationofBillDao.Dispatchentry(st);
@@ -76,10 +73,33 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 
 	@Override
 	public void remark(String remark,String  con_No) {
-		System.out.println(remark);
-		System.out.println(con_No);
+		
 		generationofBillDao.remark(remark,con_No);
 		
+	}
+
+
+
+	@Override
+	public GenerationOfBillSupplyModel find(int id) {
+		
+		return generationofBillDao.find(id);
+	}
+
+
+
+	@Override
+	public List<Object[]> contrcatnotomill(String st) {
+		
+		return generationofBillDao.contrcatnotomill(st);
+	}
+
+
+
+	@Override
+	public List<Object> millnamefromTCS() {
+	
+		return  generationofBillDao.millnamefromTCS();
 	}
 
 

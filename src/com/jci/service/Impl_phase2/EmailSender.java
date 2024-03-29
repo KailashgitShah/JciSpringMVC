@@ -22,8 +22,8 @@ public class EmailSender {
                       
             	  
 //            	 String smtpHost = "smtp.gmail.com";
-            	  String smtpHost = "smtp.gmailllll.com";
-          		int smtpPort = 587; // Use 587 for TLS or 465 for SSL
+                String smtpHost = "smtp.gmailllll.com";
+          		int smtpPort = 587;
 
           		String username = "guptamansi7867@gmail.com";
           		String password = "xhoaypvcvzsctmrm";
@@ -64,27 +64,11 @@ public class EmailSender {
                        transport.sendMessage(message, message.getAllRecipients());
                        transport.close();
 
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
-                       System.out.println("Sent message successfully....");
+                
                                            
                                             }catch(Exception e)
                                            {
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
-                                                          System.out.println("error in sending mail"+e);
+                                                    
                                                           e.printStackTrace();
                                            }
               
