@@ -1140,18 +1140,21 @@ public class Controller_V {
 		try {
 			String quotedContractString = quoteContractNo(contractNOString);
 			quotedContractString = quotedContractString.substring(0, quotedContractString.length() - 1);
-
+			
+		   	  
+        
 			contractGenerationService2.setContractAuthrizeStatus(quotedContractString);
 
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		  String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
 		for (String contract : contractNos) {
 			String[] contractNo = contract.split("/");
 
 			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
-			;
+			 
 			String filePath = contractNo[3] + File.separator + fileName;
 
 			String loginName = (String) request.getSession().getAttribute("loginName");
@@ -1174,6 +1177,8 @@ public class Controller_V {
 
 			// Add "Authorized By" content at the bottom
 			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase("Authorized By: " + loginName), 545, 50,
+					0);
+			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase(date), 540, 666,
 					0);
 
 			// Close the PdfStamper

@@ -464,7 +464,7 @@ var gradeArray = [];
 					async () => {
 						//alert("async");
 						//loader active 
-						//await loader("block");
+						await loader("block");
 										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
@@ -542,10 +542,11 @@ var gradeArray = [];
 							//  alert("result");
 							 	//window.location.href = "authorization.obj";
 							  	//loader hide
-								//await loader("none");
+							
 								// window.open("authorization.obj");
-								alert("data saved successfully !");
+								//alert("data saved successfully !");
 								window.location.href = "authorization.obj";
+								await loader("none");
 								
 							},
 							error: function(xhr, status, error) {

@@ -56,7 +56,7 @@ public class PdfGenerator {
 		float columnHalfWidth = fullWidth * 0.5f;
 		float columnWidth60 = fullWidth * 0.60f;
 		float columnWidth20 = fullWidth * 0.20f;
-		float widthOfTwoColumn[] = { columnHalfWidth, columnHalfWidth };
+		float widthOfTwoColumn[] = { columnHalfWidth*0.7f, columnHalfWidth*0.77f };
 		float widthOfThreeCoulmn[] = { columnWidth60, columnWidth20, columnWidth20 };
 		float widthOfThreeEqualCoulmn[] = { equalThreeColumWidth, equalThreeColumWidth, equalThreeColumWidth };
 
