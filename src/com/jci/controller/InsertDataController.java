@@ -17,6 +17,7 @@ import com.jci.model.UserRegistrationModel;
 import com.jci.model.UserRoleModel;
 import com.jci.model.RoleMasterModel;
 import com.jci.model.ZoneModel;
+import com.jci.model.dispatchdetailModel;
 import com.jci.model.ProgOfAssortmentModel;
 import com.jci.model.DailyPurchaseConfModel;
 import com.jci.model.PurchaseCenterModel;
@@ -35,6 +36,7 @@ import java.text.ParseException;
 import com.jci.model.BalePreparation;
 import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.jci.model.FarmerRegModel;
@@ -81,6 +83,7 @@ import com.jci.service.BalePrepareService;
 import com.jci.service.PoliceStationService;
 import com.jci.service.blockService;
 import com.jci.service.Impl.SendMail;
+import com.jci.service_phase2.DispatchService;
 import com.jci.service_phase2.FinancialConcurenceService;
 import com.jci.service_phase2.GenratedDemandNoteService;
 import com.jci.service_phase2.PaymentDetailService;
@@ -231,6 +234,9 @@ public class InsertDataController
     GenratedDemandNoteService genratedDemandNoteService;
        
     
+    @Autowired
+    DispatchService dispatchService;
+    
     public InsertDataController() {
         this.slipUpload = "E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlip\\";
         this.mendate = "E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\FarmerRegistration\\";
@@ -250,7 +256,7 @@ public class InsertDataController
 	   		   {
 	   	   		   if(action.equals(idAction)) 
 	   	   		   {
-	   	   			 i = 1;  
+	   	   		   	 i = 1;  
 	   	   		   }
 	   		   }
 
@@ -5708,6 +5714,8 @@ public class InsertDataController
 
 			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
 					.getAllPaymentInstrumentsentry();
+			
+			
 			mv.addObject("entryPaymentDetailsModel", allUserRegistration);
 			
 
@@ -5722,9 +5730,17 @@ public class InsertDataController
 				return new ModelAndView("index");
 			}
 			
+			
 			ModelAndView mv = new ModelAndView("editPaymentDetails");
+			List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
+			List<Object> getcontractList2 = this.paymentDetailService.Millname();
+
+			mv.addObject("getcontractList1", getcontractList1);
+			mv.addObject("getcontractList2", getcontractList2);
+			
 			if (request.getParameter("id") != null) {
 				final int id = Integer.parseInt(request.getParameter("id"));
+				System.out.println(id+"date########");
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date=entryPaymentDetailsModel.getInstdate();
@@ -5738,12 +5754,13 @@ public class InsertDataController
 				String parsed1 =  date1.toString().split(" ")[0];
 				String parsed2 = date2.toString().split(" ")[0];
 				//String parsed3 =  date3.toString().split(" ")[0];
-				System.out.println(parsed+"date########");
+				
 				//final List<PaymentInstrumentModel>paymentInstrumentModel =(List<PaymentInstrumentModel>)paymentInstrumentService.find(id);
 				mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
 				mv.addObject("parsed",  parsed);
 				mv.addObject("parsed1",  parsed1);
 				mv.addObject("parsed2",  parsed2);
+				mv.addObject("id1",  id);
 				
 				//mv.addObject("parsed3",  parsed3);
 			}
@@ -5751,68 +5768,281 @@ public class InsertDataController
 			return mv;
 		}
 		
-		@RequestMapping({ "updatePaymentDetail" })
-		public ModelAndView updatePaymentDetail(final HttpServletRequest request,
-				final RedirectAttributes redirectAttributes,Model m) {
+//		@RequestMapping({ "updatePaymentDetail" })
+//		public ModelAndView updatePaymentDetail(final HttpServletRequest request,
+//				final RedirectAttributes redirectAttributes,Model m) {
+//			String username = (String) request.getSession().getAttribute("usrname");
+//		//	final ModelAndView mv = new ModelAndView("viewPaymentInstrument.obj");
+//			if (username == null) {
+//				return new ModelAndView("index");
+//			}
+//		
+//			try {
+//				
+//				
+//				final String id = request.getParameter("Payment_id");
+//		
+//				final SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//				final String fullcontractno = request.getParameter("fullcontractno");	
+//				final String Instrumentno = request.getParameter("instrument");
+//				final String instdate = request.getParameter("instdate");
+//				final Date date1 = formatter1.parse(instdate);
+//				final String IFSC = request.getParameter("IFSC");
+//				final String BankName = request.getParameter("BankName");
+//				final String Branch = request.getParameter("Branch");	
+//				final String InstrumentValue = request.getParameter("InstrumentValue");
+//				final String QtyAllowed = request.getParameter("QtyAllowed");
+//				final String paymenttype  = request.getParameter("paymenttype");
+//				final String SupportingDocument = request.getParameter("SupportingDocument");
+//				final String dateofshipment = request.getParameter("dateofship");
+//				final Date date3 = formatter1.parse(dateofshipment);
+//				final String dateofexpiry = request.getParameter("dateofexpiry");
+//				final Date date4 = formatter1.parse(dateofexpiry);
+//				final String autorevolvingamount  = request.getParameter("autorevolvingamount");
+//				final EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
+//				entryPaymentDetailsModel.setPayment_id(Integer.parseInt(id));
+//				entryPaymentDetailsModel.setContractno(fullcontractno);
+//				entryPaymentDetailsModel.setInstdate(date1);
+//				entryPaymentDetailsModel.setInstrumentno(Instrumentno);
+//				System.out.print("++++++++++++++++++++++++++++"+ entryPaymentDetailsModel);		
+//				entryPaymentDetailsModel.setIFSC(IFSC);
+//				entryPaymentDetailsModel.setBankName (BankName);
+//				entryPaymentDetailsModel.setBranch(Branch);
+//				//paymentInstrumentModel.setCreateddate(new Date());
+//				entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
+////				/* entryPaymentDetailsModel.setQtyAllowed(QtyAllowed); */
+//				entryPaymentDetailsModel.setPayment(paymenttype);
+//				entryPaymentDetailsModel.setSupportingDocument(SupportingDocument);
+//				
+//				entryPaymentDetailsModel.setDateofship(date3);
+//				entryPaymentDetailsModel.setDateofexpiry(date4);
+//				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+//				 Date date= new Date();
+//					// Date currdate = date.toString();
+//					 entryPaymentDetailsModel.setCreated_date(date);
+//				this.paymentDetailService.create(entryPaymentDetailsModel);
+//				
+//				redirectAttributes.addFlashAttribute("msg",
+//						(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record updated successfully.</div>\r\n");
+//
+//				return new ModelAndView((View) new RedirectView("viewPaymentEntryDetails.obj"));
+//				//return  new ModelAndView ("viewPaymentInstrument");
+//			} catch (Exception ex) {
+//				System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+ex);
+//				return new ModelAndView("EntryofPaymentDetails");
+//			}
+//		
+//		}
+		
+		@Value("${upload.PaymentDocument}")
+		String PaymentDocument;
+		
+		//save the data of payment  detail data
+		@RequestMapping("updatePaymentDetail")
+		public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
+				@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
+			
+			
+			
+			
+			
+			final File theDir = new File(PaymentDocument);
+			if (!theDir.exists()) {
+				theDir.mkdirs();
+			}
+			
+			String originalFilename = SupportingDocument.getOriginalFilename();
+		    String uniqueFilename = generateUniqueFilename(originalFilename);
+		    File serverFile = new File(theDir, uniqueFilename);
+		    
+		    // Check if the file has already been uploaded
+		    if (!serverFile.exists()) {
+		        try {
+					SupportingDocument.transferTo(serverFile);
+				} catch (IllegalStateException e) {
+					
+					e.printStackTrace();
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}
+		    }
+			final ModelAndView mv = new ModelAndView();
+			
+			
 			String username = (String) request.getSession().getAttribute("usrname");
-		//	final ModelAndView mv = new ModelAndView("viewPaymentInstrument.obj");
+			try {
+				String[] selectedContracts = request.getParameterValues("contract");
+				String[] contractValue2 = request.getParameterValues("contractValue[]");
+				String[] paymentDueDate2 = request.getParameterValues("paymentDueDate[]");
+				
+				String ratiosJson = request.getParameter("ratios");
+				double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
+				for (int i = 0; i < selectedContracts.length; i++) {
+			        String st = selectedContracts[i];
+			        double ratio = ratios[i];
+			        String contractvalueajax= contractValue2[i];
+			        String paymentDueDateajax= paymentDueDate2[i];
+			        System.out.println(ratio);
+			
+			        String InstrumentValue = request.getParameter("InstrumentValue");
+			        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
+			        double instvalue=ratio*InstrumentValue1;
+			        String instvalue1 = String.valueOf(instvalue);
+			       
+			        
+				String millname65 = request.getParameter("millname65");
+				String Instrument = request.getParameter("Instrument");
+				String instdate = request.getParameter("instdate");
+				String IFSC = request.getParameter("IFSC");
+				String Branch = request.getParameter("Branch");
+				String BankName = request.getParameter("BankName");
+				String payment = request.getParameter("paymenttype");
+				String id = request.getParameter("PaymentId1");
+//				
+				
+				String dateofexpiry = request.getParameter("dateofexpiry");
+				String dateofship = request.getParameter("dateofship");
+				String Pyamentduedate = request.getParameter("payment_dueDate12");
+				String contrcat_value23 = request.getParameter("contrcat_value23");
+				String autorevolvingamount = request.getParameter("autorevolvingamount");
+				// String QtyAllowed = request.getParameter("QtyAllowed");
+				//String originalFilename = SupportingDocument.getOriginalFilename();
+				
+//			 	 String uniqueFilename = generateUniqueFilename(originalFilename);
+////	            File serverFile = new File(theDir, uniqueFilename);
+////				SupportingDocument.transferTo(serverFile);
+//				
+				
+				
+//				 // Create unique identifier based on contract details
+//			 	 String uniqueFilename = generateUniqueFilename(originalFilename); 
+//				 File serverFile = new File(theDir,uniqueFilename);
+//				 SupportingDocument.transferTo(serverFile);
+//				 
+
+				// Conditionally set autorevolvingamount based on payment type
+
+				EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
+				
+				
+				entryPaymentDetailsModel.setInstrumentno(Instrument);
+				entryPaymentDetailsModel.setMillname(millname65);
+				entryPaymentDetailsModel.setContractno(st);
+				
+				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
+				entryPaymentDetailsModel.setContract_value(contractvalueajax);
+//				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//				Date instdate1 = formatter1.parse(instdate);
+//				entryPaymentDetailsModel.setInstdate(instdate1);
+
+//				
+				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date instdate1 = formatter1.parse(instdate);
+//				SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//				String instdate3 = formatter2.format(instdate2);
+//				Date instdate1 = formatter2.parse(instdate3);
+
+				// Set the time portion to midnight
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(instdate1);
+				calendar.set(Calendar.HOUR_OF_DAY, 0);
+				calendar.set(Calendar.MINUTE, 0);
+				calendar.set(Calendar.SECOND, 0);
+				calendar.set(Calendar.MILLISECOND, 0);
+
+				//Date instdateWithoutTime = calendar.getTime();
+				Date instdateWithoutTime = calendar.getTime();
+
+				//entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
+				entryPaymentDetailsModel.setInstdate(instdate1);
+				entryPaymentDetailsModel.setPayment(payment);
+				//int  instruValue= Integer.parseInt(InstrumentValue);
+				entryPaymentDetailsModel.setInstrumentValue(instvalue1);
+				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
+				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
+				entryPaymentDetailsModel.setFc_status(0);
+
+				Date date3 = new Date();
+				Double flag = 0.0;
+				
+				 Calendar cal = Calendar.getInstance();
+				    cal.setTime(instdate1);
+				   cal.add(Calendar.DAY_OF_MONTH, 30);
+				    Date newDate = cal.getTime();
+
+				if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
+					autorevolvingamount = "0";
+					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+					entryPaymentDetailsModel.setDateofship(newDate);
+					
+					entryPaymentDetailsModel.setDateofexpiry(date3);
+
+					entryPaymentDetailsModel.setIFSC(IFSC);
+					entryPaymentDetailsModel.setBranch(Branch);
+					entryPaymentDetailsModel.setBankName(BankName);
+
+				} else if ("Cheque/DD".equalsIgnoreCase(payment)) {
+
+					autorevolvingamount = "0";
+					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+					entryPaymentDetailsModel.setDateofship(newDate);
+					entryPaymentDetailsModel.setDateofexpiry(date3);
+
+					entryPaymentDetailsModel.setIFSC(IFSC);
+					entryPaymentDetailsModel.setBranch(Branch);
+					entryPaymentDetailsModel.setBankName(BankName);
+				} else if ("Letter_of_Credit".equalsIgnoreCase(payment)) {
+
+					entryPaymentDetailsModel.setIFSC(IFSC);
+					entryPaymentDetailsModel.setBranch(Branch);
+					entryPaymentDetailsModel.setBankName(BankName);
+
+					Date dateofship1 = formatter1.parse(dateofship);
+					entryPaymentDetailsModel.setDateofship(dateofship1);
+					System.err.println(dateofship1);
+
+					Date dateofexpiry1 = formatter1.parse(dateofexpiry);
+					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry1);
+					System.err.println(dateofship1);
+
+					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+				}
+
+				Date date = new Date();
+				entryPaymentDetailsModel.setCreated_date(date);
+
+				this.paymentDetailService.create(entryPaymentDetailsModel);
+				int id1=Integer.parseInt(id);
+     			this.paymentDetailService.deleteEntry(id1);
+				
+
+				this.paymentDetailService.contratTable(st);
+				
+				
+				
+				redirectAttributes.addFlashAttribute("msg",
+						"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+
+			     }
+			    
+			}catch (Exception e) {
+
+				e.printStackTrace();
+			}
 			if (username == null) {
 				return new ModelAndView("index");
 			}
-			try {
-				
-				final String id = request.getParameter("Payment_id");
-		
-				final SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-				final String fullcontractno = request.getParameter("fullcontractno");	
-				final String Instrumentno = request.getParameter("instrument");
-				final String instdate = request.getParameter("instdate");
-				final Date date1 = formatter1.parse(instdate);
-				final String IFSC = request.getParameter("IFSC");
-				final String BankName = request.getParameter("BankName");
-				final String Branch = request.getParameter("Branch");	
-				final String InstrumentValue = request.getParameter("InstrumentValue");
-				final String QtyAllowed = request.getParameter("QtyAllowed");
-				final String paymenttype  = request.getParameter("paymenttype");
-				final String SupportingDocument = request.getParameter("SupportingDocument");
-				final String dateofshipment = request.getParameter("dateofship");
-				final Date date3 = formatter1.parse(dateofshipment);
-				final String dateofexpiry = request.getParameter("dateofexpiry");
-				final Date date4 = formatter1.parse(dateofexpiry);
-				final String autorevolvingamount  = request.getParameter("autorevolvingamount");
-				final EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
-				entryPaymentDetailsModel.setPayment_id(Integer.parseInt(id));
-				entryPaymentDetailsModel.setContractno(fullcontractno);
-				entryPaymentDetailsModel.setInstdate(date1);
-				entryPaymentDetailsModel.setInstrumentno(Instrumentno);
-				System.out.print("++++++++++++++++++++++++++++"+ entryPaymentDetailsModel);		
-				entryPaymentDetailsModel.setIFSC(IFSC);
-				entryPaymentDetailsModel.setBankName (BankName);
-				entryPaymentDetailsModel.setBranch(Branch);
-				//paymentInstrumentModel.setCreateddate(new Date());
-				entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
-//				/* entryPaymentDetailsModel.setQtyAllowed(QtyAllowed); */
-				entryPaymentDetailsModel.setPayment(paymenttype);
-				entryPaymentDetailsModel.setSupportingDocument(SupportingDocument);
-				
-				entryPaymentDetailsModel.setDateofship(date3);
-				entryPaymentDetailsModel.setDateofexpiry(date4);
-				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				 Date date= new Date();
-					// Date currdate = date.toString();
-					 entryPaymentDetailsModel.setCreated_date(date);
-				this.paymentDetailService.create(entryPaymentDetailsModel);
-				
-				redirectAttributes.addFlashAttribute("msg",
-						(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record updated successfully.</div>\r\n");
 
-				return new ModelAndView((View) new RedirectView("viewPaymentEntryDetails.obj"));
-				//return  new ModelAndView ("viewPaymentInstrument");
-			} catch (Exception ex) {
-				System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+ex);
-				return new ModelAndView("EntryofPaymentDetails");
-			}
+			return new ModelAndView(new RedirectView("EntryofPaymentDetails.obj"));
 		}
+		String generateUniqueFilename(String originalFilename) {
+		    String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		    return timestamp + "_"  + originalFilename;
+		}
+
+		
+
 		
 		@RequestMapping({ "viewFinancialConcurence" })
 		public ModelAndView viewFinancialConcurence(final HttpServletRequest request) {
@@ -5830,6 +6060,26 @@ public class InsertDataController
 
 			return mv;
 		}
+		
+//		
+		@RequestMapping({ "viewDispatchChallan" })
+		public ModelAndView viewDispatchChallanList(final HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView("ViewDispatchlist");
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+												
+
+			final List<dispatchdetailModel> allUserRegistration = (List<dispatchdetailModel>) this.dispatchService
+					.getviewDispatchChallan();
+			mv.addObject("viewDispatchChallan", allUserRegistration);
+			
+
+			return mv;
+		}
+		
+		
 		@RequestMapping({ "viewPaymentForFC" })
 		public ModelAndView viewpaymentforFC(final HttpServletRequest request) {
 			String username = (String) request.getSession().getAttribute("usrname");
@@ -5842,7 +6092,10 @@ public class InsertDataController
 			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
 					.getAllPaymentInstruments();
 			mv.addObject("allUserRegistration", allUserRegistration);
-			
+//			final List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) this.paymentDetailService
+//					.getAllPaymentInstrumentsentry();
+//			mv.addObject("entryPaymentDetailsModel", allUserRegistration);
+//			
 
 			return mv;
 		}
@@ -5856,21 +6109,44 @@ public class InsertDataController
 			ModelAndView mv = new ModelAndView("EntryofFinancialConcurence");
 			if (request.getParameter("id") != null) {
 				 final int id = Integer.parseInt(request.getParameter("id")); 
-				
-				final String  contno=request.getParameter("contno");
-				
-				this.paymentDetailService.update2(contno);
-				
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date=entryPaymentDetailsModel.getCreated_date();
-				
+			
 				String  Con_no = entryPaymentDetailsModel.getContractno();
+				int  Payment_id = entryPaymentDetailsModel.getPayment_id();
+				this.paymentDetailService.update2(Con_no);
+				String Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
+				List<Object> datesconcur = (List<Object>) this.fiannacialConcurenceService.dataofdates(Con_no,Payment_id);
+				
+				for (Object obj : datesconcur) {
+				    if (obj instanceof Object[]) {
+				        Object[] row = (Object[]) obj;
+				        if (row.length >= 4) {
+				            Object paymentDueDate = row[0];
+				            Object instrumentDate = row[1];
+				            Object instrumentvalue = row[2];
+				            Object ContractValue = row[3];
+				       
+				            System.err.println(instrumentDate);
+				            System.err.println(instrumentDate);
+				            mv.addObject("paymentDueDate", paymentDueDate);
+				            mv.addObject("instrumentDate", instrumentDate);
+				            mv.addObject("instrumentvalue", instrumentvalue);
+				            mv.addObject("ContractValue", ContractValue);
+				        } else {
+				          
+				        }
+				    } else {
+				      
+				    }
+				}
+
 				
 				 FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 				
-				String Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
+	
 				System.err.println(Contrated_quanity);
 				String parsed = date.toString().split(" ")[0];
 			    mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
@@ -5878,13 +6154,39 @@ public class InsertDataController
 				mv.addObject("parsedstring",Con_no  );
 				mv.addObject("parsedstring2",Contrated_quanity  );
 				mv.addObject("parsed",parsed  );
-				 double cost= this.fiannacialConcurenceService.calculateCharges(id,Con_no);
-				 financialConcurenceModel.setCarrying_Cost_Charged(cost);
-				 mv.addObject("cost",cost);
+				mv.addObject("Payment_id",Payment_id);
+				int cost= this.fiannacialConcurenceService.calculateCharges(Payment_id,Con_no);
+				BigInteger bigIntValue = new BigInteger(String.valueOf(cost));
+				 financialConcurenceModel.setCarrying_Cost_Charged(bigIntValue);
+				 mv.addObject("cost",bigIntValue);
+				 System.err.println(cost);
 			    }
+			
+			int allIndiaSerialNo = 000001;
+//			/* int stateSerialNo = 1; */
+			 String fcref_no1 = GenerateFCNO(request.getSession(),allIndiaSerialNo);
+			    mv.addObject("fcref_no1", fcref_no1);
 
 			return mv;
 		}
+		
+		private String GenerateFCNO(HttpSession session, int allIndiaSerialNo) {
+	     if (session.getAttribute("allIndiaSerialNo") != null) {
+	            allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
+	            allIndiaSerialNo++;
+	        }
+	        session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+
+	        String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
+	        String status=this.fiannacialConcurenceService.fcref_nocheck(formattedAllIndiaSerialNo);
+	       if ("1".equals(status)) {
+	          
+	           return GenerateFCNO(session, allIndiaSerialNo + 1);
+	       } else {
+	           
+	           return formattedAllIndiaSerialNo;
+	       }
+	    }
 		@RequestMapping({ "updatefcstatus" })
 		public ModelAndView bnaDeletepay( HttpServletRequest request, RedirectAttributes redirectAttributes) {
 			final ModelAndView mv = new ModelAndView("viewFCpaymentlist");
@@ -5896,7 +6198,7 @@ public class InsertDataController
 				if (request.getParameter("id") != null) {
 				final int id = Integer.parseInt(request.getParameter("id")); 
 				final String  contno=request.getParameter("contno");
-				this.paymentDetailService.update1(contno);
+				//this.paymentDetailService.update1(contno);
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
 			}

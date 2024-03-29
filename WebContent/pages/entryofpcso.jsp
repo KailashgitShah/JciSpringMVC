@@ -16,6 +16,13 @@
 	height: 32px;
 }
 
+
+.required:after {
+	content: " *";
+	color: red;
+}
+
+
 #btn-back-to-top {
 	position: fixed;
 	bottom: 20px;
@@ -30,15 +37,14 @@
 	top: 56px;
 	padding: 20px;
 	background: #f1f1f1;
-	right: 5vw;
-	width: 77rem;
+    left: 25rem;
+    width: 70%;
 }
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
@@ -48,19 +54,12 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
-
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
-<!-- PAGE LEVEL STYLES-->
+<link rel="stylesheet" href="assets/css/chosen.css">
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
 	type="text/javascript"></script>
 </head>
@@ -88,16 +87,18 @@
 			<%
 			List<Object[]> allentryofpcsolist = (List<Object[]>) request.getAttribute("entryofpcsolist");
 			List<String> allRefNo = (List<String>) request.getAttribute("allRefNo");
+			int totalMills = allentryofpcsolist.size();
 
-			String referenceno = (String) request.getAttribute("referenceno");
+/* 			String referenceno = (String) request.getAttribute("referenceno");
 			String pcsoDate = (String) request.getAttribute("pcsodate");
+			
 			String pcsoReqdate = (String) request.getAttribute("pcsoReqdate");
 			String pcsoQty = (String) request.getAttribute("pcsoQty");
 			String pcsoReqQty = (String) request.getAttribute("pcsoReqQty");
 			String juteRatio = (String) request.getAttribute("juteRatio");
 			String dispatchPeriod = (String) request.getAttribute("dispatchPeriod");
 			String letterRefNo = (String) request.getAttribute("letterRefNo");
-
+			
 			if (referenceno == null) {
 				pcsoDate = "";
 				pcsoReqdate = "";
@@ -108,7 +109,7 @@
 				letterRefNo = "";
 				referenceno = "";
 
-			}
+			} */
 
 			String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 			%>
@@ -124,18 +125,13 @@
 									<div class="fixedCol">
 										<div class="row">
 											<div class="col-sm-3 form-group">
-												<label>JCI letter Ref.</label> <select class="form-control"
+												<label class="required">JCI letter Ref.</label> <select class="form-control"
 													name="letterRefNo" id="refNo" required>
 													<option selected value="">-Select-</option>
 													<%
 													for (String ref : allRefNo) {
 													%>
-													<option value="<%=ref%>"
-														<%if (ref.equals(letterRefNo)) {
-	out.print("Selected");
-} else {
-	out.print("");
-}%>>
+													<option value="<%=ref%>">										
 														<%=ref%></option>
 
 													<%
@@ -145,42 +141,45 @@
 											</div>
 											<div class="col-sm-3 form-group">
 												<label>PCO Req. Date</label> <input class="form-control"
-													name="pcsoReqdate" id="pcsoReqdate"
-													placeholder="dd-mm-yyyy" value="<%=pcsoReqdate%>" readonly>
+													name="pcsoReqdate" id="pcsoReqdate" value=""
+													placeholder="dd-mm-yyyy"  type="date" readonly>
 											</div>
 											<div class="col-sm-3 form-group">
-												<label>PCO Req. Qty. (M.T)</label> <input
-													class="form-control" name="pcsoReqQty" id="pcsoReqQty"
-													value="<%=pcsoReqQty%>" readonly>
+												<label>PCO Req. Qty. (M.T)</label> <input value=""
+													class="form-control" name="pcsoReqQty" id="pcsoReqQty" 													 readonly>
+													 
+													
 											</div>
 											<div class="col-sm-3 form-group">
-												<label>PCO Date</label> <input class="form-control"
+												<label class="required">PCO Date</label> <input class="form-control"
 													name="pcsoDate" id="pcsoDate" placeholder="dd-mm-yyyy"
-													value="<%=pcsoDate%>" required>
+													 type="date" required>
 											</div>
 										</div>
 
 										<div class="row">
 											<div class="col-sm-3 form-group">
-												<label>JC Office Ref.No.</label> <input class="form-control"
-													type="text" name="referenceno" placeholder="Reference.No."
-													value="<%=referenceno%>" id="referenceno" required>
+												<label class="required">JC Office Ref.No.</label> <input class="form-control"
+													type="text" name="referenceno" placeholder="Reference.No." autocomplete="off"
+													 id="referenceno" required>
 											</div>
 											<div class="col-sm-3 form-group">
-												<label>JCI Linkage Percentage.</label> <input
+												<label class="required">JCI Linkage Percentage.</label> <input
 													class="form-control" type="number" name="juteRatio"
 													id="juteRatio" min="0" step="0.01" max="100"
-													value="<%=juteRatio%>" required>
+													 required>
 											</div>
 											<div class="col-sm-3 form-group">
-												<label>PCO Qty. (M.T)</label> <input class="form-control"
-													value="<%=pcsoQty%>" type="number" min="0" name="pcsoQty"
+												<label class="required">PCO Qty. (M.T)</label> <input class="form-control"
+													 type="number" min="0" step="0.01" name="pcsoQty"
 													id="pcsoQty">
 											</div>
 											<div class="col-sm-3 form-group">
-												<label>Dispatch Period</label> <input class="form-control"
-													value="<%=dispatchPeriod%>" name="dispatchPeriod"
-													id="dispatchPeriod" required placeholder="dd-mm-yyyy">
+												<label class="required">Dispatch Period</label> <input class="form-control"
+													name="dispatchPeriod" type="date" min="" placeholder="dd-mm-yyyy"
+													 id="dispatchPeriod" required
+													>
+													
 											</div>
 										</div>
 
@@ -216,8 +215,9 @@
 												value="<%=entryofpcsolist[1]%>" readonly>
 										</div>
 										<div class="col-sm-4 form-group">
-											<input type="number" step="any" class="form-control tAll"
-												min="0" name="totalallocation<%=mill%>" value="0"
+											<input type="text" inputmode="numeric" step="any"
+												class="form-control tAll" min="0"
+												name="totalallocation<%=mill%>" value="0"
 												id="totalallocation<%=mill%>">
 										</div>
 										<%
@@ -249,14 +249,13 @@
 	<div class="sidenav-backdrop backdrop"></div>
 	<script>
 	$(document).ready(function() {
-		$("#pcsoDate").datepicker({
-			dateFormat : 'dd-mm-yy',
-			minDate : 0
-		});
-
-		$("#dispatchPeriod").datepicker({
-			dateFormat : 'dd-mm-yy',
-		});
+	 
+		
+		 var currentDate = new Date();
+		  var formattedDate = currentDate.toISOString().split('T')[0];
+		  document.getElementById("pcsoDate").max = formattedDate;
+		  $("#dispatchPeriod").prop("readonly", true);
+		  
 	});
 
 			
@@ -295,14 +294,57 @@
 		$("#pcsoDate").on(
 				"change",
 				function() {
-					var currDate = $(this).val().split("-");
-					var minDateValue = new Date(currDate[2], currDate[1] - 1,
-							currDate[0]);
-					$("#dispatchPeriod").datepicker('option', 'minDate',
-							minDateValue);
-				})
-				
-				
+					var date = $(this).val();
+					document.getElementById("dispatchPeriod").min = date;
+					document.getElementById("dispatchPeriod").value = "";
+					 $("#dispatchPeriod").prop("readonly", false);
+					 
+						var pcsoDate = date.split("-");
+						var formattedDate = pcsoDate[2]+"-"+pcsoDate[1]+"-"+pcsoDate[0];
+					 
+						
+						 $.ajax({
+							type : "GET",
+							url : "getMillCodeForPcoDate.obj",
+							data : {
+								"pcoDate" : formattedDate
+							},
+							success : function(result) {
+								var millCodes = jQuery.parseJSON(result);
+                                
+							   //console.log(millCodes);
+							   var totalCountOfMills = '<%=totalMills%>'
+							   
+							   for(var j = 0 ; j < totalCountOfMills ; j++){
+								   var millCode =  $("#millcode" + j).val();
+								   
+								   if(millCodes.includes(millCode)){
+									   //console.log(millCode , "inside the function");
+									   $("#totalallocation" + j).prop('readonly', true); 
+								   }else{
+									   $("#totalallocation"+j).attr('readonly' , false); 
+								   }
+							 
+							   }
+							   
+							
+							}
+						})
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					})
+					
+					
+		
+					
+					
+					
 				//jute ratio validation
 				
 				
@@ -339,12 +381,12 @@
 						var inputField = $(this);
 						var lastVal = inputField.val();
 
-						inputField.on("input", function() {
+				/* 		inputField.on("input", function() {
 							var inputVal = $(this).val();
 							if (inputVal === "")
 								return;
 
-						});
+						}); */
 
 						// to prevent +, - and e from being input
 						inputFields.on("keydown", function(event) {
@@ -356,19 +398,6 @@
 					});
 
 					// to check if the fields are all empty or some have values.
-					function checkFields() {
-						var allEmpty = true;
-						inputFields.each(function() {
-							if ($(this).val() != "0" && $(this).val() != "") {
-								allEmpty = false;
-								return true;
-							}
-						});
-						submitButton.prop("disabled", allEmpty);
-					}
-
-					inputFields.on("input", checkFields);
-					checkFields();
 
 				});
 	</script>
@@ -395,16 +424,23 @@
 												}
 
 												var sz = $("#count").val();
-												var pcoQty = $("#pcsoQty")
-														.val();
+												
+												var pcoQty = parseFloat($("#pcsoQty").val());
 												var sum = 0;
 												for (var i = 0; i < sz; i++) {
 													var ele =  $("#totalallocation"+ i).val();
-													if (ele) {
-														sum += parseInt(ele);
+													
+												    if (ele !== null && ele !== '' && !isNaN(parseFloat(ele))) {
+												        sum += parseFloat(ele);
+													}else{
+														 $("#totalallocation" + i).val(0);
 													}
 												}
-
+												
+												sum = sum.toFixed(2);
+												pcoQty = pcoQty.toFixed(2);
+												 
+												
 												if (sum != pcoQty) {
 													document.getElementById("errMsg").innerHTML = "Current sum = "
 															+ sum
@@ -435,46 +471,24 @@
 					var data = jQuery.parseJSON(result);
 
 					var details = data[0]
-					var pcsoReqdate = data[0][6];
+					var pcsoReqdate = data[0][6].split("-");
+					var newDate = pcsoReqdate[2]+"-"+pcsoReqdate[1]+"-"+pcsoReqdate[0];
+					
 
 					var reqQty = data[0][7];
 
-					$("#pcsoReqdate").val(pcsoReqdate);
+					$("#pcsoReqdate").val(newDate);
 					$("#pcsoReqQty").val(reqQty);
 
 				}
 			})
 		});
 	</script>
-	
-		<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
 		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 </body>

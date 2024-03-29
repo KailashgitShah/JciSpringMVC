@@ -42,8 +42,10 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	@Override
 	public List<String> loadAllDiNo() {
 		String regionCode = (String) request.getSession().getAttribute("region");
+
 		String sqlString = "select Distinct DI_no from jciDI_ho where Regional_office='" + regionCode
 				+ "' and  DPC <> '';";
+
 		List<String> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 	}

@@ -14,6 +14,10 @@ public interface ContractGenerationService2 {
 	public List<Object[]> getListOfGradeComposition(String gradeComp);
 //	ModelAndView pcso_details(List<String> pcso,String gradeComp , String deliveryType);
 	ModelAndView pcso_details(List<String> pcso,List<String> gradeArray);
-	public int updateContractedValue(String deliveryType, String totalQtyOfMill);
+	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray);
 	public List<Contractgeneration> getContractFullDetails(String contractidn);
+	public List<Object> getFullAddressByMillName(String millNameString);
+	public List<Contractgeneration> getAllUnAuthorizedContract();
+	public void setContractAuthrizeStatus(String contractNOString);
+
 }

@@ -57,7 +57,6 @@
 				<h1 class="page-title">PCO List</h1>
 			</div>
 			<%
-			List<EntryofpcsoModel> pcsoList = (List<EntryofpcsoModel>) request.getAttribute("pcsolist");
 			List<String> refNos = (List<String>) request.getAttribute("refNos");
 	
 			%>

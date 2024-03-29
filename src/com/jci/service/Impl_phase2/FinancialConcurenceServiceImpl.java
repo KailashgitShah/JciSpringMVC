@@ -7,9 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.jci.dao_phase2.FinancialConcurenceDao;
 import com.jci.model.FinancialConcurenceModel;
 import com.jci.service_phase2.FinancialConcurenceService;
+
 
 @Service
 public class FinancialConcurenceServiceImpl implements FinancialConcurenceService {
@@ -21,7 +23,7 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 
 	@Override
 	public void create(FinancialConcurenceModel financialConcurenceModel) {
-		// TODO Auto-generated method stub
+		
 		financialConcurencedao.create(financialConcurenceModel);
 	}
 	@Override
@@ -58,12 +60,12 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 		return financialConcurencedao.find(id);
 	}
 	@Override
-	public double calculateCharges( int  id, String contno) {
+	public int calculateCharges( int  id, String contno) {
 		return financialConcurencedao.calculateCharges(id,contno);
 	}
 	@Override
-	public void remark(String remark,String  con_No) {
-		financialConcurencedao.remark(remark,con_No);
+	public void remark(String remark,String  con_No,int paymentId) {
+		financialConcurencedao.remark(remark,con_No,paymentId);
 		
 	}
 	@Override
@@ -74,6 +76,18 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 	public int paymentid(String cont_no) {
     	 return this.financialConcurencedao.paymentid(cont_no);
 	}
+	@Override
+	public List<Object> dataofdates(String Con_no, int Payment_id) {
+		
+		return this.financialConcurencedao.dataofdates(Con_no,Payment_id);
+	}
+	@Override
+	public String fcref_nocheck(String fcref_no) {
+		
+		return this.financialConcurencedao.fcref_nocheck(fcref_no);
+	}
+	
+	
 	
 	
 	

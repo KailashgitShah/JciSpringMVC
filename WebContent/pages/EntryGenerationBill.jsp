@@ -61,7 +61,7 @@
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Entry Generation of Bill of Supply</h1>
+				<h1 class="page-title">Generation of Bill of Supply</h1>
 			</div>
 
 			<%
@@ -79,7 +79,7 @@
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
-							<span>${msg}</span>
+							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveentryofGenrationbill.obj" method="POST"
 									name="myForm" enctype="multipart/form-data">
@@ -126,7 +126,7 @@
 												</span>&nbsp; <span id="Shipment_Details" name=Shipment_Details
 													class="text-danger"> </span> <input class="form-control"
 													name="Shipment_Details" id="Shipment_Details1"
-													placeholder="Shipment Details" required>
+													placeholder="Shipment Details"  readonly="readonly"required>
 											</div>
 
 
@@ -144,20 +144,26 @@
 													class="text-danger"> </span> <input
 													class="form-control taxtbox" name="Shipment_Value1" min="0"
 													step="1" pattern="\d+" placeholder="Shipment_Value"
-													required oninput="calculateGST()">
+													required oninput="calculateGST()" readonly="readonly">
+											</div>
+											
+												<div class="col-sm-4 form-group">
+												<label>Contarct no</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Contarct_no" name="Contarct_no"
+													class="text-danger"> </span> <input class="form-control"
+													name="Contarct_no" id="Contarctno" value=""
+													readonly="readonly">
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Financial year</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
+													class="text-danger"> </span> <input class="form-control"
+													name="Financial_year2" id="Financial_year1" value=""
+													readonly="readonly">
 											</div>
 
 
-											<div class="col-sm-4 form-group">
-												<label>SGST Amt</label> <input class="form-control taxtbox"
-													name="SGST_Amt" id="SGST_Amt" min=0 step=0.01
-													placeholder="SGST_Amt" readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>CGST Amt</label> <input class="form-control taxtbox"
-													name="CGST_Amt" id="CGST_Amt" min=0 step=0.01
-													placeholder="CGST_Amt" readonly="readonly">
-											</div>
+										
 
 
 
@@ -170,20 +176,19 @@
 											<div class="col-sm-4 form-group">
 												<label>IGST Amt</label> <input class="form-control taxtbox"
 													name="IGST_Amt" min="0" step="0.01" pattern="[0-9]*"
-													id="IGST_Amt" placeholder="IGST_Amt">
+													id="IGST_Amt" placeholder="IGST_Amt" readonly ="readonly">
+											</div>
+											
+											<div class="col-sm-4 form-group">
+												<label>SGST Amt</label> <input class="form-control taxtbox"
+													name="SGST_Amt" id="SGST_Amt" min=0 step=0.01
+													placeholder="SGST_Amt" readonly="readonly">
 											</div>
 											<div class="col-sm-4 form-group">
-												<label>TCS Amt</label> <input class="form-control taxtbox"
-													name="TCS_Amt" min="0" step="0.01" pattern="[0-9]*"
-													id="TCS_Amt" placeholder="TCS_Amt">
+												<label>CGST Amt</label> <input class="form-control taxtbox"
+													name="CGST_Amt" id="CGST_Amt" min=0 step=0.01
+													placeholder="CGST_Amt" readonly="readonly">
 											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>TDS Amt</label> <input class="form-control taxtbox"
-													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*"
-													id="TDS_Amt" placeholder="TDS_Amt">
-											</div>
-
 
 
 
@@ -222,7 +227,58 @@
 
 										</div>
 
+									
+
 										<div class="row">
+
+											<div class="col-sm-4 form-group">
+												<label>Recipient Name</label> <input
+													class="form-control taxtbox" name="Recipient_Name"
+													id="Recipient_Name" placeholder="Recipient_Name" readonly="readonly">
+											</div>
+
+											<div class="col-sm-4 form-group">
+												<label>Recipient GSTN </label> <input
+													class="form-control taxtbox" name="Recipient_GSTN"
+													id="Recipient_GSTN" placeholder="Recipient_GSTN" readonly="readonly">
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Recipient Address</label> <input
+													class="form-control taxtbox" name="Recipient_Address"
+													id="Recipient_Address" placeholder="Recipient_Address" readonly="readonly">
+
+											</div>
+
+
+
+
+
+										</div>
+
+										<div class="row">
+
+											<div class="col-sm-4 form-group">
+												<label>Consignee Name</label> <input
+													class="form-control taxtbox" name="Consignee_Name"
+													id="Consignee_Name" placeholder="Consignee_Name" readonly="readonly">
+											</div>
+
+											<div class="col-sm-4 form-group">
+												<label>Consignee GSTN </label> <input
+													class="form-control taxtbox" name="Consignee_GSTN"
+													id="Consignee_GSTN" placeholder="Consignee_GSTN" readonly="readonly">
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Consignee Address</label> <input
+													class="form-control taxtbox" name="Consignee_Address"
+													id="Consignee_Address" placeholder="Consignee_Address" readonly="readonly">
+											</div>
+
+
+
+
+										</div>
+											<div class="row">
 											<div class="col-sm-4 form-group">
 												<label>Supplier Name</label> <input
 													class="form-control taxtbox" name="Supplier_Name"
@@ -245,63 +301,19 @@
 
 
 										</div>
-
 										<div class="row">
-
+										
+											
 											<div class="col-sm-4 form-group">
-												<label>Recipient Name</label> <input
-													class="form-control taxtbox" name="Recipient_Name"
-													id="Recipient_Name" placeholder="Recipient_Name">
+												<label>TCS Amt</label> <input class="form-control taxtbox"
+													name="TCS_Amt" min="0" step="0.01" pattern="[0-9]*"
+													id="TCS_Amt" placeholder="TCS_Amt">
 											</div>
 
 											<div class="col-sm-4 form-group">
-												<label>Recipient GSTN </label> <input
-													class="form-control taxtbox" name="Recipient_GSTN"
-													id="Recipient_GSTN" placeholder="Recipient_GSTN">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Recipient Address</label> <input
-													class="form-control taxtbox" name="Recipient_Address"
-													id="Recipient_Address" placeholder="Recipient_Address">
-
-											</div>
-
-
-
-
-
-										</div>
-
-										<div class="row">
-
-											<div class="col-sm-4 form-group">
-												<label>Consignee Name</label> <input
-													class="form-control taxtbox" name="Consignee_Name"
-													id="Consignee_Name" placeholder="Consignee_Name">
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>Consignee GSTN </label> <input
-													class="form-control taxtbox" name="Consignee_GSTN"
-													id="Consignee_GSTN" placeholder="Consignee_GSTN">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Consignee Address</label> <input
-													class="form-control taxtbox" name="Consignee_Address"
-													id="Consignee_Address" placeholder="Consignee_Address">
-											</div>
-
-
-
-
-										</div>
-										<div class="row">
-											<div class="col-sm-4 form-group">
-												<label>Contarct no</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Contarct_no" name="Contarct_no"
-													class="text-danger"> </span> <input class="form-control"
-													name="Contarct_no" id="Contarctno" value=""
-													readonly="readonly">
+												<label>TDS Amt</label> <input class="form-control taxtbox"
+													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*"
+													id="TDS_Amt" placeholder="TDS_Amt">
 											</div>
 											<div class="col-sm-2 form-group" style="display: none;">
 												<label "display:none;">Clientstate </label> <span
@@ -479,178 +491,6 @@
 
 
 
-<!-- 
-	<script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-
-							function formatDate(date) {
-								var day = date.getDate().toString().padStart(2,
-										'0');
-								var month = (date.getMonth() + 1).toString()
-										.padStart(2, '0');
-								var year = date.getFullYear();
-								return day + '/' + month + '/' + year;
-							}
-							$('#Challan_No1')
-									.on(
-											'change',
-											function() {
-												var field2Value = $(this).val();
-
-												$
-														.ajax({
-															type : 'GET',
-															url : 'fetchingdata1.obj',
-															data : {
-																"contractno" : field2Value
-															},
-															success : function(
-																	data) {
-																alert(data);
-
-																try {
-																	var dataArray = JSON
-																			.parse(data);
-
-																	if (dataArray
-																			&& dataArray.length > 0) {
-																		var contractNo = dataArray[0][0];
-																		var creationDateStr = dataArray[0][1];
-																		var millcode = dataArray[0][2];
-																		var creationDate = new Date(
-																				creationDateStr);
-																		console
-																				.log(
-																						"Creation Date as Date object: ",
-																						creationDate);
-
-																		$(
-																				'#Contarctno')
-																				.val(
-																						contractNo);
-																		$(
-																				'#ChallanDate1')
-																				.val(
-																						formatDate(creationDate));
-																		$(
-																				'#Millcode')
-																				.val(
-																						millcode);
-
-																		$
-																				.ajax({
-																					type : 'GET',
-																					url : 'fetchingdataforbill.obj',
-																					data : {
-																						"contractno" : millcode
-																					},
-																					success : function(
-																							secondData) {
-																						alert(secondData);
-																						try {
-																							var dataArray = JSON
-																									.parse(secondData);
-
-																							if (dataArray
-																									&& dataArray.length > 0) {
-																								var unit_name = dataArray[0][1];
-																								var unit_address1 = dataArray[0][2];
-																								var unit_state = dataArray[0][3];
-																								var unit_state_location = dataArray[0][4];
-																								var client_gstin = dataArray[0][5];
-																								var client_pan = dataArray[0][6];
-																								var client_state = dataArray[0][7];
-																								var client_address1 = dataArray[0][8];
-																								var client_name = dataArray[0][9];
-
-																								$(
-																										'#Recipient_Name')
-																										.val(
-																												unit_name);
-																								$(
-																										'#Recipient_GSTN')
-																										.val(
-																												client_gstin);
-																								$(
-																										'#Recipient_Address')
-																										.val(
-																												unit_address1);
-																								$(
-																										'#Consignee_Name')
-																										.val(
-																												client_name);
-																								$(
-																										'#Consignee_GSTN')
-																										.val(
-																												client_gstin);
-																								$(
-																										'#Consignee_Address')
-																										.val(
-																												client_address1);
-																								$(
-																										'#Clientstate')
-																										.val(
-																												client_state);
-																								$(
-																										'#Clientcode')
-																										.val(
-																												unit_state);
-																								$(
-																										'#ClientPan')
-																										.val(
-																												client_pan);
-																							}
-																						} catch (error) {
-																							console
-																									.error("Error parsing JSON: "
-																											+ error);
-																						}
-
-																					},
-																					error : function(
-																							error) {
-																						console
-																								.error(
-																										'Second Ajax call error:',
-																										error);
-																					}
-																				});
-																	}
-																} catch (error) {
-																	console
-																			.error("Error parsing JSON: "
-																					+ error);
-																}
-
-																var formattedDate = formatDate(ChallanDate1);
-																$('#Contarctno')
-																		.val(
-																				data1.Contract_No);
-																$(
-																		'#ChallanDate1')
-																		.val(
-																				formattedDate);
-
-															}
-
-														});
-											});
-
-						});
-	</script>
-
-
-
-
-
-
-
-
-
-
-	<script> -->
 	
 	
     <script type="text/javascript">
@@ -752,6 +592,8 @@
 
          
          </script>
+         
+         <script>
 		function calculateGST() {
 			// Retrieve the shipment value entered by the user
 			var shipmentValue = parseFloat(document
@@ -760,7 +602,7 @@
 			// Check if the entered value is a valid number
 			if (!isNaN(shipmentValue)) {
 				// Calculate SGST and CGST amounts (assuming 18% GST rate)
-				var gstRate = 0.18;
+				var gstRate = 0.0;
 				var sgstAmt = (gstRate / 2) * shipmentValue;
 				var cgstAmt = (gstRate / 2) * shipmentValue;
 				var totalGstAmt = sgstAmt + cgstAmt;
@@ -774,7 +616,14 @@
 			}
 		}
 	</script>
-
+	<script>
+    $(document).ready(function(){
+      
+        setTimeout(function(){
+            $('#flashMessage').fadeOut('slow');
+        }, 3000); ded
+    });
+</script>
 
 
 

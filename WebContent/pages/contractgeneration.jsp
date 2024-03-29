@@ -85,8 +85,8 @@ String contactIdnNo = "BT-" + count;
 										<div class="row">
 
 											<div class="col-sm-4 form-group">
-												<label>Available Qty</label> <input name="available_qty"
-													id="available_qty" type="number" class="form-control"
+												<label  class="required">Available Qty</label> <input name="available_qty"
+													id="available_qty" type="number" class="form-control" min='0'
 													 />
 											</div>
 
@@ -106,7 +106,7 @@ String contactIdnNo = "BT-" + count;
 															Composition(%)</th>
 														<th class="col-sm-2" scope="col">Proposed
 															Composition(%)</th>
-														<th class="col-sm-2" scope="col">Remarks</th>
+														<th class="col-sm-2 required" scope="col">Remarks</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -126,10 +126,10 @@ String contactIdnNo = "BT-" + count;
 															id="variety<%=i%>" /></td>
 														<td class="col-sm-2"><input
 															class="clrSys form-control" name="system<%=i%>"
-															value="<%=rate%>" readonly /></td>
+															value="<%=rate%>" id="system<%=i%>" readonly /></td>
 														<td class="col-sm-2"><input type="number"
-															name="proposed<%=i%>" id="grade<%=i%>" step="any"
-															class="clrPro form-control" data-decimal="2" min="0"
+															name="proposed<%=i%>" id="grade<%=i%>" step="0.01"
+															class="clrPro form-control"  min="0"
 															required /></td>
 
 														<%
@@ -270,7 +270,6 @@ $("#toggle").on("click" ,async () => {
 	
 	var avaQty =$('#available_qty').val();
 	var remark = $('#remark').val();
-	
 	if(avaQty.length == 0){
 		alert("Please fill Available Qty");
 		return false;
@@ -283,13 +282,18 @@ $("#toggle").on("click" ,async () => {
 	
 	
 	//grade composition validations
-	let totel = 0;
+	var totel = 0.0;
 	for (var i = 1; i <='<%=sizeOfJuteVariey%>'; i++) {
 		let temp = $('#grade' + i).val();
 		let variety = $('#variety' + i).val();
-		if (temp == '') temp = 0; 
+		if (temp == '') temp = 0.0; 
 		totel += parseFloat(temp);
 	}
+	
+	totel = totel.toFixed(2);
+	
+	//console.log(totel , totel == 100.00000);
+
 	
 	
 	if ((+totel != 100)) {
@@ -325,12 +329,14 @@ $("#toggle").on("click" ,async () => {
 document.getElementById("loader").style.setProperty('display','none' );
 var contractedValueMillWise = [];
 var listOfTotalQty = [];
-$("#pcso_date").chosen();
-$("#pcso_date").addClass("chosen-select");
 var parsedArray = [];
 var jsonGrades = [];
 var jsonPcsoDates = [];
 var count = 0;
+var array = [];
+var gradeArray = [];
+
+
 
 	$(".pcso")
 			.on(
@@ -344,8 +350,8 @@ var count = 0;
 						jsonGrades = [];
 						listOfTotalQty = [];
 						
-						var array = [];
-						var gradeArray = [];
+						 array = [];
+						 gradeArray = [];
 					
 						
 						for(var i=1 ; i<= 6 ;i++){
@@ -425,20 +431,23 @@ var count = 0;
 										+ List[i][j] + '</td>';
 									   }
 													
-									   htmlTable +=	'<td id="allocated'+i+'" style="text-align:center">'
-													+ List[i][sizeOfSingleResultArray-1]
-													+ '</td><td style="text-align:center">' +contractedValueMillWise[i]+'</td><td><select onchange={updateOnChange('+i+')} class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
-													
-									   htmlTable +="<input type='hidden' id='contractedValue"+i+"' value='"+contractedValueMillWise[i]+"'>";
-													
+									   htmlTable += '<td id="allocated'+i+'" style="text-align:center">'
+							            + List[i][sizeOfSingleResultArray-1].toFixed(2)
+							            + '</td><td style="text-align:center" id="contractedValue'+i+'">' + contractedValueMillWise[i] + '</td><td><select onchange="updateOnChange('+i+')" class="form-control pcso" name="deliveryType'+i+'" id="deliveryType'+i+'"><option value="Mill-Delivery" selected >Mill Delivery</option><option value="Ex-Godown">Ex-Godown</option></select></td></tr>';
+
+
 											sum += List[i][sizeOfSingleResultArray-1];
 										}
+										
+										 sum = sum.toFixed(2);
 										
 // 										htmlTable += '<tr border="2px"><td style="text-align:center"></td><td style="text-align:center"> Total Allocation </td><td style="text-align:center">' 
 // 													+ sum + '</td></tr>';
 										htmlTable += '</tbody></table>';
 									 htmlTable += '<br><h4> Total Allocation = ' + sum + '</h6>';
-									
+										
+									   
+									 
 										$("#list").html(htmlTable); 
 										$("#contract_qty").val(sum);
 										$("#count").val(count);
@@ -453,9 +462,9 @@ var count = 0;
  $(".submit")
 			.click(
 					async () => {
-						
+						//alert("async");
 						//loader active 
-						await loader("block");
+						//await loader("block");
 										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
@@ -465,6 +474,18 @@ var count = 0;
 						var availableQty = $("#available_qty").val();
 						var remarks = $("#remark").val();						
 						var millDetails = [];
+						
+						var juteGradesArray = [];
+						var sysComArry = [];
+
+						for(var i=1 ; i <= 6 ; i++){
+							var variety = $("#variety"+i).val();
+							var sysComp = $("#system"+i).val();
+							juteGradesArray.push(variety);
+							sysComArry.push(sysComp);
+						}
+						
+				
 						
 						if(pcsoDate.length == 0){
 							alert("Please select PCSO Date");
@@ -477,9 +498,9 @@ var count = 0;
 						
 						  var millName = $(cells[1]).text();
 						  var millCode = $(cells[0]).text();
-						  var contractedValue = $("#contractedValue"+index).val();
-						  var Qty = $(cells[cells.length - 2]).text(); // Assuming Quantity is in the last cell
-						  var delivery_type = $("#deliveryType"+index).val(); // Assuming Quantity is in the last cell
+						  var contractedValue = $(cells[cells.length - 2]).text();
+						  var Qty = $(cells[cells.length - 3]).text(); // Assuming Quantity is in the third last cell
+						  var delivery_type = $("#deliveryType"+index).val(); // Assuming this is in the last cell
 						  millDetails.push({
 							  "millCode" : millCode,
 							  "millName" : millName,
@@ -493,7 +514,7 @@ var count = 0;
 						//console.log(millDetails,"millDetails");
 						
 						var data = {
-								"pcsoDate" : jsonPcsoDates,
+								"pcsoDate" : array,
 								"contractIdn" : contractIdn,
 								"contractdate" : contractdate,
 								"contractQty" : contractQty,
@@ -502,12 +523,15 @@ var count = 0;
 								"SortingId": '<%=count%>',
 								"labelName": labelName,
 								"availableQty": availableQty,
-								"remarks": remarks
+								"remarks": remarks,
+		                        "juteGradesArray" : juteGradesArray,
+		                        "systemComp" : sysComArry
 						 };
-						
+						//alert(data);
+						//console.log(data);
 					
                  if(jsonPcsoDates.length > 4){
-                	 
+                	// alert("true");
 				   $.ajax({
 							type : "POST",
 							url : "contractgenerationPcsoWiseSave.obj",
@@ -515,19 +539,23 @@ var count = 0;
 							async: false,
 							contentType: "application/json",
 							success : async (result) => {
-							  
-							  	window.location.href = "viewcontractgeneration.obj";
+							//  alert("result");
+							 	//window.location.href = "authorization.obj";
 							  	//loader hide
-								await loader("none");
-								// window.open("viewcontractgeneration.obj");
+								//await loader("none");
+								// window.open("authorization.obj");
+								alert("data saved successfully !");
+								window.location.href = "authorization.obj";
 								
 							},
 							error: function(xhr, status, error) {
+								alert("error");
 						        console.error("Error: " + error);
 						    }
 						}); 
 				 }
                   else{
+                	  alert("false");
                 	  return false;
                   }
 		 
@@ -540,30 +568,24 @@ var count = 0;
 function updateOnChange(id){ 
 var prevQty = listOfTotalQty[id];
 
-console.log(contractedValueMillWise);
+//console.log(contractedValueMillWise , listOfTotalQty ,prevQty, "inside change funtion");
 
-	 $.ajax({
+	  $.ajax({
 		type:"GET",
 		url:"updateContractedValue.obj",
 		data:{
 			"deliveryType" : $("#deliveryType"+id).val(),
-			"totalQtyOfMill":listOfTotalQty[id]
+			"totalQtyOfMill":prevQty,
+			"grades" : jsonGrades
 		},
 		success : function(result){
-			contractedValueMillWise[id] = +result;
-			console.log(contractedValueMillWise);
-			for(var ele of contractedValueMillWise){
-				currSum += ele;
-			}
-			
-			$("#contractValue").val(currSum);
+			//console.log(result);
+				contractedValueMillWise[id] = result;
+				$('#contractedValue' + id).text(result);
+				
+				
 		}
-	}) 
-	
-	var currSum = 0;
-	
-
-	
+	})   
 }
 </script>
 

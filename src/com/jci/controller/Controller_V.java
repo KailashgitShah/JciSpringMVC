@@ -2,6 +2,8 @@ package com.jci.controller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.util.UUID;
+import java.util.logging.Logger;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
@@ -51,6 +53,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.bouncycastle.jce.provider.BrokenJCEBlockCipher.BrokePBEWithMD5AndDES;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -77,6 +80,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
@@ -93,6 +107,8 @@ import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenrationDEmandDto;
 import com.jci.model.GenrationDemandNoteModel;
 import com.jci.model.JciDIHoModel;
+import com.jci.model.JciEntryTdsModel;
+import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.MillRecieptModel;
 import com.jci.model.OperationAndTransportCostModel;
 import com.jci.model.OperationCostModel;
@@ -100,7 +116,7 @@ import com.jci.model.PCSORequestLetter;
 import com.jci.model.RoDetailsModel;
 import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
-
+import com.jci.model.UserRegistrationModel;
 import com.jci.model.settlemetCnDnModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
@@ -111,13 +127,16 @@ import com.jci.service_phase2.ContractGenerationService2;
 import com.jci.service_phase2.CreditNoteGenerationService;
 import com.jci.service_phase2.EntryDerivativePriceService2;
 import com.jci.service_phase2.EntryofGradeCompositionService;
+import com.jci.service_phase2.EntryofTdsService;
 import com.jci.service_phase2.FactorssInvolvedCommercialService;
 import com.jci.service_phase2.FinancialConcurenceService;
 import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
 import com.jci.service_phase2.GenrationCashDocumentService;
 import com.jci.service_phase2.HOInstService;
+import com.jci.service_phase2.MillAccept;
 import com.jci.service_phase2.MillRecieptService;
+import com.jci.service_phase2.NominalOfficialService;
 import com.jci.service_phase2.OperationAndTransportCostService;
 import com.jci.service_phase2.OperationCostService;
 import com.jci.service_phase2.PCSOReqLetterService;
@@ -133,6 +152,7 @@ import com.lowagie.text.DocumentException;
 import antlr.TokenWithIndex;
 
 import java.util.Calendar;
+import java.time.LocalDate;
 
 @Transactional
 @Repository
@@ -140,6 +160,17 @@ import java.util.Calendar;
 public class Controller_V {
 	@Autowired
 	HOInstService hoInstService;
+
+
+	@Autowired
+	MillAccept millacct;
+
+	@Autowired
+	EntryofTdsService entryofTdsService;
+
+	@Autowired
+	NominalOfficialService nominalOfficialService;
+
 
 	private final PdfGenerator_K pdfGenerator;
 
@@ -227,6 +258,21 @@ public class Controller_V {
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
 
+	// convert yyyy-MM-dd to dd-MM-yyyy
+	String formateDate(String date) throws ParseException {
+
+		SimpleDateFormat simpleDateFormatyy = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat simpleDateFormatdd = new SimpleDateFormat("dd-MM-yyyy");
+
+		Date creationDateTime = new Date();
+
+		Date convertFormattedDate = simpleDateFormatyy.parse(date);
+		String withFormatedd = simpleDateFormatdd.format(convertFormattedDate);
+
+		return withFormatedd;
+	}
+
+
 // generation of pcso request letter form	
 	@RequestMapping("pcsoRequestLetter")
 
@@ -278,16 +324,18 @@ public class Controller_V {
 
 		String referenceno = request.getParameter("referenceno");
 		String reqDate = request.getParameter("reqDate");
+
 		String crop_year = request.getParameter("cropyr");
 		double system_qty = Double.parseDouble(request.getParameter("uncontractedQty"));
 		double req_qty = Double.parseDouble(request.getParameter("reqQty"));
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+		SimpleDateFormat simpleDateFormatdd = new SimpleDateFormat("dd-MM-yyyy");
 
 		Date creationDateTime = new Date();
-//		Date convertTodateDate = simpleDateFormat.parse(creationDateTime);
-//		requestLetter.setCreationDateTime(creationDateTime);
 
-		String creation_date = simpleDateFormat.format(creationDateTime);
+		reqDate = formateDate(reqDate);
+
+		String creation_date = simpleDateFormatdd.format(creationDateTime);
 		requestLetter.setReference_no(referenceno);
 		requestLetter.setCropYear(crop_year);
 		requestLetter.setSys_avail_qty(system_qty);
@@ -372,7 +420,7 @@ public class Controller_V {
 	public void downloadRequestLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
 		String fullPath = requestLetterpath + File.separator + fileName;
-		System.err.println(fullPath);
+
 		File imageFile = new File(fullPath);
 
 		if (imageFile.exists()) {
@@ -414,12 +462,17 @@ public class Controller_V {
 	@Value("${upload.contractLetterJava}")
 	String contractLetterJava;
 
+
+	@Value("${upload.authorizedContracts}")
+	String authorizedContracts;
+
+
 	// download contract letter
 	@RequestMapping(value = "downloadContractLetter", method = RequestMethod.GET)
 	public void downloadContractLetter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fileName = request.getParameter("imagePath");
-		String fullPath = contractLetterJava + File.separator + fileName;
-		System.err.println(fullPath);
+		String fullPath = authorizedContracts + File.separator + fileName;
+
 		File imageFile = new File(fullPath);
 
 		if (imageFile.exists()) {
@@ -456,6 +509,51 @@ public class Controller_V {
 
 	}
 
+
+	// download Unauthorized contract letter
+	@RequestMapping(value = "downloadUnAuthContractLetter", method = RequestMethod.GET)
+	public void downloadUnAuthContractLetter(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		String fileName = request.getParameter("imagePath");
+		String fullPath = contractLetterPath + File.separator + fileName;
+
+		File imageFile = new File(fullPath);
+
+		if (imageFile.exists()) {
+			try {
+				// Set the content type based on the file type
+				response.setContentType("application/pdf");
+
+				// download
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// fileName);
+
+				// view
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					responseOutputStream.write(buffer, 0, bytesRead);
+				}
+				fileInputStream.close();
+				responseOutputStream.close();
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+
+	}
+
+
 	// delete pcso request
 	@RequestMapping("pcsoRequestDelete")
 	public ModelAndView requestDelete(HttpServletRequest request, RedirectAttributes redirectAttributes)
@@ -483,26 +581,27 @@ public class Controller_V {
 	public ModelAndView EntryofpcsoModel(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("entryofpcso");
-		String referenceno = request.getParameter("referenceno");
-		if (referenceno != null) {
-			String pcsodate = request.getParameter("pcsodate");
-			String pcsoReqdate = request.getParameter("pcsoReqDate");
-			String pcsoQty = request.getParameter("pcsoQty");
-			String pcsoReqQty = request.getParameter("pcsoReqQty");
-			String letterRefNo = request.getParameter("letterRefNo");
-			String juteRatio = request.getParameter("juteRatio");
-			String dispatchPeriod = request.getParameter("dispatchPeriod");
+		//String referenceno = request.getParameter("referenceno");
+//		if (referenceno != null) {
+//			String pcsodate = request.getParameter("pcsoDate");
+//			String pcsoReqdate = request.getParameter("pcsoReqDate");
+//			String pcsoQty = request.getParameter("pcsoQty");
+//			String pcsoReqQty = request.getParameter("pcsoReqQty");
+//			String letterRefNo = request.getParameter("letterRefNo");
+//			String juteRatio = request.getParameter("juteRatio");
+//			String dispatchPeriod = request.getParameter("dispatchPeriod");
+//
+//			mv.addObject("referenceno", referenceno);
+//			mv.addObject("pcsoQty", pcsoQty);
+//			mv.addObject("pcsoReqQty", pcsoReqQty);
+//			mv.addObject("pcsodate", pcsodate);
+//			mv.addObject("pcsoReqdate", pcsoReqdate);
+//			mv.addObject("letterRefNo", letterRefNo);
+//			mv.addObject("dispatchPeriod", dispatchPeriod);
+//			mv.addObject("juteRatio", juteRatio);
+//
+//		}
 
-			mv.addObject("referenceno", referenceno);
-			mv.addObject("pcsoQty", pcsoQty);
-			mv.addObject("pcsoReqQty", pcsoReqQty);
-			mv.addObject("pcsodate", pcsodate);
-			mv.addObject("pcsoReqdate", pcsoReqdate);
-			mv.addObject("letterRefNo", letterRefNo);
-			mv.addObject("dispatchPeriod", dispatchPeriod);
-			mv.addObject("juteRatio", juteRatio);
-
-		}
 		final List<Object[]> allentryofpcsolist = this.pcsoentryservice.getAlldata();
 		List<String> allRequestLetterRefNo = this.pcsoentryservice.getAllRequest();
 		mv.addObject("entryofpcsolist", allentryofpcsolist);
@@ -560,6 +659,7 @@ public class Controller_V {
 					ll.add(entryofpcsoCopy);
 
 				}
+				
 
 			}
 
@@ -591,11 +691,15 @@ public class Controller_V {
 			String referenceno = request.getParameter("referenceno");
 			String pcsDate = request.getParameter("pcsoDate");
 			String pcsoReqdate = request.getParameter("pcsoReqDate");
-			String sumoftotalallocation = request.getParameter("sumoftotalallocation");
+			String dispatchPeriod = request.getParameter("dispatchPeriod");
+
+			pcsDate = formateDate(pcsDate);
+			pcsoReqdate = formateDate(pcsoReqdate);
+			dispatchPeriod = formateDate(dispatchPeriod);
+
 			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
 
-			String dispatchPeriod = request.getParameter("dispatchPeriod");
 			String juteRatio = request.getParameter("juteRatio");
 			String letterRef = request.getParameter("letterRefNo");
 
@@ -641,10 +745,8 @@ public class Controller_V {
 	public ModelAndView pcsolist(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("pcsolist");
-		List<EntryofpcsoModel> pcso = pcsoentryservice.getAllPcso();
 		List<String> refNos = pcsoentryservice.getUniqueRefNos();
 		mv.addObject("refNos", refNos);
-		mv.addObject("pcsolist", pcso);
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
@@ -723,6 +825,24 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsolist.obj"));
 	}
 
+
+	//get mill code for the particular pco date
+	@ResponseBody
+	@RequestMapping(value = { "getMillCodeForPcoDate" }, method = { RequestMethod.GET })
+	public String getMillCodeForPcoDate(final HttpServletRequest request) {
+		String pcoDate = request.getParameter("pcoDate");
+		List<String> allMillCode = this.pcsoentryservice.getMillCodeForPcoDate(pcoDate);
+
+		Gson gson = new Gson();
+		return gson.toJson(allMillCode);
+
+	}
+
+	// ---------------------------------------------------------
+	// Contract generation
+	// ---------------------------------------------------------
+
+
 	// contract generation page
 	@RequestMapping("contractgenerationPCSOWise")
 	public ModelAndView contractgenerationShow(HttpServletRequest req) {
@@ -769,21 +889,41 @@ public class Controller_V {
 		String contractQty = (String) requestBody.get("contractQty");
 		String contractdate = (String) requestBody.get("contractdate");
 
-		String pcsoDate = (String) requestBody.get("pcsoDate");
-		String gradeComp = (String) requestBody.get("gradeComp");
-		// String juteVariety = (String) requestBody.get("juteVariety");
+		ArrayList<String>  pcsoDate = (ArrayList<String> ) requestBody.get("pcsoDate");
+		String commaSeparatedPcsoDates = String.join(",", pcsoDate);
 
-		pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		ArrayList<String> juteVariety = (ArrayList<String>) requestBody.get("juteGradesArray");
+		ArrayList<String> systemComp = (ArrayList<String>) requestBody.get("systemComp");
+		String gradeComp = (String) requestBody.get("gradeComp");
+//		String sysComArray = (String) requestBody.get("systemComp");
+		
+
+//		pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		//sysComArray = sysComArray.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 
 		final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
-		// final List<String> juteArray = Arrays.asList(juteVariety.split(","));
+	//	final List<String> sysCompList = Arrays.asList(sysComArray.split(","));
+		
+//		for (String jutString : juteVariety)
+//			System.err.println(jutString);
+//
+//		for (String date : pcsoDate)
+//			System.err.println(date);
+//
+//		for (String s : systemComp)
+//			System.err.println(s);
 //		
-//		for(String jutString : juteArray)
-//		System.err.println(jutString);
+//		for (String s : gradeArray)
+//			System.err.println(s);
+
+	//	return null;
+		
+
+		
 
 		// entry of grade composition....
-
+//
 		String lableName = (String) requestBody.get("labelName");
 		String remarks = (String) requestBody.get("remarks");
 		Double availableQty = Double.parseDouble((String) requestBody.get("availableQty"));
@@ -798,21 +938,13 @@ public class Controller_V {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
-		List<Object> allJuteCombination = entryofGradeCompositionService.getAllJuteCombination();
-		List<String> varietyArray = new ArrayList<>();
-
-		int idx = 0;
-		for (Object row : allJuteCombination) {
-			Object[] rowData = (Object[]) row; // Cast each row to an Object array
-			// Access individual columns by their index (0-based)
-			Object variety = rowData[1];
-			varietyArray.add((String) variety);
-			Object systemComposition = rowData[2];
+ 
+		//entry in the grade composition table
+		for(int i = 0 ; i < juteVariety.size() ; i++) {
 			EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
-			Double ProposedValue = Double.parseDouble(gradeArray.get(idx));
-			Double systemValue = Double.parseDouble(systemComposition + "");
-			entryofGradeCompositionModel.setJute_combination((String) variety);
+			Double ProposedValue = Double.parseDouble(gradeArray.get(i));
+			Double systemValue = Double.parseDouble(systemComp.get(i));
+			entryofGradeCompositionModel.setJute_combination(juteVariety.get(i));
 			entryofGradeCompositionModel.setSystem_composition(systemValue);
 			entryofGradeCompositionModel.setProposed_composition(ProposedValue);
 			entryofGradeCompositionModel.setRemark(remarks);
@@ -821,29 +953,34 @@ public class Controller_V {
 			entryofGradeCompositionModel.setLabel_name(lableName);
 			entryofGradeCompositionModel.setCreated_by(refId);
 			entryofGradeCompositionModel.setCreated_date(created_Date);
-			entryofGradeCompositionService.create(entryofGradeCompositionModel);
-			idx++;
 		}
-
-		///
+			 
 
 		for (Map<String, String> millDetail : millDetails) {
+ 
 			Contractgeneration contractgeneration = new Contractgeneration();
 
 			Double juteValue = Double.parseDouble(millDetail.get("juteValue"));
 			String millCode = millDetail.get("millCode");
 			String millNameString = millDetail.get("millName");
+			
+			List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
+			
 			Double millQty = Double.parseDouble(millDetail.get("Qty"));
 			String deliveryType = millDetail.get("delivery_type");
 			String finalGeneratedContractNo = "JCI/" + millCode + "/" + cropYear + "/" + contractIdn;
-			contractgeneration.setPcso_date(pcsoDate);
+			contractgeneration.setPcso_date(commaSeparatedPcsoDates);
 			contractgeneration.setContract_identification_no(contractIdn);
 			contractgeneration.setContract_qty(contractQty);
 			contractgeneration.setContract_date(contractdate);
 			contractgeneration.setDelivery_type(deliveryType);
 			contractgeneration.setContract_no(finalGeneratedContractNo);
-			// contract value = 110% of jute value
-			contractgeneration.setContract_value(juteValue * 1.1);
+			
+			// contract value = 105% of jute value or fiberValue
+			contractgeneration.setContract_value(juteValue * 1.05);
+			// contract value LC = 110% of jute value or fiberValue
+			contractgeneration.setContractValueLc(juteValue * 1.1);
+			
 			contractgeneration.setCreated_date(new Date());
 			contractgeneration.setCreated_by(refId);
 			contractgeneration.setGrade_composition(lableName);
@@ -863,13 +1000,10 @@ public class Controller_V {
 
 			PdfGenerator pdfGenerator = new PdfGenerator();
 			List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
-			// List<Object[]> GradeCompList =
-			// contractGenerationService2.getListOfGradeComposition(gradeComp);
+		 
 
 			String filePath = contractLetterPath + File.separator + contractIdn;
-
-			// System.err.println(filePath);
-
+ 
 			File parentDir = new File(filePath);
 			if (!parentDir.exists()) {
 				parentDir.mkdirs();
@@ -877,31 +1011,39 @@ public class Controller_V {
 
 			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
 
-			pdfGenerator.generatePdf(finalGeneratedContractNo, millNameString, millCode, millQty, cropYear,
-					GradePriceList, gradeArray, varietyArray, fileName, deliveryType, contractdate, filePath,
-					letterHeadPath);
+			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty * 10 , cropYear,
+					GradePriceList, gradeArray , juteVariety, fileName, deliveryType, contractdate, filePath, letterHeadPath , fullAddress , commaSeparatedPcsoDates);
 
-			// send email
-			String body = "Please find below attachment to get full details of contract grade wise..";
-			String sub = "Contract Details";
-			final String filePathDir = filePath;
-			SendMail sendMail = new SendMail();
-			InternetAddress[] toAddresses = { new InternetAddress("cyfuturetest@gmail.com"),
-					new InternetAddress("pradeepcyf24@gmail.com") };
-
-			CompletableFuture.runAsync(() -> {
-				try {
-					sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+//			// send email
+//			String body = "Please find below attachment to get full details of contract grade wise..";
+//			String sub = "Contract Details";
+//			final String filePathDir = filePath;
+//			SendMail sendMail = new SendMail();
+//			InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+//					new InternetAddress("pradeepcyf24@gmail.com") };
+//
+//			CompletableFuture.runAsync(() -> {
+//				try {
+//					sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			});
+			
+			// Authorization allotment
+			
+			if(juteValue > 40000000) {
+				contractgeneration.setAuthorizedBy("HO Operation");
+			}else {
+				contractgeneration.setAuthorizedBy("HO Manager");
+			}
 
 			contractGenerationService2.create(contractgeneration);
 		}
 
 		return "Saved";
 	}
+
 
 	// listing of the contract list
 	@RequestMapping("viewcontractgeneration")
@@ -929,15 +1071,6 @@ public class Controller_V {
 		return gson.toJson(allMillUnderContract);
 
 	}
-
-//
-//	@ResponseBody
-//	@RequestMapping(value = "pcsoDates", method = RequestMethod.GET)
-//	public List<String> pcsoDates(final HttpServletRequest request) {
-//		List<String> pcso = pcsoentryservice.getAllDates();
-//		return pcso;
-//	}
-//
 
 	@ResponseBody
 	@RequestMapping(value = "pcso_details", method = RequestMethod.GET)
@@ -967,17 +1100,134 @@ public class Controller_V {
 
 		String deliveryType = request.getParameter("deliveryType");
 		String totalQtyOfMill = request.getParameter("totalQtyOfMill");
+		String grades = request.getParameter("grades");
+		grades = grades.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		final List<String> gradeArray = Arrays.asList(grades.split(","));
 
-		System.err.println(deliveryType + " , " + totalQtyOfMill);
 
-		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill);
+		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill, gradeArray);
 
 		return updatedVal + "";
 	}
 
-	//////////////////////////////////////////////////////////////////
-	// Pradeep code Starts
-	//////////////////////////////////////////////////////////////////
+	// listing of the Contract list for the authorization
+
+	@RequestMapping("authorization")
+	public ModelAndView contractAuthorization(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("ContractAuthorization");
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		List<Contractgeneration> listOfAllUnAuthorizedContract = contractGenerationService2
+				.getAllUnAuthorizedContract();
+		mv.addObject("contracts", listOfAllUnAuthorizedContract);
+		return mv;
+	}
+
+	// function generates JCI/870/2023-2024/BT-03,JCI/870/2023-2024/BT-04 to
+	// 'JCI/870/2023-2024/BT-03','JCI/870/2023-2024/BT-04',
+
+	public String quoteContractNo(String contract) {
+		String[] contractNos = contract.split(",");
+		String qutoedAns = "";
+		for (String no : contractNos)
+			qutoedAns += "'" + no + "',";
+		return qutoedAns;
+	}
+
+	// contract authorization
+	@ResponseBody
+	@RequestMapping(value = "contractAuthorizationByIdnNo", method = RequestMethod.GET)
+	public void Authorize(HttpServletRequest request, RedirectAttributes redirectAttributes)
+			throws AddressException, IOException, com.itextpdf.text.DocumentException {
+
+		String contractNOString = request.getParameter("contractNo");
+		String[] contractNos = contractNOString.split(",");
+
+		try {
+			String quotedContractString = quoteContractNo(contractNOString);
+			quotedContractString = quotedContractString.substring(0, quotedContractString.length() - 1);
+
+			contractGenerationService2.setContractAuthrizeStatus(quotedContractString);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		for (String contract : contractNos) {
+			String[] contractNo = contract.split("/");
+
+			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
+			;
+			String filePath = contractNo[3] + File.separator + fileName;
+
+			String loginName = (String) request.getSession().getAttribute("loginName");
+			String completeFilePathForOutput = authorizedContracts + File.separator + filePath;
+
+			File newOutputFile = new File(completeFilePathForOutput);
+			if (!newOutputFile.getParentFile().exists()) {
+				newOutputFile.getParentFile().mkdirs(); // Create parent directories if they don't exist
+			}
+
+			OutputStream outputStream = new FileOutputStream(completeFilePathForOutput);
+
+			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
+			PdfStamper stamper = new PdfStamper(reader, outputStream);
+
+			// Add your new content
+			PdfContentByte content = stamper.getOverContent(1); // Page number where the new content needs to be added
+			// ColumnText.showTextAligned(content, Element.ALIGN_CENTER, new Phrase("This is
+			// a sample text line for pdf generation."), 300, 400, 0);
+
+			// Add "Authorized By" content at the bottom
+			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase("Authorized By: " + loginName), 545, 50,
+					0);
+
+			// Close the PdfStamper
+			stamper.close();
+
+			try {
+				// send email
+				String body = "Please find below attachment to get full details of contract grade wise..";
+				String sub = "Contract Details";
+				final String filePathDir = contractLetterPath + File.separator + filePath;
+				SendMail sendMail = new SendMail();
+				InternetAddress[] toAddresses = { new InternetAddress("cyfuturetest@gmail.com"),
+						new InternetAddress("pradeepcyf24@gmail.com") };
+
+				CompletableFuture.runAsync(() -> {
+					try {
+						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+//			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
+//			String deString = "C:/Users/pradeep.rathor/Desktop/NewVisitor";
+//			PdfWriter writer = new PdfWriter(contractLetterPath + File.separator + filePath);
+//			PdfDocument pdfDoc = new PdfDocument(reader, writer);
+//			
+//			  PdfPTable table = new PdfPTable(2);
+//			    table.getDefaultCell().setPadding(5f); // Code 1
+//			    table.setHorizontalAlignment(Element.ALIGN_LEFT);
+//			    PdfPCell cell; 
+//			   table.addCell("Age");
+//			
+//			pdfDoc.close();
+
+		}
+
+//		return new ResponseEntity<>("{\"redirect\": \"pcsoRequestLetterList.obj\"}", HttpStatus.OK);
+		// return new ModelAndView("pcsoRequestLetterList.obj");
+
+	}
 
 	// ---------------------------------------------------------
 	// Entry Of Derivative Price
@@ -1435,6 +1685,8 @@ public class Controller_V {
 
 	// ro dispatch view page
 
+
+
 	// ---------------------------------------------------------
 	// Generation Of Credit Notes
 	// ---------------------------------------------------------
@@ -1835,6 +2087,8 @@ public class Controller_V {
 	}
 
 	// kailash
+
+	// Entry controller of payment details page
 	@RequestMapping("EntryofPaymentDetails")
 	public ModelAndView EntryofpiModelDetails(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -1842,103 +2096,195 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
+
+		// List<Object> getsumofInstrumentValue =
+		// this.paymentDetailService.getsumofInstrumentValue();
 		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
+		List<Object> getcontractList2 = this.paymentDetailService.Millname();
 
 		mv.addObject("getcontractList1", getcontractList1);
+		mv.addObject("getcontractList2", getcontractList2);
 		return mv;
 
 	}
 
+	// Initiate payment document path
+	@Value("${upload.PaymentDocument}")
+	String PaymentDocument;
+
+	// save the data of payment detail data
 	@RequestMapping("saveentryofpaymentinstrumentDetails")
 	public ModelAndView saveentryofPID(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("upload.Imagedownload");
+
+		final File theDir = new File(PaymentDocument);
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
+
+		String originalFilename = SupportingDocument.getOriginalFilename();
+		String uniqueFilename = generateUniqueFilename(originalFilename);
+		File serverFile = new File(theDir, uniqueFilename);
+
+		// Check if the file has already been uploaded
+		if (!serverFile.exists()) {
+			try {
+				SupportingDocument.transferTo(serverFile);
+			} catch (IllegalStateException e) {
+
+				e.printStackTrace();
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+		}
 		final ModelAndView mv = new ModelAndView();
+
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
+			String[] selectedContracts = request.getParameterValues("contract");
+			String[] contractValue2 = request.getParameterValues("contractValue[]");
+			String[] paymentDueDate2 = request.getParameterValues("paymentDueDate[]");
 
-			String contractno = request.getParameter("fullcontractno");
-			String Instrument = request.getParameter("Instrument");
-			String instdate = request.getParameter("instdate");
-			String IFSC = request.getParameter("IFSC");
-			String Branch = request.getParameter("Branch");
-			String BankName = request.getParameter("BankName");
-			String payment = request.getParameter("paymenttype");
-			String InstrumentValue = request.getParameter("InstrumentValue");
-			String dateofexpiry = request.getParameter("dateofexpiry");
-			String dateofship = request.getParameter("dateofship");
-			String autorevolvingamount = request.getParameter("autorevolvingamount");
-			// String QtyAllowed = request.getParameter("QtyAllowed");
-			final String filename = SupportingDocument.getOriginalFilename();
-			File serverFile = new File(theDir, filename);
-			SupportingDocument.transferTo(serverFile);
+			String ratiosJson = request.getParameter("ratios");
+			double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
+			for (int i = 0; i < selectedContracts.length; i++) {
+				String st = selectedContracts[i];
+				double ratio = ratios[i];
+				String contractvalueajax = contractValue2[i];
+				String paymentDueDateajax = paymentDueDate2[i];
+				System.out.println(ratio);
 
-			// Conditionally set autorevolvingamount based on payment type
+				String InstrumentValue = request.getParameter("InstrumentValue");
+				double InstrumentValue1 = Double.parseDouble(InstrumentValue);
+				double instvalue = ratio * InstrumentValue1;
+				String instvalue1 = String.valueOf(instvalue);
 
-			EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
-			entryPaymentDetailsModel.setContractno(contractno);
-			entryPaymentDetailsModel.setInstrumentno(Instrument);
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date instdate1 = formatter1.parse(instdate);
-			entryPaymentDetailsModel.setInstdate(instdate1);
+				String millname65 = request.getParameter("millname65");
+				String Instrument = request.getParameter("Instrument");
+				String instdate = request.getParameter("instdate");
+				String IFSC = request.getParameter("IFSC");
+				String Branch = request.getParameter("Branch");
+				String BankName = request.getParameter("BankName");
+				String payment = request.getParameter("paymenttype");
 
-			entryPaymentDetailsModel.setPayment(payment);
-			entryPaymentDetailsModel.setInstrumentValue(InstrumentValue);
-			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
-			entryPaymentDetailsModel.setSupportingDocument(filename);
-			entryPaymentDetailsModel.setFc_status(0);
+				String dateofexpiry = request.getParameter("dateofexpiry");
+				String dateofship = request.getParameter("dateofship");
+				String Pyamentduedate = request.getParameter("payment_dueDate12");
+				String contrcat_value23 = request.getParameter("contrcat_value23");
+				String autorevolvingamount = request.getParameter("autorevolvingamount");
+				// String QtyAllowed = request.getParameter("QtyAllowed");
+				// String originalFilename = SupportingDocument.getOriginalFilename();
 
-			Date date3 = new Date();
-			Double flag = 0.0;
+//		 	 String uniqueFilename = generateUniqueFilename(originalFilename);
+////            File serverFile = new File(theDir, uniqueFilename);
+////			SupportingDocument.transferTo(serverFile);
+//			
 
-			if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
-				autorevolvingamount = "0";
-				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				entryPaymentDetailsModel.setDateofship(date3);
-				entryPaymentDetailsModel.setDateofexpiry(date3);
+//			 // Create unique identifier based on contract details
+//		 	 String uniqueFilename = generateUniqueFilename(originalFilename); 
+//			 File serverFile = new File(theDir,uniqueFilename);
+//			 SupportingDocument.transferTo(serverFile);
+//			 
 
-				entryPaymentDetailsModel.setIFSC(IFSC);
-				entryPaymentDetailsModel.setBranch(Branch);
-				entryPaymentDetailsModel.setBankName(BankName);
+				// Conditionally set autorevolvingamount based on payment type
 
-			} else if ("Cheque/DD".equalsIgnoreCase(payment)) {
+				EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 
-				autorevolvingamount = "0";
-				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				entryPaymentDetailsModel.setDateofship(date3);
-				entryPaymentDetailsModel.setDateofexpiry(date3);
+				entryPaymentDetailsModel.setInstrumentno(Instrument);
+				entryPaymentDetailsModel.setMillname(millname65);
+				entryPaymentDetailsModel.setContractno(st);
 
-				entryPaymentDetailsModel.setIFSC(IFSC);
-				entryPaymentDetailsModel.setBranch(Branch);
-				entryPaymentDetailsModel.setBankName(BankName);
-			} else if ("Letter_of_Credit".equalsIgnoreCase(payment)) {
+				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
+				entryPaymentDetailsModel.setContract_value(contractvalueajax);
+//			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//			Date instdate1 = formatter1.parse(instdate);
+//			entryPaymentDetailsModel.setInstdate(instdate1);
 
-				entryPaymentDetailsModel.setIFSC(IFSC);
-				entryPaymentDetailsModel.setBranch(Branch);
-				entryPaymentDetailsModel.setBankName(BankName);
+//			
+				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date instdate1 = formatter1.parse(instdate);
+//			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//			String instdate3 = formatter2.format(instdate2);
+//			Date instdate1 = formatter2.parse(instdate3);
 
-				Date dateofship1 = formatter1.parse(dateofship);
-				entryPaymentDetailsModel.setDateofship(dateofship1);
-				System.err.println(dateofship1);
+				// Set the time portion to midnight
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(instdate1);
+				calendar.set(Calendar.HOUR_OF_DAY, 0);
+				calendar.set(Calendar.MINUTE, 0);
+				calendar.set(Calendar.SECOND, 0);
+				calendar.set(Calendar.MILLISECOND, 0);
 
-				Date dateofexpiry1 = formatter1.parse(dateofexpiry);
-				entryPaymentDetailsModel.setDateofexpiry(dateofexpiry1);
-				System.err.println(dateofship1);
+				// Date instdateWithoutTime = calendar.getTime();
+				Date instdateWithoutTime = calendar.getTime();
 
-				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+				// entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
+				entryPaymentDetailsModel.setInstdate(instdate1);
+				entryPaymentDetailsModel.setPayment(payment);
+				// int instruValue= Integer.parseInt(InstrumentValue);
+				entryPaymentDetailsModel.setInstrumentValue(instvalue1);
+				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
+				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
+				entryPaymentDetailsModel.setFc_status(0);
+
+				Date date3 = new Date();
+				Double flag = 0.0;
+
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(instdate1);
+				cal.add(Calendar.DAY_OF_MONTH, 30);
+				Date newDate = cal.getTime();
+
+				if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
+					autorevolvingamount = "0";
+					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+					entryPaymentDetailsModel.setDateofship(newDate);
+
+					entryPaymentDetailsModel.setDateofexpiry(date3);
+
+					entryPaymentDetailsModel.setIFSC(IFSC);
+					entryPaymentDetailsModel.setBranch(Branch);
+					entryPaymentDetailsModel.setBankName(BankName);
+
+				} else if ("Cheque/DD".equalsIgnoreCase(payment)) {
+
+					autorevolvingamount = "0";
+					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+					entryPaymentDetailsModel.setDateofship(newDate);
+					entryPaymentDetailsModel.setDateofexpiry(date3);
+
+					entryPaymentDetailsModel.setIFSC(IFSC);
+					entryPaymentDetailsModel.setBranch(Branch);
+					entryPaymentDetailsModel.setBankName(BankName);
+				} else if ("Letter_of_Credit".equalsIgnoreCase(payment)) {
+
+					entryPaymentDetailsModel.setIFSC(IFSC);
+					entryPaymentDetailsModel.setBranch(Branch);
+					entryPaymentDetailsModel.setBankName(BankName);
+
+					Date dateofship1 = formatter1.parse(dateofship);
+					entryPaymentDetailsModel.setDateofship(dateofship1);
+					System.err.println(dateofship1);
+
+					Date dateofexpiry1 = formatter1.parse(dateofexpiry);
+					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry1);
+					System.err.println(dateofship1);
+
+					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+				}
+
+				Date date = new Date();
+				entryPaymentDetailsModel.setCreated_date(date);
+
+				this.paymentDetailService.create(entryPaymentDetailsModel);
+
+				this.paymentDetailService.contratTable(st);
+				redirectAttributes.addFlashAttribute("msg",
+						"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n"
+								+ "");
+
 			}
-
-			Date date = new Date();
-			entryPaymentDetailsModel.setCreated_date(date);
-
-			this.paymentDetailService.create(entryPaymentDetailsModel);
-
-			this.paymentDetailService.contratTable(contractno);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
 		} catch (Exception e) {
 
@@ -1951,15 +2297,21 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofPaymentDetails.obj"));
 	}
 
+	String generateUniqueFilename(String originalFilename) {
+		String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		return timestamp + "_" + originalFilename;
+	}
+
+	// download the support document which upload
+
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imageDirectory = "upload.Imagedownload"; // Replace with your image directory path
-		String imagePath = imageDirectory + File.separator + filename;
-
+		String imagePath = PaymentDocument + File.separator + filename;
 		File imageFile = new File(imagePath);
 
 		// Check if the file exists
 		if (imageFile.exists()) {
+
 			try {
 				// Set the content type based on the file type
 				String contentType = determineContentType(filename);
@@ -1971,17 +2323,14 @@ public class Controller_V {
 				// filename);
 				response.setHeader("Content-Disposition", "");
 				// Stream the file content to the response
-				FileInputStream fileInputStream = new FileInputStream(imageFile);
-				OutputStream responseOutputStream = response.getOutputStream();
-
-				byte[] buffer = new byte[1024];
-				int bytesRead;
-				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-					responseOutputStream.write(buffer, 0, bytesRead);
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
 				}
-
-				fileInputStream.close();
-				responseOutputStream.close();
 			} catch (IOException e) {
 				// Handle IO exception
 				e.printStackTrace();
@@ -2005,6 +2354,7 @@ public class Controller_V {
 		}
 	}
 
+	// entry Controller of the financial concurence page
 	@RequestMapping("EntryofFinancialConcurence")
 	public ModelAndView EntryofFinancialConcurence(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2017,6 +2367,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	// ajax remark for approval and selection after fc rejection
 	@ResponseBody
 	@RequestMapping("saveRemarks")
 	public ResponseEntity<String> saveRemarks(@RequestParam("remarks") String remarks,
@@ -2029,19 +2380,11 @@ public class Controller_V {
 			return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 		}
 		try {
-			this.financialConcurenceservice.remark(remarks, contractNo);
-			this.paymentDetailService.update1(contractNo);
+			this.financialConcurenceservice.remark(remarks, contractNo, paymentId);
+			this.paymentDetailService.update1(contractNo, paymentId, remarks);
 
 			EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(paymentId);
 			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
-
-////				request.getSession().setAttribute("myModel", entryPaymentDetailsModel);
-//////
-////				redirectAttributes.addFlashAttribute("contractNo", entryPaymentDetailsModel.getContractno());
-////				redirectAttributes.addFlashAttribute("paymentId", entryPaymentDetailsModel.getPayment_id());
-//
-//				//String modelQueryString = "contractNo=" + entryPaymentDetailsModel.getContractno() + "&paymentType="
-////						+ entryPaymentDetailsModel.getPayment_id();
 
 			redirectAttributes.addFlashAttribute("entryPaymentDetailsModel", entryPaymentDetailsModel);
 
@@ -2054,6 +2397,8 @@ public class Controller_V {
 			return new ResponseEntity<>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	// ajax remarks for bill of supply form
 
 	@ResponseBody
 	@RequestMapping("saveRemarksofbill")
@@ -2083,6 +2428,8 @@ public class Controller_V {
 		}
 	}
 
+	// save the data of FC after issuing the fc and modfied data.
+
 	@RequestMapping("saveFinancialConcurence")
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2092,21 +2439,30 @@ public class Controller_V {
 			String FC_Issue_Date = request.getParameter("FC_Issue_Date");
 			String FC_Ref_No = request.getParameter("FC_Ref_No.");
 			String Contracted_Qty = request.getParameter("Contracted_Qty.");
-			String QtyAllowed = request.getParameter("QtyAllowed");
-			String carryingCostParam = request.getParameter("Carrying_cost");
-			double Carrying_Cost_Charged = 0.0; // Default value if the parameter is not present or cannot be parsed
+			String QtyAllowed = request.getParameter("Shipment_Value1");
+			String carryingCostParam = request.getParameter("SGST_Amt1");
+			String Payment_id = request.getParameter("Payment_id");
+			int id = Integer.parseInt(Payment_id);
+			String remarks = request.getParameter("Remarks1");
+			this.paymentDetailService.remark(remarks, fullcontractno, id);
+			BigInteger Carrying_Cost_Charged = BigInteger.ZERO; // Default value if the parameter is not present or
+																// cannot be parsed
 
 			if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
 				try {
-					Carrying_Cost_Charged = Double.parseDouble(carryingCostParam);
+					double carryingCostDouble = Double.parseDouble(carryingCostParam);
+
+					Carrying_Cost_Charged = BigInteger.valueOf((long) carryingCostDouble);
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
+
 				}
 			}
 
 			// double Carrying_Cost_Charged = request.getParameter("Carrying_cost");
 
 			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
-			System.out.print(financialConcurenceModel);
+
 			financialConcurenceModel.setFullcontractno(fullcontractno);
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date contdate = formatter1.parse(FC_Issue_Date);
@@ -2116,11 +2472,13 @@ public class Controller_V {
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
+			System.err.println("++++++++++++++" + Carrying_Cost_Charged);
 
 			Date date = new Date();
 			// Date currdate = date.toString();
 			financialConcurenceModel.setCreated_date(date);
-			financialConcurenceModel.setRemarks("Not any");
+			financialConcurenceModel.setRemarks(remarks);
+			System.out.print(financialConcurenceModel);
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -2135,6 +2493,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
 	}
 
+	// entry controller of mill receipt
 	@RequestMapping("EntryofMillreceipt")
 	public ModelAndView EntryofMillreceipt(HttpServletRequest request)
 
@@ -2153,6 +2512,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	// ajax controller for mill reciept service
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
 	public String hodinofetch(@RequestParam("contractno") String contractno) {
@@ -2164,6 +2524,41 @@ public class Controller_V {
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
+	public String contractlistfetch1(@RequestParam("contractno") String contractno) {
+		System.err.println("contractlistfetch");
+		List<Object[]> contractRecieptModelt1 = paymentDetailService.contractlistfetchdata(contractno);
+		System.err.println("resultList++++++++++" + contractRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractRecieptModelt1);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "millnamebasedcontract", method = RequestMethod.GET)
+	public String millnamebasedcontract(@RequestParam("contractno") String millname) {
+
+		List<Object[]> millnamecontract = (List<Object[]>) paymentDetailService.millnamecontractvise(millname);
+		System.err.println("resultList++++++++++" + millnamecontract);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millnamecontract);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	// ajax call for previos data of instvalue
+	@ResponseBody
+	@RequestMapping(value = "PreviousEntry", method = RequestMethod.GET)
+	public String PreviousEntry(@RequestParam("contractno") String contractno) {
+		System.err.println("resultList++++++++++");
+		List<Object[]> paymentDetailsdto = (List<Object[]>) paymentDetailService.PreviousNo(contractno);
+		System.err.println("resultList++++++++++" + paymentDetailsdto);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(paymentDetailsdto);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	// save controller for mill reciept form
 	@RequestMapping("saveentryofMillreciept")
 	public ModelAndView saveentryofMR(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -2307,6 +2702,7 @@ public class Controller_V {
 		return mv;
 	}
 
+	// ajax url for genrated demand note service to fetch data
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatatocontractno", method = RequestMethod.GET)
 	public String fetchingdatatocontractnoq(@RequestParam("contractno") String contractno) {
@@ -2317,6 +2713,7 @@ public class Controller_V {
 		return resultString;
 	}
 
+	// entry controller of generation demand note
 	@RequestMapping("EntryofGenrationDeamandNote")
 	public ModelAndView EntryofGenrationDemand(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2336,7 +2733,7 @@ public class Controller_V {
 		// GenrationDEmandDto cotract_No =
 		// this.genratedDemandNoteService.fetchContract_no();
 
-//			System.out.println("cotract_No>>>>>>>>>>>>>"+cotract_No);
+//			
 //			Date date =cotract_No.getContract_date();
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 //			String formattedDate = dateFormat.format(date);
@@ -2347,7 +2744,6 @@ public class Controller_V {
 		return mv;
 	}
 
-//		
 	// private String generateDemandNoteNumber()
 	private String generateDemandNoteNumber(HttpSession session, int lastSerialNumber) {
 		Date currentDate = new Date();
@@ -2369,6 +2765,7 @@ public class Controller_V {
 
 	}
 
+	// save entry of geration demand note form field
 	@RequestMapping("saveentryofGenrationDeamandNote")
 	public ModelAndView saveentryofGDN(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -2439,6 +2836,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofGenrationDeamandNote.obj"));
 	}
 
+	// entry page confirmation form
 	@RequestMapping("entryofConfirationSettelment")
 	public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2462,16 +2860,16 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getcontractddownlist);
 		return resultString;
 	}
-
-	@ResponseBody
-	@RequestMapping(value = "gradecomposition", method = RequestMethod.GET)
-	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
-		List<Object> gradecmposition = confirmationofClaimSettlementService.gradecomposition(ContractNo);
-		Gson gson = new Gson();
-		String jsonResponse = gson.toJson(gradecmposition);
-		return jsonResponse;
-
-	}
+//
+//	@ResponseBody
+//	@RequestMapping(value = "gradefetchingdata", method = RequestMethod.GET)
+//	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
+//		List<Object[]> gradecmposition = confirmationofClaimSettlementService.gradecfetchingdata1omposition(ContractNo);
+//		Gson gson = new Gson();
+//		String jsonResponse = gson.toJson(gradecmposition);
+//		return jsonResponse;
+//
+//	}
 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
@@ -2482,6 +2880,8 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getsettlementlist);
 		return resultString;
 	}
+
+	// entrt page of genration bill
 
 	@RequestMapping("EntryofGenerationBillsupply")
 	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request) {
@@ -2538,14 +2938,18 @@ public class Controller_V {
 		}
 	}
 
+	@Value("${upload.Confirmationsettlement}")
+	String Confirmationsettlement;
+
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
 	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
 			RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("upload.Imagedownload");
+		final File theDir = new File("Confirmationsettlement");
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
+
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
@@ -2665,9 +3069,31 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("entryofConfirationSettelment.obj"));
 	}
 
+	// view page of confirmation settelment form
+
+	@RequestMapping({ "ViewConfirmationsettelment" })
+	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
+				.getAll();
+		mv.addObject("confirmationClaim", confirmationClaim);
+
+		return mv;
+	}
+
+	// save page of generation bill of supply
+
+	@Value("${upload.Genrationofbill}")
+	String Genrationofbill;
+
 	@RequestMapping("saveentryofGenrationbill")
 	public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		final File theDir = new File("C:\\Users\\kailash.shah\\documentimage");
+		final File theDir = new File("Genrationofbill");
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
@@ -2780,33 +3206,66 @@ public class Controller_V {
 
 		EmailSender email = new EmailSender();
 		InternetAddress[] toAddresses = null;
-
 		String subject = "Bill of Supply attachement";
-
 		String body = "In this All information regarding Bill of supply . ";
+		String filename = "Genrationofbill";
 
-		String filename = "C:\\Users\\kailash.shah\\Downloads\\website.jpg";
 		// String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
 		String username1 = "";
 		try {
 			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
 			// InternetAddress("animesh.anand@cyfuture.com")};
-
 			toAddresses = new InternetAddress[] { new InternetAddress("shahkailash2000@gmail.com"),
 					new InternetAddress("kailashshahsha81@gmail.com") };
-
 		} catch (AddressException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		email.sendEmail(toAddresses, body, subject, filename, username1);
+////           
+//          
 
 		// End Email
 
 //
 		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
+
 	}
+
+//	 //download document of BOS
+//    @RequestMapping("downloadPDF")
+//		 public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
+//  	 // String imageDirectory = "C:\\Users\\kailash.shah\\documentimage";
+//  	 
+//		    String imagePath = Genrationofbill + File.separator + filename;
+//
+//
+//		String subject = "Bill of Supply attachement";
+//
+//		String body = "In this All information regarding Bill of supply . ";
+//
+//		String filename = "C:\\Users\\kailash.shah\\Downloads\\website.jpg";
+//		// String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
+//		String username1 = "";
+//		try {
+//			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
+//			// InternetAddress("animesh.anand@cyfuture.com")};
+//
+//			toAddresses = new InternetAddress[] { new InternetAddress("shahkailash2000@gmail.com"),
+//					new InternetAddress("kailashshahsha81@gmail.com") };
+//
+//		} catch (AddressException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		email.sendEmail(toAddresses, body, subject, filename, username1);
+//
+//		// End Email
+//
+////
+//		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
+//	}
 
 	@RequestMapping("downloadPDF")
 	public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
@@ -2859,7 +3318,6 @@ public class Controller_V {
 			return "application/octet-stream";
 		}
 	}
-//			 
 
 	@RequestMapping({ "ViewofGenerationBillsupply" })
 	public ModelAndView viewBillofSupplyReciept(final HttpServletRequest request) {
@@ -2888,12 +3346,34 @@ public class Controller_V {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "paymentdetailsforshow", method = RequestMethod.GET)
+	public String paymentdetails(@RequestParam("contractno") String contractno1) {
+
+		List<Object[]> paymentdetails = paymentDetailService.paymentdetails(contractno1);
+		System.err.println("resultList++++++++++" + paymentdetails);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(paymentdetails);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "fetchingdataforbill", method = RequestMethod.GET)
 	public String fetchingdatanominactionclaimforbill(@RequestParam("contractno") String contractno) {
 		List<Object[]> millRecieptModelt1 = generationofBillService.contarctnoformaster(contractno);
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(millRecieptModelt1);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "greadewiseqty", method = RequestMethod.GET)
+	public String greadewiseqtypayment(@RequestParam("contractno") String contractno,
+			@RequestParam("contractqty") String contractqty) {
+		List<Object[]> Graedewiseqty = paymentDetailService.gradewiseqty(contractno, contractqty);
+		System.err.println("resultList++++++++++" + Graedewiseqty);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(Graedewiseqty);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 
@@ -3060,9 +3540,13 @@ public class Controller_V {
 		return mv;
 	}
 
-	//To laod HO
+
+	//To load HO
 	@RequestMapping("HOdispatchInst")
 	public ModelAndView HODispatchInstructionModel(HttpServletRequest request, HttpSession session) {
+
+	
+
 		String username = (String) request.getSession().getAttribute("usrname");
 		List<String> contractList = (List<String>) hoInstService.getContract();
 
@@ -3072,6 +3556,7 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
+
 		String regionIdString = (String) session.getAttribute("region");
 		List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
 		List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
@@ -3187,6 +3672,9 @@ public class Controller_V {
 				}
 				Double g2 = Double.parseDouble(gprice2);
 
+
+
+	
 				String gprice3 = request.getParameter(st + "-grade" + "4");
 				if (gprice3 == null) {
 					gprice3 = "0";
@@ -3218,7 +3706,7 @@ public class Controller_V {
 				Double g7 = Double.parseDouble(gprice7);
 
 				String remString = request.getParameter("remarks");
-				
+
 				Date date = new Date(); // your Date object
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				String formattedDate = formatter.format(date);
@@ -3279,7 +3767,9 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("HOdispatchInst.obj"));
 	}
 
+
 	//View JCI
+
 	@RequestMapping("jcilist")
 	public String jciHoList(Model model) {
 
@@ -3289,7 +3779,10 @@ public class Controller_V {
 		return "ViewJCIHO";
 	}
 
+
 	//Delete DI for particular DI no.
+
+
 	@RequestMapping({ "deleteHO" })
 	public ModelAndView deleteHO(final HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 		ModelAndView mv = new ModelAndView("ViewJCIHO");
@@ -3321,8 +3814,11 @@ public class Controller_V {
 	}
 
 // Vishwdeep RO
+
 	
 	//To get Cooperatives list for particular RO
+
+
 	@ResponseBody
 	@RequestMapping(value = "getCooperative", method = RequestMethod.GET)
 	public List<String> getList(HttpSession session) {
@@ -3331,8 +3827,11 @@ public class Controller_V {
 		return roDispatchService.getCooperative(regionIdString);
 
 	}
+
 	
 	//To get Ro Form
+
+
 	@RequestMapping("roDispatchInstruction")
 	public ModelAndView viewRoDispatcher(HttpServletRequest request, HttpSession session) throws FileNotFoundException {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -3356,6 +3855,7 @@ public class Controller_V {
 
 		return mv;
 	}
+
 
 	// Save RO Multiple
 	@ResponseBody
@@ -3486,6 +3986,666 @@ public class Controller_V {
 		return jsonResponse;
 	}
 
+
+	@RequestMapping("viewmillAcc")
+	public String ViewMillAcceptance1(Model model, HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("listMillAcceptence");
+		if (username == null) {
+			return "index";
+		}
+		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
+
+		// System.out.println(AllList + "allistttttttttttttt")
+		model.addAttribute("AllList", AllList);
+		return "listMillAcceptence";
+	}
+
+	@RequestMapping("saveMillAcceptenceFile")
+	public ModelAndView millaccept(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession s)
+			throws IllegalStateException, IOException {
+
+		String contractId = request.getParameter("contract_id");
+
+		millacct.updatemillacceptflag(contractId);
+		redirectAttributes.addFlashAttribute("msg",
+				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Contract Accepted.</div>\r\n");
+
+		return new ModelAndView(new RedirectView("viewmillAcc.obj"));
+
+	}
+
+	@Value("${upload.millAcceptDownolad}")
+	String millAcceptDownolad;
+
+	@RequestMapping("downloadSupportingDocumententMillAccept")
+	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+		String imageDirectory = millAcceptDownolad; // directory path
+		String idn = filename.split("C")[0];
+		String imagePath = imageDirectory + File.separator + idn + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+
+		if (imageFile.exists()) {
+
+			try {
+
+				// Set the content type based on the file type
+
+				String contentType = determineContentType(filename);
+
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+
+				response.setContentLength((int) imageFile.length());
+
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+
+				int bytesRead;
+
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+					responseOutputStream.write(buffer, 0, bytesRead);
+
+				}
+
+				fileInputStream.close();
+
+				responseOutputStream.close();
+
+			} catch (IOException e) {
+
+				// Handle IO exception
+
+				e.printStackTrace();
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
+
+		} else {
+
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		}
+
+	}
+
+	// Utility method to determine content type based on filename
+
+	private String determineContentType2(String filename) {
+
+		if (filename.endsWith(".pdf")) {
+
+			return "application/pdf";
+
+		} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+
+			return "image/jpeg";
+
+		} else if (filename.endsWith(".png")) {
+
+			return "image/png";
+
+		} else {
+
+			return "application/octet-stream"; // Default to binary data if content type is unknown
+
+		}
+
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------
+//Nomination of official for claim settlement
+//---------------------------------------------------------
+
+	// Showing the Form of Nominal form for fILLING
+	@RequestMapping("viewmnominalform")
+	public ModelAndView ViewNominalform(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("Nominationofofficial");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+		List<String> millid = nominalOfficialService.millid_MillReceipt();
+
+		// fetching the Contract No From JciContract Table
+		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
+		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
+		System.err.println("omname and fa name" + OM_official + FA_official);
+
+		List<String> contractno = nominalOfficialService.contractno_ContractTable();
+
+		// for counting the total Number of row.
+
+		int total = nominalOfficialService.CountRecord();
+		mv.addObject("total", total);
+
+		mv.addObject("OM_official", OM_official);
+		mv.addObject("FA_official", FA_official);
+		mv.addObject("contractno", contractno);
+		mv.addObject("millid", millid);
+		return mv;
+	}
+
+	// For Handling AJAX Url for Fetching the Mill Receipt Table Data.
+
+	@ResponseBody
+	@RequestMapping(value = "fetchmillreceiptdata", method = RequestMethod.GET)
+	public String FetchDataMillReciept(@RequestParam("millid") String millid) {
+
+		System.out.println("Hello ---------------- ");
+		System.out.println("Hello--------------- ");
+		System.out.println("Hello ---------------- ");
+		System.out.println("Hello ---------------- ");
+
+		System.out.println("Hello---------------- ");
+
+		List<Object> millReceiptData = nominalOfficialService.FetchMillReceiptData(millid);
+
+		// Convert the a JSON in string
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(millReceiptData);
+
+		return jsonResponse;
+
+	}
+
+	// AJAX fetching data from grade_composition.
+
+	@ResponseBody
+	@RequestMapping(value = "gradecomposition1", method = RequestMethod.GET)
+	public String GradeComposition1(@RequestParam("ContractNo") String ContractNo) {
+
+		List<Object> gradecmposition = nominalOfficialService.gradecomposition(ContractNo);
+
+		System.out.println(gradecmposition);
+		System.out.println("Printing Grade Compostion");
+
+		// Convert the a JSON in string
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(gradecmposition);
+
+		return jsonResponse;
+
+	}
+
+	@Value("${upload.OMOofficialDocumentDownload}")
+	String OmoOfficialDocumentDownload;
+
+//	@Value("${upload.FAofficialDocumentDownload}")
+//	String FAofficialDocumentDownload;
+//	@Value("${upload.MillDocumentDownload}")
+//	String MillDocumentDownload;
+	@RequestMapping("savenominal")
+	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		String Mill = request.getParameter("Mill");
+
+		String ContractNo = request.getParameter("ContractNo");
+		String ChallanNo = request.getParameter("ChallanNo");
+		String MRNo = request.getParameter("MRNo");
+		String BaleMark = request.getParameter("BaleMark");
+		String jutegrade = request.getParameter("jutegrade");
+		String CropYear = request.getParameter("CropYear");
+		String millname = request.getParameter("client_name");
+
+		// gettting data for grade wise Allocation
+
+		String g1 = request.getParameter("g1");
+		String g2 = request.getParameter("g2");
+		String g3 = request.getParameter("g3");
+		String g4 = request.getParameter("g4");
+		String g5 = request.getParameter("g5");
+		String g6 = request.getParameter("g6");
+
+		String q1 = request.getParameter("q1");
+		String q2 = request.getParameter("q2");
+		String q3 = request.getParameter("q3");
+		String q4 = request.getParameter("q4");
+		String q5 = request.getParameter("q5");
+		String q6 = request.getParameter("q6");
+
+		// end here
+
+		// double QualityClaim = (Double)
+		// Double.parseDouble(request.getParameter("QualityClaim"));
+
+		String QualityClaim = request.getParameter("QualityClaim");
+
+		double MoistureContent = (Double) Double.parseDouble(request.getParameter("MoistureContent"));
+		double NCVPercentage = (Double) Double.parseDouble(request.getParameter("NCVPercentage"));
+		double ClaimAmount = (Double) Double.parseDouble(request.getParameter("ClaimAmount"));
+		String omofficial = request.getParameter("omofficial");
+
+		System.err.println(omofficial + "omofficial");
+
+		String FAofficial = request.getParameter("FAomofficial");
+
+		System.err.println(FAofficial + "FAomofficial");
+
+		String DateofInpection1 = request.getParameter("DateofInpection");
+
+		SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat outDataFormat = new SimpleDateFormat("dd-MM-yyyy");
+		String DateofInpection2 = null;
+
+		try {
+			Date date = inputDateFormat.parse(DateofInpection1);
+			// Convert the Date to a formatted string
+			DateofInpection2 = outDataFormat.format(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long SettlementId = (Long) Long.parseLong(request.getParameter("SettlementId"));
+
+		// Creating object of
+		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+		jciclaim_NominationModel.setMill(Mill);
+		jciclaim_NominationModel.setContractNo(ContractNo);
+		jciclaim_NominationModel.setChallanNo(ChallanNo);
+		// Just Modify FOr Dummy Data
+		jciclaim_NominationModel.setInspection_by(QualityClaim);
+
+		jciclaim_NominationModel.setMoisture_settlement(MoistureContent);
+		jciclaim_NominationModel.setNcv_settlement(NCVPercentage);
+		jciclaim_NominationModel.setClaimAmount(ClaimAmount);
+		jciclaim_NominationModel.setOMOfficial(omofficial);
+		jciclaim_NominationModel.setFAOfficial(FAofficial);
+		jciclaim_NominationModel.setDateofInspection(DateofInpection2);
+		System.out.println(DateofInpection2 + "DateofInpection2");
+		jciclaim_NominationModel.setSettlement_id(SettlementId);
+
+		// date- created on
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		Date currentDate = new Date();
+		String formattedDate = sdf.format(currentDate);
+		System.err.println("dateeeeeeeeee" + formattedDate);
+		System.out.println(formattedDate);
+		// Inspection date
+
+		SimpleDateFormat idf = new SimpleDateFormat("dd-MM-yyyy");
+		Date create_date = new Date();
+		String Inspection_date = idf.format(create_date);
+
+		System.out.println(Inspection_date);
+		jciclaim_NominationModel.setInspection_date(Inspection_date);
+		jciclaim_NominationModel.setCreated_on(formattedDate);
+
+		// setting Static Value for Remaining
+
+		jciclaim_NominationModel.setSettlement_amt(12.5);
+		jciclaim_NominationModel.setQuality_settlement(0);
+		jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
+		jciclaim_NominationModel.setDispute_flag(0);
+		jciclaim_NominationModel.setCreated_by("myself");
+
+		// Setting the data in model
+
+		jciclaim_NominationModel.setGrade1(g1);
+		jciclaim_NominationModel.setGrade2(g2);
+		jciclaim_NominationModel.setGrade3(g3);
+		jciclaim_NominationModel.setGrade4(g4);
+		jciclaim_NominationModel.setGrade5(g5);
+		jciclaim_NominationModel.setGrade6(g6);
+
+		jciclaim_NominationModel.setQty1(q1);
+		jciclaim_NominationModel.setQty2(q2);
+		jciclaim_NominationModel.setQty3(q3);
+		jciclaim_NominationModel.setQty4(q4);
+		jciclaim_NominationModel.setQty5(q5);
+		jciclaim_NominationModel.setQty6(q6);
+
+		// email is working for static and dynamic both
+
+		// 1- email is for omoofficial
+
+		EmailSender email = new EmailSender();
+		InternetAddress[] toAddresses = null;
+
+		String subject = "This is the  EMail Subject of view!!";
+
+		String body = "This is the Body of the Email for om official . ";
+
+		// String filename = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+		String filename = OmoOfficialDocumentDownload;
+		String username1 = "";
+
+		String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
+		System.err.println("userEmail for omo official" + userEmailOmo);
+		try {
+
+			// toAddresses = new InternetAddress[]{new InternetAddress(userEmailOmo) };
+
+			toAddresses = new InternetAddress[] { new InternetAddress("test123@gmail.com")
+
+			};
+
+		} catch (AddressException e) {
+
+			e.printStackTrace();
+		}
+
+		email.sendEmail(toAddresses, body, subject, filename, username1);
+
+//		// 2- These Email is for fa official
+//
+//		// EmailSender email=new EmailSender();
+//		InternetAddress[] toAddressesfa = null;
+//
+//		String subjectfa = "This is the  EMail Subject of view!!";
+//
+//		String bodyfa = "This is the Body of the Email for fa official. ";
+//		String filenamefa =FAofficialDocumentDownload;
+//		//String filenamefa = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+//				
+//		String usernamefa = "";
+//		String userEmailFA = nominalOfficialService.getEmailForFA(FAofficial);
+//
+//		System.err.println("userEmail for fa official" + userEmailFA);
+//		try {
+//
+//			// toAddresses = new InternetAddress[]{ new InternetAddress(userEmailFA)};
+//
+//			toAddresses = new InternetAddress[] {
+//
+//					new InternetAddress("guptamansi7867@gmail.com")
+//
+//			};
+//
+//		} catch (AddressException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+////		email.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
+//		email.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
+//
+//		// 3- These email is for MILL
+//		InternetAddress[] toAddressesMill = null;
+//
+//		String subjectMill = "This is the  EMail Subject of view!!";
+//
+//		String bodyMill = "This is the Body of the Email for Mill . ";
+//
+//		//String filenameMill = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+//		String filenameMill = MillDocumentDownload;
+//		String usernameMill = "";
+//
+//		String userEmailMill = nominalOfficialService.getEmaiformills(Mill);
+//
+//		System.err.println("userEmail for getting email for mill " + userEmailMill);
+//		try {
+//
+//			// toAddresses = new InternetAddress[]{ new InternetAddress(userEmailMill)};
+//
+//			toAddresses = new InternetAddress[] { new InternetAddress("mansi1.gupta@cyfuture.com")
+////						   
+//			};
+////			  
+//		} catch (AddressException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		email.sendEmail(toAddresses, bodyMill, subjectMill, filenameMill, usernameMill);
+
+		nominalOfficialService.create(jciclaim_NominationModel);
+
+		redirectAttributes.addFlashAttribute("msg",
+				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+
+		return new ModelAndView(new RedirectView("viewlistnominal.obj"));
+
+	}
+
+	@RequestMapping("viewlistnominal")
+	public String ViewNominal(Model model, HttpServletRequest request) {
+		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
+		model.addAttribute("jciclaim_NominationModel", AllList);
+		String omofficial = request.getParameter("omofficial");
+		System.err.println("view" + omofficial);
+
+		return "viewlistnominal";
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------
+//Entry of tds 
+//---------------------------------------------------------
+
+	@RequestMapping("entryoftds")
+	public ModelAndView EntryofTDSForm(HttpServletRequest request) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("EntryofTds");
+
+		if (username == null) {
+
+			mv = new ModelAndView("index");
+
+		}
+
+		// Adding the Mill Name as a Drop Down List In Entry Of TDS Form
+
+		List<String> Mill = entryofTdsService.MillName();
+
+		mv.addObject("Mill", Mill);
+
+		return mv;
+
+	}
+
+// Handling the Ajax Call URL For FEtching Financial Year Based On Mill Name
+// Saving the Entry of TDS Data
+	@Value("${upload.EntryTdsSupportingDocument}")
+	String EntryTdsSupportingDocument;
+
+	@RequestMapping("saveentryoftds")
+
+	public ModelAndView saveEntryOfTds(HttpServletRequest request, RedirectAttributes redirectAttributes,
+			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument, HttpSession s)
+			throws IllegalStateException, IOException {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		String Mill = request.getParameter("Mill");
+
+		String DateofIntimation = request.getParameter("DateofIntimation");
+
+		String Financialyear = request.getParameter("Financialyear");
+		String fullPath = EntryTdsSupportingDocument;
+
+		final File theDir = new File(fullPath);
+
+//	final File theDir = new File("C:\\Users\\Mansi.Gupta\\Downloads\\upload\\millAcceptence");
+
+		if (!theDir.exists()) {
+
+			theDir.mkdirs();
+
+		}
+
+		final String filename = SupportingDocument.getOriginalFilename();
+
+		File serverFile = new File(theDir, filename);
+
+		SupportingDocument.transferTo(serverFile);
+
+		// Creating object of
+
+		JciEntryTdsModel jciEntryTdsModel = new JciEntryTdsModel();
+
+		jciEntryTdsModel.setMill(Mill);
+
+		jciEntryTdsModel.setFinancial_year(Financialyear);
+
+		jciEntryTdsModel.setDate_of_Intimation(DateofIntimation);
+
+		jciEntryTdsModel.setSupporting_document(filename);
+		System.err.println(filename);
+		// setting Static Value for Remaining
+
+		entryofTdsService.create(jciEntryTdsModel);
+
+		redirectAttributes.addFlashAttribute("msg",
+				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+
+		return new ModelAndView(new RedirectView("viewentryoftds.obj"));
+
+	}
+
+	@RequestMapping("viewentryoftds")
+
+	public String ViewEntryofTds(Model model) {
+
+		List<JciEntryTdsModel> AllList = (List<JciEntryTdsModel>) entryofTdsService.getAll();
+
+		model.addAttribute("AllList", AllList);
+
+		return "ViewEntryOfTds";
+
+	}
+
+	@Value("${upload.EntryOfTdsDownolad}")
+	String EntryOfTdsDownload;
+
+	@RequestMapping("downloadSupportingDocumententrytds")
+
+	public void downloadDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+		String imageDirectory = EntryOfTdsDownload; // Replace with your image
+													// directory path
+
+		String imagePath = imageDirectory + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+
+		if (imageFile.exists()) {
+
+			try {
+
+				// Set the content type based on the file type
+
+				String contentType = determineContentType(filename);
+
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+
+				response.setContentLength((int) imageFile.length());
+
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+
+				int bytesRead;
+
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+					responseOutputStream.write(buffer, 0, bytesRead);
+
+				}
+
+				fileInputStream.close();
+
+				responseOutputStream.close();
+
+			} catch (IOException e) {
+
+				// Handle IO exception
+
+				e.printStackTrace();
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
+
+		} else {
+
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		}
+
+	}
+
+// Utility method to determine content type based on filename
+
+	private String determineContentType3(String filename) {
+
+		if (filename.endsWith(".pdf")) {
+
+			return "application/pdf";
+
+		} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+
+			return "image/jpeg";
+
+		} else if (filename.endsWith(".png")) {
+
+			return "image/png";
+
+		} else {
+
+			return "application/octet-stream"; // Default to binary data if content type is unknown
+
+		}
+
+	}
+
+// For Handling AJax Url
+
+	@ResponseBody
+
+	@RequestMapping(value = "finacialyear", method = RequestMethod.GET)
+
+	public String fetchFContractIdentifcation_jcicontract(@RequestParam("Mill") String Mill) {
+
+		String contractIdentication = (String) entryofTdsService.contractIdentification(Mill);
+
+		System.out.println(contractIdentication);
+
+		// Convert the a JSON in string
+
+		Gson gson = new Gson();
+
+		String jsonResponse = gson.toJson(contractIdentication);
+
+		return jsonResponse;
+
+	}
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

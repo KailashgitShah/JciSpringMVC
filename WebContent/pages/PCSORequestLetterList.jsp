@@ -12,28 +12,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
-<!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
-	rel="stylesheet" />
-<!-- THEME STYLES-->
-<link href="assets/css/main.min.css" rel="stylesheet" />
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-
-<!-- PAGE LEVEL STYLES-->
+  <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="assets/css/main.min.css" rel="stylesheet" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+     
 <style>
 .scrollmenu {
 	overflow: auto;
@@ -95,7 +85,6 @@
 
 										String fullFilePath = requestEl.getLetter_path();
 										String date = requestEl.getReqGenDate();
-										String encodedFilePath = URLEncoder.encode(fullFilePath, "UTF-8");
 										String refNo = requestEl.getReference_no();
 										//String date = requestEl.getReqGenDate();
 										String cropYear = requestEl.getCropYear();
@@ -112,8 +101,9 @@
 										<td><%=qty%></td>
 										<td><%=availQty%></td>
 
-										<td><button class="btn btn-outline-success"
-												onclick="openLinkInNewTab('downloadRequestLetter.obj?imagePath=<%=encodedFilePath%>')">View</button></td>
+										<td><a class="btn btn-success"  target="_blank"
+												<%-- onclick="openLinkInNewTab('downloadRequestLetter.obj?imagePath=<%=encodedFilePath%>')">View</button></td> --%>
+												href='downloadRequestLetter.obj?imagePath=<%=fullFilePath%>'>View</a></td>
 										<%
 										if (emailStatus == 0) {
 										%>
@@ -159,9 +149,7 @@
 		}, 1500);
 	</script>
 	<script>
-		function openLinkInNewTab(url) {
-			window.open(url, '_blank');
-		}
+		
 
 		//send mail funtion
 		function acknowlegeRequest(refNo, date, cropYear, qty, id) {
@@ -191,39 +179,31 @@
 		}
 	</script>
 
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
-	<script type="text/javascript">
-		$(function() {
-			$('#example-table').DataTable({
-				pageLength : 10,
-			//"ajax": './assets/demo/data/table_data.json',
-			/*"columns": [
-			    { "S": "name" },
-			    { "data": "office" },
-			    { "data": "extn" },
-			    { "data": "start_date" },
-			    { "data": "salary" }
-			]*/
-			});
-		})
-	</script>
-
+ <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
+    
+     <script type="text/javascript">
+        $(function() {
+            $('#example-table').DataTable({
+                pageLength: 10,
+                //"ajax": './assets/demo/data/table_data.json',
+                /*"columns": [
+                    { "S": "name" },
+                    { "data": "office" },
+                    { "data": "extn" },
+                    { "data": "start_date" },
+                    { "data": "salary" }
+                ]*/
+            });
+        })
+    </script>
 </body>
 
 </html>

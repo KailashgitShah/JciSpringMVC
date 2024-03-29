@@ -1,4 +1,5 @@
 <%@page import="com.jci.model.PaymentInstrumentModel"%>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@page import="com.jci.model.FinancialConcurenceModel"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -113,7 +114,7 @@ th {
 			
 			<div class="page-content fade-in-up">
 				<div class="ibox">
-					<span>${msg}</span>
+					<span id="flashMessage">${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
 							<table
@@ -131,6 +132,7 @@ th {
 										<th>QtyAllowed</th>
 										<th>Carrying_Cost_Charged</th>
 										<th>Created_date</th>
+										<th>Remarks</th>
 										
 									
 
@@ -139,6 +141,7 @@ th {
 								<tbody>
 									<%
 									int i = 1;
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (FinancialConcurenceModel financialConcurenceModel : allUserRegistration) {
 
 										if (i <= 200) {
@@ -146,12 +149,13 @@ th {
 									<tr>
 										<td><%=i%></td>
 										<td><%=financialConcurenceModel.getFullcontractno()%></td>
-										<td><%=financialConcurenceModel.getFC_Issue_Date()%></td>
+										 <td><%= sdf.format(financialConcurenceModel.getFC_Issue_Date()) %></td>
 										<td><%=financialConcurenceModel.getFC_Ref_No()%></td>
 										<td><%=financialConcurenceModel.getContracted_Qty()%></td>
 										<td><%=financialConcurenceModel.getQtyAllowed()%></td>
 										<td><%=financialConcurenceModel.getCarrying_Cost_Charged()%></td>
 										<td><%=financialConcurenceModel.getCreated_date()%></td>
+										<td><%=financialConcurenceModel.getRemarks()%></td>
 										
 
 
@@ -188,6 +192,15 @@ th {
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
+	
+		<script>
+    $(document).ready(function(){
+      
+        setTimeout(function(){
+            $('#flashMessage').fadeOut('slow');
+        }, 3000); ded
+    });
+</script>
 	<!-- BEGIN THEME CONFIG PANEL-->
 
 	<!-- END THEME CONFIG PANEL-->

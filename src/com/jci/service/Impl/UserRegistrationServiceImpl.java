@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao.UserRegistrationDao;
 import com.jci.model.UserRegistrationModel;
 import com.jci.service.UserRegistrationService;
@@ -157,6 +158,11 @@ public class UserRegistrationServiceImpl implements UserRegistrationService{
 		// TODO Auto-generated method stub
 		userRegistrationDao.updateConcurrentlogin(email,set);
 
+	}
+
+	@Override
+	public String getUsername(String email) {
+		return userRegistrationDao.getUsername(email);
 	}
 
 	

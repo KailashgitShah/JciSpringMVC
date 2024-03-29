@@ -485,4 +485,10 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 				System.out.println(e.getLocalizedMessage());
 			}
 	}
+	
+	@Override
+	public String getUsername(String email) {
+		String sqlString = "select employeename from jciumt where email='"+email + "'";
+		return (String)currentSession().createSQLQuery(sqlString).uniqueResult();
+	}
 }

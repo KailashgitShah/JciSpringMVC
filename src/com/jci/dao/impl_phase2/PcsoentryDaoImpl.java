@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.PcsoentryDao;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.EntryofpcsoModel;
@@ -88,9 +89,16 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 	@Override
 	public List<String> getAllDates() {
 		List<String> ll = new ArrayList<>();
-		List<String> rows = new ArrayList<>();
-		String querystr = "  select  distinct(pcso_date) FROM jcientryof_pcso";
-		return currentSession().createSQLQuery(querystr).list();
+		String querystr = "select distinct(pcso_date),CONVERT(date , pcso_date , 105)  FROM jcientryof_pcso ORDER by CONVERT(date , pcso_date , 105)  desc";
+		List<Object[]> pcsoDateList = currentSession().createSQLQuery(querystr).list();
+		List<String>dates=new ArrayList<>();
+		
+		for(Object[] row:pcsoDateList) {
+			dates.add((String)row[0]);
+		}
+		
+		return dates;
+		 
 	}
 
 	@Override
@@ -158,9 +166,15 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 
 	@Override
 	public List<String> getUniqueRefNos() {
-		String sql = "select distinct Jc_reference_no from jcientryof_pcso";
-		List<String> list = currentSession().createSQLQuery(sql).list();
-		return list;
+		String sql = "select distinct (Jc_reference_no),created_date from jcientryof_pcso order by created_date desc";
+		List<Object[]>  list = currentSession().createSQLQuery(sql).list();
+		List<String>Jc_reference_nos=new ArrayList<>();
+		
+		for(Object[] row:list) {
+			Jc_reference_nos.add((String)row[0]);
+		}
+		
+		return Jc_reference_nos;
 	}
 
 	@Override
@@ -200,6 +214,19 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 	public int getCountOfTotalEntries() {
 		String sqString = "select COUNT( distinct Contract_identification_no ) from jcicontract";
 		return (int)currentSession().createSQLQuery(sqString).uniqueResult();
+	}
+
+	@Override
+	public List<String> getMillCodeForPcoDate(String pcoDate) {
+		String sqString = "select mill_code from jcientryof_pcso where pcso_date = '"+pcoDate+"'";
+		List<Object> pcodates = currentSession().createSQLQuery(sqString).list();
+		List<String> pcsoDateString = new ArrayList<>();
+		
+		for(Object eleObjects : pcodates) {
+			pcsoDateString.add((String) eleObjects);
+		}
+		
+		return pcsoDateString;
 	}
 
 }

@@ -40,13 +40,12 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		    return resultList1;
 		}
 	@Override
-    public List<Object> gradecomposition(String contractno) {
-          String q=" SELECT"
-                       + "  Jcigrade_composition.Jute_combination,\r\n"
-                       + "  (jcigrade_composition.Proposed_composition*jcicontract.Contract_qty)/100 as new_proposed_composition\r\n"
-                       + "   FROM Jcigrade_composition  INNER JOIN  jcicontract on  jcicontract.Grade_composition=jcigrade_composition.Label_name\r\n"
-                       + "  WHERE Contract_no='"+contractno+"'";
-               List<Object> gradecomposition= (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+    public List<Object[]> gradecfetchingdata1omposition(String contractno) {
+          String q="  SELECT     Jcigrade_composition.Jute_combination,\r\n"
+          		+ "                      (jcigrade_composition.Proposed_composition*jcicontract.Contract_qty)/100 as new_proposed_composition\r\n"
+          		+ "                     FROM Jcigrade_composition  INNER JOIN  jcicontract on  jcicontract.Grade_composition=jcigrade_composition.Label_name\r\n"
+          		+ "                    WHERE Contract_no='JCI/190/2023-2024/BT001'";
+               List<Object[]> gradecomposition= (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
                    return gradecomposition;
           
           
@@ -59,6 +58,14 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		  		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 		}
+    
+    
+//	@Override
+//	public List<Object[]>fetchdataofclaim( String st) {
+//		String sql =" select a.MR_no,a.Bale_mark,a.Crop_year,a.Quality_claim,a.MoistureContent,a.NCV_percentage,a.Challan_no,b.Contract_qty,b.Grade_composition from jcicontract as b left join jcimill_receipt  as a on a.HO_di =b.Contract_no WHERE HO_di =  '" +st+"'"; 
+//		  		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+//		    return resultList1;
+//		}
 	
 	@Override
 	public List<Object[]>fetchdatasttlement(int st) {

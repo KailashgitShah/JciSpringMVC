@@ -15,7 +15,12 @@ public interface ContractGenerationDao2 {
 	ModelAndView pcso_details(List<String> pcsoDates,List<String> gradeComp);
 	List<Object[]> getListOfGradesPrice(String cropYear);
 	List<Object[]> getListOfGradeComposition(String gradeComp);
-	int updateContractedValue(String deliveryType, String totalQtyOfMill);
+	int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray);
 	List<Contractgeneration> getContractFullDetails(String contractidn);
+	List<Object> getFullAddressByMillName(String millNameString);
+	public List<Contractgeneration> getAllUnAuthorizedContract();
+	public void setContractAuthrizeStatus(String contactNo);
+	
+
 
 }

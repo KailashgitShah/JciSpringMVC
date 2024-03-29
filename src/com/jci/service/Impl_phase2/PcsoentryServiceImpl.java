@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.PcsoentryDao;
 import com.jci.model.EntryofpcsoModel;
 import com.jci.model.PcsoDateModel;
@@ -85,6 +86,11 @@ public class PcsoentryServiceImpl implements PcsoentryService {
 	@Override
 	public int getCountOfTotalEntries() {
 		return this.pcsoentrydao.getCountOfTotalEntries();
+	}
+
+	@Override
+	public List<String> getMillCodeForPcoDate(String pcoDate) {
+		return this.pcsoentrydao.getMillCodeForPcoDate(pcoDate);
 	}
 
 

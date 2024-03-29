@@ -189,9 +189,6 @@ public class LoginController {
 						
 							String currCropYear = currentyear + "-" + nextyear;
 							
-
-                    	 
-                    	 
                     	        useremail1 = email;
                     	        String set0 = "0";
                                 userRegService.updateConcurrentlogin(email,set0);
@@ -208,6 +205,7 @@ public class LoginController {
                                 String roletype = userRegService.getroletypr(email);
                                 String regionId = userRegService.getregionId(email);
                                 String zoneId = userRegService.getzoneId(email);
+                                String loginName = userRegService.getUsername(email);
                                 System.out.println("dpc_center =====   "+dpc_center);
                                 
                                 
@@ -223,6 +221,7 @@ public class LoginController {
                                 session.setAttribute("roleId", roleId);
                                 session.setAttribute("refId", refId);
                                 session.setAttribute("rolename", rolename);
+                                session.setAttribute("loginName", loginName);
                                 session.setAttribute("dpc_center", dpc_center);
                                 session.setAttribute("userpass", password);
                                 session.setAttribute("currCropYear", currCropYear);

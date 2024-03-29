@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-md-11">
                         <div class="ibox">
-                          <span>${msg}</span>
+                          <span id="flashMessage">${msg}</span>
                             <div class="ibox-body">
                        <form action="saveConfirmationOfClaimSettelment.obj" method="POST" name ="myForm" enctype="multipart/form-data">
                            <div class="child-checkbox" id="disableform">
@@ -249,88 +249,62 @@
                                     </div>  
                                      
                                      <!--  For Showing the grade wise jute variety -->
-                                                           <div class="row">
+                                                          
+												<div class="row">
+												    <div class="col-sm-15">
+												        <table class="table">
+												            <thead>
+												                <tr>
+												                    <th id="grade">Grade</th>
+												                    <th id="grade1">Jute combination</th>
+												                    <th id="grade2">Quantity</th>
+												                </tr>
+												            </thead>
+												            <tbody>
+												               <tr>
+																    <td  id="g111">Grade 1:</td>
+																    <td><input type="text" id="g11" name="g11" readonly="readonly" value="" style="width: 300px; height: 30px;"></td>
+																    <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+																</tr>
 
-                                                                  <span style="font-size: 15px"> Jute Variety Grade wise</span>
-
-                                                           </div>
-
-                                                           <div class="row">
-
-                                                                  <div class="col-sm-3 form-group ">
-
-
-
-                                                                        <div class="input-container">
-                                                                               <label for="field1">grade 1:</label> <input type="text"
-                                                                                     id="g1" name="g1">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="field2">grade 2:</label> <input type="text"
-                                                                                     id="g2" name="g2">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="field3">grade 3:</label> <input type="text"
-                                                                                     id="g3" name="g3">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="field4">grade 4:</label> <input type="text"
-                                                                                     id="g4" name="g4">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="field5">grade 5:</label> <input type="text"
-                                                                                     id="g5" name="g5">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="field6">grade 6:</label> <input type="text"
-                                                                                     id="g6" name="g6">
-                                                                        </div>
-
-                                                                  </div>
-
-
-                                                                  <div class="col-sm-4 form-group">
-
-                                                                        <div class="input-container">
-                                                                               <label for="q1">Qty 1:</label> <input type="text" id="q1"
-                                                                                     name="q1">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="q2">Qty 2:</label> <input type="text" id="q2"
-                                                                                     name="q2">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="q3">Qty 3:</label> <input type="text" id="q3"
-                                                                                     name="q3">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="q4">Qty 4:</label> <input type="text" id="q4"
-                                                                                     name="q4">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="q5">Qty 5:</label> <input type="text" id="q5"
-                                                                                     name="q5">
-                                                                        </div>
-
-                                                                        <div class="input-container">
-                                                                               <label for="q6">Qty 6:</label> <input type="text" id="q6"
-                                                                                     name="q6">
-                                                                        </div>
-
-
-
-                                                                  </div>
-
-                                                           </div>
+												                <tr>
+												                    <td id="g211" >Grade 2:</td>
+												                    <td><input type="text" id="g21" name="g21" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g22" name="g22" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g311">Grade 3:</td>
+												                    <td><input type="text" id="g31" name="g31" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g32" name="g32" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g411">Grade 4:</td>
+												                    <td><input type="text" id="g41" name="g41" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g42" name="g42" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g511">Grade 5:</td>
+												                    <td><input type="text" id="g51" name="g51" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g52" name="g52" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g611">Grade 6:</td>
+												                    <td><input type="text" id="g61" name="g61" readonly="readonly" value ="" style="width: 300px; height: 30px;"></td>
+												                    <td><input type="text" id="g62" name="g62" readonly="readonly" value ="" style="width: 200px; height: 30px;"></td>
+												                </tr>
+												                <tr>
+												                    <td  id="g21"></td>
+												                     <td> <input type="text" id="g71" name="g71" readonly="readonly"   value ="Total" style="width: 300px; height: 30px; text-align:right; font-weight: bold; "></td>
+												                   <!--  <td><strong style ="text-align:right">Total</strong></td> -->
+												                    <td><input type="text" id="g72" name="g72" readonly="readonly" value ="" style="width: 200px; height: 30px; font-weight: bold;"></td>
+												                </tr>
+												            </tbody>
+												            
+												        </table>
+												    </div>
+												</div>
+												
+											
 
                                                            <!-- End the grade wise -->
 
@@ -386,6 +360,54 @@
 	 });
 		
 	</script> 
+	
+	      
+      	<script type="text/javascript">
+      
+ $(document).ready(function() {
+	    $('#SettlementId1').on('change', function() {
+	    var field2Value = $(this).val();
+	    alert(field2Value);
+	     
+	    $.ajax({
+	        type: 'GET',
+	        url: 'fetchingdatanominactionclaim.obj',
+	        data: { "contractno": field2Value },
+	        success: function(data) {
+	           alert(data);
+	           data = data.replace(/^\[|\]$/g, '');
+	           data = data.replace(/^\[|\]$/g, '');
+	           var valuesArray = data.split(',');
+	           for (var i = 0; i < valuesArray.length; i++) {
+	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
+	        	}
+	           
+	               // Set the value of the <select> element
+	               $('#Quality_Settlement1').val(valuesArray[0]);
+	               $('#Moisture_Settlement1').val(valuesArray[1]);
+	               $('#NCV_Settlement1').val(valuesArray[2]);
+	               $('#SettlementAmount1').val(valuesArray[3]); 
+	               $('#ClaimAmount1').val(valuesArray[4]);
+	        
+	               var dateParts = valuesArray[5].split("-");
+	               var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+	               $('#Dateofinspection12').val(formattedDate);
+	             
+	               $('#Supportingdocument1').val(valuesArray[6]);
+	              
+	           
+
+	        },
+	        error: function(error) {
+	            alert("Error: " + error);
+	        }
+	    });
+
+	    });
+	});
+
+      
+      </script> 
 	<script type="text/javascript">
       
  $(document).ready(function() {
@@ -428,6 +450,117 @@
       
       </script>
       
+      <script>
+    $(document).ready(function(){
+      
+        setTimeout(function(){
+            $('#flashMessage').fadeOut('slow');
+        }, 3000); ded
+    });
+</script>
+      
+      
+        
+<script type="text/javascript">
+      
+ $(document).ready(function() {
+	    $('#fullcontractno1').on('change', function() {
+	    var field2Value = $(this).val();
+	   
+	      $.ajax({
+	            type: 'GET',
+	            url: 'paymentdetailsforshow.obj',
+	            data: { "contractno": field2Value },
+	            success: function(data) {
+	            alert(data)
+	            	 try {
+	        	            var dataArray = JSON.parse(data);
+
+	        	            if (dataArray && dataArray.length > 0) {
+	        	                var Contarctqty = dataArray[0][0];
+	        	                var Contarctdate = dataArray[0][2];
+	        	                var ContarctValue = dataArray[0][1];
+	        	                var Paymentduedate = dataArray[0][3];
+	        	                var mill_name = dataArray[0][4];
+	        	                
+	        	               var GradeComposition = dataArray[0][5];
+	     					 /*  $('#GradeComposition2').val(GradeComposition);
+	        	              $('#Contract_date1').val(Contarctdate);
+	        	              $('#contract_Value1').val(ContarctValue);
+	        	              $('#payment_dueDate1').val(Paymentduedate);
+	        	              $('#Mill_name1').val(mill_name);
+	        	              $('#ContracQty1').val(Contarctqty); */
+	        	            
+	        	               $.ajax({
+	     			                  type: 'GET',
+	     			                  url: 'greadewiseqty.obj',
+	     			                  data: { "contractno": GradeComposition, 
+	     			                	  "contractqty": Contarctqty },
+	     			                      success: function(secondData) {
+	     			                     alert(secondData)
+	     			                      try { 
+	     			                      var dataArray = JSON.parse(secondData);
+
+	     			                     if (dataArray && dataArray.length > 0) {
+	     			                    	var g11 = dataArray[0][0];
+	     		        	                var g12 = dataArray[0][1];
+	     		        	                var g21 = dataArray[1][0];
+	     		        	                var g22 = dataArray[1][1];
+	     		        	                var g31 = dataArray[2][0];
+	     		        	                var g32 = dataArray[2][1];
+	     		        	                var g41 = dataArray[3][0];
+	     		        	                var g42 = dataArray[3][1];
+	     		        	                var g51 = dataArray[4][0];
+	     		        	                var g52 = dataArray[4][1];
+	     		        	                var g61 = dataArray[5][0];
+	     		        	                var g62 = dataArray[5][1];
+	     		        	           
+	     		        	                  var totalsum = 0; 
+
+	     		        	                  for (var i = 0; i < dataArray.length; i++) {
+	     		        	                      totalsum += dataArray[i][1];
+	     		        	                  }
+
+	     		        	                
+	     		        	               
+	     		     					  $('#g11').val(g11);
+	     		        	              $('#g12').val(g12);
+	     		        	              $('#g21').val(g21);
+	     		        	              $('#g22').val(g22);
+	     		        	              $('#g31').val(g31);
+	     		        	              $('#g32').val(g32);
+	     		        	              $('#g41').val(g41);
+	     		        	              $('#g42').val(g42);
+	     		        	              $('#g51').val(g51);
+	     		        	              $('#g52').val(g52);
+	     		        	              $('#g61').val(g61);
+	     		        	              $('#g62').val(g62);
+	     		        	              $('#g72').val(totalsum); 
+	     			                    	 
+	     			                     }
+	     			             	        } catch (error) {
+	     			             	            console.error("Error parsing JSON: " + error);
+	     			             	        }
+	     		},
+	     			                  error: function(error) {
+	     			                      console.error('Second Ajax call error:', error);
+	     			                  }
+	     			              });
+	        	            }
+	            	 }
+	        	         catch (error) {
+	        	            console.error("Error parsing JSON: " + error);
+	        	        }
+	        	           
+	        	   }
+	          }); 
+	    });
+	});
+
+      
+      </script> 
+    
+      
        <script>
     function deleteErrorMsg(){
     	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
@@ -449,7 +582,7 @@
 </script>
       <!--  For Fetching the Grade_Composition based on Contract Number -->
 
-       <script type="text/javascript">
+      <!--  <script type="text/javascript">
              $(document).ready(function() {
                   
                     $('#fullcontractno1').on('change', function() {
@@ -464,6 +597,7 @@
                                        ContractNo : selectedOption
                                  },
                                  success : function(data) {
+                                	 alert(data);
 										  var response = JSON.parse(data);
 										  var innerArray1 = response[0];
 	                                       var innerArray2 = response[1];
@@ -518,55 +652,11 @@
                     });
              });
        </script>
-
-       
+ -->
+       	<script type="text/javascript">
       
-      	<script type="text/javascript">
-      
- $(document).ready(function() {
-	    $('#SettlementId1').on('change', function() {
-	    var field2Value = $(this).val();
-	    alert(field2Value);
-	     
-	    $.ajax({
-	        type: 'GET',
-	        url: 'fetchingdatanominactionclaim.obj',
-	        data: { "contractno": field2Value },
-	        success: function(data) {
-	           alert(data);
-	           data = data.replace(/^\[|\]$/g, '');
-	           data = data.replace(/^\[|\]$/g, '');
-	           var valuesArray = data.split(',');
-	           for (var i = 0; i < valuesArray.length; i++) {
-	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
-	        	}
-	           
-	               // Set the value of the <select> element
-	               $('#Quality_Settlement1').val(valuesArray[0]);
-	               $('#Moisture_Settlement1').val(valuesArray[1]);
-	               $('#NCV_Settlement1').val(valuesArray[2]);
-	               $('#SettlementAmount1').val(valuesArray[3]); 
-	               $('#ClaimAmount1').val(valuesArray[4]);
-	        
-	               var dateParts = valuesArray[5].split("-");
-	               var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
-	               $('#Dateofinspection12').val(formattedDate);
-	             
-	               $('#Supportingdocument1').val(valuesArray[6]);
-	              
-	           
 
-	        },
-	        error: function(error) {
-	            alert("Error: " + error);
-	        }
-	    });
 
-	    });
-	});
-
-      
-      </script> 
 	
 
     

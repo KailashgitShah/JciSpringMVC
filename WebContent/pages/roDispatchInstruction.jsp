@@ -103,8 +103,10 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 							<div id='errorcontainer'
 								style='display: none; text-align: center;'></div>
 							<div class="ibox-body">
+
 								<!-- <form action="saveRoDi.obj" method="POST"> -->
 								<div class="row">
+
 
 									<div class="col-sm-4 form-group">
 										<label>HO DI No.</label><span class="text-danger">* </span>&nbsp;
@@ -270,9 +272,12 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	                allOptions.push(value);
 	            });
 
+
 	            <%for (String no : allCooperative) {%>
 	            allOptions.push("<%=no%>");
 	            <%}%>
+
+      
 
 	            dpcDropdown.empty();
 

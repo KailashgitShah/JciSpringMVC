@@ -17,6 +17,12 @@
 	width: 100%;
 	height: 32px;
 }
+
+.required:after {
+	content: " *";
+	color: red;
+}
+
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,19 +38,12 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
-
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
-<!-- PAGE LEVEL STYLES-->
+<link rel="stylesheet" href="assets/css/chosen.css">
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
 	type="text/javascript"></script>
 </head>
@@ -224,7 +223,7 @@ if (bale.get(7) != null)
 												<td id="grade5"><%=grade5%></td>
 												<td id="grade6"><%=grade6%></td>
 												<td id="grade7"><%=grade7%></td>
-												<td  id="total"><%=loosejute + balesum%></td>
+												<td id="total"><%=loosejute + balesum%></td>
 
 											</tr>
 
@@ -255,7 +254,7 @@ if (bale.get(7) != null)
 
 											<label class="required">Date</label> <input
 												class="form-control" name="reqDate" id="reqDate"
-												placeholder="dd-mm-yyyy" autocomplete="off" required>
+												autocomplete="off" type="date" min="" required>
 
 										</div>
 										<div class="col-sm-4 form-group">
@@ -266,10 +265,10 @@ if (bale.get(7) != null)
 
 									</div>
 									<div class="row">
-										 <input
-												class="form-control" name="uncontractedQty"
-												id="uncontractedQty" type="hidden" value="<%=totalUnContractedQty%>" readonly>
-										
+										<input class="form-control" name="uncontractedQty"
+											id="uncontractedQty" type="hidden"
+											value="<%=totalUnContractedQty%>" readonly>
+
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty.</label> <input
 												class="form-control" name="reqQty" id="reqQty" type="number"
@@ -297,15 +296,13 @@ if (bale.get(7) != null)
 	</div>
 
 
-	<script>
+	 <script>
 		$(document).ready(function() {
-			$("#reqDate").datepicker({
-				dateFormat : 'dd-mm-yy',
-				minDate : 0
-			});
+			 var currentDate = new Date();
+			  var formattedDate = currentDate.toISOString().split('T')[0];
+			  document.getElementById("reqDate").min = formattedDate;
 		});
 	</script>
-
 	<script type="text/javascript">
 		$(document).ready(
 
@@ -320,7 +317,7 @@ if (bale.get(7) != null)
 					// to set ref number to alphanumeric
 					refNo.on("input", function() {
 						var inputVal = $(this).val();
-						var refVal = inputVal.replace(/[^a-zA-Z0-9-/]/g, "");
+						var refVal = inputVal.replace(/[^a-zA-Z0-9-]/g, "");
 						$(this).val(refVal);
 					});
 
@@ -450,38 +447,11 @@ if (bale.get(7) != null)
 											});
 						});
 	</script>
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
 		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
 
 </body>
 </html>
