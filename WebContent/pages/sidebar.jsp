@@ -100,6 +100,12 @@ body {
 					<li data-pre="6" id="o6"><a href="viewUserRegistration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
 								Registration</b></a></li>
+								<li data-pre="5" id="o5"><a href="millRegisteration.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Mill Registration
+								</b></a></li>
+								<li data-pre="5" id="o5"><a href="viewmillRegistration.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Mill Registration
+								List</b></a></li>
 
 				</ul></li>
 			<li><a href="javascript:void(0);;"><i

@@ -151,7 +151,7 @@ input[type="file"] {
 									<th>Sl.NO</th>
 
                                         <th>Mill name</th>
-										 <th>Contract No.</th>
+										 <th>Contract Identification No.</th>
 										
 										<th>Crop Year</th>
 										<th>Contract Quantity</th>				  
@@ -199,7 +199,8 @@ input[type="file"] {
 											
 												<input type="hidden" value="${item.contract_id}"
 													name="contract_id" >
-												<td><c:choose>
+												<td>
+											 <c:choose>
 														<c:when test="${item.contract_acceptance_flag eq '0'}">
 															<button class="btn btn-danger" style="width: 60px"
 																type="submit">Accept</button>
@@ -207,7 +208,9 @@ input[type="file"] {
 														<c:otherwise>
 															<button class="btn btn-success" disabled>Accepted</button>
 														</c:otherwise>
-													</c:choose></td>
+													</c:choose> 
+												
+													</td>
 											</form>
 										</tr>
 										<%i++; %>
@@ -266,7 +269,6 @@ input[type="file"] {
 			});
 		})
 	</script>
-
 
 
 

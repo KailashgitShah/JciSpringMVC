@@ -109,6 +109,7 @@ import com.jci.model.JciDIHoModel;
 import com.jci.model.JciEntryTdsModel;
 import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.MillRecieptModel;
+import com.jci.model.MillRegistrationModel;
 import com.jci.model.OperationAndTransportCostModel;
 import com.jci.model.OperationCostModel;
 import com.jci.model.PCSORequestLetter;
@@ -135,6 +136,7 @@ import com.jci.service_phase2.GenrationCashDocumentService;
 import com.jci.service_phase2.HOInstService;
 import com.jci.service_phase2.MillAccept;
 import com.jci.service_phase2.MillRecieptService;
+import com.jci.service_phase2.MillRegistrationService;
 import com.jci.service_phase2.NominalOfficialService;
 import com.jci.service_phase2.OperationAndTransportCostService;
 import com.jci.service_phase2.OperationCostService;
@@ -166,8 +168,12 @@ public class Controller_V {
 	@Autowired
 	EntryofTdsService entryofTdsService;
 	
+	
 	@Autowired
 	NominalOfficialService nominalOfficialService;
+	
+	@Autowired
+	MillRegistrationService millRegistrationService;
 
 
 
@@ -4496,6 +4502,96 @@ public String fetchFContractIdentifcation_jcicontract(@RequestParam("Mill") Stri
 	return jsonResponse;
 
 }
+
+/// ///////////////////////////////////////////////mill registration//////////////////////////////////////
+
+@RequestMapping("millRegisteration")
+public ModelAndView Vi(Model model, HttpServletRequest request) {
+	String username = (String) request.getSession().getAttribute("usrname");
+
+	ModelAndView mv = new ModelAndView("millRegistration");
+
+	if (username == null) {
+
+		mv = new ModelAndView("index");
+
+	}
+	List<String>millid =  millRegistrationService.MillName();
+	mv.addObject("millid", millid);
+	
+	
+	//model.addAttribute("AllList", AllList);
+	return mv;
+}
+
+
+@ResponseBody
+@RequestMapping(value = "millcodefetch", method = RequestMethod.GET)
+public String MillCodeFetch(@RequestParam("millid") String millid) {
+
+
+
+	List<Object> millReceiptData = millRegistrationService.FetchMillReceiptData(millid);
+
+	
+	Gson gson = new Gson();
+	String jsonResponse = gson.toJson(millReceiptData);
+
+	return jsonResponse;
+
+}
+
+@RequestMapping("savemillregister")
+public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession s)
+		throws IllegalStateException, IOException {
+	String username = (String) request.getSession().getAttribute("usrname");
+
+	String mill_name = request.getParameter("mill_name");
+
+	String mill_password= request.getParameter("mill_password");
+
+	String mill_code = request.getParameter("mill_code");
+	String mill_emailaddress = request.getParameter("mill_emailaddress");
+	String mill_address = request.getParameter("mill_address");
+	String mill_mobile= request.getParameter("mill_mobile");
+
+	// Creating object of
+
+	MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
+	millRegistrationModel.setMill_name(mill_name);
+	millRegistrationModel.setMill_address(mill_address);
+	millRegistrationModel.setMill_code(mill_code);
+	millRegistrationModel.setMill_emailaddress(mill_emailaddress);
+	millRegistrationModel.setMill_mobile(mill_mobile);
+	millRegistrationModel.setMill_password(mill_password);
+
+	millRegistrationService.create(millRegistrationModel);
+
+	redirectAttributes.addFlashAttribute("msg",
+			(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+
+	return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+
+}
+
+@RequestMapping("viewmillRegistration")
+
+public String ViewmillRegistration(Model model) {
+
+	List<MillRegistrationModel> AllList = (List<MillRegistrationModel>)millRegistrationService .getAll();
+	
+	Collections.reverse(AllList);
+	
+
+	model.addAttribute("AllList", AllList);
+
+	return "viewMillRegistration";
+
+}
+
+
+
+
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************
