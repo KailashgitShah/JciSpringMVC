@@ -56,11 +56,20 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	
 		
 	@Override
-	public List<Contractgeneration> getAll() {
+	public List<Contractgeneration> getAll(String millcode) {
+		String millcodeget = millcode;
+		
 	    List<Contractgeneration> ll = new ArrayList<>();
 	    List<Object[]> rows = new ArrayList<>();
-	    String querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract";
+	    String querystr;
 	    
+	    if (millcodeget == null) {
+	    	    querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract " ;
+	   	    
+	    }
+	    else {
+	   querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where  Mill_code = "+ millcodeget ;
+	    }
 	    Session session = sessionFactory.getCurrentSession();
 	    Transaction tx = session.beginTransaction();
 	    SQLQuery query = session.createSQLQuery(querystr);

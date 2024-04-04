@@ -10,4 +10,10 @@ public interface MillRegistrationService {
 	public List<Object> FetchMillReceiptData(String millid);
 	public void create(MillRegistrationModel millsave);
 	public List <MillRegistrationModel> getAll();
+	
+	/////////////// This is for login
+	public String checkLogin(String usrname, String password);
+	public String  checkmillcode(String email);
+	public String checkmillemail (String email);
+	
 }

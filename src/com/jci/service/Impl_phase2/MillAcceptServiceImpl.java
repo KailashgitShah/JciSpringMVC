@@ -15,9 +15,9 @@ public class MillAcceptServiceImpl implements MillAccept{
 	millAcceptDao millacceptpdao;
 	
 	@Override
-	public List<Contractgeneration> getAll() {
+	public List<Contractgeneration> getAll( String millcode) {
 		// TODO Auto-generated method stub
-		return millacceptpdao.getAll();
+		return millacceptpdao.getAll(millcode);
 	}
 	
 	

@@ -79,6 +79,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -3796,16 +3797,20 @@ public class Controller_V {
 
     @RequestMapping("viewmillAcc")
 	public String ViewMillAcceptance1(Model model, HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-
+		
 		ModelAndView mv = new ModelAndView("listMillAcceptence");
 
-		if (username == null) {
-
-			return "index";
-
-		}
-		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll();
+//		String username = (String) request.getSession().getAttribute("usrname");
+//    	String useremail = (String) request.getSession().getAttribute("useremail");
+    	
+//		if (useremail != null && username == null) {
+//		    return "millLogin";
+//		}  if (username != null && useremail == null ) {
+//		    return "index";
+//		}
+//		
+		String millcode = (String) request.getSession().getAttribute("millcode");
+		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll(millcode);
 		
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
@@ -4587,6 +4592,61 @@ public String ViewmillRegistration(Model model) {
 
 	return "viewMillRegistration";
 
+}
+
+///////////////////////////////////////// mill login ////////////////////////////////////////////////////////////////////////////////////////////
+@RequestMapping("millLogin")
+public ModelAndView login(HttpServletRequest request){
+	HttpSession session = request.getSession();
+	session.invalidate();
+
+	ModelAndView mv = new ModelAndView("millLogin");
+
+	return mv;
+}
+
+
+  @RequestMapping("milldash")
+  public ModelAndView millDashBoard(HttpServletRequest request){ 
+		/*
+		 * HttpSession session = request.getSession(); request.getSession();
+		 * session.invalidate();
+		 */
+ ModelAndView mv = new ModelAndView("milldashboard");
+  
+  return mv;
+   }
+ 
+
+
+@RequestMapping("millloginAction")
+public ModelAndView loginDetailsCheck1(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession session) {
+    ModelAndView mv = new ModelAndView("millLogin");
+
+    try {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        
+        if (email != null && password != null) {
+            String ifExist = millRegistrationService.checkLogin(email, password);
+           String millcode = millRegistrationService.checkmillcode(email);
+           String useremail =  millRegistrationService.checkmillemail(email);
+            
+            if (ifExist == null) {
+                mv.addObject("msg", "<div class=\"alert alert-danger\"><b>Failure !</b>Please Enter correct username and password.</div> \r\n");
+            } else {
+            	//session.setAttribute("email", email);
+            	session.setAttribute("millcode", millcode);
+            	session.setAttribute("useremail", useremail);
+                mv = new ModelAndView(new RedirectView("milldash.obj"));
+                
+            }
+        }
+
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+    return mv;
 }
 
 

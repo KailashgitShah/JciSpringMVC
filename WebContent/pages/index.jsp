@@ -58,6 +58,8 @@
 
                   <div class="form-group">
                         <button class="btn btn-info btn-block" type="submit" id="submitBtn">Login</button>
+                        <br>
+                        <a class="btn btn-info btn-block"  href="millLogin.obj">Click Here For Mill Login</a>
                   </div>
 
             </form>

@@ -1,12 +1,15 @@
 package com.jci.dao.impl_phase2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +63,61 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 		List<MillRegistrationModel> ll = c.list();
 		return ll;
 	}
+
+	@Override
+	public String loginCheck(String userName, String password) {
+		// TODO Auto-generated method stub
+		//jcimill_Registration
+		List<Integer> result = new ArrayList<>();
+		String querystr = "select * from jcimill_Registration where mill_emailaddress ='" + userName + "' and mill_password ='" + password + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object[]> rows = query.list();
+		 if (rows.isEmpty()) {
+		        return null; // No matching user found
+		    } else {
+		      
+		        Object[] firstRow = rows.get(0);
+		        return firstRow.toString(); // Return the desired value
+		    }
+		
+	}
+
+	@Override
+	public String checkmillcode(String email) {
+	
+			String querystr = "select mill_code from jcimill_Registration where mill_emailaddress ='" + email + "'";
+			Session session = sessionFactory.getCurrentSession();
+			SQLQuery query = session.createSQLQuery(querystr);
+			List<String> userList = query.list();
+
+			if (!userList.isEmpty()) {
+				return userList.get(0);
+				// return "0";
+			} else {
+				return "0";
+			}
+		}
+
+	@Override
+	public String checkmillemail(String email) {
+
+		String querystr = "select mill_emailaddress  from jcimill_Registration where mill_emailaddress ='" + email + "'";
+		Session session = sessionFactory.getCurrentSession();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<String> userList = query.list();
+
+		if (!userList.isEmpty()) {
+			return userList.get(0);
+			// return "0";
+		} else {
+			return "0";
+		}
+	}
+
+	
+	
 	
 
 }

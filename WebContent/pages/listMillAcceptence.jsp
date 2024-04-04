@@ -123,10 +123,117 @@ input[type="file"] {
 <body class="fixed-navbar">
 	<div class="page-wrapper">
 		<!-- START HEADER-->
+		<c:choose>
+    <c:when test="${not empty sessionScope.roleId}">
 		<%@ include file="header.jsp"%>
+		</c:when>
+		<c:otherwise>
+		 <header class="header">
+            <div class="page-brand">
+                <a class="link" href="index.html">
+                    <span class="brand">Admin
+                        <span class="brand-tip">CAST</span>
+                    </span>
+                    <span class="brand-mini">AC</span>
+                </a>
+            </div>
+               
+            
+            <div class="flexbox flex-1">
+                <!-- START TOP-LEFT TOOLBAR-->
+                <ul class="nav navbar-toolbar">
+                    <li>
+                        <a class="nav-link sidebar-toggler js-sidebar-toggler"><i class="ti-menu"></i></a>
+                    </li>
+                </ul>
+                <!-- END TOP-LEFT TOOLBAR-->
+                <!-- START TOP-RIGHT TOOLBAR-->
+                 <ul class="nav navbar-toolbar ">
+               
+                 <!--    <li class="bell"><i class="fa fa-bell-o"></i>
+                        <span>10</span>
+                    </li> -->
+                    <li> <a class="dropdown-item" href="millLogin.obj"><i class="fa fa-power-off"></i>Logout</a></li>
+                   
+                </ul>
+                <!-- END TOP-RIGHT TOOLBAR-->
+            </div>
+            <div>
+           
+        </header>
+		
+		</c:otherwise>
+		</c:choose>
 		<!-- END HEADER-->
 		<!-- START SIDEBAR-->
-		<%@ include file="sidebar.jsp"%>
+		
+
+	
+<c:choose>
+    <c:when test="${not empty sessionScope.roleId}">
+        <!-- Sidebar 1 -->
+        <%@ include file="sidebar.jsp"%> 
+    </c:when>
+    <c:otherwise>
+        <!-- Sidebar 2 -->
+        <style>
+            body {
+                zoom: 85%;
+            }
+
+            .side-menu li a {
+                color: #fff;
+            }
+
+            .sidebarleft {
+                /* Add your styles for the sidebar container */
+            }
+
+            /* Add more styles as needed */
+        </style>
+
+        <nav class="page-sidebar" id="sidebar" style="height: 90%; overflow-y: auto;">
+            <div class="page-brand">
+                <a class="link" href="#"> 
+                    <span class="brand"> 
+                        <span class="brand-tip"> 
+                            <img src="assets/img/logo5.png">
+                        </span>
+                    </span> 
+                    <span class="brand-mini"> 
+                        <img src="assets/img/logo5.png">
+                    </span>
+                </a>
+            </div>
+            
+             <div class="admin-info">
+
+				<div class="font-strong">
+					Welcome <br> <span style="color: #ffc107;"> <%
+	String useremail = (String) request.getSession().getAttribute("useremail");
+ 	if (useremail == null) {
+ 	 	//String redirectURL = "http://49.50.79.121:8080/jcicms/index.obj";
+ 	 	String redirectURL = "http://localhost:8080/jciadmin/index.obj";
+ 	 	response.sendRedirect(redirectURL); }
+ 	 out.println(useremail);
+ %>
+	</span>			
+</div>
+				</div>
+            
+            <div id="sidebar-collapse" class="sidebarleft">
+                <ul class="side-menu metismenu">
+                    <li><a href="milldash.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a></li>
+                </ul>
+
+                <ul class="side-menu metismenu">
+                    <li><a href="viewmillAcc.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Mill Acceptance list</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </c:otherwise>
+</c:choose>
+	
 		<!-- END SIDEBAR-->
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->

@@ -143,11 +143,13 @@ public class LoginController {
 		//  System.out.println("dashboard"); 
 			String username =(String)request.getSession().getAttribute("usrname");
 		  ModelAndView mv = new ModelAndView("dashboard");
-		  if(username == null) {
-          	mv = new ModelAndView("index");
-              }
+			/*
+			 * if(username == null) { mv = new ModelAndView("index"); }
+			 */
 		  return mv; 
 		  }
+	  
+	  
 	 
 
 	  @RequestMapping("loginAction")
@@ -239,4 +241,9 @@ public class LoginController {
             }
             return mv;
       }
+	  
+	  
+	 
+	  
+	  
 }

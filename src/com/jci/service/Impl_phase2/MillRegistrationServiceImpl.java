@@ -34,6 +34,21 @@ public class MillRegistrationServiceImpl implements MillRegistrationService{
 		// TODO Auto-generated method stub
 		return millRegistrationDao.getAll();
 	}
+	@Override
+	public String checkLogin(String usrname, String password) {
+		// TODO Auto-generated method stub
+		return millRegistrationDao.loginCheck(usrname, password);
+	}
+	@Override
+	public String checkmillcode(String email) {
+		// TODO Auto-generated method stub
+		return millRegistrationDao.checkmillcode(email);
+	}
+	@Override
+	public String checkmillemail(String email) {
+		// TODO Auto-generated method stub
+		return millRegistrationDao. checkmillemail(email);
+	}
 	
 	
 }
