@@ -33,4 +33,5 @@ public interface VerifyTallySlipService {
 	public void updatestatustoPP(String tallyslipno);
 	public void updatestatustoRMZM(String tallyno);
 	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis, String purchasesdate,String purchasesdateTo);
+	public List<String> getexcelpath(String regionId);
 }

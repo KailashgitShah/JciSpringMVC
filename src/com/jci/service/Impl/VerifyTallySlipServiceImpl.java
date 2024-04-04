@@ -165,6 +165,12 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 		return VerificationTallySlipDao.getAllPurchase(cropyear,placeofp,basis,purchasesdateFrom,purchasesdateTo);
 	}
 
+	@Override
+	public List<String> getexcelpath(String regionId) {
+		// TODO Auto-generated method stub
+		return VerificationTallySlipDao.getexcelpath(regionId);
+	}
+
 
 
 }

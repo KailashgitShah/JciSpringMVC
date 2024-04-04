@@ -657,7 +657,6 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 					//System.err.println("purchaseRegister___________"+purchaseRegister);
 					r.add(purchaseRegister);
 				}
-System.err.println("khojjo bsdk"+r);
 				return r;
 			} else {
 				return null;
@@ -667,6 +666,12 @@ System.err.println("khojjo bsdk"+r);
 			return null;
 		}
 	
+	}
+
+	@Override
+	public List<String> getexcelpath(String regionId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

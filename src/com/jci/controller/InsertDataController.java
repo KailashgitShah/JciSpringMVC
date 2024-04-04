@@ -5078,6 +5078,7 @@ public class InsertDataController
 	                createpayment.setSender("JCI");
 	                createpayment.setBeneficiary_bank(paymentlist.getBeneficiary_bank());
 	                createpayment.setPurchase_date(paymentlist.getPurchase_date());
+	                createpayment.setRegion_id((String) session.getAttribute("regionId"));
 	                //createpayment.setUTR_no("UTR NO");
 	                //createpayment.setDate(paymentlist.getDate());
 	                createpayment.setExcel_link(filename);
@@ -5811,6 +5812,7 @@ public class InsertDataController
 	    @RequestMapping({ "downloadexcel" })
         public ModelAndView downloadexcel(final HttpServletRequest request, RedirectAttributes red) {
            String username =(String)request.getSession().getAttribute("usrname");
+	    	String regionId =(String)request.getSession().getAttribute("regionId");
            ModelAndView mv = new ModelAndView("downloadAllExcelSheet");
            if(username == null)
               {
@@ -5825,6 +5827,8 @@ public class InsertDataController
    	        	 red.addFlashAttribute("errorMessage","Access denied");
    				   return mv=new ModelAndView("Home");
    	        } 
+            List<String> excelpathS = verifyTallySlipService.getexcelpath(regionId);
+
         	   
            } 
            catch(Exception e) {

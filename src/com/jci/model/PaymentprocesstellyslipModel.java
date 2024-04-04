@@ -68,7 +68,17 @@ public class PaymentprocesstellyslipModel {
 	@Column(name = "farmerreg_no")
    	private String farmerreg_no;
 	
+	@Column(name = "Region_id")
+   	private String Region_id;
 	
+
+	public String getRegion_id() {
+		return Region_id;
+	}
+
+	public void setRegion_id(String region_id) {
+		Region_id = region_id;
+	}
 
 	public String getDpc_name() {
 		return dpc_name;
@@ -209,7 +219,6 @@ public class PaymentprocesstellyslipModel {
 
 
 
-
 	@Override
 	public String toString() {
 		return "PaymentprocesstellyslipModel [payment_id=" + payment_id + ", amount=" + amount + ", debitAC_no="
@@ -218,14 +227,15 @@ public class PaymentprocesstellyslipModel {
 				+ ", beneficiary_branch=" + beneficiary_branch + ", JCI_Ref=" + JCI_Ref + ", sender=" + sender
 				+ ", beneficiary_bank=" + beneficiary_bank + ", purchase_date=" + purchase_date + ", UTR_no=" + UTR_no
 				+ ", date=" + date + ", excel_link=" + excel_link + ", dpc_name=" + dpc_name + ", farmerreg_no="
-				+ farmerreg_no + "]";
+				+ farmerreg_no + ", Region_id=" + Region_id + "]";
 	}
 
+	
 
 	public PaymentprocesstellyslipModel(int payment_id, double amount, String debitAC_no, String beneficiary_IFSC_code,
 			String beneficiaryAC_No, String aC_type, String beneficiary_name, String beneficiary_branch, String jCI_Ref,
 			String sender, String beneficiary_bank, String purchase_date, String uTR_no, String date, String excel_link,
-			String dpc_name, String farmerreg_no) {
+			String dpc_name, String farmerreg_no, String region_id) {
 		super();
 		this.payment_id = payment_id;
 		this.amount = amount;
@@ -244,6 +254,7 @@ public class PaymentprocesstellyslipModel {
 		this.excel_link = excel_link;
 		this.dpc_name = dpc_name;
 		this.farmerreg_no = farmerreg_no;
+		Region_id = region_id;
 	}
 
 	public PaymentprocesstellyslipModel() {
