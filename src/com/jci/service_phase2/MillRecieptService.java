@@ -19,7 +19,8 @@ public interface MillRecieptService {
 		public List<Object> fetchHODINO();
 		//public  List<Object[]> fetchdata(String contractno);
 		//public MillRecieptModel fetchdata(String st);
-		public MillRecieptModel fetchdata(String st);
+		//public MillRecieptModel fetchdata(String st);
+		public List<Object[]> fetchdata(String st);
 		
 		public MillRecieptModel Creditqty(String contractno);
 		public void UpdateContractstatus( String s);

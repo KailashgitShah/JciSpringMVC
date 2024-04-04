@@ -2199,7 +2199,7 @@ public class Controller_V {
 		        double ratio = ratios[i];
 		        String contractvalueajax= contractValue2[i];
 		        String paymentDueDateajax= paymentDueDate2[i];
-		        System.out.println(ratio);
+		     
 		
 		        String InstrumentValue = request.getParameter("InstrumentValue");
 		        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
@@ -2580,12 +2580,12 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
 	public String hodinofetch(@RequestParam("contractno") String contractno) {
-
-		MillRecieptModel millRecieptModelt1 = millRecieptService.fetchdata(contractno);
+		
+		List<Object[]> millRecieptModelt1 = millRecieptService.fetchdata(contractno);
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(millRecieptModelt1);
-		return resultString;// gson.toJson((Object)millRecieptModelt1);
+		return resultString;
 	}
 	
 	@ResponseBody
@@ -2658,8 +2658,9 @@ public class Controller_V {
 			String MR_No = request.getParameter("MR_No");
 			String MR_Date1 = request.getParameter("MR_Date");
 			String HR_Date1 = request.getParameter("HO_Date");
-			String Mill_code = request.getParameter("Millcode2");
-			System.err.println(Mill_code);
+			//String Mill_code = request.getParameter("Millcode2");
+			String Mill_code = request.getParameter("875");
+			
 
 			// String mill_id = request.getParameter("HO_Date");
 
@@ -2801,6 +2802,7 @@ public class Controller_V {
 		int lastSerialNumber = 1640;
 		String demandNoteNumber = generateDemandNoteNumber(request.getSession(), lastSerialNumber);
 		mv.addObject("demandNoteNumber", demandNoteNumber);
+		
 
 		// String demandNoteNumber = generateDemandNoteNumber();
 		mv.addObject("demandNoteNumber", demandNoteNumber);
@@ -2961,6 +2963,7 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 		 final String challan_no = request.getParameter("id"); 
+		 List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
 		 final String millname = request.getParameter("millname"); 
 //		 List<Object[]> ShipmentDetails= (List<Object[]>)
 		 
@@ -2975,6 +2978,7 @@ public class Controller_V {
 		mv.addObject("billOfSupplyNo", billOfSupplyNo);
 		mv.addObject("challan_no", challan_no);
 		mv.addObject("millname", millname);
+		mv.addObject("list", list);
 
 		return mv;
 

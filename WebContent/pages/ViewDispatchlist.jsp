@@ -10,6 +10,8 @@
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
 <%@page isELIgnored="false"%>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,17 +69,19 @@
 
 			</div>
 
-			<%
-			List<Object[]> allUserRegistration = (List<Object[]>)request.getAttribute("viewDispatchChallan");
 			
-	
-		%>
+<%
+List<Object[]> allUserRegistration = (List<Object[]>) request.getAttribute("viewDispatchChallan");
+%>
+
                   <div class="page-content fade-in-up">
                 <div class="ibox">
                     <div class="ibox-head">
                     <span id="flashMessage">${msg}</span>
                         <div class="ibox-title"></div>
                     </div>
+                      
+                    
                     <div class="ibox-body">
                       <div class="scrollmenu">
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
@@ -116,10 +120,35 @@
 										
 									</tr>
 								</thead>
+								
+								
                            <tbody>
+<script>
+// Function to format the date as "DD-MM-YYYY"
+function formatDate(dateString) {
+    try {
+        if (dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+        } else {
+            return ""; // Return empty string if date string is null or empty
+        }
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return dateString; // Return original date string if unable to parse
+    }
+}
+</script>    
 						 			<%
 									int i = 1;
+						 			
+						 			
+						 			
 								for(Object[] row : allUserRegistration ){
+									
 									if (i <= 200) {
 									%>
 									<tr>
@@ -129,6 +158,10 @@
 										<td><%= row[2] %></td>
 										<td><%= row[3] %></td>
 										<td><%= row[4] %></td>
+								
+										
+									  
+										
 										<td><%= row[5] %></td>
 										<td><%= row[6] %></td>
 										<td><%= row[7] %></td>
@@ -162,9 +195,10 @@
 										}
 									   i++;
 										} 
+								
+								
 										%>
-									
-										
+		
 									 
 									
 								</tbody>
@@ -180,13 +214,16 @@
             <%@ include file="footer.jsp"%>
         </div>
     </div>
+    
+    
+ 
     <!-- BEGIN THEME CONFIG PANEL-->
      
     <!-- END THEME CONFIG PANEL-->
     <!-- BEGIN PAGA BACKDROPS-->
     <div class="sidenav-backdrop backdrop"></div>
     
-    
+
     
  
 

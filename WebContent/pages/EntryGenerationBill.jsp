@@ -66,12 +66,30 @@
 
 			<%
 			List<Object[]> getChallanlist = (List<Object[]>) request.getAttribute("getChallanlist");
+			List<Object[]> list = (List<Object[]>) request.getAttribute("list");
 			String billOfSupplyNo = (String) request.getAttribute("billOfSupplyNo");
 			String challan_no = (String) request.getAttribute("challan_no");
 			String millname = (String) request.getAttribute("millname");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String serverCurrentDate = dateFormat.format(new Date());
+			
+			
+			     String strNominalWt = "";
+			     String strRate = "";
+			     String strNominalQty = "";
+			     float total=0;
+			     // Iterate over dispatchList data
+			     for (Object[] row : list) {
+			    	 
+				        // Assuming you need to extract values
+						 
+					        float nominalWt = ((Number) row[4]).floatValue(); 
+					        float rate = ((Number) row[5]).floatValue();  
+					        float nominalQty = ((Number) row[6]).floatValue(); 
+					        total+=rate*nominalQty;
+					      
+				    }
 			%>
 
 
@@ -159,7 +177,7 @@
 											            <th>Driver_name</th>
 											            <th>License_no</th>
 											            <th>Driver_contact</th>
-											            <th>SHIPMENT VALUE</th>
+											          
 											          
 											        </tr>
 											    </thead>
@@ -175,7 +193,7 @@
 															<td><%= row[3] %></td>
 															<td><%= row[4] %></td>
 															<td><%= row[5] %></td>
-															<td><%= row[6] %></td>
+															
 															<% 
 															}
 											        	%>
@@ -191,9 +209,9 @@
 												<label>Shipment Value</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
 													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Shipment_Value1" min="0"
-													step="1" pattern="\d+" placeholder="Shipment_Value"
-													required oninput="calculateGST();calculateTCS();" >
+													class="form-control taxtbox" name="Shipment_Value1" min="0" value="<%=total %>" readonly="readonly"
+													 placeholder="Shipment_Value"
+													required   >
 											</div>
 											
 										</div> 
@@ -339,13 +357,14 @@
 											
 											<div class="col-sm-4 form-group">
 												<label>TCS Amt</label> <input class="form-control taxtbox"
-													name="TCS_Amt" min="0" step="0.01" pattern="[0-9]*"
+													name="TCS_Amt" min="0" step="0.01" 
 													id="TCS_Amt" placeholder="TCS_Amt">
 											</div>
 
 											<div class="col-sm-4 form-group">
-												<label>TDS Amt</label> <input class="form-control taxtbox"
-													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*"
+												<label>TDS Amt</label><span class="text-danger">*
+												</span> <input class="form-control taxtbox"
+													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*" required
 													id="TDS_Amt" placeholder="TDS_Amt">
 											</div>
 											<div class="col-sm-4 form-group">
@@ -476,17 +495,9 @@
 		});
 	</script>
 
+		
 
 
-<!-- 	<script type='text/javascript'>
-		function fun() {
-			if (document.getElementById("Challan_No1").value != "")
-				document.getElementById("submitBtn").disabled = false;
-			else
-				document.getElementById("submitBtn").disabled = true;
-
-		}
-	</script> -->
 
 
 	<script>
@@ -575,6 +586,7 @@
 
                         $('#Contarctno').val(contractNo);
                         $('#ChallanDate1').val(formatDate(creationDate));
+                        
                     
 
                         $.ajax({
@@ -582,9 +594,7 @@
                             url: 'contrcatnotomill.obj',
                             data: { "contractno": contractNo },
                             success: function(secondData) {
-                               
-                              
-                                console.log(secondData);
+                            
                                 var dataArray = JSON.parse(secondData);
                               
                                 if (dataArray && dataArray.length > 0) {
@@ -661,12 +671,25 @@
          
          </script>
          
+        <script>
+
+            window.addEventListener('load', function() {
+
+		    calculateGST();
+		    calculateTCS();
+		});
+		</script>
+         
+         
+         
          <script>
 		function calculateGST() {
 			// Retrieve the shipment value entered by the user
-			var shipmentValue = parseFloat(document
+		/* 	var shipmentValue = parseFloat(document
 					.getElementsByName("Shipment_Value1")[0].value);
-
+ */
+ 
+          var shipmentValue =<%=total%>;
 			// Check if the entered value is a valid number
 			if (!isNaN(shipmentValue)) {
 				// Calculate SGST and CGST amounts (assuming 18% GST rate)
@@ -690,8 +713,9 @@
 	<script>
     function calculateTCS() {
      
-        var shipmentValue = parseFloat(document.getElementsByName("Shipment_Value1")[0].value);
-        
+      /*   var shipmentValue = parseFloat(document.getElementsByName("Shipment_Value1")[0].value);
+        */
+        var shipmentValue =<%=total%>;
        
         var millname = '<%= millname %>';
         

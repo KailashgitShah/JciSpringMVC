@@ -16,7 +16,8 @@ public interface MillReceiptDao {
 		public MillRecieptModel find(int id);
 		public void delete(int id);
 		public List<Object> fetchHODINO();
-		public  MillRecieptModel fetchdata(String st);
+		//public  MillRecieptModel fetchdata(String st);
+		public  List<Object[]> fetchdata(String st);
 		
 		public void UpdateContractstatus( String s);
 		public MillRecieptModel Creditqty(String st);

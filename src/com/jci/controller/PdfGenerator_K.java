@@ -232,7 +232,7 @@ public class PdfGenerator_K {
        
 		Paragraph paragraph6 = new Paragraph()
 		        .add(new Text("CHALLAN REF:").setFont(boldFont))
-		        .add(new Text("").setFont(normalFont));
+		        .add(new Text(challan_No1).setFont(normalFont));
 		cell52.add(paragraph6);
         contentTable.addCell(cell52);
         
@@ -312,8 +312,7 @@ public class PdfGenerator_K {
 		cell21.setBorderTop(new SolidBorder(borderWidth));
 		contentTable.addCell(cell21);
 
-//
-//		
+		
 		  Cell cell22 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		  cell22.setBorderRight(new SolidBorder(borderWidth));
 		  cell22.setBorderTop(new SolidBorder(borderWidth));
@@ -462,7 +461,7 @@ public class PdfGenerator_K {
         
 		
      String[] columnNames = {"SI NO", "HSN", "DESCRIPTION", "CROP YEAR", "BALE MARK", "VARIETY/GRADE", "NO OF BALES", "NOMINAL WT./BALE", "UNIT", "RATE (RS/UNIT)", "QTY", "TOTAL"};
-     float[] columnWidths = {3, 5, 7, 6, 4, 2, 1, 8, 1, 2, PageSize.A4.getWidth() * 0.1f, PageSize.A4.getWidth() * 0.1f};
+     float[] columnWidths = {2, 5, 5, 4, 4, 2, 1, 6, 2, 2, PageSize.A4.getWidth() * 0.1f, PageSize.A4.getWidth() * 0.1f};
      float totalWidth = 0;
      for (float width : columnWidths) {
          totalWidth += width;
@@ -684,15 +683,17 @@ public class PdfGenerator_K {
 	cell11376.setFont(boldFont);
 	cell11376.setHeight(minimumHeight);
 	contentTable36.addCell(cell11376);
-
+	
 	document.add(contentTable36);
  ConvertWord_k convertWord_k = new ConvertWord_k();
-	double invoiceDouble = Double.parseDouble(Invoice_Value); // Parse String to double
+ String stringValue5 = Float.toString(totalqty2);
+	double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
     int convertInt = (int) invoiceDouble;
 	String InvoiceNO = convertWord_k.convertToWords(convertInt);
 	
+	
     String staticTextBefore = "Invoice value in words : ";
-    String staticTextMid = " Rupees";
+    String staticTextMid = " Rupees ";
     String staticTextAfter = " Only";
    
      Paragraph dynamicParagraph = new Paragraph()

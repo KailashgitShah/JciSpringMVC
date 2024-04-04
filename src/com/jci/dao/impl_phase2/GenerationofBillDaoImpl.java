@@ -81,9 +81,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 		String sql="select  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Rate,Nominal_qty  from  jcidispatch_details_child where  Challan_no='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
-
-				
-	}
+    }
 
 	@Override
 	public String billofsupplyno(String st) {
@@ -100,7 +98,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]>ChallanNo(String st) {
-		String sql="select  Date_of_shipment,Mode_of_shipment,Vehicle_no,Driver_contact,License_no,Place_of_Shipment,Jute_value  from  jcidispatch_details where Challan_no ='" + st + "' ";
+		String sql="select  Date_of_shipment,Mode_of_shipment,Vehicle_no,Driver_name,License_no,Driver_contact from  jcidispatch_details where Challan_no ='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
 	}

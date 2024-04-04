@@ -57,19 +57,9 @@
             <% 
           
             List<Object>getdataList1=(List<Object>)request.getAttribute("getdataList1");
-		    
-		    String date = (String) request.getAttribute("parsed");
-		
-			 
-			%>
-         
-         
-         
-         
-         
-			
-            
-            <div class="page-content fade-in-up">
+            String date = (String) request.getAttribute("parsed");
+		%>
+          <div class="page-content fade-in-up">
                 <div class="row">
                     <div class="col-md-11">
                         <div class="ibox">
@@ -89,9 +79,10 @@
 													        String field1 = (String) data[0]; 
 													        String field2 = (String) data[1];
 													       
+													       
 													    %>
 													    
-													       <option value="<%= field2 %>"><%= field1  %></option>
+													       <option value="<%= field2 %>"><%= field1  %><%= field2  %></option>
 													    <%
 													    }
 													    %>
@@ -289,61 +280,61 @@
  </script>
 
 <script type="text/javascript">
-      
- $(document).ready(function() {
-	    $('#HODate').on('change', function() {
-	    var field2Value = $(this).val();
-	   
-	      $.ajax({
-	            type: 'GET',
-	            url: 'fetchingdata.obj',
-	            data: { "contractno": field2Value },
-	            success: function(data) {
-	            	alert(data);
-	            	
-	            	var data1 = JSON.parse(data);
-	                var Date_of_shipment = data1.Date_shipment;
-	                var mill = data1.Mill_id;
-	                alert(mill);
-	                var DI_Date = data1.Ho_date;
-	              
-	                
-	                var date = new Date(Date_of_shipment);
-                    var month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-	                var day = date.getDate().toString().padStart(2, '0');
-	                var year = date.getFullYear();
-	                var formattedDate = day + '/' + month + '/' + year;
-	              
-	                
-	                var date1 = new Date(DI_Date);
-                    var month1 = (date1.getMonth() + 1).toString().padStart(2, '0'); 
-	                var day1 = date1.getDate().toString().padStart(2, '0');
-	                var year1 = date1.getFullYear();
-	                var formattedDate1 = day1 + '/' + month1 + '/' + year1;
-	                
-	                $('#Challan_No12').val(data1.Challan_no);
-	                $('#Date_of_Shipment134').val(formattedDate); 
-	               /*  $('#Date_of_Shipment134').val(Date_of_shipment); */
-	                 $('#Vehicle_No').val(data1.Vehicle_no);
-	                 $('#Bale_Mark').val(data1.Bale_mark);
-	                 $('#juteewiseqty').val(data1.Jute_variety);
-	                 $('#Crop_Year').val(data1.Crop_year); 
-	                 $('#HO_Date1').val(formattedDate1);
-	                 $('#ChallanQty1').val(data1.Challan_qty);
-	                 $('#Millcode1').val(data1.Mill_id);
-	               
-	                 $('#Short_Qty1').val(data1.Actual_qty);
-	                 $('#Actual_Qty1').val(data1.Short_qty);
-	                 
-	            }
-	             
-	        }); 
-	    });
-	});
+$(document).ready(function() {
+    // When the element with ID 'HODate' changes
+    $('#HODate').on('change', function() {
+        // Get the selected value
+        var field2Value = $(this).val();
 
-      
-      </script> 
- 
+        // Function to format date
+        function formatDate(date) {
+            var day = date.getDate().toString().padStart(2, '0');
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var year = date.getFullYear();
+            return day + '/' + month + '/' + year;
+        }
+
+        // AJAX request
+        $.ajax({
+            type: 'GET',
+            url: 'fetchingdata.obj', // Make sure this URL is correct
+            data: { "contractno": field2Value }, // Data to send to the server
+            success: function(data) {
+                alert(data); // For debugging, remove in production
+
+                var dataArray = JSON.parse(data);
+
+                if (dataArray && dataArray.length > 0) {
+                  
+                    var Challan_no = dataArray[0][0];
+                    var Date_of_shipment = new Date(dataArray[0][1]); // Convert to date object
+                    var Vehicle_no = dataArray[0][2];
+                    var Bale_mark = dataArray[0][3];
+                    var Jute_variety = dataArray[0][4];
+                    var Crop_year = dataArray[0][5];
+                    var DI_Date = new Date(dataArray[0][6]); 
+                    var Actual_qty = dataArray[0][7];
+                    var Short_qty = dataArray[0][8];
+                    var Nominal_qty  = dataArray[0][9];
+
+                    // Set values to corresponding HTML elements
+                    $('#Challan_No12').val(Challan_no);
+                    $('#Date_of_Shipment134').val(formatDate(Date_of_shipment));
+                    $('#Vehicle_No').val(Vehicle_no);
+                    $('#Bale_Mark').val(Bale_mark);
+                    $('#juteewiseqty').val(Jute_variety);
+                    $('#Crop_Year').val(Crop_year);
+                    $('#HO_Date1').val(formatDate(DI_Date));
+                    $('#Short_Qty1').val(Actual_qty);
+                    $('#Actual_Qty1').val(Short_qty);
+                    $('#ChallanQty1').val(Nominal_qty);
+                    
+                }
+            }
+        });
+    });
+});
+</script>
  
  
  <script>

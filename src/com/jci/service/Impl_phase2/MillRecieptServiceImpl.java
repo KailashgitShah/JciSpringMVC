@@ -54,10 +54,10 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 	public void delete(int id) {
     	millRecieptDao.delete(id);
 	}
-    @Override
-	public  MillRecieptModel fetchdata( String st) {
-    	return millRecieptDao.fetchdata(st);
-	}
+//    @Override
+//	public  MillRecieptModel fetchdata( String st) {
+//    	return millRecieptDao.fetchdata(st);
+//	}
     
     
 	 @Override
@@ -74,4 +74,9 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 		public  MillRecieptModel Creditqty( String st) {
 	    	return millRecieptDao.Creditqty(st);
 		}
+	@Override
+	public List<Object[]> fetchdata(String st) {
+		
+		return millRecieptDao.fetchdata(st);
+	}
 }
