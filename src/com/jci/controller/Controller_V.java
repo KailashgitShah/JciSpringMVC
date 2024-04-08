@@ -387,8 +387,7 @@ public class Controller_V {
 				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
 				+ "Thanks & Regards \n " + "Jute Corporation Of India";
 
-		InternetAddress[] toAddresses = { new InternetAddress("cyfuturetest@gmail.com"),
-				new InternetAddress("pradeepcyf24@gmail.com") };
+		InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
 
 		SendMail sendMail = new SendMail();
 
@@ -574,7 +573,7 @@ public class Controller_V {
 	public ModelAndView EntryofpcsoModel(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("entryofpcso");
-		//String referenceno = request.getParameter("referenceno");
+		// String referenceno = request.getParameter("referenceno");
 //		if (referenceno != null) {
 //			String pcsodate = request.getParameter("pcsoDate");
 //			String pcsoReqdate = request.getParameter("pcsoReqDate");
@@ -652,7 +651,6 @@ public class Controller_V {
 					ll.add(entryofpcsoCopy);
 
 				}
-				
 
 			}
 
@@ -818,7 +816,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("pcsolist.obj"));
 	}
 
-	//get mill code for the particular pco date
+	// get mill code for the particular pco date
 	@ResponseBody
 	@RequestMapping(value = { "getMillCodeForPcoDate" }, method = { RequestMethod.GET })
 	public String getMillCodeForPcoDate(final HttpServletRequest request) {
@@ -834,7 +832,6 @@ public class Controller_V {
 	// Contract generation
 	// ---------------------------------------------------------
 
-	
 	// contract generation page
 	@RequestMapping("contractgenerationPCSOWise")
 	public ModelAndView contractgenerationShow(HttpServletRequest req) {
@@ -881,22 +878,22 @@ public class Controller_V {
 		String contractQty = (String) requestBody.get("contractQty");
 		String contractdate = (String) requestBody.get("contractdate");
 
-		ArrayList<String>  pcsoDate = (ArrayList<String> ) requestBody.get("pcsoDate");
-		String commaSeparatedPcsoDates = String.join(",", pcsoDate);
+		//ArrayList<String> pcsoDate = (ArrayList<String>) requestBody.get("pcsoDate");
+	//	String commaSeparatedPcsoDates = String.join(",", pcsoDate);
 
 		ArrayList<String> juteVariety = (ArrayList<String>) requestBody.get("juteGradesArray");
 		ArrayList<String> systemComp = (ArrayList<String>) requestBody.get("systemComp");
 		String gradeComp = (String) requestBody.get("gradeComp");
 //		String sysComArray = (String) requestBody.get("systemComp");
-		
 
 //		pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
-		//sysComArray = sysComArray.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+		// sysComArray = sysComArray.replaceAll("\\[", "").replaceAll("\\]",
+		// "").replaceAll("\"", "'");
 
 		final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
-	//	final List<String> sysCompList = Arrays.asList(sysComArray.split(","));
-		
+		// final List<String> sysCompList = Arrays.asList(sysComArray.split(","));
+
 //		for (String jutString : juteVariety)
 //			System.err.println(jutString);
 //
@@ -909,10 +906,7 @@ public class Controller_V {
 //		for (String s : gradeArray)
 //			System.err.println(s);
 
-	//	return null;
-		
-
-		
+		// return null;
 
 		// entry of grade composition....
 //
@@ -930,9 +924,9 @@ public class Controller_V {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
- 
-		//entry in the grade composition table
-		for(int i = 0 ; i < juteVariety.size() ; i++) {
+
+		// entry in the grade composition table
+		for (int i = 0; i < juteVariety.size(); i++) {
 			EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
 			Double ProposedValue = Double.parseDouble(gradeArray.get(i));
 			Double systemValue = Double.parseDouble(systemComp.get(i));
@@ -945,34 +939,47 @@ public class Controller_V {
 			entryofGradeCompositionModel.setLabel_name(lableName);
 			entryofGradeCompositionModel.setCreated_by(refId);
 			entryofGradeCompositionModel.setCreated_date(created_Date);
+			entryofGradeCompositionService.create(entryofGradeCompositionModel);
 		}
-			 
+
+		List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
 
 		for (Map<String, String> millDetail : millDetails) {
- 
+
 			Contractgeneration contractgeneration = new Contractgeneration();
 
 			Double juteValue = Double.parseDouble(millDetail.get("juteValue"));
 			String millCode = millDetail.get("millCode");
 			String millNameString = millDetail.get("millName");
-			
+
+			ArrayList<String> pcsoDateForMill = new ArrayList<>();
+			Object pcsoDateForMillObj = millDetail.get("pcsoDateForMill");
+			if (pcsoDateForMillObj instanceof ArrayList) {
+				pcsoDateForMill = (ArrayList<String>) pcsoDateForMillObj;
+			} else {
+				System.err.println("pcsoDateForMill is not an ArrayList<String>");
+			}
+
 			List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
-			
+
 			Double millQty = Double.parseDouble(millDetail.get("Qty"));
 			String deliveryType = millDetail.get("delivery_type");
 			String finalGeneratedContractNo = "JCI/" + millCode + "/" + cropYear + "/" + contractIdn;
+
+			 String commaSeparatedPcsoDates = String.join(",", pcsoDateForMill);
+
 			contractgeneration.setPcso_date(commaSeparatedPcsoDates);
 			contractgeneration.setContract_identification_no(contractIdn);
 			contractgeneration.setContract_qty(contractQty);
 			contractgeneration.setContract_date(contractdate);
 			contractgeneration.setDelivery_type(deliveryType);
 			contractgeneration.setContract_no(finalGeneratedContractNo);
-			
+
 			// contract value = 105% of jute value or fiberValue
 			contractgeneration.setContract_value(juteValue * 1.05);
 			// contract value LC = 110% of jute value or fiberValue
 			contractgeneration.setContractValueLc(juteValue * 1.1);
-			
+
 			contractgeneration.setCreated_date(new Date());
 			contractgeneration.setCreated_by(refId);
 			contractgeneration.setGrade_composition(lableName);
@@ -990,9 +997,10 @@ public class Controller_V {
 			LocalDate tenDaysAfter = currentDate.plusDays(10); // Add 10 days
 			contractgeneration.setPayment_duedate(tenDaysAfter.format(formatter));
 
+			System.err.println(contractgeneration.toString());
+
 			PdfGenerator pdfGenerator = new PdfGenerator();
-			List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
-		 
+		
 
 			String filePath = contractLetterPath + File.separator + contractIdn;
  
@@ -1021,16 +1029,16 @@ public class Controller_V {
 //					e.printStackTrace();
 //				}
 //			});
-			
+
 			// Authorization allotment
-			
-			if(juteValue > 40000000) {
+
+			if (juteValue > 40000000) {
 				contractgeneration.setAuthorizedBy("HO Operation");
-			}else {
+			} else {
 				contractgeneration.setAuthorizedBy("HO Manager");
 			}
 
-			contractGenerationService2.create(contractgeneration);
+			 contractGenerationService2.create(contractgeneration);
 		}
 
 		return "Saved";
@@ -1095,7 +1103,6 @@ public class Controller_V {
 		grades = grades.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		final List<String> gradeArray = Arrays.asList(grades.split(","));
 
-
 		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill, gradeArray);
 
 		return updatedVal + "";
@@ -1140,21 +1147,19 @@ public class Controller_V {
 		try {
 			String quotedContractString = quoteContractNo(contractNOString);
 			quotedContractString = quotedContractString.substring(0, quotedContractString.length() - 1);
-			
-		   	  
-        
+
 			contractGenerationService2.setContractAuthrizeStatus(quotedContractString);
 
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		  String date =  new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+		String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
 		for (String contract : contractNos) {
 			String[] contractNo = contract.split("/");
 
 			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
-			 
+
 			String filePath = contractNo[3] + File.separator + fileName;
 
 			String loginName = (String) request.getSession().getAttribute("loginName");
@@ -1178,8 +1183,7 @@ public class Controller_V {
 			// Add "Authorized By" content at the bottom
 			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase("Authorized By: " + loginName), 545, 50,
 					0);
-			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase(date), 540, 666,
-					0);
+			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase(date), 540, 666, 0);
 
 			// Close the PdfStamper
 			stamper.close();
@@ -1190,8 +1194,7 @@ public class Controller_V {
 				String sub = "Contract Details";
 				final String filePathDir = contractLetterPath + File.separator + filePath;
 				SendMail sendMail = new SendMail();
-				InternetAddress[] toAddresses = { new InternetAddress("cyfuturetest@gmail.com"),
-						new InternetAddress("pradeepcyf24@gmail.com") };
+				InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
 
 				CompletableFuture.runAsync(() -> {
 					try {

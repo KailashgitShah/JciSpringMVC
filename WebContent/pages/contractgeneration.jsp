@@ -464,7 +464,7 @@ var gradeArray = [];
 					async () => {
 						//alert("async");
 						//loader active 
-						await loader("block");
+						//await loader("block");
 										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
@@ -501,12 +501,25 @@ var gradeArray = [];
 						  var contractedValue = $(cells[cells.length - 2]).text();
 						  var Qty = $(cells[cells.length - 3]).text(); // Assuming Quantity is in the third last cell
 						  var delivery_type = $("#deliveryType"+index).val(); // Assuming this is in the last cell
+						  
+						  var pcsoDateForMill = [];
+						  
+						  for(var count=2 ; count < cells.length - 3 ; count++){
+							  if($(cells[count]).text() != 0){
+								  /* console.log(array[count-2] , $(cells[count]).text()); */
+								  pcsoDateForMill.push(array[count-2]);
+							  }
+						  }
+						  
+						 /*  console.log(pcsoDateForMill); */
+						  
 						  millDetails.push({
 							  "millCode" : millCode,
 							  "millName" : millName,
 							  "juteValue" : contractedValue,
 							  "Qty" : Qty,
-							  "delivery_type" : delivery_type
+							  "delivery_type" : delivery_type,
+							  "pcsoDateForMill" : pcsoDateForMill
 						  })
 
 						})
@@ -528,7 +541,9 @@ var gradeArray = [];
 		                        "systemComp" : sysComArry
 						 };
 						//alert(data);
-						//console.log(data);
+						console.log(data);
+						
+						//return false;
 					
                  if(jsonPcsoDates.length > 4){
                 	// alert("true");
@@ -544,9 +559,9 @@ var gradeArray = [];
 							  	//loader hide
 							
 								// window.open("authorization.obj");
-								//alert("data saved successfully !");
-								window.location.href = "authorization.obj";
-								await loader("none");
+								alert("data saved successfully !");
+								///window.location.href = "authorization.obj";
+								//await loader("none");
 								
 							},
 							error: function(xhr, status, error) {

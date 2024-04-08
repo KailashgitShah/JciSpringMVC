@@ -70,7 +70,7 @@ public class PdfGenerator {
 			add2 = row[1] + "";
 			areaAndpincode = row[2] + "-" + row[3];
 		}
-//		
+		
 //		System.err.println(add1);
 //		System.err.println(add2);
 //		System.err.println(areaAndpincode);
@@ -130,7 +130,7 @@ public class PdfGenerator {
 			Double rObject1 = Double.parseDouble(compList.get(i));
 			Object[] rObject2 = priceList.get(0);
 
-			Double composition = (rObject1 / 100) * qty * 10; // Qty in Qtls
+			Double composition = (rObject1 / 100) * qty; // Qty in Qtls
 			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
 			totalContractedprice += composition * priceDouble;
 
