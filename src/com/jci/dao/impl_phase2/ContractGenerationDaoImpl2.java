@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,7 +34,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	List<Double> pg = new ArrayList<>();
-	
+
 	@Override
 	public List<Object[]> getListOfGradesPrice(String cropYear) {
 		String sqlQueryToGetHighestPriceOfExGodown = "select top 1 grade1, grade2, grade3, grade4, grade5, grade6 from jcientry_derivative_price where grade1 + grade2 + grade3 + grade4 + grade5 + grade6 = (select Max(grade1+grade2+grade3+grade4+grade5+grade6) as SumGrades from jcientry_derivative_price where state_name='West Bengal' and crop_year='"
@@ -89,19 +90,24 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		List<Object[]> rows = new ArrayList<>();
 
-		StringBuilder querystr = new StringBuilder("SELECT  mill_name, mill_code,");
-		pcsoDates.forEach(date -> {
-			querystr.append("SUM(CASE WHEN pcso_date =" + date + "THEN Allocated_qty ELSE 0 END) AS " + date + ",");
-		});
+//		StringBuilder querystr = new StringBuilder("SELECT  mill_name, mill_code,");
+//		pcsoDates.forEach(date -> {
+//			querystr.append("SUM(CASE WHEN pcso_date =" + date + "THEN Allocated_qty ELSE 0 END) AS " + date + ",");
+//		});
+//
+//		querystr.deleteCharAt(querystr.length() -1);
+		
+		StringJoiner selectColumns = new StringJoiner(", ");
+		pcsoDates.forEach(date -> selectColumns.add("SUM(CASE WHEN pcso_date = " + date + " THEN Allocated_qty ELSE 0 END) AS " + date));
 
-		querystr.append(
-				"SUM(Allocated_qty) AS Total_Allocation FROM [XMWJCI].[dbo].[jcientryof_pcso] WHERE pcso_date IN (");
+		String querystr = "SELECT mill_name, mill_code, " + selectColumns.toString() + " , SUM(Allocated_qty) AS Total_Allocation FROM [XMWJCI].[dbo].[jcientryof_pcso] WHERE pcso_date IN (";
 
+		StringJoiner dateJoiner = new StringJoiner(", ");
 		pcsoDates.forEach(date -> {
-			querystr.append(date + ",");
+			dateJoiner.add(date);
 		});
-		querystr.deleteCharAt(querystr.length() - 1);
-		querystr.append(") GROUP BY mill_name, mill_code");
+		// querystr.deleteCharAt(uerystr.length() - 1);
+		querystr += dateJoiner +  ") GROUP BY mill_name, mill_code";
 
 		SQLQuery query = currentSession().createSQLQuery(querystr.toString());
 		rows = query.list();
@@ -138,31 +144,31 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		}
 
-		Double totalContractedValue = 0.0;
+		int totalContractedValue = 0;
 
-		List<Double> contractedValueList = new ArrayList<Double>();
+		List<Integer> contractedValueList = new ArrayList<Integer>();
 
 		for (Object[] row : rows) {
 			int size = row.length;
 			Double totalAllocatedToMill = (Double) row[size - 1];
 			int sizeOfComponents = pg.size() / 2;
-			Double contractedValueForPerticularMill = 0.0;
+			int contractedValueForPerticularMill = 0;
 			for (int j = 0; j < sizeOfComponents; j++) {
 //				System.out.println(
 //						Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
 				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
-						* (totalAllocatedToMill* 10 * pg.get(j));
+						* (totalAllocatedToMill * 10 * pg.get(j));
 			}
 //			System.out.println("-------------------------------------------");
 //			System.out.println(contractedValueForPerticularMill);
 //			System.out.println("-------------------------------------------");
-			contractedValueForPerticularMill = Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
+			//contractedValueForPerticularMill = Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
 			contractedValueList.add(contractedValueForPerticularMill);
-			//System.out.println("temp : " + contractedValueForPerticularMill);
+			// System.out.println("temp : " + contractedValueForPerticularMill);
 			totalContractedValue += contractedValueForPerticularMill;
 		}
-		totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
-	//	System.err.println(totalContractedValue);
+		//totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
+		// System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
@@ -229,13 +235,14 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		for (int j = 0; j < gradeArray.size(); j++) {
 
-			updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100) * (totalAllocatedToMill * 10 * pg.get(i));
+			updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100)
+					* (totalAllocatedToMill * 10 * pg.get(i));
 //			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
 //			System.err.println("j = " + j + " " + "i = " + i);
 			i++;
 		}
 
-		//System.err.println(updatedContractedValue);
+		// System.err.println(updatedContractedValue);
 
 		return updatedContractedValue;
 
@@ -243,7 +250,8 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public List<Contractgeneration> getContractFullDetails(String contractidn) {
-		String sql = "select * from jcicontract where Contract_identification_no = '" + contractidn + "' and Authorize_Status = 1";
+		String sql = "select * from jcicontract where Contract_identification_no = '" + contractidn
+				+ "' and Authorize_Status = 1";
 
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
 
@@ -260,7 +268,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			model.setDelivery_type((String) eleObjects[14]);
 			model.setContract_date((String) eleObjects[6]);
 			model.setPayment_duedate((String) eleObjects[21]);
-			model.setIntial_Payment_flag((int)eleObjects[17]);
+			model.setIntial_Payment_flag((int) eleObjects[17]);
 
 			listOfContract.add(model);
 		}
@@ -278,10 +286,11 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public List<Contractgeneration> getAllUnAuthorizedContract() {
-		
-		String roleName = (String)request.getSession().getAttribute("rolename");
-		
-		String sql = "select * from jcicontract where Authorized_By ='" + roleName + "' and Authorize_Status = 0 order by created_date desc";
+
+		String roleName = (String) request.getSession().getAttribute("rolename");
+
+		String sql = "select * from jcicontract where Authorized_By ='" + roleName
+				+ "' and Authorize_Status = 0 order by created_date desc";
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
 
 		List<Contractgeneration> listOfContract = new ArrayList<>();
@@ -297,8 +306,8 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			model.setDelivery_type((String) eleObjects[14]);
 			model.setContract_identification_no((String) eleObjects[7]);
 			model.setMill_qty((double) eleObjects[20]);
-			model.setJute_value((double) eleObjects[25]);
-			model.setContract_no( (String)eleObjects[8]);
+			model.setJute_value((int) eleObjects[25]);
+			model.setContract_no((String) eleObjects[8]);
 
 			listOfContract.add(model);
 		}
@@ -308,9 +317,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public void setContractAuthrizeStatus(String contractNo) {
-		String sqlString = "update jcicontract set Authorize_Status = 1 , Contract_date = FORMAT(GETDATE(), 'dd-MM-yyyy') where Contract_no in (" + contractNo + ")";
+		String sqlString = "update jcicontract set Authorize_Status = 1 , Contract_date = FORMAT(GETDATE(), 'dd-MM-yyyy') where Contract_no in ("
+				+ contractNo + ")";
 
-		currentSession().createSQLQuery(sqlString).executeUpdate();	
+		currentSession().createSQLQuery(sqlString).executeUpdate();
 	}
 
 }

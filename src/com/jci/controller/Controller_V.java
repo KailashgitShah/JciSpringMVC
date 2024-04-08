@@ -948,7 +948,7 @@ public class Controller_V {
 
 			Contractgeneration contractgeneration = new Contractgeneration();
 
-			Double juteValue = Double.parseDouble(millDetail.get("juteValue"));
+			int juteValue = Integer.parseInt(millDetail.get("juteValue"));
 			String millCode = millDetail.get("millCode");
 			String millNameString = millDetail.get("millName");
 
@@ -976,9 +976,9 @@ public class Controller_V {
 			contractgeneration.setContract_no(finalGeneratedContractNo);
 
 			// contract value = 105% of jute value or fiberValue
-			contractgeneration.setContract_value(juteValue * 1.05);
+			contractgeneration.setContract_value((int)(juteValue * 1.05));
 			// contract value LC = 110% of jute value or fiberValue
-			contractgeneration.setContractValueLc(juteValue * 1.1);
+			contractgeneration.setContractValueLc((int)(juteValue * 1.1));
 
 			contractgeneration.setCreated_date(new Date());
 			contractgeneration.setCreated_by(refId);

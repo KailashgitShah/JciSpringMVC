@@ -30,6 +30,10 @@
 	content: " *";
 	color: red;
 }
+
+.loader {
+	z-index: 9999;
+}
 </style>
 
 </head>
@@ -42,6 +46,10 @@ String contactIdnNo = "BT-" + count;
 %>
 
 <body class="fixed-navbar">
+	<div class="loader">
+		<img src="assets/img/1488.gif">
+	</div>
+
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -85,9 +93,9 @@ String contactIdnNo = "BT-" + count;
 										<div class="row">
 
 											<div class="col-sm-4 form-group">
-												<label  class="required">Available Qty</label> <input name="available_qty"
-													id="available_qty" type="number" class="form-control" min='0'
-													 />
+												<label class="required">Available Qty</label> <input
+													name="available_qty" id="available_qty" type="number"
+													class="form-control" min='0' />
 											</div>
 
 											<div class="col-sm-4 form-group">
@@ -129,14 +137,13 @@ String contactIdnNo = "BT-" + count;
 															value="<%=rate%>" id="system<%=i%>" readonly /></td>
 														<td class="col-sm-2"><input type="number"
 															name="proposed<%=i%>" id="grade<%=i%>" step="0.01"
-															class="clrPro form-control"  min="0"
-															required /></td>
+															class="clrPro form-control" min="0" required /></td>
 
 														<%
 														if (i == 1) {
 														%>
 														<td class="col-sm-2"><textarea name="remark"
-																id="remark" class="form-control" ></textarea></td>
+																id="remark" class="form-control"></textarea></td>
 														<%
 														}
 														%>
@@ -163,7 +170,7 @@ String contactIdnNo = "BT-" + count;
 
 									<div class="ibox-body" id="contractgeneration">
 
-								<div class="row">
+										<div class="row">
 											<div class="col-sm-4 form-group">
 												<label class="required">PCSO Date</label>
 
@@ -184,7 +191,7 @@ String contactIdnNo = "BT-" + count;
 													%>
 												</select>
 											</div>
-								
+
 
 											<div class="col-sm-3 form-group">
 
@@ -199,12 +206,13 @@ String contactIdnNo = "BT-" + count;
 													class="form-control" name="contract_qty" id="contract_qty"
 													type="number" readonly>
 											</div>
-									</div>
+										</div>
 
-										
+
 										<div id="list"></div>
 										<div>
-											<button class="btn btn-success float-right submit" type="submit">Submit</button>
+											<button class="btn btn-success float-right submit"
+												type="submit">Submit</button>
 										</div>
 									</div>
 
@@ -231,31 +239,31 @@ String contactIdnNo = "BT-" + count;
 
 
 	<div class="sidenav-backdrop backdrop"></div>
-  <div class="preloader-backdrop" id="loader">
-            <div class="page-preloader">Loading</div>
-      </div> 
+	<div class="preloader-backdrop" id="loader">
+		<div class="page-preloader">Loading</div>
+	</div>
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-			type="text/javascript"></script>
-		<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-			type="text/javascript"></script>
-		<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-			type="text/javascript"></script>
-		<script
-			src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-			type="text/javascript"></script>
-		<!-- PAGE LEVEL PLUGINS-->
-	
-		<!-- CORE SCRIPTS-->
-		<script src="assets/js/app.min.js" type="text/javascript"></script>
+	type="text/javascript"></script>
+<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+	type="text/javascript"></script>
+<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+	type="text/javascript"></script>
+<script
+	src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+	type="text/javascript"></script>
+<!-- PAGE LEVEL PLUGINS-->
+
+<!-- CORE SCRIPTS-->
+<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 <script>
 $("#pcso_date").chosen();
 $("#pcso_date").addClass("chosen-select");
 
-
+$(".loader").hide();
 
 async function loader(val) {
     await new Promise((resolve) => {
@@ -465,6 +473,9 @@ var gradeArray = [];
 						//alert("async");
 						//loader active 
 						//await loader("block");
+						
+						
+                         $(".loader").show();
 										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
@@ -559,8 +570,9 @@ var gradeArray = [];
 							  	//loader hide
 							
 								// window.open("authorization.obj");
+							  	$(".loader").hide()
 								alert("data saved successfully !");
-								///window.location.href = "authorization.obj";
+								window.location.href = "authorization.obj";
 								//await loader("none");
 								
 							},
