@@ -346,9 +346,12 @@ input[type="radio"] {
 					for (var j = 1; j <= columns - 1; j++) {
 						if ((variety === "Mesta" || variety === "Bimli")
 								&& j > 6) {
-							tableHTML += "<td><input class='cell-input' type='number' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
-						} else
-							tableHTML += "<td><input class='cell-input' type='number' min='0' name='" + selectedValue[i] + "-grade" + j + "' value='0' /></td>";
+							tableHTML += "<td><input class='cell-input' type='number' step='0.01' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
+						} 
+						else if((variety == "Tossa (New)"|| variety =="White (New)") && j>5)
+							tableHTML += "<td><input class='cell-input' type='number' step='0.01' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
+						else
+							tableHTML += "<td><input class='cell-input' type='number' step='0.01' min='0' name='" + selectedValue[i] + "-grade" + j + "' value='0' /></td>";
 					}
 
 					tableHTML += "<td id='total-" + i + "' class='row-total' style='text-align: center;''><strong><span>0</span></strong></td></tr>";
@@ -384,11 +387,11 @@ input[type="radio"] {
 												.find("input.cell-input")
 												.each(
 														function() {
-															rowTotal += parseInt($(
+															rowTotal += parseFloat($(
 																	this).val()) || 0;
 														});
 										$(this).html(
-												"<strong>" + rowTotal
+												"<strong>" + rowTotal.toFixed(2)
 														+ "</strong>");
 									});
 				}
@@ -403,7 +406,7 @@ input[type="radio"] {
 											var inputValue = $(this).val();
 											if (!isNaN(inputValue)
 													&& inputValue !== "") {
-												grandTotal += parseInt(
+												grandTotal += parseFloat(
 														inputValue, 10);
 											}
 										});
@@ -411,7 +414,7 @@ input[type="radio"] {
 
 					// Update the grand total cell
 					$("#grand-total").html(
-							"<strong>" + grandTotal + "</strong>");
+							"<strong>" + grandTotal.toFixed(2) + "</strong>");
 				}
 			} else {
 				$("#form2").empty();
@@ -541,8 +544,8 @@ input[type="radio"] {
 									}
 									var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8])
 											.toFixed(2);
-									console.log(parseInt(d[i][1] * d[2] / 100)
-											- parseInt(d[14][i - 8]));
+									console.log(parseFloat(d[i][1] * d[2] / 100)
+											- parseFloat(d[14][i - 8]));
 									contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>"
 											+ d[i][0]
 											+ "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>"
@@ -594,7 +597,7 @@ input[type="radio"] {
 
 								contentToDisplay += "</table><br>";
 
-								document.getElementById("IssQty").value = total;//Issued QTY
+								document.getElementById("IssQty").value = total.toFixed(2);//Issued QTY
 								contentToDisplay += "<br><h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Last Five DI's for the Particular Mill</h1><br>";
 								contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%; text-align: center;'>DI No.</th><th style='border: 1px solid black; width: 20%; text-align: center;'>To</th></tr>";
 								//alert(parseInt(d[16 + parseInt(d[15])])
@@ -602,9 +605,9 @@ input[type="radio"] {
 								//alert(size + 2);
 								for (var i = size + 1; i <= Math
 										.max(
-												parseInt(d[18 + parseInt(d[17])])
-														+ parseInt(18 + parseInt(d[17])),
-												parseInt(d[18 + parseInt(d[17])])); i++) {
+												parseFloat(d[18 + parseFloat(d[17])])
+														+ parseFloat(18 + parseFloat(d[17])),
+														parseFloat(d[18 + parseFloat(d[17])])); i++) {
 
 									contentToDisplay += "<tr><td style='border: 1px solid black;'><span style='color: blue; width: 50%;'>"
 											+ d[i][0]
@@ -757,13 +760,13 @@ input[type="radio"] {
 
 	<script>
 		function myFunc() {
-			var allow = parseInt(document.getElementById("qty").value);
-			var issued = parseInt(document.getElementById("IssQty").value);
+			var allow = parseFloat(document.getElementById("qty").value);
+			var issued = parseFloat(document.getElementById("IssQty").value);
 			var selectedValue = $("#jutevariety").val();
 			var n = selectedValue.length;
 
 			var total = 0;
-
+			//alert(issued+"issued");
 			// Function to check for total
 			for (var i = 0; i < n; i++) {
 				var variety = selectedValue[i];
@@ -777,7 +780,7 @@ input[type="radio"] {
 						inputName = variety + "-grade" + j;
 					}
 
-					var inputValue = parseInt($(
+					var inputValue = parseFloat($(
 							"input[name='" + inputName + "']").val()) || 0;
 					total += inputValue;
 				}
@@ -787,7 +790,7 @@ input[type="radio"] {
 			console.log("total: " + total);
 			console.log("allow: " + allow);
 
-			if (issued + total <= allow) {
+			if (issued + total <= allow && total>0) {
 				// alert("Form submitted successfully!");
 				return true; // Proceed with form submission
 			} else {

@@ -74,4 +74,13 @@ public class RoDispatchServiceImpl implements RoDispatchService{
 		
 	}
 
+	
+
+	@Override
+	public String dpcCheck(String dpc, String hoDIno) {
+		// TODO Auto-generated method stub
+		return roDispatchDao.dpcCheck(dpc,hoDIno);
+	}
+	
+
 }

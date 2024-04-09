@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.RoDispatchDao;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.RoDispatchModel;
@@ -106,8 +107,8 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	@Override
 	public List<String> getprevious(String diNo) {
 		// TODO Auto-generated method stub
-		String sqlString = "select RO_DI_NO , RO_DI_DATE, SUM([GR1_QTY]+[GR2_QTY]+[GR3_QTY]+[GR4_QTY]+[GR5_QTY]+[GR6_QTY]+[GR7_QTY]+[GR8_QTY]) AS Allocation from jciDI_ro where HO_DI_NO='"
-				+ diNo + "' group by RO_DI_NO,RO_DI_DATE;";
+		String sqlString = "select RO_DI_NO , RO_DI_DATE,DPC, SUM([GR1_QTY]+[GR2_QTY]+[GR3_QTY]+[GR4_QTY]+[GR5_QTY]+[GR6_QTY]+[GR7_QTY]+[GR8_QTY]) AS Allocation from jciDI_ro where HO_DI_NO='"
+				+ diNo + "' group by RO_DI_NO,RO_DI_DATE,DPC;";
 		List<String> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 	}
@@ -123,6 +124,16 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		currentSession().createSQLQuery(sqlString).executeUpdate();// for setting values only
 		return;
 		
+	}
+	@Override
+	public String dpcCheck(String dpc,String hoDIno) {
+		// TODO Auto-generated method stub
+		String sqlString = "SELECT CASE WHEN EXISTS " +
+                " (SELECT * FROM jciDI_ro WHERE HO_DI_NO = '" + hoDIno + "' AND DPC = '" + dpc + "') " +
+                " THEN '0' ELSE '1' END AS result;";
+
+		 String list = (String) currentSession().createSQLQuery(sqlString).uniqueResult();
+		 return list;
 	}
 
 }

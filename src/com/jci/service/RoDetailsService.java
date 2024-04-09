@@ -14,4 +14,6 @@ public interface RoDetailsService {
 	public List <RoDetailsModel> getAll();
 	public boolean submitform(RoDetailsModel roDetails);
 	public List<String> zonecode(String zoneCode);
+	public String dpcCheck(String dpc);
+	
 }

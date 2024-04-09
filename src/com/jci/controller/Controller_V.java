@@ -3828,7 +3828,15 @@ public class Controller_V {
 
 	}
 
-	
+	@ResponseBody
+	@RequestMapping(value = "dpcCheck", method = RequestMethod.GET)
+	public String dpcCheck(HttpServletRequest request, @RequestParam("dpc") String dpc, @RequestParam("hoDiNo") String hoDIno) {
+	    System.err.println("Reached ajax");
+	    final Gson gson = new Gson();
+	    String result = roDispatchService.dpcCheck(dpc, hoDIno);
+	    return gson.toJson(result);
+	}
+
 	//To get Ro Form
 
 
@@ -3860,7 +3868,7 @@ public class Controller_V {
 	// Save RO Multiple
 	@ResponseBody
 	@RequestMapping(value = "saveRoDi", method = { RequestMethod.POST })
-	public String saveRoDispatch(HttpServletRequest request, @RequestBody Map<String, Object> requestBody,
+	public String saveRoDispatch(@RequestBody Map<String, Object> requestBody,
 			RedirectAttributes redirectAttributes) throws ParseException {
 		List<Map<String, Object>> juteDetails = (List<Map<String, Object>>) requestBody.get("juteDetails");
 	
@@ -3965,7 +3973,7 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "fetchDetails", method = RequestMethod.GET)
 	public String fetchDetails(@RequestParam("diNo") String HOno) {
-		System.err.println("Reached");
+		
 		List<String> detailsList = (List<String>) roDispatchService.getDetails(HOno);
 
 		Gson gson = new Gson();

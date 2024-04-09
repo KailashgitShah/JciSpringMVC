@@ -25,4 +25,6 @@ public interface RoDispatchDao {
 	public List<String> getprevious(String diNo);
 
 	public void update(String contractNoString);
+
+	public String dpcCheck(String dpc, String hoDIno);
 }

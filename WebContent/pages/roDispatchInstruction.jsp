@@ -102,7 +102,10 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 							<div id='errorcontainer'
 								style='display: none; text-align: center;'></div>
+								<div id='dpcerror'
+								style='display: none; text-align: center;'></div>
 							<div class="ibox-body">
+							
 
 								<!-- <form action="saveRoDi.obj" method="POST"> -->
 								<div class="row">
@@ -126,12 +129,12 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 									<div class="col-sm-4 form-group">
 										<label>HO DI Date</label> <input class="form-control"
-											name="hoDiDate" id="hoDiDate" type="text" value="" readonly>
+											name="hoDiDate" id="hoDiDate" type="text" value="" placeholder="HO DI Date" readonly>
 									</div>
 
 									<div class="col-sm-4 form-group">
 										<label>Contract No</label> <input class="form-control "
-											name="contractNo" id="contractNo" type="text" value=""
+											name="contractNo" id="contractNo" type="text" placeholder="Contract No"  value=""
 											readonly>
 									</div>
 								</div>
@@ -140,13 +143,13 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 									<div class="col-sm-4 form-group">
 										<label>Contract Date</label> <input class="form-control"
-											name="contractDate" id="contractDate" type="text" value=""
+											name="contractDate" id="contractDate" placeholder="Contract Date" type="text" value=""
 											readonly>
 									</div>
 
 									<div class="col-sm-4 form-group">
 										<label>Crop year </label> <input class="form-control"
-											id="cropYear" name="CropYear" type="text" readonly>
+											id="cropYear" name="CropYear" placeholder="Crop Year" type="text" readonly>
 									</div>
 									<div class="col-sm-4 form-group">
 										<label>DPC</label> <span class="text-danger">* </span>&nbsp;<select
@@ -170,19 +173,19 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 
 									<div class="col-sm-4 form-group">
-										<label>RO DI No</label> <input class="form-control"
+										<label>RO DI No</label> <input placeholder="RO DI No" class="form-control"
 											name="roDiNo" id="roDiNo" type="text" readonly>
 									</div>
 
 									<div class="col-sm-4 form-group">
-										<label>RO DI Date</label> <input class="form-control"
+										<label>RO DI Date</label> <input class="form-control" placeholder="RO DI Date"
 											name="roDiDate" id="roDiDate" type="text" readonly>
 									</div>
 
 									<div class="col-sm-4 form-group">
 										<label>Last date of Shipment </label><span class="text-danger">*
 										</span>&nbsp;<input class="form-control" name="lastDateOfShipment"
-											id="lastDateOfShipment" type="date"
+											id="lastDateOfShipment" type="date" placeholder="Last Date of Shipment"
 											placeholder="last date of shipment" required />
 									</div>
 
@@ -201,17 +204,22 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 
 									<input type="hidden" name="allowedQty" id="allowedQty" />
-									<div class="col-sm-4 form-group">
+									
+
+								</div>
+								<div class="row">
+								<div class="col-sm-8 form-group">
 										<label id="lblName"></label>
 										<div id="form3"></div>
 										<span id="misQty"></span>
 									</div>
-
 								</div>
-								<div class="col-sm-4 form-group">
+								<div class="row">
+								<div class="col-sm-8 form-group">
 									<label id="lblName"></label>
 									<div id="form2"></div>
 									<span id="misQty"></span>
+								</div>
 								</div>
 								<br>
 								<div class="row">
@@ -233,7 +241,54 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+<script>
+//Bind change event handler to #hoDiNo and #dpc
+$('#hoDiNo, #dpc').change(function() {
+    // Retrieve values from the select elements
+    var dpc = $('#dpc').val();
+    var hoDiNo = $('#hoDiNo').val();
 
+    // Make the AJAX call
+    $.ajax({
+        type: "GET",
+        url: "dpcCheck.obj",
+        data: {
+            "dpc": dpc,
+            "hoDiNo": hoDiNo
+        },
+        success: function(result) {
+            var data = jQuery.parseJSON(result);
+            c1 = data; // Parsing and assigning the value
+
+            // Alert or use check1 within the success callback
+            //alert(c1);
+            console.log("check:---" + c1);
+            if(c1==="0"){
+            $('#submit').prop('disabled', true);
+            var errorMessage = " DI has been issued for this DPC/Cooperative" ;
+            var errorDiv = $("<div>").text(errorMessage).css({
+                "color": "red",
+                "font-weight": "bold"
+            });
+            $("#dpcerror").append(errorDiv).show(); // Show the error container
+            window.scrollTo(0, 0);
+            setTimeout(function() {
+                $("#dpcerror").empty().hide(); // Clear and hide the error message after 5 seconds
+            }, 5000);
+            }
+            else{
+            	 $("#dpcerror").empty().hide();
+            	 $('#submit').prop('disabled', false);
+            }
+            // Any further operations dependent on check1 should be done here
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + error);
+        }
+    });
+});
+
+</script>
 	<script>
 	// Get today's date in string format
 	const currentDate = new Date();
@@ -280,7 +335,10 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
       
 
 	            dpcDropdown.empty();
-
+				dpcDropdown.append($('<option>',{
+					value:"-1",
+					text:"Select"
+				}));
 	            allOptions.forEach(function(value) {
 	                dpcDropdown.append($('<option>', {
 	                    value: value,
@@ -336,10 +394,11 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	                var t1 = 0;
 
 	                for (var i = 1; i <= 8; i++) {
-	                    t1 += data.contractDetails[k][11 + i];
-	                    contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseFloat(data.contractDetails[k][11 + i]) + "' readonly></td>";
-
+	                    t1 += parseFloat(data.contractDetails[k][11 + i].toFixed(2));
+	                    contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='DI_" + k + i + "' style='width: 70px;' value='" + parseFloat(data.contractDetails[k][11 + i].toFixed(2))+ "' readonly></td>";
 	                }
+
+	                t1 = parseFloat(t1.toFixed(2)); 
 
 	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>" + t1 + "</td></tr>";
 	                contentToDisplay += "<tr>";
@@ -360,7 +419,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='total_bal" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
 
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>Enter Value</td>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>DI Issue</td>";
 
 	                for (var i = 1; i <= 8; i++) {
 	                    if (data.contractDetails[k][20] == "Mesta" || data.contractDetails[k][20] == "Bimli") {
@@ -369,7 +428,14 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	                        } else {
 	                            contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" + k+i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
 	                        }
-	                    } else {
+	                    }else if(data.contractDetails[k][20] == "White (New)" || data.contractDetails[k][20] == "Tossa (New)"){
+	                    	 if (i > 5) {
+		                        	contentToDisplay += "<td style='text-align: center; border: 1px solid black;' value='0'><input type='number' id='GR" + i + "_QTY' style='width: 70px;' value='0' disabled min='0'></td>";
+		                        } else {
+		                            contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" + k+i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
+		                        }
+	                    }
+	                    else {
 	                        contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" +k+ i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
 	                    }
 	                }
@@ -405,18 +471,19 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 						   var total =0;
 						   var total2=0;
 						    for (var j = 0; j < data[i].length; j++) {
-						        $("#form2 #alloc_" + i + (j + 1)).val(data[i][j]);
-						        $("#form2 #bal_" + i + (j + 1)).val($("#form2 #DI_" + i + (j + 1)).val() - data[i][j]);
+						        $("#form2 #alloc_" + i + (j + 1)).val(data[i][j].toFixed(2));
+						        $("#form2 #bal_" + i + (j + 1)).val(($("#form2 #DI_" + i + (j + 1)).val() - data[i][j]).toFixed(2));
+						        console.log( $("#form2 #bal_" + i + (j + 1)).val(($("#form2 #DI_" + i + (j + 1)).val() - data[i][j]).toFixed(2)));
 						        total += data[i][j];
-						        total2 += $("#form2 #DI_" + i + (j + 1)).val() - data[i][j];
+						        total2 += $("#form2 #DI_" + i + (j + 1)).val() - data[i][j].toFixed(2);
 						        /* alert(($("#form2 #DI_" + i + (j + 1)).val() - data[i][j])); */
-						         $("#form2 #GR" + i + (j + 1) + "_QTY").attr('max', ($("#form2 #DI_" + i + (j + 1)).val() - data[i][j]));
-						        console.log("#GR" + i + (j+1) + "_QTY"+":"+($("#form2 #DI_" + i + (j + 1)).val() - data[i][j]));
+						         $("#form2 #GR" + i + (j + 1) + "_QTY").attr('max', ($("#form2 #DI_" + i + (j + 1)).val() - data[i][j].toFixed(2)));
+						        console.log("#GR" + i + (j+1) + "_QTY"+":"+($("#form2 #DI_" + i + (j + 1)).val() - data[i][j].toFixed(2)));
 						        
 
 						    }
-						    $("#form2 #total_alloc"+i).val(total);
-							$("#form2 #total_bal"+i).val(total2);
+						    $("#form2 #total_alloc"+i).val(total.toFixed(2));
+							$("#form2 #total_bal"+i).val(total2.toFixed(2));
 						}
 
 					
@@ -468,6 +535,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	<script>
 $(document).ready(function() {
     // Define a function to gather data
+    var c1="";
     function gatherData() {
         var juteDetails = [];
          var flag = 1;
@@ -479,7 +547,7 @@ $(document).ready(function() {
             var values = [];
        	 	console.log(juteVar);
             // Check if the juteVar is not empty and not 'Allocated' or 'Balance'
-            if (juteVar == 'Enter Value') {
+            if (juteVar == 'DI Issue') {
                 // Loop through each input field in the row
                 $(row).find('input').each(function(i, input) {
                     var value = $(input).val() || '0'; // Use '0' if the value is not present
@@ -558,7 +626,7 @@ for (var i = 0; i < size.length; i++) {
 }
 
 //To check if Remarks is empty or not
-if($("#remarks").val().length ==0){
+if($("#remarks").val().length ==0 || $("#dpc").val() =="-1"){
 	 var errorMessage = " Fill all the marked fields" ;
      var errorDiv = $("<div>").text(errorMessage).css({
          "color": "red",
@@ -577,7 +645,7 @@ var total = 0;
 for (var i = 0; i < size.length; i++) {
     
     console.log("Jute variety:", size[i].juteVar);
-    // Check if the jute variety is "Enter Value"
+    // Check if the jute variety is "DI Issue"
     if (size[i].juteVar == "Mesta"||(size[i].juteVar == "Bimli")||(size[i].juteVar == "Tossa (New)")||(size[i].juteVar == "White (New)")) {
         
    		
@@ -606,12 +674,38 @@ if (total === 0) {
 }
 
 
+var dpc = $("#dpc").val();
+var hoDiNo = $("#hoDiNo").val();
 
 
-// If the code reaches this point, the comparisons were successful
-// Additional logic can be added here if needed
+/* $.ajax({
+    type: "GET",
+    url: "dpcCheck.obj",
+    data: {
+        "dpc": dpc,
+        "hoDiNo": hoDiNo
+    },
+   
+    success: function(result) {
+        var data = jQuery.parseJSON(result);
+        c1 = data; // Parsing and assigning the value
 
-        // Perform AJAX request to save the data
+        // Alert or use check1 within the success callback
+        //alert(c1);
+        console.log("check:---" + c1);
+        return false;
+        console.log("after cgeck");
+        // Any further operations dependent on check1 should be done here
+    },
+    error: function(xhr, status, error) {
+        console.error("Error: " + error);
+    }
+    
+}); */
+
+
+
+        //  AJAX request to save the data
         $.ajax({
             type: "POST",
             url: "saveRoDi.obj",
@@ -681,15 +775,15 @@ $("#hoDiNo").on("change", function() {
      		    var elementToUpdate = $("#form3");
  			    var contentToDisplay="<h5 style='text-align: center; text-decoration: underline; font-weight: bold;'>Previous Issued DI</h5>";
        		    contentToDisplay+="<table id='table_r' style='border-collapse: collapse; width: 100%;'>";
-             	contentToDisplay+="<tr><th style='border: 1px solid black; text-align: center;'>S.no</th><th style='border: 1px solid black; text-align: center;'>RO DI no.</th><th style='border: 1px solid black; text-align: center;'>RO DI Date</th><th style='border: 1px solid black; text-align: center;'>Allocated Qty(Qtls)</th></tr> ";
+             	contentToDisplay+="<tr><th style='border: 1px solid black; text-align: center;'>S.no</th><th style='border: 1px solid black; text-align: center;'>RO DI no.</th><th style='border: 1px solid black; text-align: center;'>RO DI Date</th><th style='border: 1px solid black; text-align: center;'>DPC/Cooperative</th><th style='border: 1px solid black; text-align: center;'>Allocated Qty(Qtls)</th></tr> ";
 				var totalAllocatedQty = 0; // Variable to store the total allocated quantity
 
 			for(var i=0; i<data.length; i++){
-			 contentToDisplay += "<tr><td style='border: 1px solid black; text-align: center; color: blue;'>" + (i + 1) + "</td><td style='border: 1px solid black; text-align: center; width: 30%; color: blue;'>" + data[i][0] + "</td><td style='border: 1px solid black; text-align: center; width: 60%; color: blue;'>" + data[i][1] + "</td><td style='border: 1px solid black; text-align: center; color: green;'>" + data[i][2] + "</td></tr>";
-  			  totalAllocatedQty += parseFloat(data[i][2]); // Accumulate the allocated quantity for total calculation
+			 contentToDisplay += "<tr><td style='border: 1px solid black; text-align: center; color: blue;'>" + (i + 1) + "</td><td style='border: 1px solid black; text-align: center; width: 30%; color: blue;'>" + data[i][0] + "</td><td style='border: 1px solid black; text-align: center; width: 60%; color: blue;'>" + data[i][1] + "</td><td style='border: 1px solid black; text-align: center; width: 60%; color: blue;'>" + data[i][2] + "</td><td style='border: 1px solid black; text-align: center; color: green;'>" + data[i][3] + "</td></tr>";
+  			  totalAllocatedQty += parseFloat(data[i][3].toFixed(2)) // Accumulate the allocated quantity for total calculation
 			}
 
-		contentToDisplay+="<tr><td colspan='3' style='text-align: right; border: 1px solid black; '>Total</td><td style='border: 1px solid black;  text-align: center;color: green;'>" + totalAllocatedQty + "</td></tr>"; // Adding the total row
+		contentToDisplay+="<tr><td colspan='4' style='text-align: right; border: 1px solid black; '><strong>Total</strong></td><td style='border: 1px solid black;  text-align: center;color: green;'>" + totalAllocatedQty.toFixed(2) + "</td></tr>"; // Adding the total row
 		contentToDisplay+="</table>";
 		elementToUpdate.html(contentToDisplay);
 
