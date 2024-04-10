@@ -4557,14 +4557,17 @@ public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttr
 
 	String mill_code = request.getParameter("mill_code");
 	String mill_emailaddress = request.getParameter("mill_emailaddress");
-	String mill_address = request.getParameter("mill_address");
+	
 	String mill_mobile= request.getParameter("mill_mobile");
+	String created_by_username = request.getParameter("created_by_username");
+	String created_by_rolename = request.getParameter("created_by_rolename");
 
 	// Creating object of
 
 	MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
 	millRegistrationModel.setMill_name(mill_name);
-	millRegistrationModel.setMill_address(mill_address);
+	millRegistrationModel.setCreated_by_username(created_by_username);
+	millRegistrationModel.setCreated_by_rolename(created_by_rolename);
 	millRegistrationModel.setMill_code(mill_code);
 	millRegistrationModel.setMill_emailaddress(mill_emailaddress);
 	millRegistrationModel.setMill_mobile(mill_mobile);
@@ -4606,16 +4609,16 @@ public ModelAndView login(HttpServletRequest request){
 }
 
 
-  @RequestMapping("milldash")
-  public ModelAndView millDashBoard(HttpServletRequest request){ 
-		/*
-		 * HttpSession session = request.getSession(); request.getSession();
-		 * session.invalidate();
-		 */
- ModelAndView mv = new ModelAndView("milldashboard");
-  
-  return mv;
-   }
+//  @RequestMapping("milldash")
+//  public ModelAndView millDashBoard(HttpServletRequest request){ 
+//		/*
+//		 * HttpSession session = request.getSession(); request.getSession();
+//		 * session.invalidate();
+//		 */
+// ModelAndView mv = new ModelAndView("milldashboard");
+//  
+//  return mv;
+//   }
  
 
 
@@ -4638,7 +4641,7 @@ public ModelAndView loginDetailsCheck1(HttpServletRequest request, RedirectAttri
             	//session.setAttribute("email", email);
             	session.setAttribute("millcode", millcode);
             	session.setAttribute("useremail", useremail);
-                mv = new ModelAndView(new RedirectView("milldash.obj"));
+                mv = new ModelAndView(new RedirectView("viewmillAcc.obj"));
                 
             }
         }

@@ -32,6 +32,7 @@ import org.hibernate.Query;
 @Transactional
 @Repository
 public class MillAcceptDaoImpl implements millAcceptDao{
+	
 	@Autowired
 	private HttpServletRequest request;
 
@@ -80,7 +81,8 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        String Contract_no = (String) row[0];
 	        String Contract_date = (String) row[1];
 	        String Contract_qty = (String) row[2];
-	        Double Contract_value =(Double) row[3]; // Use BigDecimal for Contract_value
+			/* Double Contract_value =(Double) row[3]; */ // Use BigDecimal for Contract_value
+	        Integer Contract_value =(Integer) row[3];
 	        String Payment_duedate = (String) row[4];
 	        int Contract_acceptance_flag = ((Number) row[5]).intValue();
 	        Long contract_id = ((BigDecimal) row[6]).longValue(); // Use BigDecimal's longValue()
@@ -91,8 +93,8 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        String CropYear =(String)row[10];
 	     
 	        String Intial_Payment_date = (String)row[11];
-	        Double  Contract_value_lc =(Double)row[12];
-	        Double Jute_value = (Double)row[13];
+	        Integer  Contract_value_lc =(Integer)row[12];
+	        Integer Jute_value = (Integer)row[13];
 	        String Contract_identification_no =(String)row[14];
 	        
 

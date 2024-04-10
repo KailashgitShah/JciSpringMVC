@@ -21,8 +21,8 @@ public class EmailSender {
                     //  String password = "Jute@1234";
                       
             	  
-            	// String smtpHost = "smtp.gmail.com";
-            	  String smtpHost = "smtp.gmailllll.com";
+            	 String smtpHost = "smtp.gmail.com";
+            	//  String smtpHost = "smtp.gmailllll.com";
           		int smtpPort = 587; // Use 587 for TLS or 465 for SSL
 
           		String username = "guptamansi7867@gmail.com";

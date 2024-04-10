@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%-- <!DOCTYPE html>
 <html lang="en">
 <%@page import="com.jci.model.UserRegistrationModel"%>
 <head>
@@ -143,8 +143,57 @@
                 
                     <div class="farmer-box">
                         <div class="famers-content">
-                            <ul>
-                            
+                             <ul>
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon.png"></span>
+                                        <p>Farmer's Registration</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon2.png"></span>
+                                        <p>Raw Jute Procurement& Payment</p>
+                                    </a>
+                                </li>
+
+                                <li class="">
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon8.png"></span>
+                                        <p>Progress of Assortment</p>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon3.png"></span>
+                                        <p>BIN Performance Calculation</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon4.png"></span>
+                                        <p>Market Arrival</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon5.png"></span>
+                                        <p>Sale of Raw Jute</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon6.png"></span>
+                                       <p>Despatch Instruction</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span><img src="assets/img/farm-icon7.png"></span>
+                                        <p>Despatch of Raw Jute</p>
+                                    </a>
+                                </li>
                             </ul>
                         </div><!-- famers-content -->
                     </div><!-- farmer-box -->
@@ -165,12 +214,12 @@
                         margin-left: 10px;
                     }
                 </style>
-                <style>
+           <!--      <style>
     .banner-image img {
         height: 1000px; /* Adjust the height as per your requirement */
         /* You can also use other CSS properties like max-height or min-height */
     }
-</style>
+</style> -->
                  
             </div>
             <!-- END PAGE CONTENT-->
@@ -210,3 +259,4 @@
 </html>  
                 
                 
+ --%>

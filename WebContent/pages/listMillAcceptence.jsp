@@ -153,7 +153,7 @@ input[type="file"] {
                  <!--    <li class="bell"><i class="fa fa-bell-o"></i>
                         <span>10</span>
                     </li> -->
-                    <li> <a class="dropdown-item" href="millLogin.obj"><i class="fa fa-power-off"></i>Logout</a></li>
+                    <li> <a class="dropdown-item" href="index.obj"><i class="fa fa-power-off"></i>Logout</a></li>
                    
                 </ul>
                 <!-- END TOP-RIGHT TOOLBAR-->
@@ -174,7 +174,7 @@ input[type="file"] {
         <!-- Sidebar 1 -->
         <%@ include file="sidebar.jsp"%> 
     </c:when>
-    <c:otherwise>
+  <c:otherwise>
         <!-- Sidebar 2 -->
         <style>
             body {
@@ -222,16 +222,16 @@ input[type="file"] {
 				</div>
             
             <div id="sidebar-collapse" class="sidebarleft">
-                <ul class="side-menu metismenu">
+               <!--  <ul class="side-menu metismenu">
                     <li><a href="milldash.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a></li>
-                </ul>
+                </ul> -->
 
                 <ul class="side-menu metismenu">
                     <li><a href="viewmillAcc.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Mill Acceptance list</span></a></li>
                 </ul>
             </div>
         </nav>
-    </c:otherwise>
+    </c:otherwise> 
 </c:choose>
 	
 		<!-- END SIDEBAR-->
@@ -293,7 +293,7 @@ input[type="file"] {
 											
 											<td>${item.getJute_value()}</td> 
 											
-											<td>${item.getContract_value()}</td>
+											 <td>${item.getContract_value()}</td> 
 											<td>${item.getContractValueLc()}</td>
 										
  											<td>  <a href="downloadSupportingDocumententMillAccept.obj?filename=${item. getContract_acceptance_doc()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	

@@ -9,7 +9,7 @@
 
 <%@page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
 
 <!DOCTYPE html>
@@ -116,7 +116,28 @@ input[type="file"] {
 	}
 </script>
 
+<%-- <script>
+    // Retrieve the value of the "username" session variable
+    var useremail = '<%=session.getAttribute("usrname")%>';
+    // Retrieve the value of the "rolename" session variable
+    var userole= '<%=session.getAttribute("rolename")%>
+	';
 
+	// Set the value of the input fields
+	document.getElementById("created_by_username").value = useremail;
+	document.getElementById("created_by_role").value = userole;
+</script> --%>
+<script>
+    // Retrieve the value of the "username" session variable
+    var useremail = '<%=session.getAttribute("username")%>';
+    // Retrieve the value of the "rolename" session variable
+    var userrole = '<%=session.getAttribute("rolename")%>
+	';
+
+	// Set the value of the input fields
+	document.getElementById("created_by_username").value = useremail;
+	document.getElementById("created_by_role").value = userole;
+</script>
 
 </head>
 
@@ -138,7 +159,7 @@ input[type="file"] {
 					<div class="col-md-11">
 						<div class="ibox">
 							<div class="ibox-head">
-								
+
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
@@ -161,6 +182,16 @@ input[type="file"] {
 
 											</select>
 										</div>
+										<div class="col-sm-4 form-group">
+											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
+											<span id="errEmail" name="errEmail" class="text-danger">
+											</span> <input class="form-control" autocomplete="off" type="text"
+												id="emailAddress" name="mill_emailaddress"
+												placeholder="Email address"
+												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+												onkeyup="validatemail()">
+
+										</div>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Password</label>
@@ -173,6 +204,11 @@ input[type="file"] {
 												class="fa fa-fw fa-eye field-icon toggle-password"></span>
 										</div>
 
+
+
+									</div>
+									<div class="row">
+
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Code</label> &nbsp;&nbsp;&nbsp;
 											<span id="errID" name="errID" class="text-danger"> </span><span
@@ -181,26 +217,24 @@ input[type="file"] {
 												placeholder=" Code" id="millunitcode" ReadOnly>
 										</div>
 
+
+
+										<div class="col-sm-4 form-group">
+											<label class="required">Created By UserName</label> <input
+												class="form-control" id="created_by_username"
+												name="created_by_username" value = "<%=session.getAttribute("usrname")%>"
+												placeholder="<%=session.getAttribute("usrname")%>" readonly>
+										</div>
+
+										<div class="col-sm-4 form-group">
+											<label class="required">Created By Role</label> <input
+												class="form-control" id="created_by_role"
+												name="created_by_rolename"
+												value="<%=session.getAttribute("rolename")%>"
+												placeholder="<%=session.getAttribute("rolename")%>" readonly>
+										</div>
 									</div>
 									<div class="row">
-
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
-											<span id="errEmail" name="errEmail" class="text-danger">
-											</span> <input class="form-control" autocomplete="off" type="text"
-												id="emailAddress" name="mill_emailaddress"
-												placeholder="Email address"
-												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-												onkeyup="validatemail()">
-
-										</div>
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Address</label>
-											&nbsp;&nbsp;&nbsp; <span id="errID" name="errID"
-												class="text-danger"> </span><span id="errID1" name="errID1"
-												class="text-danger"> </span> <input class="form-control"
-												name="mill_address" type="text" placeholder=" Address">
-										</div>
 										<div class="col-sm-4 form-group">
 											<label class="required">Mobile Number</label>
 											&nbsp;&nbsp;&nbsp; <span id="errMobile" name="errMobile"
@@ -216,9 +250,6 @@ input[type="file"] {
 
 											</div>
 										</div>
-
-
-
 
 									</div>
 
@@ -299,42 +330,57 @@ input[type="file"] {
 	}
 </script>
 <script type="text/javascript">
-		
-		$(document).ready(function() {
-			
+	$(document).ready(function() {
 
-			$('#Mill').on('change', function() {
-				
+		$('#Mill').on('change', function() {
 
-		var selectedOption = $(this).val();
-	
-		$.ajax({
-			type : 'GET', 
-			url : 'millcodefetch.obj', 
-			data : {
-		
-				millid : selectedOption
-				
-			}, 
-			success : function(data) {
-				
-			var response = JSON.parse(data);
-			 response[0]
-			$('#millunitcode').val( response[0]);
-				
-              
-			
+			var selectedOption = $(this).val();
 
-			},
-			error : function(err) {
-				// Handle errors here
-				console.error('AJAX request failed: ' + err);
-			}
+			$.ajax({
+				type : 'GET',
+				url : 'millcodefetch.obj',
+				data : {
 
-		});
+					millid : selectedOption
+
+				},
+				success : function(data) {
+
+					var response = JSON.parse(data);
+					response[0]
+					$('#millunitcode').val(response[0]);
+
+				},
+				error : function(err) {
+					// Handle errors here
+					console.error('AJAX request failed: ' + err);
+				}
+
 			});
 		});
-	</script>
+	});
+</script>
 
+<!-- CORE PLUGINS-->
+    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL SCRIPTS-->
+    <script type="text/javascript">
+        $(function() {
+            $('#example-table').DataTable({
+            	
+            	    fixedHeader: true
+            
+            });
+        })
+  
+    </script>
 </html>
 

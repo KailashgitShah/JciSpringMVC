@@ -91,12 +91,13 @@ th     { background:#eee; }
 									<th>Sl.No</th>
 									<th>Mill Name </th>
 										<th>Mill Code</th>
-										<th>Mill Email</th>
-										 
+										<th>Mill Email</th> 
 										 <th>Mill Password</th>
+										 <th>Mill Mobile Number</th>
+										<th>Created_by UserName</th>
+										<th>Created_by Role </th>
 										
-										<th>Mill Address</th>
-										<th>Mill Mobile Number</th>
+										
 										
 										 
 										
@@ -112,13 +113,13 @@ th     { background:#eee; }
 									<tr>
 									
 								     <td><%=i %></td>	
-								     <td>${item. getMill_name()}</td>
-								     
+								     <td>${item. getMill_name()}</td>								     
 								      <td>${item.getMill_code() }</td>
 								      <td>${item. getMill_emailaddress()}</td>
-								      <td>${item.getMill_password() }</td>
-								      <td>${item. getMill_address()}</td>
+								      <td>${item.getMill_password() }</td>		      
 								      <td>${item.getMill_mobile() }</td>
+								      <td>${item.getCreated_by_username()}</td>
+								 <td> ${item.getCreated_by_rolename()}</td>
 								     
 							
 						           </tr>

@@ -27,12 +27,18 @@ public class MillRegistrationModel {
 		@Column(name="mill_emailaddress")
 		private String mill_emailaddress;
 		
-		@Column(name = "mill_address")
-		private String mill_address;
-		
+//		@Column(name = "mill_address")
+//		private String mill_address;
+//		
 		@Column(name="mill_mobile")
 		private String mill_mobile;
-
+        
+		@Column(name="created_by_username")
+		private String created_by_username;
+		
+		@Column(name="created_by_rolename")
+		private String created_by_rolename;
+		
 		public Long getMillRegistration_id() {
 			return MillRegistration_id;
 		}
@@ -73,14 +79,7 @@ public class MillRegistrationModel {
 			this.mill_emailaddress = mill_emailaddress;
 		}
 
-		public String getMill_address() {
-			return mill_address;
-		}
-
-		public void setMill_address(String mill_address) {
-			this.mill_address = mill_address;
-		}
-
+	
 		public String getMill_mobile() {
 			return mill_mobile;
 		}
@@ -89,29 +88,49 @@ public class MillRegistrationModel {
 			this.mill_mobile = mill_mobile;
 		}
 
+		
+		public String getCreated_by_username() {
+			return created_by_username;
+		}
+
+		public void setCreated_by_username(String created_by_username) {
+			this.created_by_username = created_by_username;
+		}
+
+		public String getCreated_by_rolename() {
+			return created_by_rolename;
+		}
+
+		public void setCreated_by_rolename(String created_by_rolename) {
+			this.created_by_rolename = created_by_rolename;
+		}
+
 		public MillRegistrationModel() {
 			super();
 		}
 
 		public MillRegistrationModel(Long millRegistration_id, String mill_name, String mill_password, String mill_code,
-				String mill_emailaddress, String mill_address, String mill_mobile) {
+				String mill_emailaddress, String mill_mobile, String created_by_username, String created_by_rolename) {
 			super();
 			MillRegistration_id = millRegistration_id;
 			this.mill_name = mill_name;
 			this.mill_password = mill_password;
 			this.mill_code = mill_code;
 			this.mill_emailaddress = mill_emailaddress;
-			this.mill_address = mill_address;
 			this.mill_mobile = mill_mobile;
+			this.created_by_username = created_by_username;
+			this.created_by_rolename = created_by_rolename;
 		}
 
 		@Override
 		public String toString() {
 			return "MillRegistrationModel [MillRegistration_id=" + MillRegistration_id + ", mill_name=" + mill_name
 					+ ", mill_password=" + mill_password + ", mill_code=" + mill_code + ", mill_emailaddress="
-					+ mill_emailaddress + ", mill_address=" + mill_address + ", mill_mobile=" + mill_mobile + "]";
+					+ mill_emailaddress + ", mill_mobile=" + mill_mobile + ", created_by_username="
+					+ created_by_username + ", created_by_rolename=" + created_by_rolename + "]";
 		}
-		
+
+	
 		
 	 
 
