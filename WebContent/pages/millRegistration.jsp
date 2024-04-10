@@ -9,7 +9,7 @@
 
 <%@page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!DOCTYPE html>
@@ -116,28 +116,6 @@ input[type="file"] {
 	}
 </script>
 
-<%-- <script>
-    // Retrieve the value of the "username" session variable
-    var useremail = '<%=session.getAttribute("usrname")%>';
-    // Retrieve the value of the "rolename" session variable
-    var userole= '<%=session.getAttribute("rolename")%>
-	';
-
-	// Set the value of the input fields
-	document.getElementById("created_by_username").value = useremail;
-	document.getElementById("created_by_role").value = userole;
-</script> --%>
-<script>
-    // Retrieve the value of the "username" session variable
-    var useremail = '<%=session.getAttribute("username")%>';
-    // Retrieve the value of the "rolename" session variable
-    var userrole = '<%=session.getAttribute("rolename")%>
-	';
-
-	// Set the value of the input fields
-	document.getElementById("created_by_username").value = useremail;
-	document.getElementById("created_by_role").value = userole;
-</script>
 
 </head>
 
@@ -182,32 +160,34 @@ input[type="file"] {
 
 											</select>
 										</div>
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
-											<span id="errEmail" name="errEmail" class="text-danger">
-											</span> <input class="form-control" autocomplete="off" type="text"
-												id="emailAddress" name="mill_emailaddress"
-												placeholder="Email address"
-												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-												onkeyup="validatemail()">
-
-										</div>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Password</label>
 											&nbsp;&nbsp;&nbsp; <span id="errPass" name="errPass"
 												class="text-danger"> </span> <input id="password"
-												type="password" class="form-control" name="mill_password"
-												value="" placeholder="Password"
+												type="Password" class="form-control" name="mill_password"
+												value="" placeholder="Password" required
 												onblur="return matchpassword()"> <span
 												toggle="#password"
-												class="fa fa-fw fa-eye field-icon toggle-password"></span>
+												class="fa fa-fw fa-eye field-icon toggle-password"
+												onclick="togglePasswordVisibility()"></span>
 										</div>
 
 
+										<div class="col-sm-4 form-group">
+											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
+											<span id="errEmail" name="errEmail" class="text-danger">
+											</span> <input class="form-control" autocomplete="off" type="text"
+												id="emailAddress" name="mill_emailaddress"
+												placeholder="Email address" required
+												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+												onkeyup="validatemail()">
+
+										</div>
 
 									</div>
 									<div class="row">
+
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Code</label> &nbsp;&nbsp;&nbsp;
@@ -219,10 +199,13 @@ input[type="file"] {
 
 
 
+
+
 										<div class="col-sm-4 form-group">
 											<label class="required">Created By UserName</label> <input
 												class="form-control" id="created_by_username"
-												name="created_by_username" value = "<%=session.getAttribute("usrname")%>"
+												name="created_by_username"
+												value="<%=session.getAttribute("usrname")%>"
 												placeholder="<%=session.getAttribute("usrname")%>" readonly>
 										</div>
 
@@ -243,7 +226,7 @@ input[type="file"] {
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="basic-addon1">+91</span>
 												<input class="form-control" type="tel" maxlength="10"
-													minlength="10"
+													minlength="10" required
 													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
 													" id="mobile" name="mill_mobile"
 													title="10 digit mobile number" placeholder="Mobile Number">
@@ -275,7 +258,7 @@ input[type="file"] {
 				</div>
 				<div>
 					<ul>
-						<li>Length must be greater than or equal to <b>8</b>
+						<li>Password Length must be greater than or equal to <b>8</b>
 						</li>
 						<li>Must contain one or more <b>Uppercase</b> characters
 						</li>
@@ -301,34 +284,66 @@ input[type="file"] {
 
 
 
+	<script>
+		document.getElementById("emailAddress").addEventListener("input",
+				function(event) {
+					var email = event.target.value;
+					var errorSpan = document.getElementById("errEmail");
+					if (!isValidEmail(email)) {
+						errorSpan.textContent = "Invalid email address";
+						errorSpan.style.display = "inline";
+					} else {
+						errorSpan.textContent = "";
+						errorSpan.style.display = "none";
+					}
+				});
 
+		function isValidEmail(email) {
+			// Regular expression for basic email validation
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return emailRegex.test(email);
+		}
+	</script>
 
+	<script>
+		function matchpassword() {
 
+			var password = $("#password").val();
 
+			var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+			if (regex.test(password)) {
+				$("#errPass").hide();
+				$(':input[type="submit"]').prop('disabled', false);
+				return true;
+			} else {
+				document.getElementById("errPass").innerHTML = "Password didn't match with criteria!"
+				$("#errPass").show();
+				$(':input[type="submit"]').prop('disabled', true);
+				return false;
 
+			}
+		}
+	</script>
+	<script>
+		function togglePasswordVisibility() {
+			var passwordInput = document.getElementById("password");
+			var eyeIcon = document.querySelector(".toggle-password");
 
-
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+				eyeIcon.classList.remove("fa-eye");
+				eyeIcon.classList.add("fa-eye-slash");
+			} else {
+				passwordInput.type = "password";
+				eyeIcon.classList.remove("fa-eye-slash");
+				eyeIcon.classList.add("fa-eye");
+			}
+		}
+	</script>
 
 </body>
-<script>
-	function matchpassword() {
 
-		var password = $("#password").val();
 
-		var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-		if (regex.test(password)) {
-			$("#errPass").hide();
-			$(':input[type="submit"]').prop('disabled', false);
-			return true;
-		} else {
-			document.getElementById("errPass").innerHTML = "Password didn't match with criteria!"
-			$("#errPass").show();
-			$(':input[type="submit"]').prop('disabled', true);
-			return false;
-
-		}
-	}
-</script>
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -362,25 +377,31 @@ input[type="file"] {
 </script>
 
 <!-- CORE PLUGINS-->
-    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL PLUGINS-->
-    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <!-- CORE SCRIPTS-->
-    <script src="assets/js/app.min.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL SCRIPTS-->
-    <script type="text/javascript">
-        $(function() {
-            $('#example-table').DataTable({
-            	
-            	    fixedHeader: true
-            
-            });
-        })
-  
-    </script>
+<script src="./assets/vendors/jquery/dist/jquery.min.js"
+	type="text/javascript"></script>
+<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+	type="text/javascript"></script>
+<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+	type="text/javascript"></script>
+<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+	type="text/javascript"></script>
+<script
+	src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+	type="text/javascript"></script>
+<!-- PAGE LEVEL PLUGINS-->
+<script src="./assets/vendors/DataTables/datatables.min.js"
+	type="text/javascript"></script>
+<!-- CORE SCRIPTS-->
+<script src="assets/js/app.min.js" type="text/javascript"></script>
+<!-- PAGE LEVEL SCRIPTS-->
+<script type="text/javascript">
+	$(function() {
+		$('#example-table').DataTable({
+
+			fixedHeader : true
+
+		});
+	})
+</script>
 </html>
 
