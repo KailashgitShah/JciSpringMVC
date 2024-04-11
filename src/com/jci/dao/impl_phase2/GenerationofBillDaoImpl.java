@@ -98,8 +98,11 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]>ChallanNo(String st) {
-		String sql="select  Date_of_shipment,Mode_of_shipment,Vehicle_no,Driver_name,License_no,Driver_contact from  jcidispatch_details where Challan_no ='" + st + "' ";
-		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		String sql="SELECT  CONVERT(varchar, Date_of_shipment, 105) AS Date_of_shipment, Mode_of_shipment,Vehicle_no,\r\n"
+				+ "  Driver_name,License_no,Driver_contact FROM jcidispatch_details where Challan_no ='" + st + "' ";
+		//String sql="select  CONVERT(VARCHAR(10), Date_of_shipment, 105) AS Formatted_Date_of_shipment, ,Mode_of_shipment,Vehicle_no,Driver_name,License_no,Driver_contact from  jcidispatch_details where Challan_no ='" + st + "' ";
+		 
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
 	}
 
@@ -139,6 +142,14 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 		String sql="select Mill from  jcitds_entry ";
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> ShipmentDetails(String st) {
+		String sql="SELECT  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+		
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    return resultList1;
 	}
 
 

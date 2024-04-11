@@ -71,6 +71,7 @@
 			String challan_no = (String) request.getAttribute("challan_no");
 			String millname = (String) request.getAttribute("millname");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
+			List<Object[]>  Perticulargoods = (List<Object[]>) request.getAttribute("Perticulargoods");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String serverCurrentDate = dateFormat.format(new Date());
 			
@@ -162,59 +163,8 @@
 											</div>
 
 										</div>
-												
-										 <table id="Shipmenttabel" class="table table-bordered">
-											  
-											    <thead class="thead-light">
-											   
-											    <tr>
-											            <th style="width: 200px;">SHIPMENT DETAILS</th>
-											       </tr>
-											        <tr>
-											            <th>Date_of_shipment</th>
-											            <th>Mode_of_shipment</th>
-											            <th>Vehicle_no</th>
-											            <th>Driver_name</th>
-											            <th>License_no</th>
-											            <th>Driver_contact</th>
-											          
-											          
-											        </tr>
-											    </thead>
-											    <tbody>
-											        	<% 
-											        	
-											        	for (Object[] row : ShipmentDetails) {
-															%>
-															<tr>
-															<td><%= row[0] %></td>
-															<td><%= row[1] %></td>
-															<td><%= row[2] %></td>
-															<td><%= row[3] %></td>
-															<td><%= row[4] %></td>
-															<td><%= row[5] %></td>
-															
-															<% 
-															}
-											        	%>
-			
-													
-											    </tbody>
-											</table>
-										<div class="row">
-
-
-
-											<div class="col-sm-4 form-group">
-												<label>Shipment Value</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Shipment_Value1" min="0" value="<%=total %>" readonly="readonly"
-													 placeholder="Shipment_Value"
-													required   >
-											</div>
-											
-										</div> 
+										
+									
 
 
 									
@@ -333,18 +283,18 @@
 											<div class="col-sm-4 form-group">
 												<label>Supplier Name</label> <input
 													class="form-control taxtbox" name="Supplier_Name"
-													id="Supplier_Name"  value="The Jute Corporation of India limited"placeholder="Supplier_Name">
+													id="Supplier_Name"  value="The Jute Corporation of India limited"placeholder="Supplier_Name" readonly="readonly">
 											</div>
 
 											<div class="col-sm-4 form-group">
 												<label>Supplier GSTN</label> <input class="form-control"
 													name="Supplier_GSTN" id="Supplier_GSTN" value="19AABCT8820B1ZH"
-													placeholder="Supplier_GSTN">
+													placeholder="Supplier_GSTN" readonly="readonly">
 											</div>
 											<div class="col-sm-4 form-group">
 												<label>Supplier Address</label> <input class="form-control"
 													name="Supplier_Address" id="Supplier_Address" VALUE =" Sribash Angan Ghat(South) Road,PO+Bloc-Nabadwip Sub Div Krishnanagar,Dist-Nadia,741302"
-													placeholder="Supplier_Address">
+													placeholder="Supplier_Address" readonly="readonly">
 											</div>
 
 
@@ -352,9 +302,21 @@
 
 
 										</div>
-										<div class="row">
+										
+										
 										
 											
+											
+										<div class="row">
+										
+												<div class="col-sm-4 form-group">
+												<label>Shipment Value</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
+													class="text-danger"> </span> <input
+													class="form-control taxtbox" name="Shipment_Value1" min="0" value="<%=total %>" readonly="readonly"
+													 placeholder="Shipment_Value"
+													required   >
+											</div>
 											<div class="col-sm-4 form-group">
 												<label>TCS Amt</label> <input class="form-control taxtbox"
 													name="TCS_Amt" min="0" step="0.01" 
@@ -367,13 +329,7 @@
 													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*" required
 													id="TDS_Amt" placeholder="TDS_Amt">
 											</div>
-											<div class="col-sm-4 form-group">
-												<label>Financial year</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
-													class="text-danger"> </span> <input class="form-control"
-													name="Financial_year2" id="Financial_year1" value=""
-													readonly="readonly">
-											</div>
+											
 											<div class="col-sm-2 form-group" style="display: none;">
 												<label "display:none;">Clientstate </label> <span
 													class="text-danger">* </span>&nbsp; <span id="Contarct_no"
@@ -397,12 +353,126 @@
 											</div>
 											
 											
+									     	<%
+												for (Object[] row : ShipmentDetails) {
+												%>
+												<div class="col-sm-2 form-group">
+												    <label style="display:none;">Driver name</label>
+												    <span class="text-danger"> </span>
+												    <input type="hidden" class="form-control" name="Driver_name" id="Driver_name" value="<%= row[4] %>" readonly="readonly">
+												</div>
+												<div class="col-sm-2 form-group">
+												    <label style="display:none;">Driver Lic no</label>
+												    <span class="text-danger"> </span>
+												    <input type="hidden" class="form-control" name="Driver_Lic_no" id="Driver_Lic_no" value="<%= row[3] %>" readonly="readonly">
+												</div>
+												<div class="col-sm-2 form-group">
+												    <label style="display:none;">Vehicle no</label>
+												    <span class="text-danger"> </span>
+												    <input type="hidden" class="form-control" name="Vehicle_no" id="Vehicle_no" value="<%= row[2] %>" readonly="readonly">
+												</div>
+												<%
+												}
+												%>
+
 											
 											
 										
 										</div>
 										
+										<div class="row">
+										<div class="col-sm-4 form-group">
+												<label>Financial year</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
+													class="text-danger"> </span> <input class="form-control"
+													name="Financial_year2" id="Financial_year1" value=""
+													readonly="readonly">
+											</div>
+											
+												<div class="col-sm-4 form-group">
+												<label>Transit policy No</label> <span class="text-danger">*
+												</span>&nbsp; <input class="form-control"
+												oninput="this.value = this.value.toUpperCase();"
+													maxlength="16" type="text" pattern="[A-Za-z0-9/-]*"
+													name="TrnasitPolicyNo" id="TrnasitPolicyno" required 
+													>
+											</div>
+											
+										</div> 
 										
+												
+										 <table id="Shipmenttabel" class="table table-bordered">
+											  
+											    <thead class="thead-light">
+											   
+											    <tr>
+											            <th style="width: 200px;">SHIPMENT DETAILS</th>
+											       </tr>
+											        <tr>
+											            <th>Date_of_shipment</th>
+											            <th>Mode_of_shipment</th>
+											            <th>Vehicle_no</th>
+											            <th>Driver_name</th>
+											            <th>License_no</th>
+											            <th>Driver_contact</th>
+											          
+											          
+											        </tr>
+											    </thead>
+											    <tbody>
+											        	<% 
+											        	
+											        	for (Object[] row : ShipmentDetails) {
+															%>
+															<tr>
+															<td><%= row[0] %></td>
+															<td><%= row[1] %></td>
+															<td><%= row[2] %></td>
+															<td><%= row[3] %></td>
+															<td><%= row[4] %></td>
+															<td><%= row[5] %></td>
+															
+															<% 
+															}
+											        	%>
+			
+													
+											    </tbody>
+											</table>
+											
+												 <table id="shipmentdetailsTable" class="table table-bordered">
+											    <thead class="thead-light">
+											       <tr>
+											            <th style="width: 200px;">Particulars of Goods</th>
+											       </tr>
+											        <tr>
+											            <th>Crop year </th>
+											            <th> Bale Mark</th>
+											            <th>Variety Grade</th>
+											            <th> No of bales</th>
+											            <th>Nominal wt/bale</th>
+											            <th>Rate(RS/UNIT)</th>
+											          
+											        </tr>
+											    </thead>
+											    <tbody>
+											     <% 
+											        	
+											        	for (Object[] row : Perticulargoods) {
+															%>
+															<tr>
+															<td><%= row[0] %></td>
+															<td><%= row[1] %></td>
+															<td><%= row[2] %></td>
+															<td><%= row[3] %></td>
+															<td><%= row[4] %></td>
+															<td><%= row[5] %></td>
+															
+															<% 
+															}
+											        	%>
+											    </tbody>
+											</table>
 										
 								
 											
@@ -573,6 +643,7 @@
             url: 'fetchingdata1.obj',
             data: { "contractno": field2Value },
             success: function(data) {
+            	alert(data);
                
                 try {
                     var dataArray = JSON.parse(data);
@@ -594,6 +665,7 @@
                             url: 'contrcatnotomill.obj',
                             data: { "contractno": contractNo },
                             success: function(secondData) {
+                            	alert(secondData);
                             
                                 var dataArray = JSON.parse(secondData);
                               

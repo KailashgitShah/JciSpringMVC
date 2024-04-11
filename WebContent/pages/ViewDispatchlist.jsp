@@ -71,7 +71,7 @@
 
 			
 <%
-List<Object[]> allUserRegistration = (List<Object[]>) request.getAttribute("viewDispatchChallan");
+   List<Object[]> allUserRegistration = (List<Object[]>) request.getAttribute("viewDispatchChallan");
 %>
 
                   <div class="page-content fade-in-up">
@@ -90,7 +90,7 @@ List<Object[]> allUserRegistration = (List<Object[]>) request.getAttribute("view
 										<th>Sl.No</th>
 										
 										<th>Challan_no</th>
-										<th>Consignment_note</th>
+										<!-- <th>Consignment_note</th> -->
 										<th>Contract_No</th>
 										<th>Contract_date</th>
 										<th>Creation_date</th>
@@ -154,7 +154,7 @@ function formatDate(dateString) {
 									<tr>
 										<td><%=i%></td>
 										<td><%= row[0] %></td>
-										<td><%= row[1] %></td>
+										<%-- <td><%= row[1] %></td> --%>
 										<td><%= row[2] %></td>
 										<td><%= row[3] %></td>
 										<td><%= row[4] %></td>

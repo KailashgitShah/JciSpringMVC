@@ -10,6 +10,7 @@ public interface GenerationofBillDao {
 	  public void create(GenerationOfBillSupplyModel generationOfBillSupplyModel);
 	  public List<GenerationOfBillSupplyModel> getAll();
 	  public List<Object[]>ChallanNo( String st);
+	  public List<Object[]>ShipmentDetails( String st);
 	  public  List<Object[]> contarctno(String st);
 	  public  List<Object> millnamefromTCS();
 	  public  List<Object[]> contrcatnotomill(String st);

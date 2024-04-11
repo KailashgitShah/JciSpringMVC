@@ -2567,10 +2567,12 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 
-		// List<Object[]>getdataList = this.millRecieptService.fetchdata();
+		
 		List<Object> getdataList1 = this.millRecieptService.fetchHODINO();
+		List<Object[]> fetchMill_NameR = this.millRecieptService.fetchMill_NameR();
 
 		mv.addObject("getdataList1", getdataList1);
+		mv.addObject("fetchMill_NameR", fetchMill_NameR);
 		return mv;
 	}
 
@@ -2587,6 +2589,21 @@ public class Controller_V {
 		String resultString = new Gson().toJson(millRecieptModelt1);
 		return resultString;
 	}
+	
+	
+	
+//	
+//	@ResponseBody
+//	@RequestMapping(value = "millreceiptbased", method = RequestMethod.GET)
+//	public String millreceiptbased(@RequestParam("contractno") String contractno) {
+//		List<Object[]> Mill_NameR = millRecieptService.fetchHODINO(contractno);
+//		System.err.println("resultList++++++++++" + Mill_NameR);
+//		Gson gson = new Gson();
+//		String resultString = new Gson().toJson(Mill_NameR);
+//		return resultString;
+//	}
+//	
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
@@ -2702,11 +2719,17 @@ public class Controller_V {
 
 			millRecieptModel.setHO_di(HO_DI);
 			millRecieptModel.setChallan_no(Challan_No);
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(Date_of_Shipment);
-			System.err.println(date1);
-			// Date instdate1 = formatter1.parse(Date_of_Shipment);
-			millRecieptModel.setDate_shipment(date1);
+			
+//			SimpleDateFormat inputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+//	        SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+	       // Date date4 = inputFormatter.parse(Date_of_Shipment);
+            // Format the date to the desired format
+            //String formattedDate = outputFormatter.format(date4);
+            //System.out.println("Formatted date: " + formattedDate);
+			 //Date shipmentDate = dateFormat.parse(Date_of_Shipment);
+
+			millRecieptModel.setDate_shipment(Date_of_Shipment);
 			millRecieptModel.setVehicle_no(Vehicle_No);
 			millRecieptModel.setChallan_qty(Challan_Qty1);
 			millRecieptModel.setActual_qty(Actual_Qty1);
@@ -2724,7 +2747,7 @@ public class Controller_V {
 			millRecieptModel.setMr_date(MR_Date);
 
 			Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(HR_Date1);
-//				Date MR_Date3 = formatter1.parse(HR_Date1);
+				//Date MR_Date3 = formatter1.parse(HR_Date1);
 			millRecieptModel.setHo_date(date2);
 
 			// millRecieptModel.setMr_date(MR_Date);
@@ -2743,7 +2766,7 @@ public class Controller_V {
 			millRecieptModel.setClaim_status(2);
 
 			this.millRecieptService.create(millRecieptModel);
-			// this.millRecieptService.UpdateContractstatus(HO_DI);
+			this.millRecieptService.UpdateContractstatus(HO_DI);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
@@ -2970,7 +2993,9 @@ public class Controller_V {
 //			final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
 //			
 		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
+		List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
 		mv.addObject("ShipmentDetails", ShipmentDetails);
+		mv.addObject("Perticulargoods", Perticulargoods);
 
 		int allIndiaSerialNo = 1;
 		int stateSerialNo = 1;
@@ -3207,6 +3232,10 @@ public class Controller_V {
 			String Clientstate = request.getParameter("Clientstate");
 			String Clientcode = request.getParameter("Clientcode");
 			String ClientPan = request.getParameter("ClientPan");
+			String TrnasitPolicyNo = request.getParameter("TrnasitPolicyNo");
+			String Driver_name = request.getParameter("Driver_name");
+			String Driver_Lic_no = request.getParameter("Driver_Lic_no");
+			String Vehicle_no = request.getParameter("Vehicle_no");
 //		       // String QtyAllowed = request.getParameter("QtyAllowed");
 ////		        final String filename = SupportingDocument.getOriginalFilename();
 ////		        File serverFile = new File(theDir, filename);
@@ -3239,9 +3268,11 @@ public class Controller_V {
 			generationOfBillSupplyModel.setConsignee_gSTN(Consignee_GSTN);
 			generationOfBillSupplyModel.setConsignee_address(Consignee_Address);
 			generationOfBillSupplyModel.setContract_no(Conract_no);
+			generationOfBillSupplyModel.setTrnasitPolicyno(TrnasitPolicyNo);
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
+			 String ro_id = (String) request.getSession().getAttribute("regionId");
 			generationOfBillSupplyModel.setRo_id("1");
 			// generationOfBillSupplyModel.setBos_file_path("documents");
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
@@ -3258,7 +3289,7 @@ public class Controller_V {
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1,
 					Supplier_Name, Supplier_GSTN, Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address,
 					Consignee_Name, Consignee_GSTN, Consignee_Address, Bill_of_Supply, Conract_no, Clientstate,
-					Clientcode, ClientPan, BOS_Date, list);
+					Clientcode, ClientPan, BOS_Date,TrnasitPolicyNo,list,Vehicle_no,Driver_Lic_no,Driver_name);
 
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 

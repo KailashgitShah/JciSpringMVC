@@ -12,6 +12,7 @@ public interface GenerationofBillService {
 	
 	 public List<GenerationOfBillSupplyModel>getAll();
 	  public List<Object[]>ChallanNo(String st);
+	  public List<Object[]>ShipmentDetails(String st);
 	  public  List<Object[]>contarctno(String  st);
 	  public  List<Object[]>contrcatnotomill(String  st);
 	  public  List<Object>millnamefromTCS();

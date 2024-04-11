@@ -103,6 +103,14 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 
+
+	@Override
+	public List<Object[]> ShipmentDetails(String st) {
+		
+		return generationofBillDao.ShipmentDetails(st);
+	}
+
+
 	
 
 

@@ -69,17 +69,17 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		try 
 		  {
 			String sql = "select a.Contract_no, a.Contract_date,c.Payment_duedate, c.Contract_cancel_date ,d.Payment_id, f.Contracted_qty, f.Carrying_Cost_Charged\r\n"
-					+ "									from jcidispatch_details a left join jcicontract c on c.Contract_no = a.Contract_No left join\r\n"
-					+ "										jcipayment_arrangement d on d.Contract_No = a.Contract_No \r\n"
-					+ "											left join jcifinancial_concurrence f on f.Contractno = a.Contract_No \r\n"
-					+ "											   where f.Contractno = '" + st + "' ";
+					+ "		from jcidispatch_details a left join jcicontract c on c.Contract_no = a.Contract_No left join\r\n"
+					+ "		jcipayment_arrangement d on d.Contract_No = a.Contract_No \r\n"
+					+ "		left join jcifinancial_concurrence f on f.Contractno = a.Contract_No \r\n"
+					+ "		  where f.Contractno = '" + st + "' ";
     		
 	
 		
 		Session session = sessionFactory.getCurrentSession();
 		  Transaction tx = session.beginTransaction();
 		  SQLQuery query = session.createSQLQuery(sql);
-		  System.out.println("KKKKKKKKKKKK"+query);
+		
 		  result = query.list();
         for(  Object[] element:result) {
 	    	 
@@ -106,7 +106,7 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 	@Override
 	public List<Object> fetchcon_no() {
 	
-	  	String sql="select Contract_no from jcicontract   ";
+	  	String sql="select ContractNo from jciclaim_nomination   ";
 				
 		//String sql=" select dd.Challan_no,dd.Date_of_shipment,dd.Vehicle_no,dd.Bale_mark,dd.Jute_variety,dd.Crop_year,mr.MR_No from  jcidispatch_details as dd join jcimill_receipt as mr on dd.Dientry_id=mr.Mr_id ";
 

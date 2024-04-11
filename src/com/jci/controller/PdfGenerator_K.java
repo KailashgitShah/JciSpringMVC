@@ -66,7 +66,7 @@ public class PdfGenerator_K {
 	public String generateBillPdf( String  Invoice_Value, String challan_No1, String supplier_Name,
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
 			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
-			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan, List<Object[]> list) throws FileNotFoundException {
+			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name) throws FileNotFoundException {
 		
 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
@@ -173,8 +173,7 @@ public class PdfGenerator_K {
 		cell12.add(paragraph22);
         contentTable.addCell(cell12);
 
-//	
-//		
+	
 		Cell cell31 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		cell31.setBorderRight(new SolidBorder(borderWidth));
 		cell31.setBorderTop(new SolidBorder(borderWidth));
@@ -185,7 +184,7 @@ public class PdfGenerator_K {
         contentTable.addCell(cell31);
 		
 
-//		
+	
 		Cell cell32 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		cell32.setBorderRight(new SolidBorder(borderWidth));
 		cell32.setBorderTop(new SolidBorder(borderWidth));
@@ -725,7 +724,7 @@ public class PdfGenerator_K {
 	//cell11223.setBorderTop(new SolidBorder(borderWidth));
 	Paragraph paragraph224 = new Paragraph()
 	        .add(new Text("TRANSIT POLICY NO :").setFont(boldFont))
-	        .add(new Text(supplier_GSTN).setFont(normalFont));
+	        .add(new Text(TrnasitPolicyNo).setFont(normalFont));
 	cell11223.add(paragraph224);
     contentTable22.addCell(cell11223);
     
@@ -734,7 +733,7 @@ public class PdfGenerator_K {
     //cell11224.setBorderTop(new SolidBorder(borderWidth));
 	Paragraph paragraph225 = new Paragraph()
 	        .add(new Text("TRANSPORTER NAME:").setFont(boldFont))
-	        .add(new Text(supplier_GSTN).setFont(normalFont));
+	        .add(new Text(Driver_name).setFont(normalFont));
 	cell11224.add(paragraph225);
     contentTable22.addCell(cell11224);
     
@@ -742,11 +741,22 @@ public class PdfGenerator_K {
     cell11225.setBorderRight(new SolidBorder(borderWidth));
     //cell11225.setBorderTop(new SolidBorder(borderWidth));
 	Paragraph paragraph226 = new Paragraph()
-	        .add(new Text("TRUCK NO & DRIVER LIC NO :").setFont(boldFont))
-	        .add(new Text(supplier_GSTN).setFont(normalFont));
+	        .add(new Text("TRUCK NO :").setFont(boldFont))
+	        .add(new Text(Vehicle_no).setFont(normalFont));
 	cell11225.add(paragraph226);
     contentTable22.addCell(cell11225);
+  
+    
+    Cell cell11228 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+    cell11228.setBorderRight(new SolidBorder(borderWidth));
+    //cell11225.setBorderTop(new SolidBorder(borderWidth));
+	Paragraph paragraph228 = new Paragraph()
+	        .add(new Text("DRIVER LIC NO :").setFont(boldFont))
+	        .add(new Text(Driver_Lic_no).setFont(normalFont));
+	cell11228.add(paragraph228);
+    contentTable22.addCell(cell11228);
     document.add(contentTable22);
+    
  
     Paragraph spacingParagraph123 = new Paragraph("\n\n\n").setFixedLeading(10f); 
     document.add(spacingParagraph123);

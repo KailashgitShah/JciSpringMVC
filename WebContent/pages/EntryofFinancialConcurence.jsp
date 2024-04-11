@@ -408,7 +408,9 @@
 				    
 				    checkbox.change(function() {
 				        if (checkbox.is(':checked')) {
+				        	calculateGST();
 				            carryingCostFormGroup.show();
+				            
 				        } else {
 				            carryingCostFormGroup.hide();
 				            sgstAmtInput.value = 0; 

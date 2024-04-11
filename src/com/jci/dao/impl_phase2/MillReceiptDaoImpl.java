@@ -75,17 +75,6 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		}
 	 
 		
-//		  @Override 
-//		 public  List<Object[]> fetchdata(String st) {
-//			 String sql ="   SELECT  distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, c.Bale_mark, c.Jute_variety, c.Crop_year, a.DI_Date,c.Nominal_qty,s.Actual_qty, s.Short_qty  FROM jcicredit_note as s\r\n"
-//			 		+ "			  LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No  left join jcidispatch_details_child as c on c.Contract_No=a.Contract_No\r\n"
-//			 			+ "			  		  WHERE a.Contract_No =  '" +st+"'"; 
-//			 
-//			
-//			 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-//			 return resultList1;
-//
-//		  }  
 		  
 		  
 		
@@ -97,54 +86,32 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		  MillRecieptModel resultList1 =  new MillRecieptModel();
 		  try 
 		  { 
-			  //String sql ="SELECT a.Challan_no, a.Date_of_shipment, a.Vehicle_no, a.Bale_mark, a.Jute_variety, a.Crop_year, b.DI_Date FROM jcidispatch_details a left join jciDI_ho b on b.Contract_No = a.Contract_no WHERE a.Contract_No = '"  +st+"'"; 
 			  String sql ="SELECT Actual_qty,Short_qty  FROM jcicredit_note  WHERE Crn_id = 3"; 
 			 
 			  Session session = sessionFactory.getCurrentSession();
 			  Transaction tx = session.beginTransaction();
 			  SQLQuery query = session.createSQLQuery(sql);
-			  //System.out.println("KKKKKKKKKKKK"+query);
-		     list = query.list();
+			  list = query.list();
 		     
 		     
 		     for(  Object[] element:list) {
-		    	
-			      
-			      
-
-			      // Convert the float values to String and set them in the resultList1 model
-			      resultList1.setActual_qty((Double)element[0]);
+		    	 resultList1.setActual_qty((Double)element[0]);
 			      resultList1.setShort_qty((Double) element[1]);
-			     
-			   
-					/*
-					 * resultList1.setActual_qty((String)element[0]);
-					 * resultList1.setShort_qty((String)element[1]);
-					 */
-		    
-		      
-		    }
+			  }
 		  }
 		  catch (Exception e)
 		  {
 			  System.out.println(e.getLocalizedMessage());
 		  } 
-		  //this.sessionFactory.getCurrentSession().createSQLQuery(sql).setParameter( "st", st).list();
-		  return  resultList1;
+		    return  resultList1;
 		  
 		  }
 		 @Override
 			public List<Object> fetchHODINO() {
 			
-			  	String sql="SELECT  distinct b.DI_no, b.Contract_No,a.Mill_code\r\n"
-			  			+ "FROM jcicontract AS a\r\n"
-			  			+ "LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_no  WHERE b.Contract_No IS NOT NULL;\r\n"
-			  			+ "";
-						
-				//String sql=" select dd.Challan_no,dd.Date_of_shipment,dd.Vehicle_no,dd.Bale_mark,dd.Jute_variety,dd.Crop_year,mr.MR_No from  jcidispatch_details as dd join jcimill_receipt as mr on dd.Dientry_id=mr.Mr_id ";
-
-				//String sql="select Challan_no,Date_of_shipment,Vehicle_no,Bale_mark,Jute_variety,Crop_year from  jcidispatch_details";
-			    List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+			  	String sql=  "SELECT  distinct b.DI_no,a.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_no where b.Contract_no is not null ";
+				
+			  	 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			    return resultList1;
 
 //			 
@@ -160,9 +127,8 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 	@Override
 	public void UpdateContractstatus(String s) {
 		
-		 //String hql = "UPDATE jcicontract set Contract_status = ‘Mill Raised Claim’  where Payment_id = '" + id + "' ";
-		    
-		 String hql = "UPDATE jcicontract set Contract_status = ‘Mill Raised Claim’  where Payment_id = '" + s + "' ";
+		   
+		 String hql = "UPDATE jcicontract set Contract_status = ‘Mill Raised Claim’  where Contract_no = '" + s + "' ";
 		 this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 		
 	}
@@ -179,6 +145,15 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 			
 			 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			 return resultList1;
+	}
+
+	@Override
+	public List<Object[]> fetchMill_NameR() {
+		
+		String sql ="SELECT a.Mill_name, b.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
+			
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		 return resultList1;
 	}
 
 	  //  

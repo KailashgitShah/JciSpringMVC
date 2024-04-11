@@ -82,7 +82,7 @@
 													       
 													    %>
 													    
-													       <option value="<%= field2 %>"><%= field1  %><%= field2  %></option>
+													       <option value="<%= field2 %>"><%= field1  %></option>
 													    <%
 													    }
 													    %>

@@ -96,6 +96,17 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "Remarks")
 	private String Remarks;
+	
+	@Column(name = "TrnasitPolicyno")
+	private String TrnasitPolicyno;
+
+	public String getTrnasitPolicyno() {
+		return TrnasitPolicyno;
+	}
+
+	public void setTrnasitPolicyno(String trnasitPolicyno) {
+		TrnasitPolicyno = trnasitPolicyno;
+	}
 
 	public String getRemarks() {
 		return Remarks;

@@ -54,11 +54,7 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 	public void delete(int id) {
     	millRecieptDao.delete(id);
 	}
-//    @Override
-//	public  MillRecieptModel fetchdata( String st) {
-//    	return millRecieptDao.fetchdata(st);
-//	}
-    
+
     
 	 @Override
 		public List<Object> fetchHODINO() {
@@ -67,7 +63,6 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 	
 	@Override
 	public void UpdateContractstatus( String  s) {
-		// TODO Auto-generated method stub
 		 this.millRecieptDao.UpdateContractstatus(s);
 	}
 	 @Override
@@ -78,5 +73,9 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 	public List<Object[]> fetchdata(String st) {
 		
 		return millRecieptDao.fetchdata(st);
+	}
+	@Override
+	public List<Object[]> fetchMill_NameR() {
+		return millRecieptDao.fetchMill_NameR();
 	}
 }
