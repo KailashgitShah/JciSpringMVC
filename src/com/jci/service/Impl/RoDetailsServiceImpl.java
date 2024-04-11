@@ -66,4 +66,10 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 		// TODO Auto-generated method stub
 		return roDao.findregionbyid(region);
 	}
+
+	@Override
+	public String dpcCheck(String dpc) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

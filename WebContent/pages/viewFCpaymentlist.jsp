@@ -82,6 +82,7 @@
                                <thead>
 									<tr>
 										<th>Sl.No</th>
+										<th></th>
 										<th>Contract No.</th>
 										<th>Instrument No</th>
 										<th>Instrument Date</th>
@@ -94,7 +95,7 @@
 										<th>Last Shipment date</th>
 										<th>Auto Revolving Amount</th>
 										<th>Supporting Document</th>
-										<th></th>
+										
 										<th></th>
 									</tr>
 								</thead>
@@ -109,6 +110,12 @@
 									%>
 									<tr>
 										<td><%=i%></td>
+										<td>
+									    <a href="issuePaymentDetail.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>&contno=<%=entryPaymentDetailsModel.getContractno()%>">
+									        <button class="btn btn-primary custom-button" type="button" style="display: inline-block; width: 100px; height: 15px; border-radius: 5px;">Issue FC</button>
+									    </a>
+									</td> 
+									
 										<td><%= entryPaymentDetailsModel.getContractno() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
 										 <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
@@ -130,11 +137,6 @@
 								
 
 
-									<td>
-									    <a href="issuePaymentDetail.obj?id=<%=entryPaymentDetailsModel.getPayment_id()%>&contno=<%=entryPaymentDetailsModel.getContractno()%>">
-									        <button class="btn btn-primary custom-button" type="button">Issue FC</button>
-									    </a>
-									</td> 
 									
 						  
 									<!-- 	class="btn btn-danger custom-button" -->

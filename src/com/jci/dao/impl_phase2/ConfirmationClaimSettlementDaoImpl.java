@@ -51,7 +51,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
           
     }
 
-	
+//	
 	@Override
 	public List<Object[]>fetchdataofclaim( String st) {
 		String sql =" select MR_no,Bale_mark,Crop_year,Quality_claim,MoistureContent,NCV_percentage,Challan_no from jcimill_receipt WHERE HO_di =  '" +st+"'"; 

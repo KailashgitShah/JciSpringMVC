@@ -35,7 +35,7 @@ public class MillRecieptModel {
 	private String Challan_no;
 	
 	@Column( name = "Date_shipment")
-	private Date Date_shipment;
+	private String  Date_shipment;
 	
 	
 	
@@ -163,13 +163,13 @@ public class MillRecieptModel {
 	}
 
 
-	public Date getDate_shipment() {
+	public String getDate_shipment() {
 		return Date_shipment;
 	}
 
 
-	public void setDate_shipment(Date row) {
-		Date_shipment = row;
+	public void setDate_shipment(String instdate1) {
+		Date_shipment = instdate1;
 	}
 
 
@@ -353,7 +353,7 @@ public class MillRecieptModel {
 	}
 
 
-	public MillRecieptModel(BigInteger mr_id, String hO_di, Date ho_date, String challan_no, Date date_shipment,
+	public MillRecieptModel(BigInteger mr_id, String hO_di, Date ho_date, String challan_no, String date_shipment,
 			String vehicle_no, Double challan_qty, String jute_variety, Double actual_qty, String bale_mark,
 			String crop_year, dispatchdetailModel dispathcDetailModel, String quality_claim, Double moistureContent,
 			Double nCV_percentage, Double nCV_qty, String mR_no, Date mr_date, Double mR_qty, Double short_qty,
