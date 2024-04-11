@@ -152,7 +152,7 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 											id="cropYear" name="CropYear" placeholder="Crop Year" type="text" readonly>
 									</div>
 									<div class="col-sm-4 form-group">
-										<label>DPC</label> <span class="text-danger">* </span>&nbsp;<select
+										<label>DPC/Cooperative</label> <span class="text-danger">* </span>&nbsp;<select
 											name="dpc" id="dpc" class="form-control" required>
 											<option value="-1" disabled selected>-Select-</option>
 											<%
