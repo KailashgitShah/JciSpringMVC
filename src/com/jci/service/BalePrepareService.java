@@ -12,6 +12,6 @@ public interface BalePrepareService {
 	public BalePreparation find(int id);
 	public List<BalePreparation> getAll(String place_of_packing, String regionId, String zoneId);
 	public boolean submitform(BalePreparation Zone);
-	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate);
+	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate, String cropyear, String basis);
 	
 }

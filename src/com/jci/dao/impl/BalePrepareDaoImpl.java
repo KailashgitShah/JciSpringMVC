@@ -142,8 +142,61 @@ public class BalePrepareDaoImpl implements  BalePrepareDao {
 	}
 
 	@Override
-	public List<BalePreparation> getbyFilter(String dpc, String fromdate, String todate) {
-		String querystr = "SELECT pur.centername,bale.* FROM jcibalepreparation bale left join jcipurchasecenter pur on bale.place_of_packing = pur.CENTER_CODE where bale.place_of_packing = '"+dpc+"' and packing_date between '"+fromdate+"' and'"+todate+"'";
+	public List<BalePreparation> getbyFilter(String dpc, String fromdate, String todate,String cropyear, String basiss) {
+		//String querystr = "SELECT pur.centername,bale.* FROM jcibalepreparation bale left join jcipurchasecenter pur on bale.place_of_packing = pur.CENTER_CODE where bale.place_of_packing = '"+dpc+"' and packing_date between '"+fromdate+"' and'"+todate+"' and bale.basis = '"+basiss+"' and bale.crop_year = '"+cropyear+"'";
+				
+				String querystr = "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%1' AND bale.crop_year = '"+cropyear+"' AND bale.basis = '"+todate+"' AND bale.place_of_packing = '"+todate+"' and bale.jute_variety='"+todate+"' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%2' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Tossa (New)' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%3' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Tossa (New)' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%4' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Tossa (New)' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%5' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Tossa (New)' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%6' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Tossa (New)' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%7' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Tossa (New)' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety,bale.packing_date " +
+		                "UNION ALL " +
+		                "SELECT pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, bale.jute_variety, bale.packing_date, SUM(bale.bale_no) as balesum " +
+		                "FROM jcibalepreparation bale " +
+		                "LEFT JOIN jcipurchasecenter pur ON bale.place_of_packing = pur.CENTER_CODE " +
+		                "WHERE bale.jute_grade LIKE '%8' AND bale.crop_year = '2023-2024' AND bale.basis = 'MSP' AND bale.place_of_packing = '0084' and bale.jute_variety='Bimli' " +
+		                "GROUP BY pur.centername, bale.jute_grade, bale.bin_no, bale.crop_year, b";
+
+	
+				
+				
+				
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);

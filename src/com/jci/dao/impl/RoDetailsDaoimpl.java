@@ -84,4 +84,17 @@ public class RoDetailsDaoimpl implements RoDetailsDao {
 		}
 		return result;
 	}
+
+	@Override
+	public String getRoname(String region_id) {
+		// TODO Auto-generated method stub
+
+		String querystr = "select roname from jcirodetails where rocode ='" + region_id + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		String region = query.list().get(0).toString();
+		return region;
+
+	}
 }

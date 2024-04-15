@@ -51,8 +51,8 @@ public class BalePrepareServiceImpl implements BalePrepareService	{
 		return balePrepare.submitform(BalePreparation);
 	}
 
-	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate){
-		return balePrepare.getbyFilter(dpc,fromdate, todate);
+	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate,String cropyear, String basis){
+		return balePrepare.getbyFilter(dpc,fromdate, todate,cropyear,basis);
 	}
 
 }

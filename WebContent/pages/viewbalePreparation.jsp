@@ -56,7 +56,7 @@
                     <div class="ibox-body">
                     <form action = "getBalesData.obj"  onsubmit = "return validation()">
                     <div class="row">
-				<div class="col-sm-4 form-group">
+				<div class="col-sm-3 form-group">
 											<label id="zoneLabel" class="required">Zone</label>  &nbsp;&nbsp;&nbsp; <span id="errZone" name="errZone" class="text-danger"> </span>
 											<%
 												List<ZoneModel> zoneList = (List<ZoneModel>) request.getAttribute("zoneList");
@@ -72,7 +72,7 @@
 												%>
 											</select>
 												</div>
-			<div class="col-sm-4 form-group">
+			<div class="col-sm-3 form-group">
 											<label id="regionLabel" class="required">Region</label>&nbsp;&nbsp;&nbsp; <span id="errRegion" name="errRegion" class="text-danger"> </span>
 											<!-- <input class="form-control" type="text" name="region" placeholder="Region" required> -->
 											<select class="form-control" name="region" id="region">
@@ -80,32 +80,48 @@
 											</select>
 										</div>
 										
-		   <div class="col-sm-4 form-group">
+		   <div class="col-sm-3 form-group">
 											<label id="dpclabel" class="required">DPC</label> &nbsp;&nbsp;&nbsp; <span id="errDPC" name="errDPC" class="text-danger"> </span>
 											<select class="form-control" name="dpc" id="dpc">
 												<option disabled selected value>-Select-</option>
 											</select>
 										</div>
-									
-			</div>
-			<div class ="row">
-			 <div class="col-sm-4 form-group">
+		   <div class="col-sm-3 form-group">
 											<label>From Date</label> 
 											<span class="text-danger">* </span>&nbsp; <span id="errfromdate" name="errfromdate"
 												class="text-danger"> </span>
 											<input class="form-control" name="fromdate" id="fromdate"  placeholder="dd-mm-yyyy" value="" readonly>
 										</div>
-			<div class="col-sm-4 form-group">
+			</div>
+			<div class ="row">
+			
+			<div class="col-sm-3 form-group">
 											<label>To Date</label> 
 											<span class="text-danger">* </span>&nbsp; <span id="errtodate" name="errtodate"
 												class="text-danger"> </span>
 											<input class="form-control" name="todate" id="todate"  placeholder="dd-mm-yyyy" value="" readonly>
 										</div>
-			<div class="col-sm-4 form-group">
-										<label> </label> &nbsp;&nbsp;&nbsp; 
-										
-										<input type = "submit" id="search" value ="search" class="btn btn-primary"/ style ="display: block;">
+			
+			 <div class="col-sm-3 form-group">
+											<label class="required">Crop Year</label> 
+											<select class="form-control" name="cropyear" id="cropyear">
+												<option disabled selected value>-Select-</option>
+												<option value="2022-2023">2022-2023</option>
+												<option value="2023-2024">2023-2024</option>
+											</select>
 										</div>
+			 <div class="col-sm-3 form-group">
+											<label class="required">Basis</label>
+											<select class="form-control" name="basis" id="basis">
+												<option disabled selected value>-Select-</option>
+												 <option value="MSP">MSP</option>
+                                                 <option value="Commercial">Commercial</option>
+											</select>
+										</div>
+			<div class="col-sm-3 form-group">
+										<label> </label>
+										<input type = "submit" id="search" value ="search" class="btn btn-primary"/ style ="display: block;">
+										</div>																					
 			</div>
 			</form>
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
@@ -123,9 +139,6 @@
 									    <th>Jute Grade</th>
 										<th>Place Of Packing</th>
 									    <th>Bale No</th>							
-										
-										<!-- <th></th>
-										<th></th> -->
 									</tr>
 								</thead>
 								<tbody>

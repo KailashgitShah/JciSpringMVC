@@ -196,8 +196,9 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao{
         String ptsid = result1.toString(); 
         ptsid = result1.toString() .replace("]", "");
         ptsid = ptsid.toString() .replace("[", "");
-        
-        querystr1 = "SELECT DISTINCT\n" + 
+        //ptsid = "0000000";
+        System.out.println("ptsid=="+ptsid);
+        querystr1 = "SELECT DISTINCT \n" + 
                   "round(sum(j1.grade1*j1.netquantity)/sum(j1.netquantity),2) as gr1,\n" + 
                   "round(sum(j1.grade2*j1.netquantity)/sum(j1.netquantity),2) as gr2,\n" + 
                   "round(sum(j1.grade3*j1.netquantity)/sum(j1.netquantity),2) as gr3,\n" + 
@@ -256,9 +257,7 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao{
               double grade6 =((BigDecimal)o[6]).doubleValue();
               double grade7 =((BigDecimal)o[7]).doubleValue();
               final SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
-            //  System.out.println("date purchase = "+o[8]);
               String datepurchase =(String)o[8];
-             // System.out.println("date purchase = "+datepurchase);
               String basis= (String)o[13];
               dailyPurchaseConfModel.setGrade1(grade0);
               dailyPurchaseConfModel.setGrade2(grade1);
@@ -270,12 +269,10 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao{
               dailyPurchaseConfModel.setGrade8(grade7);
               dailyPurchaseConfModel.setDatepurchase(datepurchase);
               dailyPurchaseConfModel.setBinno((int)o[15]);
-            //  System.out.println("o[17]"+o[17]);
-           dailyPurchaseConfModel.setGquantity(((BigDecimal)o[17]).toString());  //gross qty
-            // System.out.println("o[17] = "+ ((BigDecimal)o[17]).toString());
-           dailyPurchaseConfModel.setDquantity(((BigDecimal)o[18]).toString()); // deduction qty
+              dailyPurchaseConfModel.setGquantity(((BigDecimal)o[17]).toString());  //gross qty
+              dailyPurchaseConfModel.setDquantity(((BigDecimal)o[18]).toString()); // deduction qty
               
-        dailyPurchaseConfModel.setFibervalue(((BigDecimal)o[16]).doubleValue()); //amount payable
+              dailyPurchaseConfModel.setFibervalue(((BigDecimal)o[16]).doubleValue()); //amount payable
               
               if(basis.equalsIgnoreCase("commercial")) {
                    querystr = "SELECT top 1 grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8 FROM jcijutepricesforcommercial where CONVERT( date, effectDate ,105) <= GETDATE() and crop_yr='"+cropyr + "' and jute_variety like '"+ variety+"%' and dpc like '%"+dpcid+"%'"+"order by id desc ";

@@ -634,7 +634,6 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 				// Object[] row = result.get(0);
 				for (Object[] row : result) {
 					PurchaseRegisterDTO purchaseRegister = new PurchaseRegisterDTO();
-					
 					purchaseRegister.setRegionId((String) row[0]);
 					purchaseRegister.setCentername((String) row[1]);
 					purchaseRegister.setTallyslipno((String) row[2]);
@@ -654,7 +653,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 					purchaseRegister.setFarmername((String) row[16]);
 					purchaseRegister.setRate_slipno((int) row[17]);
 					purchaseRegister.setTally_status((String) row[18]);
-					//System.err.println("purchaseRegister___________"+purchaseRegister);
+					System.err.println("purchaseRegister___________"+purchaseRegister);
 					r.add(purchaseRegister);
 				}
 				return r;

@@ -13,6 +13,6 @@ public interface BalePrepareDao {
 	public BalePreparation find(int id);
 	public List <BalePreparation> getAll(String place_of_packing, String regionId, String zoneId);
 	public boolean submitform(BalePreparation BalePreparation);
-	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate);
+	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate, String cropyear, String basis);
 
 }

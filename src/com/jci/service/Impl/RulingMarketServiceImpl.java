@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jci.dao.RulingMarketDao;
+import com.jci.model.MarkerArrivalModelDTO;
 import com.jci.model.RulingMarket;
 import com.jci.service.RulingMarketService;
 
@@ -48,6 +49,18 @@ public class RulingMarketServiceImpl implements RulingMarketService {
 	@Override
 	public boolean submitform(RulingMarket rulingMarket) {
 		return rulingDao.submitform(rulingMarket);
+	}
+
+	@Override
+	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id) {
+		// TODO Auto-generated method stub
+		return rulingDao.MarketArrivalList(arrivaldate, region_id);
+	}
+
+	@Override
+	public String getdatArrival(String arrivaldate) {
+		// TODO Auto-generated method stub
+		return rulingDao.getdatArrival(arrivaldate);
 	}
 
 }

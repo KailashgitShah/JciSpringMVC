@@ -60,4 +60,10 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 	public List<String> zonecode(String zoneCode) {
 		return roDao.zonecode(zoneCode);
 	}
+
+	@Override
+	public String getRoname(String region_id) {
+		// TODO Auto-generated method stub
+		return roDao.getRoname(region_id);
+	}
 }

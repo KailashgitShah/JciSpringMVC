@@ -2,6 +2,7 @@ package com.jci.dao;
 
 import java.util.List;
 
+import com.jci.model.MarkerArrivalModelDTO;
 import com.jci.model.RulingMarket;
 public interface RulingMarketDao {
 	public void create(RulingMarket RulingMarket);
@@ -11,4 +12,6 @@ public interface RulingMarketDao {
 	public RulingMarket find(int id);
 	public List <RulingMarket> getAll();
 	public boolean submitform(RulingMarket RulingMarket);
+	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id);
+	public String getdatArrival(String arrivaldate);
 }

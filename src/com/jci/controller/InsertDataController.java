@@ -1,6 +1,7 @@
 package com.jci.controller;
 import org.apache.log4j.LogManager;
 import com.jci.model.MSPPriceCalculationModel;
+import com.jci.model.MarkerArrivalModelDTO;
 import com.jci.model.RulingMarket;
 import com.jci.model.BatchIdentificationModel;
 import com.jci.model.BinListFromDbDTO;
@@ -5749,9 +5750,11 @@ System.out.println();
 	            final String dpc = request.getParameter("dpc");
 	            final String fromdate = request.getParameter("fromdate");
 	            final String todate = request.getParameter("todate");
+	            final String cropyear = request.getParameter("cropyear");
+	            final String basis = request.getParameter("basis");
 	            
 	            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
-	    		viewBale = (List<BalePreparation>)this.balePrepareService.getbyFilter(dpc,fromdate,  todate);
+	    		viewBale = (List<BalePreparation>)this.balePrepareService.getbyFilter(dpc,fromdate,todate,cropyear,basis);
 	    		final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
 	            mv.addObject("zoneList", (Object)zoneList);
 	            mv.addObject("viewBalePreparation", (Object)viewBale);
@@ -5873,19 +5876,44 @@ System.out.println();
 	        return mv;
 	    }
 	    
-	    @RequestMapping({ "purchaseslisting" })
-	    public ModelAndView purchaseslisting(final HttpServletRequest request,HttpServletResponse response,final RedirectAttributes redirectAttributes) throws ParseException, IOException {
+		    @RequestMapping({ "purchaseslisting" })
+		    public ModelAndView purchaseslisting(final HttpServletRequest request,HttpServletResponse response,final RedirectAttributes redirectAttributes) throws ParseException, IOException {
+		    	String cropyear = request.getParameter("cropyear");
+		    	String Placeofp = request.getParameter("dpc");
+		    	String basis = request.getParameter("basis");
+		    	String pdateFrom = request.getParameter("purchasesdatefrom");
+		    	String pdateTo = request.getParameter("purchasesdateto");
+		    	SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
+		        Date date = sdfInput.parse(pdateFrom);
+		        Date date1 = sdfInput.parse(pdateTo);
+			    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			    String purchasesdateFrom = formatter.format(date);
+			    String purchasesdateTo = formatter.format(date1);
+		    	ModelAndView mv = new ModelAndView("PurchaseListDownload");
+	
+		        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase(cropyear,Placeofp,basis,purchasesdateFrom,purchasesdateTo);
+		        System.out.println("purchaselist__________"+purchaselist.toString());
+		        if(purchaselist ==null)
+		    	{
+	                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+	                return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
+		    	}
+		        mv.addObject("purchaselist",(Object)purchaselist);
+		        mv.addObject("cropyear",(Object)cropyear);
+		        mv.addObject("Placeofp",(Object)Placeofp);
+		        mv.addObject("basis",(Object)basis);
+		        mv.addObject("purchasesdateFrom",(Object)purchasesdateFrom);
+		        mv.addObject("purchasesdateTo",(Object)purchasesdateTo);
+			    return mv;
+		    }
+	    
+	    @RequestMapping({ "purchaseslist_download" })
+	    public ModelAndView purchaseslist_download(final HttpServletRequest request,HttpServletResponse response,final RedirectAttributes redirectAttributes) throws ParseException, IOException {
 	    	String cropyear = request.getParameter("cropyear");
 	    	String Placeofp = request.getParameter("dpc");
 	    	String basis = request.getParameter("basis");
-	    	String pdateFrom = request.getParameter("purchasesdatefrom");
-	    	String pdateTo = request.getParameter("purchasesdateto");
-	    	SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
-	        Date date = sdfInput.parse(pdateFrom);
-	        Date date1 = sdfInput.parse(pdateTo);
-		    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		    String purchasesdateFrom = formatter.format(date);
-		    String purchasesdateTo = formatter.format(date1);
+	    	String purchasesdateFrom = request.getParameter("purchasesdatefrom");
+	    	String purchasesdateTo = request.getParameter("purchasesdateto");
 	    	ModelAndView mv = new ModelAndView("PurchaseRegisterList");
 
 	        final List<PurchaseRegisterDTO> purchaselist = (List<PurchaseRegisterDTO>)this.verifyTallySlipService.getAllPurchase(cropyear,Placeofp,basis,purchasesdateFrom,purchasesdateTo);
@@ -5921,10 +5949,10 @@ System.out.println();
 	    
 		        try {
 		        	//local file location
-		        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
+		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
 		        	
 		        	//live file location
-		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
+		        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
 		        	
                     Map<String, Object> parameters = new HashMap<String, Object>();
                     // Prepare data sources
@@ -5951,5 +5979,130 @@ System.out.println();
              }
 
 		  return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
+	    }
+	    @RequestMapping(value = { "MarketArrival" })
+	    public ModelAndView MarketArrival(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	    	String username =(String)request.getSession().getAttribute("usrname");
+	    	ModelAndView mv = new ModelAndView("MarketArrivalList");
+	    	 if(username == null) {
+	         	return new ModelAndView("index");
+	             }
+	        try {
+	          
+	                final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
+	                mv.addObject("regionList", (Object)regionList);
+	           
+	        }
+	        catch (Exception e) {
+	            System.out.println(e.getLocalizedMessage());
+	        }
+	         
+	        return mv;
+	    }
+	    
+	    @RequestMapping(value = { "MarketArrivalList" })
+	    public ModelAndView MarketArrivalList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) throws ParseException {
+	    	String username =(String)request.getSession().getAttribute("usrname");
+	    	 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    	 DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    	 final String datearrival = request.getParameter("datearrival");
+	    	  Date date = inputFormat.parse(datearrival);
+               System.out.println("arrivaldate=="+datearrival);
+               String arrivaldate = outputFormat.format(date);
+	    	   final String region_id = request.getParameter("region_id");
+
+	    	ModelAndView mv = new ModelAndView("marketArrivalReport");
+	    	 if(username == null) {
+	         	return new ModelAndView("index");
+	             }
+	        try {
+	            final String dpc = request.getParameter("dpc");
+	            final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldate,region_id);
+	           
+	            if(allMarketArrival ==null)
+	            {
+	                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+	                return new ModelAndView((View)new RedirectView("MarketArrival.obj"));
+		    	}
+	            String roName = this.roService.getRoname(region_id);
+	            String dateArrival = this.rulingMarketService.getdatArrival(arrivaldate);
+	            System.out.println("allMarketArrival==="+allMarketArrival);
+	            
+	               mv.addObject("allMarketArrival", (Object)allMarketArrival);
+	               mv.addObject("roName", (Object)roName);
+	               mv.addObject("region_id", (Object)region_id);
+	               mv.addObject("dateArrival", (Object)dateArrival);
+	           
+	        }
+	        catch (Exception e) {
+	            System.out.println(e.getLocalizedMessage());
+	        }
+	         
+	        return mv;
+	    }
+	    
+	    @RequestMapping(value = { "MarketArrivalDownload" })
+	    public ModelAndView MarketArrivalDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) throws ParseException {
+	    	String username =(String)request.getSession().getAttribute("usrname");
+	    	 final String arrivaldate = request.getParameter("datearrival");
+	    	 final String region_id = request.getParameter("region_id");
+	    	 ModelAndView mv = new ModelAndView("marketArrivalReport");
+	    	 if(username == null)
+	    	     {
+	         	   return new ModelAndView("index");
+	             }
+	        try {
+	            final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldate,region_id);
+	            String roname =   roService.getRoname(region_id);
+	            
+	            double qtytotal = 0.0;
+	            double g2total = 0.0;
+	            double g3total = 0.0;
+	            double g4total = 0.0;
+	            double g5total = 0.0;
+	            for(MarkerArrivalModelDTO marketlist : allMarketArrival)
+	            {
+	                qtytotal += Double.valueOf(marketlist.getArrivedqty());
+	            	g2total += marketlist.getGrade2();
+	            	g3total += marketlist.getGrade3();
+	            	g4total += marketlist.getGrade4();
+	            	g5total += marketlist.getGrade5();
+
+	            	marketlist.setQtytotal(qtytotal);
+	            	marketlist.setG2total(g2total);
+	            	marketlist.setG3total(g3total);
+	            	marketlist.setG4total(g4total);
+	            	marketlist.setG5total(g5total);
+	            	marketlist.setRo_name(roname);
+	            }
+	            mv.addObject("allMarketArrival", (Object)allMarketArrival);
+	               
+			        	//local file location
+			        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\MarketArrival.jrxml");
+			        	
+			        	//live file location
+			        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
+			        	
+	                    Map<String, Object> parameters = new HashMap<String, Object>();
+	                    // Prepare data sources
+	                    JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allMarketArrival);
+
+	                    // Fill JasperPrints
+	                    JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	                 response.setHeader("Content-Disposition", "attachment; filename=MarketArrivalReport.pdf");
+	                 try (OutputStream out = response.getOutputStream()) {
+	                     JRPdfExporter exporter = new JRPdfExporter();
+	                     exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	                  //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+	                     exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	                     exporter.exportReport();
+	                 }
+	               
+	        }
+	        catch (Exception e) {
+	            System.out.println(e.getLocalizedMessage());
+	        }
+	         
+	        return mv;
 	    }
 }
