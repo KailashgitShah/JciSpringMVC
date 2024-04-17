@@ -4013,6 +4013,248 @@ public class Controller_V {
 		return jsonResponse;
 
 	}
+//	@Value("${upload.OMOofficialDocumentDownload}")
+//	String OmoOfficialDocumentDownload;
+////	@Value("${upload.FAofficialDocumentDownload}")
+////	String FAofficialDocumentDownload;
+////	@Value("${upload.MillDocumentDownload}")
+////	String MillDocumentDownload;
+//	@RequestMapping("savenominal")
+//	public ModelAndView saveNominalform(HttpServletRequest request , @RequestParam("Settlement_id") Long Settlement_id, RedirectAttributes redirectAttributes) {
+//
+//		String username = (String) request.getSession().getAttribute("usrname");
+//
+//		
+//		String Mill = request.getParameter("Mill");
+//		String ContractNo = request.getParameter("ContractNo");
+//		String ChallanNo = request.getParameter("ChallanNo");
+//		String MRNo = request.getParameter("MRNo");
+//		String BaleMark = request.getParameter("BaleMark");
+//		String jutegrade = request.getParameter("jutegrade");
+//		String CropYear = request.getParameter("CropYear");
+//		String millname = request.getParameter("client_name");
+//		//String Settlement_id_generated = request.getParameter("Settlement_id_generated");
+//
+//		// gettting data for grade wise Allocation
+//
+//		String g1 = request.getParameter("g1");
+//		String g2 = request.getParameter("g2");
+//		String g3 = request.getParameter("g3");
+//		String g4 = request.getParameter("g4");
+//		String g5 = request.getParameter("g5");
+//		String g6 = request.getParameter("g6");
+//
+//		String q1 = request.getParameter("q1");
+//		String q2 = request.getParameter("q2");
+//		String q3 = request.getParameter("q3");
+//		String q4 = request.getParameter("q4");
+//		String q5 = request.getParameter("q5");
+//		String q6 = request.getParameter("q6");
+//		String Mr_NO = request.getParameter("Mr_No");
+//
+//		// end here
+//
+//		// double QualityClaim = (Double)
+//		// Double.parseDouble(request.getParameter("QualityClaim"));
+//
+//		String QualityClaim = request.getParameter("QualityClaim");
+//
+//		double MoistureContent = (Double) Double.parseDouble(request.getParameter("MoistureContent"));
+//		double NCVPercentage = (Double) Double.parseDouble(request.getParameter("NCVPercentage"));
+//		double ClaimAmount = (Double) Double.parseDouble(request.getParameter("ClaimAmount"));
+//		String omofficial = request.getParameter("omofficial");
+//		String FAofficial = request.getParameter("FAomofficial");
+//		// Date of Inspection
+//		String DateofInpection = request.getParameter("DateofInpection");
+//		// Creating object of
+//		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+//		//int total = nominalOfficialService.CountRecord();
+//		//Long SettlementId1 = (Long) Long.parseLong(request.getParameter("Settlement_id"));
+//		
+//		jciclaim_NominationModel.setSettlement_id(Settlement_id);
+//		//System.err.println(Settlement_id );
+//		
+//		       // Setting the data in model
+//
+//				jciclaim_NominationModel.setGrade1(g1);
+//				jciclaim_NominationModel.setGrade2(g2);
+//				jciclaim_NominationModel.setGrade3(g3);
+//				jciclaim_NominationModel.setGrade4(g4);
+//				jciclaim_NominationModel.setGrade5(g5);
+//				jciclaim_NominationModel.setGrade6(g6);
+//
+//				jciclaim_NominationModel.setQty1(q1);
+//				jciclaim_NominationModel.setQty2(q2);
+//				jciclaim_NominationModel.setQty3(q3);
+//				jciclaim_NominationModel.setQty4(q4);
+//				jciclaim_NominationModel.setQty5(q5);
+//				jciclaim_NominationModel.setQty6(q6);
+//				
+//		///perfectly set value whitout dout
+//		jciclaim_NominationModel.setMill(Mill);
+//		jciclaim_NominationModel.setContractNo(ContractNo);
+//		jciclaim_NominationModel.setChallanNo(ChallanNo);
+//		jciclaim_NominationModel.setClaimAmount(ClaimAmount);
+//		jciclaim_NominationModel.setOMOfficial(omofficial);
+//		jciclaim_NominationModel.setFAOfficial(FAofficial);
+//		jciclaim_NominationModel.setMr_No(Mr_NO );
+//		jciclaim_NominationModel.setQualityClaim(QualityClaim);
+//		
+//		//Date - Date of Inspection
+//		jciclaim_NominationModel.setDateofInspection(DateofInpection);
+//		// Date- created_on 
+//		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//	    Date currentDate = new Date();
+//	    String formattedDate = sdf.format(currentDate);
+//		jciclaim_NominationModel.setCreated_on(formattedDate);
+//		
+//		//   have confusion on name	
+//		jciclaim_NominationModel.setMoisture_settlement(MoistureContent);
+//		jciclaim_NominationModel.setNcv_settlement(NCVPercentage);	
+//		//jciclaim_NominationModel.setSettlement_id(SettlementId);
+//		
+//		
+//
+//		
+//		// Inspection_date confusion
+//
+//		SimpleDateFormat idf = new SimpleDateFormat("dd-MM-yyyy");
+//		Date create_date = new Date();
+//		String Inspection_date = idf.format(create_date);
+//
+//		jciclaim_NominationModel.setInspection_date(Inspection_date);
+//		
+//
+//		
+//
+//		// setting Static Value for Remaining
+//
+//		jciclaim_NominationModel.setSettlement_amt(12.5);
+//		jciclaim_NominationModel.setQuality_settlement(0);
+//		jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
+//		jciclaim_NominationModel.setDispute_flag(0);
+//		jciclaim_NominationModel.setCreated_by("myself");
+//		jciclaim_NominationModel.setInspection_by("official");
+//		
+//		
+//		
+//		
+//
+//		// email is working for static and dynamic both
+//
+//		// 1- email is for omoofficial
+//
+//		EmailSender email = new EmailSender();
+//		InternetAddress[] toAddresses = null;
+//
+//		String subject = "This is the  EMail Subject of view!!";
+//
+//		String body = " This is the Body of the Email for om official . ";
+//
+//		//String filename = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+//		String filename = OmoOfficialDocumentDownload;
+//		String username1 = "";
+//
+//		String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
+//	//	System.err.println("userEmail for omo official" + userEmailOmo);
+//		try {
+//
+//			// toAddresses = new InternetAddress[]{new InternetAddress(userEmailOmo) };
+//
+//			toAddresses = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
+//
+//			};
+//
+//		} catch (AddressException e) {
+//
+//			e.printStackTrace();
+//		}
+//
+//		email.sendEmail(toAddresses, body, subject, filename, username1);
+//
+////		// 2- These Email is for fa official
+////
+////		// EmailSender email=new EmailSender();
+////		InternetAddress[] toAddressesfa = null;
+////
+////		String subjectfa = "This is the  EMail Subject of view!!";
+////
+////		String bodyfa = "This is the Body of the Email for fa official. ";
+////		String filenamefa =FAofficialDocumentDownload;
+////		//String filenamefa = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+////				
+////		String usernamefa = "";
+////		String userEmailFA = nominalOfficialService.getEmailForFA(FAofficial);
+////
+////		System.err.println("userEmail for fa official" + userEmailFA);
+////		try {
+////
+////			// toAddresses = new InternetAddress[]{ new InternetAddress(userEmailFA)};
+////
+////			toAddresses = new InternetAddress[] {
+////
+////					new InternetAddress("guptamansi7867@gmail.com")
+////
+////			};
+////
+////		} catch (AddressException e) {
+////			// TODO Auto-generated catch block
+////			e.printStackTrace();
+////		}
+////
+//////		email.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
+////		email.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
+////
+////		// 3- These email is for MILL
+////		InternetAddress[] toAddressesMill = null;
+////
+////		String subjectMill = "This is the  EMail Subject of view!!";
+////
+////		String bodyMill = "This is the Body of the Email for Mill . ";
+////
+////		//String filenameMill = "C:\\Users\\Mansi.Gupta\\Downloads\\new.jpg";
+////		String filenameMill = MillDocumentDownload;
+////		String usernameMill = "";
+////
+////		String userEmailMill = nominalOfficialService.getEmaiformills(Mill);
+////
+////		System.err.println("userEmail for getting email for mill " + userEmailMill);
+////		try {
+////
+////			// toAddresses = new InternetAddress[]{ new InternetAddress(userEmailMill)};
+////
+////			toAddresses = new InternetAddress[] { new InternetAddress("mansi1.gupta@cyfuture.com")
+//////						   
+////			};
+//////			  
+////		} catch (AddressException e) {
+////			// TODO Auto-generated catch block
+////			e.printStackTrace();
+////		}
+////
+////		email.sendEmail(toAddresses, bodyMill, subjectMill, filenameMill, usernameMill);
+//		
+//		///////////// here set setllemnt id for text generated from backend
+//		
+//		//jciclaim_NominationModel.setSettlement_id(Settlement_id);
+//		//System.err.println(Settlement_id );
+//		nominalOfficialService.create(jciclaim_NominationModel);
+//		
+//		//////// It will change the contract_status on jci contract on form submit 
+//		String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
+//		nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
+//		
+//		/////// It will change claim status on Jcimill_receipt on form submit 
+//		
+//		
+//		
+//
+//		redirectAttributes.addFlashAttribute("msg",
+//				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+//
+//		return new ModelAndView(new RedirectView("viewlistnominal.obj"));
+
+//	}
 	@Value("${upload.OMOofficialDocumentDownload}")
 	String OmoOfficialDocumentDownload;
 //	@Value("${upload.FAofficialDocumentDownload}")
@@ -4020,11 +4262,9 @@ public class Controller_V {
 //	@Value("${upload.MillDocumentDownload}")
 //	String MillDocumentDownload;
 	@RequestMapping("savenominal")
-	public ModelAndView saveNominalform(HttpServletRequest request , @RequestParam("Settlement_id") Long Settlement_id, RedirectAttributes redirectAttributes) {
+	public ModelAndView saveNominalform(HttpServletRequest request ,  RedirectAttributes redirectAttributes) {
 
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		
+		String username = (String) request.getSession().getAttribute("usrname");	
 		String Mill = request.getParameter("Mill");
 		String ContractNo = request.getParameter("ContractNo");
 		String ChallanNo = request.getParameter("ChallanNo");
@@ -4033,7 +4273,16 @@ public class Controller_V {
 		String jutegrade = request.getParameter("jutegrade");
 		String CropYear = request.getParameter("CropYear");
 		String millname = request.getParameter("client_name");
-
+		String Mr_NO = request.getParameter("Mr_No");
+		String Settlement_id_generated = request.getParameter("Settlement_id_generated");
+		String QualityClaim = request.getParameter("QualityClaim");
+		double MoistureContent = (Double) Double.parseDouble(request.getParameter("MoistureContent"));
+		double NCVPercentage = (Double) Double.parseDouble(request.getParameter("NCVPercentage"));
+		double ClaimAmount = (Double) Double.parseDouble(request.getParameter("ClaimAmount"));
+		String omofficial = request.getParameter("omofficial");
+		String FAofficial = request.getParameter("FAomofficial");
+		String DateofInpection = request.getParameter("DateofInpection");
+		
 		// gettting data for grade wise Allocation
 
 		String g1 = request.getParameter("g1");
@@ -4049,79 +4298,66 @@ public class Controller_V {
 		String q4 = request.getParameter("q4");
 		String q5 = request.getParameter("q5");
 		String q6 = request.getParameter("q6");
-		String Mr_NO = request.getParameter("Mr_No");
-
-		// end here
-
-		// double QualityClaim = (Double)
-		// Double.parseDouble(request.getParameter("QualityClaim"));
-
-		String QualityClaim = request.getParameter("QualityClaim");
-
-		double MoistureContent = (Double) Double.parseDouble(request.getParameter("MoistureContent"));
-		double NCVPercentage = (Double) Double.parseDouble(request.getParameter("NCVPercentage"));
-		double ClaimAmount = (Double) Double.parseDouble(request.getParameter("ClaimAmount"));
-		String omofficial = request.getParameter("omofficial");
-
-
-		String FAofficial = request.getParameter("FAomofficial");
-
-		
-		String DateofInpection1 = request.getParameter("DateofInpection");
-
 	
-		SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat outDataFormat = new SimpleDateFormat("dd-MM-yyyy");
-		String DateofInpection2 = null;
-
-		try {
-			Date date = inputDateFormat.parse(DateofInpection1);
-			// Convert the Date to a formatted string
-			DateofInpection2 = outDataFormat.format(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 
 		// Creating object of
 		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
-		//int total = nominalOfficialService.CountRecord();
-		//Long SettlementId1 = (Long) Long.parseLong(request.getParameter("Settlement_id"));
 		
-		jciclaim_NominationModel.setSettlement_id(Settlement_id);
-		System.err.println(Settlement_id );
+		       // Setting the data in model
+
+				jciclaim_NominationModel.setGrade1(g1);
+				jciclaim_NominationModel.setGrade2(g2);
+				jciclaim_NominationModel.setGrade3(g3);
+				jciclaim_NominationModel.setGrade4(g4);
+				jciclaim_NominationModel.setGrade5(g5);
+				jciclaim_NominationModel.setGrade6(g6);
+
+				jciclaim_NominationModel.setQty1(q1);
+				jciclaim_NominationModel.setQty2(q2);
+				jciclaim_NominationModel.setQty3(q3);
+				jciclaim_NominationModel.setQty4(q4);
+				jciclaim_NominationModel.setQty5(q5);
+				jciclaim_NominationModel.setQty6(q6);
+				
+		///perfectly set value whitout dout
 		jciclaim_NominationModel.setMill(Mill);
 		jciclaim_NominationModel.setContractNo(ContractNo);
 		jciclaim_NominationModel.setChallanNo(ChallanNo);
-		// Just Modify FOr Dummy Data
-		jciclaim_NominationModel.setInspection_by(QualityClaim);
-
-		jciclaim_NominationModel.setMoisture_settlement(MoistureContent);
-		jciclaim_NominationModel.setNcv_settlement(NCVPercentage);
 		jciclaim_NominationModel.setClaimAmount(ClaimAmount);
 		jciclaim_NominationModel.setOMOfficial(omofficial);
 		jciclaim_NominationModel.setFAOfficial(FAofficial);
-		jciclaim_NominationModel.setDateofInspection(DateofInpection2);
 		jciclaim_NominationModel.setMr_No(Mr_NO );
+//		jciclaim_NominationModel.setClaimAmount(ClaimAmount);
 		
-	//	System.out.println(DateofInpection2 + "DateofInpection2");
+		//backend generated settlement id
+		jciclaim_NominationModel.setSettlement_id_generated(Settlement_id_generated );
+		//Date - Date of Inspection
+		jciclaim_NominationModel.setDateofInspection(DateofInpection);
+		// Date- created_on 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	    Date currentDate = new Date();
+	    String formattedDate = sdf.format(currentDate);
+		jciclaim_NominationModel.setCreated_on(formattedDate);
 		
-	//	jciclaim_NominationModel.setSettlement_id(SettlementId);
+		//   have confusion on name	
+		jciclaim_NominationModel.setMoisture_settlement(MoistureContent);
+		jciclaim_NominationModel.setNcv_settlement(NCVPercentage);	
+		
+		
 		
 		
 
-		// date- created on
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		Date currentDate = new Date();
-		String formattedDate = sdf.format(currentDate);
 		
-		// Inspection date
+		// Inspection_date confusion
 
 		SimpleDateFormat idf = new SimpleDateFormat("dd-MM-yyyy");
 		Date create_date = new Date();
 		String Inspection_date = idf.format(create_date);
 
 		jciclaim_NominationModel.setInspection_date(Inspection_date);
-		jciclaim_NominationModel.setCreated_on(formattedDate);
+		
+
+		
 
 		// setting Static Value for Remaining
 
@@ -4130,22 +4366,8 @@ public class Controller_V {
 		jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
 		jciclaim_NominationModel.setDispute_flag(0);
 		jciclaim_NominationModel.setCreated_by("myself");
-
-		// Setting the data in model
-
-		jciclaim_NominationModel.setGrade1(g1);
-		jciclaim_NominationModel.setGrade2(g2);
-		jciclaim_NominationModel.setGrade3(g3);
-		jciclaim_NominationModel.setGrade4(g4);
-		jciclaim_NominationModel.setGrade5(g5);
-		jciclaim_NominationModel.setGrade6(g6);
-
-		jciclaim_NominationModel.setQty1(q1);
-		jciclaim_NominationModel.setQty2(q2);
-		jciclaim_NominationModel.setQty3(q3);
-		jciclaim_NominationModel.setQty4(q4);
-		jciclaim_NominationModel.setQty5(q5);
-		jciclaim_NominationModel.setQty6(q6);
+		jciclaim_NominationModel.setInspection_by("official");
+		
 		
 		
 		
@@ -4166,7 +4388,7 @@ public class Controller_V {
 		String username1 = "";
 
 		String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
-		System.err.println("userEmail for omo official" + userEmailOmo);
+	//	System.err.println("userEmail for omo official" + userEmailOmo);
 		try {
 
 			// toAddresses = new InternetAddress[]{new InternetAddress(userEmailOmo) };
@@ -4247,7 +4469,7 @@ public class Controller_V {
 		///////////// here set setllemnt id for text generated from backend
 		
 		//jciclaim_NominationModel.setSettlement_id(Settlement_id);
-		System.err.println(Settlement_id );
+		//System.err.println(Settlement_id );
 		nominalOfficialService.create(jciclaim_NominationModel);
 		
 		//////// It will change the contract_status on jci contract on form submit 
@@ -4265,7 +4487,6 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("viewlistnominal.obj"));
 
 	}
-
 	@RequestMapping("viewlistnominal")
 	public String ViewNominal(Model model, HttpServletRequest request) {
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
@@ -4546,6 +4767,13 @@ public String MillCodeFetch(@RequestParam("millid") String millid) {
 
 }
 
+@ResponseBody
+@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
+public String validatemillEmail(final HttpServletRequest request) {
+	
+    final Gson gson = new Gson();
+    return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
+}
 @RequestMapping("savemillregister")
 public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession s)
 		throws IllegalStateException, IOException {
@@ -4554,24 +4782,26 @@ public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttr
 	String mill_name = request.getParameter("mill_name");
 
 	String mill_password= request.getParameter("mill_password");
+	String confirm_mill_password = request.getParameter("confirm_mill_password");
 
 	String mill_code = request.getParameter("mill_code");
 	String mill_emailaddress = request.getParameter("mill_emailaddress");
 	
 	String mill_mobile= request.getParameter("mill_mobile");
-	String created_by_username = request.getParameter("created_by_username");
-	String created_by_rolename = request.getParameter("created_by_rolename");
+	String official_name = request.getParameter("official_name");
+	String official_designation = request.getParameter("official_designation");
 
 	// Creating object of
 
 	MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
 	millRegistrationModel.setMill_name(mill_name);
-	millRegistrationModel.setCreated_by_username(created_by_username);
-	millRegistrationModel.setCreated_by_rolename(created_by_rolename);
+	millRegistrationModel.setOfficial_name(official_name);
+	millRegistrationModel.setOfficial_designation(official_designation);
 	millRegistrationModel.setMill_code(mill_code);
 	millRegistrationModel.setMill_emailaddress(mill_emailaddress);
 	millRegistrationModel.setMill_mobile(mill_mobile);
 	millRegistrationModel.setMill_password(mill_password);
+	millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
 
 	millRegistrationService.create(millRegistrationModel);
 

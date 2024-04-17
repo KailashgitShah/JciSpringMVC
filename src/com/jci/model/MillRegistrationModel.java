@@ -21,23 +21,23 @@ public class MillRegistrationModel {
 		@Column(name="mill_password")
 		private String mill_password;
 		
+		@Column(name="confirm_mill_password")
+		private String confirm_mill_password;
 		@Column(name="mill_code")
 		private String mill_code;
 		
 		@Column(name="mill_emailaddress")
 		private String mill_emailaddress;
 		
-//		@Column(name = "mill_address")
-//		private String mill_address;
-//		
+
 		@Column(name="mill_mobile")
 		private String mill_mobile;
         
-		@Column(name="created_by_username")
-		private String created_by_username;
+		@Column(name="official_name")
+		private String official_name;
 		
-		@Column(name="created_by_rolename")
-		private String created_by_rolename;
+		@Column(name="official_designation")
+		private String official_designation;
 		
 		public Long getMillRegistration_id() {
 			return MillRegistration_id;
@@ -89,47 +89,62 @@ public class MillRegistrationModel {
 		}
 
 		
-		public String getCreated_by_username() {
-			return created_by_username;
+		
+
+		public String getOfficial_name() {
+			return official_name;
 		}
 
-		public void setCreated_by_username(String created_by_username) {
-			this.created_by_username = created_by_username;
+		public void setOfficial_name(String official_name) {
+			this.official_name = official_name;
 		}
 
-		public String getCreated_by_rolename() {
-			return created_by_rolename;
+		public String getOfficial_designation() {
+			return official_designation;
 		}
 
-		public void setCreated_by_rolename(String created_by_rolename) {
-			this.created_by_rolename = created_by_rolename;
+		public void setOfficial_designation(String official_designation) {
+			this.official_designation = official_designation;
+		}
+        
+		
+		public String getConfirm_mill_password() {
+			return confirm_mill_password;
+		}
+
+		public void setConfirm_mill_password(String confirm_mill_password) {
+			this.confirm_mill_password = confirm_mill_password;
 		}
 
 		public MillRegistrationModel() {
 			super();
 		}
 
-		public MillRegistrationModel(Long millRegistration_id, String mill_name, String mill_password, String mill_code,
-				String mill_emailaddress, String mill_mobile, String created_by_username, String created_by_rolename) {
+		public MillRegistrationModel(Long millRegistration_id, String mill_name, String mill_password,
+				String confirm_mill_password, String mill_code, String mill_emailaddress, String mill_mobile,
+				String official_name, String official_designation) {
 			super();
 			MillRegistration_id = millRegistration_id;
 			this.mill_name = mill_name;
 			this.mill_password = mill_password;
+			this.confirm_mill_password = confirm_mill_password;
 			this.mill_code = mill_code;
 			this.mill_emailaddress = mill_emailaddress;
 			this.mill_mobile = mill_mobile;
-			this.created_by_username = created_by_username;
-			this.created_by_rolename = created_by_rolename;
+			this.official_name = official_name;
+			this.official_designation = official_designation;
 		}
 
 		@Override
 		public String toString() {
 			return "MillRegistrationModel [MillRegistration_id=" + MillRegistration_id + ", mill_name=" + mill_name
-					+ ", mill_password=" + mill_password + ", mill_code=" + mill_code + ", mill_emailaddress="
-					+ mill_emailaddress + ", mill_mobile=" + mill_mobile + ", created_by_username="
-					+ created_by_username + ", created_by_rolename=" + created_by_rolename + "]";
+					+ ", mill_password=" + mill_password + ", confirm_mill_password=" + confirm_mill_password
+					+ ", mill_code=" + mill_code + ", mill_emailaddress=" + mill_emailaddress + ", mill_mobile="
+					+ mill_mobile + ", official_name=" + official_name + ", official_designation="
+					+ official_designation + "]";
 		}
 
+		
 	
 		
 	 

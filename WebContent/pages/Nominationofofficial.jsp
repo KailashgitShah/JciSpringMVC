@@ -152,12 +152,12 @@
 												readonly="readonly">
 										</div>
                                             <div class="col-sm-4 form-group">
-											<label> Settlement Id</label> <input
-												class="form-control taxtbox" name="Settlement_id"
+											<input type="hidden"
+												class="form-control taxtbox" name="Settlement_id_generated"
 												id="SettlementId" type="text" required readonly="readonly">
 										</div> 
 										
-								<!-- Settlement_id -->
+								
 
 									</div>
 

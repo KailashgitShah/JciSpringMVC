@@ -139,7 +139,7 @@ th {
 
 
 
-									 <th>Settlement Id</th>
+									 
 
 
 
@@ -169,7 +169,7 @@ th {
 
 											<td>${item. getFAOfficial()}</td>
 											<td>${item.getDateofInspection()}</td>
-											 <td>${item.getSettlement_id()}</td>
+											
 
 
 

@@ -49,6 +49,11 @@ public class MillRegistrationServiceImpl implements MillRegistrationService{
 		// TODO Auto-generated method stub
 		return millRegistrationDao. checkmillemail(email);
 	}
+	@Override
+	public boolean validatemillEmail(String Email) {
+		// TODO Auto-generated method stub
+		return millRegistrationDao.validatemillEmail(Email);
+	}
 	
 	
 }

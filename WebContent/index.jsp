@@ -27,7 +27,7 @@
       <div class="content">
             <div class="brand"></div>
             <form id="login-form" action="loginAction.obj" method="post">
-                  <h2 class="login-title">Sign In</h2>
+                  <h2 class="login-title">Official Sign In</h2>
                   <center>
                         <img src="assets\img\logos\main_logo.png">
                   </center>

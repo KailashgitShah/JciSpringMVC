@@ -11,7 +11,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -147,7 +146,7 @@ input[type="file"] {
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
-											<label>Mill </label> <select name="mill_name" id="Mill"
+											<label>Mill Name </label> <select name="mill_name" id="Mill"
 												class="form-control taxtbox" required onchange="MillCode()">
 
 												<option value="">-Select-</option>
@@ -161,33 +160,6 @@ input[type="file"] {
 											</select>
 										</div>
 
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Password</label>
-											&nbsp;&nbsp;&nbsp; <span id="errPass" name="errPass"
-												class="text-danger"> </span> <input id="password"
-												type="Password" class="form-control" name="mill_password"
-												value="" placeholder="Password" required
-												onblur="return matchpassword()"> <span
-												toggle="#password"
-												class="fa fa-fw fa-eye field-icon toggle-password"
-												onclick="togglePasswordVisibility()"></span>
-										</div>
-
-
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
-											<span id="errEmail" name="errEmail" class="text-danger">
-											</span> <input class="form-control" autocomplete="off" type="text"
-												id="emailAddress" name="mill_emailaddress"
-												placeholder="Email address" required
-												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-												onkeyup="validatemail()">
-
-										</div>
-
-									</div>
-									<div class="row">
-
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Code</label> &nbsp;&nbsp;&nbsp;
@@ -197,27 +169,69 @@ input[type="file"] {
 												placeholder=" Code" id="millunitcode" ReadOnly>
 										</div>
 
-
-
-
-
 										<div class="col-sm-4 form-group">
-											<label class="required">Created By UserName</label> <input
-												class="form-control" id="created_by_username"
-												name="created_by_username"
-												value="<%=session.getAttribute("usrname")%>"
-												placeholder="<%=session.getAttribute("usrname")%>" readonly>
+											<label class="required">Mill Official Name</label> <input
+												class="form-control" name="official_name" type="text"
+												value=""
+												<%-- value="<%=session.getAttribute("usrname")%>" --%>
+												placeholder="Enter Mill official Name">
 										</div>
 
-										<div class="col-sm-4 form-group">
-											<label class="required">Created By Role</label> <input
-												class="form-control" id="created_by_role"
-												name="created_by_rolename"
-												value="<%=session.getAttribute("rolename")%>"
-												placeholder="<%=session.getAttribute("rolename")%>" readonly>
-										</div>
+
+
+
+
 									</div>
 									<div class="row">
+										<div class="col-sm-4 form-group">
+											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
+											<span id="errEmail" name="errEmail" class="text-danger">
+											</span> <input class="form-control" autocomplete="off" type="text"
+												id="emailAddress" name="mill_emailaddress"
+												placeholder="Enter Email address" required
+												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+												onkeyup="validatemail()">
+
+										</div>
+
+
+
+										<div class="col-sm-4 form-group">
+											<label class="required">Mill Password</label>
+											<div class="input-group">
+												<input id="password" type="Password" class="form-control"
+													name="mill_password" value="" placeholder="Password"
+													required onblur="return matchpassword()">
+												<div class="input-group-append">
+													<button type="button" class="btn btn-outline-secondary"
+														id="togglePassword">
+														<i class="fa fa-eye" aria-hidden="true"></i>
+													</button>
+												</div>
+											</div>
+											<span id="errPass" name="errPass" class="text-danger"></span>
+										</div>
+
+										<div class="col-sm-4 form-group">
+											<label class="required">Confirm Mill Password</label>
+											<div class="input-group">
+												<input type="password" class="form-control" name="confirm_mill_password"
+													placeholder="Enter Password" id="password1"
+													oninput="checkPasswordMatch()">
+												<div class="input-group-append">
+													<button type="button" class="btn btn-outline-secondary"
+														id="togglePassword1">
+														<i class="fa fa-eye" aria-hidden="true"></i>
+													</button>
+												</div>
+											</div>
+											<span id="errMatch" class="text-danger"></span>
+										</div>
+
+									</div>
+									<div class="row">
+
+
 										<div class="col-sm-4 form-group">
 											<label class="required">Mobile Number</label>
 											&nbsp;&nbsp;&nbsp; <span id="errMobile" name="errMobile"
@@ -229,9 +243,17 @@ input[type="file"] {
 													minlength="10" required
 													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
 													" id="mobile" name="mill_mobile"
-													title="10 digit mobile number" placeholder="Mobile Number">
+													title="10 digit mobile number"
+													placeholder="Enter Mobile Number">
 
 											</div>
+										</div>
+										<div class="col-sm-4 form-group">
+											<label class="required">Designation</label> <input
+												class="form-control" type="text" name="official_designation"
+												value="" placeholder="Enter Designation"<%-- 	value="<%=session.getAttribute("rolename")%>" --%>
+												<%-- placeholder="<%=session.getAttribute("rolename")%>" readonly --%>
+												>
 										</div>
 
 									</div>
@@ -281,68 +303,94 @@ input[type="file"] {
 
 
 
-
-
-
-	<script>
-		document.getElementById("emailAddress").addEventListener("input",
-				function(event) {
-					var email = event.target.value;
-					var errorSpan = document.getElementById("errEmail");
-					if (!isValidEmail(email)) {
-						errorSpan.textContent = "Invalid email address";
-						errorSpan.style.display = "inline";
-					} else {
-						errorSpan.textContent = "";
-						errorSpan.style.display = "none";
-					}
-				});
-
-		function isValidEmail(email) {
-			// Regular expression for basic email validation
-			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			return emailRegex.test(email);
-		}
-	</script>
-
 	<script>
 		function matchpassword() {
-
 			var password = $("#password").val();
-
 			var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
 			if (regex.test(password)) {
 				$("#errPass").hide();
 				$(':input[type="submit"]').prop('disabled', false);
 				return true;
 			} else {
-				document.getElementById("errPass").innerHTML = "Password didn't match with criteria!"
+				document.getElementById("errPass").innerHTML = "Password didn't match with criteria!";
 				$("#errPass").show();
 				$(':input[type="submit"]').prop('disabled', true);
 				return false;
-
 			}
 		}
-	</script>
-	<script>
-		function togglePasswordVisibility() {
-			var passwordInput = document.getElementById("password");
-			var eyeIcon = document.querySelector(".toggle-password");
 
-			if (passwordInput.type === "password") {
-				passwordInput.type = "text";
-				eyeIcon.classList.remove("fa-eye");
-				eyeIcon.classList.add("fa-eye-slash");
+		// Function to toggle password visibility
+		document.getElementById('togglePassword').addEventListener('click',
+				function() {
+					var passwordInput = document.getElementById('password');
+					var icon = this.querySelector('i');
+
+					if (passwordInput.type === 'password') {
+						passwordInput.type = 'text';
+						icon.classList.remove('fa-eye');
+						icon.classList.add('fa-eye-slash');
+					} else {
+						passwordInput.type = 'password';
+						icon.classList.remove('fa-eye-slash');
+						icon.classList.add('fa-eye');
+					}
+				});
+
+		// Function to check password match
+		function checkPasswordMatch() {
+			var password = $("#password").val();
+			var confirmPassword = $("#password1").val();
+
+			if (password === confirmPassword) {
+				$("#errMatch").hide();
 			} else {
-				passwordInput.type = "password";
-				eyeIcon.classList.remove("fa-eye-slash");
-				eyeIcon.classList.add("fa-eye");
+				document.getElementById("errMatch").innerHTML = "Passwords do not match!";
+				$("#errMatch").show();
 			}
 		}
+
+		// Toggle password visibility for confirm password field
+		document.getElementById('togglePassword1').addEventListener('click',
+				function() {
+					var passwordInput = document.getElementById('password1');
+					var icon = this.querySelector('i');
+
+					if (passwordInput.type === 'password') {
+						passwordInput.type = 'text';
+						icon.classList.remove('fa-eye');
+						icon.classList.add('fa-eye-slash');
+					} else {
+						passwordInput.type = 'password';
+						icon.classList.remove('fa-eye-slash');
+						icon.classList.add('fa-eye');
+					}
+				});
 	</script>
+
+
 
 </body>
+<script>
+	document.getElementById("emailAddress").addEventListener("input",
+			function(event) {
+				var email = event.target.value;
+				var errorSpan = document.getElementById("errEmail");
+				if (!isValidEmail(email)) {
+					errorSpan.textContent = "Invalid email address";
+					errorSpan.style.display = "inline";
+				} else {
+					errorSpan.textContent = "";
+					errorSpan.style.display = "none";
+				}
+			});
 
+	function isValidEmail(email) {
+		// Regular expression for basic email validation
+		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailRegex.test(email);
+	}
+</script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -375,6 +423,35 @@ input[type="file"] {
 		});
 	});
 </script>
+
+<script>
+function validatemail(){
+	
+	var email = document.getElementById("emailAddress").value;
+	var flag = false;
+	for(var i=0; i<email.length; i++){
+		if(email[i]=='@'){
+			flag =  true
+			  $.ajax({
+					type:"GET",
+					url:"validatemillEmail.obj",
+					data:{"Email":email},
+					success:function(result){
+						document.getElementById("emailCheck").value = result;
+    					if(result == 'false'){
+    						document.getElementById("errEmail").innerHTML = " Email Already Exists!";
+    					}
+    					else{
+    						document.getElementById("errEmail").innerHTML = "";
+    					}
+    				}			
+			  });
+		}
+	}
+	
+}
+</script>
+
 
 <!-- CORE PLUGINS-->
 <script src="./assets/vendors/jquery/dist/jquery.min.js"

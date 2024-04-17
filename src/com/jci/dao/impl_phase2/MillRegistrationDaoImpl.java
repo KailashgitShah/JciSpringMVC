@@ -116,6 +116,20 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 		}
 	}
 
+	@Override
+	public boolean validatemillEmail(String Email) {
+		String querystr = "select * from jcimill_Registration where mill_emailaddress ='" + Email + "'";
+		Session session = sessionFactory.getCurrentSession();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object[]> rows = query.list();
+		boolean isPresent = rows.isEmpty();
+		if (isPresent) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	
 	
 	

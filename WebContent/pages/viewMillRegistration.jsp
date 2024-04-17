@@ -93,9 +93,10 @@ th     { background:#eee; }
 										<th>Mill Code</th>
 										<th>Mill Email</th> 
 										 <th>Mill Password</th>
+										 <th>Confirm Mill Password</th>
 										 <th>Mill Mobile Number</th>
-										<th>Created_by UserName</th>
-										<th>Created_by Role </th>
+										<th>Mill Official Name</th>
+										<th>Designation</th>
 										
 										
 										
@@ -116,10 +117,11 @@ th     { background:#eee; }
 								     <td>${item. getMill_name()}</td>								     
 								      <td>${item.getMill_code() }</td>
 								      <td>${item. getMill_emailaddress()}</td>
-								      <td>${item.getMill_password() }</td>		      
+								      <td>${item.getMill_password() }</td>	
+								      <td>${item.getConfirm_mill_password() }</td>	      
 								      <td>${item.getMill_mobile() }</td>
-								      <td>${item.getCreated_by_username()}</td>
-								 <td> ${item.getCreated_by_rolename()}</td>
+								      <td>${item.getOfficial_name()}</td>
+								        <td>${item.getOfficial_designation()}</td>
 								     
 							
 						           </tr>
