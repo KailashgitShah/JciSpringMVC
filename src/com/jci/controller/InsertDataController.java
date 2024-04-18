@@ -5812,8 +5812,34 @@ System.out.println();
 			
 		}
 	    
+
 	    @RequestMapping({ "downloadexcel" })
         public ModelAndView downloadexcel(final HttpServletRequest request, RedirectAttributes red) {
+           String username =(String)request.getSession().getAttribute("usrname");
+           ModelAndView mv = new ModelAndView("downloadAllExcelSheet");
+           if(username == null)
+              {
+                  return mv = new ModelAndView("index");
+              }
+           try 
+           {
+        	   String pagename = "downloadexcel";
+   	        int i = checkprivileges(pagename);
+   	        if(i != 1)
+   	        {
+   	        	 red.addFlashAttribute("errorMessage","Access denied");
+   				   return mv=new ModelAndView("Home");
+   	        } 
+        	   
+           } 
+           catch(Exception e) {
+        	   e.printStackTrace();
+           }
+            return mv;
+        }
+
+	    @RequestMapping({ "downloadexcelregionwise" })
+        public ModelAndView downloadexcelregionwise(final HttpServletRequest request, RedirectAttributes red) {
            String username =(String)request.getSession().getAttribute("usrname");
 	    	String regionId =(String)request.getSession().getAttribute("regionId");
            ModelAndView mv = new ModelAndView("downloadAllExcelSheet");
@@ -5831,8 +5857,6 @@ System.out.println();
    				   return mv=new ModelAndView("Home");
    	        } 
             List<String> excelpathS = verifyTallySlipService.getexcelpath(regionId);
-
-        	   
            } 
            catch(Exception e) {
         	   e.printStackTrace();
@@ -5843,7 +5867,7 @@ System.out.println();
 	    @RequestMapping(value = { "downloadexcels" }, method = { RequestMethod.GET })
 	    public ResponseEntity<byte[]> downloadExcelFile() throws IOException {
 	        String EXCEL_FOLDER_PATH = "E:/Program Files/Apache Software Foundation/Tomcat 8.5/webapps/TallySlipPayments";
-	       // String EXCEL_FOLDER_PATH = "D:/JCI/AllExcel";
+	        //String EXCEL_FOLDER_PATH = "D:/JCI/AllExcel";
 
 
 	       String fileName =  request.getParameter("filename");
@@ -5949,10 +5973,10 @@ System.out.println();
 	    
 		        try {
 		        	//local file location
-		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
+		        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\purchaseReport.jrxml");
 		        	
 		        	//live file location
-		        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
+		        	JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
 		        	
                     Map<String, Object> parameters = new HashMap<String, Object>();
                     // Prepare data sources
@@ -6078,10 +6102,10 @@ System.out.println();
 	            mv.addObject("allMarketArrival", (Object)allMarketArrival);
 	               
 			        	//local file location
-			        	JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\MarketArrival.jrxml");
+			        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\MarketArrival.jrxml");
 			        	
 			        	//live file location
-			        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\purchaseReport.jrxml");
+			        	JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\MarketArrival.jrxml");
 			        	
 	                    Map<String, Object> parameters = new HashMap<String, Object>();
 	                    // Prepare data sources

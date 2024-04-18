@@ -159,21 +159,16 @@ th     { background:#eee; }
             });
         })
     </script>
-<script type="text/javascript">
-        $(function() {
-            $('#example-table').DataTable({
-                pageLength: 10,
-                //"ajax": './assets/demo/data/table_data.json',
-                /*"columns": [
-                    { "S": "name" },
-                    { "data": "office" },
-                    { "data": "extn" },
-                    { "data": "start_date" },
-                    { "data": "salary" }
-                ]*/
-            });
-        })
-    </script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $('#example-table').DataTable({
+            fixedHeader: true,
+            scrollX: true,
+            "paging": true,
+            "pageLength": 25
+        });
+    });
+</script>
 </body>
 
 </html>
