@@ -4767,6 +4767,14 @@ public String MillCodeFetch(@RequestParam("millid") String millid) {
 
 }
 
+//@ResponseBody
+//@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
+//public boolean validatemillEmail(@RequestParam("emailAddress") String emailAddress) {
+//	
+//    final Gson gson = new Gson();
+//   return this.millRegistrationService.validatemillEmail(emailAddress);
+//        // return emailNotExist;
+//}
 @ResponseBody
 @RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
 public String validatemillEmail(final HttpServletRequest request) {
@@ -4774,6 +4782,7 @@ public String validatemillEmail(final HttpServletRequest request) {
     final Gson gson = new Gson();
     return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
 }
+
 @RequestMapping("savemillregister")
 public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession s)
 		throws IllegalStateException, IOException {
@@ -4802,13 +4811,19 @@ public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttr
 	millRegistrationModel.setMill_mobile(mill_mobile);
 	millRegistrationModel.setMill_password(mill_password);
 	millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
-
+	//ModelAndView mv = new ModelAndView();
+	final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
+    if (emailNotExist) {
 	millRegistrationService.create(millRegistrationModel);
-
+	 //final boolean emailNotExist = this.UserRegistrationService.validateEmail(email);
 	redirectAttributes.addFlashAttribute("msg",
 			(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-
 	return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+    }else {
+    	 redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with  another email.</div>\r\n");
+           return new ModelAndView(new RedirectView("millRegisteration.obj"));
+    }
+//return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
 
 }
 

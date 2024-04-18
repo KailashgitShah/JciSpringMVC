@@ -183,18 +183,12 @@ input[type="file"] {
 
 									</div>
 									<div class="row">
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
-											<span id="errEmail" name="errEmail" class="text-danger">
-											</span> <input class="form-control" autocomplete="off" type="text"
-												id="emailAddress" name="mill_emailaddress"
-												placeholder="Enter Email address" required
-												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-												onkeyup="validatemail()">
-
+									
+											<div class="col-sm-4 form-group">
+											<label class="required">EMP Email</label> &nbsp;&nbsp;&nbsp; <span id="errEmail" name="errEmail" class="text-danger"> </span>
+											<input class="form-control" autocomplete="off" type="text"  id="emailAddress" oninvalid="this.setCustomValidity('Please enter a valid Email')" oninput="this.setCustomValidity('')"   name="mill_emailaddress" placeholder="Email address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" onkeyup="validatemail()">
+											<span  style="color: red; font-size: 13px;" id="EmailError">Please enter a valid Email</span> 
 										</div>
-
-
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Password</label>
@@ -215,9 +209,9 @@ input[type="file"] {
 										<div class="col-sm-4 form-group">
 											<label class="required">Confirm Mill Password</label>
 											<div class="input-group">
-												<input type="password" class="form-control" name="confirm_mill_password"
-													placeholder="Enter Password" id="password1"
-													oninput="checkPasswordMatch()">
+												<input type="password" class="form-control"
+													name="confirm_mill_password" placeholder="Enter Password"
+													id="password1" oninput="checkPasswordMatch()">
 												<div class="input-group-append">
 													<button type="button" class="btn btn-outline-secondary"
 														id="togglePassword1">
@@ -371,26 +365,7 @@ input[type="file"] {
 
 
 </body>
-<script>
-	document.getElementById("emailAddress").addEventListener("input",
-			function(event) {
-				var email = event.target.value;
-				var errorSpan = document.getElementById("errEmail");
-				if (!isValidEmail(email)) {
-					errorSpan.textContent = "Invalid email address";
-					errorSpan.style.display = "inline";
-				} else {
-					errorSpan.textContent = "";
-					errorSpan.style.display = "none";
-				}
-			});
 
-	function isValidEmail(email) {
-		// Regular expression for basic email validation
-		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	}
-</script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -423,10 +398,44 @@ input[type="file"] {
 		});
 	});
 </script>
+ 
+
+
 
 <script>
-function validatemail(){
+$(document).ready(function() {
 	
+	  $("#EmailError").hide();
+     $('#emailAddress').keyup(function() { 
+        $("#EmailError").hide();
+        var hasError = false;
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+ 
+        var emailaddressVal = $("#emailAddress").val();
+        if(emailaddressVal == '') {
+            $("#EmailError").show();
+            hasError = true;
+        }
+ 
+        else if(!emailReg.test(emailaddressVal)) {
+        	//alert('error');
+        	 $("#EmailError").show();
+            hasError = true;
+        }
+        if(hasError == true) { return false; }
+ 
+    });
+});
+</script>
+<script>
+    function allow_alphabets(element){
+        let textInput = element.value;
+        textInput = textInput.replace(/[^A-Za-z ]*$/gm, ""); 
+        element.value = textInput;
+    }
+</script>
+<script>
+function validatemail(){
 	var email = document.getElementById("emailAddress").value;
 	var flag = false;
 	for(var i=0; i<email.length; i++){
@@ -451,7 +460,6 @@ function validatemail(){
 	
 }
 </script>
-
 
 <!-- CORE PLUGINS-->
 <script src="./assets/vendors/jquery/dist/jquery.min.js"
