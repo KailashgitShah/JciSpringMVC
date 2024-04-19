@@ -2,9 +2,12 @@ package com.jci.dao.impl_phase2;
 
 import java.util.List;
 
+
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +30,16 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		
 		currentSession().save(confirmationClaimSettlementModel);
 	}
-	@Override
-    public List<ConfirmationClaimSettlementModel> getAll() {
-        Criteria criteria = currentSession().createCriteria(CashDocumentModel.class);
-        return criteria.list();
-    }
+		@Override
+	    public List<ConfirmationClaimSettlementModel> getAll() {
+	        Criteria criteria = currentSession().createCriteria(ConfirmationClaimSettlementModel.class);
+	        criteria.addOrder(Order.desc("Created_on"));
+	        return criteria.list();
+	    }
 
 	@Override
 	public List<Object>SettlementId() {
-	String sql="select  Settlement_id , ContractNo from  jciclaim_nomination";
+	String sql="select  Settlement_id from  jciclaim_nomination";
 			 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 		}
@@ -44,7 +48,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
           String q="  SELECT     Jcigrade_composition.Jute_combination,\r\n"
           		+ "                      (jcigrade_composition.Proposed_composition*jcicontract.Contract_qty)/100 as new_proposed_composition\r\n"
           		+ "                     FROM Jcigrade_composition  INNER JOIN  jcicontract on  jcicontract.Grade_composition=jcigrade_composition.Label_name\r\n"
-          		+ "                    WHERE Contract_no='JCI/190/2023-2024/BT001'";
+          		+ "                    WHERE Contract_no='"+contractno+"';";
                List<Object[]> gradecomposition= (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
                    return gradecomposition;
           
@@ -73,6 +77,14 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		  		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 		}
+
+	@Override
+	public List<String> fetchContract(String settlementId) {
+		// TODO Auto-generated method stub
+		String sqlString ="Select ContractNo from jciclaim_nomination where Settlement_id='"+settlementId+"';";
+		List<String>resultList1= (List<String>)this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		return resultList1;
+	}
 	
 	
 

@@ -55,13 +55,6 @@ import java.io.FileOutputStream;
 import org.springframework.stereotype.Component;
 @Component
 
-//		
-
-
-
-
-
-
 public class PdfGenerator_K {
 	public String generateBillPdf( String  Invoice_Value, String challan_No1, String supplier_Name,
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
@@ -72,8 +65,8 @@ public class PdfGenerator_K {
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 	     String fileName = "generatedfile_" + timestamp + ".pdf";
 //
-	     String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
-			
+			/* String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName; */
+	     String filePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\jcidocs" + fileName;
 
 		     PdfWriter pdfWriter = new PdfWriter(filePath);
 

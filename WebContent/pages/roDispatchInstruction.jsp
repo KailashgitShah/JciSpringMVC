@@ -157,8 +157,12 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 											<option value="-1" disabled selected>-Select-</option>
 											<%
 											for (String no : allCooperative) {
-											%>
-											<option value="<%=no%>"><%=no%></option>
+												
+													String[] element=no.split("!");
+												%>
+												<option value="<%=element[0]%>"><%=element[1]%></option>
+											
+											
 											<%
 											}
 											%>
@@ -328,10 +332,21 @@ $('#hoDiNo, #dpc').change(function() {
 	            });
 
 
-	            <%for (String no : allCooperative) {%>
-	            allOptions.push("<%=no%>");
-	            <%}%>
+	            <%
+	            for (String no : allCooperative) {
+	                String[] commaSD = no.split(",");
+	                for(String s : commaSD) { 
+	            %>
+	                allOptions.push("<%=s%>");
+	            <%
+	                }
+	            }
+	            %>
 
+	            
+	           
+	            	
+	           
       
 
 	            dpcDropdown.empty();
@@ -340,9 +355,11 @@ $('#hoDiNo, #dpc').change(function() {
 					text:"Select"
 				}));
 	            allOptions.forEach(function(value) {
+	            	
+	            	var code = value.split("!");
 	                dpcDropdown.append($('<option>', {
-	                    value: value,
-	                    text: value
+	                    value: code[0],
+	                    text: code[1]
 	                }));
 	            });
 

@@ -647,6 +647,7 @@ input[type="radio"] {
 
 																		html += "<option value="
 																				+ data[i]
+																						.split("-")[0]+"!"+data[i]
 																						.split("-")[1]
 																				+ ">"
 																				+ data[i]

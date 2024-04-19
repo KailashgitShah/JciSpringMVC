@@ -426,7 +426,7 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Nomination of Officials for Claim Settlement</b></a></li>
 								<li data-pre="" id=""><a
-						href="entryofConfirationSettelment.obj"><i
+						href="entryofConfirmationSettelment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Confirmation of Claim Settlement Report </b></a></li>
 					<li data-pre="" id=""><a href="ViewConfirmationsettelment.obj"><i

@@ -1,5 +1,6 @@
 package com.jci.dao.impl_phase2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +35,16 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	@Override
 	public List<String> loadAllDpc() {
 		String regionCode = (String) request.getSession().getAttribute("region");
-		String sqlString = "select centername from jcipurchasecenter where rocode='" + regionCode + "'";
-		List<String> list = currentSession().createSQLQuery(sqlString).list();
-		return list;
+		String sqlString = "select CENTER_CODE,centername from jcipurchasecenter where rocode='" + regionCode + "'";
+		
+		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
+		List<String> newlList = new ArrayList<>();
+		for(Object[] ro: list) {
+			newlList.add(ro[0]+"!"+ro[1]);
+		}
+		// TODO Auto-generated method stub
+		return newlList;
+		
 	}
 
 	//To load all DI no. in RO form
@@ -86,10 +94,17 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 //To get Cooperatives
 	@Override
 	public List<String> getCooperative(String regionIdString) {
-		String sqlString = "Select centername from jcipurchasecenter where rocode='" + regionIdString + "';";
-		List<String> list = currentSession().createSQLQuery(sqlString).list();
+		String sqlString = "SELECT CENTER_CODE, centername "+
+				" FROM jcipurchasecenter "+
+				"WHERE rocode = '" + regionIdString + "'"+ 
+				 " AND centertypecode = 'C';";
+		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
+		List<String> newlList = new ArrayList<>();
+		for(Object[] ro: list) {
+			newlList.add(ro[0]+"!"+ro[1]);
+		}
 		// TODO Auto-generated method stub
-		return list;
+		return newlList;
 	}
 	
 //To get details for DI no.
@@ -107,8 +122,10 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	@Override
 	public List<String> getprevious(String diNo) {
 		// TODO Auto-generated method stub
-		String sqlString = "select RO_DI_NO , RO_DI_DATE,DPC, SUM([GR1_QTY]+[GR2_QTY]+[GR3_QTY]+[GR4_QTY]+[GR5_QTY]+[GR6_QTY]+[GR7_QTY]+[GR8_QTY]) AS Allocation from jciDI_ro where HO_DI_NO='"
-				+ diNo + "' group by RO_DI_NO,RO_DI_DATE,DPC;";
+		String sqlString = " SELECT jciDI_ro.RO_DI_NO,  jciDI_ro.RO_DI_DATE, jcipurchasecenter.centername , SUM(jciDI_ro.GR1_QTY + jciDI_ro.GR2_QTY + jciDI_ro.GR3_QTY + jciDI_ro.GR4_QTY + jciDI_ro.GR5_QTY + jciDI_ro.GR6_QTY + jciDI_ro.GR7_QTY + jciDI_ro.GR8_QTY) AS Allocation FROM jciDI_ro "
+		+"INNER JOIN jcipurchasecenter ON jciDI_ro.DPC = jcipurchasecenter.CENTER_CODE "
+		+ " WHERE jciDI_ro.HO_DI_NO = '"+diNo+ "' " 
+			+"  GROUP BY jciDI_ro.RO_DI_NO, jciDI_ro.RO_DI_DATE, jciDI_ro.DPC, jcipurchasecenter.centername;";
 		List<String> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 	}
