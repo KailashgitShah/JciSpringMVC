@@ -1,11 +1,4 @@
 package com.jci.controller;
-
-import static org.hamcrest.CoreMatchers.nullValue;
-
-import java.util.UUID;
-import java.util.logging.Logger;
-import java.io.BufferedReader;
-import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,33 +21,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64.Encoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.http.impl.bootstrap.HttpServer;
-import org.apache.log4j.lf5.viewer.categoryexplorer.TreeModelAdapter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
-import org.bouncycastle.jce.provider.BrokenJCEBlockCipher.BrokePBEWithMD5AndDES;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -73,25 +52,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
+
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
 import com.jci.model.ConfirmationClaimSettlementModel;
@@ -148,11 +122,6 @@ import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
 import com.lowagie.text.DocumentException;
-
-import antlr.TokenWithIndex;
-
-import java.util.Calendar;
-import java.time.LocalDate;
 
 @Transactional
 @Repository
@@ -1063,8 +1032,8 @@ public class Controller_V {
 	@RequestMapping(value = { "getAllContractDetails" }, method = { RequestMethod.GET })
 	public String getAllContractDetails(final HttpServletRequest request) {
 		String contractidn = request.getParameter("contract");
-		List<Contractgeneration> allMillUnderContract = this.contractGenerationService2
-				.getContractFullDetails(contractidn);
+		String pcsoDates = request.getParameter("pcsoDates");
+		List<Contractgeneration> allMillUnderContract = this.contractGenerationService2.getContractFullDetails(contractidn , pcsoDates);
 
 		Gson gson = new Gson();
 		return gson.toJson(allMillUnderContract);

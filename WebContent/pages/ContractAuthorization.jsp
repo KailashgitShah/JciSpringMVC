@@ -46,6 +46,9 @@ String contractNos ="";
 %>
 
 <body class="fixed-navbar">
+	<div class="contractLoader">
+		<img src="assets/img/1488.gif">
+	</div>
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -100,6 +103,7 @@ String contractNos ="";
 										//String date=new SimpleDateFormat("dd-MM-yyyy").format(requestEl.getCreation_date());
 										String encodedFilePath = URLEncoder.encode(fullFolder, "UTF-8");
 										contractNos += requestEl.getContract_no() + ",";
+										//System.err.println(requestEl.toString());
 									%>
 									<tr>
 
@@ -159,6 +163,7 @@ String contractNos ="";
 	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
 	<script type="text/javascript">
+	$(".contractLoader").hide();
 		setTimeout(function() {
 			document.getElementById('flashMessage').style.display = 'none';
 		}, 1500);
@@ -172,6 +177,8 @@ String contractNos ="";
 		if(	!confirm("Do you want to Authorize this contract")){
 			return false;
 		}
+		
+		$(".contractLoader").show();
 			
 				$.ajax({
 					url : "contractAuthorizationByIdnNo.obj",
@@ -180,6 +187,7 @@ String contractNos ="";
 						"contractNo" : contractNo
 					},
 					success : function(result) {
+						$(".contractLoader").hide();
 						location.reload();
 						//window.location.href = "entryofpcso.obj";
 					}
@@ -215,6 +223,8 @@ String contractNos ="";
 			if(	!confirm("Do you want to Authorize All the contracts together..")){
 				return false;
 			}
+			
+			$(".contractLoader").show();
 				
 			
 			var allContractNos = '<%=contractNos%>';
@@ -227,6 +237,8 @@ String contractNos ="";
 					"contractNo" : allContractNos
 				},
 				success : function(result) {
+					
+					$(".contractLoader").hide();
 					location.reload();
 				}
 			})

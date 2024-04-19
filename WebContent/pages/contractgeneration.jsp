@@ -30,10 +30,6 @@
 	content: " *";
 	color: red;
 }
-
-.loader {
-	z-index: 9999;
-}
 </style>
 
 </head>
@@ -46,7 +42,7 @@ String contactIdnNo = "BT-" + count;
 %>
 
 <body class="fixed-navbar">
-	<div class="loader">
+	<div class="contractLoader">
 		<img src="assets/img/1488.gif">
 	</div>
 
@@ -239,9 +235,6 @@ String contactIdnNo = "BT-" + count;
 
 
 	<div class="sidenav-backdrop backdrop"></div>
-	<div class="preloader-backdrop" id="loader">
-		<div class="page-preloader">Loading</div>
-	</div>
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
@@ -263,14 +256,8 @@ String contactIdnNo = "BT-" + count;
 $("#pcso_date").chosen();
 $("#pcso_date").addClass("chosen-select");
 
-$(".loader").hide();
+$(".contractLoader").hide();
 
-async function loader(val) {
-    await new Promise((resolve) => {
-        document.getElementById("loader").style.setProperty('display', val);
-        setTimeout(resolve, 100); // Resolves the promise after 100ms
-    });
-}
 
 
 var flag = 1; //user for show and hide the content
@@ -334,7 +321,6 @@ $("#toggle").on("click" ,async () => {
 
 
 <script>
-document.getElementById("loader").style.setProperty('display','none' );
 var contractedValueMillWise = [];
 var listOfTotalQty = [];
 var parsedArray = [];
@@ -470,12 +456,8 @@ var gradeArray = [];
  $(".submit")
 			.click(
 					async () => {
-						//alert("async");
-						//loader active 
-						//await loader("block");
-						
-						
-                         $(".loader").show();
+					
+                         $(".contractLoader").show();
 										    
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
@@ -551,9 +533,7 @@ var gradeArray = [];
 		                        "juteGradesArray" : juteGradesArray,
 		                        "systemComp" : sysComArry
 						 };
-						//alert(data);
-						console.log(data);
-						
+				
 						//return false;
 					
                  if(jsonPcsoDates.length > 4){
@@ -562,18 +542,13 @@ var gradeArray = [];
 							type : "POST",
 							url : "contractgenerationPcsoWiseSave.obj",
 							data :JSON.stringify(data),
-							async: false,
+							//async: false,
 							contentType: "application/json",
 							success : async (result) => {
-							//  alert("result");
-							 	//window.location.href = "authorization.obj";
-							  	//loader hide
-							
-								// window.open("authorization.obj");
-							  	$(".loader").hide()
-								alert("data saved successfully !");
+							  	$(".contractLoader").hide()
+			
 								window.location.href = "authorization.obj";
-								//await loader("none");
+							
 								
 							},
 							error: function(xhr, status, error) {

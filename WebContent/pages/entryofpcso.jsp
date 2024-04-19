@@ -16,12 +16,10 @@
 	height: 32px;
 }
 
-
 .required:after {
 	content: " *";
 	color: red;
 }
-
 
 #btn-back-to-top {
 	position: fixed;
@@ -37,8 +35,8 @@
 	top: 56px;
 	padding: 20px;
 	background: #f1f1f1;
-    left: 25rem;
-    width: 70%;
+	left: 25rem;
+	width: 70%;
 }
 </style>
 <meta charset="UTF-8">
@@ -54,6 +52,8 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <!-- PLUGINS STYLES-->
 <link href="./assets/vendors/DataTables/datatables.min.css"
 	rel="stylesheet" />
@@ -89,27 +89,27 @@
 			List<String> allRefNo = (List<String>) request.getAttribute("allRefNo");
 			int totalMills = allentryofpcsolist.size();
 
-/* 			String referenceno = (String) request.getAttribute("referenceno");
-			String pcsoDate = (String) request.getAttribute("pcsodate");
-			
-			String pcsoReqdate = (String) request.getAttribute("pcsoReqdate");
-			String pcsoQty = (String) request.getAttribute("pcsoQty");
-			String pcsoReqQty = (String) request.getAttribute("pcsoReqQty");
-			String juteRatio = (String) request.getAttribute("juteRatio");
-			String dispatchPeriod = (String) request.getAttribute("dispatchPeriod");
-			String letterRefNo = (String) request.getAttribute("letterRefNo");
-			
-			if (referenceno == null) {
-				pcsoDate = "";
-				pcsoReqdate = "";
-				pcsoQty = "";
-				pcsoReqQty = "";
-				juteRatio = "";
-				dispatchPeriod = "";
-				letterRefNo = "";
-				referenceno = "";
+			/* 			String referenceno = (String) request.getAttribute("referenceno");
+				String pcsoDate = (String) request.getAttribute("pcsodate");
+				
+				String pcsoReqdate = (String) request.getAttribute("pcsoReqdate");
+				String pcsoQty = (String) request.getAttribute("pcsoQty");
+				String pcsoReqQty = (String) request.getAttribute("pcsoReqQty");
+				String juteRatio = (String) request.getAttribute("juteRatio");
+				String dispatchPeriod = (String) request.getAttribute("dispatchPeriod");
+				String letterRefNo = (String) request.getAttribute("letterRefNo");
+				
+				if (referenceno == null) {
+					pcsoDate = "";
+					pcsoReqdate = "";
+					pcsoQty = "";
+					pcsoReqQty = "";
+					juteRatio = "";
+					dispatchPeriod = "";
+					letterRefNo = "";
+					referenceno = "";
 
-			} */
+				} */
 
 			String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 			%>
@@ -125,13 +125,13 @@
 									<div class="fixedCol">
 										<div class="row">
 											<div class="col-sm-3 form-group">
-												<label class="required">JCI letter Ref.</label> <select class="form-control"
-													name="letterRefNo" id="refNo" required>
-													<option selected value="">-Select-</option>
+												<label class="required">JCI letter Ref.</label> <select
+													class="form-control" name="letterRefNo" id="refNo" required>
+													<option value="">-Select-</option>
 													<%
 													for (String ref : allRefNo) {
 													%>
-													<option value="<%=ref%>">										
+													<option value="<%=ref%>">
 														<%=ref%></option>
 
 													<%
@@ -142,44 +142,45 @@
 											<div class="col-sm-3 form-group">
 												<label>PCO Req. Date</label> <input class="form-control"
 													name="pcsoReqdate" id="pcsoReqdate" value=""
-													placeholder="dd-mm-yyyy"  type="date" readonly>
+													placeholder="dd-mm-yyyy" type="date" readonly>
 											</div>
 											<div class="col-sm-3 form-group">
 												<label>PCO Req. Qty. (M.T)</label> <input value=""
-													class="form-control" name="pcsoReqQty" id="pcsoReqQty" 													 readonly>
-													 
-													
+													class="form-control" name="pcsoReqQty" id="pcsoReqQty"
+													readonly>
+
+
 											</div>
 											<div class="col-sm-3 form-group">
-												<label class="required">PCO Date</label> <input class="form-control"
-													name="pcsoDate" id="pcsoDate" placeholder="dd-mm-yyyy"
-													 type="date" required>
+												<label class="required">PCO Date</label> <input
+													class="form-control" name="pcsoDate" id="pcsoDate"
+													placeholder="dd-mm-yyyy" type="date" required>
 											</div>
 										</div>
 
 										<div class="row">
 											<div class="col-sm-3 form-group">
-												<label class="required">JC Office Ref.No.</label> <input class="form-control"
-													type="text" name="referenceno" placeholder="Reference.No." autocomplete="off"
-													 id="referenceno" required>
+												<label class="required">JC Office Ref.No.</label> <input
+													class="form-control" type="text" name="referenceno"
+													placeholder="Reference.No." autocomplete="off"
+													id="referenceno" required>
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">JCI Linkage Percentage.</label> <input
-													class="form-control" type="number" name="juteRatio"
-													id="juteRatio" min="0" step="0.01" max="100"
-													 required>
+													class="form-control" type="number" name="juteRatio" value=""
+													id="juteRatio" min="0" step="0.01" max="100" required>
 											</div>
 											<div class="col-sm-3 form-group">
-												<label class="required">PCO Qty. (M.T)</label> <input class="form-control"
-													 type="number" min="0" step="0.01" name="pcsoQty"
-													id="pcsoQty">
+												<label class="required">PCO Qty. (M.T)</label> <input
+													class="form-control" type="number" min="0" step="0.01" value=""
+													name="pcsoQty" id="pcsoQty">
 											</div>
 											<div class="col-sm-3 form-group">
-												<label class="required">Dispatch Period</label> <input class="form-control"
-													name="dispatchPeriod" type="date" min="" placeholder="dd-mm-yyyy"
-													 id="dispatchPeriod" required
-													>
-													
+												<label class="required">Dispatch Period</label> <input
+													class="form-control" name="dispatchPeriod" type="date"
+													min="" placeholder="dd-mm-yyyy" id="dispatchPeriod"
+													required>
+
 											</div>
 										</div>
 
@@ -249,13 +250,12 @@
 	<div class="sidenav-backdrop backdrop"></div>
 	<script>
 	$(document).ready(function() {
-	 
-		
 		 var currentDate = new Date();
 		  var formattedDate = currentDate.toISOString().split('T')[0];
 		  document.getElementById("pcsoDate").max = formattedDate;
-		  $("#dispatchPeriod").prop("readonly", true);
-		  
+		  $("#dispatchPeriod").prop("readonly", true);	
+		 /*  document.getElementById("refNo").value = "";
+		  $("#pcsoQty").val(""); */
 	});
 
 			

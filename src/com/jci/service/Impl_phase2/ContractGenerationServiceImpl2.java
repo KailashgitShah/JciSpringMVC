@@ -54,8 +54,8 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	}
 
 	@Override
-	public List<Contractgeneration> getContractFullDetails(String contractidn) {
-		return contractGenerationDao2.getContractFullDetails(contractidn);
+	public List<Contractgeneration> getContractFullDetails(String contractidn , String pcsoDates) {
+		return contractGenerationDao2.getContractFullDetails(contractidn,pcsoDates);
 	}
 
 	@Override

@@ -96,18 +96,20 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //		});
 //
 //		querystr.deleteCharAt(querystr.length() -1);
-		
-		StringJoiner selectColumns = new StringJoiner(", ");
-		pcsoDates.forEach(date -> selectColumns.add("SUM(CASE WHEN pcso_date = " + date + " THEN Allocated_qty ELSE 0 END) AS " + date));
 
-		String querystr = "SELECT mill_name, mill_code, " + selectColumns.toString() + " , SUM(Allocated_qty) AS Total_Allocation FROM [XMWJCI].[dbo].[jcientryof_pcso] WHERE pcso_date IN (";
+		StringJoiner selectColumns = new StringJoiner(", ");
+		pcsoDates.forEach(date -> selectColumns
+				.add("SUM(CASE WHEN pcso_date = " + date + " THEN Allocated_qty ELSE 0 END) AS " + date));
+
+		String querystr = "SELECT mill_name, mill_code, " + selectColumns.toString()
+				+ " , SUM(Allocated_qty) AS Total_Allocation FROM [XMWJCI].[dbo].[jcientryof_pcso] WHERE pcso_date IN (";
 
 		StringJoiner dateJoiner = new StringJoiner(", ");
 		pcsoDates.forEach(date -> {
 			dateJoiner.add(date);
 		});
 		// querystr.deleteCharAt(uerystr.length() - 1);
-		querystr += dateJoiner +  ") GROUP BY mill_name, mill_code";
+		querystr += dateJoiner + ") GROUP BY mill_name, mill_code";
 
 		SQLQuery query = currentSession().createSQLQuery(querystr.toString());
 		rows = query.list();
@@ -162,12 +164,13 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //			System.out.println("-------------------------------------------");
 //			System.out.println(contractedValueForPerticularMill);
 //			System.out.println("-------------------------------------------");
-			//contractedValueForPerticularMill = Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
+			// contractedValueForPerticularMill =
+			// Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
 			contractedValueList.add(contractedValueForPerticularMill);
 			// System.out.println("temp : " + contractedValueForPerticularMill);
 			totalContractedValue += contractedValueForPerticularMill;
 		}
-		//totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
+		// totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
 		// System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
@@ -249,9 +252,20 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	@Override
-	public List<Contractgeneration> getContractFullDetails(String contractidn) {
+	public List<Contractgeneration> getContractFullDetails(String contractidn, String pcsoDates) {
+
+//		String[] dateList = pcsoDates.split(",");
+//		String withCommaString = "";
+//
+//		for (String s : dateList) {
+//			withCommaString += "'" + s + "',";
+//		}
+//		
+	
+		//withCommaString= withCommaString.substring(0, withCommaString.length() - 1);
+		
 		String sql = "select * from jcicontract where Contract_identification_no = '" + contractidn
-				+ "' and Authorize_Status = 1";
+				+ "' and Authorize_Status = 1 and Pcso_date ='" + pcsoDates + "'";
 
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
 
@@ -261,13 +275,13 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			Contractgeneration model = new Contractgeneration();
 			model.setContract_acceptance_doc((String) eleObjects[2]);
 			model.setGrade_composition((String) eleObjects[15]);
-			model.setMill_code((String) eleObjects[18]);
-			model.setMill_name((String) eleObjects[19]);
-			model.setMill_qty((double) eleObjects[20]);
-			model.setPcso_date((String) eleObjects[22]);
+			model.setMill_code((String) eleObjects[19]);
+			model.setMill_name((String) eleObjects[20]);
+			model.setMill_qty((double) eleObjects[21]);
+			model.setPcso_date((String) eleObjects[23]);
 			model.setDelivery_type((String) eleObjects[14]);
 			model.setContract_date((String) eleObjects[6]);
-			model.setPayment_duedate((String) eleObjects[21]);
+			model.setPayment_duedate((String) eleObjects[22]);
 			model.setIntial_Payment_flag((int) eleObjects[17]);
 
 			listOfContract.add(model);
@@ -295,18 +309,20 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		List<Contractgeneration> listOfContract = new ArrayList<>();
 
+		System.err.println(list);
+
 		for (Object[] eleObjects : list) {
 			Contractgeneration model = new Contractgeneration();
 			model.setContract_acceptance_doc((String) eleObjects[2]);
 			model.setGrade_composition((String) eleObjects[15]);
-			model.setMill_code((String) eleObjects[18]);
-			model.setMill_name((String) eleObjects[19]);
-			model.setMill_qty((double) eleObjects[20]);
-			model.setPcso_date((String) eleObjects[22]);
+			model.setMill_code((String) eleObjects[19]);
+			model.setMill_name((String) eleObjects[20]);
+			model.setMill_qty((double) eleObjects[21]);
+			model.setPcso_date((String) eleObjects[23]);
 			model.setDelivery_type((String) eleObjects[14]);
 			model.setContract_identification_no((String) eleObjects[7]);
-			model.setMill_qty((double) eleObjects[20]);
-			model.setJute_value((int) eleObjects[25]);
+			// model.setMill_qty((double) eleObjects[20]);
+			model.setJute_value((int) eleObjects[18]);
 			model.setContract_no((String) eleObjects[8]);
 
 			listOfContract.add(model);

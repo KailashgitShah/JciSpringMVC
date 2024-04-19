@@ -114,7 +114,7 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-sm-3 form-group">
+									<div class="col-sm-3 form-group">
 											<label>JCI letter Ref.</label> <input class="form-control"
 												name="letterRefNo" id="letterRefNo" value="<%=letterRef %>" readonly>	
 										</div>
@@ -206,7 +206,7 @@
 										</button> -->
 										<button class="btn btn-default" type="submit" id="submit">Submit</button>
 										<button class="btn btn-default" type="button"  onclick="history.go(-1)" 
-										>BackHi</button>
+										>Back</button>
 										
 <!-- 										<button class="btn btn-default" type="submit" id="reset"
 											formaction="entryofpcso.obj">Back</button> -->
