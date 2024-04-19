@@ -135,23 +135,29 @@
 
 									<div class="row">
 
-										<div class="col-sm-4 form-group">
+										<!-- <div class="col-sm-4 form-group">
 											<label>MR No</label> <input class="form-control taxtbox"
 												name="MRNo" id="MRNo" type="text" required
 												readonly="readonly">
+										</div> -->
+										<div class="col-sm-4 form-group">
+											<label>MR No</label> <input class="form-control taxtbox"
+												name="Mr_No" id="MRNo" type="text" required
+												readonly="readonly">
 										</div>
-
+										
 										<div class="col-sm-4 form-group">
 											<label>Bale Mark</label> <input class="form-control taxtbox"
 												id="BaleMark" name="BaleMark" type="text" required
 												readonly="readonly">
 										</div>
-                                             <div class="col-sm-4 form-group">
-											<label> Settlement Id</label> <input
-												class="form-control taxtbox" name="SettlementId"
+                                            <div class="col-sm-4 form-group">
+											<input type="hidden"
+												class="form-control taxtbox" name="Settlement_id_generated"
 												id="SettlementId" type="text" required readonly="readonly">
-										</div>
-									
+										</div> 
+										
+								
 
 									</div>
 
@@ -244,9 +250,6 @@
 									</div>
 
 									<!-- End the grade wise -->
-
-
-
 									<div class="row">
 
 										<div class="col-sm-4 form-group">

@@ -103,8 +103,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View Nomination of Officials for Claim
-					Settlement</h1>
+				<h1 class="page-title">View Mill Registration</h1>
 
 			</div>
 
@@ -121,67 +120,64 @@ th {
 
 								<thead>
 									<tr>
-									<th>Sl.NO</th>
-										<th>Mill</th>
-										<th>Contract No</th>
-										<th>Challan No</th>
-										<th>MR NO</th>
-										<!--  <th>Quality Claim</th> -->
-										<!-- <th>Moisture Content</th>
-										<th>NCV Percentage</th> -->
-										<th>Claim Amount</th>
-										<th>O&M Official</th>
-
-
-										<th>F&A Official</th>
-
-										<th>Date of Inspection</th>
-
-
-
-									 
-
-
-
+										<th>Sl.No</th>
+										<th>Mill Name</th>
+										<th>Mill Code</th>
+										<th>Mill Email</th>
+										<th>Mill Password</th>
+										<th>Confirm Mill Password</th>
+										<th>Mill Mobile Number</th>
+										<th>Mill Official Name</th>
+										<th>Designation</th>
+										<th>RESET</th>
 
 
 									</tr>
 								</thead>
 								<tbody>
-								<%int i=1; %>
-
-									<c:forEach items="${jciclaim_NominationModel}" var="item">
+									<%
+									int i = 1;
+									%>
+									<c:forEach items="${AllList}" var="item">
 
 
 										<tr>
-										<td  class="sorting_1"><%=i%></td>
-                                               
-											<td >${item.getMill()}</td>
-											<td>${item.getContractNo()}
-											<td>${item.getChallanNo()}</td>
-											<td>${item.getMr_No()}</td>
-											<%-- <td>  ${item.getQuality_settlement()}</td> --%>
-											<%-- <td>${item.getMoisture_settlement()}</td>
-											<td>${item.getNcv_settlement()}</td> --%>
-											<td>${item.getClaimAmount()}</td>
-											<td>${item.getOMOfficial()}</td>
 
+											<td><%=i%></td>
 
-											<td>${item. getFAOfficial()}</td>
-											<td>${item.getDateofInspection()}</td>
+											<td>${item. getMill_name()}</td>
+											<td>${item.getMill_code() }</td>
+											<td>${item. getMill_emailaddress()}</td>
+											<td>${item.getMill_password() }</td>
+											<td>${item.getConfirm_mill_password() }</td>
+											<td>${item.getMill_mobile() }</td>
+											<td>${item.getOfficial_name()}</td>
+											<td>${item.getOfficial_designation()}</td>
+
+											<%--     <td><a href="updateMillRegistration.obj?id=${item.getMillRegistration_id()}"><button class="btn btn-secondary" type="submit">RESET</button></a></td>   --%>
+
+											<td><a href="#"
+												onclick="confirmReset('${item.getMillRegistration_id()}')">
+													<button class="btn btn-secondary" type="button">RESET</button>
+											</a></td>
+
+											<%--    <td>
+				 				     <form action="ResetMillRegistrationPassword.obj" method="POST">
 											
-
-
-
-
-
-
-
-
-
+												<input type="hidden" value="${item.getMillRegistration_id()}"
+													name="MillRegistration_id"  >
+												 <button class="btn btn-default" type="submit">Reset</button>
+												
+											
+											</form> 
+							</td>
+							 --%>
 										</tr>
-										<%i++; %>
+										<%
+										i++;
+										%>
 									</c:forEach>
+
 
 
 
@@ -242,6 +238,21 @@ th {
 			});
 		})
 	</script>
+	<script>
+		function confirmReset(registrationId) {
+			// Display a confirmation dialog
+			var confirmation = confirm("Are you sure you want to reset the password?");
+
+			// If user clicks "OK" (true)
+			if (confirmation) {
+				// Redirect to the reset password page
+				window.location.href = "updateMillRegistration.obj?id="
+						+ registrationId;
+			}
+			// If user clicks "Cancel" (false), do nothing
+		}
+	</script>
+
 </body>
 
 </html>

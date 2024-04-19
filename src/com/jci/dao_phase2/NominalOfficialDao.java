@@ -8,8 +8,10 @@ import com.jci.model.UserRegistrationModel;
 public interface NominalOfficialDao {
 
 
-	public void create(Jciclaim_NominationModel nominal);
+	public void create(Jciclaim_NominationModel nominal );
+	public void claimStatusUpdate(String ContractNoForClaimStatusUpdate);
 	public void update(Jciclaim_NominationModel nominal);
+	
 	public Jciclaim_NominationModel edit(int id);
 	public void delete(int id);
 

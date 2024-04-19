@@ -88,6 +88,7 @@ th     { background:#eee; }
 
 								<thead>
 									<tr>
+									<th>Sl.No</th>
 									<th>Mill</th>
 										<th>Financial year</th>
 										<th>Date of Intimation</th>
@@ -102,12 +103,12 @@ th     { background:#eee; }
 							</tr>
 								</thead>
 								<tbody>
-						
+						<%int i=1; %>
 							      <c:forEach items="${AllList}" var="item">
 							      
 							  
 									<tr>
-										
+									<td><%=i %></td>	
 								<td> ${item.getMill()}</td>
 							    <td> ${item.getFinancial_year()} 
 								<td>  ${item.getDate_of_Intimation()}</td>
@@ -118,6 +119,7 @@ th     { background:#eee; }
 								<td>  <a href="downloadSupportingDocumententrytds.obj?filename=${item.getSupporting_document()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
 							
 						</tr>
+						<%i++; %>
 						</c:forEach>
 										
 										

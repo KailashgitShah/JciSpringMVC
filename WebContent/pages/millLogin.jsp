@@ -26,12 +26,12 @@
 <body class="bg-silver-300">
       <div class="content">
             <div class="brand"></div>
-            <form id="login-form" action="loginAction.obj" method="post">
-                  <h2 class="login-title">Official Sign In</h2>
+            <form id="login-form" action="millloginAction.obj" method="post">
+                  <h2 class="login-title">Mill Sign In</h2>
                   <center>
                         <img src="assets\img\logos\main_logo.png">
                   </center>
-                  <span>${msg}</span>
+                   <span>${msg}</span>
                   <div class="form-group">
                         <div class="input-group-icon right">
                               <div class="input-icon">
@@ -52,25 +52,25 @@
                   </div>
 
                   <div class="form-group">
+                   
                         <div class="g-recaptcha"
                               data-sitekey="6LcrxS4pAAAAACsuVabLKpMvWvpjBJbK5Lq3ZP81"></div>
+                              
                   </div>
-
+                
+ 
                   <div class="form-group">
                         <button class="btn btn-info btn-block" type="submit" id="submitBtn">Login</button>
-                         <br>
-                        <a class="btn "  href="millLogin.obj">Click Here For Mill Login</a>
+                        
                   </div>
 
-
-<!--button -->
             </form>
       </div>
       <!-- BEGIN PAGA BACKDROPS-->
       <div class="sidenav-backdrop backdrop"></div>
       <div class="preloader-backdrop">
             <div class="page-preloader">Loading</div>
-      </div>
+      </div> 
       <!-- END PAGA BACKDROPS-->
       <!-- CORE PLUGINS -->
       <script src="./assets/vendors/jquery/dist/jquery.min.js"
@@ -86,7 +86,7 @@
       <!-- CORE SCRIPTS-->
       <script src="assets/js/app.js" type="text/javascript"></script>
       <!-- PAGE LEVEL SCRIPTS-->
-  <script>
+            <script>
        $(document).on('click' , '#submitBtn' , function(){
       var response = grecaptcha.getResponse();
       
@@ -96,9 +96,9 @@
       }
       
       }) 
-   </script>
+      </script>
       
-      <script type="text/javascript">
+     <!--  <script type="text/javascript">
             $(function() {
                   $('#login-form').validate({
                         errorClass : "help-block",
@@ -119,7 +119,7 @@
                         },
                   });
             });
-      </script>
+      </script> -->
 </body>
 
 </html>

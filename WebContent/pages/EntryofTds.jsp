@@ -201,67 +201,6 @@ function f(){
 </script>
  
 
-	<!-- <script type="text/javascript">
-		// Wait for the document to be ready
-
-		$(document).ready(function() {
-
-			// Add an event listener for the change event on the dropdown
-
-			$('#Mill').on('change', function() {
-
-				//alert("before")
-
-				// Get the selected option value
-
-				var selectedOption = $(this).val();
-
-				// alert(selectedOption + "selectedOption")
-			//	alert("You have selected: " + selectedOption)
-
-				$.ajax({
-
-					type : 'GET', // You can adjust the HTTP method as needed (e.g., POST)
-
-					url : 'finacialyear.obj', // Replace with the actual API endpoint
-
-					data : {
-
-						Mill : selectedOption
-
-					},
-
-					success : function(data) {
-
-						// Handle the response data and display it.
-
-						// console.log('Response data:', data)
-						console.log('data:', data);
-						var cleandata = data.replace(/"/g, '');
-
-						$("#Financialyear").val(cleandata);
-
-						//alert("response data" + data)
-						//alert("Financial year of the mill is: " + data) 
-
-					},
-
-					error : function(err) {
-
-						// Handle errors here
-
-						console.error('AJAX request failed: ', err);
-
-						alert("errorrrrrrrrrrr")
-
-					}
-
-				});
-
-			});
-
-		});
-	</script> -->
 
 
 

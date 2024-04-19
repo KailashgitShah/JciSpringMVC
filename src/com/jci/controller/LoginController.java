@@ -143,11 +143,13 @@ public class LoginController {
 		//  System.out.println("dashboard"); 
 			String username =(String)request.getSession().getAttribute("usrname");
 		  ModelAndView mv = new ModelAndView("dashboard");
-		  if(username == null) {
-          	mv = new ModelAndView("index");
-              }
+			/*
+			 * if(username == null) { mv = new ModelAndView("index"); }
+			 */
 		  return mv; 
 		  }
+	  
+	  
 	 
 
 	  @RequestMapping("loginAction")
@@ -161,7 +163,7 @@ public class LoginController {
                    String dpcId = request.getParameter("dpcId");
                    String ifExist =  userRegService.checkLogin(email, password);
                    //String flag =  userRegService.checkConcurrentlogin(email);
-                   String username =(String)request.getSession().getAttribute("usrname");
+                   String username = (String)request.getSession().getAttribute("usrname");
                      if(ifExist!=null && ifExist.equalsIgnoreCase("mobile")) { 
                            mv.addObject("msg", "<div class=\"alert alert-danger\"><b>Failure !</b>Mobile User Can not Login Here.</div> \r\n");
                      
@@ -241,4 +243,9 @@ public class LoginController {
             }
             return mv;
       }
+	  
+	  
+	 
+	  
+	  
 }

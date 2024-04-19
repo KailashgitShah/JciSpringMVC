@@ -12,7 +12,8 @@ import javax.persistence.Table;
 public class Jciclaim_NominationModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Settlement_id")
 	private Long Settlement_id; // Primary key, assumed to be BigInt
 
@@ -35,7 +36,6 @@ public class Jciclaim_NominationModel {
 	private String FAOfficial;
 
 	@Column(name = "DateofInspection", nullable = false)
-
 	private String DateofInspection;
 	
 	@Column(name = "Quality_settlement")
@@ -107,7 +107,12 @@ public class Jciclaim_NominationModel {
 	@Column(name = "qty6")
 	private String qty6;
 	
-	
+	@Column(name = "Mr_No")
+	private String Mr_No;
+	@Column(name="QualityClaim")
+	private String QualityClaim;
+	@Column(name = "Settlement_id_generated")
+	private String Settlement_id_generated;
 
 	public String getGrade1() {
 		return grade1;
@@ -347,6 +352,30 @@ public class Jciclaim_NominationModel {
 
 	public void setCreated_on(String created_on) {
 		Created_on = created_on;
+	}
+
+	public String getMr_No() {
+		return Mr_No;
+	}
+
+	public void setMr_No(String mr_No) {
+		Mr_No = mr_No;
+	}
+
+	public String getQualityClaim() {
+		return QualityClaim;
+	}
+
+	public void setQualityClaim(String qualityClaim) {
+		QualityClaim = qualityClaim;
+	}
+
+	public String getSettlement_id_generated() {
+		return Settlement_id_generated;
+	}
+
+	public void setSettlement_id_generated(String settlement_id_generated) {
+		Settlement_id_generated = settlement_id_generated;
 	}
 
 	

@@ -27,7 +27,7 @@
       <div class="content">
             <div class="brand"></div>
             <form id="login-form" action="loginAction.obj" method="post">
-                  <h2 class="login-title">Sign In</h2>
+                  <h2 class="login-title">Official Sign In</h2>
                   <center>
                         <img src="assets\img\logos\main_logo.png">
                   </center>
@@ -58,6 +58,8 @@
 
                   <div class="form-group">
                         <button class="btn btn-info btn-block" type="submit" id="submitBtn">Login</button>
+                        <br>
+                        <a class="btn"  href="millLogin.obj">Click Here For Mill Login</a>
                   </div>
 
             </form>

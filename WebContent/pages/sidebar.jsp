@@ -100,6 +100,12 @@ body {
 					<li data-pre="6" id="o6"><a href="viewUserRegistration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
 								Registration</b></a></li>
+								<li data-pre="5" id="o5"><a href="millRegisteration.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Mill Registration
+								</b></a></li>
+								<li data-pre="5" id="o5"><a href="viewmillRegistration.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Mill Registration
+								List</b></a></li>
 
 				</ul></li>
 			<li><a href="javascript:void(0);;"><i
@@ -262,10 +268,10 @@ body {
 						href="contractgenerationPCSOWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation PCO Wise</b></a></li>
-					<!-- <li data-pre="39" id="o39"><a
+					 <li data-pre="39" id="o39"><a
 						href="contractgenerationMillWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
-								Generation Mill Wise</b></a></li> -->
+								Generation Mill Wise</b></a></li>
 					<li data-pre="40" id="o40"><a
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
@@ -274,7 +280,7 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Authorization</b></a></li>
 					<li data-pre="" id=""><a href="viewmillAcc.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Mill
-								Acceptence List</b></a></li>
+								Acceptence List</b></a></li> 
 				</ul></li>
 
 
@@ -316,20 +322,68 @@ body {
 
 				</ul></li>
 
-			<li><a href="javascript:void(0);"><i
+		<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">&nbsp;Issue financial concurrence</span> <i
+					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-				
+					<li data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								payment Details</b></a></li>
+					<li data-pre="" id=""><a href="viewPaymentEntryDetails.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View User
+								Payment list</b></a></li>
 					<li data-pre="" id=""><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
 								Payment list</b></a></li>
 					<li data-pre="" id=""><a href="viewFinancialConcurence.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Financial Concuerence list</b></a></li>
+					<li data-pre="" id=""><a href="EntryofMillreceipt.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill
+								Receipt</b></a></li>
+					<li data-pre="" id=""><a href="viewMillReciept.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View of Mill
+								Receipt</b></a></li>
+					<li data-pre="" id=""><a
+						href="EntryofGenrationDeamandNote.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+
+								Generation demand Note</b></a></li>
+					<li data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Generation demand Note list</b></a></li>
+					<li data-pre="" id=""><a
+						href="EntryofGenerationBillsupply.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								Generation Bill of supply</b></a></li>
+					<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View of
+								Generation Bill of supply</b></a></li>
+					<li data-pre="" id=""><a
+						href="entryofConfirationSettelment.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								Confirmation of Claim Settlement Report </b></a></li>
+					<li data-pre="" id=""><a href="ViewConfirmationsettelment.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View of
+								Confirmation of Claim Settlement Report </b></a></li>
+
+					<li data-pre="52" id="o52"><a href="viewmnominalform.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Nomination of
+								Officials for Claim Settlement</b></a></li>
+					<li data-pre="52" id="o52"><a href="viewlistnominal.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Nomination of Officials for Claim Settlement</b></a></li>
+					<li data-pre="52" id="o52"><a href="entryoftds.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b> Entry of TDS
+								U/s 194Q Declaration </b></a></li>
+					<li data-pre="52" id="o52"><a href="viewentryoftds.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b> View Entry
+								of TDS U/s 194Q Declaration </b></a></li>
 				</ul></li>
+
+
 				
 				
 						

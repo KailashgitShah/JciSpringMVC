@@ -9,7 +9,8 @@ import com.jci.model.UserRegistrationModel;
 
 public interface NominalOfficialService {
 
-	public void create(Jciclaim_NominationModel nominal);
+	public void create(Jciclaim_NominationModel nominal );
+	public void claimStatusUpdate(String ContractNoForClaimStatusUpdate);
 
 	public void update(Jciclaim_NominationModel nominal);
 
