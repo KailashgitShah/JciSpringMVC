@@ -16,4 +16,8 @@ public interface RoDispatchService {
  public void create(RoDispatchModel roDispatchModel);
  public List<RoDispatchModel> getAllRoDi();
 public List<String> getCooperative(String regionIdString);
+public List<String> getDetails(String hOno);
+public List<String> getprevious(String diNo);
+public void update(String contractNoString);
+public String dpcCheck(String dpc, String hoDIno);
 }

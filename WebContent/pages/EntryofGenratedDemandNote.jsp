@@ -59,7 +59,7 @@
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Entry of Genration Demand Note</h1>
+				<h1 class="page-title">Entry of Generation Demand Note</h1>
 			</div>
 
 			<%

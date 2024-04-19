@@ -113,10 +113,6 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	    return ll;
 	}
 
-
-	
-	
-
 	@Override
 	public void updatemillacceptflag(String contractId ) {
 		

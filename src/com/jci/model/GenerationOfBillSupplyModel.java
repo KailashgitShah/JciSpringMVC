@@ -25,7 +25,7 @@ public class GenerationOfBillSupplyModel {
 	@Column(name = "Challan_date", nullable = false)
 	private String Challan_date;
 
-	@Column(name = "Shipment_details", nullable = false)
+	@Column(name = "Shipment_details")
 	private String Shipment_details;
 
 	@Column(name = "Shipment_value", nullable = false)
@@ -96,6 +96,17 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "Remarks")
 	private String Remarks;
+	
+	@Column(name = "TrnasitPolicyno")
+	private String TrnasitPolicyno;
+
+	public String getTrnasitPolicyno() {
+		return TrnasitPolicyno;
+	}
+
+	public void setTrnasitPolicyno(String trnasitPolicyno) {
+		TrnasitPolicyno = trnasitPolicyno;
+	}
 
 	public String getRemarks() {
 		return Remarks;

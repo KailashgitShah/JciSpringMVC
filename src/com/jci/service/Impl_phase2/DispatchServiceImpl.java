@@ -15,7 +15,7 @@ public class DispatchServiceImpl implements DispatchService {
 	Dispatchdetaildao dispatchdetaildao;
 	
 	@Override
-	 public List<dispatchdetailModel> getviewDispatchChallan() {
+	 public List<Object[]> getviewDispatchChallan() {
 	       
 	        return dispatchdetaildao.getviewDispatchChallan();
 	    }

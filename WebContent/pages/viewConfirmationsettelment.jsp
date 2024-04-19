@@ -8,6 +8,7 @@
 <%@page import="com.jci.model.ZoneModel"%>
 <%@page isELIgnored="false"%>
 
+<%@ page import="java.text.SimpleDateFormat"%>
 
 
 <!DOCTYPE html>
@@ -108,10 +109,10 @@ th {
 			</div>
 
 			<%
-			List<ConfirmationClaimSettlementModel> allUserRegistration = (List<ConfirmationClaimSettlementModel>) request.getAttribute("confirmationClaim");
-		 
+			List<ConfirmationClaimSettlementModel> allUserRegistration = (List<ConfirmationClaimSettlementModel>) request
+					.getAttribute("confirmationClaim");
 			%>
-			
+
 			<div class="page-content fade-in-up">
 				<div class="ibox">
 					<span>${msg}</span>
@@ -124,45 +125,49 @@ th {
 
 								<thead>
 									<tr>
-										<th>Sl.No</th>
-										<th>Settlement Id.</th>
-										<th>Date of inspection</th>
-										<th>Contract No.</th>
-										<th>Challan No</th>
-										
-										<th>Quality Settlement</th>
-										<th>Moisture Settlement</th>
-										<th>NCV Settlement</th>
-										<th>Claim Amount</th>
-										<th>Settlement Amount </th>
-										<th>Inspection by</th>
-										<th>Supporting Document</th>
-										
+										<th style="text-align: center">Sl.No</th>
+										<th style="text-align: center">Settlement Id.</th>
+										<!-- <th style="text-align:center">Date of inspection</th> -->
+										<th style="text-align: center">Contract No.</th>
+										<th style="text-align: center">Challan No</th>
+
+										<th style="text-align: center">Quality Settlement</th>
+										<th style="text-align: center">Moisture Settlement</th>
+										<th style="text-align: center">NCV Settlement</th>
+										<th style="text-align: center">Claim Amount</th>
+										<th style="text-align: center">Settlement Amount</th>
+										<th style="text-align: center">Inspection by</th>
+										<th style='text-align: center'>Supporting Document</th>
+
 
 									</tr>
 								</thead>
 								<tbody>
 									<%
 									int i = 1;
-									for (ConfirmationClaimSettlementModel  confirmationClaimSettlementModel : allUserRegistration) {
+									for (ConfirmationClaimSettlementModel confirmationClaimSettlementModel : allUserRegistration) {
 
 										if (i <= 200) {
 									%>
 									<tr>
 										<td><%=i%></td>
-										<td><%= confirmationClaimSettlementModel.getSettlement_id() %></td>
-										<td><%= confirmationClaimSettlementModel.getDate_of_Inspection() %></td>
-										<td><%= confirmationClaimSettlementModel.getContract_No() %></td>
-										<td><%= confirmationClaimSettlementModel.getChallan_No()%></td>
-										<td><%= confirmationClaimSettlementModel.getQuality_settlement() %></td>
-										<td><%= confirmationClaimSettlementModel.getMoisture_settlement() %></td>
-										<td><%= confirmationClaimSettlementModel.getNcv_settlement() %></td>
-										<td><%= confirmationClaimSettlementModel.getClaim_Amount() %></td>
-										<td><%= confirmationClaimSettlementModel.getSettlement_amt() %></td>
-										<td><%= confirmationClaimSettlementModel.getInspection_by()%></td>
-										<td><%= confirmationClaimSettlementModel.getSupporting_doc() %></td>
-								
-                                     
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getSettlement_id()%></td>
+										<%-- <td style="text-align:center"><%= new SimpleDateFormat("dd-MM-yyyy").format(confirmationClaimSettlementModel.getDate_of_Inspection()) %></td> --%>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getContract_No()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getChallan_No()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getQuality_settlement()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getMoisture_settlement()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getNcv_settlement()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getClaim_Amount()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getSettlement_amt()%></td>
+										<td style="text-align: center"><%=confirmationClaimSettlementModel.getInspection_by()%></td>
+										<%-- <td style="text-align:center"><%= confirmationClaimSettlementModel.getSupporting_doc() %></td> --%>
+										<td><a
+											href="downloadSupportDocument.obj?filename=<%=confirmationClaimSettlementModel.getSupporting_doc()%>"
+											class="btn btn-primary btn-sm" target="_blank"> View
+												Supporting docs</a></td>
+
+
 
 									</tr>
 									<%

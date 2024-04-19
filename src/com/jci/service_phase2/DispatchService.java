@@ -9,6 +9,6 @@ import com.jci.model.dispatchdetailModel;
 @Service
 public interface DispatchService {
 
-	 public List<dispatchdetailModel>getviewDispatchChallan();
+	 public List<Object[]>getviewDispatchChallan();
 	
 }

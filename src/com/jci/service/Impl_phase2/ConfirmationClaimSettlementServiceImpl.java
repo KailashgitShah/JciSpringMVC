@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao.impl_phase2.ConfirmationClaimSettlementDaoImpl;
 import com.jci.dao_phase2.ConfirmationClaimSettlementDao;
 //import com.jci.dao_phase2.GenrationCashDocumentDao;
@@ -51,6 +52,12 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 	@Override
 	public  List<Object[]> fetchdatasttlement( int st) {
 		return confirmationClaimSettlementDao.fetchdatasttlement(st);
+	}
+
+	@Override
+	public List<String> fetchContract(String settlementId) {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.fetchContract(settlementId);
 	}
 	
 

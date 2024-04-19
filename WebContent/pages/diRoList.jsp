@@ -47,21 +47,7 @@
   text-decoration: none;
 }
 </style>
-<script>
 
-/* $(document).ready(function() {
-    var table = $('#example-table').DataTable( {
-        scrollY:        "300px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         false,
-        fixedColumns:   {
-            left: 1,
-            right: 1
-        }
-    } );
-} ); */
-</script>
 </head>
 
 <body class="fixed-navbar">
@@ -112,21 +98,21 @@
 									for(RoDispatchModel di : roDiList){
 									%>
 									<tr>
-										<td><%=i%></td>
+										<td  style='text-align:center;'><%=i%></td>
 									
-										<td><%=di.getContractNo()%></td>
-										<td><%=di.getLastDateOfShipment()%></td>
-				                    	<td><%=di.getRoDiNo()%></td>
-										<td><%=di.getRoDiDate()%></td>
-										<td><%=di.getJuteVariety()%></td>
-										<td><%=di.getGr1Qty()%></td>	
-										<td><%=di.getGr2Qty()%></td>	
-										<td><%=di.getGr3Qty()%></td>	
-										<td><%=di.getGr4Qty()%></td>	
-										<td><%=di.getGr5Qty()%></td>	
-										<td><%=di.getGr6Qty()%></td>	
-										<td><%=di.getGr7Qty()%></td>	
-										<td><%=di.getGr8Qty()%></td>	
+										<td style='text-align:center;'><%=di.getContractNo()%></td>
+										<td  style='text-align:center;'><%=di.getLastDateOfShipment()%></td>
+				                    	<td  style='text-align:center;'><%=di.getRoDiNo()%></td>
+										<td  style='text-align:center;'><%=di.getRoDiDate()%></td>
+										<td  style='text-align:center;'><%=di.getJuteVariety()%></td>
+										<td  style='text-align:center;'><%=di.getGr1Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr2Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr3Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr4Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr5Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr6Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr7Qty()%></td>	
+										<td  style='text-align:center;'><%=di.getGr8Qty()%></td>	
 							 
 									<%-- 	<td><a href="editentryofgradecomposition.obj?grade_id=<%=egcl.getId()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
 										<td><a onclick="return confirm('Are you sure you want to delete this item?');" href="entryofgradecompositiondelete.obj?grade_id=<%=egcl.getId()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td>
@@ -171,14 +157,7 @@
         $(function() {
             $('#example-table').DataTable({
                 pageLength: 10,
-                //"ajax": './assets/demo/data/table_data.json',
-                /*"columns": [
-                    { "S": "name" },
-                    { "data": "office" },
-                    { "data": "extn" },
-                    { "data": "start_date" },
-                    { "data": "salary" }
-                ]*/
+               
             });
         })
     </script>

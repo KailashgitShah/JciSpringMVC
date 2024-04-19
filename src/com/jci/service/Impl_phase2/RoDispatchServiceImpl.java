@@ -55,4 +55,32 @@ public class RoDispatchServiceImpl implements RoDispatchService{
 		return roDispatchDao.getCooperative(regionIdString);
 	}
 
+	@Override
+	public List<String> getDetails(String hOno) {
+		// TODO Auto-generated method stub
+		return roDispatchDao.getDetails(hOno);
+	}
+
+	@Override
+	public List<String> getprevious(String diNo) {
+		// TODO Auto-generated method stub
+		return roDispatchDao.getprevious(diNo);
+	}
+
+	@Override
+	public void update(String contractNoString) {
+		// TODO Auto-generated method stub
+		roDispatchDao.update(contractNoString);
+		
+	}
+
+	
+
+	@Override
+	public String dpcCheck(String dpc, String hoDIno) {
+		// TODO Auto-generated method stub
+		return roDispatchDao.dpcCheck(dpc,hoDIno);
+	}
+	
+
 }

@@ -2,9 +2,7 @@ package com.jci.service_phase2;
 
 import java.util.List;
 
-
-
-
+import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.GenerationOfBillSupplyModel;
 
 
@@ -13,11 +11,15 @@ public interface GenerationofBillService {
 	public void create(GenerationOfBillSupplyModel generationOfBillSupplyModel);
 	
 	 public List<GenerationOfBillSupplyModel>getAll();
-	  public List<Object[]>ChallanNo();
+	  public List<Object[]>ChallanNo(String st);
+	  public List<Object[]>ShipmentDetails(String st);
 	  public  List<Object[]>contarctno(String  st);
+	  public  List<Object[]>contrcatnotomill(String  st);
+	  public  List<Object>millnamefromTCS();
 	  public  List<Object[]>contarctnoformaster(String  st);
 	  public  List<Object[]>Dispatchentry(String  st);
 	  public   String billofsupplyno(String  st);
 	  public String billUpdation(String st);
 	  public void remark(String cont_no,String  con_No);
+	  public GenerationOfBillSupplyModel find(int id);
 }

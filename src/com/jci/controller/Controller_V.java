@@ -118,6 +118,7 @@ import com.jci.service_phase2.PaymentDetailService;
 import com.jci.service_phase2.PaymentRealizationService;
 import com.jci.service.StateService;
 import com.jci.service.Impl.SendMail;
+import com.jci.service.Impl.sendemailBOS;
 import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
@@ -850,6 +851,7 @@ public class Controller_V {
 		//ArrayList<String> pcsoDate = (ArrayList<String>) requestBody.get("pcsoDate");
 	//	String commaSeparatedPcsoDates = String.join(",", pcsoDate);
 
+
 		ArrayList<String> juteVariety = (ArrayList<String>) requestBody.get("juteGradesArray");
 		ArrayList<String> systemComp = (ArrayList<String>) requestBody.get("systemComp");
 		String gradeComp = (String) requestBody.get("gradeComp");
@@ -913,6 +915,7 @@ public class Controller_V {
 
 		List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
 
+
 		for (Map<String, String> millDetail : millDetails) {
 
 			Contractgeneration contractgeneration = new Contractgeneration();
@@ -928,6 +931,7 @@ public class Controller_V {
 			} else {
 				System.err.println("pcsoDateForMill is not an ArrayList<String>");
 			}
+
 
 			List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
 
@@ -947,7 +951,9 @@ public class Controller_V {
 			// contract value = 105% of jute value or fiberValue
 			contractgeneration.setContract_value((int)(juteValue * 1.05));
 			// contract value LC = 110% of jute value or fiberValue
+
 			contractgeneration.setContractValueLc((int)(juteValue * 1.1));
+
 
 			contractgeneration.setCreated_date(new Date());
 			contractgeneration.setCreated_by(refId);
@@ -969,10 +975,8 @@ public class Controller_V {
 			System.err.println(contractgeneration.toString());
 
 			PdfGenerator pdfGenerator = new PdfGenerator();
-		
-
 			String filePath = contractLetterPath + File.separator + contractIdn;
- 
+
 			File parentDir = new File(filePath);
 			if (!parentDir.exists()) {
 				parentDir.mkdirs();
@@ -980,8 +984,9 @@ public class Controller_V {
 
 			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
 
-			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty * 10 , cropYear,
-					GradePriceList, gradeArray , juteVariety, fileName, deliveryType, contractdate, filePath, letterHeadPath , fullAddress , commaSeparatedPcsoDates);
+			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty * 10,
+					cropYear, GradePriceList, gradeArray, juteVariety, fileName, deliveryType, contractdate, filePath,
+					letterHeadPath, fullAddress, commaSeparatedPcsoDates);
 
 //			// send email
 //			String body = "Please find below attachment to get full details of contract grade wise..";
@@ -1653,49 +1658,6 @@ public class Controller_V {
 
 	// ro dispatch view page
 
-	// save ro dispatch instruction
-	@RequestMapping("saveRoDi")
-	public ModelAndView saveRoDispatch(HttpServletRequest request, @ModelAttribute RoDispatchModel roDispatchModel,
-			RedirectAttributes redirectAttributes) throws ParseException {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		Date date = new Date();
-		roDispatchModel.setCreationDate(date);
-		String lastDateOFShipmentString = request.getParameter("lastDateOfShipment");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat outPutDate = new SimpleDateFormat("dd-MM-yyyy");
-
-		Date fomatedDate = dateFormat.parse(lastDateOFShipmentString);
-		String finalStringDate = outPutDate.format(fomatedDate);
-		roDispatchModel.setLastDateOfShipment(finalStringDate);
-		System.out.println(roDispatchModel.toString());
-		this.roDispatchService.create(roDispatchModel);
-		redirectAttributes.addFlashAttribute("msg",
-				"<div class=\"alert alert-success\"><b>Success !</b>data successfully.</div>\r\n" + "");
-
-		return new ModelAndView(new RedirectView("roDispatchList.obj"));
-	}
-
-	// ro list
-	@RequestMapping("roDispatchList")
-	public ModelAndView roDiList(HttpServletRequest request) {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		List<RoDispatchModel> allDi = roDispatchService.getAllRoDi();
-
-		ModelAndView mv = new ModelAndView("diRoList");
-		mv.addObject("roDiList", allDi);
-		return mv;
-	}
-
 	// ---------------------------------------------------------
 	// Generation Of Credit Notes
 	// ---------------------------------------------------------
@@ -2158,6 +2120,7 @@ public class Controller_V {
 			String ratiosJson = request.getParameter("ratios");
 			double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
 			for (int i = 0; i < selectedContracts.length; i++) {
+
 				String st = selectedContracts[i];
 				double ratio = ratios[i];
 				String contractvalueajax = contractValue2[i];
@@ -2481,7 +2444,6 @@ public class Controller_V {
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
-			System.err.println("++++++++++++++" + Carrying_Cost_Charged);
 
 			Date date = new Date();
 			// Date currdate = date.toString();
@@ -2493,7 +2455,7 @@ public class Controller_V {
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
 		} catch (Exception e) {
-			System.out.println("++++++++++++++" + e);
+
 			e.printStackTrace();
 		}
 		if (username == null) {
@@ -2514,10 +2476,11 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 
-		// List<Object[]>getdataList = this.millRecieptService.fetchdata();
 		List<Object> getdataList1 = this.millRecieptService.fetchHODINO();
+		List<Object[]> fetchMill_NameR = this.millRecieptService.fetchMill_NameR();
 
 		mv.addObject("getdataList1", getdataList1);
+		mv.addObject("fetchMill_NameR", fetchMill_NameR);
 		return mv;
 	}
 
@@ -2526,12 +2489,24 @@ public class Controller_V {
 	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
 	public String hodinofetch(@RequestParam("contractno") String contractno) {
 
-		MillRecieptModel millRecieptModelt1 = millRecieptService.fetchdata(contractno);
+		List<Object[]> millRecieptModelt1 = millRecieptService.fetchdata(contractno);
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(millRecieptModelt1);
-		return resultString;// gson.toJson((Object)millRecieptModelt1);
+		return resultString;
 	}
+
+//	
+//	@ResponseBody
+//	@RequestMapping(value = "millreceiptbased", method = RequestMethod.GET)
+//	public String millreceiptbased(@RequestParam("contractno") String contractno) {
+//		List<Object[]> Mill_NameR = millRecieptService.fetchHODINO(contractno);
+//		System.err.println("resultList++++++++++" + Mill_NameR);
+//		Gson gson = new Gson();
+//		String resultString = new Gson().toJson(Mill_NameR);
+//		return resultString;
+//	}
+//	
 
 	@ResponseBody
 	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
@@ -2597,8 +2572,8 @@ public class Controller_V {
 			String MR_No = request.getParameter("MR_No");
 			String MR_Date1 = request.getParameter("MR_Date");
 			String HR_Date1 = request.getParameter("HO_Date");
-			String Mill_code = request.getParameter("Millcode2");
-			System.err.println(Mill_code);
+			// String Mill_code = request.getParameter("Millcode2");
+			String Mill_code = request.getParameter("875");
 
 			// String mill_id = request.getParameter("HO_Date");
 
@@ -2640,11 +2615,17 @@ public class Controller_V {
 
 			millRecieptModel.setHO_di(HO_DI);
 			millRecieptModel.setChallan_no(Challan_No);
+
+//			SimpleDateFormat inputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+//	        SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(Date_of_Shipment);
-			System.err.println(date1);
-			// Date instdate1 = formatter1.parse(Date_of_Shipment);
-			millRecieptModel.setDate_shipment(date1);
+			// Date date4 = inputFormatter.parse(Date_of_Shipment);
+			// Format the date to the desired format
+			// String formattedDate = outputFormatter.format(date4);
+			// System.out.println("Formatted date: " + formattedDate);
+			// Date shipmentDate = dateFormat.parse(Date_of_Shipment);
+
+			millRecieptModel.setDate_shipment(Date_of_Shipment);
 			millRecieptModel.setVehicle_no(Vehicle_No);
 			millRecieptModel.setChallan_qty(Challan_Qty1);
 			millRecieptModel.setActual_qty(Actual_Qty1);
@@ -2662,7 +2643,7 @@ public class Controller_V {
 			millRecieptModel.setMr_date(MR_Date);
 
 			Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(HR_Date1);
-//				Date MR_Date3 = formatter1.parse(HR_Date1);
+			// Date MR_Date3 = formatter1.parse(HR_Date1);
 			millRecieptModel.setHo_date(date2);
 
 			// millRecieptModel.setMr_date(MR_Date);
@@ -2681,7 +2662,7 @@ public class Controller_V {
 			millRecieptModel.setClaim_status(2);
 
 			this.millRecieptService.create(millRecieptModel);
-			// this.millRecieptService.UpdateContractstatus(HO_DI);
+			this.millRecieptService.UpdateContractstatus(HO_DI);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
@@ -2845,51 +2826,6 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofGenrationDeamandNote.obj"));
 	}
 
-	// entry page confirmation form
-	@RequestMapping("entryofConfirationSettelment")
-	public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		ModelAndView mv = new ModelAndView("ConfirmationofClaimSettlement");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
-
-		mv.addObject("getSettlementidlist", getSettlementidlist);
-		return mv;
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "fetchingdatamillrecept", method = RequestMethod.GET)
-	public String fetchingdatatocontractnoji(@RequestParam("contractno") String contractno) {
-		List<Object[]> getcontractddownlist = confirmationofClaimSettlementService.fetchdataofclaim(contractno);
-		System.err.println("resultList++++++++++" + getcontractddownlist);
-		Gson gson = new Gson();
-		String resultString = new Gson().toJson(getcontractddownlist);
-		return resultString;
-	}
-//
-//	@ResponseBody
-//	@RequestMapping(value = "gradefetchingdata", method = RequestMethod.GET)
-//	public String GradeComposition(@RequestParam("ContractNo") String ContractNo) {
-//		List<Object[]> gradecmposition = confirmationofClaimSettlementService.gradecfetchingdata1omposition(ContractNo);
-//		Gson gson = new Gson();
-//		String jsonResponse = gson.toJson(gradecmposition);
-//		return jsonResponse;
-//
-//	}
-
-	@ResponseBody
-	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
-	public String fetchingdatanominactionclaim(@RequestParam("contractno") int contractno) {
-		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
-		System.err.println("resultList++++++++++" + getsettlementlist);
-		Gson gson = new Gson();
-		String resultString = new Gson().toJson(getsettlementlist);
-		return resultString;
-	}
-
 	// entrt page of genration bill
 
 	@RequestMapping("EntryofGenerationBillsupply")
@@ -2900,13 +2836,25 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		List<Object[]> getChallanlist = (List<Object[]>) this.generationofBillService.ChallanNo();
-		mv.addObject("getChallanlist", getChallanlist);
+		final String challan_no = request.getParameter("id");
+		List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
+		final String millname = request.getParameter("millname");
+//		 List<Object[]> ShipmentDetails= (List<Object[]>)
+
+//			final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
+//			
+		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
+		List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
+		mv.addObject("ShipmentDetails", ShipmentDetails);
+		mv.addObject("Perticulargoods", Perticulargoods);
 
 		int allIndiaSerialNo = 1;
 		int stateSerialNo = 1;
 		String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo);
 		mv.addObject("billOfSupplyNo", billOfSupplyNo);
+		mv.addObject("challan_no", challan_no);
+		mv.addObject("millname", millname);
+		mv.addObject("list", list);
 
 		return mv;
 
@@ -2950,151 +2898,6 @@ public class Controller_V {
 	@Value("${upload.Confirmationsettlement}")
 	String Confirmationsettlement;
 
-	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
-	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
-			RedirectAttributes redirectAttributes,
-			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("Confirmationsettlement");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
-
-		final ModelAndView mv = new ModelAndView();
-		String username = (String) request.getSession().getAttribute("usrname");
-		try {
-
-			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
-			String Settlement_Id1 = request.getParameter("Settlement_Id1");
-			int Settlement_Id12 = Integer.parseInt(Settlement_Id1);
-			String Date_of_inspection1 = request.getParameter("Dateofinspection");
-			String fullcontractno = request.getParameter("fullcontractno");
-			String Challan_No1 = request.getParameter("Challan_No1");
-			// String MR_No1 = request.getParameter("MR_No1");
-			// String Bale_Mark1 = request.getParameter("Bale_Mark1");
-			// String Jute_Variety_Grade_wise1 =
-			// request.getParameter("Jute_Variety_Grade_wise1");
-			// String Crop_Year1 = request.getParameter("Crop_Year1");
-			// String Quality_Claim1 = request.getParameter("Quality_Claim1");
-			// double Quality_Claim12 = Double.parseDouble(Quality_Claim1);
-			// String Moisture_Content1 = request.getParameter("Moisture_Content1");
-			// double Moisture_Content12 = Double.parseDouble(Moisture_Content1);
-			// String NCV_Percentage1 = request.getParameter("NCV_Percentage1");
-			// double NCV_Percentage12 = Double.parseDouble(NCV_Percentage1);
-
-			final String filename = SupportingDocument.getOriginalFilename();
-			File serverFile = new File(theDir, filename);
-			SupportingDocument.transferTo(serverFile);
-			double defaultValue = 0.0;
-
-			String Inspection_by1 = request.getParameter("Inspectionby1");
-			String Supporting_document1 = request.getParameter("Supportingdocument1");
-
-			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
-
-			String Claim_Amount1 = request.getParameter("ClaimAmount");
-
-			if (Claim_Amount1 != null) {
-
-				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			} else {
-				double Claim_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			}
-
-			String Quality_Settlement1 = request.getParameter("Quality_Settlement1");
-			if (Quality_Settlement1 != null) {
-
-				double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
-				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
-			} else {
-				double Quality_Settlement12 = defaultValue;
-				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
-			}
-
-			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement1");
-			if (Moisture_Settlement1 != null) {
-
-				double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
-				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
-			} else {
-				double Moisture_Settlement12 = defaultValue;
-				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
-			}
-
-			String NCV_Settlement1 = request.getParameter("NCV_Settlement1");
-			if (NCV_Settlement1 != null) {
-
-				double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
-				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
-			} else {
-				double NCV_Settlement12 = defaultValue;
-				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
-			}
-
-			String Settlement_Amount1 = request.getParameter("SettlementAmount");
-
-			if (Settlement_Amount1 != null) {
-
-				double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			} else {
-				double Settlement_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			}
-
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
-			Date instdate1 = formatter1.parse(Date_of_inspection1);
-			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
-			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
-			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
-			confirmationClaimSettlementModel.setContract_No(fullcontractno);
-			confirmationClaimSettlementModel.setChallan_No(Challan_No1);
-
-			confirmationClaimSettlementModel.setInspection_by(Inspection_by1);
-			confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
-
-			Date date1 = new Date();
-			confirmationClaimSettlementModel.setInspection_date(date1);
-			confirmationClaimSettlementModel.setDispute_flag(0);
-			confirmationClaimSettlementModel.setOM_Official("vishal");
-			confirmationClaimSettlementModel.setMill("1");
-			confirmationClaimSettlementModel.setFA_Official("Pradeep");
-			confirmationClaimSettlementModel.setCreated_by("kailash");
-			confirmationClaimSettlementModel.setCreated_on(date1);
-
-			this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		return new ModelAndView(new RedirectView("entryofConfirationSettelment.obj"));
-	}
-
-	// view page of confirmation settelment form
-
-	@RequestMapping({ "ViewConfirmationsettelment" })
-	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-
-		final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
-				.getAll();
-		mv.addObject("confirmationClaim", confirmationClaim);
-
-		return mv;
-	}
-
 	// save page of generation bill of supply
 
 	@Value("${upload.Genrationofbill}")
@@ -3102,7 +2905,7 @@ public class Controller_V {
 
 	@RequestMapping("saveentryofGenrationbill")
 	public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		final File theDir = new File("Genrationofbill");
+		final File theDir = new File(Genrationofbill);
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
@@ -3112,7 +2915,7 @@ public class Controller_V {
 
 			String Challan_No1 = request.getParameter("Challan_No1");
 			String Challan_Date1 = request.getParameter("Challan_Date1");
-			String Shipment_Details = request.getParameter("Shipment_Details");
+			// String Shipment_Details = request.getParameter("Shipment_Details");
 			String Shipment_Value1 = request.getParameter("Shipment_Value1");
 			String SGST_Amt = request.getParameter("SGST_Amt");
 			String CGST_Amt = request.getParameter("CGST_Amt");
@@ -3135,6 +2938,10 @@ public class Controller_V {
 			String Clientstate = request.getParameter("Clientstate");
 			String Clientcode = request.getParameter("Clientcode");
 			String ClientPan = request.getParameter("ClientPan");
+			String TrnasitPolicyNo = request.getParameter("TrnasitPolicyNo");
+			String Driver_name = request.getParameter("Driver_name");
+			String Driver_Lic_no = request.getParameter("Driver_Lic_no");
+			String Vehicle_no = request.getParameter("Vehicle_no");
 //		       // String QtyAllowed = request.getParameter("QtyAllowed");
 ////		        final String filename = SupportingDocument.getOriginalFilename();
 ////		        File serverFile = new File(theDir, filename);
@@ -3147,7 +2954,7 @@ public class Controller_V {
 			GenerationOfBillSupplyModel generationOfBillSupplyModel = new GenerationOfBillSupplyModel();
 			generationOfBillSupplyModel.setChallan_No(Challan_No1);
 			generationOfBillSupplyModel.setChallan_date(Challan_Date1);
-			generationOfBillSupplyModel.setShipment_details(Shipment_Details);
+			// generationOfBillSupplyModel.setShipment_details(Shipment_Details);
 			generationOfBillSupplyModel.setShipment_value(Shipment_Value1);
 			generationOfBillSupplyModel.setSGST_amt(SGST_Amt);
 			generationOfBillSupplyModel.setCGST_amt(CGST_Amt);
@@ -3167,9 +2974,11 @@ public class Controller_V {
 			generationOfBillSupplyModel.setConsignee_gSTN(Consignee_GSTN);
 			generationOfBillSupplyModel.setConsignee_address(Consignee_Address);
 			generationOfBillSupplyModel.setContract_no(Conract_no);
+			generationOfBillSupplyModel.setTrnasitPolicyno(TrnasitPolicyNo);
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
+			String ro_id = (String) request.getSession().getAttribute("regionId");
 			generationOfBillSupplyModel.setRo_id("1");
 			// generationOfBillSupplyModel.setBos_file_path("documents");
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
@@ -3183,22 +2992,44 @@ public class Controller_V {
 //		          cashDocumentModel.setBOS_No(Bill_of_Supply);
 
 			PdfGenerator_K pdfgenereatorK = new PdfGenerator_K();
-			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Shipment_Details,
-					Supplier_Name, Supplier_GSTN, Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address,
-					Consignee_Name, Consignee_GSTN, Consignee_Address, Bill_of_Supply, Conract_no, Clientstate,
-					Clientcode, ClientPan, BOS_Date, list);
+			
+			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
+					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
+					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
+					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name);
 
 			generationOfBillSupplyModel.setBos_file_path(filePath);
-			System.out.println(filePath);
-			System.out.println(filePath);
-			System.out.println(filePath);
+			System.err.println("filePath = " + filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
+		 
 			this.genrationCashDocumentService.create(cashDocumentModel);
 			this.generationofBillService.billUpdation(Conract_no);
 
 //		        
-//		       
+
+//			sendemailBOS email = new sendemailBOS();
+//			InternetAddress[] toAddresses = null;
+//			String subject = "Bill of Supply attachement";
+//			String body = "In this All information regarding Bill of supply . ";
+			// String filename=Genrationofbill;
+
+			// String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
+			String filePathDir = "C:\\Users\\vishwdeep.singharia\\Desktop\\jcidocs" + File.separator + filePath;
+			System.err.println("filePathDir = " + filePathDir);
+			String username1 = "";
+//			try {
+//				// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
+//				// InternetAddress("animesh.anand@cyfuture.com")};
+//				toAddresses = new InternetAddress[] { new InternetAddress("kailashshahbro@gmail.com"),
+//						new InternetAddress("kailashshahsha81@gmail.com") };
+//			} catch (AddressException e) {
+//
+//				e.printStackTrace();
+//			}
+//			email.sendEmailBos(toAddresses, body, subject, filePathDir, username1);
+//
+////		       
 //		        this.paymentDetailService.contratTable(contractno);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -3213,74 +3044,19 @@ public class Controller_V {
 
 		// Starting Email Sender
 
-		EmailSender email = new EmailSender();
-		InternetAddress[] toAddresses = null;
-		String subject = "Bill of Supply attachement";
-		String body = "In this All information regarding Bill of supply . ";
-		String filename = "Genrationofbill";
-
-		// String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
-		String username1 = "";
-		try {
-			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
-			// InternetAddress("animesh.anand@cyfuture.com")};
-			toAddresses = new InternetAddress[] { new InternetAddress("shahkailash2000@gmail.com"),
-					new InternetAddress("kailashshahsha81@gmail.com") };
-		} catch (AddressException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		email.sendEmail(toAddresses, body, subject, filename, username1);
-////           
-//          
-
 		// End Email
+		
+		 
 
-//
-		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
+		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
 	}
 
-//	 //download document of BOS
-//    @RequestMapping("downloadPDF")
-//		 public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
-//  	 // String imageDirectory = "C:\\Users\\kailash.shah\\documentimage";
-//  	 
-//		    String imagePath = Genrationofbill + File.separator + filename;
-//
-//
-//		String subject = "Bill of Supply attachement";
-//
-//		String body = "In this All information regarding Bill of supply . ";
-//
-//		String filename = "C:\\Users\\kailash.shah\\Downloads\\website.jpg";
-//		// String filename = "C:\\Users\\kailash.shah\\documentimage\\" + filePath;
-//		String username1 = "";
-//		try {
-//			// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
-//			// InternetAddress("animesh.anand@cyfuture.com")};
-//
-//			toAddresses = new InternetAddress[] { new InternetAddress("shahkailash2000@gmail.com"),
-//					new InternetAddress("kailashshahsha81@gmail.com") };
-//
-//		} catch (AddressException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		email.sendEmail(toAddresses, body, subject, filename, username1);
-//
-//		// End Email
-//
-////
-//		return new ModelAndView(new RedirectView("EntryofGenerationBillsupply.obj"));
-//	}
-
 	@RequestMapping("downloadPDF")
 	public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imageDirectory = "upload.Imagedownload";
+		// String imageDirectory = "upload.Imagedownload";
 
-		String imagePath = imageDirectory + File.separator + filename;
+		String imagePath = Genrationofbill + File.separator + filename;
 
 		File imageFile = new File(imagePath);
 
@@ -3297,20 +3073,20 @@ public class Controller_V {
 
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 				OutputStream responseOutputStream = response.getOutputStream();
-//
+
 				byte[] buffer = new byte[1024];
 				int bytesRead;
 				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
 					responseOutputStream.write(buffer, 0, bytesRead);
 				}
-//
+
 				fileInputStream.close();
 				responseOutputStream.close();
 			} else {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
 		} catch (IOException e) {
-//			            
+
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
@@ -3328,21 +3104,6 @@ public class Controller_V {
 		}
 	}
 
-	@RequestMapping({ "ViewofGenerationBillsupply" })
-	public ModelAndView viewBillofSupplyReciept(final HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView("viewGenerationBill");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-
-		final List<GenerationOfBillSupplyModel> GenerationOfBill = (List<GenerationOfBillSupplyModel>) this.generationofBillService
-				.getAll();
-		mv.addObject("GenerationOfBill", GenerationOfBill);
-
-		return mv;
-	}
-
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata1", method = RequestMethod.GET)
 	public String hodinofetch1(@RequestParam("contractno") String contractno1) {
@@ -3351,6 +3112,17 @@ public class Controller_V {
 		System.err.println("resultList++++++++++" + BI_no);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(BI_no);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "contrcatnotomill", method = RequestMethod.GET)
+	public String contrcatnotomill(@RequestParam("contractno") String contractno1) {
+
+		List<Object[]> contrcatnotomill = generationofBillService.contrcatnotomill(contractno1);
+		System.err.println("resultList++++++++++" + contrcatnotomill);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contrcatnotomill);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
 
@@ -3368,11 +3140,21 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "fetchingdataforbill", method = RequestMethod.GET)
 	public String fetchingdatanominactionclaimforbill(@RequestParam("contractno") String contractno) {
-		List<Object[]> millRecieptModelt1 = generationofBillService.contarctnoformaster(contractno);
-		System.err.println("resultList++++++++++" + millRecieptModelt1);
+		System.err.println("resultList++++++++++" + contractno);
+		List<Object[]> listofaddress = generationofBillService.contarctnoformaster(contractno);
+		System.err.println(" listofaddress++++++++++" + listofaddress);
 		Gson gson = new Gson();
-		String resultString = new Gson().toJson(millRecieptModelt1);
-		return resultString;// gson.toJson((Object)millRecieptModelt1);
+		String resultString = new Gson().toJson(listofaddress);
+		return resultString;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "fetchingdataMillname", method = RequestMethod.GET)
+	public String millnamedetails(@RequestParam("millname") String millname) {
+		List<Object> listofaddress = generationofBillService.millnamefromTCS();
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(listofaddress);
+		return resultString;
 	}
 
 	@ResponseBody
@@ -3549,8 +3331,10 @@ public class Controller_V {
 		return mv;
 	}
 
+	// To load HO
 	@RequestMapping("HOdispatchInst")
-	public ModelAndView HODispatchInstructionModel(HttpServletRequest request) {
+	public ModelAndView HODispatchInstructionModel(HttpServletRequest request, HttpSession session) {
+
 		String username = (String) request.getSession().getAttribute("usrname");
 		List<String> contractList = (List<String>) hoInstService.getContract();
 
@@ -3561,14 +3345,19 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 
+		String regionIdString = (String) session.getAttribute("region");
 		List<Object[]> ronameList = (List<Object[]>) hoInstService.getRoname();
 		List<String> juteVariety = (List<String>) hoInstService.getJuteVariety();
+		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
 		System.err.println(ronameList);
 		mv.addObject("ronameList", ronameList);
 		mv.addObject("juteVariety", juteVariety);
+		mv.addObject("loadAllCooperativesList", loadAllCooperativesList);
 
 		return mv;
 	}
+
+	// To get ho Details
 
 	@ResponseBody
 	@RequestMapping(value = "HoDispatch", method = RequestMethod.GET)
@@ -3582,16 +3371,22 @@ public class Controller_V {
 		return jsonResponse;
 	}
 
+//DPC finding for Region
 	@ResponseBody
 	@RequestMapping({ "findDpc" })
 	public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
 
 		String username = (String) request.getSession().getAttribute("usrname");
 		final Gson gson = new Gson();
+		/*
+		 * System.err.println((Object)
+		 * this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
+		 */
 		return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
-
+		
 	}
 
+//To get count previous HO count dor DI no. for particular Region
 	@ResponseBody
 	@RequestMapping({ "countHo" })
 	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request) {
@@ -3609,20 +3404,19 @@ public class Controller_V {
 			String[] variety = request.getParameterValues("jutevariety");
 
 			for (String st : variety) {
-				System.err.println(st);
-				System.err.println(st);
+
 				Integer usId = (Integer) request.getSession().getAttribute("userId");//
-				System.err.println(usId);
+
 				String user = Integer.toString(usId);
-				System.err.println(user);
+
 				String contNo = request.getParameter("fullcontractno");//
-				System.err.println(contNo);
+
 				String crpyrString = request.getParameter("cropyear");//
-				System.err.println(crpyrString);
+
 				String contqtyString = request.getParameter("contractquantity");//
-				System.err.println(contqtyString);
+
 				Double cQtyDouble = Double.parseDouble(contqtyString);//
-				System.err.println(cQtyDouble);
+
 				String dIString = request.getParameter("dateofdi");//
 
 				String dateStr = request.getParameter("dateofdi");
@@ -3630,28 +3424,27 @@ public class Controller_V {
 				Date result = formater.parse(dateStr);
 				SimpleDateFormat newFormater = new SimpleDateFormat("dd-MM-yyyy");
 
-				System.err.println(dIString);
 				String fcString = request.getParameter("FC_Ref_No");//
-				System.err.println(fcString);
+
 				String diNoString = request.getParameter("uniqueno");//
-				System.err.println(diNoString);
+
 				String contDateString = request.getParameter("contractdate");//
-				System.err.println(contDateString);
+
 				String allowQty = request.getParameter("qty");//
-				System.err.println(allowQty);
+
 				Double qtyDouble = Double.parseDouble(allowQty);
-				System.err.println(qtyDouble);
+
 				String regOfficeString = request.getParameter("region");//
-				System.err.println(regOfficeString);
+
 				String[] dpcString = request.getParameterValues("dpc_name");
-				System.err.println(dpcString);
+
 				String lastShipString = request.getParameter("lastdateofshipment");//
 
 				String dateStr1 = request.getParameter("lastdateofshipment");
 				SimpleDateFormat formater1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date result1 = formater1.parse(dateStr1);
 				SimpleDateFormat newFormater1 = new SimpleDateFormat("dd-MM-yyyy");
-				System.err.println(lastShipString);
+
 				JciDIHoModel diHo = new JciDIHoModel();
 				String gprice0 = request.getParameter(st + "-grade" + "1");
 				if (gprice0 == null) {
@@ -3701,7 +3494,7 @@ public class Controller_V {
 				Double g7 = Double.parseDouble(gprice7);
 
 				String remString = request.getParameter("remarks");
-				System.err.println(remString);
+
 				Date date = new Date(); // your Date object
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				String formattedDate = formatter.format(date);
@@ -3762,6 +3555,8 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("HOdispatchInst.obj"));
 	}
 
+	// View JCI
+
 	@RequestMapping("jcilist")
 	public String jciHoList(Model model) {
 
@@ -3770,6 +3565,8 @@ public class Controller_V {
 
 		return "ViewJCIHO";
 	}
+
+	// Delete DI for particular DI no.
 
 	@RequestMapping({ "deleteHO" })
 	public ModelAndView deleteHO(final HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
@@ -3802,6 +3599,9 @@ public class Controller_V {
 	}
 
 // Vishwdeep RO
+
+	// To get Cooperatives list for particular RO
+
 	@ResponseBody
 	@RequestMapping(value = "getCooperative", method = RequestMethod.GET)
 	public List<String> getList(HttpSession session) {
@@ -3810,6 +3610,18 @@ public class Controller_V {
 		return roDispatchService.getCooperative(regionIdString);
 
 	}
+
+	@ResponseBody
+	@RequestMapping(value = "dpcCheck", method = RequestMethod.GET)
+	public String dpcCheck(HttpServletRequest request, @RequestParam("dpc") String dpc,
+			@RequestParam("hoDiNo") String hoDIno) {
+		System.err.println("Reached ajax");
+		final Gson gson = new Gson();
+		String result = roDispatchService.dpcCheck(dpc, hoDIno);
+		return gson.toJson(result);
+	}
+
+	// To get Ro Form
 
 	@RequestMapping("roDispatchInstruction")
 	public ModelAndView viewRoDispatcher(HttpServletRequest request, HttpSession session) throws FileNotFoundException {
@@ -3821,7 +3633,7 @@ public class Controller_V {
 		List<String> loadAllDpc = roDispatchService.loadAllDpc();
 		List<String> loadAllDiNo = roDispatchService.loadAllDiNo();
 		List<String> loadAllCooperativesList = roDispatchService.getCooperative(regionIdString);
-		// int countAvaiResult = roDispatchService.getCountOfAvailableEntries();
+		System.err.println(loadAllCooperativesList);
 		ModelAndView mv = new ModelAndView("roDispatchInstruction");
 		mv.addObject("loadAllDpc", loadAllDpc);
 		mv.addObject("loadAllDiNo", loadAllDiNo);
@@ -3835,11 +3647,124 @@ public class Controller_V {
 		return mv;
 	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Save RO Multiple
+	@ResponseBody
+	@RequestMapping(value = "saveRoDi", method = { RequestMethod.POST })
+	public String saveRoDispatch(@RequestBody Map<String, Object> requestBody, RedirectAttributes redirectAttributes)
+			throws ParseException {
+		List<Map<String, Object>> juteDetails = (List<Map<String, Object>>) requestBody.get("juteDetails");
 
-// ---------------------------------------------------------
-// Mill Acceptence
-// ---------------------------------------------------------
+		// Handle other fields from the request body
+		String contractNoString = (String) requestBody.get("contractNo");
+
+		String hoDiNo = (String) requestBody.get("hoDiNo");
+
+		String hoDiDate = (String) requestBody.get("hoDiDate");
+
+		String contractDate = (String) requestBody.get("contractDate");
+
+		String cropYear = (String) requestBody.get("cropYear");
+
+		String dpc = (String) requestBody.get("dpc");
+
+		String roDiNo = (String) requestBody.get("roDiNo");
+
+		String roDiDate = (String) requestBody.get("roDiDate");
+
+		String lastDateOfShipment = (String) requestBody.get("lastDateOfShipment");
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat outPutDate = new SimpleDateFormat("dd-MM-yyyy");
+		Date fomatedDate = dateFormat.parse(lastDateOfShipment);
+		String finalStringDate = outPutDate.format(fomatedDate);
+
+		String remarksValue = (String) requestBody.get("remarksValue");
+		System.err.println("Remarks Value: " + remarksValue);
+		Date date = new Date();
+		SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateFormater = simpleDateTimeFormat.format(date);
+		Date created_Date = null;
+		created_Date = simpleDateTimeFormat.parse(dateFormater);
+		for (Map<String, Object> entry : juteDetails) {
+			RoDispatchModel roDispatchModel = new RoDispatchModel();
+			String juteVar = (String) entry.get("juteVar");
+			Object valuesObj = entry.get("values");
+			roDispatchModel.setJuteVariety(juteVar);
+			roDispatchModel.setContractDate(contractDate);
+			roDispatchModel.setContractNo(contractNoString);
+			roDispatchModel.setCreationDate(created_Date);
+			roDispatchModel.setCropYear(cropYear);
+			roDispatchModel.setDpc(dpc);
+			roDispatchModel.setHoDiDate(hoDiDate);
+			roDispatchModel.setHoDiNo(hoDiNo);
+			roDispatchModel.setLastDateOfShipment(finalStringDate);
+			roDispatchModel.setRemarks(remarksValue);
+			roDispatchModel.setRoDiDate(roDiDate);
+			roDispatchModel.setRoDiNo(roDiNo);
+
+			if (valuesObj instanceof ArrayList) {
+				List<String> stringValues = (ArrayList<String>) valuesObj;
+				roDispatchModel.setGr1Qty(Double.parseDouble(stringValues.get(0)));
+				roDispatchModel.setGr2Qty(Double.parseDouble(stringValues.get(1)));
+				roDispatchModel.setGr3Qty(Double.parseDouble(stringValues.get(2)));
+				roDispatchModel.setGr4Qty(Double.parseDouble(stringValues.get(3)));
+				roDispatchModel.setGr5Qty(Double.parseDouble(stringValues.get(4)));
+				roDispatchModel.setGr6Qty(Double.parseDouble(stringValues.get(5)));
+				roDispatchModel.setGr7Qty(Double.parseDouble(stringValues.get(6)));
+				roDispatchModel.setGr8Qty(Double.parseDouble(stringValues.get(7)));
+				this.roDispatchService.create(roDispatchModel);
+
+//                System.out.println("Double values: " + doubleValues);
+			} else {
+				System.err.println("Unexpected data type for 'values'.");
+
+			}
+		}
+		roDispatchService.update(contractNoString);
+		redirectAttributes.addFlashAttribute("msg", "Data saved successfully.");
+
+		return "redirect:/roDispatchInstruction.obj";
+	}
+
+	// RO List
+	@RequestMapping("roDispatchList")
+	public ModelAndView roDiList(HttpServletRequest request) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
+		List<RoDispatchModel> allDi = roDispatchService.getAllRoDi();
+
+		ModelAndView mv = new ModelAndView("diRoList");
+		mv.addObject("roDiList", allDi);
+		return mv;
+	}
+
+	// Fetch details for DI
+	@ResponseBody
+	@RequestMapping(value = "fetchDetails", method = RequestMethod.GET)
+	public String fetchDetails(@RequestParam("diNo") String HOno) {
+
+		List<String> detailsList = (List<String>) roDispatchService.getDetails(HOno);
+
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(detailsList);
+
+		return jsonResponse;
+
+	}
+
+	// To get the details of previous DIs
+	@ResponseBody
+	@RequestMapping(value = "getdetails", method = RequestMethod.GET)
+	public String getDetails(@RequestParam("diNo") String diNo) {
+		List<String> list = (List<String>) this.roDispatchService.getprevious(diNo);
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(list);
+		return jsonResponse;
+	}
 
 	@RequestMapping("viewmillAcc")
 	public String ViewMillAcceptance1(Model model, HttpServletRequest request) {
@@ -4004,14 +3929,6 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "fetchmillreceiptdata", method = RequestMethod.GET)
 	public String FetchDataMillReciept(@RequestParam("millid") String millid) {
-
-		System.out.println("Hello ---------------- ");
-		System.out.println("Hello--------------- ");
-		System.out.println("Hello ---------------- ");
-		System.out.println("Hello ---------------- ");
-
-		System.out.println("Hello---------------- ");
-
 		List<Object> millReceiptData = nominalOfficialService.FetchMillReceiptData(millid);
 
 		// Convert the a JSON in string
@@ -4500,6 +4417,248 @@ public class Controller_V {
 		return jsonResponse;
 
 	}
+
+	// Entry and Nomination of Claim Settlement
+	@RequestMapping("entryofConfirmationSettelment")
+	public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("ConfirmationofClaimSettlement");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		System.err.println(getSettlementidlist);
+		mv.addObject("getSettlementidlist", getSettlementidlist);
+		return mv;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "fetchSettlementData", method = RequestMethod.GET)
+	public String fetchingdatatocontractnoji(@RequestParam("id") String id) {
+		List<Object[]> getcontractddownlist = confirmationofClaimSettlementService.fetchdataofclaim(id);
+		System.err.println("resultList++++++++++" + getcontractddownlist);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(getcontractddownlist);
+		return resultString;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
+	public String fetchingdatanominactionclaim(@RequestParam("contractno") int contractno) {
+		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
+		System.err.println("resultList++++++++++" + getsettlementlist);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(getsettlementlist);
+		return resultString;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "fetchContractNo", method = RequestMethod.GET)
+	public String contractNo(@RequestParam("id") String settlementId) {
+		List<String> contractList = confirmationofClaimSettlementService.fetchContract(settlementId);
+		System.err.println("resultList++++++++++" + contractList);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractList);
+		return resultString;
+	}
+
+	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
+	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
+			RedirectAttributes redirectAttributes,
+			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
+		final File theDir = new File("Confirmationsettlement");
+		if (!theDir.exists()) {
+			theDir.mkdirs();
+		}
+
+		final ModelAndView mv = new ModelAndView();
+		String username = (String) request.getSession().getAttribute("usrname");
+		try {
+
+			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
+			String Settlement_Id1 = request.getParameter("Settlement_Id1");
+
+			int Settlement_Id12 = Integer.parseInt(Settlement_Id1);
+			String Date_of_inspection1 = request.getParameter("Dateofinspection");
+			String fullcontractno = request.getParameter("fullcontractno");
+			String Challan_No1 = request.getParameter("Challan_No1");
+			final File theDirect = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\");
+			if (!theDirect.exists()) {
+				theDirect.mkdirs();
+			}
+
+			double defaultValue = 0.0;
+
+			String Inspection_by1 = request.getParameter("Inspectionby1");
+
+			final String filename = SupportingDocument.getOriginalFilename();
+			System.err.println(filename + "---------");
+
+			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
+
+			String Claim_Amount1 = request.getParameter("ClaimAmount");
+
+			if (Claim_Amount1 != null) {
+
+				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
+				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+			} else {
+				double Claim_Amount12 = defaultValue;
+				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+			}
+
+			String Quality_Settlement1 = request.getParameter("Quality_Settlement1");
+			if (Quality_Settlement1 != null) {
+
+				double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
+				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
+			} else {
+				double Quality_Settlement12 = defaultValue;
+				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
+			}
+
+			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement1");
+			if (Moisture_Settlement1 != null) {
+
+				double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
+				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
+			} else {
+				double Moisture_Settlement12 = defaultValue;
+				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
+			}
+
+			String NCV_Settlement1 = request.getParameter("NCV_Settlement1");
+			if (NCV_Settlement1 != null) {
+
+				double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
+				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
+			} else {
+				double NCV_Settlement12 = defaultValue;
+				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
+			}
+
+			String Settlement_Amount1 = request.getParameter("SettlementAmount");
+
+			if (Settlement_Amount1 != null) {
+
+				double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
+				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
+			} else {
+				double Settlement_Amount12 = defaultValue;
+				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
+			}
+
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
+			Date instdate1 = formatter1.parse(Date_of_inspection1);
+			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
+			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
+			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
+			confirmationClaimSettlementModel.setContract_No(fullcontractno);
+			confirmationClaimSettlementModel.setChallan_No(Challan_No1);
+
+			confirmationClaimSettlementModel.setInspection_by(Inspection_by1);
+
+//			confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
+
+			Date date1 = new Date();
+			confirmationClaimSettlementModel.setInspection_date(date1);
+			confirmationClaimSettlementModel.setDispute_flag(0);
+			confirmationClaimSettlementModel.setOM_Official("vishal");
+			confirmationClaimSettlementModel.setMill("1");
+			confirmationClaimSettlementModel.setFA_Official("Pradeep");
+			confirmationClaimSettlementModel.setCreated_by("kailash");
+			confirmationClaimSettlementModel.setCreated_on(date1);
+			File file = null;
+			String url = "";
+			String pathurl = "";
+			if (!SupportingDocument.isEmpty()) {
+				try {
+					file = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\"
+							+ SupportingDocument.getOriginalFilename());
+					final OutputStream os = new FileOutputStream(file);
+					os.write(SupportingDocument.getBytes());
+					os.close();
+				} catch (Exception e) {
+					System.err.println(e.getLocalizedMessage());
+					e.printStackTrace();
+					System.err.println("inside catch file----");
+				}
+				pathurl = file.getAbsolutePath();
+				final String path = url = SupportingDocument.getOriginalFilename();
+				confirmationClaimSettlementModel.setSupporting_doc(url);
+				System.err.println("outside catch file----");
+			}
+			this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
+			redirectAttributes.addFlashAttribute("msg",
+					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+
+		} catch (Exception e) {
+			System.err.println("overall catch inside----");
+
+		}
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
+		return new ModelAndView(new RedirectView("entryofConfirmationSettelment.obj"));
+	}
+	// view page of confirmation settelment form
+
+	@RequestMapping({ "ViewConfirmationsettelment" })
+	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
+				.getAll();
+		mv.addObject("confirmationClaim", confirmationClaim);
+
+		return mv;
+	}
+
+	@RequestMapping("downloadSupportDocument")
+	public void downloadDocs(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\" + filename;
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+
+	// Utility method to determine content type based on filename
+
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

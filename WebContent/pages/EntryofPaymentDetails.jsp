@@ -597,7 +597,7 @@ $(document).ready(function() {
             });
            
             // Update the total contract value label
-            $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
+            $('#differenceLabel').text('Instrument Value min = ' + totalContractValue);
            
             // Recalculate ratios
             recalculateRatios();
