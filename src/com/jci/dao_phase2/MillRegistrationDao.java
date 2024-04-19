@@ -9,7 +9,8 @@ public interface MillRegistrationDao {
 	public List<Object> FetchMillReceiptData(String millid);
 	public void create(MillRegistrationModel millsave);
 	public List <MillRegistrationModel> getAll();
-	
+	public MillRegistrationModel getmillRegistrationProfile(int MillRegistrationId );
+	public void ResetPassword(int MillRegistrationId);
 /////////////// This is for login
 	public String loginCheck(String userName, String password);
 	public String  checkmillcode(String email);

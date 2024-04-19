@@ -54,6 +54,15 @@ public class MillRegistrationServiceImpl implements MillRegistrationService{
 		// TODO Auto-generated method stub
 		return millRegistrationDao.validatemillEmail(Email);
 	}
+	@Override
+	public MillRegistrationModel getmillRegistrationProfile(int MillRegistrationId) {
+		return millRegistrationDao. getmillRegistrationProfile(MillRegistrationId);
+	}
+	@Override
+	public void ResetPassword(int MillRegistrationId) {
+		millRegistrationDao.ResetPassword(MillRegistrationId);
+		
+	}
 	
 	
 }

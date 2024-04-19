@@ -13,7 +13,7 @@ public class MillRegistrationModel {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Column(name = "MillRegistration_id")
-	    private Long MillRegistration_id ;
+	    private int MillRegistration_id ;
 	 
 	   @Column(name = "mill_name") 
 	   private String mill_name;
@@ -39,11 +39,13 @@ public class MillRegistrationModel {
 		@Column(name="official_designation")
 		private String official_designation;
 		
-		public Long getMillRegistration_id() {
+		
+
+		public int getMillRegistration_id() {
 			return MillRegistration_id;
 		}
 
-		public void setMillRegistration_id(Long millRegistration_id) {
+		public void setMillRegistration_id(int millRegistration_id) {
 			MillRegistration_id = millRegistration_id;
 		}
 
@@ -120,7 +122,7 @@ public class MillRegistrationModel {
 			super();
 		}
 
-		public MillRegistrationModel(Long millRegistration_id, String mill_name, String mill_password,
+		public MillRegistrationModel(int millRegistration_id, String mill_name, String mill_password,
 				String confirm_mill_password, String mill_code, String mill_emailaddress, String mill_mobile,
 				String official_name, String official_designation) {
 			super();
@@ -143,6 +145,7 @@ public class MillRegistrationModel {
 					+ mill_mobile + ", official_name=" + official_name + ", official_designation="
 					+ official_designation + "]";
 		}
+
 
 		
 	

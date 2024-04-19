@@ -5,7 +5,7 @@
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
 
-<%@page import="com.jci.model.UserRegistrationModel"%>
+<%@page import="com.jci.model.MillRegistrationModel "%>
 
 <%@page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -129,8 +129,13 @@ input[type="file"] {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Mill Registration</h1>
+				<h1 class="page-title">Edit Mill Registration</h1>
 			</div>
+
+			<%
+			MillRegistrationModel userProfile = (MillRegistrationModel) request.getAttribute("profile");
+			%>
+
 			<div class="page-content fade-in-up">
 				<div class="row">
 					<div class="col-md-11">
@@ -140,10 +145,13 @@ input[type="file"] {
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
-								<form action="savemillregister.obj" method="POST">
+								<form action="updateMillRegistration.obj" method="POST">
 									<input type="hidden" name="emailCheck" id="emailCheck">
 									<input type="hidden" name="dubName" id="dubName">
-									<div class="row">
+
+
+
+									<%-- <div class="row">
 
 										<div class="col-sm-4 form-group">
 											<label>Mill Name </label> <select name="mill_name" id="Mill"
@@ -173,7 +181,7 @@ input[type="file"] {
 											<label class="required">Mill Official Name</label> <input
 												class="form-control" name="official_name" type="text"
 												value=""
-												<%-- value="<%=session.getAttribute("usrname")%>" --%>
+												value="<%=session.getAttribute("usrname")%>"
 												placeholder="Enter Mill official Name">
 										</div>
 
@@ -181,49 +189,53 @@ input[type="file"] {
 
 
 
-									</div>
-									<div class="row">
+									</div> --%>
+									<!-- 	<div class="row">
 									
 											<div class="col-sm-4 form-group">
 											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp; <span id="errEmail" name="errEmail" class="text-danger"> </span>
 											<input class="form-control" autocomplete="off" type="text"  id="emailAddress" oninvalid="this.setCustomValidity('Please enter a valid Email')" oninput="this.setCustomValidity('')"   name="mill_emailaddress" placeholder="Email address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" onkeyup="validatemail()">
 											<span  style="color: red; font-size: 13px;" id="EmailError">Please enter a valid Email</span> 
-										</div>
-
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Password</label>
-											<div class="input-group">
-												<input id="password" type="Password" class="form-control"
-													name="mill_password" value="" placeholder="Password"
-													required onblur="return matchpassword()">
-												<div class="input-group-append">
-													<button type="button" class="btn btn-outline-secondary"
-														id="togglePassword">
-														<i class="fa fa-eye" aria-hidden="true"></i>
-													</button>
-												</div>
+										</div> -->
+									<input type="hidden" name="MillRegistration_id" id ="MillRegistration_id"
+										value="<%=userProfile.getMillRegistration_id()%>">
+									<div class="col-sm-4 form-group">
+										<label class="required">Mill Password</label>
+										<div class="input-group">
+											<input id="password" type="Password" class="form-control"
+												name="mill_password"
+												value="<%=userProfile.getMill_password()%>"
+												placeholder="Password" required
+												onblur="return matchpassword()">
+											<div class="input-group-append">
+												<button type="button" class="btn btn-outline-secondary"
+													id="togglePassword">
+													<i class="fa fa-eye" aria-hidden="true"></i>
+												</button>
 											</div>
-											<span id="errPass" name="errPass" class="text-danger"></span>
 										</div>
-
-										<div class="col-sm-4 form-group">
-											<label class="required">Confirm Mill Password</label>
-											<div class="input-group">
-												<input type="password" class="form-control"
-													name="confirm_mill_password" placeholder="Enter Password"
-													id="password1" oninput="checkPasswordMatch()">
-												<div class="input-group-append">
-													<button type="button" class="btn btn-outline-secondary"
-														id="togglePassword1">
-														<i class="fa fa-eye" aria-hidden="true"></i>
-													</button>
-												</div>
-											</div>
-											<span id="errMatch" class="text-danger"></span>
-										</div>
-
+										<span id="errPass" name="errPass" class="text-danger"></span>
 									</div>
-									<div class="row">
+
+									<div class="col-sm-4 form-group">
+										<label class="required">Confirm Mill Password</label>
+										<div class="input-group">
+											<input type="password" class="form-control"
+												name="confirm_mill_password"
+												value="<%=userProfile.getConfirm_mill_password()%>"
+												placeholder="Enter Password" id="password1"
+												oninput="checkPasswordMatch()">
+											<div class="input-group-append">
+												<button type="button" class="btn btn-outline-secondary"
+													id="togglePassword1">
+													<i class="fa fa-eye" aria-hidden="true"></i>
+												</button>
+											</div>
+										</div>
+										<span id="errMatch" class="text-danger"></span>
+									</div>
+							</div>
+							<%-- <div class="row">
 
 
 										<div class="col-sm-4 form-group">
@@ -245,52 +257,52 @@ input[type="file"] {
 										<div class="col-sm-4 form-group">
 											<label class="required">Designation</label> <input
 												class="form-control" type="text" name="official_designation"
-												value="" placeholder="Enter Designation"<%-- 	value="<%=session.getAttribute("rolename")%>" --%>
-												<%-- placeholder="<%=session.getAttribute("rolename")%>" readonly --%>
+												value="" placeholder="Enter Designation"	value="<%=session.getAttribute("rolename")%>"
+												placeholder="<%=session.getAttribute("rolename")%>" readonly
 												>
 										</div>
 
 									</div>
 
 
+ --%>
 
 
 
 
 
 
-
-									<div class="row">
-										<div class="col-sm-12 form-group">
-											<input type="submit" value="Submit" id="submit"
-												class="btn btn-primary">
-											<!-- <input class="btn btn-primary" type="submit" id="enq_submit">Submit</button> -->
-										</div>
-									</div>
-								</form>
+							<div class="row">
+								<div class="col-sm-12 form-group">
+									<input type="submit" value="Submit" id="submit"
+										class="btn btn-primary">
+									<!-- <input class="btn btn-primary" type="submit" id="enq_submit">Submit</button> -->
+								</div>
 							</div>
+							</form>
 						</div>
 					</div>
 				</div>
-				<div>
-					<ul>
-						<li>Password Length must be greater than or equal to <b>8</b>
-						</li>
-						<li>Must contain one or more <b>Uppercase</b> characters
-						</li>
-						<li>Must contain one or more <b>Lowercase</b> characters
-						</li>
-						<li>Must contain one or more <b>Numeric</b> values
-						</li>
-						<li>Must contain one or more <b>Special</b> characters
-						</li>
-					</ul>
-				</div>
-
 			</div>
-			<!-- END PAGE CONTENT-->
-			<%@ include file="footer.jsp"%>
+			<div>
+				<ul>
+					<li>Password Length must be greater than or equal to <b>8</b>
+					</li>
+					<li>Must contain one or more <b>Uppercase</b> characters
+					</li>
+					<li>Must contain one or more <b>Lowercase</b> characters
+					</li>
+					<li>Must contain one or more <b>Numeric</b> values
+					</li>
+					<li>Must contain one or more <b>Special</b> characters
+					</li>
+				</ul>
+			</div>
+
 		</div>
+		<!-- END PAGE CONTENT-->
+		<%@ include file="footer.jsp"%>
+	</div>
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
@@ -398,67 +410,71 @@ input[type="file"] {
 		});
 	});
 </script>
- 
+
 
 
 
 <script>
-$(document).ready(function() {
-	
-	  $("#EmailError").hide();
-     $('#emailAddress').keyup(function() { 
-        $("#EmailError").hide();
-        var hasError = false;
-        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
- 
-        var emailaddressVal = $("#emailAddress").val();
-        if(emailaddressVal == '') {
-            $("#EmailError").show();
-            hasError = true;
-        }
- 
-        else if(!emailReg.test(emailaddressVal)) {
-        	//alert('error');
-        	 $("#EmailError").show();
-            hasError = true;
-        }
-        if(hasError == true) { return false; }
- 
-    });
-});
+	$(document).ready(function() {
+
+		$("#EmailError").hide();
+		$('#emailAddress').keyup(function() {
+			$("#EmailError").hide();
+			var hasError = false;
+			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+			var emailaddressVal = $("#emailAddress").val();
+			if (emailaddressVal == '') {
+				$("#EmailError").show();
+				hasError = true;
+			}
+
+			else if (!emailReg.test(emailaddressVal)) {
+				//alert('error');
+				$("#EmailError").show();
+				hasError = true;
+			}
+			if (hasError == true) {
+				return false;
+			}
+
+		});
+	});
 </script>
 <script>
-    function allow_alphabets(element){
-        let textInput = element.value;
-        textInput = textInput.replace(/[^A-Za-z ]*$/gm, ""); 
-        element.value = textInput;
-    }
-</script>
-<script>
-function validatemail(){
-	var email = document.getElementById("emailAddress").value;
-	var flag = false;
-	for(var i=0; i<email.length; i++){
-		if(email[i]=='@'){
-			flag =  true
-			  $.ajax({
-					type:"GET",
-					url:"validatemillEmail.obj",
-					data:{"Email":email},
-					success:function(result){
-						document.getElementById("emailCheck").value = result;
-    					if(result == 'false'){
-    						document.getElementById("errEmail").innerHTML = " Email Already Exists!";
-    					}
-    					else{
-    						document.getElementById("errEmail").innerHTML = "";
-    					}
-    				}			
-			  });
-		}
+	function allow_alphabets(element) {
+		let textInput = element.value;
+		textInput = textInput.replace(/[^A-Za-z ]*$/gm, "");
+		element.value = textInput;
 	}
-	
-}
+</script>
+<script>
+	function validatemail() {
+		var email = document.getElementById("emailAddress").value;
+		var flag = false;
+		for (var i = 0; i < email.length; i++) {
+			if (email[i] == '@') {
+				flag = true
+				$
+						.ajax({
+							type : "GET",
+							url : "validatemillEmail.obj",
+							data : {
+								"Email" : email
+							},
+							success : function(result) {
+								document.getElementById("emailCheck").value = result;
+								if (result == 'false') {
+									document.getElementById("errEmail").innerHTML = " Email Already Exists!";
+								} else {
+									document.getElementById("errEmail").innerHTML = "";
+								}
+							}
+						});
+			}
+		}
+
+	}
 </script>
 
 <!-- CORE PLUGINS-->

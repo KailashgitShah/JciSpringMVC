@@ -118,6 +118,8 @@ import com.jci.model.RoDetailsModel;
 import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
 import com.jci.model.UserRegistrationModel;
+import com.jci.model.UserRoleModel;
+import com.jci.model.ZoneModel;
 import com.jci.model.settlemetCnDnModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
@@ -4829,7 +4831,8 @@ public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttr
 
 @RequestMapping("viewmillRegistration")
 
-public String ViewmillRegistration(Model model) {
+
+public String ViewmillRegistration(Model model , HttpServletRequest request) {
 
 	List<MillRegistrationModel> AllList = (List<MillRegistrationModel>)millRegistrationService .getAll();
 	
@@ -4837,10 +4840,105 @@ public String ViewmillRegistration(Model model) {
 	
 
 	model.addAttribute("AllList", AllList);
+	//int MillRegistrationId = Integer.parseInt(request.getParameter("MillRegistration_id"));
 
 	return "viewMillRegistration";
 
 }
+//@RequestMapping({ "updateMillRegistration" })
+//public ModelAndView updateMillRegistration(HttpServletRequest request,RedirectAttributes redirectAttributes) throws NumberFormatException, Exception
+//{
+//	String username = (String) request.getSession().getAttribute("usrname");
+//
+//	ModelAndView mv = new ModelAndView();
+//
+//	if (username == null) {
+//
+//		mv = new ModelAndView("index");
+//
+//	}
+//
+//	
+//	int MillRegistrationId = Integer.parseInt(request.getParameter("id"));	
+//	millRegistrationService.ResetPassword(MillRegistrationId);	
+//	redirectAttributes.addFlashAttribute("msg",
+//		(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
+//	 return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+//}
+
+@RequestMapping({ "updateMillRegistration" })
+public ModelAndView updateMillRegistration(HttpServletRequest request,RedirectAttributes redirectAttributes) throws NumberFormatException, Exception
+{
+	String username = (String) request.getSession().getAttribute("usrname");
+	ModelAndView mv = new ModelAndView();
+	if (username == null) {
+		mv = new ModelAndView("index");
+	}
+	int MillRegistrationId = Integer.parseInt(request.getParameter("id"));	
+	
+	millRegistrationService.ResetPassword(MillRegistrationId);	
+//	EmailSender email = new EmailSender();
+//	InternetAddress[] toAddresses = null;
+//	String subject = "your new password !!";
+//	String body = " This is the Body of the Email for om official . ";
+//	String username1 = "";
+//	//String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
+////		System.err.println("userEmail for omo official" + userEmailOmo);
+//	try {
+//		// toAddresses = new InternetAddress[]{new InternetAddress(userEmailOmo) };
+//		toAddresses = new InternetAddress[] { new InternetAddress("mansigupta7867@gmail.com")
+//		};
+//	} catch (AddressException e) {
+//		e.printStackTrace();
+//	}
+//	email.sendEmailMill(toAddresses, body, subject, username1);
+	redirectAttributes.addFlashAttribute("msg",
+		(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
+	 return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+}
+
+//@RequestMapping("ResetMillRegistrationPassword")
+//public ModelAndView updateMillRegistration(HttpServletRequest request, RedirectAttributes redirectAttributes,
+//		 HttpSession s)
+//		throws IllegalStateException, IOException {
+//
+//    String  MillRegistrationId = request.getParameter("MillRegistrationId"); 
+//
+//	System.err.println(MillRegistrationId  + "MillRegistrationId ");
+//	//millRegistrationService.ResetPassword(MillRegistrationId);
+//	 redirectAttributes.addFlashAttribute("msg",
+//				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Reset Password.</div>\r\n");
+//	
+//	
+//
+//	return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+//
+//}
+
+
+//@RequestMapping({ "ResetMillRegistrationPassword" })
+//public ModelAndView updateMillRegistration(HttpServletRequest request,RedirectAttributes redirectAttributes ,  HttpSession s) 
+//{
+//	
+////	String username =(String)request.getSession().getAttribute("usrname");
+////	ModelAndView mv = new ModelAndView("updateMillRegistration");
+////	if(username == null) {
+////    	return mv = new ModelAndView("index");
+////        }
+//	
+//	int MillRegistrationId = Integer.parseInt(request.getParameter("MillRegistration_id"));
+//	System.err.println(MillRegistrationId  + "MillRegistrationId ");
+//	millRegistrationService.ResetPassword(MillRegistrationId);
+//		 redirectAttributes.addFlashAttribute("msg",
+//					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password Reset.</div>\r\n");
+//		
+//		
+//
+//		return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+//	
+//}
+
+
 
 ///////////////////////////////////////// mill login ////////////////////////////////////////////////////////////////////////////////////////////
 @RequestMapping("millLogin")
@@ -4856,7 +4954,8 @@ public ModelAndView login(HttpServletRequest request){
 
 //  @RequestMapping("milldash")
 //  public ModelAndView millDashBoard(HttpServletRequest request){ 
-//		/*
+//		/*eptence
+
 //		 * HttpSession session = request.getSession(); request.getSession();
 //		 * session.invalidate();
 //		 */
