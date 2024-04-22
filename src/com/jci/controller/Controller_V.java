@@ -33,6 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -4166,12 +4167,10 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		// fetching the Contract No From JciContract Table
 		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
 		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
-		// System.err.println("omname and fa name" + OM_official + FA_official);
 
 		List<String> contractno = nominalOfficialService.contractno_ContractTable();
 
 		// for counting the total Number of row.
-
 		int total = nominalOfficialService.CountRecord();
 		mv.addObject("total", total);
 
@@ -4183,7 +4182,6 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	// For Handling AJAX Url for Fetching the Mill Receipt Table Data.
-
 	@ResponseBody
 	@RequestMapping(value = "fetchmillreceiptdata", method = RequestMethod.GET)
 	public String FetchDataMillReciept(@RequestParam("millid") String millid) {
@@ -4529,6 +4527,9 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		jciclaim_NominationModel.setOMOfficial(omofficial);
 		jciclaim_NominationModel.setFAOfficial(FAofficial);
 		jciclaim_NominationModel.setMr_No(Mr_NO);
+		jciclaim_NominationModel.setCropYear(CropYear);
+		jciclaim_NominationModel.setBaleMark(BaleMark);
+		jciclaim_NominationModel.setCreated_by(username);
 //		jciclaim_NominationModel.setClaimAmount(ClaimAmount);
 
 		// backend generated settlement id
@@ -4559,7 +4560,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		jciclaim_NominationModel.setQuality_settlement(0);
 		jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
 		jciclaim_NominationModel.setDispute_flag(0);
-		jciclaim_NominationModel.setCreated_by("myself");
+		
 		jciclaim_NominationModel.setInspection_by("official");
 
 		// email is working for static and dynamic both
@@ -4676,16 +4677,18 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@RequestMapping("viewlistnominal")
-	public String ViewNominal(Model model, HttpServletRequest request) {
+	public ModelAndView ViewNominal(Model model, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("viewlistnominal");
+		String username = (String) request.getSession().getAttribute("usrname");
+	
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
-		// Collections.sort(AllList,
-		// Comparator.comparing(Jciclaim_NominationModel::getCreated_on).reversed());
 		Collections.reverse(AllList);
 		model.addAttribute("jciclaim_NominationModel", AllList);
-		String omofficial = request.getParameter("omofficial");
-		// System.err.println("view" + omofficial);
-
-		return "viewlistnominal";
+		String omofficial = request.getParameter("omofficial");		
+		return mv;
 	}
 ////////////////////////////////////////////// NOMINATION OF OFFICIAL FOR CLAIM SETTLEMENT END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4779,15 +4782,25 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
 	@RequestMapping("viewentryoftds")
 
-	public String ViewEntryofTds(Model model) {
+	public ModelAndView ViewEntryofTds(Model model ,HttpServletRequest request) {
+		
+
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("ViewEntryOfTds");
+
+		if (username == null) {
+
+			mv = new ModelAndView("index");
+
+		}
+
 
 		List<JciEntryTdsModel> AllList = (List<JciEntryTdsModel>) entryofTdsService.getAll();
 		Collections.reverse(AllList);
-		// .reverse(AllList);
-
 		model.addAttribute("AllList", AllList);
 
-		return "ViewEntryOfTds";
+		return mv;
 
 	}
 
@@ -4946,14 +4959,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
 	}
 
-//@ResponseBody
-//@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
-//public boolean validatemillEmail(@RequestParam("emailAddress") String emailAddress) {
-//	
-//    final Gson gson = new Gson();
-//   return this.millRegistrationService.validatemillEmail(emailAddress);
-//        // return emailNotExist;
-//}
+
 	@ResponseBody
 	@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
 	public String validatemillEmail(final HttpServletRequest request) {
@@ -4995,17 +5001,21 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
 		// ModelAndView mv = new ModelAndView();
 		final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
-		if (emailNotExist) {
-			millRegistrationService.create(millRegistrationModel);
-			// final boolean emailNotExist =
-			// this.UserRegistrationService.validateEmail(email);
-			redirectAttributes.addFlashAttribute("msg",
-					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-			return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+
+		if (emailNotExist && mill_password.equals(confirm_mill_password)) {
+		    // Create mill registration
+		    millRegistrationService.create(millRegistrationModel);
+		    // Redirect with success message
+		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+		    return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+		} else if (!mill_password.equals(confirm_mill_password)) {
+		    // Redirect with password mismatch message
+		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Password and Confirm Mill Password are different. Please fill in the same Mill Password and Confirm Mill Password. </div>\r\n");
+		    return new ModelAndView(new RedirectView("millRegisteration.obj"));
 		} else {
-			redirectAttributes.addFlashAttribute("msg",
-					(Object) "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with  another email.</div>\r\n");
-			return new ModelAndView(new RedirectView("millRegisteration.obj"));
+		    // Redirect with duplicate email message
+		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with another email.</div>\r\n");
+		    return new ModelAndView(new RedirectView("millRegisteration.obj"));
 		}
 //return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
 
@@ -5014,8 +5024,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	@RequestMapping("viewmillRegistration")
 
 	public ModelAndView ViewmillRegistration(Model model, HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("viewMillRegistration");
-		
+		ModelAndView mv = new ModelAndView("viewMillRegistration");	
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 

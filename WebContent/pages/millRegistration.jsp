@@ -456,10 +456,11 @@ function validatemail(){
     				}			
 			  });
 		}
-	}
-	
+	}	
 }
 </script>
+
+
 
 <!-- CORE PLUGINS-->
 <script src="./assets/vendors/jquery/dist/jquery.min.js"

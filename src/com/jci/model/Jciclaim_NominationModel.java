@@ -113,6 +113,11 @@ public class Jciclaim_NominationModel {
 	private String QualityClaim;
 	@Column(name = "Settlement_id_generated")
 	private String Settlement_id_generated;
+	@Column(name="BaleMark")
+	private String BaleMark;
+	
+	@Column(name="CropYear")
+	private String  CropYear;
 
 	public String getGrade1() {
 		return grade1;
@@ -378,6 +383,23 @@ public class Jciclaim_NominationModel {
 		Settlement_id_generated = settlement_id_generated;
 	}
 
+	public String getBaleMark() {
+		return BaleMark;
+	}
+
+	public void setBaleMark(String baleMark) {
+		BaleMark = baleMark;
+	}
+
+	public String getCropYear() {
+		return CropYear;
+	}
+
+	public void setCropYear(String cropYear) {
+		CropYear = cropYear;
+	}
+
+	
 	
 
 

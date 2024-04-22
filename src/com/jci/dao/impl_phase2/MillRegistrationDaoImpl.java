@@ -101,7 +101,7 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 
 			if (!userList.isEmpty()) {
 				return userList.get(0);
-				// return "0";
+				
 			} else {
 				return "0";
 			}
@@ -117,7 +117,6 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 
 		if (!userList.isEmpty()) {
 			return userList.get(0);
-			// return "0";
 		} else {
 			return "0";
 		}
@@ -179,17 +178,15 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 	        Query emailQuery1 = this.sessionFactory.getCurrentSession().createSQLQuery(emailQuery);
 	        String millemail = (String) emailQuery1.uniqueResult();
             this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-	        System.out.println("Success");
 	        EmailSender email = new EmailSender();
 			InternetAddress[] toAddresses = null;
 			String subject = "your new password !!";
 			String username1 ="";
 					String body = "Dear Mill ,\n " + "Hope This email finds you well ,\n"
 							+ "We are pleased to inform you that your password has been successfully reset .\n"+ " This is Your New Password for Mill Login: \n " + new_mill_password + "\n " + 
-							
 							 "Thanks & Regards \n " + "Jute Corporation Of India";
 			try {
-				//toAddresses = new InternetAddress[]{new InternetAddress(millemail) };
+				
 				toAddresses = new InternetAddress[] { new InternetAddress(millemail)
 				};
 			} catch (AddressException e) {
