@@ -10,6 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -166,35 +167,7 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 		}
 		 return millRegistration;
 	}
-//
-//	@Override
-//	public void ResetPassword(int MillRegistrationId) {
-//		String new_mill_password = "Mansi@123";
-//		String confirm_mill_password = "Mansi@123";
-//		try {
-//			String hql = "update jcimill_Registration set mill_password = '" + new_mill_password + "', confirm_mill_password = '" + confirm_mill_password + "'  where MillRegistration_id = " + MillRegistrationId;
-//
-//					this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-//			      System.out.println("success");
-//			} catch (Exception e) {
-//				  System.out.println(e.getLocalizedMessage());
-//			}
-//		
-//	}
-//	@Override
-//	public void ResetPassword(int MillRegistrationId) {
-//	    String new_mill_password = generatePassword();
-//	    String confirm_mill_password = new_mill_password;
-//	   
-//	    try {
-//	        String hql = "update jcimill_Registration set mill_password = '" + new_mill_password + "', confirm_mill_password = '" + confirm_mill_password + "'  where MillRegistration_id = " + MillRegistrationId;
-//
-//	        this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-//	        System.out.println("Success");
-//	    } catch (Exception e) {
-//	        System.out.println(e.getLocalizedMessage());
-//	    }
-//	}
+
 	@Override
 	public void ResetPassword(int MillRegistrationId) {
 	    String new_mill_password = generatePassword();
@@ -202,8 +175,9 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 	   
 	    try {
 	        String hql = "update jcimill_Registration set mill_password = '" + new_mill_password + "', confirm_mill_password = '" + confirm_mill_password + "'  where MillRegistration_id = " + MillRegistrationId;
-           // String millemail = "select mill_emailaddress from  jcimill_Registration  where MillRegistration_id = " + MillRegistrationId;
-	     //  System.out.println(millemail);
+	        String emailQuery = "SELECT mill_emailaddress FROM jcimill_Registration WHERE MillRegistration_id = " + MillRegistrationId;
+	        Query emailQuery1 = this.sessionFactory.getCurrentSession().createSQLQuery(emailQuery);
+	        String millemail = (String) emailQuery1.uniqueResult();
             this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	        System.out.println("Success");
 	        EmailSender email = new EmailSender();
@@ -215,8 +189,8 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 							
 							 "Thanks & Regards \n " + "Jute Corporation Of India";
 			try {
-				// toAddresses = new InternetAddress[]{new InternetAddress(millemail) };
-				toAddresses = new InternetAddress[] { new InternetAddress("mansigupta7867@gmail.com")
+				//toAddresses = new InternetAddress[]{new InternetAddress(millemail) };
+				toAddresses = new InternetAddress[] { new InternetAddress(millemail)
 				};
 			} catch (AddressException e) {
 				e.printStackTrace();

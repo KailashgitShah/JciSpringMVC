@@ -3771,7 +3771,250 @@ public class Controller_V {
 		String jsonResponse = gson.toJson(list);
 		return jsonResponse;
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Entry and Nomination of Claim Settlement
+@RequestMapping("entryofConfirmationSettelment")
+public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
+String username = (String) request.getSession().getAttribute("usrname");
+
+ModelAndView mv = new ModelAndView("ConfirmationofClaimSettlement");
+if (username == null) {
+mv = new ModelAndView("index");
+}
+List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+System.err.println(getSettlementidlist);
+mv.addObject("getSettlementidlist", getSettlementidlist);
+return mv;
+}
+
+@ResponseBody
+@RequestMapping(value = "fetchSettlementData", method = RequestMethod.GET)
+public String fetchingdatatocontractnoji(@RequestParam("id") String id) {
+List<Object[]> getcontractddownlist = confirmationofClaimSettlementService.fetchdataofclaim(id);
+System.err.println("resultList++++++++++" + getcontractddownlist);
+Gson gson = new Gson();
+String resultString = new Gson().toJson(getcontractddownlist);
+return resultString;
+}
+
+@ResponseBody
+@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
+public String fetchingdatanominactionclaim(@RequestParam("contractno") int contractno) {
+List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
+System.err.println("resultList++++++++++" + getsettlementlist);
+Gson gson = new Gson();
+String resultString = new Gson().toJson(getsettlementlist);
+return resultString;
+}
+
+@ResponseBody
+@RequestMapping(value = "fetchContractNo", method = RequestMethod.GET)
+public String contractNo(@RequestParam("id") String settlementId) {
+List<String> contractList = confirmationofClaimSettlementService.fetchContract(settlementId);
+System.err.println("resultList++++++++++" + contractList);
+Gson gson = new Gson();
+String resultString = new Gson().toJson(contractList);
+return resultString;
+}
+
+@RequestMapping("saveConfirmationOfClaimSettelment.obj")
+public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
+RedirectAttributes redirectAttributes,
+@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
+final File theDir = new File("Confirmationsettlement");
+if (!theDir.exists()) {
+theDir.mkdirs();
+}
+
+final ModelAndView mv = new ModelAndView();
+String username = (String) request.getSession().getAttribute("usrname");
+try {
+
+/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
+String Settlement_Id1 = request.getParameter("Settlement_Id1");
+
+int Settlement_Id12 = Integer.parseInt(Settlement_Id1);
+String Date_of_inspection1 = request.getParameter("Dateofinspection");
+String fullcontractno = request.getParameter("fullcontractno");
+String Challan_No1 = request.getParameter("Challan_No1");
+final File theDirect = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\");
+if (!theDirect.exists()) {
+theDirect.mkdirs();
+}
+
+double defaultValue = 0.0;
+
+String Inspection_by1 = request.getParameter("Inspectionby1");
+
+final String filename = SupportingDocument.getOriginalFilename();
+System.err.println(filename + "---------");
+
+ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
+
+String Claim_Amount1 = request.getParameter("ClaimAmount");
+
+if (Claim_Amount1 != null) {
+
+double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
+confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+} else {
+double Claim_Amount12 = defaultValue;
+confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+}
+
+String Quality_Settlement1 = request.getParameter("Quality_Settlement1");
+if (Quality_Settlement1 != null) {
+
+double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
+confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
+} else {
+double Quality_Settlement12 = defaultValue;
+confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
+}
+
+String Moisture_Settlement1 = request.getParameter("Moisture_Settlement1");
+if (Moisture_Settlement1 != null) {
+
+double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
+confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
+} else {
+double Moisture_Settlement12 = defaultValue;
+confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
+}
+
+String NCV_Settlement1 = request.getParameter("NCV_Settlement1");
+if (NCV_Settlement1 != null) {
+
+double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
+confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
+} else {
+double NCV_Settlement12 = defaultValue;
+confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
+}
+
+String Settlement_Amount1 = request.getParameter("SettlementAmount");
+
+if (Settlement_Amount1 != null) {
+
+double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
+confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
+} else {
+double Settlement_Amount12 = defaultValue;
+confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
+}
+
+SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
+Date instdate1 = formatter1.parse(Date_of_inspection1);
+confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
+// confirmationClaimSettlementModel.setMill(Settlement_Id12);
+confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
+confirmationClaimSettlementModel.setContract_No(fullcontractno);
+confirmationClaimSettlementModel.setChallan_No(Challan_No1);
+
+confirmationClaimSettlementModel.setInspection_by(Inspection_by1);
+
+//confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
+
+Date date1 = new Date();
+confirmationClaimSettlementModel.setInspection_date(date1);
+confirmationClaimSettlementModel.setDispute_flag(0);
+confirmationClaimSettlementModel.setOM_Official("vishal");
+confirmationClaimSettlementModel.setMill("1");
+confirmationClaimSettlementModel.setFA_Official("Pradeep");
+confirmationClaimSettlementModel.setCreated_by("kailash");
+confirmationClaimSettlementModel.setCreated_on(date1);
+File file = null;
+String url = "";
+String pathurl = "";
+if (!SupportingDocument.isEmpty()) {
+try {
+file = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\"
++ SupportingDocument.getOriginalFilename());
+final OutputStream os = new FileOutputStream(file);
+os.write(SupportingDocument.getBytes());
+os.close();
+} catch (Exception e) {
+System.err.println(e.getLocalizedMessage());
+e.printStackTrace();
+System.err.println("inside catch file----");
+}
+pathurl = file.getAbsolutePath();
+final String path = url = SupportingDocument.getOriginalFilename();
+confirmationClaimSettlementModel.setSupporting_doc(url);
+System.err.println("outside catch file----");
+}
+this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
+redirectAttributes.addFlashAttribute("msg",
+"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+
+} catch (Exception e) {
+System.err.println("overall catch inside----");
+
+}
+if (username == null) {
+return new ModelAndView("index");
+}
+
+return new ModelAndView(new RedirectView("entryofConfirmationSettelment.obj"));
+}
+// view page of confirmation settelment form
+
+@RequestMapping({ "ViewConfirmationsettelment" })
+public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
+String username = (String) request.getSession().getAttribute("usrname");
+ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
+if (username == null) {
+mv = new ModelAndView("index");
+}
+
+final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
+.getAll();
+mv.addObject("confirmationClaim", confirmationClaim);
+
+return mv;
+}
+
+@RequestMapping("downloadSupportDocument")
+public void downloadDocs(@RequestParam("filename") String filename, HttpServletResponse response) {
+String imagePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\" + filename;
+File imageFile = new File(imagePath);
+
+// Check if the file exists
+if (imageFile.exists()) {
+
+try {
+// Set the content type based on the file type
+String contentType = determineContentType(filename);
+response.setContentType(contentType);
+
+// Set the content length and attachment disposition
+response.setContentLength((int) imageFile.length());
+// response.setHeader("Content-Disposition", "attachment; filename=" +
+// filename);
+response.setHeader("Content-Disposition", "");
+// Stream the file content to the response
+try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+OutputStream responseOutputStream = response.getOutputStream()) {
+byte[] buffer = new byte[1024];
+int bytesRead;
+while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+responseOutputStream.write(buffer, 0, bytesRead);
+}
+}
+} catch (IOException e) {
+// Handle IO exception
+e.printStackTrace();
+response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+}
+} else {
+response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+}
+}
+
+
+
+/////////////////////////////////////// MILL ACCEPTENCE START ///////////////////////////////////////////////////////////////////
 	@RequestMapping("viewmillAcc")
 	public String ViewMillAcceptance1(Model model, HttpServletRequest request) {
 
@@ -3902,7 +4145,9 @@ public class Controller_V {
 
 	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////MILL ACCEPTENCE END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	///////////////////////////////////////NOMINATION OF OFFICIAL START /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------
 //Nomination of official for claim settlement
@@ -4442,8 +4687,9 @@ public class Controller_V {
 
 		return "viewlistnominal";
 	}
+////////////////////////////////////////////// NOMINATION OF OFFICIAL FOR CLAIM SETTLEMENT END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////ENTRY OF TDS START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------
 //Entry of tds 
@@ -4664,256 +4910,17 @@ public class Controller_V {
 
 	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////// Entry of TDS END ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 
-	// Entry and Nomination of Claim Settlement
-	@RequestMapping("entryofConfirmationSettelment")
-	public ModelAndView entryofConfirationSettelment(HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		ModelAndView mv = new ModelAndView("ConfirmationofClaimSettlement");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
-		System.err.println(getSettlementidlist);
-		mv.addObject("getSettlementidlist", getSettlementidlist);
-		return mv;
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "fetchSettlementData", method = RequestMethod.GET)
-	public String fetchingdatatocontractnoji(@RequestParam("id") String id) {
-		List<Object[]> getcontractddownlist = confirmationofClaimSettlementService.fetchdataofclaim(id);
-		System.err.println("resultList++++++++++" + getcontractddownlist);
-		Gson gson = new Gson();
-		String resultString = new Gson().toJson(getcontractddownlist);
-		return resultString;
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
-	public String fetchingdatanominactionclaim(@RequestParam("contractno") int contractno) {
-		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
-		System.err.println("resultList++++++++++" + getsettlementlist);
-		Gson gson = new Gson();
-		String resultString = new Gson().toJson(getsettlementlist);
-		return resultString;
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "fetchContractNo", method = RequestMethod.GET)
-	public String contractNo(@RequestParam("id") String settlementId) {
-		List<String> contractList = confirmationofClaimSettlementService.fetchContract(settlementId);
-		System.err.println("resultList++++++++++" + contractList);
-		Gson gson = new Gson();
-		String resultString = new Gson().toJson(contractList);
-		return resultString;
-	}
-
-	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
-	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
-			RedirectAttributes redirectAttributes,
-			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("Confirmationsettlement");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
-
-		final ModelAndView mv = new ModelAndView();
-		String username = (String) request.getSession().getAttribute("usrname");
-		try {
-
-			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
-			String Settlement_Id1 = request.getParameter("Settlement_Id1");
-
-			int Settlement_Id12 = Integer.parseInt(Settlement_Id1);
-			String Date_of_inspection1 = request.getParameter("Dateofinspection");
-			String fullcontractno = request.getParameter("fullcontractno");
-			String Challan_No1 = request.getParameter("Challan_No1");
-			final File theDirect = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\");
-			if (!theDirect.exists()) {
-				theDirect.mkdirs();
-			}
-
-			double defaultValue = 0.0;
-
-			String Inspection_by1 = request.getParameter("Inspectionby1");
-
-			final String filename = SupportingDocument.getOriginalFilename();
-			System.err.println(filename + "---------");
-
-			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
-
-			String Claim_Amount1 = request.getParameter("ClaimAmount");
-
-			if (Claim_Amount1 != null) {
-
-				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			} else {
-				double Claim_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			}
-
-			String Quality_Settlement1 = request.getParameter("Quality_Settlement1");
-			if (Quality_Settlement1 != null) {
-
-				double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
-				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
-			} else {
-				double Quality_Settlement12 = defaultValue;
-				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
-			}
-
-			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement1");
-			if (Moisture_Settlement1 != null) {
-
-				double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
-				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
-			} else {
-				double Moisture_Settlement12 = defaultValue;
-				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
-			}
-
-			String NCV_Settlement1 = request.getParameter("NCV_Settlement1");
-			if (NCV_Settlement1 != null) {
-
-				double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
-				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
-			} else {
-				double NCV_Settlement12 = defaultValue;
-				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
-			}
-
-			String Settlement_Amount1 = request.getParameter("SettlementAmount");
-
-			if (Settlement_Amount1 != null) {
-
-				double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			} else {
-				double Settlement_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			}
-
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
-			Date instdate1 = formatter1.parse(Date_of_inspection1);
-			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
-			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
-			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
-			confirmationClaimSettlementModel.setContract_No(fullcontractno);
-			confirmationClaimSettlementModel.setChallan_No(Challan_No1);
-
-			confirmationClaimSettlementModel.setInspection_by(Inspection_by1);
-
-//			confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
-
-			Date date1 = new Date();
-			confirmationClaimSettlementModel.setInspection_date(date1);
-			confirmationClaimSettlementModel.setDispute_flag(0);
-			confirmationClaimSettlementModel.setOM_Official("vishal");
-			confirmationClaimSettlementModel.setMill("1");
-			confirmationClaimSettlementModel.setFA_Official("Pradeep");
-			confirmationClaimSettlementModel.setCreated_by("kailash");
-			confirmationClaimSettlementModel.setCreated_on(date1);
-			File file = null;
-			String url = "";
-			String pathurl = "";
-			if (!SupportingDocument.isEmpty()) {
-				try {
-					file = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\"
-							+ SupportingDocument.getOriginalFilename());
-					final OutputStream os = new FileOutputStream(file);
-					os.write(SupportingDocument.getBytes());
-					os.close();
-				} catch (Exception e) {
-					System.err.println(e.getLocalizedMessage());
-					e.printStackTrace();
-					System.err.println("inside catch file----");
-				}
-				pathurl = file.getAbsolutePath();
-				final String path = url = SupportingDocument.getOriginalFilename();
-				confirmationClaimSettlementModel.setSupporting_doc(url);
-				System.err.println("outside catch file----");
-			}
-			this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-
-		} catch (Exception e) {
-			System.err.println("overall catch inside----");
-
-		}
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		return new ModelAndView(new RedirectView("entryofConfirmationSettelment.obj"));
-	}
-	// view page of confirmation settelment form
-
-	@RequestMapping({ "ViewConfirmationsettelment" })
-	public ModelAndView ViewConfirmationsettelment(final HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView("viewConfirmationsettelment");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-
-		final List<ConfirmationClaimSettlementModel> confirmationClaim = (List<ConfirmationClaimSettlementModel>) this.confirmationofClaimSettlementService
-				.getAll();
-		mv.addObject("confirmationClaim", confirmationClaim);
-
-		return mv;
-	}
-
-	@RequestMapping("downloadSupportDocument")
-	public void downloadDocs(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imagePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\" + filename;
-		File imageFile = new File(imagePath);
-
-		// Check if the file exists
-		if (imageFile.exists()) {
-
-			try {
-				// Set the content type based on the file type
-				String contentType = determineContentType(filename);
-				response.setContentType(contentType);
-
-				// Set the content length and attachment disposition
-				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
-				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
-						OutputStream responseOutputStream = response.getOutputStream()) {
-					byte[] buffer = new byte[1024];
-					int bytesRead;
-					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-						responseOutputStream.write(buffer, 0, bytesRead);
-					}
-				}
-			} catch (IOException e) {
-				// Handle IO exception
-				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			}
-		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
-
-
-/// ///////////////////////////////////////////////mill registration//////////////////////////////////////
+/// ///////////////////////////////////////////////mill registration Start//////////////////////////////////////
 
 	@RequestMapping("millRegisteration")
-	public ModelAndView Vi(Model model, HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
+	public ModelAndView millregistration(Model model, HttpServletRequest request) {
+		//String username = (String) request.getSession().getAttribute("usrname");
 
 		ModelAndView mv = new ModelAndView("millRegistration");
-
+		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 
 			mv = new ModelAndView("index");
@@ -4958,7 +4965,10 @@ public class Controller_V {
 	@RequestMapping("savemillregister")
 	public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession s) throws IllegalStateException, IOException {
+		
+		
 		String username = (String) request.getSession().getAttribute("usrname");
+		
 
 		String mill_name = request.getParameter("mill_name");
 
@@ -5003,7 +5013,15 @@ public class Controller_V {
 
 	@RequestMapping("viewmillRegistration")
 
-	public String ViewmillRegistration(Model model, HttpServletRequest request) {
+	public ModelAndView ViewmillRegistration(Model model, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("viewMillRegistration");
+		
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+
+			mv = new ModelAndView("index");
+
+		}
 
 		List<MillRegistrationModel> AllList = (List<MillRegistrationModel>) millRegistrationService.getAll();
 
@@ -5013,7 +5031,8 @@ public class Controller_V {
 		// int MillRegistrationId =
 		// Integer.parseInt(request.getParameter("MillRegistration_id"));
 
-		return "viewMillRegistration";
+		//return "viewMillRegistration";
+		return mv;
 
 	}
 
@@ -5033,8 +5052,10 @@ public class Controller_V {
 				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
 		return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
 	}
-
-///////////////////////////////////////// mill login ////////////////////////////////////////////////////////////////////////////////////////////
+	
+///////////////////////////////////////// mill registration end //////////////////////////////////////////////////////////////////////////
+	
+///////////////////////////////////////// mill login start ////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("millLogin")
 	public ModelAndView login(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -5076,6 +5097,7 @@ public class Controller_V {
 		}
 		return mv;
 	}
+///////////////////////////////////// mill login end ////////////////////////////////////////////////////////////////////////////////////////////
 
 }
 
