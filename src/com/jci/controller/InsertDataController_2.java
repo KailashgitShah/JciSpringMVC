@@ -48,7 +48,7 @@ import com.google.gson.Gson;
 import com.jci.model.BatchIdentificationModel;
 import com.jci.model.EntryofSaleModel;
 import com.jci.model.FarmerRegistrationModel;
-import com.jci.model.FinalizationoflotsizerspModel;
+
 import com.jci.model.HODispatchInstructionModel;
 import com.jci.model.EntryofpcsoModel;
 
