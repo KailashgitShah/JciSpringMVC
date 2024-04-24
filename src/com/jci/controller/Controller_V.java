@@ -4946,6 +4946,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		return mv;
 	}
 
+	
 	@ResponseBody
 	@RequestMapping(value = "millcodefetch", method = RequestMethod.GET)
 	public String MillCodeFetch(@RequestParam("millid") String millid) {
@@ -4968,6 +4969,14 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
 	}
 
+	
+	@ResponseBody
+	@RequestMapping(value = { "validatemill" }, method = { RequestMethod.GET })
+	public String validatemill(final HttpServletRequest request) {
+
+		final Gson gson = new Gson();
+		return this.millRegistrationService.validatemill(request.getParameter("millName")) + "";
+	}
 	@RequestMapping("savemillregister")
 	public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession s) throws IllegalStateException, IOException {
@@ -5001,8 +5010,9 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
 		// ModelAndView mv = new ModelAndView();
 		final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
+		final boolean millNotRegistered = this.millRegistrationService.validatemill(mill_name);
 
-		if (emailNotExist && mill_password.equals(confirm_mill_password)) {
+		if (emailNotExist && mill_password.equals(confirm_mill_password)  && millNotRegistered ==false) {
 		    // Create mill registration
 		    millRegistrationService.create(millRegistrationModel);
 		    // Redirect with success message
@@ -5012,7 +5022,11 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		    // Redirect with password mismatch message
 		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Password and Confirm Mill Password are different. Please fill in the same Mill Password and Confirm Mill Password. </div>\r\n");
 		    return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		} else {
+		} else if(millNotRegistered==true) {
+			   redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Already Registered.Please Select another Mill Name.</div>\r\n");
+			    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+		}
+		else {
 		    // Redirect with duplicate email message
 		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with another email.</div>\r\n");
 		    return new ModelAndView(new RedirectView("millRegisteration.obj"));

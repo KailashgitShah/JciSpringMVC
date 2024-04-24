@@ -63,6 +63,11 @@ public class MillRegistrationServiceImpl implements MillRegistrationService{
 		millRegistrationDao.ResetPassword(MillRegistrationId);
 		
 	}
+	@Override
+	public boolean validatemill(String millName) {
+		// TODO Auto-generated method stub
+		return millRegistrationDao.validatemill(millName);
+	}
 	
 	
 }

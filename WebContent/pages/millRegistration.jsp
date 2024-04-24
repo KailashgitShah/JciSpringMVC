@@ -145,29 +145,26 @@ input[type="file"] {
 									<input type="hidden" name="dubName" id="dubName">
 									<div class="row">
 
-										<div class="col-sm-4 form-group">
-											<label>Mill Name </label> <select name="mill_name" id="Mill"
-												class="form-control taxtbox" required onchange="MillCode()">
+						
+									
+<div class="col-sm-4 form-group">
+    <label>Mill Name</label>
+    <select name="mill_name" id="Mill" class="form-control taxtbox" required onchange="validateMill()">
+        <option value="">-Select-</option>
+        <c:forEach items="${millid}" var="item">
+            <option value="${item}">${item}</option>
+        </c:forEach>
+    </select> 
+    <span id="errMill" class="text-danger"></span>
+</div>
 
-												<option value="">-Select-</option>
+<div class="col-sm-4 form-group" id="millCodeField" style="display: none;">
+    <label class="required">Mill Code</label>
+    <span id="errID" name="errID" class="text-danger"></span>
+    <span id="errID1" name="errID1" class="text-danger"></span>
+    <input class="form-control" name="mill_code" type="text" placeholder=" Code" id="millunitcode" readonly>
+</div>
 
-												<c:forEach items="${millid}" var="item">
-
-													<option value="${item}">${item}</option>
-
-												</c:forEach>
-
-											</select>
-										</div>
-
-
-										<div class="col-sm-4 form-group">
-											<label class="required">Mill Code</label> &nbsp;&nbsp;&nbsp;
-											<span id="errID" name="errID" class="text-danger"> </span><span
-												id="errID1" name="errID1" class="text-danger"> </span> <input
-												class="form-control" name="mill_code" type="text"
-												placeholder=" Code" id="millunitcode" ReadOnly>
-										</div>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Mill Official Name</label> <input
@@ -183,11 +180,19 @@ input[type="file"] {
 
 									</div>
 									<div class="row">
-									
-											<div class="col-sm-4 form-group">
-											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp; <span id="errEmail" name="errEmail" class="text-danger"> </span>
-											<input class="form-control" autocomplete="off" type="text"  id="emailAddress" oninvalid="this.setCustomValidity('Please enter a valid Email')" oninput="this.setCustomValidity('')"   name="mill_emailaddress" placeholder="Email address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" onkeyup="validatemail()">
-											<span  style="color: red; font-size: 13px;" id="EmailError">Please enter a valid Email</span> 
+
+										<div class="col-sm-4 form-group">
+											<label class="required">Mill Email</label> &nbsp;&nbsp;&nbsp;
+											<span id="errEmail" name="errEmail" class="text-danger">
+											</span> <input class="form-control" autocomplete="off" type="text"
+												id="emailAddress"
+												oninvalid="this.setCustomValidity('Please enter a valid Email')"
+												oninput="this.setCustomValidity('')"
+												name="mill_emailaddress" placeholder="Email address"
+												pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+												onkeyup="validatemail()"> <span
+												style="color: red; font-size: 13px;" id="EmailError">Please
+												enter a valid Email</span>
 										</div>
 
 										<div class="col-sm-4 form-group">
@@ -398,69 +403,102 @@ input[type="file"] {
 		});
 	});
 </script>
- 
+
 
 
 
 <script>
-$(document).ready(function() {
-	
-	  $("#EmailError").hide();
-     $('#emailAddress').keyup(function() { 
-        $("#EmailError").hide();
-        var hasError = false;
-        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
- 
-        var emailaddressVal = $("#emailAddress").val();
-        if(emailaddressVal == '') {
-            $("#EmailError").show();
-            hasError = true;
-        }
- 
-        else if(!emailReg.test(emailaddressVal)) {
-        	//alert('error');
-        	 $("#EmailError").show();
-            hasError = true;
-        }
-        if(hasError == true) { return false; }
- 
-    });
-});
+	$(document).ready(function() {
+
+		$("#EmailError").hide();
+		$('#emailAddress').keyup(function() {
+			$("#EmailError").hide();
+			var hasError = false;
+			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+			var emailaddressVal = $("#emailAddress").val();
+			if (emailaddressVal == '') {
+				$("#EmailError").show();
+				hasError = true;
+			}
+
+			else if (!emailReg.test(emailaddressVal)) {
+				//alert('error');
+				$("#EmailError").show();
+				hasError = true;
+			}
+			if (hasError == true) {
+				return false;
+			}
+
+		});
+	});
 </script>
 <script>
-    function allow_alphabets(element){
-        let textInput = element.value;
-        textInput = textInput.replace(/[^A-Za-z ]*$/gm, ""); 
-        element.value = textInput;
-    }
+	function allow_alphabets(element) {
+		let textInput = element.value;
+		textInput = textInput.replace(/[^A-Za-z ]*$/gm, "");
+		element.value = textInput;
+	}
 </script>
 <script>
-function validatemail(){
-	var email = document.getElementById("emailAddress").value;
-	var flag = false;
-	for(var i=0; i<email.length; i++){
-		if(email[i]=='@'){
-			flag =  true
-			  $.ajax({
-					type:"GET",
-					url:"validatemillEmail.obj",
-					data:{"Email":email},
-					success:function(result){
-						document.getElementById("emailCheck").value = result;
-    					if(result == 'false'){
-    						document.getElementById("errEmail").innerHTML = " Email Already Exists!";
-    					}
-    					else{
-    						document.getElementById("errEmail").innerHTML = "";
-    					}
-    				}			
-			  });
+	function validatemail() {
+		var email = document.getElementById("emailAddress").value;
+		var flag = false;
+		for (var i = 0; i < email.length; i++) {
+			if (email[i] == '@') {
+				flag = true
+				$
+						.ajax({
+							type : "GET",
+							url : "validatemillEmail.obj",
+							data : {
+								"Email" : email
+							},
+
+							success : function(result) {
+								document.getElementById("emailCheck").value = result;
+								if (result == 'false') {
+									document.getElementById("errEmail").innerHTML = " Email Already Exists!";
+								} else {
+									document.getElementById("errEmail").innerHTML = "";
+								}
+							}
+						});
+			}
 		}
-	}	
+	}
+</script>
+
+
+
+<script>
+function validateMill() {
+    var millSelect = document.getElementById("Mill").value;
+
+    $.ajax({
+        type: "GET",
+        url: "validatemill.obj",
+        data: {
+            "millName": millSelect
+        },
+        success: function(result) {
+            if (result === 'true') {
+                document.getElementById("errMill").innerHTML = "This Mill is already Registered!";
+                document.getElementById("millCodeField").style.display = "none"; // Hide mill code field
+                document.getElementById("millunitcode").value = ""; // Clear mill code input
+                document.getElementById("Mill").selectedIndex = 0; // Clear mill selection
+            } else {
+                document.getElementById("errMill").innerHTML = "";
+                document.getElementById("millCodeField").style.display = "block"; // Show mill code field
+            }
+        },
+        error: function() {
+            alert("Error occurred while checking mill.");
+        }
+    });
 }
 </script>
-
-
 
 <!-- CORE PLUGINS-->
 <script src="./assets/vendors/jquery/dist/jquery.min.js"

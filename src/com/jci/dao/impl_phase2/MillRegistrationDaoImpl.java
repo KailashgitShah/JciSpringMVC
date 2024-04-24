@@ -138,6 +138,20 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 	}
 
 	@Override
+	public boolean validatemill(String millName) {
+		String querystr = "select * from jcimill_Registration where mill_name ='" + millName + "'";
+		Session session = sessionFactory.getCurrentSession();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object[]> rows = query.list();
+		boolean isPresent = rows.isEmpty();
+		if (isPresent) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	@Override
 	public MillRegistrationModel getmillRegistrationProfile(int MillRegistrationId) {
 		List<MillRegistrationModel> result = new ArrayList<>();
 		String querystr ="Select mill_password , mill_emailaddress  , mill_name , confirm_mill_password  , mill_code  , official_name , official_designation , mill_mobile  from jcimill_Registration where MillRegistration_id ='" + MillRegistrationId + "'";		
@@ -180,7 +194,7 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
             this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	        EmailSender email = new EmailSender();
 			InternetAddress[] toAddresses = null;
-			String subject = "your new password !!";
+			String subject = "Updated Mill  Password !!";
 			String username1 ="";
 					String body = "Dear Mill ,\n " + "Hope This email finds you well ,\n"
 							+ "We are pleased to inform you that your password has been successfully reset .\n"+ " This is Your New Password for Mill Login: \n " + new_mill_password + "\n " + 
@@ -246,6 +260,7 @@ public class MillRegistrationDaoImpl implements MillRegistrationDao {
 
 	    return password.toString();
 	}
+
 	
 	
 	

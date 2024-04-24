@@ -23,24 +23,32 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.jci.model.PaymentInstrumentModel;
+import com.jci.model.RoDetailsModel;
+import com.jci.model.RoleMasterModel;
 import com.jci.model.UploadingReceiptModel;
 import com.jci.model.UserActionModel;
 import com.jci.model.UserPriviligeModel;
 import com.jci.model.UserRoleModel;
 import com.jci.model.labelGenerationModel;
+import com.jci.service.BatchIdentificationService;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.EntryofsaleService;
 import com.jci.service.HoDispatchService;
 import com.jci.service.PaymentInstrumentService;
 import com.jci.service.RawJuteProcurementAndPaymentService;
+import com.jci.service.RoDetailsService;
+import com.jci.service.RoleMasterService;
 import com.jci.service.UploadRecieptService;
 import com.jci.service.UserActionService;
 import com.jci.service.UserPriviligeService;
 import com.jci.service.UserRoleService;
 import com.jci.service.labelGenerationService;
+
 import com.google.gson.Gson;
+import com.jci.model.BatchIdentificationModel;
 import com.jci.model.EntryofSaleModel;
 import com.jci.model.FarmerRegistrationModel;
+import com.jci.model.FinalizationoflotsizerspModel;
 import com.jci.model.HODispatchInstructionModel;
 import com.jci.model.EntryofpcsoModel;
 
@@ -70,6 +78,8 @@ public class InsertDataController_2 {
 	
 	
 	
+
+	
 	@Autowired
 	labelGenerationService labelgenerationService;
 	
@@ -81,6 +91,15 @@ public class InsertDataController_2 {
 	 
 	 @Autowired
 	 InsertDataController insertDataController;
+	 
+		@Autowired
+		RoDetailsService rodetailService;
+
+		@Autowired
+		RoleMasterService roleService;
+		@Autowired
+		BatchIdentificationService batchService;
+
 	
 	
 	 private boolean isStringValid(String input) {
@@ -767,7 +786,11 @@ public class InsertDataController_2 {
 		}
 
 
-		/////////////////////////////////////////////////
+/////////////////////////////////////////////////  Finalization of lot sizes and Reserve Sale Price - START///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 
+		
+		
+/////////////////////////////////////////////////  Finalization of lot sizes and Reserve Sale Price - END///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 
 }
