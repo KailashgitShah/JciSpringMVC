@@ -14,4 +14,10 @@ public interface CreditNoteGenerationDao {
 	List<Object[]> getAllMillsOfContracts();
 	List<Object[]> findDetails(String table, String contractNoString);
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel);
+	List<String> getParamenterDetails(String parameter);
+	List<Object[]> showFilterData(String parameter, String basedOn);
+	double getAvgJuteValue(String challanNo);
+	List<Object[]> getShipmentDetailsByChallanNo(String challanNo);
+	List<Object[]> getMillDetailsByCode(String millcode);
+	List<Object[]> getDispatchDetails(String challanNo);
 }

@@ -22,4 +22,16 @@ public interface CreditNoteGenerationService {
 	public List<Object[]> findDetails(String string, String contractNoString);
 
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel);
+
+	public List<String> getParamenterDetails(String parameter);
+
+	public List<Object[]> showFilterData(String parameter, String basedOn);
+
+	public double getAvgJuteValue(String challanNo);
+
+	public List<Object[]> getShipmentDetailsByChallanNo(String challanNo);
+
+	public List<Object[]> getMillDetailsByCode(String millcode);
+
+	public List<Object[]> getDispatchDetails(String challanNo);
 }

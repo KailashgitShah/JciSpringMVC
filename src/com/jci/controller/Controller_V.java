@@ -61,6 +61,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.google.common.base.Supplier;
 import com.google.gson.Gson;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
@@ -131,6 +132,10 @@ import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
 import com.lowagie.text.DocumentException;
+import com.microsoft.schemas.office.excel.CTClientData;
+import com.microsoft.schemas.office.excel.CTClientData.Factory;
+
+import kotlin.Unit;
 
 @Transactional
 @Repository
@@ -1695,17 +1700,21 @@ public class Controller_V {
 	@RequestMapping(value = { "generateCrn" }, method = { RequestMethod.POST })
 	public ModelAndView generateCrn(final HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		final String shipmentDetails = request.getParameter("shipmentDetails");
 		final Double nominalWt = Double.parseDouble(request.getParameter("nominalWeight"));
 		final Double actualWt = Double.parseDouble(request.getParameter("ActualWeight"));
 		final String roId = request.getParameter("roId");
 		final String invoiceVal = request.getParameter("invoiceValue");
 		final String ChallanNo = request.getParameter("ChallanNo");
 		final String contractNo = request.getParameter("contractNo");
+		final String diNo = request.getParameter("diNo");
+		final String bosNo = request.getParameter("bosNo");
+		final String bosDate = request.getParameter("bosDate");
+		final String millCode = request.getParameter("millCode");
 
 		int Count = creditNoteGenerationService.getCountOfRo(roId);
+		
+		double avgJuteVal = creditNoteGenerationService.getAvgJuteValue(ChallanNo);
 
-		session.setAttribute("shipmentDetails", shipmentDetails);
 		session.setAttribute("ContractNo", contractNo);
 		session.setAttribute("nominalWeight", nominalWt);
 		session.setAttribute("ActualWeight", actualWt);
@@ -1713,8 +1722,15 @@ public class Controller_V {
 		session.setAttribute("roId", roId);
 		session.setAttribute("Count", Count);
 		session.setAttribute("invoiceVal", invoiceVal);
+		session.setAttribute("avgJuteVal", avgJuteVal);
+		session.setAttribute("diNo", diNo);
+		session.setAttribute("bosNo", bosNo);
+		session.setAttribute("bosDate", bosDate);
+		session.setAttribute("millcode", millCode);
+		
 
 		ModelAndView mView = new ModelAndView("generationOfCreditNote");
+ 
 		return mView;
 	}
 
@@ -1732,25 +1748,28 @@ public class Controller_V {
 		return mView;
 	}
 
-	@Value("${upload.creditNoteDetails}")
-	String creditNoteDetails;
+//	@Value("${upload.creditNoteDetails}")
+//	String creditNoteDetails;
 
 	// save credit note
 	@ResponseBody
 	@RequestMapping(value = { "saveCreditNote" }, method = { RequestMethod.POST })
-	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request,
-			@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request) throws IllegalStateException, IOException {
 
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-
+	 ;
 		final String shipmentDetails = request.getParameter("shipment");
 		final String crnDate = request.getParameter("cnDate");
 		final String crnNo = request.getParameter("cnNo");
 		final String ChallanNo = request.getParameter("ChallanNo");
 		final String contractNo = request.getParameter("contractNo");
+		final String bosNo = request.getParameter("bosNo");
+		final String diNo = request.getParameter("diNo");
+		final String bosDate = request.getParameter("bosDate");
+		final String millcode = request.getParameter("millcode");
 
 		final Double shortQty = Double.parseDouble(request.getParameter("shortQty"));
 		final Double nominalWt = Double.parseDouble(request.getParameter("bosQty"));
@@ -1773,25 +1792,107 @@ public class Controller_V {
 		creditNotes.setShipmentDetails(shipmentDetails);
 		creditNotes.setRoId(roId);
 		creditNotes.setShortQty(shortQty);
-
-		if (file == null || file.isEmpty()) {
-			creditNotes.setDocument("");
-		} else {
-			final String originalFileName = file.getOriginalFilename();
-			String dirString = creditNoteDetails;
-
-			File fileStoreAt = new File(dirString);
-
-			if (!fileStoreAt.exists()) {
-				fileStoreAt.mkdir();
-			}
-
-			File tranferFile = new File(dirString, originalFileName);
-			file.transferTo(tranferFile);
-			creditNotes.setDocument(originalFileName);
+		
+		
+		PdfGenerator pdfGenerator = new PdfGenerator();
+		
+		String supplier_Name = "The Jute Corporation of India Limited";
+		String supplier_GSTN = "19AABCT8820B1ZH";
+		String unit_GSTN = supplier_GSTN;
+		String supplier_Address = "Vill-Dhaipukur, RMC Complex, PO-Pandua Dist-Hooghly, 712449";
+		
+		
+//		 a.unit_name, a.unit_address1,  a.unit_state,   a.unit_location, b.client_gstin, b.client_pan,
+//		 b.client_state, b.client_address1,  b.client_name, a.client_unit_code 
+		 //Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty 
+		
+		String invocieValue = "433"; 
+		String unit_name = ""; 
+		String unit_address = ""; 
+		String client_name = ""; 
+		String client_GSTN = ""; 
+		String client_state = ""; 
+		String client_code = ""; 
+		String client_address1 = ""; 
+		String client_pan = ""; 
+		   
+		
+		List<Object[]> millFullDetailsList = creditNoteGenerationService.getMillDetailsByCode(millcode);
+		List<Object[]> dispetchDetails = creditNoteGenerationService.getDispatchDetails(ChallanNo);	
+		
+		for(Object[] row : millFullDetailsList) {
+			unit_name = (String)row[0];
+			unit_address = (String)row[1];
+			client_name = (String)row[8];
+			client_GSTN = (String)row[4];
+			client_state = (String)row[6];
+			client_code = (String)row[2];
+			client_address1 = (String)row[7];
+			client_pan = (String)row[5];
 		}
+		
+		
+		System.err.println("invoiceValue: " + invocieValue);
+//		System.err.println("unit_name: " + unit_name);
+//		System.err.println("unit_address: " + unit_address);
+//		System.err.println("client_name: " + client_name);
+//		System.err.println("client_GSTN: " + client_GSTN);
+//		System.err.println("client_state: " + client_state);
+//		System.err.println("client_code: " + client_code);
+//		System.err.println("client_address1: " + client_address1);
+//		System.err.println("client_pan: " + client_pan);
+//		System.err.println("bosDate: " + bosDate);
+//		System.err.println("diNo" + diNo);
 
-		creditNoteGenerationService.create(creditNotes);
+		pdfGenerator.generatePdfOfCreditNoteDoc(invocieValue , ChallanNo,  supplier_Name,  supplier_GSTN,
+				 supplier_Address,  unit_name, unit_GSTN, unit_address,
+				 client_name,  client_GSTN ,  client_address1 ,  bosNo,
+				 contractNo,  client_state,  client_code , bosDate, client_pan,
+				 dispetchDetails , diNo , bosNo);
+	
+//		recipent = Unit
+//		consinee = clien
+//		supplier = static
+//     	 
+//		(String Invoice_Value, String challan_No1, String , String client_gstin,
+//				String unit_address1, String client_name, String client_gstin, String client_address1,
+//				String client_name, String consignee_GSTN, String consignee_Address, String bill_of_Supply,
+//				String conract_no, String unit_location, String Clientcode, String BOS_Date, String client_pan,
+//				String TrnasitPolicyNo, List<Object[]> list, String Vehicle_no, String Driver_Lic_no, String Driver_name,
+//				String TCS_Amt) 
+		
+	
+		
+//        	 
+//        	 generatePdfOfCreditNoteDoc(String Invoice_Value, String challan_No1, String supplier_Name, String supplier_GSTN,
+//        				String supplier_Address, String recipient_Name, String recipient_GSTN, String recipient_Address,
+//        				String consignee_Name, String consignee_GSTN, String consignee_Address, String bill_of_Supply,
+//        				String conract_no, String Clientstate, String client_unit_code, String BOS_Date, String ClientPan,
+//        				String TrnasitPolicyNo, List<Object[]> dis)
+//		
+		
+		//pdfGenerator.generatePdfOfCreditNoteDoc(Invoice_Value, ChallanNo, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, username, shipmentDetails, crnDate, null, crnNo, ChallanNo, contractNo, roId)
+		
+		
+
+//		if (file == null || file.isEmpty()) {
+//			creditNotes.setDocument("");
+//		} else {
+//			final String originalFileName = file.getOriginalFilename();
+//			String dirString = creditNoteDetails;
+//
+//			File fileStoreAt = new File(dirString);
+//
+//			if (!fileStoreAt.exists()) {
+//				fileStoreAt.mkdir();
+//			}
+//
+//			File tranferFile = new File(dirString, originalFileName);
+//			file.transferTo(tranferFile);
+//			creditNotes.setDocument(originalFileName);
+//		}
+
+		///creditNoteGenerationService.create(creditNotes);
 
 		return new ModelAndView(new RedirectView("creditNoteList.obj"));
 
@@ -1827,6 +1928,44 @@ public class Controller_V {
 
 		mView.addObject("list", ListingCreditNotes);
 		return mView;
+	}
+	
+	
+	// get mill code for the particular pco date
+	@ResponseBody
+	@RequestMapping(value = { "showCrdNoteBy" }, method = { RequestMethod.GET })
+	public String showCrdNoteBy(final HttpServletRequest request) {
+		String parameter = request.getParameter("parameter");
+		System.err.println("parameter => " + parameter);
+		List<String> details = this.creditNoteGenerationService.getParamenterDetails(parameter);
+
+		Gson gson = new Gson();
+		return gson.toJson(details);
+
+	}
+	
+	// get mill code for the particular pco date
+	@ResponseBody
+	@RequestMapping(value = { "showFilterdData" }, method = { RequestMethod.GET })
+	public String showFilterdData(final HttpServletRequest request) {
+		String parameter = request.getParameter("parameter");
+		String basedOn = request.getParameter("basedOn");
+		List<Object[]> details = this.creditNoteGenerationService.showFilterData(parameter,basedOn);
+		Gson gson = new Gson();
+		return gson.toJson(details);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = { "getShipmentDetailsByChallanNo" }, method = { RequestMethod.GET })
+	public String getShipmentDetailsByChallanNo(final HttpServletRequest request) {
+		final String challanNo = request.getParameter("challanNo");
+		List<Object[]> shipmentDetails = creditNoteGenerationService.getShipmentDetailsByChallanNo(challanNo);
+	 
+		Gson gson = new Gson();
+
+		return gson.toJson(shipmentDetails);
+
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,8 @@
 package com.jci.dao.impl_phase2;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -9,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.CreditNoteGenerationDao;
 import com.jci.model.CreditNotes;
 import com.jci.model.EntryDerivativePrice;
@@ -37,6 +41,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	@Override
 	public void create(CreditNotes creditNotes) {
 		currentSession().save(creditNotes);
+
 	}
 
 	@Override
@@ -77,6 +82,77 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel) {
 		currentSession().save(settlemetCnDnModel);
 
+	}
+
+	@Override
+	public List<String> getParamenterDetails(String parameter) {
+		String sqlString = "";
+		if (parameter.equals("Region")) {
+			sqlString = "select distinct(b.Ro_id) from jcibos_generation a INNER JOIN "
+					+ "jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no";
+		} else {
+			sqlString = "select distinct(a.Contract_no) " + "from jcibos_generation a INNER JOIN "
+					+ "jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no";
+		}
+
+		List<String> datalist = currentSession().createSQLQuery(sqlString).list();
+
+		return datalist;
+	}
+
+	@Override
+	public List<Object[]> showFilterData(String parameter, String basedOn) {
+
+		String sqlString = "";
+		if (parameter.equals("Region")) {
+			sqlString = "select a.Bill_of_supply_no,a.BOS_date,a.Contract_no ,a.Challan_No, a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt, c.Mill_name , c.DI_No , a.Ro_id , c.Mill_code from "
+					+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and b.Ro_id = '"
+					+ basedOn + "' inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
+		} else {
+			sqlString = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No, a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No ,a.Ro_id,c.Mill_code from  "
+					+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Contract_no = '"
+					+ basedOn + "' inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
+		}
+
+		List<Object[]> datalist = currentSession().createSQLQuery(sqlString).list();
+		return datalist;
+	}
+
+	@Override
+	public double getAvgJuteValue(String challanNo) {
+		String sql = "select Sum(Jute_value)/SUM(No_of_bales) from jcidispatch_details_child where Challan_no = '"
+				+ challanNo + "'";
+
+		double result = (double) currentSession().createSQLQuery(sql).uniqueResult();
+		return result;
+	}
+
+	@Override
+	public List<Object[]> getShipmentDetailsByChallanNo(String challanNo) {
+		String sqlString = "select  Date_of_shipment , Mode_of_shipment , Vehicle_no , Driver_name , License_no , Driver_contact from jcidispatch_details where Challan_no ='"
+				+ challanNo + "'";
+
+		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
+
+		return list;
+	}
+
+	@Override
+	public List<Object[]> getMillDetailsByCode(String millcode) {
+
+		String sql = "SELECT  a.unit_name, a.unit_address1,  a.unit_state,   a.unit_location, b.client_gstin, b.client_pan, b.client_state, b.client_address1,  b.client_name, a.client_unit_code "
+				+ " FROM  jcimilldetailchild AS a LEFT JOIN jcimilldetailmaster AS b ON a.client_code = b.client_code where a.client_unit_code='"
+				+ millcode + "'";
+		List<Object[]> resultList1 = (List<Object[]>) currentSession().createSQLQuery(sql).list();
+		return resultList1;
+	}
+
+	@Override
+	public List<Object[]> getDispatchDetails(String challanNo) {
+		String sql = "select Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty  from  jcidispatch_details_child where  Challan_no='"
+				+ challanNo + "' ";
+		List<Object[]> resultList1 = (List<Object[]>) currentSession().createSQLQuery(sql).list();
+		return resultList1;
 	}
 
 }

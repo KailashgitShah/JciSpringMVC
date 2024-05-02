@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.CreditNoteGenerationDao;
 import com.jci.model.CreditNotes;
 import com.jci.model.settlemetCnDnModel;
@@ -58,6 +59,36 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel) {
 		 creditNoteGenerationDao.saveSettlementOfCnDn(settlemetCnDnModel) ;
 		
+	}
+
+	@Override
+	public List<String> getParamenterDetails(String parameter) {
+		return creditNoteGenerationDao.getParamenterDetails(parameter);
+	}
+
+	@Override
+	public List<Object[]> showFilterData(String parameter, String basedOn) {
+		return creditNoteGenerationDao.showFilterData(parameter,basedOn);
+	}
+
+	@Override
+	public double getAvgJuteValue(String challanNo) {
+		return creditNoteGenerationDao.getAvgJuteValue(challanNo);
+	}
+
+	@Override
+	public List<Object[]> getShipmentDetailsByChallanNo(String challanNo) {
+		return creditNoteGenerationDao.getShipmentDetailsByChallanNo(challanNo);
+	}
+
+	@Override
+	public List<Object[]> getMillDetailsByCode(String millcode) {
+		return creditNoteGenerationDao.getMillDetailsByCode(millcode);
+}
+
+	@Override
+	public List<Object[]> getDispatchDetails(String challanNo) {
+		return creditNoteGenerationDao.getDispatchDetails(challanNo);
 	}
 
 }
