@@ -283,7 +283,7 @@ body {
 					class="nav-label">&nbsp;Payment Arrangement</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-				
+
 					<li data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment Details</b></a></li>
@@ -291,12 +291,12 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
 								Payment list</b></a></li>
 
-				
 
-				
 
-				
-					
+
+
+
+
 
 					<!-- <li data-pre="41" id="o41"><a href="entryofpayment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
@@ -322,7 +322,7 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-				
+
 					<li data-pre="" id=""><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
 								Payment list</b></a></li>
@@ -330,57 +330,60 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Financial Concuerence list</b></a></li>
 				</ul></li>
-				
-				
-						
+
+
+
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Dispatch Instruction HO</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-			<li data-pre="" id=""><a href="HOdispatchInst.obj"><i
+					<li data-pre="" id=""><a href="HOdispatchInst.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>HO Dispatch
 								Instruction</b></a></li>
 
 					<li data-pre="" id=""><a href="jcilist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View HO
 								Dispatch </b></a></li>
-								
+
 				</ul></li>
-				
+
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Dispatch Instruction RO</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-				<li data-pre="" id=""><a href="roDispatchInstruction.obj"><i
+					<li data-pre="" id=""><a href="roDispatchInstruction.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Ro Dispatch
 								Instruction</b></a></li>
-				<li data-pre="" id=""><a href="roDispatchList.obj"><i
+					<li data-pre="" id=""><a href="roDispatchList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Ro Dispatch
 								List</b></a></li>
-								
+
 				</ul></li>
-				
-				
-				<li><a href="javascript:void(0);"><i
+
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Dispatch Menu(BOS)</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
 					<li data-pre="" id=""><a href="viewDispatchChallan.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Listing Of  Dispatch Details</b></a></li>
-							<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Listing Of
+								Dispatch Details</b></a></li>
+					<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of
 								Generation Bill of supply</b></a></li>
-								</ul></li>
-								
-								
-									
-								<li><a href="javascript:void(0);"><i
+					<li data-pre="" id=""><a href="WeightmentSlipList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li>
+				</ul></li>
+
+
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Generation Of Credit Notes</span> <i
 					class="fa fa-angle-left arrow"></i></a>
@@ -394,26 +397,26 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>All Credit
 								Notes </b></a></li>
 				</ul></li>
-								
-				<li><a href="javascript:void(0);"><i
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Mill Receipt</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-	           <li data-pre="" id=""><a href="EntryofMillreceipt.obj"><i
+					<li data-pre="" id=""><a href="EntryofMillreceipt.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill
 								Receipt</b></a></li>
 					<li data-pre="" id=""><a href="viewMillReciept.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of Mill
 								Receipt</b></a></li>
-								</ul></li>
-									
-				
-									
-				
-							
-									
-				<li><a href="javascript:void(0);"><i
+				</ul></li>
+
+
+
+
+
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Claim Settelement</span> <i
 					class="fa fa-angle-left arrow"></i></a>
@@ -425,51 +428,55 @@ body {
 					<li data-pre="52" id="o52"><a href="viewlistnominal.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Nomination of Officials for Claim Settlement</b></a></li>
-								<li data-pre="" id=""><a
+					<li data-pre="" id=""><a
 						href="entryofConfirmationSettelment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Confirmation of Claim Settlement Report </b></a></li>
 					<li data-pre="" id=""><a href="ViewConfirmationsettelment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of
 								Confirmation of Claim Settlement Report </b></a></li>
-								</ul></li>
 								
-								<li><a href="javascript:void(0);"><i
+								<li data-pre="" id=""><a href="verifyClaimReport.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Verify Claim Report
+								 </b></a></li>
+				</ul></li>
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp; Demand Note</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-              <li data-pre="" id=""><a
+					<li data-pre="" id=""><a
 						href="EntryofGenrationDeamandNote.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-									Generation demand Note</b></a></li>
+								Generation demand Note</b></a></li>
 					<li data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Generation demand Note list</b></a></li>
-								</ul></li>
-									
-				<li><a href="javascript:void(0);"><i
+				</ul></li>
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;TDS Entry</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-		
+
 					<li data-pre="52" id="o52"><a href="entryoftds.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> Entry of TDS
 								U/s 194Q Declaration </b></a></li>
 					<li data-pre="52" id="o52"><a href="viewentryoftds.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> View Entry
 								of TDS U/s 194Q Declaration </b></a></li>
-								</ul></li>
-								
-								
-									<li><a href="javascript:void(0);"><i
+				</ul></li>
+
+
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">&nbsp;Settelment of Credit and Debit note</span> <i
-					class="fa fa-angle-left arrow"></i></a>
+					class="nav-label">&nbsp;Settelment of Credit and Debit note</span>
+					<i class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-				<li data-pre="" id=""><a href="settlementcndn.obj"><i
+					<li data-pre="" id=""><a href="settlementcndn.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> Settlement
 								Of Credit And Debit Notes</b></a></li>
 
@@ -479,7 +486,7 @@ body {
 								Payment Realization / Disbursal Details</b></a></li>
 
 
-								
+
 				</ul></li>
 		</ul>
 

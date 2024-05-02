@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
@@ -117,6 +118,7 @@ import com.jci.model.RoDetailsModel;
 import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
 import com.jci.model.UserRegistrationModel;
+import com.jci.model.jciWeighmentEntry;
 import com.jci.model.settlemetCnDnModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
@@ -148,8 +150,9 @@ import com.jci.service.Impl.sendemailBOS;
 import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
+import com.jci.service_phase2.WeighmentEntryService;
 import com.lowagie.text.DocumentException;
-
+import com.jci.service_phase2.verifyClaimService;
 import antlr.TokenWithIndex;
 
 import java.util.Calendar;
@@ -159,6 +162,10 @@ import java.time.LocalDate;
 @Repository
 @Controller
 public class Controller_V {
+	@Autowired
+	verifyClaimService verifyClaimService;
+	@Autowired
+	WeighmentEntryService weighmentEntryService;
 	@Autowired
 	HOInstService hoInstService;
 
@@ -2907,9 +2914,6 @@ public class Controller_V {
 		}
 	}
 
-	@Value("${upload.Confirmationsettlement}")
-	String Confirmationsettlement;
-
 	// save page of generation bill of supply
 
 	@Value("${upload.Genrationofbill}")
@@ -3004,7 +3008,7 @@ public class Controller_V {
 //		          cashDocumentModel.setBOS_No(Bill_of_Supply);
 
 			PdfGenerator_K pdfgenereatorK = new PdfGenerator_K();
-			
+
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
 					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
 					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
@@ -3014,7 +3018,7 @@ public class Controller_V {
 			System.err.println("filePath = " + filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
-		 
+
 			this.genrationCashDocumentService.create(cashDocumentModel);
 			this.generationofBillService.billUpdation(Conract_no);
 
@@ -3057,8 +3061,6 @@ public class Controller_V {
 		// Starting Email Sender
 
 		// End Email
-		
-		 
 
 		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
@@ -3395,7 +3397,7 @@ public class Controller_V {
 		 * this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
 		 */
 		return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
-		
+
 	}
 
 //To get count previous HO count dor DI no. for particular Region
@@ -4475,8 +4477,11 @@ public class Controller_V {
 		return resultString;
 	}
 
+	@Value("${upload.Confirmationsettlement}")
+	String ConfirmationOfClaim;
+
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
-	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
+	public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session ,HttpServletRequest request,
 			RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
 		final File theDir = new File("Confirmationsettlement");
@@ -4490,12 +4495,18 @@ public class Controller_V {
 
 			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
-
-			int Settlement_Id12 = Integer.parseInt(Settlement_Id1);
+ 
+			BigInteger Settlement_Id12 = new BigInteger(Settlement_Id1);
+			System.err.println(Settlement_Id12);
 			String Date_of_inspection1 = request.getParameter("Dateofinspection");
+			
+			
 			String fullcontractno = request.getParameter("fullcontractno");
 			String Challan_No1 = request.getParameter("Challan_No1");
-			final File theDirect = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\");
+			System.err.println(Challan_No1);
+			System.err.println(Challan_No1);
+			System.err.println(Challan_No1);
+			final File theDirect = new File(ConfirmationOfClaim);
 			if (!theDirect.exists()) {
 				theDirect.mkdirs();
 			}
@@ -4506,7 +4517,15 @@ public class Controller_V {
 
 			final String filename = SupportingDocument.getOriginalFilename();
 			System.err.println(filename + "---------");
-
+			String rolename= (String) session.getAttribute("rolename");
+			/* if(rolename == "") */
+			System.err.println(session.getAttribute("rolename"));
+			System.err.println(session.getAttribute("rolename"));
+			System.err.println(session.getAttribute("rolename"));
+			System.err.println(session.getAttribute("rolename"));
+			
+			
+			
 			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
 
 			String Claim_Amount1 = request.getParameter("ClaimAmount");
@@ -4520,30 +4539,36 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
 			}
 
-			String Quality_Settlement1 = request.getParameter("Quality_Settlement1");
+			String Quality_Settlement1 = request.getParameter("Quality_Settlement");
+			System.err.println("Quality_Settlement1:"+Quality_Settlement1);
 			if (Quality_Settlement1 != null) {
 
 				double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
+				System.err.println("Quality_Settlement12:"+Quality_Settlement12);
 				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 			} else {
 				double Quality_Settlement12 = defaultValue;
 				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 			}
 
-			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement1");
+			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement");
+			System.err.println("Moisture_Settlement1:"+Moisture_Settlement1);
 			if (Moisture_Settlement1 != null) {
-
+			
 				double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
+				System.err.println("Moisture_Settlement12:"+Moisture_Settlement12);
 				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 			} else {
 				double Moisture_Settlement12 = defaultValue;
 				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 			}
 
-			String NCV_Settlement1 = request.getParameter("NCV_Settlement1");
+			String NCV_Settlement1 = request.getParameter("NCV_Settlement");
+			System.err.println("NCV_Settlement1:"+NCV_Settlement1);
 			if (NCV_Settlement1 != null) {
 
 				double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
+				System.err.println("NCV_Settlement12:"+NCV_Settlement12);
 				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
 			} else {
 				double NCV_Settlement12 = defaultValue;
@@ -4561,8 +4586,17 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
 			}
 
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd"); // Corrected format for parsing
 			Date instdate1 = formatter1.parse(Date_of_inspection1);
+
+			// Formatting the date for display in DD-MM-YYYY format
+			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+			String formattedDate = formatter2.format(instdate1);
+
+			System.err.println(formattedDate); // Print formatted date string
+
+			// Set the original Date object to the model
+			
 			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
 			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
 			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
@@ -4574,20 +4608,21 @@ public class Controller_V {
 //			confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
 
 			Date date1 = new Date();
-			confirmationClaimSettlementModel.setInspection_date(date1);
+			
 			confirmationClaimSettlementModel.setDispute_flag(0);
 			confirmationClaimSettlementModel.setOM_Official("vishal");
 			confirmationClaimSettlementModel.setMill("1");
 			confirmationClaimSettlementModel.setFA_Official("Pradeep");
 			confirmationClaimSettlementModel.setCreated_by("kailash");
 			confirmationClaimSettlementModel.setCreated_on(date1);
+			
+			
 			File file = null;
 			String url = "";
 			String pathurl = "";
 			if (!SupportingDocument.isEmpty()) {
 				try {
-					file = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\"
-							+ SupportingDocument.getOriginalFilename());
+					file = new File(ConfirmationOfClaim + SupportingDocument.getOriginalFilename());
 					final OutputStream os = new FileOutputStream(file);
 					os.write(SupportingDocument.getBytes());
 					os.close();
@@ -4634,7 +4669,7 @@ public class Controller_V {
 
 	@RequestMapping("downloadSupportDocument")
 	public void downloadDocs(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imagePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\" + filename;
+		String imagePath = ConfirmationOfClaim + filename;
 		File imageFile = new File(imagePath);
 
 		// Check if the file exists
@@ -4667,6 +4702,135 @@ public class Controller_V {
 		} else {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
+	}
+	
+	//Verification of Weighment Slip
+	@RequestMapping({"WeightmentSlipList"})
+	public ModelAndView  WeightmentSlipList(HttpSession session,HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String Ro_id = (String) session.getAttribute("region");
+		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+			
+		 
+		 ModelAndView mv = new ModelAndView("WeightmentSlipList");
+		 mv.addObject("WeightmentList", list);
+		 System.err.println(list.toString());
+		 return mv;
+	}
+	@RequestMapping(value={"WeightmentById"}, method = RequestMethod.GET)
+	public ModelAndView ListOFWeightmentSlipById(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String id = request.getParameter("id");
+		System.err.println(id);
+		System.err.println(id);
+		System.err.println(id);
+		 ModelAndView mv = new ModelAndView("VerificationOfWeightment");
+		 List<Object[]> list = weighmentEntryService.getSlipDetails(id);
+		 mv.addObject("Data",list);
+		/*
+		 * jciWeighmentEntry list =
+		 * weighmentEntryService.ListOFWeightmentSlipById(Weighment_id);
+		 */
+	
+		 
+			/*
+			 * if(list!=null) { return new ServiceResponse<>(new
+			 * BaseMessageResponse<>(HttpStatus.OK.value(), list, "true", "Success"),
+			 * HttpStatus.OK);}else { return new ServiceResponse<>(new
+			 * BaseMessageResponse<>(HttpStatus.NOT_FOUND.value(), list, "false",
+			 * "No Data Found"), HttpStatus.NOT_FOUND); }
+			 */
+		 return mv;
+	 }
+	@RequestMapping(value = {"verifyWeightmentSlip"}, method = RequestMethod.POST)
+	 public ModelAndView saveWeightmentSlip(@ModelAttribute jciWeighmentEntry weighmentSlip,HttpServletRequest request,HttpSession session) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+				System.err.println(weighmentSlip);
+				try {
+		 Date currDate = new Date();
+		
+		 String BosNo = request.getParameter("billNo");
+		 Double gross= Double.parseDouble( request.getParameter("DPCGrossWt"));
+		 Double actual= Double.parseDouble( request.getParameter("DPCqty"));
+		 Double net= Double.parseDouble( request.getParameter("DPCNetqty"));
+		 
+		 weighmentEntryService.editVerification(gross,actual,net,currDate,BosNo);
+		 
+		 
+				}
+				 catch (Exception  e) {
+						// Handle IO exception
+						
+					}
+				String Ro_id = (String) session.getAttribute("region");
+				List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+					
+				 
+				 ModelAndView model = new ModelAndView("WeightmentSlipList");
+				 model.addObject("WeightmentList", list);
+					return model;
+		 }
+	
+	
+	
+	//Verify Claim by FA official
+	@RequestMapping({"verifyClaimReport"})
+	public ModelAndView  VerifyClaimReport(HttpSession session,HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		
+		String Ro_id = (String) session.getAttribute("region");
+		
+//		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		System.err.println(getSettlementidlist);
+			
+		 
+		 ModelAndView mv = new ModelAndView("verifyClaimReport");
+		 mv.addObject("getSettlementidlist",getSettlementidlist);
+//		 mv.addObject("WeightmentList", list);
+//		 System.err.println(list.toString());
+		 return mv;
+	}
+	
+	@RequestMapping(value={"verifyClaim"},method=RequestMethod.POST)
+	public ModelAndView  VerifyClaim(HttpSession session,HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String Ro_id = (String) session.getAttribute("region");
+//		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+		
+		 
+		 ModelAndView mv = new ModelAndView("verifyClaimReport");
+//		 mv.addObject("WeightmentList", list);
+//		 System.err.println(list.toString());
+		 
+		 return mv;
+	}
+	@ResponseBody
+	@RequestMapping(value= "fetchClaims.obj", method = RequestMethod.GET)
+	public String fetchClaims(@RequestParam("id") BigInteger settlementId) {
+System.err.println("Reached");
+		List<Object[]> list1= verifyClaimService.fetchClaimsMill(settlementId);
+		
+		System.err.println(list1.toString());
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(list1);
+		return resultString;
+		
 	}
 
 	// Utility method to determine content type based on filename

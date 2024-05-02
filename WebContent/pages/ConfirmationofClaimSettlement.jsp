@@ -74,16 +74,18 @@
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveConfirmationOfClaimSettelment.obj"
-									method="POST" name="myForm" enctype="multipart/form-data">
+									method="POST" name="myForm" enctype="multipart/form-data" onsubmit="return myFunc()">
 									<div class="child-checkbox" id="disableform">
+									<div id='errorcontainer'
+								style='display: none; text-align: center;'></div>
 										<div class="row">
 
-											<div class="col-sm-4 form-group">
+											 <div class="col-sm-4 form-group">
 												<label>Settlement Id</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Settlement_Id" name="Settlement_Id"
 													class="text-danger"> </span> <select name="Settlement_Id1"
 													id="SettlementId1" class="form-control taxtbox" required>
-													<option value="-1" selected disabled>-Select-</option>
+													<option value="" selected disabled>-Select-</option>
 													<%
 													for (int i = 0; i < getSettlementid.size(); i++) {
 														BigDecimal settlementId = (BigDecimal) getSettlementid.get(i);
@@ -128,9 +130,16 @@
 											<div class="col-sm-4 form-group">
 												<label>Challan No</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Challan_No" name="Challan_No "
-													class="text-danger"> </span> <input
+													class="text-danger"> </span> <!-- <input
 													class="form-control taxtbox" name="Challan_No1"
-													id="ChallanNo1" placeholder="Challan_No" required readonly>
+													id="ChallanNo1" placeholder="Challan_No" required readonly> -->
+													<select name="Challan_No1"
+													id="ChallanNo1" class="form-control taxtbox" required>
+
+													<option value="-1" selected disabled>-Select-</option>
+
+												</select>
+													
 											</div>
 
 											<div class="col-sm-4 form-group">
@@ -487,12 +496,15 @@ $(document).ready(function(){
 	        	}
 	           
 	               // Set the value of the <select> element
+	               $('#Quality_Settlement1').attr('max',valuesArray[0]);
 	               $('#Quality_Settlement1').val(valuesArray[0]);
 	               $('#Moisture_Settlement1').val(valuesArray[1]);
 	               $('#NCV_Settlement1').val(valuesArray[2]);
 	               $('#SettlementAmount1').val(valuesArray[3]); 
 	               $('#ClaimAmount1').val(valuesArray[4]);
-	        		
+	               $('#Moisture_Settlement1').attr('max', valuesArray[1]);
+	               $('#NCV_Settlement1').attr('max', valuesArray[2]);
+	               $('#SettlementAmount1').attr('max', valuesArray[3]);
 	               var dateParts = valuesArray[5].split("-");
 	               var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
 	               $('#Dateofinspection12').val(formattedDate);
@@ -524,26 +536,46 @@ $(document).ready(function(){
 	        type: 'GET',
 	        url: 'fetchSettlementData.obj',
 	        data: { "id": field2Value },
-	        success: function(data) {
-	           //alert(data);
-	           //alert("fetchMillreceipt"+data);
-	           data = data.replace(/^\[|\]$/g, '');
-	           data = data.replace(/^\[|\]$/g, '');
-	           var valuesArray = data.split(',');
-	           for (var i = 0; i < valuesArray.length; i++) {
-	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
+	        success: function(result) {
+	        	alert("Before:" + result);
+
+	        	var data = JSON.parse(result);
+
+	        	console.log(data);
+	        	//alert(data);
+	        	//alert(data.length);
+
+	        	for (var i = 0; i < data.length; i++) {
+	        	    var option = document.createElement("option");
+
+	        	    // Set the value attribute of the option
+	        	    option.value = data[i][1]; // Assuming data[i][1] contains the value for the option
+
+	        	    // Set the text content of the option
+	        	    option.textContent = data[i][1]; // Assuming data[i][1] contains the text to display
+
+	        	    // Append the option to the select dropdown
+	        	    document.getElementById("ChallanNo1").appendChild(option);
 	        	}
 
-	           $('#MRNo1').val(valuesArray[0]);
-	           $('#BaleMark1').val(valuesArray[1]);
-	          
-	           $('#CropYear1').val(valuesArray[2]);
-	      
-	           $('#QualityClaim1').val(valuesArray[3]);
-	           $('#MoistureContent1').val(valuesArray[4]);
-	           $('#NCVPercentage1').val(valuesArray[5]); 
-	           $('#ChallanNo1').val(valuesArray[6]); 
+	        	$("#ChallanNo1").on('change', function() {
+	        		//alert();
+	        	    var selectedChallanNo = $(this).val(); // Get the selected value of ChallanNo1
+	        	    //alert(selectedChallanNo)
+	        	    for (var i = 0; i < data.length; i++) {
+	        	    	//alert(data[i][1]+"=="+selectedChallanNo);
+	        	        if (selectedChallanNo === data[i][1]) {
+	        	            $("#BaleMark1").val(data[i][2]); 
+	        	            $("#CropYear1").val(data[i][3]);
+	        	            $("#QualityClaim1").val(data[i][4]);
+	        	            $("#MoistureContent1").val(data[i][5]);
+	        	            $("#NCVPercentage1").val(data[i][6]);
+	        	           
+	        	        }
+	        	    }
+	        	});
 
+	        	$("#MRNo1").val(data[0][0]);
 	        },
 	        error: function(error) {
 	            alert("Error: " + error);
@@ -551,19 +583,13 @@ $(document).ready(function(){
 	    });
 
 	    });
+	  
 	});
 
       
       </script>
 
-	<script>
-    $(document).ready(function(){
-      
-        setTimeout(function(){
-            $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
-    });
-</script>
+	
 
 
 
@@ -661,7 +687,7 @@ $(document).ready(function(){
       </script>
 
 
-	<script>
+<script>
     function deleteErrorMsg(){
     	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
    		 if(F_BANK_IFSC.length>1){
@@ -680,6 +706,24 @@ $(document).ready(function(){
         element.value = textInput; 
     }
 </script>
+<script>
+function myFunc(){
+	var maxQ = $('#Quality_Settlement1').attr('max');
+	alert(maxQ);
+	var maxMoisture = $('#Moisture_Settlement1').attr('max');
+	alert(maxMoisture);
+	var maxN = $('#NCV_Settlement1').attr('max');
+	alert(maxN)
+	 if($('#Quality_Settlement1').attr('max') > $('#Quality_Settlement1').val() || $('#Moisture_Settlement1').attr('max' )> $('#Moisture_Settlement1')val() || $('#NCV_Settlement1').attr('max')<$('#NCV_Settlement1').val())
+	{	
+		 return false;
+	
+	
+	}
+	 else return true;
+}
+</script>
+
 	<script type="text/javascript">
       
 
