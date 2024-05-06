@@ -26,7 +26,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 
 	@Override
 	public void create(ConfirmationClaimSettlementModel confirmationClaimSettlementModel) {
-
+	
 		currentSession().save(confirmationClaimSettlementModel);
 	}
 
@@ -75,7 +75,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 
 	@Override
 	public List<Object[]> fetchdatasttlement(int st) {
-		String sql = " select Quality_settlement,Moisture_settlement,Ncv_settlement,Settlement_amt,ClaimAmount,DateofInspection,Supporting_doc from jciclaim_nomination WHERE Settlement_id = '"
+		String sql = " select Quality_settlement,Moisture_settlement,Ncv_settlement,Settlement_amt,ClaimAmount,DateofInspection,Supporting_doc,Mill from jciclaim_nomination WHERE Settlement_id = '"
 				+ st + "'";
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.list();

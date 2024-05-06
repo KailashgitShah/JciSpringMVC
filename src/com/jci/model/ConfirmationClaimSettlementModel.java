@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 
@@ -18,7 +19,9 @@ import javax.persistence.TemporalType;
 public class ConfirmationClaimSettlementModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
+	@Column(name = "id", unique = true)
+	private int id;
+	
 	@Column(name = "Settlement_id")
 	private BigInteger Settlement_id;
 
@@ -72,6 +75,14 @@ public class ConfirmationClaimSettlementModel {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date Created_on;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public BigInteger getSettlement_id() {
 		return Settlement_id;
 	}
@@ -100,8 +111,8 @@ public class ConfirmationClaimSettlementModel {
 		return Challan_No;
 	}
 
-	public void setChallan_No(String challa_No) {
-		Challan_No = challa_No;
+	public void setChallan_No(String challan_No) {
+		Challan_No = challan_No;
 	}
 
 	public Double getClaim_Amount() {
@@ -184,8 +195,6 @@ public class ConfirmationClaimSettlementModel {
 		Supporting_doc = supporting_doc;
 	}
 
-	
-
 	public int getDispute_flag() {
 		return Dispute_flag;
 	}
@@ -210,16 +219,32 @@ public class ConfirmationClaimSettlementModel {
 		Created_on = created_on;
 	}
 
-	public ConfirmationClaimSettlementModel(BigInteger settlement_id, String mill, String contract_No, String challa_No,
-			Double claim_Amount, String oM_Official, String fA_Official, Date date_of_Inspection,
-			Double quality_settlement, Double moisture_settlement, Double ncv_settlement, Double settlement_amt,
-			String inspection_by, String supporting_doc,  int dispute_flag, String created_by,
-			Date created_on) {
+	@Override
+	public String toString() {
+		return "ConfirmationClaimSettlementModel [id=" + id + ", Settlement_id=" + Settlement_id + ", Mill=" + Mill
+				+ ", Contract_No=" + Contract_No + ", Challan_No=" + Challan_No + ", Claim_Amount=" + Claim_Amount
+				+ ", OM_Official=" + OM_Official + ", FA_Official=" + FA_Official + ", Date_of_Inspection="
+				+ Date_of_Inspection + ", Quality_settlement=" + Quality_settlement + ", Moisture_settlement="
+				+ Moisture_settlement + ", Ncv_settlement=" + Ncv_settlement + ", Settlement_amt=" + Settlement_amt
+				+ ", Inspection_by=" + Inspection_by + ", Supporting_doc=" + Supporting_doc + ", Dispute_flag="
+				+ Dispute_flag + ", Created_by=" + Created_by + ", Created_on=" + Created_on + "]";
+	}
+
+	public ConfirmationClaimSettlementModel() {
 		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public ConfirmationClaimSettlementModel(int id, BigInteger settlement_id, String mill, String contract_No,
+			String challan_No, Double claim_Amount, String oM_Official, String fA_Official, Date date_of_Inspection,
+			Double quality_settlement, Double moisture_settlement, Double ncv_settlement, Double settlement_amt,
+			String inspection_by, String supporting_doc, int dispute_flag, String created_by, Date created_on) {
+		super();
+		this.id = id;
 		Settlement_id = settlement_id;
 		Mill = mill;
 		Contract_No = contract_No;
-		Challan_No = challa_No;
+		Challan_No = challan_No;
 		Claim_Amount = claim_Amount;
 		OM_Official = oM_Official;
 		FA_Official = fA_Official;
@@ -230,25 +255,11 @@ public class ConfirmationClaimSettlementModel {
 		Settlement_amt = settlement_amt;
 		Inspection_by = inspection_by;
 		Supporting_doc = supporting_doc;
-		
 		Dispute_flag = dispute_flag;
 		Created_by = created_by;
 		Created_on = created_on;
 	}
 
-	public ConfirmationClaimSettlementModel() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public String toString() {
-		return "ConfirmationClaimSettlementModel [Settlement_id=" + Settlement_id + ", Mill=" + Mill + ", Contract_No="
-				+ Contract_No + ", Challa_No=" + Challan_No + ", Claim_Amount=" + Claim_Amount + ", OM_Official="
-				+ OM_Official + ", FA_Official=" + FA_Official + ", Date_of_Inspection=" + Date_of_Inspection
-				+ ", Quality_settlement=" + Quality_settlement + ", Moisture_settlement=" + Moisture_settlement
-				+ ", Ncv_settlement=" + Ncv_settlement + ", Settlement_amt=" + Settlement_amt + ", Inspection_by="
-				+ Inspection_by + ", Supporting_doc=" + Supporting_doc +  ", Dispute_flag=" + Dispute_flag + ", Created_by=" + Created_by + ", Created_on=" + Created_on + "]";
-	}
+	
 
 }

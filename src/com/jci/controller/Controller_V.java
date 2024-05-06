@@ -4481,7 +4481,7 @@ public class Controller_V {
 	String ConfirmationOfClaim;
 
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
-	public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session ,HttpServletRequest request,
+	public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpServletRequest request,
 			RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
 		final File theDir = new File("Confirmationsettlement");
@@ -4495,12 +4495,11 @@ public class Controller_V {
 
 			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
- 
+
 			BigInteger Settlement_Id12 = new BigInteger(Settlement_Id1);
 			System.err.println(Settlement_Id12);
 			String Date_of_inspection1 = request.getParameter("Dateofinspection");
-			
-			
+
 			String fullcontractno = request.getParameter("fullcontractno");
 			String Challan_No1 = request.getParameter("Challan_No1");
 			System.err.println(Challan_No1);
@@ -4517,15 +4516,13 @@ public class Controller_V {
 
 			final String filename = SupportingDocument.getOriginalFilename();
 			System.err.println(filename + "---------");
-			String rolename= (String) session.getAttribute("rolename");
+			String rolename = (String) session.getAttribute("rolename");
 			/* if(rolename == "") */
 			System.err.println(session.getAttribute("rolename"));
 			System.err.println(session.getAttribute("rolename"));
 			System.err.println(session.getAttribute("rolename"));
 			System.err.println(session.getAttribute("rolename"));
-			
-			
-			
+
 			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
 
 			String Claim_Amount1 = request.getParameter("ClaimAmount");
@@ -4540,11 +4537,11 @@ public class Controller_V {
 			}
 
 			String Quality_Settlement1 = request.getParameter("Quality_Settlement");
-			System.err.println("Quality_Settlement1:"+Quality_Settlement1);
+			System.err.println("Quality_Settlement1:" + Quality_Settlement1);
 			if (Quality_Settlement1 != null) {
 
 				double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
-				System.err.println("Quality_Settlement12:"+Quality_Settlement12);
+				System.err.println("Quality_Settlement12:" + Quality_Settlement12);
 				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 			} else {
 				double Quality_Settlement12 = defaultValue;
@@ -4552,11 +4549,11 @@ public class Controller_V {
 			}
 
 			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement");
-			System.err.println("Moisture_Settlement1:"+Moisture_Settlement1);
+			System.err.println("Moisture_Settlement1:" + Moisture_Settlement1);
 			if (Moisture_Settlement1 != null) {
-			
+
 				double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
-				System.err.println("Moisture_Settlement12:"+Moisture_Settlement12);
+				System.err.println("Moisture_Settlement12:" + Moisture_Settlement12);
 				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 			} else {
 				double Moisture_Settlement12 = defaultValue;
@@ -4564,11 +4561,11 @@ public class Controller_V {
 			}
 
 			String NCV_Settlement1 = request.getParameter("NCV_Settlement");
-			System.err.println("NCV_Settlement1:"+NCV_Settlement1);
+			System.err.println("NCV_Settlement1:" + NCV_Settlement1);
 			if (NCV_Settlement1 != null) {
 
 				double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
-				System.err.println("NCV_Settlement12:"+NCV_Settlement12);
+				System.err.println("NCV_Settlement12:" + NCV_Settlement12);
 				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
 			} else {
 				double NCV_Settlement12 = defaultValue;
@@ -4592,11 +4589,12 @@ public class Controller_V {
 			// Formatting the date for display in DD-MM-YYYY format
 			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
 			String formattedDate = formatter2.format(instdate1);
-
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date parsedDate = originalFormat.parse(formattedDate);
 			System.err.println(formattedDate); // Print formatted date string
 
 			// Set the original Date object to the model
-			
+
 			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
 			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
 			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
@@ -4608,15 +4606,14 @@ public class Controller_V {
 //			confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
 
 			Date date1 = new Date();
-			
+			String millName = request.getParameter("mill");
 			confirmationClaimSettlementModel.setDispute_flag(0);
-			confirmationClaimSettlementModel.setOM_Official("vishal");
-			confirmationClaimSettlementModel.setMill("1");
-			confirmationClaimSettlementModel.setFA_Official("Pradeep");
-			confirmationClaimSettlementModel.setCreated_by("kailash");
+			confirmationClaimSettlementModel.setOM_Official(username);
+			confirmationClaimSettlementModel.setMill(millName);
+			confirmationClaimSettlementModel.setFA_Official("");
+			confirmationClaimSettlementModel.setCreated_by(username);
 			confirmationClaimSettlementModel.setCreated_on(date1);
-			
-			
+
 			File file = null;
 			String url = "";
 			String pathurl = "";
@@ -4703,24 +4700,24 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-	
-	//Verification of Weighment Slip
-	@RequestMapping({"WeightmentSlipList"})
-	public ModelAndView  WeightmentSlipList(HttpSession session,HttpServletRequest request) {
+
+	// Verification of Weighment Slip
+	@RequestMapping({ "WeightmentSlipList" })
+	public ModelAndView WeightmentSlipList(HttpSession session, HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
 		String Ro_id = (String) session.getAttribute("region");
 		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
-			
-		 
-		 ModelAndView mv = new ModelAndView("WeightmentSlipList");
-		 mv.addObject("WeightmentList", list);
-		 System.err.println(list.toString());
-		 return mv;
+
+		ModelAndView mv = new ModelAndView("WeightmentSlipList");
+		mv.addObject("WeightmentList", list);
+		System.err.println(list.toString());
+		return mv;
 	}
-	@RequestMapping(value={"WeightmentById"}, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "WeightmentById" }, method = RequestMethod.GET)
 	public ModelAndView ListOFWeightmentSlipById(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
@@ -4730,109 +4727,109 @@ public class Controller_V {
 		System.err.println(id);
 		System.err.println(id);
 		System.err.println(id);
-		 ModelAndView mv = new ModelAndView("VerificationOfWeightment");
-		 List<Object[]> list = weighmentEntryService.getSlipDetails(id);
-		 mv.addObject("Data",list);
+		ModelAndView mv = new ModelAndView("VerificationOfWeightment");
+		List<Object[]> list = weighmentEntryService.getSlipDetails(id);
+		mv.addObject("Data", list);
 		/*
 		 * jciWeighmentEntry list =
 		 * weighmentEntryService.ListOFWeightmentSlipById(Weighment_id);
 		 */
-	
-		 
-			/*
-			 * if(list!=null) { return new ServiceResponse<>(new
-			 * BaseMessageResponse<>(HttpStatus.OK.value(), list, "true", "Success"),
-			 * HttpStatus.OK);}else { return new ServiceResponse<>(new
-			 * BaseMessageResponse<>(HttpStatus.NOT_FOUND.value(), list, "false",
-			 * "No Data Found"), HttpStatus.NOT_FOUND); }
-			 */
-		 return mv;
-	 }
-	@RequestMapping(value = {"verifyWeightmentSlip"}, method = RequestMethod.POST)
-	 public ModelAndView saveWeightmentSlip(@ModelAttribute jciWeighmentEntry weighmentSlip,HttpServletRequest request,HttpSession session) {
+
+		/*
+		 * if(list!=null) { return new ServiceResponse<>(new
+		 * BaseMessageResponse<>(HttpStatus.OK.value(), list, "true", "Success"),
+		 * HttpStatus.OK);}else { return new ServiceResponse<>(new
+		 * BaseMessageResponse<>(HttpStatus.NOT_FOUND.value(), list, "false",
+		 * "No Data Found"), HttpStatus.NOT_FOUND); }
+		 */
+		return mv;
+	}
+
+	@RequestMapping(value = { "verifyWeightmentSlip" }, method = RequestMethod.POST)
+	public ModelAndView saveWeightmentSlip(@ModelAttribute jciWeighmentEntry weighmentSlip, HttpServletRequest request,
+			HttpSession session) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-				System.err.println(weighmentSlip);
-				try {
-		 Date currDate = new Date();
-		
-		 String BosNo = request.getParameter("billNo");
-		 Double gross= Double.parseDouble( request.getParameter("DPCGrossWt"));
-		 Double actual= Double.parseDouble( request.getParameter("DPCqty"));
-		 Double net= Double.parseDouble( request.getParameter("DPCNetqty"));
-		 
-		 weighmentEntryService.editVerification(gross,actual,net,currDate,BosNo);
-		 
-		 
-				}
-				 catch (Exception  e) {
-						// Handle IO exception
-						
-					}
-				String Ro_id = (String) session.getAttribute("region");
-				List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
-					
-				 
-				 ModelAndView model = new ModelAndView("WeightmentSlipList");
-				 model.addObject("WeightmentList", list);
-					return model;
-		 }
-	
-	
-	
-	//Verify Claim by FA official
-	@RequestMapping({"verifyClaimReport"})
-	public ModelAndView  VerifyClaimReport(HttpSession session,HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
+		System.err.println(weighmentSlip);
+		try {
+			Date currDate = new Date();
+
+			String BosNo = request.getParameter("billNo");
+			Double gross = Double.parseDouble(request.getParameter("DPCGrossWt"));
+			Double actual = Double.parseDouble(request.getParameter("DPCqty"));
+			Double net = Double.parseDouble(request.getParameter("DPCNetqty"));
+
+			weighmentEntryService.editVerification(gross, actual, net, currDate, BosNo);
+
+		} catch (Exception e) {
+			// Handle IO exception
+
 		}
-		
 		String Ro_id = (String) session.getAttribute("region");
-		
-//		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+
+		ModelAndView model = new ModelAndView("WeightmentSlipList");
+		model.addObject("WeightmentList", list);
+		return model;
+	}
+
+	// Verify Claim by FA official
+	@RequestMapping(value = { "verifyClaimReport" }, method = RequestMethod.GET)
+	public ModelAndView VerifyClaimReport(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
+		String Ro_id = (String) session.getAttribute("region");
+
 		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
 		System.err.println(getSettlementidlist);
-			
-		 
-		 ModelAndView mv = new ModelAndView("verifyClaimReport");
-		 mv.addObject("getSettlementidlist",getSettlementidlist);
-//		 mv.addObject("WeightmentList", list);
-//		 System.err.println(list.toString());
-		 return mv;
+		redirectAttributes.addFlashAttribute("msg",
+				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+		ModelAndView mv = new ModelAndView("verifyClaimReport");
+		mv.addObject("getSettlementidlist", getSettlementidlist);
+
+		return mv;
 	}
-	
-	@RequestMapping(value={"verifyClaim"},method=RequestMethod.POST)
-	public ModelAndView  VerifyClaim(HttpSession session,HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-		String Ro_id = (String) session.getAttribute("region");
-//		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
-		
-		 
-		 ModelAndView mv = new ModelAndView("verifyClaimReport");
-//		 mv.addObject("WeightmentList", list);
-//		 System.err.println(list.toString());
-		 
-		 return mv;
-	}
+
 	@ResponseBody
-	@RequestMapping(value= "fetchClaims.obj", method = RequestMethod.GET)
+	@RequestMapping(value = "fetchClaims.obj", method = RequestMethod.GET)
 	public String fetchClaims(@RequestParam("id") BigInteger settlementId) {
-System.err.println("Reached");
-		List<Object[]> list1= verifyClaimService.fetchClaimsMill(settlementId);
-		
+		System.err.println("Reached");
+		List<Object[]> list1 = verifyClaimService.fetchClaimsMill(settlementId);
+
 		System.err.println(list1.toString());
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(list1);
 		return resultString;
-		
+
 	}
 
+	@ResponseBody
+	@RequestMapping(value = {"acceptClaim"}, method = RequestMethod.GET)
+	public String acceptClaim(@RequestParam("id") Integer id, HttpSession session, HttpServletRequest request) {
+	    System.err.println("Reached Accept");
+	    String username = (String) request.getSession().getAttribute("usrname");
+	    verifyClaimService.acceptClaim(id, username);
+	    System.out.println("username" + username);
+	    return "true";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = {"rejectClaim"}, method = {RequestMethod.GET})
+	public String rejectClaim(@RequestParam("id") Integer id, HttpServletRequest request,HttpSession session) {
+		System.err.println("Reached Reject");
+		String username = (String) request.getSession().getAttribute("usrname");
+		verifyClaimService.rejectClaim(id, username);
+		
+		return "true";
+		
+	}
+	
+	
 	// Utility method to determine content type based on filename
 
 }

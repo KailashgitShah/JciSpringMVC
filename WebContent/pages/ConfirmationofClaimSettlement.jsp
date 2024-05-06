@@ -284,7 +284,14 @@
 													class="form-control taxtbox" name="Inspectionby1"
 													placeholder="Inspection by" required>
 											</div>
-
+											<div class="col-sm-4 form-group">
+												<label>Mill name</label> <span class="text-danger">*
+												</span>&nbsp; <span id="mill1" name="mil1 "
+													class="text-danger"> </span><input
+													class="form-control taxtbox" type="text"
+													name="mill" id="mill"  readonly
+													placeholder="Mill name" required>
+											</div>
 
 
 
@@ -487,14 +494,21 @@ $(document).ready(function(){
 	        url: 'fetchingdatanominactionclaim.obj',
 	        data: { "contractno": field2Value },
 	        success: function(data) {
+	        
 	           //alert("nominationClaim"+data);
 	           data = data.replace(/^\[|\]$/g, '');
 	           data = data.replace(/^\[|\]$/g, '');
+	           alert(data)
+	           console.log(data);
 	           var valuesArray = data.split(',');
+	           console.log(valuesArray)
+	           
 	           for (var i = 0; i < valuesArray.length; i++) {
 	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
 	        	}
-	           
+	           var millname = valuesArray[7];
+	          
+	           $('#mill').val(valuesArray[7]);
 	               // Set the value of the <select> element
 	               $('#Quality_Settlement1').attr('max',valuesArray[0]);
 	               $('#Quality_Settlement1').val(valuesArray[0]);
@@ -510,6 +524,7 @@ $(document).ready(function(){
 	               $('#Dateofinspection12').val(formattedDate);
 	             
 	               $('#Supportingdocument1').val(valuesArray[6]);
+	               
 	              
 	           
 
@@ -570,7 +585,7 @@ $(document).ready(function(){
 	        	            $("#QualityClaim1").val(data[i][4]);
 	        	            $("#MoistureContent1").val(data[i][5]);
 	        	            $("#NCVPercentage1").val(data[i][6]);
-	        	           
+	        	            $("mill").val(data[i][7]);
 	        	        }
 	        	    }
 	        	});
@@ -699,7 +714,7 @@ $(document).ready(function(){
        	}
 
 }
-	}
+	
     function allow_alphabets(element){
       let textInput = element.value;
         textInput = textInput.replace(/[^A-Za-z ]+$/gm, ""); 
@@ -714,7 +729,7 @@ function myFunc(){
 	alert(maxMoisture);
 	var maxN = $('#NCV_Settlement1').attr('max');
 	alert(maxN)
-	 if($('#Quality_Settlement1').attr('max') > $('#Quality_Settlement1').val() || $('#Moisture_Settlement1').attr('max' )> $('#Moisture_Settlement1')val() || $('#NCV_Settlement1').attr('max')<$('#NCV_Settlement1').val())
+	 if($('#Quality_Settlement1').attr('max') > $('#Quality_Settlement1').val() || $('#Moisture_Settlement1').attr('max' )> $('#Moisture_Settlement1').val() || $('#NCV_Settlement1').attr('max')<$('#NCV_Settlement1').val())
 	{	
 		 return false;
 	
