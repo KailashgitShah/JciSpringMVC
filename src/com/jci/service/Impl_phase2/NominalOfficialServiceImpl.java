@@ -133,4 +133,40 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 		
 	}
 
+	@Override
+	public List<String> gethodi() {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.gethodi();
+	}
+
+	@Override
+	public List<Object[]> getchallan(String hodi) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getchallan(hodi);
+	}
+
+	@Override
+	public List<Object[]> dateofInspection(String dateOfInspection) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.dateofInspection(dateOfInspection);
+	}
+
+	@Override
+	public String getcontractidentification(String ContractNo) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getcontractidentification(ContractNo);
+	}
+
+	@Override
+	public String getmillcode(String millname) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getmillcode(millname);
+	}
+
+	@Override
+	public Jciclaim_NominationModel find(int id) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.find(id);
+	}
+
 }

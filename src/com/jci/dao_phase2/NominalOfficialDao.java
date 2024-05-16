@@ -33,12 +33,18 @@ public interface NominalOfficialDao {
 	public List<String> UsernameFA_jciumt(String role);
 	public List<UserRegistrationModel> getom_official();
 	public List<UserRegistrationModel> getfa_official();
-	
+	public List<String> gethodi();
+	public List<Object[]> getchallan(String hodi);
+	public List<Object[]> dateofInspection(String dateOfInspection);
 	 // for fetching data from grdae_composition
 		public List<Object>  gradecomposition(String contractno);
 		//email process
 		 public String getEmailForOmo(String omofficial);
 		 public String getEmailForFA(String FAofficial);
 		 public String getEmaiformills(String  Mill);
-
+	     public String getcontractidentification(String ContractNo);
+	     public String getmillcode(String millname);
+	     
+	     public Jciclaim_NominationModel find(int id);
+         
 }

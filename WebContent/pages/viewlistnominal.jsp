@@ -124,19 +124,17 @@ th {
 									<th>Sl.NO</th>
 										<th>Mill</th>
 										<th>Contract No</th>
-										<th>Challan No</th>
-										<th>MR NO</th>
+										<th>HO DI</th>
+										<th>Challan No</th> 
+										 <th>MR NO</th> 
 										<!--  <th>Quality Claim</th> -->
 										<!-- <th>Moisture Content</th>
 										<th>NCV Percentage</th> -->
-										<th>Claim Amount</th>
+										<!-- <th>Claim Amount</th> -->
 										<th>O&M Official</th>
-
-
 										<th>F&A Official</th>
-
 										<th>Date of Inspection</th>
-
+                                        <th>Edit</th>
 
 
 									 
@@ -157,18 +155,22 @@ th {
 										<td  class="sorting_1"><%=i%></td>
                                                
 											<td >${item.getMill()}</td>
-											<td>${item.getContractNo()}
-											<td>${item.getChallanNo()}</td>
-											<td>${item.getMr_No()}</td>
+											 <td>${item.getContractNo()}</td>
+											 <td>${item.getHoDi()}</td>
+											 <td>${item. getChallans()}</td>
+											 <td>${item.getMr_number()}</td>
+											<%-- <td>${item.getChallanNo()}</td> --%>
+											<%-- <td>${item.getMr_No()}</td>  --%>
 											<%-- <td>  ${item.getQuality_settlement()}</td> --%>
 											<%-- <td>${item.getMoisture_settlement()}</td>
 											<td>${item.getNcv_settlement()}</td> --%>
-											<td>${item.getClaimAmount()}</td>
+											<%-- <td>${item.getClaimAmount()}</td> --%>
 											<td>${item.getOMOfficial()}</td>
 
 
 											<td>${item. getFAOfficial()}</td>
 											<td>${item.getDateofInspection()}</td>
+											<td><a href="updatenominalform.obj?id=${item.getSettlement_id()}" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
 											
 
 

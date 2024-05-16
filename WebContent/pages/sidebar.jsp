@@ -106,6 +106,9 @@ body {
 								<li data-pre="5" id="o5"><a href="viewmillRegistration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Mill Registration
 								List</b></a></li>
+								<li data-pre="5" id="o5"><a href="privacypolicy.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Privacy policy 
+								</b></a></li>
 
 				</ul></li>
 			<li><a href="javascript:void(0);;"><i

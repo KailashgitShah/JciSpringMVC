@@ -87,12 +87,12 @@
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Nomination of Officials for Claim
+				<h1 class="page-title">Update Nomination of Officials for Claim
 					Settlement</h1>
 			</div>
-			
 
-		
+			
+			
 			<div class="page-content fade-in-up">
 				<div class="row">
 					<div class="col-md-11">
@@ -107,7 +107,7 @@
 												name="Mill" id="Mill" class="form-control taxtbox" required>
 											 	<option value="">Select</option> 
 												
-											<c:forEach items="${millid}" var="item">
+											    <c:forEach items="${millid}" var="item">
 												 <option value="${item}">${item}</option> 
 												</c:forEach> 
 
@@ -174,10 +174,14 @@
 												name="DateofInpection" 
 												placeholder="dd-mm-yyyy" required >
 										</div>  -->
+										   <%
+			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
+										   
+		                                    %>
 										<div class="col-sm-4 form-group">
                                          <label>Date of Inspection</label>
                                         <input class="form-control taxtbox" id="DateofInpection" 
-                                        name="DateofInpection" placeholder="dd-mm-yyyy" required>                                   
+                                        name="DateofInpection" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getDateofInspection()%>"  required>                                   
 									 </div>
 										        
 										      
@@ -291,7 +295,7 @@
 
 
 
-<!--  <script type="text/javascript">
+<script type="text/javascript">
     // Initialize the Datepicker
     $("#DateofInpection").datepicker({
         dateFormat: 'dd-mm-yy',
@@ -305,14 +309,11 @@
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
-                    alert(response + "response")
-                     var selectedOmofficial = document.getElementById("omofficial").value;
-                    var selectedFafficial = document.getElementById("FAofficial").value;   
-                    var innerArray = response[0];
-                    var omoofficial =  innerArray[0];
-                    alert(omoofficial )
-                    var faofficial = innerArray[1];
-                    alert(faofficial )
+                    //alert(response);
+
+                    var selectedOfficial = document.getElementById("omofficial").value;
+                   // alert(selectedOfficial + " selectedOfficial");
+
                     var canSelect = true;
                     for (var i = 0; i < response.length; i++) {
                         if (response[i] === selectedOfficial) {
@@ -332,80 +333,8 @@
             });
         }
     });
-</script>    -->
+</script>   
 
- <script type="text/javascript">
-    // Initialize the Datepicker
-    $("#DateofInpection").datepicker({
-        dateFormat: 'dd-mm-yy',
-        onSelect: function(selectedDate) {
-            var selectedOption = selectedDate;
-            $.ajax({
-                type: 'GET',
-                url: 'fetchdateOfInspection.obj',
-                data: {
-                    DateOfInspection: selectedOption
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);                
-                    var selectedOmofficial = document.getElementById("omofficial").value;
-                    var selectedFafficial = document.getElementById("FAofficial").value;
-                   
-                    for (var i = 0; i < response.length; i++) {
-                        var innerArray = response[i];
-                        var omoofficial = innerArray[0];
-                        var faofficial = innerArray[1];
-
-                        if (omoofficial == selectedOmofficial && faofficial == selectedFafficial) {
-                           // var confirmMessage = selectedOmofficial + "and" +selectedFafficial+ "both FaOfficial and OmoOfficial is Already Occupied On This Date for Another Claim Settlement. Are you sure you want to select this Date?";
-                            if (confirm(confirmMessage)) {
-                            	
-                               
-                            } else {
-                              
-                                 $("#DateofInpection").val('');
-                            }
-                            return;
-                           
-                        }
-
-                        else  if (faofficial == selectedFafficial && omoofficial != selectedOmofficial) {
-                            var confirmMessage = selectedFafficial + " FAofficial is Already Occupied On This Date for Another Claim Settlement. Are you sure you want to select this Date?";
-                            if (confirm(confirmMessage)) {
-                               
-                            } else {
-                               
-                                 $("#DateofInpection").val('');
-                            }
-                            return;
-                        }
-                        else if (faofficial != selectedFafficial && omoofficial == selectedOmofficial) {
-                                var confirmMessage = selectedOmofficial + " omoofficial is Already Occupied On This Date for Another Claim Settlement. Are you sure you want to select this Date?";
-                                if (confirm(confirmMessage)) {
-                                    
-                                } else {
-                                  
-                                     $("#DateofInpection").val('');
-                                }
-                                return;
-                               
-                        }
-                        else{
-                        	
-                        }
-                    
-                    
-                    }
-                    // If the loop completes without finding a match, no need for confirmation
-                    // Proceed with further actions if any
-                },
-                error: function(err) {
-                    console.error('AJAX request failed: ' + err);
-                }
-            });
-        }
-    });
-</script>
 
 
 <script>

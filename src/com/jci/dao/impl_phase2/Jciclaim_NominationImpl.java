@@ -16,8 +16,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao_phase2.NominalOfficialDao;
+import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.JciDIHoModel;
 import com.jci.model.Jciclaim_NominationModel;
+import com.jci.model.MillRecieptModel;
 import com.jci.model.RoDetailsModel;
 import com.jci.model.UserRegistrationModel;
 
@@ -232,5 +234,93 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 		
 	}
+
+	@Override
+	public List<String> gethodi() {
+		
+		//String q = "select DI_no from jciDI_ho ";
+		
+		String q = "select DISTINCT HO_di from jcimill_receipt ";
+		List millid = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+
+		return millid;
+	}
+
+
+
+	@Override
+	public List<Object[]> getchallan(String hodi) {
+//	    String q = 
+//	        "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt " +
+//	        "FROM jcimill_receipt jcimr " +
+//	        "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
+//	        "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
+//	        "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
+//	        "WHERE jcimr.Ho_di = '" + hodi + "'";
+		String q = 
+			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt " +
+			    "FROM jcimill_receipt jcimr " +
+			    "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
+			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
+			    "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
+			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
+			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
+
+
+	    List<Object[]> contractListData = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+	    return contractListData;
+	}
+
+	@Override
+	public List<Object[]> dateofInspection(String dateOfInspection) {
+		String q = "select OMOfficial , FAOfficial from jciclaim_nomination where DateofInspection ='" + dateOfInspection + "'";
+		List<Object[]> gradecomposition = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+		return gradecomposition;
+	}
+
+	@Override
+	public String getcontractidentification(String ContractNo) {
+		String q = "select Contract_identification_no from jcicontract where Contract_no = '" + ContractNo + "'";
+		String contractidentification = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+
+		// TODO Auto-generated method stub
+		return contractidentification;
+	}
+
+	@Override
+	public String getmillcode(String millname) {
+		String q = "select client_unit_code from jcimilldetailchild where  unit_name = '" + millname + "'";
+		String millcode = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+
+		// TODO Auto-generated method stub
+		return millcode;
+		
+	}
+
+	@Override
+	public Jciclaim_NominationModel find(int id) {
+		List<Jciclaim_NominationModel> result = new ArrayList<>();
+		String querystr = "select DateofInspection , FAOfficial , OMOfficial from jciclaim_nomination where Settlement_id='" + id + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object[]> rows = query.list();		
+		Jciclaim_NominationModel nominationofficial = new Jciclaim_NominationModel();
+		for (Object[] row : rows) {
+			String DateofInspection = (String) row[0];
+			String FAOfficial = (String) row[1];
+			String OMOfficial = (String) row[2];
+			nominationofficial.setDateofInspection(DateofInspection);
+		}
+
+		return nominationofficial;
+		
+
+	}
+
+
+
+
+	
 
 }
