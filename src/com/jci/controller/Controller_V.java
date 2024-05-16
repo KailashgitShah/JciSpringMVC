@@ -4441,7 +4441,7 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
 		System.err.println(getSettlementidlist);
 		mv.addObject("getSettlementidlist", getSettlementidlist);
 		return mv;
@@ -4492,19 +4492,22 @@ public class Controller_V {
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
-
+			String count = request.getParameter("q");
+			int cnt = Integer.parseInt(count);
+			System.err.println(count);
+			System.err.println(count);
+			System.err.println(count);
+			System.err.println(count);
 			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
+			
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
 
-			BigInteger Settlement_Id12 = new BigInteger(Settlement_Id1);
-			System.err.println(Settlement_Id12);
+		
 			String Date_of_inspection1 = request.getParameter("Dateofinspection");
 
 			String fullcontractno = request.getParameter("fullcontractno");
 			String Challan_No1 = request.getParameter("Challan_No1");
-			System.err.println(Challan_No1);
-			System.err.println(Challan_No1);
-			System.err.println(Challan_No1);
+			
 			final File theDirect = new File(ConfirmationOfClaim);
 			if (!theDirect.exists()) {
 				theDirect.mkdirs();
@@ -4518,25 +4521,23 @@ public class Controller_V {
 			System.err.println(filename + "---------");
 			String rolename = (String) session.getAttribute("rolename");
 			/* if(rolename == "") */
-			System.err.println(session.getAttribute("rolename"));
-			System.err.println(session.getAttribute("rolename"));
-			System.err.println(session.getAttribute("rolename"));
-			System.err.println(session.getAttribute("rolename"));
+			
 
 			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
+			
+			String Claim_Amount1 = request.getParameter("SettlementAmount");
 
-			String Claim_Amount1 = request.getParameter("ClaimAmount");
+			
+          for(int i=0;i<cnt;i++) {
+        	  if (Claim_Amount1 != null) {
 
-			if (Claim_Amount1 != null) {
-
-				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			} else {
-				double Claim_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			}
-
-			String Quality_Settlement1 = request.getParameter("Quality_Settlement");
+  				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
+  				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+  			} else {
+  				double Claim_Amount12 = defaultValue;
+  				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+  			}
+			String Quality_Settlement1 = request.getParameter("qs"+i);
 			System.err.println("Quality_Settlement1:" + Quality_Settlement1);
 			if (Quality_Settlement1 != null) {
 
@@ -4548,7 +4549,7 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 			}
 
-			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement");
+			String Moisture_Settlement1 = request.getParameter("ms"+i);
 			System.err.println("Moisture_Settlement1:" + Moisture_Settlement1);
 			if (Moisture_Settlement1 != null) {
 
@@ -4560,7 +4561,7 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 			}
 
-			String NCV_Settlement1 = request.getParameter("NCV_Settlement");
+			String NCV_Settlement1 = request.getParameter("ns"+i);
 			System.err.println("NCV_Settlement1:" + NCV_Settlement1);
 			if (NCV_Settlement1 != null) {
 
@@ -4572,16 +4573,6 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
 			}
 
-			String Settlement_Amount1 = request.getParameter("SettlementAmount");
-
-			if (Settlement_Amount1 != null) {
-
-				double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			} else {
-				double Settlement_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			}
 
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd"); // Corrected format for parsing
 			Date instdate1 = formatter1.parse(Date_of_inspection1);
@@ -4595,7 +4586,7 @@ public class Controller_V {
 
 			// Set the original Date object to the model
 
-			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
+			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id1);
 			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
 			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
 			confirmationClaimSettlementModel.setContract_No(fullcontractno);
@@ -4634,6 +4625,7 @@ public class Controller_V {
 				System.err.println("outside catch file----");
 			}
 			this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
+          }
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
@@ -4700,7 +4692,20 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-
+	
+	@ResponseBody
+	@RequestMapping(value = {"fetchChallan"}, method = {RequestMethod.GET})
+	public String fetchClaim(@RequestParam("id") String id, HttpServletRequest request,HttpSession session) {
+		System.err.println("Reached challan");
+		String username = (String) request.getSession().getAttribute("usrname");
+		List<Object[]> list =confirmationofClaimSettlementService.fetchChallan(id);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(list);
+		System.err.println("-----------------------"+list);
+		return resultString;
+		
+		
+	}
 	// Verification of Weighment Slip
 	@RequestMapping({ "WeightmentSlipList" })
 	public ModelAndView WeightmentSlipList(HttpSession session, HttpServletRequest request) {
@@ -4785,7 +4790,7 @@ public class Controller_V {
 
 		String Ro_id = (String) session.getAttribute("region");
 
-		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
 		System.err.println(getSettlementidlist);
 		redirectAttributes.addFlashAttribute("msg",
 				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -4797,7 +4802,7 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "fetchClaims.obj", method = RequestMethod.GET)
-	public String fetchClaims(@RequestParam("id") BigInteger settlementId) {
+	public String fetchClaims(@RequestParam("id") String settlementId) {
 		System.err.println("Reached");
 		List<Object[]> list1 = verifyClaimService.fetchClaimsMill(settlementId);
 
@@ -4829,6 +4834,30 @@ public class Controller_V {
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = {"fetchPrice"}, method = {RequestMethod.GET})
+	public String fetchPrice(@RequestParam("variety") String var,@RequestParam("grade") String gr,@RequestParam("contract") String Contract, HttpServletRequest request,HttpSession session) {
+		System.err.println("Reached Price");
+		System.err.println(var+"0000000000000"+ gr);
+		char lastChar = gr.charAt(gr.length() - 1); // Extract the last character
+		int gradeNumber = Character.getNumericValue(lastChar); // Convert the character to an integer
+		gradeNumber++; // Increment the integer by 1
+		String grade = "grade" + gradeNumber; // Concatenate with "grade_"
+
+		String username = (String) request.getSession().getAttribute("usrname");
+		String dpcId = (String) request.getSession().getAttribute("dpcId");
+		
+		String cropyear = (String) request.getSession().getAttribute("currCropYear");
+		System.err.println(dpcId+"-"+cropyear+"--"+var+"--"+grade+"--"+Contract);
+		String priceString= confirmationofClaimSettlementService.fetchPrice(var,grade,dpcId,cropyear,Contract);
+//		verifyClaimService.rejectClaim(id, username);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(priceString);
+		System.err.println("----------------"+resultString);
+		return resultString;
+		
+		
+	}
 	
 	// Utility method to determine content type based on filename
 

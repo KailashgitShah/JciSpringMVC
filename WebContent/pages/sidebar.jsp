@@ -418,7 +418,7 @@ body {
 
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">&nbsp;Claim Settelement</span> <i
+					class="nav-label">&nbsp;Claim Settlement</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 

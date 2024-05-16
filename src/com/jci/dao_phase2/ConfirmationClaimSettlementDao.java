@@ -9,7 +9,7 @@ public interface ConfirmationClaimSettlementDao {
 
 	public List<ConfirmationClaimSettlementModel> getAll();
 
-	public List<Object> SettlementId();
+	public List<Object[]> SettlementId();
 
 	public List<Object[]> fetchdataofclaim(String st);
 
@@ -18,4 +18,8 @@ public interface ConfirmationClaimSettlementDao {
 	public List<Object[]> gradecfetchingdata1omposition(String st);
 
 	public List<String> fetchContract(String settlementId);
+
+	public List<Object[]> fetchChallan(String id);
+
+	public String fetchPrice(String var, String gr, String dpcId, String cropyear, String contract);
 }

@@ -35,7 +35,7 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 	}
 
 	@Override
-	public  List<Object> SettlementId() {
+	public  List<Object[]> SettlementId() {
 		return confirmationClaimSettlementDao.SettlementId();
 	}
 	
@@ -58,6 +58,18 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 	public List<String> fetchContract(String settlementId) {
 		// TODO Auto-generated method stub
 		return confirmationClaimSettlementDao.fetchContract(settlementId);
+	}
+
+	@Override
+	public List<Object[]> fetchChallan(String id) {
+		
+		return confirmationClaimSettlementDao.fetchChallan(id);
+	}
+
+	@Override
+	public String fetchPrice(String var, String gr, String dpcId, String cropyear,String Contract) {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.fetchPrice(var,gr,dpcId,cropyear,Contract);
 	}
 	
 

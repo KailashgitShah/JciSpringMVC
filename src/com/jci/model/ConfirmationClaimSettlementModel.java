@@ -23,7 +23,7 @@ public class ConfirmationClaimSettlementModel {
 	private int id;
 	
 	@Column(name = "Settlement_id")
-	private BigInteger Settlement_id;
+	private String Settlement_id;
 
 	@Column(name = "Mill")
 	private String Mill;
@@ -83,11 +83,11 @@ public class ConfirmationClaimSettlementModel {
 		this.id = id;
 	}
 
-	public BigInteger getSettlement_id() {
+	public String getSettlement_id() {
 		return Settlement_id;
 	}
 
-	public void setSettlement_id(BigInteger settlement_id) {
+	public void setSettlement_id(String settlement_id) {
 		Settlement_id = settlement_id;
 	}
 
@@ -235,7 +235,7 @@ public class ConfirmationClaimSettlementModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ConfirmationClaimSettlementModel(int id, BigInteger settlement_id, String mill, String contract_No,
+	public ConfirmationClaimSettlementModel(int id, String settlement_id, String mill, String contract_No,
 			String challan_No, Double claim_Amount, String oM_Official, String fA_Official, Date date_of_Inspection,
 			Double quality_settlement, Double moisture_settlement, Double ncv_settlement, Double settlement_amt,
 			String inspection_by, String supporting_doc, int dispute_flag, String created_by, Date created_on) {

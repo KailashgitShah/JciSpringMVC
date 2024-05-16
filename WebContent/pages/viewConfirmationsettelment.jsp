@@ -134,8 +134,8 @@ th {
 										<th style="text-align: center">Quality Settlement</th>
 										<th style="text-align: center">Moisture Settlement</th>
 										<th style="text-align: center">NCV Settlement</th>
-										<th style="text-align: center">Claim Amount</th>
 										<th style="text-align: center">Settlement Amount</th>
+										
 										<th style="text-align: center">Inspection by</th>
 										<th style='text-align: center'>Supporting Document</th>
 
@@ -159,7 +159,7 @@ th {
 										<td style="text-align: center"><%=confirmationClaimSettlementModel.getMoisture_settlement()%></td>
 										<td style="text-align: center"><%=confirmationClaimSettlementModel.getNcv_settlement()%></td>
 										<td style="text-align: center"><%=confirmationClaimSettlementModel.getClaim_Amount()%></td>
-										<td style="text-align: center"><%=confirmationClaimSettlementModel.getSettlement_amt()%></td>
+										
 										<td style="text-align: center"><%=confirmationClaimSettlementModel.getInspection_by()%></td>
 										<%-- <td style="text-align:center"><%= confirmationClaimSettlementModel.getSupporting_doc() %></td> --%>
 										<td><a
