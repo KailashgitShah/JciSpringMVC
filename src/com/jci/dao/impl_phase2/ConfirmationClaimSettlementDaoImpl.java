@@ -77,9 +77,9 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 //		}
 
 	@Override
-	public List<Object[]> fetchdatasttlement(int st) {
-		String sql = " select DateofInspection ,Mill from jciclaim_nomination WHERE Settlement_id_generated = '"
-				+ st + "'";
+	public List<Object[]> fetchdatasttlement(String st) {
+		String sql = " select top 1 DateofInspection ,Mill from jciclaim_nomination WHERE ContractNo = '"
+				+ st + "' order by Created_on DESC";
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.list();
 		System.err.println(resultList1);
@@ -89,7 +89,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	@Override
 	public List<String> fetchContract(String settlementId) {
 		// TODO Auto-generated method stub
-		String sqlString = "Select ContractNo from jciclaim_nomination where Settlement_id_generated='" + settlementId + "';";
+		String sqlString = "Select DISTINCT ContractNo from jciclaim_nomination where Settlement_id_generated='" + settlementId + "';";
 		List<String> resultList1 = (List<String>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
 				.list();
 		return resultList1;
@@ -97,7 +97,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 
 	@Override
 	public List<Object[]> fetchChallan(String id) {
-		String string ="Select Challans from jciclaim_nomination where ContractNo='"+id+"';";
+		String string ="Select Distinct Challans from jciclaim_nomination where ContractNo='"+id+"';";
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(string)
 				.list();;
 		return resultList1;

@@ -99,15 +99,6 @@
 
 												</select>
 											</div>
-
-
-											<div class="col-sm-4 form-group">
-												<label>Date_of_inspection</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Date_of_inspection"
-													name="Date_of_inspection" class="text-danger"> </span> <input
-													class="form-control" name="Dateofinspection"
-													id="Dateofinspection12" value="" type="date" required>
-											</div>
 											<div class="col-sm-4 form-group">
 												<label>Contract No.</label> <span class="text-danger">*
 												</span>&nbsp; <span id="contractno" name="contractno"
@@ -120,6 +111,15 @@
 
 
 											</div>
+
+											<div class="col-sm-4 form-group">
+												<label>Date_of_inspection</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Date_of_inspection"
+													name="Date_of_inspection" class="text-danger"> </span> <input
+													class="form-control" name="Dateofinspection"
+													id="Dateofinspection12" value="" type="date" required>
+											</div>
+											
 
 
 
@@ -229,75 +229,13 @@
 														<span id="misQty"></span>
 													</div>
 											
-											<!-- <div class="col-sm-4 form-group">
-												<label>Moisture Content</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Moisture_Content" name="Moisture_Content "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Moisture Content"
-													id="MoistureContent1" value=""
-													placeholder="Moisture Content" readonly required>
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>NCV Percentage </label> <span class="text-danger">*
-												</span>&nbsp; <span id="NCV_Percentage " name="NCV Percentage "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="NCV_Percentage1"
-													id="NCVPercentage1" value="" placeholder="NCV Percentage"
-													readonly required>
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Quality Settlement</label> <span class="text-danger">
-												</span>&nbsp; <span id="Quality_Settlement"
-													name="Quality_Settlement" class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Quality_Settlement"
-													id="Quality_Settlement1" value="" type="number" step="0.01"
-													placeholder=" Quality Settlement" required>
-
-
-											</div> -->
+										
 
 
 
 										</div>
 
-										<!-- <div class="row"> -->
-
-
-											<!-- <div class="col-sm-4 form-group">
-												<label>Moisture Settlement</label> <span class="text-danger"></span>&nbsp;
-												<span id="Moisture_Settlement" name="Moisture_Settlement"
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Moisture_Settlement"
-													id="Moisture_Settlement1" value="" type="number"
-													step="0.01" placeholder="Moisture Settlement" required>
-
-
-
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>NCV Settlement</label> <span class="text-danger">
-												</span>&nbsp; <span id="NCV_Settlement" name="NCV_Settlement"
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="NCV_Settlement"
-													type="number" step="0.01" id="NCV_Settlement1" value=""
-													placeholder=" NCV Settlement" required>
-
-
-
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Claim Amount</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Claim_Amount" name="Claim_Amount "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" type="number"
-													name="ClaimAmount" id="ClaimAmount1" value="" readonly
-													placeholder="Claim Amount" required>
-											</div>
-
-
-
-										</div> -->
+										
 
 										<div class="row">
 
@@ -324,20 +262,14 @@
 
 										</div>
 
-										<!--  For Showing the grade wise jute variety -->
-
-								
-
-
-
-										<!-- End the grade wise -->
+									
 
 
 
 
 										<div class="row">
 											<div class="col-sm-12 form-group">
-												<input type="submit" value="Submit" class="btn btn-primary"
+												<input type="submit" value="Submit" id ="sub" class="btn btn-primary"
 													id="submit" onclick="">
 											</div>
 
@@ -401,6 +333,7 @@ data.forEach(function(value) {
 
 	<script>
 $(document).ready(function(){
+	$("#sub").prop("disabled", true);
     $("#SettlementId1").on('change',function(){
         var id=$(this).val();
         //alert(id);
@@ -442,48 +375,47 @@ $(document).ready(function(){
 
 	<script type="text/javascript">
       
- $(document).ready(function() {
-	    $('#SettlementId1').on('change', function() {
-	    var field2Value = $(this).val();
-	    
-	 
-	     
-	    $.ajax({
-	        type: 'GET',
-	        url: 'fetchingdatanominactionclaim.obj',
-	        data: { "contractno": field2Value },
-	        success: function(data) {
-	        
-	           //alert("nominationClaim"+data);
-	           data = data.replace(/^\[|\]$/g, '');
-	           data = data.replace(/^\[|\]$/g, '');
-	           //alert(data)
-	           console.log(data);
-	           var valuesArray = data.split(',');
-	           console.log(valuesArray)
-	           
-	           for (var i = 0; i < valuesArray.length; i++) {
-	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
-	        	}
-	           /* var millname = valuesArray[7]; */
-	          
-	           $('#mill').val(valuesArray[1]);
-	               
-	           var dateParts = valuesArray[0].split("-");
-               var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
-               $('#Dateofinspection12').val(formattedDate);
-             
+	$(document).ready(function() {
+	    $('#fullcontractno1').on('change', function() {
+	        var field2Value = $("#fullcontractno1").val();
 
-	                       
-	              
-	           
+	        $.ajax({
+	            type: 'GET',
+	            url: 'fetchingdatanominactionclaim.obj',
+	            data: { "contractno": field2Value },
+	            success: function(result) {
+	            	var data = result;
+	            	alert(data);
+	            	alert(typeof data);
+	            	console.log(data);
+	            	data = data.replace(/^\[|\]$/g, '');
+	            	data = data.replace(/^\[|\]$/g, '');
+	            	var parts = data.split(",");
+	            	alert(parts[0] + "-----------" + parts[1]);
 
-	        },
-	        error: function(error) {
-	            alert("Error: " + error);
-	        }
-	    });
+	            	var inspectionDate = parts[0].replace(/^"|"$/g, ''); // Remove double quotes from the beginning and end of the string
+	            	var millName = parts[1].replace(/^"|"$/g, ''); // Remove double quotes from the beginning and end of the string
 
+
+	            	// Parse inspection date
+	            	var inspectionDateParts = inspectionDate.split("-");
+	            	var year = inspectionDateParts[2];
+	            	var month = inspectionDateParts[1];
+	            	var day = inspectionDateParts[0];
+
+	            	// Format the date as yyyy-MM-dd
+	            	var formattedInspectionDate = year + "-" + month + "-" + day;
+
+	            	// Setting values to respective fields
+	            	$('#mill').val(millName);
+	            	$('#Dateofinspection12').val(formattedInspectionDate);
+
+	            },
+	            error: function(error) {
+	                console.error("Error: " + error);
+	                // Handle error here
+	            }
+	        });
 	    });
 	});
 
@@ -594,6 +526,7 @@ $(document).ready(function(){
 	                }
 	               /*  $('#Settlement_Amount').text(totalSettlementAmount); */
 	                $("#SettlementAmount1").val(totalSettlementAmount);
+	                $("#sub").prop("disabled", false);
 	            });
 	        } catch (error) {
 	            alert("Error: " + error);

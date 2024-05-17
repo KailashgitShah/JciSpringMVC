@@ -13,7 +13,7 @@ public interface ConfirmationClaimSettlementDao {
 
 	public List<Object[]> fetchdataofclaim(String st);
 
-	public List<Object[]> fetchdatasttlement(int st);
+	public List<Object[]> fetchdatasttlement(String st);
 
 	public List<Object[]> gradecfetchingdata1omposition(String st);
 

@@ -50,7 +50,7 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 		return confirmationClaimSettlementDao.fetchdataofclaim(st);
 	}
 	@Override
-	public  List<Object[]> fetchdatasttlement( int st) {
+	public  List<Object[]> fetchdatasttlement( String st) {
 		return confirmationClaimSettlementDao.fetchdatasttlement(st);
 	}
 

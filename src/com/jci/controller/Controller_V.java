@@ -4459,9 +4459,12 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
-	public String fetchingdatanominactionclaim(@RequestParam("contractno") int contractno) {
+	public String fetchingdatanominactionclaim(@RequestParam("contractno") String contractno) {
+		System.err.println("--------------------");
+		System.err.println("--------------------");
+		System.err.println("--------------------");
 		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
-		System.err.println("resultList++++++++++" + getsettlementlist);
+		System.err.println("MILL and DOI---" + getsettlementlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(getsettlementlist);
 		return resultString;
@@ -4532,7 +4535,7 @@ public class Controller_V {
         	  if (Claim_Amount1 != null) {
 
   				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
-  				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+  				confirmationClaimSettlementModel.setSettlement_amt(Claim_Amount12);
   			} else {
   				double Claim_Amount12 = defaultValue;
   				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);

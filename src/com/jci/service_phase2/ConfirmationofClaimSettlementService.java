@@ -16,7 +16,7 @@ public interface ConfirmationofClaimSettlementService {
 
 	public List<Object[]> fetchdataofclaim(String st);
 
-	public List<Object[]> fetchdatasttlement(int st);
+	public List<Object[]> fetchdatasttlement(String contractno);
 
 	public List<Object[]> gradecfetchingdata1omposition(String st);
 
