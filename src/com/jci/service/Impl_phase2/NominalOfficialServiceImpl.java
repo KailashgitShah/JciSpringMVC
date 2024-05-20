@@ -164,9 +164,21 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	}
 
 	@Override
-	public Jciclaim_NominationModel find(int id) {
+	public Jciclaim_NominationModel find(String id) {
 		// TODO Auto-generated method stub
 		return nominalOfficialDao.find(id);
+	}
+
+	@Override
+	public void millrecieptstatus(String mr) {
+		nominalOfficialDao.millrecieptstatus(mr);
+		
+	}
+
+	@Override
+	public void updatefa(String id, String FAomofficial) {
+		nominalOfficialDao.updatefa( id,  FAomofficial);
+	
 	}
 
 }

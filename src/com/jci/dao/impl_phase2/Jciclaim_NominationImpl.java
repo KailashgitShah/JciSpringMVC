@@ -1,12 +1,15 @@
 package com.jci.dao.impl_phase2;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,8 +19,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao_phase2.NominalOfficialDao;
+import com.jci.model.Contractgeneration;
 import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.JciDIHoModel;
+import com.jci.model.JciEntryTdsModel;
 import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.MillRecieptModel;
 import com.jci.model.RoDetailsModel;
@@ -66,12 +71,88 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<Jciclaim_NominationModel> getAll() {
 		// TODO Auto-generated method stub
+		String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial , Settlement_id from jciclaim_nomination";
+		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
-		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(Jciclaim_NominationModel.class);
-		List<Jciclaim_NominationModel> ll = c.list();
-		return ll;
+		List<Jciclaim_NominationModel> list = new ArrayList<>();
+
+		for (Object[] eleObject : contracts) {
+			Jciclaim_NominationModel nomination = new Jciclaim_NominationModel();
+
+			nomination.setSettlement_id_generated((String) eleObject[0]);
+			nomination.setCreated_on((String) eleObject[1]);
+			nomination.setDateofInspection((String) eleObject[2]);
+			nomination.setMill((String) eleObject[3]);
+			nomination.setContractNo((String) eleObject[4]);
+			nomination.setHoDi((String) eleObject[5]);
+			nomination.setOMOfficial((String) eleObject[6]);
+			//nomination.setSettlement_id((Long) eleObject[7]);
+			//nomination.setSettlement_id( eleObject[7]);
+			list.add(nomination);
+
+		}
+
+		return list;
+//		List<Jciclaim_NominationModel> result = new ArrayList<>();
+//		HttpSession session1 = request.getSession(false);
+//		String querystr = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial , Settlement_id from jciclaim_nomination";
+//		
+//	
+//		Session session = sessionFactory.getCurrentSession();
+//		Transaction tx = session.beginTransaction();
+//		SQLQuery query = session.createSQLQuery(querystr);
+//		List<Object[]> rows = query.list();
+//		// System.out.println(rows);
+//
+//		for (Object[] row : rows) {
+//			Jciclaim_NominationModel nomination= new Jciclaim_NominationModel();
+//			String Settlement_id_generated = (String) row[0];
+//			String Created_on = (String) row[1];
+//			String DateofInspection = (String) row[2];
+//			String Mill = (String) row[3];
+//			String ContractNo = (String) row[4];
+//			String HoDi = (String) row[5];
+//			String OMOfficial = (String) row[6];
+//			Long settlementIdDecimal = (Long) row[7];
+//			nomination.setSettlement_id_generated(Settlement_id_generated);
+//			nomination.setCreated_on(Created_on);
+//			nomination.setDateofInspection(DateofInspection);
+//			nomination.setMill(Mill);
+//			nomination.setContractNo(ContractNo);
+//			nomination.setHoDi(HoDi);
+//			nomination.setOMOfficial(OMOfficial);
+//			//nomination.setSettlement_id(settlementIdDecimal);
+////			int id = (int) row[8];
+////			String rolename = (String) row[9];
+////			String usertype = (String) row[10];
+////			int ho = (int) row[11];
+//			// System.out.println("zonessssss"+ zonename);
+////			userRegistration.setRefid(id);
+////			;
+////			userRegistration.setUsername(username);
+////			userRegistration.setEmployeeid(employeeid);
+////			userRegistration.setEmail(email);
+////			userRegistration.setEmployeename(employeename);
+////			userRegistration.setMobileno(mobileno);
+////			userRegistration.setCentername(centername);
+////			userRegistration.setRoname(roname);
+////			userRegistration.setZonename(zonename);
+////			userRegistration.setRoles_name(rolename);
+////			userRegistration.setUsertype(usertype);
+////			userRegistration.setHo(ho);
+//			result.add(nomination);
+//		}
+//		return result;
 	}
-
+		
+	
+//	@Override
+//	public List<Jciclaim_NominationModel> getAll() {
+//	    String hql = "FROM Jciclaim_NominationModel";
+//	    Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+//	    List<Jciclaim_NominationModel> resultList = ((Object) query).getResultList();
+//	    return resultList;
+//	}
 	@Override
 	public boolean submitform(Jciclaim_NominationModel nominal) {
 		// TODO Auto-generated method stub
@@ -257,6 +338,8 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 //	        "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
 //	        "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
 //	        "WHERE jcimr.Ho_di = '" + hodi + "'";
+		
+		///////////////////correct
 		String q = 
 			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt " +
 			    "FROM jcimill_receipt jcimr " +
@@ -265,6 +348,14 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 			    "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
 			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
 			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
+//		String q = 
+//			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jcd.Date_of_shipment " +
+//			    "FROM jcimill_receipt jcimr " +
+//			    
+//			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
+//			  
+//			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
+//			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
 
 
 	    List<Object[]> contractListData = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
@@ -298,9 +389,9 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	}
 
 	@Override
-	public Jciclaim_NominationModel find(int id) {
+	public Jciclaim_NominationModel find(String id) {
 		List<Jciclaim_NominationModel> result = new ArrayList<>();
-		String querystr = "select DateofInspection , FAOfficial , OMOfficial from jciclaim_nomination where Settlement_id='" + id + "'";
+		String querystr = "select DateofInspection , FAOfficial , OMOfficial , Settlement_id_generated from jciclaim_nomination where Settlement_id_generated ='" + id + "'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -310,12 +401,30 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 			String DateofInspection = (String) row[0];
 			String FAOfficial = (String) row[1];
 			String OMOfficial = (String) row[2];
+			String id1 = (String)row[3];
 			nominationofficial.setDateofInspection(DateofInspection);
+			nominationofficial.setSettlement_id_generated(id1);
+			
 		}
 
 		return nominationofficial;
 		
 
+	}
+
+	@Override
+	public void millrecieptstatus(String mr) {
+		
+		int Contract_Staus_Change = 1;
+		String hql = "UPDATE jcimill_receipt set  Claim_status= '"+ Contract_Staus_Change+"' where MR_no = '" + mr + "' ";
+	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+	}
+
+	@Override
+	public void updatefa(String id, String FAomofficial) {
+		
+		String hql = "UPDATE jciclaim_nomination set  FAOfficial = '"+ FAomofficial +"' where Settlement_id_generated= '" +id+ "' ";
+	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	}
 
 

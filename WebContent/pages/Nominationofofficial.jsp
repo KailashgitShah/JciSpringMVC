@@ -152,7 +152,7 @@
 										    </c:forEach>
 										</select>
 										</div>
-										<div class="col-sm-4 form-group">
+										<%-- <div class="col-sm-4 form-group">
 										<div id="faMessage" class="text-danger"></div>
 										<label>F&A Official</label>
 										<span class="text-danger">*</span>
@@ -162,7 +162,7 @@
 										        <option value="${item}">${item}</option>
 										    </c:forEach>
 										</select> 
-										</div>
+										</div> --%>
 										
 										
 										<div class="col-sm-4 form-group">
@@ -362,17 +362,19 @@
         
     });
 </script>
+
  
  
-<script>
+ <script>
 	 	$(document).ready(function() {
 	 	    // Hide the milldetailsTable initially
 	 	    $('#milldetailsTable').hide();
 
 	 	    // Add an event listener for the change event on the dropdown
 	 	    $('#HODate').on('change', function() {
-	 	        // Get the selected option value
+	 	        
 	 	        var selectedOption = $(this).val();
+	 	          //alert(selectedOption)
 
 	 	        // Make an AJAX request to fetch data based on the selected HO DI
 	 	        $.ajax({
@@ -384,12 +386,15 @@
 	 	            dataType: 'json', // Set the dataType to 'json'
 	 	            success: function(data) {
 	 	                // Parse the JSON response
+	 	               // alert("kkkkkkkkkkkkk")
+	 	              // alert(data)
 	 	                var dataArray = data;
+	 	               // alert(dataArray)
 	 	                $("#binDataBody").empty();
 	 	               
 	 	               var num_of_rows = dataArray.length;
 	 	                
-	 	                
+	 	               // alert(num_of_rows)
 	 	                $('#numRows').val(num_of_rows);
 	 	             
 	 	                for (var i = 0; i < dataArray.length; i++) {
@@ -400,14 +405,14 @@
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +	                  
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +	                  
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>';                  
-	 	                 
+	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>';                  	 	                 
 	 	                    newRow += "</tr>";
 	 	                    $("#binDataBody").append(newRow);
 	 	                }
 	 	            },
 	 	            error: function(err) {
 	 	                // Handle errors here
+	 	                alert("error")
 	 	                console.error('AJAX request failed: ' + err);
 	 	            }
 	 	        });
@@ -471,7 +476,7 @@
 
 						// Generating the Settlement id using MRNo and For Increment using Count
 
-						var Settlementid = MRNo.toString() + ${total};
+						var Settlementid =  ${total};
 
 						$('#SettlementId').val(Settlementid);
 

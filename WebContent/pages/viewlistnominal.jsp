@@ -122,27 +122,15 @@ th {
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-										<th>Mill</th>
-										<th>Contract No</th>
-										<th>HO DI</th>
-										<th>Challan No</th> 
-										 <th>MR NO</th> 
-										<!--  <th>Quality Claim</th> -->
-										<!-- <th>Moisture Content</th>
-										<th>NCV Percentage</th> -->
-										<!-- <th>Claim Amount</th> -->
-										<th>O&M Official</th>
-										<th>F&A Official</th>
-										<th>Date of Inspection</th>
-                                        <th>Edit</th>
-
-
-									 
-
-
-
-
-
+									<th>Settlement ID</th>
+									<th>Date Of Entry</th>
+									<th>Date of Inspection</th>
+									<th>Mill</th>
+									<th>Contract No</th>
+									<th>HO DI No</th>
+									<th>O&M Official</th> 
+									<th>Details	</th>	
+									<th>Nominate F&A Official</th>															
 									</tr>
 								</thead>
 								<tbody>
@@ -153,25 +141,20 @@ th {
 
 										<tr>
 										<td  class="sorting_1"><%=i%></td>
-                                               
+                                            <td >${item.getSettlement_id_generated()}</td>
+                                           <td>${item.getCreated_on()}</td>
+                                            <td>${item.getDateofInspection()}</td>
 											<td >${item.getMill()}</td>
 											 <td>${item.getContractNo()}</td>
 											 <td>${item.getHoDi()}</td>
-											 <td>${item. getChallans()}</td>
-											 <td>${item.getMr_number()}</td>
-											<%-- <td>${item.getChallanNo()}</td> --%>
-											<%-- <td>${item.getMr_No()}</td>  --%>
-											<%-- <td>  ${item.getQuality_settlement()}</td> --%>
-											<%-- <td>${item.getMoisture_settlement()}</td>
-											<td>${item.getNcv_settlement()}</td> --%>
-											<%-- <td>${item.getClaimAmount()}</td> --%>
-											<td>${item.getOMOfficial()}</td>
-
-
-											<td>${item. getFAOfficial()}</td>
-											<td>${item.getDateofInspection()}</td>
-											<td><a href="updatenominalform.obj?id=${item.getSettlement_id()}" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
+											 <td>${item.getOMOfficial()}</td>										
+                                             <td></td>                                            											
+											 <%--  <td><a href="updatenominalform.obj?id=${item.getSettlement_id()}" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>   --%>
+											<%-- <td><a href="updatenominalform.obj?id=${item.getSettlement_id()}"><button class="btn btn-default" type="button">Add F&A Official</button></a></td> --%>
+<td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
 											
+
+
 
 
 

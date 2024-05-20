@@ -99,10 +99,10 @@
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="savenominal.obj" method="POST">
+								<form action="updatesavenominalform.obj" method="POST">
 									<div class="row">
 
-										<div class="col-sm-4 form-group">
+										<%-- <div class="col-sm-4 form-group">
 											<label> Mill</label> <span class="text-danger">* </span> <select
 												name="Mill" id="Mill" class="form-control taxtbox" required>
 											 	<option value="">Select</option> 
@@ -114,8 +114,8 @@
 
 											</select>
 										</div>
-                                    
-										<div class="col-sm-4 form-group">
+                                     --%>
+									<%-- 	<div class="col-sm-4 form-group">
 											<label>Contract No</label> <select name="ContractNo"
 												id="ContractNo" class="form-control taxtbox" required>
 												<option value="">Select</option>
@@ -126,8 +126,8 @@
 
 
 											</select>
-										</div>
-										  <div class="col-sm-4 form-group">
+										</div> --%>
+										<%--   <div class="col-sm-4 form-group">
 	                                             <label>HO DI </label>
 	                                              <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
 	                                        	<select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
@@ -137,9 +137,9 @@
 												     </c:forEach> 
 													</select>
 										             </div>
-										              </div>
+										              </div> --%>
 										              
-										        <div class="row">										        
+										   <%--      <div class="row">										        
 										     <div class="col-sm-4 form-group">
 											<label>O&M Official</label> <span class="text-danger">*
 											</span> <select name="omofficial" id="omofficial"
@@ -152,7 +152,7 @@
 
 
 											</select>
-										</div>
+										</div> --%>
 									
 										<div class="col-sm-4 form-group">
 											<label>F&A Official</label> <span class="text-danger">*
@@ -178,16 +178,17 @@
 			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
 										   
 		                                    %>
-										<div class="col-sm-4 form-group">
+										<%-- <div class="col-sm-4 form-group">
                                          <label>Date of Inspection</label>
                                         <input class="form-control taxtbox" id="DateofInpection" 
                                         name="DateofInpection" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getDateofInspection()%>"  required>                                   
-									 </div>
-										        
+									 </div> --%>
+										  <input class="form-control taxtbox" 
+                                        name="Settlement_id_generated" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getSettlement_id_generated()%>"  required>      
 										      
      
-										        	<div class="row">
-
+										        	<!-- <div class="row">
+ -->
 										<!-- <div class="col-sm-2 form-group">
 										    <table   id="milldetailsTable" class="table table-bordered" style="border-width: 2px; border-style: solid; border-color: #ccc;">
 										        
@@ -212,7 +213,7 @@
 										 
 									</div>
 									</div> -->
-						            
+						           <!--  
 						             <div class="row mt-3">
 									        <table class="table table-bordered">
 									            <thead>
@@ -229,7 +230,7 @@
 									            </thead>
 									            <tbody id="binDataBody">
 									            
-									                <!-- Data rows will be dynamically populated -->
+									                Data rows will be dynamically populated
 									            </tbody>
 									        </table>
 									    </div>		
@@ -246,7 +247,7 @@
                                    
                                     <input type="hidden" id="numRows" name="rows">
                                     
-									<br>
+									<br> -->
 									
 									<div class="row">
 

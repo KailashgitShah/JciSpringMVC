@@ -1,4 +1,6 @@
 package com.jci.controller;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -4186,7 +4188,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	public String hodinofech(@RequestParam("hodino") String hodino) {
 		
 
-		List<Object[]> millReceiptData = nominalOfficialService.getchallan( hodino);
+		List<Object[]> millReceiptData = nominalOfficialService.getchallan(hodino);
 
 		// Convert the a JSON in string
 		Gson gson = new Gson();
@@ -4242,6 +4244,8 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 
+
+
 	@Value("${upload.OMOofficialDocumentDownload}")
 	String OmoOfficialDocumentDownload;
 
@@ -4270,11 +4274,12 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		
 		String contractIdentificationnumber = nominalOfficialService.getcontractidentification(ContractNo);
 		String millcode= nominalOfficialService.getmillcode(Mill);
+		String SetllementIdGenerated = HoDI +"//"+Settlement_id_generated;
 		
 		for (int i = 0; i < rows; i++) {
 		// Creating object of
 		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
-		String SetllementIdGenerated = millcode+"/"+contractIdentificationnumber+"/"+mr_no[i];
+		
 		jciclaim_NominationModel.setMill(Mill);
 		jciclaim_NominationModel.setContractNo(ContractNo);
 		jciclaim_NominationModel.setOMOfficial(omofficial);
@@ -4307,13 +4312,18 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 //		jciclaim_NominationModel.setInspection_by("official");
 		jciclaim_NominationModel.setChallanNo("challans");
 		jciclaim_NominationModel.setClaimAmount(2);
-		      // Date- created_on
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-				Date currentDate = new Date();
-				String formattedDate = sdf.format(currentDate);
-				jciclaim_NominationModel.setCreated_on(formattedDate);
-				
+//      Date- created_on
+//	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//		Date currentDate = new Date();
+//		String formattedDate = sdf.format(currentDate);
+//		jciclaim_NominationModel.setCreated_on(formattedDate);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate currentDate = LocalDate.now();
+		String formattedDate = currentDate.format(formatter);
+		jciclaim_NominationModel.setCreated_on(formattedDate);		
 		nominalOfficialService.create(jciclaim_NominationModel);
+		 String mr = mr_no[i];
+	     nominalOfficialService.millrecieptstatus(mr);	
 		
 		// email is working for static and dynamic both
 		}
@@ -4400,6 +4410,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		/////// It will change claim status on Jcimill_receipt on form submit//////////////////
 	return new ModelAndView(new RedirectView("viewlistnominal.obj"));
 	}
+
 	
 	@RequestMapping(value ="updatenominalform"  , method = RequestMethod.GET)
 	public ModelAndView updateNominalform(HttpServletRequest request) {
@@ -4408,28 +4419,69 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-	      int id = Integer.parseInt(request.getParameter("id"));
+		String  id = request.getParameter("id");
+		//int id = Integer.parseInt(request.getParameter("id"));
 	      Jciclaim_NominationModel nomination = nominalOfficialService.find(id);
 	      mv.addObject("nomination", nomination);
-	     System.out.println(nomination);	  
-		List<String> millid = nominalOfficialService.millid_MillReceipt();
-		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
 		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
-		List<String> contractno = nominalOfficialService.contractno_ContractTable();
-		List<String> DI_no = nominalOfficialService.gethodi();
-		int total = nominalOfficialService.CountRecord();
-		mv.addObject("total", total);
+		mv.addObject("FA_official", FA_official);	
+		return mv;	
+	}
+//    
+	
+//	@RequestMapping(value ="updatenominalform"  , method = RequestMethod.GET)
+//	public ModelAndView updateNominalform(HttpServletRequest request) {
+//		String username = (String) request.getSession().getAttribute("usrname");
+//		ModelAndView mv = new ModelAndView("editnominationofofficial");
+//		if (username == null) {
+//			mv = new ModelAndView("index");
+//		}
+//	      int id = Integer.parseInt(request.getParameter("id"));
+//	      Jciclaim_NominationModel nomination = nominalOfficialService.find(id);
+//	      mv.addObject("nomination", nomination);
+//	     System.out.println(nomination);	  
+//		List<String> millid = nominalOfficialService.millid_MillReceipt();
+//		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
+//		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
+//		List<String> contractno = nominalOfficialService.contractno_ContractTable();
+//		List<String> DI_no = nominalOfficialService.gethodi();
+//		int total = nominalOfficialService.CountRecord();
+//		mv.addObject("total", total);
+//
+//		mv.addObject("OM_official", OM_official);
+//		mv.addObject("FA_official", FA_official);
+//		mv.addObject("contractno", contractno);
+//		mv.addObject("millid", millid);
+//		mv.addObject("DI_no", DI_no);
+//		
+//		return mv;
+//		
+//	}
+//
+//	
 
-		mv.addObject("OM_official", OM_official);
-		mv.addObject("FA_official", FA_official);
-		mv.addObject("contractno", contractno);
-		mv.addObject("millid", millid);
-		mv.addObject("DI_no", DI_no);
+	
+	@RequestMapping("updatesavenominalform")
+	public ModelAndView updatesavenominatiion(HttpServletRequest request,RedirectAttributes redirectAttributes)
+	{
+		String username =(String)request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("editnominationofofficial");
+		if(username == null) {
+        	return new ModelAndView("index");
+            }
+		try {
+			  String FAomofficial = request.getParameter("FAomofficial");
+			  final String id = request.getParameter("Settlement_id_generated");
+			nominalOfficialService.updatefa(id ,FAomofficial);
+			  redirectAttributes.addFlashAttribute("msg",
+						(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+			return new ModelAndView(new RedirectView("viewlistnominal.obj"));
+		} catch(Exception e){
+			System.out.println("Error in update user profile"+ e.getStackTrace());
+		}
 		
 		return mv;
-		
 	}
-
 	@RequestMapping("viewlistnominal")
 	public ModelAndView ViewNominal(Model model, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("viewlistnominal");
@@ -4439,7 +4491,7 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			mv = new ModelAndView("index");
 		}
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
-		Collections.reverse(AllList);
+//		Collections.reverse(AllList);
 		model.addAttribute("jciclaim_NominationModel", AllList);
 		String omofficial = request.getParameter("omofficial");		
 		return mv;

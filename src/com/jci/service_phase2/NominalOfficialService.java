@@ -12,6 +12,7 @@ public interface NominalOfficialService {
 
 	public void create(Jciclaim_NominationModel nominal );
 	public void claimStatusUpdate(String ContractNoForClaimStatusUpdate);
+	public void millrecieptstatus(String mr );
 
 	public void update(Jciclaim_NominationModel nominal);
 
@@ -54,6 +55,8 @@ public interface NominalOfficialService {
 
 	public String getEmaiformills(String Mill);
 	
-	public Jciclaim_NominationModel find(int id);
+	public Jciclaim_NominationModel find(String id);
+	public void updatefa(String id , String FAomofficial);
+
 
 }
