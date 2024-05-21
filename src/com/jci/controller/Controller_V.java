@@ -4427,39 +4427,22 @@ response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		mv.addObject("FA_official", FA_official);	
 		return mv;	
 	}
-//    
 	
-//	@RequestMapping(value ="updatenominalform"  , method = RequestMethod.GET)
-//	public ModelAndView updateNominalform(HttpServletRequest request) {
-//		String username = (String) request.getSession().getAttribute("usrname");
-//		ModelAndView mv = new ModelAndView("editnominationofofficial");
-//		if (username == null) {
-//			mv = new ModelAndView("index");
-//		}
-//	      int id = Integer.parseInt(request.getParameter("id"));
-//	      Jciclaim_NominationModel nomination = nominalOfficialService.find(id);
-//	      mv.addObject("nomination", nomination);
-//	     System.out.println(nomination);	  
-//		List<String> millid = nominalOfficialService.millid_MillReceipt();
-//		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
-//		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
-//		List<String> contractno = nominalOfficialService.contractno_ContractTable();
-//		List<String> DI_no = nominalOfficialService.gethodi();
-//		int total = nominalOfficialService.CountRecord();
-//		mv.addObject("total", total);
-//
-//		mv.addObject("OM_official", OM_official);
-//		mv.addObject("FA_official", FA_official);
-//		mv.addObject("contractno", contractno);
-//		mv.addObject("millid", millid);
-//		mv.addObject("DI_no", DI_no);
-//		
-//		return mv;
-//		
-//	}
-//
-//	
-
+	@RequestMapping(value ="nominationdetails"  , method = RequestMethod.GET)
+	public ModelAndView NominationDetails(HttpServletRequest request , Model model) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("nominationdetails");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+		String  settlement_id= request.getParameter("id");
+		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAlldetails( settlement_id);
+//		Collections.reverse(AllList);
+		model.addAttribute("jciclaim_NominationModel", AllList);
+	    //  Jciclaim_NominationModel nomination = nominalOfficialService.getAllDetails(id);
+	   //   mv.addObject("nomination", nomination);	
+		return mv;	
+	}
 	
 	@RequestMapping("updatesavenominalform")
 	public ModelAndView updatesavenominatiion(HttpServletRequest request,RedirectAttributes redirectAttributes)

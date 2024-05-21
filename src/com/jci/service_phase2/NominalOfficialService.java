@@ -21,6 +21,7 @@ public interface NominalOfficialService {
 	public void delete(int id);
 
 	public List<Jciclaim_NominationModel> getAll();
+	public List<Jciclaim_NominationModel>getAlldetails(String settlement_id);
 
 	public boolean submitform(Jciclaim_NominationModel off);
 

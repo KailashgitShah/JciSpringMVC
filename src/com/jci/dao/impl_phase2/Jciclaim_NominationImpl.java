@@ -71,7 +71,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<Jciclaim_NominationModel> getAll() {
 		// TODO Auto-generated method stub
-		String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial , Settlement_id from jciclaim_nomination";
+		String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial from jciclaim_nomination";
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 		List<Jciclaim_NominationModel> list = new ArrayList<>();
@@ -86,63 +86,14 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 			nomination.setContractNo((String) eleObject[4]);
 			nomination.setHoDi((String) eleObject[5]);
 			nomination.setOMOfficial((String) eleObject[6]);
-			//nomination.setSettlement_id((Long) eleObject[7]);
+			nomination.setFAOfficial((String) eleObject[7]);
 			//nomination.setSettlement_id( eleObject[7]);
 			list.add(nomination);
 
 		}
 
 		return list;
-//		List<Jciclaim_NominationModel> result = new ArrayList<>();
-//		HttpSession session1 = request.getSession(false);
-//		String querystr = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial , Settlement_id from jciclaim_nomination";
-//		
-//	
-//		Session session = sessionFactory.getCurrentSession();
-//		Transaction tx = session.beginTransaction();
-//		SQLQuery query = session.createSQLQuery(querystr);
-//		List<Object[]> rows = query.list();
-//		// System.out.println(rows);
-//
-//		for (Object[] row : rows) {
-//			Jciclaim_NominationModel nomination= new Jciclaim_NominationModel();
-//			String Settlement_id_generated = (String) row[0];
-//			String Created_on = (String) row[1];
-//			String DateofInspection = (String) row[2];
-//			String Mill = (String) row[3];
-//			String ContractNo = (String) row[4];
-//			String HoDi = (String) row[5];
-//			String OMOfficial = (String) row[6];
-//			Long settlementIdDecimal = (Long) row[7];
-//			nomination.setSettlement_id_generated(Settlement_id_generated);
-//			nomination.setCreated_on(Created_on);
-//			nomination.setDateofInspection(DateofInspection);
-//			nomination.setMill(Mill);
-//			nomination.setContractNo(ContractNo);
-//			nomination.setHoDi(HoDi);
-//			nomination.setOMOfficial(OMOfficial);
-//			//nomination.setSettlement_id(settlementIdDecimal);
-////			int id = (int) row[8];
-////			String rolename = (String) row[9];
-////			String usertype = (String) row[10];
-////			int ho = (int) row[11];
-//			// System.out.println("zonessssss"+ zonename);
-////			userRegistration.setRefid(id);
-////			;
-////			userRegistration.setUsername(username);
-////			userRegistration.setEmployeeid(employeeid);
-////			userRegistration.setEmail(email);
-////			userRegistration.setEmployeename(employeename);
-////			userRegistration.setMobileno(mobileno);
-////			userRegistration.setCentername(centername);
-////			userRegistration.setRoname(roname);
-////			userRegistration.setZonename(zonename);
-////			userRegistration.setRoles_name(rolename);
-////			userRegistration.setUsertype(usertype);
-////			userRegistration.setHo(ho);
-//			result.add(nomination);
-//		}
-//		return result;
+
 	}
 		
 	
@@ -204,7 +155,13 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<String> contractno_ContractTable() {
 		// TODO Auto-generated method stub
-		String q = "SELECT DISTINCT  Contract_no FROM jcicontract";
+		 String q = "SELECT DISTINCT jcicontract.Contract_no " +
+	               "FROM jcicontract " +
+	               "WHERE jcicontract.Contract_no NOT IN ( " +
+	               "    SELECT DISTINCT ContractNo " +
+	               "    FROM jciclaim_nomination " +
+	               ")";
+		//String q = "SELECT DISTINCT  Contract_no FROM jcicontract ";
 		List contractNo = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 
 		return contractNo;
@@ -425,6 +382,33 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		
 		String hql = "UPDATE jciclaim_nomination set  FAOfficial = '"+ FAomofficial +"' where Settlement_id_generated= '" +id+ "' ";
 	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+	}
+
+	@Override
+	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
+		String sqlQuery = "select distinct Challans ,Mr_number ,Mr_Date , billOfSupply_number ,dateofshipment ,shipmentquantity from jciclaim_nomination Where Settlement_id_generated='"+settlement_id+"'";
+		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+
+		List<Jciclaim_NominationModel> list = new ArrayList<>();
+
+		for (Object[] eleObject : contracts) {
+			Jciclaim_NominationModel nomination = new Jciclaim_NominationModel();
+
+			nomination.setChallans((String) eleObject[0]);
+			nomination.setMr_number((String) eleObject[1]);
+			nomination.setMr_Date((String) eleObject[2]);
+			nomination.setBillOfSupply_number((String) eleObject[3]);
+			nomination.setDateofshipment((String) eleObject[4]);
+			nomination.setShipmentquantity((String) eleObject[5]);
+//			nomination.setOMOfficial((String) eleObject[6]);
+			//nomination.setSettlement_id((Long) eleObject[7]);
+			//nomination.setSettlement_id( eleObject[7]);
+			list.add(nomination);
+
+		}
+
+		return list;
+
 	}
 
 

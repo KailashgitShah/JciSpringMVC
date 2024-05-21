@@ -183,7 +183,7 @@
                                         <input class="form-control taxtbox" id="DateofInpection" 
                                         name="DateofInpection" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getDateofInspection()%>"  required>                                   
 									 </div> --%>
-										  <input class="form-control taxtbox" 
+										  <input  type ="hidden" 
                                         name="Settlement_id_generated" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getSettlement_id_generated()%>"  required>      
 										      
      

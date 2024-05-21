@@ -48,5 +48,5 @@ public interface NominalOfficialDao {
 	     public Jciclaim_NominationModel find(String id);
 	     public void millrecieptstatus(String mr);
 	     public void updatefa(String id, String FAomofficial);
-         
+	     public List<Jciclaim_NominationModel>getAlldetails(String settlement_id);
 }
