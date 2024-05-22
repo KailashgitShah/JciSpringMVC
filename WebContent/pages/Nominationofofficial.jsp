@@ -152,17 +152,7 @@
 										    </c:forEach>
 										</select>
 										</div>
-										<%-- <div class="col-sm-4 form-group">
-										<div id="faMessage" class="text-danger"></div>
-										<label>F&A Official</label>
-										<span class="text-danger">*</span>
-										<select name="FAomofficial" id="FAofficial" class="form-control taxtbox" required>
-										    <option value="">Select</option>
-										    <c:forEach items="${FA_official}" var="item">
-										        <option value="${item}">${item}</option>
-										    </c:forEach>
-										</select> 
-										</div> --%>
+									
 										
 										
 										<div class="col-sm-4 form-group">
@@ -260,7 +250,7 @@
 
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     // Initialize the Datepicker
     $("#DateofInpection").datepicker({
         dateFormat: 'dd-mm-yy',
@@ -361,11 +351,85 @@
             });
         
     });
-</script>
+</script> -->
 
+
+ <script type="text/javascript">
+    // Initialize the Datepicker
+    $("#DateofInpection").datepicker({
+        dateFormat: 'dd-mm-yy',
+        onSelect: function(selectedDate) {
+            var selectedOption = selectedDate;
+            // alert(selectedOption); // Uncomment this line for debugging
+            $.ajax({
+                type: 'GET',
+                url: 'fetchdateOfInspection.obj',
+                data: {
+                    DateOfInspection: selectedOption
+                },
+                success: function(data) {
+                    var response = JSON.parse(data);                               
+                    var selectedOmofficial = document.getElementById("omofficial").value;
+                    var omMessageElement = document.getElementById("omMessage");
+                    for (var i = 0; i < response.length; i++) {
+                        var innerArray = response[i];
+                        var omoofficial = innerArray[0];
+                        var faofficial = innerArray[1];
+                           
+                        if (selectedOption == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
+                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
+                            return;
+                        } 
+                     
+                    }
+                    // If no conflicting dates found, clear any existing messages
+                    omMessageElement.innerText = "";
+                   
+                },
+                error: function(err) {
+                    console.error('AJAX request failed: ' + err);
+                }
+            });
+        }
+    });
+    $("#omofficial").change(function() { // Corrected the typo here
+        // Execute the logic when omofficial selection changes
+        var selectedOmofficial = document.getElementById("omofficial").value;       
+        var selectedDate = document.getElementById("DateofInpection").value;
+        var omMessageElement = document.getElementById("omMessage");
+        
+
+        
+            $.ajax({
+                type: 'GET',
+                url: 'fetchdateOfInspection.obj',
+                data: {
+                    DateOfInspection: selectedDate
+                },
+                success: function(data) {
+                    var response = JSON.parse(data);
+                    for (var i = 0; i < response.length; i++) {
+                        var innerArray = response[i];
+                        var omoofficial = innerArray[0];
+                        var faofficial = innerArray[1];
+                        if (selectedDate  == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
+                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
+                            return;
+                        }
+                        
+                    }
+                    // If no conflicting dates found, clear any existing messages
+                    omMessageElement.innerText = "";
+                },
+                error: function(err) {
+                    console.error('AJAX request failed: ' + err);
+                }
+            });
+        
+    });
+</script>
  
- 
- <script>
+  <script>
 	 	$(document).ready(function() {
 	 	    // Hide the milldetailsTable initially
 	 	    $('#milldetailsTable').hide();
@@ -420,7 +484,9 @@
 	 	});
 
 </script> 
-	
+
+
+
 
 	<!-- 	AJAX Call for Fetching Mill Receipt Data -->
 
@@ -518,6 +584,7 @@
 	<!-- PAGE LEVEL PLUGINS-->
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	
 
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>

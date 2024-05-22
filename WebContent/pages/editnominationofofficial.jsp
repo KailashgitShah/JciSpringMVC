@@ -87,7 +87,7 @@
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Update Nomination of Officials for Claim
+				<h1 class="page-title"> Add FA Officials for Claim
 					Settlement</h1>
 			</div>
 
@@ -102,152 +102,29 @@
 								<form action="updatesavenominalform.obj" method="POST">
 									<div class="row">
 
-										<%-- <div class="col-sm-4 form-group">
-											<label> Mill</label> <span class="text-danger">* </span> <select
-												name="Mill" id="Mill" class="form-control taxtbox" required>
-											 	<option value="">Select</option> 
-												
-											    <c:forEach items="${millid}" var="item">
-												 <option value="${item}">${item}</option> 
-												</c:forEach> 
-
-
-											</select>
-										</div>
-                                     --%>
-									<%-- 	<div class="col-sm-4 form-group">
-											<label>Contract No</label> <select name="ContractNo"
-												id="ContractNo" class="form-control taxtbox" required>
-												<option value="">Select</option>
-
-												<c:forEach items="${contractno}" var="item">
-													<option value="${item}">${item}</option>
-												</c:forEach>
-
-
-											</select>
-										</div> --%>
-										<%--   <div class="col-sm-4 form-group">
-	                                             <label>HO DI </label>
-	                                              <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
-	                                        	<select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
-													   <option value="">-Select-</option>
-													   <c:forEach items="${DI_no}" var="item">
-												      <option value="${item}">${item}</option> 
-												     </c:forEach> 
-													</select>
-										             </div>
-										              </div> --%>
-										              
-										   <%--      <div class="row">										        
-										     <div class="col-sm-4 form-group">
-											<label>O&M Official</label> <span class="text-danger">*
-											</span> <select name="omofficial" id="omofficial"
-												class="form-control taxtbox" required>
-												<option value="">Select</option>
-
-												<c:forEach items="${OM_official}" var="item" >
-													<option value="${item}">${item}</option>
-												</c:forEach>
-
-
-											</select>
-										</div> --%>
-									
 										<div class="col-sm-4 form-group">
-											<label>F&A Official</label> <span class="text-danger">*
-											</span> <select name="FAomofficial" id="FAofficial"
-												class="form-control taxtbox" required>
-												<option value="">Select</option>
-
-												<c:forEach items="${FA_official}" var="item">
-													<option value="${item}">${item}</option>
-												</c:forEach>
-
-
-											</select>
-
+										<div id="faMessage" class="text-danger"></div>
+										<label>F&A Official</label>
+										<span class="text-danger">*</span>
+										<select name="FAomofficial" id="FAofficial" class="form-control taxtbox" required>
+										    <option value="">Select</option>
+										    <c:forEach items="${FA_official}" var="item">
+										        <option value="${item}">${item}</option>
+										    </c:forEach>
+										</select> 
 										</div>
-										<!--  <div class="col-sm-4 form-group">
-											<label> Date of Inspection</label> <input
-												class="form-control taxtbox" id="DateofInpection"
-												name="DateofInpection" 
-												placeholder="dd-mm-yyyy" required >
-										</div>  -->
+										
 										   <%
 			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
 										   
 		                                    %>
-										<%-- <div class="col-sm-4 form-group">
-                                         <label>Date of Inspection</label>
-                                        <input class="form-control taxtbox" id="DateofInpection" 
+                                        <input type="hidden" class="form-control taxtbox" id="DateofInpection" 
                                         name="DateofInpection" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getDateofInspection()%>"  required>                                   
-									 </div> --%>
-										  <input  type ="hidden" 
+										<input  type ="hidden" 
                                         name="Settlement_id_generated" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getSettlement_id_generated()%>"  required>      
 										      
      
-										        	<!-- <div class="row">
- -->
-										<!-- <div class="col-sm-2 form-group">
-										    <table   id="milldetailsTable" class="table table-bordered" style="border-width: 2px; border-style: solid; border-color: #ccc;">
 										        
-											    <thead class="thead-light"> 
-											       
-											        <tr>
-											           <th>Challan_Number</th>
-											           <th>Date_Of_Shipment</th>
-											           <th>Bill_Of_Supply_Number</th>
-											           <th>Shipment_Quantity</th>
-											           <th>MR_Number</th>
-											           <th>MR_Date</th>
-											           <th>Claim_Valuation</th>
-											          
-											          
-											        </tr>
-											    </thead>
-											    <tbody>
-											    //dyanamically generated
-											   </tbody>
-											</table>
-										 
-									</div>
-									</div> -->
-						           <!--  
-						             <div class="row mt-3">
-									        <table class="table table-bordered">
-									            <thead>
-									                <tr>
-									                    <th>Challan</th>
-									                    <th>Mr_No</th>
-									                     <th>Mr_Date</th>
-									                      <th>Bill_Of_Supply_Number</th>
-									                    <th>Date_Of_Shipment</th>									                   
-									                    <th>Shipment_Quantity</th>
-									                    
-									                 
-									                </tr>
-									            </thead>
-									            <tbody id="binDataBody">
-									            
-									                Data rows will be dynamically populated
-									            </tbody>
-									        </table>
-									    </div>		
-						            			   
-									    <div class="row">
-                                        
-                                            <div class="col-sm-4 form-group">
-											<input type="hidden"
-												class="form-control taxtbox" name="Settlement_id_generated"
-												id="SettlementId" type="text" required readonly="readonly">
-										</div> 
-										
-									</div>
-                                   
-                                    <input type="hidden" id="numRows" name="rows">
-                                    
-									<br> -->
 									
 									<div class="row">
 
@@ -296,193 +173,52 @@
 
 
 
+
 <script type="text/javascript">
     // Initialize the Datepicker
-    $("#DateofInpection").datepicker({
-        dateFormat: 'dd-mm-yy',
-        onSelect: function(selectedDate) {
-            var selectedOption = selectedDate;
+ 
+    // Event handler for omofficial select element
+    $(" #FAofficial").change(function() {
+        // Execute the logic when omofficial selection changes
+        var selectedFafficial = document.getElementById("FAofficial").value;
+        var selectedDate = document.getElementById("DateofInpection").value;
+        var faMessageElement = document.getElementById("faMessage");
+
+        
             $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
                 data: {
-                    DateOfInspection: selectedOption
+                    DateOfInspection: selectedDate
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
-                    //alert(response);
-
-                    var selectedOfficial = document.getElementById("omofficial").value;
-                   // alert(selectedOfficial + " selectedOfficial");
-
-                    var canSelect = true;
                     for (var i = 0; i < response.length; i++) {
-                        if (response[i] === selectedOfficial) {
-                            alert( selectedOfficial + " is Already Occupied On This Date for Another Claim Settlement . Are you sure you want to select this Date");
-                            canSelect = false;
-                            break;
+                        var innerArray = response[i];
+                        var omoofficial = innerArray[0];
+                        var faofficial = innerArray[1];
+                        if (selectedDate  == document.getElementById("DateofInpection").value  && faofficial == selectedFafficial) {
+                            faMessageElement.innerText = selectedFafficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
+                            return;
                         }
+                       
                     }
-
-                    if (canSelect) {
-                        // Perform further actions if the official can be selected
-                    }
+                    // If no conflicting dates found, clear any existing messages
+                    faMessageElement.innerText = "";
                 },
                 error: function(err) {
                     console.error('AJAX request failed: ' + err);
                 }
             });
-        }
+        
     });
-</script>   
+</script>
+ 
 
 
 
-<script>
-	 	$(document).ready(function() {
-	 	    // Hide the milldetailsTable initially
-	 	    $('#milldetailsTable').hide();
-
-	 	    // Add an event listener for the change event on the dropdown
-	 	    $('#HODate').on('change', function() {
-	 	        // Get the selected option value
-	 	        var selectedOption = $(this).val();
-
-	 	        // Make an AJAX request to fetch data based on the selected HO DI
-	 	        $.ajax({
-	 	            type: 'GET',
-	 	            url: 'findByHoDi.obj',
-	 	            data: {
-	 	                hodino: selectedOption
-	 	            },
-	 	            dataType: 'json', // Set the dataType to 'json'
-	 	            success: function(data) {
-	 	                // Parse the JSON response
-	 	                var dataArray = data;
-	 	                $("#binDataBody").empty();
-	 	               
-	 	               var num_of_rows = dataArray.length;
-	 	                // Set the value of the hidden input field
-	 	                
-	 	                $('#numRows').val(num_of_rows);
-	 	             
-	 	                for (var i = 0; i < dataArray.length; i++) {
-	 	                	  var newRow = "<tr>";
-		 	                    newRow +=
-	 	                    	 '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>';                  
-	 	                    /*     "<td name='mr_no[]'>" + dataArray[i][1]+ "</td>" +
-	 	                        "<td name='mr_date[]'>" + dataArray[i][2] + "</td>" +
-	 	                        "<td name='billofsupply[]'>" + dataArray[i][3]+ "</td>" +
-	 	                        "<td name='dateofshipment[]'>" + dataArray[i][4]+ "</td>" +
-	 	                        "<td name='shipmentquantity[]'>" + dataArray[i][5] + "</td>"; */
-	 	                    newRow += "</tr>";
-	 	                    $("#binDataBody").append(newRow);
-	 	                }
-	 	            },
-	 	            error: function(err) {
-	 	                // Handle errors here
-	 	                console.error('AJAX request failed: ' + err);
-	 	            }
-	 	        });
-	 	    });
-	 	});
-
-</script> 
 	
 
-	<!-- 	AJAX Call for Fetching Mill Receipt Data -->
-
-	<script type="text/javascript">
-		// Wait for the document to be ready
-		$(document).ready(function() {
-			// Add an event listener for the change event on the dropdown
-
-			$('#Mill').on('change', function() {
-				// Get the selected option value
-				var selectedOption = $(this).val();
-				//alert( selectedOption)
-
-				// Make an AJAX call to fetch data based on the selected value
-				$.ajax({
-					type : 'GET', // You can adjust the HTTP method as needed (e.g., POST)
-					url : 'fetchmillreceiptdata.obj', // Replace with the actual API endpoint
-					data : {
-				
-						millid : selectedOption
-						//mill_name : selectedOption
-					}, // Pass the selected option to the server
-					success : function(data) {
-						
-						// Handle the response data and display it.
-                        // alert(data + "dataaaaaaaaaaaaa")
-					
-
-						// Parse the JSON response
-					var response = JSON.parse(data);
-             	//	var rolename = JSON.parse(data)
-             	
-                    /*  var s = "<option disabled selected value>-Select-</option>";
-     				for (var i = 0; i < response.length; i++) {
-     					s += '<option value="' + response[i].split("-")[0] + ','
-     							+ response[i].split("-")[1] + '">'
-     							+ response[i].split("-")[1] + '</option>';
-     				}
-
-					 */
-                      
-						var innerArray1 = response[0];
-
-						// Access the elements within the inner array
-						var ChallanNo = innerArray1[0];
-						var MRNo = innerArray1[1];
-						var BaleMark = innerArray1[2];
-						var CropYear = innerArray1[3];
-						var QualityClaim = innerArray1[4];
-						var MoistureContent = innerArray1[5];
-						var NCVPercentage = innerArray1[6];
-						//var mill_name = innerArray1[7];
-						//alert(mill_name)
-						
-						
-						
-
-						// For DateofInpection value settingbased on MRs
-						var DateofInpection = MRNo + "0";
-
-						$('#ChallanNo').val(ChallanNo); // Setting Data In JSP Text Field
-
-						$('#MRNo').val(MRNo);
-						$('#BaleMark').val(BaleMark);
-						$('#CropYear').val(CropYear);
-						$('#QualityClaim').val(QualityClaim);
-						$('#MoistureContent').val(MoistureContent);
-						$('#NCVPercentage').val(NCVPercentage);
-
-						// Generating the Settlement id using MRNo and For Increment using Count
-
-						var Settlementid = MRNo.toString() + ${total};
-
-						$('#SettlementId').val(Settlementid);
-
-					},
-					error : function(err) {
-						// Handle errors here
-						console.error('AJAX request failed: ' + err);
-					}
-
-				});
-			});
-		});
-	</script>
-
-	<!--  For Fetching the Grade_Composition based on Contract Number -->
-
-	<!--   For Hinding and Showing the  Grade Wise Alloction-->
 
 	<script type="text/javascript">
 		$(document).ready(function() {

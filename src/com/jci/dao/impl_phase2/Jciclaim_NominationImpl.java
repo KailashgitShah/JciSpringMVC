@@ -137,8 +137,9 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	public List<Object> FetchMillReceiptData(String millid) {
 		// TODO Auto-generated method stub
 
-
 		
+
+//		
 		String q = "SELECT DISTINCT " +
 		           "jcimill_receipt.Challan_no, jcimill_receipt.MR_no, jcimill_receipt.Bale_mark, jcimill_receipt.Crop_year, " +
 		           "jcimill_receipt.Quality_claim, jcimill_receipt.MoistureContent, jcimill_receipt.NCV_percentage, jcimilldetailchild.unit_name " +
