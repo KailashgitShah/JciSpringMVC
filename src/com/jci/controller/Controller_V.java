@@ -4986,7 +4986,7 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		List<Object> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
 		System.err.println(getSettlementidlist);
 		mv.addObject("getSettlementidlist", getSettlementidlist);
 		return mv;
@@ -5004,7 +5004,7 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
-	public String fetchingdatanominactionclaim(@RequestParam("contractno") int contractno) {
+	public String fetchingdatanominactionclaim(@RequestParam("contractno") String contractno) {
 		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
 		System.err.println("resultList++++++++++" + getsettlementlist);
 		Gson gson = new Gson();
