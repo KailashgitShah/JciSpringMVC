@@ -19,6 +19,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\RawJutePr
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao_phase2\OperationCostDao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\StateDao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\UserActionServiceImpl.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\CreditNoteDTO.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\SalepricecalculationServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\FinancialConcurenceServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\BatchDaoImpl.java
@@ -31,6 +32,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\DispatchDet
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\controller\PdfGenerator_K.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\labelGenerationDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\MillAccept.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\verifyClaimService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\JBADaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl_phase2\ContractGenerationDaoImpl2.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\MillRecieptServiceImpl.java
@@ -123,6 +125,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\Ro
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\ZoneDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\UserRoleDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\PaymentDetailService.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\jciWeighmentEntry.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\EntryofsaledaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao_phase2\Dispatchdetaildao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\PCSODao.java
@@ -145,6 +148,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\Cont
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\FactorssInvolvedCommercialServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\CommercialJuteVarietyModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\FarmerRegServiceImpl.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl_phase2\WeightmentDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao_phase2\PaymentDetailsDao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\CommercialCeilingPriceIntimationService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\BalePreparationService.java
@@ -265,9 +269,11 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\Mi
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\CommercialCeilingPriceIntimationDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\RopeMakingDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\EntryofTdsServiceImpl.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\WeightmentServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\MarketArrivalDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\ProgOfAssortmentModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\PaymentDetailServiceImpl.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\verifyClaimServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\PoliceStationDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\RopeMakingModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\UserRoleDao.java
@@ -325,6 +331,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\DistrictMod
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\FinancialConcurenceModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\CashDocumentModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\UserPriviligeModel.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl_phase2\verifyClaimDaoImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\FactorssInvolvedCommercialService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao_phase2\FactorssInvolvedCommercialDao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\PurchaseCenterDaoImpl.java
@@ -343,6 +350,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\Entr
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\UploadRecieptService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\AreaService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\AddOrganisationService.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service_phase2\WeighmentEntryService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\MarketArrivalModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\RoDetailsService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\DailyPurchaseModelConfService.java
@@ -362,6 +370,7 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\Confirmatio
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\SalepricecalculationService.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\MarketArrivalServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\impl\UserPriviligeDaoImpl.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao_phase2\WeightmentDao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\PurchaseCenterServiceImpl.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\model\JbaModel.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\JBAServiceImpl.java
@@ -388,3 +397,4 @@ C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl\RawJ
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\service\Impl_phase2\EntryDerivativePriceServiceImpl2.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\CommercialCeilingPriceIntimationDao.java
 C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao\DailyPurchaseConfDao.java
+C:\Users\pradeep.rathor\Desktop\CodeMerged\JCI-CMS\src\com\jci\dao_phase2\verifyClaimDao.java

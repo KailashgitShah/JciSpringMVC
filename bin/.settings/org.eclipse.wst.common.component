@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
+                                        
+=======
+                                            
+    
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+    
+    
+    
+    
+    
+    
+    
+    
+    <wb-module deploy-name="jciadmin-1.0">
+<<<<<<< HEAD
+                                                                                
+=======
+                                                                                        
+        
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+        
+        
+        
+        
+        
+        
+        
+        
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+<<<<<<< HEAD
+                                                                                
+=======
+                                                                                        
+        
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+        
+        
+        
+        
+        
+        
+        
+        
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+<<<<<<< HEAD
+                                                                                
+=======
+                                                                                        
+        
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+        
+        
+        
+        
+        
+        
+        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+<<<<<<< HEAD
+                                                                        
+=======
+                                                                                
+        
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+        
+        
+        
+        
+        
+        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
+<<<<<<< HEAD
+                        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
+                                                                                
+=======
+                                
+        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
+                                                                                        
+        
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+        
+        
+        
+        
+        
+        
+        
+        
+        <property name="context-root" value="jciadmin"/>
+<<<<<<< HEAD
+                                                                                
+=======
+                                                                                        
+        
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+        
+        
+        
+        
+        
+        
+        
+        
+        <property name="java-output-path" value="/JCI-CMS/target/classes"/>
+<<<<<<< HEAD
+                                                                            
+=======
+                                                                                    
+    
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+    
+    
+    
+    
+    
+    
+    
+    
+    </wb-module>
+<<<<<<< HEAD
+                                    
+=======
+                                        
+
+>>>>>>> f746e4c8f17c73521e2200488fbeab70e43a8a6c
+
+
+
+
+
+
+
+
+</project-modules>

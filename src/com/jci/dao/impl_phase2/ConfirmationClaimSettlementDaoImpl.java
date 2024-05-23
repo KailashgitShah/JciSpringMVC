@@ -1,8 +1,7 @@
 package com.jci.dao.impl_phase2;
 
+import java.math.BigDecimal;
 import java.util.List;
-
-
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -18,76 +17,109 @@ import com.jci.model.ConfirmationClaimSettlementModel;
 
 @Repository
 @Transactional
-public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSettlementDao  {
+public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSettlementDao {
 	@Autowired
 	SessionFactory sessionFactory;
-	protected Session currentSession(){
+
+	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
 	}
-	
-	@Override
-	public void create(ConfirmationClaimSettlementModel confirmationClaimSettlementModel) {
-		
-		currentSession().save(confirmationClaimSettlementModel);
-	}
-		@Override
-	    public List<ConfirmationClaimSettlementModel> getAll() {
-	        Criteria criteria = currentSession().createCriteria(ConfirmationClaimSettlementModel.class);
-	        criteria.addOrder(Order.desc("Created_on"));
-	        return criteria.list();
-	    }
 
 	@Override
-	public List<Object>SettlementId() {
-	String sql="select  Settlement_id from  jciclaim_nomination";
-			 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-		    return resultList1;
-		}
+	public void create(ConfirmationClaimSettlementModel confirmationClaimSettlementModel) {
+	
+		currentSession().save(confirmationClaimSettlementModel);
+	}
+
 	@Override
-    public List<Object[]> gradecfetchingdata1omposition(String contractno) {
-          String q="  SELECT     Jcigrade_composition.Jute_combination,\r\n"
-          		+ "                      (jcigrade_composition.Proposed_composition*jcicontract.Contract_qty)/100 as new_proposed_composition\r\n"
-          		+ "                     FROM Jcigrade_composition  INNER JOIN  jcicontract on  jcicontract.Grade_composition=jcigrade_composition.Label_name\r\n"
-          		+ "                    WHERE Contract_no='"+contractno+"';";
-               List<Object[]> gradecomposition= (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
-                   return gradecomposition;
-          
-          
-    }
+	public List<ConfirmationClaimSettlementModel> getAll() {
+		Criteria criteria = currentSession().createCriteria(ConfirmationClaimSettlementModel.class);
+		criteria.addOrder(Order.desc("Created_on"));
+		return criteria.list();
+	}
+
+	@Override
+	public List<Object[]> SettlementId() {
+		String sql = "SELECT DISTINCT nom.Settlement_id_generated \r\n"
+				+ "FROM jciclaim_nomination nom\r\n"
+				+ "LEFT JOIN jciclaim_report_mill rep ON nom.Settlement_id_generated = rep.Settlement_id\r\n"
+				+ "WHERE rep.Settlement_id IS NULL;";
+		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		return resultList1;
+	}
+
+	@Override
+	public List<Object[]> gradecfetchingdata1omposition(String contractno) {
+		String q = "  SELECT     Jcigrade_composition.Jute_combination,\r\n"
+				+ "                      (jcigrade_composition.Proposed_composition*jcicontract.Contract_qty)/100 as new_proposed_composition\r\n"
+				+ "                     FROM Jcigrade_composition  INNER JOIN  jcicontract on  jcicontract.Grade_composition=jcigrade_composition.Label_name\r\n"
+				+ "                    WHERE Contract_no='" + contractno + "';";
+		List<Object[]> gradecomposition = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q)
+				.list();
+		return gradecomposition;
+
+	}
 
 //	
 	@Override
-	public List<Object[]>fetchdataofclaim( String st) {
-		String sql =" select MR_no,Bale_mark,Crop_year,Quality_claim,MoistureContent,NCV_percentage,Challan_no from jcimill_receipt WHERE HO_di =  '" +st+"'"; 
-		  		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-		    return resultList1;
-		}
-    
-    
+	public List<Object[]> fetchdataofclaim(String st) {
+		String sql = " select jcimill_receipt.Mr_no,jcimill_receipt.Mr_date,jcimill_receipt.Jute_Variety,jcimill_receipt.Jute_Grade,jcimill_receipt.Actual_qty,jcimill_receipt.QualityPercentage,jcimill_receipt.MoistureContent,jcimill_receipt.NCV_percentage,jcidispatch_details_child.No_of_bales,jcidispatch_details_child.Rate,jcimill_receipt.Crop_year,jcimill_receipt.NCV_qty,jcimill_receipt.Challan_no,jciclaim_nomination.ContractNo,jciclaim_nomination.DateofInspection,jciclaim_nomination.Mill,jciclaim_nomination.Mr_number,jciclaim_nomination.Mr_Date from jcimill_receipt left  join jcidispatch_details_child on jcimill_receipt.Jute_Grade = jcidispatch_details_child.Jute_grade inner join jciclaim_nomination on jciclaim_nomination.Challans = jcimill_receipt.Challan_no   WHERE jciclaim_nomination.Settlement_id_generated =  '"+ st + "'";
+		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.list();
+		return resultList1;
+	}
+
 //	@Override
 //	public List<Object[]>fetchdataofclaim( String st) {
 //		String sql =" select a.MR_no,a.Bale_mark,a.Crop_year,a.Quality_claim,a.MoistureContent,a.NCV_percentage,a.Challan_no,b.Contract_qty,b.Grade_composition from jcicontract as b left join jcimill_receipt  as a on a.HO_di =b.Contract_no WHERE HO_di =  '" +st+"'"; 
 //		  		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 //		    return resultList1;
 //		}
-	
+
 	@Override
-	public List<Object[]>fetchdatasttlement(int st) {
-		String sql =" select Quality_settlement,Moisture_settlement,Ncv_settlement,Settlement_amt,ClaimAmount,DateofInspection,Supporting_doc from jciclaim_nomination WHERE Settlement_id = '" +st+"'"; 
-		  		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-		    return resultList1;
-		}
+	public List<Object[]> fetchdatasttlement(String st) {
+		String sql = " select top 1 DateofInspection ,Mill from jciclaim_nomination WHERE ContractNo = '"
+				+ st + "' order by Created_on DESC";
+		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.list();
+		System.err.println(resultList1);
+		return resultList1;
+	}
 
 	@Override
 	public List<String> fetchContract(String settlementId) {
 		// TODO Auto-generated method stub
-		String sqlString ="Select ContractNo from jciclaim_nomination where Settlement_id='"+settlementId+"';";
-		List<String>resultList1= (List<String>)this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		String sqlString = "Select DISTINCT ContractNo from jciclaim_nomination where Settlement_id_generated='" + settlementId + "';";
+		List<String> resultList1 = (List<String>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
+				.list();
 		return resultList1;
 	}
-	
-	
 
-	
+	@Override
+	public List<Object[]> fetchChallan(String id) {
+		String string ="Select Distinct Challans from jciclaim_nomination where ContractNo='"+id+"';";
+		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(string)
+				.list();;
+		return resultList1;
+	}
+
+	@Override
+	public String fetchPrice(String var, String gr, String dpcId, String cropyear,String contract) {
+		// TODO Auto-generated method stub
+		String resultString = "SELECT jcientry_derivative_price." + gr + "\r\n"
+		        + "FROM jcientry_derivative_price \r\n"
+		        + "INNER JOIN jcicontract ON jcientry_derivative_price.delivery_type = jcicontract.Delivery_type \r\n"
+		        + "INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = jcientry_derivative_price.district \r\n"
+		        + "WHERE jcipurchasecenter.CENTER_CODE='" + dpcId + "' \r\n"
+		        + "AND jcicontract.Contract_no='" + contract + "' \r\n"
+		        + "AND jcientry_derivative_price.crop_year='" + cropyear + "' \r\n"
+		        + "AND jcientry_derivative_price.jute_variety='" + var + "'";
+
+		// Execute the query without casting to String
+		BigDecimal result = (BigDecimal) this.sessionFactory.getCurrentSession().createSQLQuery(resultString).uniqueResult();
+		return result.toString(); // Convert BigDecimal to String
+ // Return the result without casting to String
+
+	}
 
 }

@@ -78,7 +78,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		List<Object[]> rows = query.list();
 		for (Object[] row : rows) {
 			result.add(row[6].toString());
-			result.add(row[23].toString());
+			result.add(row[28].toString());
 			result.add(row[9].toString());// Contradate-Cropyear-contractqty
 			result.add(row[20].toString());// Mill name
 			result.add(row[15].toString());// Label name

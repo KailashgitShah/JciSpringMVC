@@ -445,9 +445,11 @@ input[type="radio"] {
 															url : "HoDispatch.obj",
 															data : {
 																"contract" : cont
+																
 															},
 															success : function(
 																	data) {
+																console.log(data);
 																displayContr(
 																		data,
 																		cont);

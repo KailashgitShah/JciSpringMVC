@@ -45,6 +45,29 @@
 	content: " *";
 	color: red;
 }
+.ibox {
+    padding: 0 0px;
+}
+.page-content .ibox .ibox-body .col-sm-12.form-group {
+    padding: 0 0px;
+}
+div.scrollmenu {
+ /*  background-color: #333; */
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
 </style>
 </head>
 <body class="fixed-navbar" onload="myFunction()">
@@ -63,7 +86,7 @@
 			</div>
 
 			<%
-			List<Object> getSettlementid = (List<Object>) request.getAttribute("getSettlementidlist");
+			List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettlementidlist");
 			%>
 
 
@@ -74,89 +97,33 @@
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveConfirmationOfClaimSettelment.obj"
-									method="POST" name="myForm" enctype="multipart/form-data">
+									method="POST" name="myForm" enctype="multipart/form-data" onsubmit="return myFunc()">
 									<div class="child-checkbox" id="disableform">
+									<div id='errorcontainer'
+								style='display: none; text-align: center;'></div>
 										<div class="row">
 
-											<div class="col-sm-4 form-group">
+											 <div class="col-sm-4 form-group">
 												<label>Settlement Id</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Settlement_Id" name="Settlement_Id"
 													class="text-danger"> </span> <select name="Settlement_Id1"
 													id="SettlementId1" class="form-control taxtbox" required>
-													<option value="-1" selected disabled>-Select-</option>
+													<option value="" selected disabled>-Select-</option>
 													<%
-													for (int i = 0; i < getSettlementid.size(); i++) {
-														BigDecimal settlementId = (BigDecimal) getSettlementid.get(i);
-													%>
-													<option value="<%=settlementId.intValue()%>"><%=settlementId.intValue()%></option>
-													<%
-													}
-													%>
+    for (Object obj : getSettlementid) {
+        if (obj instanceof String) {
+            String settlementId = (String) obj;
+%>
+            <option value="<%=settlementId%>"><%=settlementId%></option>
+<%
+        }
+    }
+%>
+
 												</select>
 											</div>
-
-
-											<div class="col-sm-4 form-group">
-												<label>Date_of_inspection</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Date_of_inspection"
-													name="Date_of_inspection" class="text-danger"> </span> <input
-													class="form-control" name="Dateofinspection"
-													id="Dateofinspection12" value="" type="date" required>
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Contract No.</label> <span class="text-danger">*
-												</span>&nbsp; <span id="contractno" name="contractno"
-													class="text-danger"> </span> <select name="fullcontractno"
-													id="fullcontractno1" class="form-control taxtbox" required>
-
-													<option value="-1" selected disabled>-Select-</option>
-
-												</select>
-
-
-											</div>
-
-
-
-										</div>
-
-
-										<div class="row">
-
-
-
-											<div class="col-sm-4 form-group">
-												<label>Challan No</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Challan_No" name="Challan_No "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Challan_No1"
-													id="ChallanNo1" placeholder="Challan_No" required readonly>
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>MR No</label> <span class="text-danger">* </span>&nbsp;
-												<span id="MR_No" name="MR_No " class="text-danger"> </span>
-												<input class="form-control taxtbox" name="MR_No1" id="MRNo1"
-													value="" placeholder="MR No" required readonly>
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Bale Mark</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Bale_Mark" name="Bale_Mark "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Bale_Mark1" value=""
-													id="BaleMark1" placeholder="Bale Mark" required readonly>
-											</div>
-
-
-
-
-
-										</div>
-
-										<div class="row">
-
-
-											<div class="col-sm-4 form-group">
+										
+<div class="col-sm-4 form-group">
 												<label class="required">Supporting Document
 													(330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
 													class="text-danger"> </span> <img id="imgPreview" /><input
@@ -166,6 +133,28 @@
 													onkeypress="deleteErrorMsg()" required>
 											</div>
 											<div class="col-sm-4 form-group">
+												<label>Mill name</label> <span class="text-danger">*
+												</span>&nbsp; <span id="mill1" name="mil1 "
+													class="text-danger"> </span><input
+													class="form-control taxtbox" type="text"
+													name="mill" id="mill"  readonly
+													placeholder="Mill name" required>
+											</div>
+											
+											
+
+
+
+										</div>
+
+
+									
+
+										<div class="row">
+
+
+											
+											<div class="col-sm-4 form-group">
 												<label>Crop Year</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Crop_Year" name="Crop_Year "
 													class="text-danger"> </span> <input
@@ -174,210 +163,86 @@
 													required>
 											</div>
 											<div class="col-sm-4 form-group">
-												<label>Quality Claim </label> <span class="text-danger">*
-												</span>&nbsp; <span id="Quality_Claim " name="Quality_Claim  "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Quality_Claim1"
-													id="QualityClaim1" value="" placeholder="Quality Claim"
-													readonly required>
-											</div>
-										</div>
-
-										<div class="row">
-											<div class="col-sm-4 form-group">
-												<label>Moisture Content</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Moisture_Content" name="Moisture_Content "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Moisture Content"
-													id="MoistureContent1" value=""
-													placeholder="Moisture Content" readonly required>
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>NCV Percentage </label> <span class="text-danger">*
-												</span>&nbsp; <span id="NCV_Percentage " name="NCV Percentage "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="NCV_Percentage1"
-													id="NCVPercentage1" value="" placeholder="NCV Percentage"
-													readonly required>
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Quality Settlement</label> <span class="text-danger">
-												</span>&nbsp; <span id="Quality_Settlement"
-													name="Quality_Settlement" class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Quality_Settlement"
-													id="Quality_Settlement1" value="" type="number" step="0.01"
-													placeholder=" Quality Settlement" required>
-
-
-											</div>
-
-
-
-										</div>
-
-										<div class="row">
-
-
-											<div class="col-sm-4 form-group">
-												<label>Moisture Settlement</label> <span class="text-danger"></span>&nbsp;
-												<span id="Moisture_Settlement" name="Moisture_Settlement"
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Moisture_Settlement"
-													id="Moisture_Settlement1" value="" type="number"
-													step="0.01" placeholder="Moisture Settlement" required>
-
-
-
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>NCV Settlement</label> <span class="text-danger">
-												</span>&nbsp; <span id="NCV_Settlement" name="NCV_Settlement"
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="NCV_Settlement"
-													type="number" step="0.01" id="NCV_Settlement1" value=""
-													placeholder=" NCV Settlement" required>
-
-
-
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Claim Amount</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Claim_Amount" name="Claim_Amount "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" type="number"
-													name="ClaimAmount" id="ClaimAmount1" value="" readonly
-													placeholder="Claim Amount" required>
-											</div>
-
-
-
-										</div>
-
-										<div class="row">
-
-
-
-
-											<div class="col-sm-4 form-group">
-												<label>Settlement Amount</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Settlement_Amount"
-													name="Settlement_Amount " class="text-danger"> </span> <input
-													class="form-control taxtbox" name="SettlementAmount"
-													id="SettlementAmount1" value="" readonly
-													placeholder="Settlement Amount" required>
-											</div>
-
-											<div class="col-sm-4 form-group">
 												<label>Inspection by</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Inspection_by" name="Inspection_by "
 													class="text-danger"> </span> <input
 													class="form-control taxtbox" name="Inspectionby1"
 													placeholder="Inspection by" required>
 											</div>
-
-
-
-
+											
+											
+											
+											
+											
+											<!--  <div class="col-sm-4 form-group">
+												<label>MR No. </label> <span class="text-danger">*
+												</span>&nbsp; <span 
+													class="text-danger"> </span> <input
+													class="form-control taxtbox" name="mrNo"
+													id="mrNo" value="" placeholder="MR No."
+													readonly required>
+											</div>  -->
+										</div>
+										<!-- <div class="row">
+										 <div class="col-sm-4 form-group">
+												<label>MR Date </label> <span class="text-danger">*
+												</span>&nbsp; <span 
+													class="text-danger"> </span> <input
+													class="form-control taxtbox" name="mrDate"
+													id="mrDate" value="" placeholder="MR Date"
+													readonly required>
+											</div> 
+										</div>
+ -->
+										<div class="row">
+									 	<div class="scrollmenu"> 
+										<div class="col-sm-12 form-group">
+														<label id="lblName"></label>
+														<div id="form2"></div>
+														<span id="misQty"></span>
+													</div>
+										 	</div> 
+										
 
 
 
 										</div>
 
-										<!--  For Showing the grade wise jute variety -->
+										
 
 										<div class="row">
-											<div class="col-sm-15">
-												<table class="table">
-													<thead>
-														<tr>
-															<th id="grade">Grade</th>
-															<th id="grade1">Jute combination</th>
-															<th id="grade2">Quantity</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td id="g111"><strong>Grade 1:</strong></td>
-															<td><input type="text" id="g11" name="g11"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="g12" name="g12"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px;"></td>
-														</tr>
 
-														<tr>
-															<td id="g211"><strong>Grade 2:</strong></td>
-															<td><input type="text" id="g21" name="g21"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="g22" name="g22"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g311"><strong>Grade 3:</strong></td>
-															<td><input type="text" id="g31" name="g31"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="g32" name="g32"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g411"><strong>Grade 4:</strong></td>
-															<td><input type="text" id="g41" name="g41"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="g42" name="g42"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g511"><strong>Grade 5:</strong></td>
-															<td><input type="text" id="g51" name="g51"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="g52" name="g52"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g611"><strong>Grade 6:</strong></td>
-															<td><input type="text" id="g61" name="g61"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="g62" name="g62"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g21"></td>
-															<td align="right"><input type="text" id="g71"
-																name="g71" readonly="readonly" value="Total"
-																style="width: 60px; height: 30px; text-align: center; font-weight: bold;"></td>
-															<!--  <td><strong style ="text-align:right">Total</strong></td> -->
-															<td><input type="number" id="g72" name="g72"
-																readonly="readonly" value=""
-																style="width: 100px; height: 30px; font-weight: bold;"></td>
-														</tr>
-													</tbody>
+											<div class="col-sm-4 form-group">
+    <label id="lblName"></label>
+    <div id="form3"></div>
+    <span id="misQty"></span>
+</div>
 
-												</table>
-											</div>
+
+											<div class="col-sm-12 form-group">
+    <label id="lblName"></label>
+    <input
+													class="form-control taxtbox" name="q"
+													type="number"  id="q" value=""
+													placeholder="q" required>
+</div>										
+											
+
+
+
+
+
+
 										</div>
 
-
-
-										<!-- End the grade wise -->
+									
 
 
 
 
 										<div class="row">
 											<div class="col-sm-12 form-group">
-												<input type="submit" value="Submit" class="btn btn-primary"
+												<input type="submit" value="Submit" id ="sub" class="btn btn-primary"
 													id="submit" onclick="">
 											</div>
 
@@ -395,37 +260,53 @@
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
-
-	<script type="text/javascript">
+<!-- <script type="text/javascript">
+$("#fullcontractno1").on('change', function() {
+    var id = $(this).val();
+    // Instead of alerting the ID directly, you might want to do something more meaningful with it
+    console.log("Selected ID: " + id); // Using console.log for debugging instead of alert
     
-	$(document).ready(function(){
-		 $("#submit").click(function(){
-		
-			  var contractdate = $("#contractdate").val();
-			  var instdate = $("#instdate").val();
-			  var paymenttype = $("#paymenttype").val();
-			  
-			  if(contractdate =="" || instdate =="")
-				  {
-				    alert("Please select mandatory Fields!");
-				  }
-			  if(paymenttype =="letterofcredit")
-				  {
-					  var dateofship = $("#dateofship").val();
-					  var dateofexpiry = $("#dateofexpiry").val();
-					  if(dateofship =="" || dateofexpiry =="")
-						  {
-						    alert("Please select mandatory Fields!");
-						  }
-				  }
-			  
-		    });
-	 });
-		
-	</script>
+    // Making AJAX request
+    $.ajax({
+        type: 'GET',
+        url: 'fetchChallan.obj',
+        data: {
+            "id": id
+        },
+        success: function(result) {
+            // Parse JSON response
+            var data = JSON.parse(result); // jQuery.parseJSON is deprecated, using JSON.parse instead
+            // Do something with the parsed data, maybe update UI or perform further operations
+             
+                // Append new options
+             
+
+data.forEach(function(value) {
+    var splitValues = value.split(","); // Splitting at commas
+    splitValues.forEach(function(item) {
+        $('#ChallanNo1').append($('<option>', {
+            value: item,
+            text: item
+        }));
+    });
+});
+
+            console.log("Received data:", data); // Log the data instead of alerting
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error("Error:", status, error); // Logging error details
+            alert("Error: " + error); // Alerting user about the error
+        }
+    });
+});
+
+</script>
+	 -->
 
 	<script>
 $(document).ready(function(){
+	$("#sub").prop("disabled", true);
     $("#SettlementId1").on('change',function(){
         var id=$(this).val();
         //alert(id);
@@ -465,221 +346,232 @@ $(document).ready(function(){
 
 </script>
 
-	<script type="text/javascript">
+ 	<!-- <script type="text/javascript">
       
- $(document).ready(function() {
-	    $('#SettlementId1').on('change', function() {
-	    var field2Value = $(this).val();
-	    
-	 
-	     
-	    $.ajax({
-	        type: 'GET',
-	        url: 'fetchingdatanominactionclaim.obj',
-	        data: { "contractno": field2Value },
-	        success: function(data) {
-	           //alert("nominationClaim"+data);
-	           data = data.replace(/^\[|\]$/g, '');
-	           data = data.replace(/^\[|\]$/g, '');
-	           var valuesArray = data.split(',');
-	           for (var i = 0; i < valuesArray.length; i++) {
-	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
-	        	}
-	           
-	               // Set the value of the <select> element
-	               $('#Quality_Settlement1').val(valuesArray[0]);
-	               $('#Moisture_Settlement1').val(valuesArray[1]);
-	               $('#NCV_Settlement1').val(valuesArray[2]);
-	               $('#SettlementAmount1').val(valuesArray[3]); 
-	               $('#ClaimAmount1').val(valuesArray[4]);
-	        		
-	               var dateParts = valuesArray[5].split("-");
-	               var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
-	               $('#Dateofinspection12').val(formattedDate);
-	             
-	               $('#Supportingdocument1').val(valuesArray[6]);
-	              
-	           
-
-	        },
-	        error: function(error) {
-	            alert("Error: " + error);
-	        }
-	    });
-
-	    });
-	});
-
-      
-      </script>
-	<script type="text/javascript">
-      
- $(document).ready(function() {
+	$(document).ready(function() {
 	    $('#fullcontractno1').on('change', function() {
-	    var field2Value = $(this).val();
-	    var id=$("#SettlementId1").val();
-	    //alert()
-	     
-	    $.ajax({
-	        type: 'GET',
-	        url: 'fetchSettlementData.obj',
-	        data: { "id": field2Value },
-	        success: function(data) {
-	           //alert(data);
-	           //alert("fetchMillreceipt"+data);
-	           data = data.replace(/^\[|\]$/g, '');
-	           data = data.replace(/^\[|\]$/g, '');
-	           var valuesArray = data.split(',');
-	           for (var i = 0; i < valuesArray.length; i++) {
-	        	    valuesArray[i] = valuesArray[i].replace(/^"|"$/g, '');
-	        	}
+	        var field2Value = $("#fullcontractno1").val();
 
-	           $('#MRNo1').val(valuesArray[0]);
-	           $('#BaleMark1').val(valuesArray[1]);
-	          
-	           $('#CropYear1').val(valuesArray[2]);
-	      
-	           $('#QualityClaim1').val(valuesArray[3]);
-	           $('#MoistureContent1').val(valuesArray[4]);
-	           $('#NCVPercentage1').val(valuesArray[5]); 
-	           $('#ChallanNo1').val(valuesArray[6]); 
-
-	        },
-	        error: function(error) {
-	            alert("Error: " + error);
-	        }
-	    });
-
-	    });
-	});
-
-      
-      </script>
-
-	<script>
-    $(document).ready(function(){
-      
-        setTimeout(function(){
-            $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
-    });
-</script>
-
-
-
-	<script type="text/javascript">
-      
- $(document).ready(function() {
-	    $('#fullcontractno1').on('change', function() {
-	    var field2Value = $(this).val();
-	   
-	      $.ajax({
+	        $.ajax({
 	            type: 'GET',
-	            url: 'paymentdetailsforshow.obj',
+	            url: 'fetchingdatanominactionclaim.obj',
 	            data: { "contractno": field2Value },
-	            success: function(data) {
-	            //alert(data)
-	            	 try {
-	        	            var dataArray = JSON.parse(data);
+	            success: function(result) {
+	            	var data = result;
+	            	alert(data);
+	            	alert(typeof data);
+	            	console.log(data);
+	            	data = data.replace(/^\[|\]$/g, '');
+	            	data = data.replace(/^\[|\]$/g, '');
+	            	var parts = data.split(",");
+	            	alert(parts[0] + "-----------" + parts[1]);
 
-	        	            if (dataArray && dataArray.length > 0) {
-	        	                var Contarctqty = dataArray[0][0];
-	        	                var Contarctdate = dataArray[0][2];
-	        	                var ContarctValue = dataArray[0][1];
-	        	                var Paymentduedate = dataArray[0][3];
-	        	                var mill_name = dataArray[0][4];
-	        	                
-	        	               var GradeComposition = dataArray[0][5];
-	     					
-	        	               $.ajax({
-	     			                  type: 'GET',
-	     			                  url: 'greadewiseqty.obj',
-	     			                  data: { "contractno": GradeComposition, 
-	     			                	  "contractqty": Contarctqty },
-	     			                      success: function(secondData) {
-	     			                    // alert(secondData)
-	     			                      try { 
-	     			                      var dataArray = JSON.parse(secondData);
+	            	var inspectionDate = parts[0].replace(/^"|"$/g, ''); // Remove double quotes from the beginning and end of the string
+	            	var millName = parts[1].replace(/^"|"$/g, ''); // Remove double quotes from the beginning and end of the string
 
-	     			                     if (dataArray && dataArray.length > 0) {
-	     			                    	var g11 = dataArray[0][0];
-	     		        	                var g12 = dataArray[0][1];
-	     		        	                var g21 = dataArray[1][0];
-	     		        	                var g22 = dataArray[1][1];
-	     		        	                var g31 = dataArray[2][0];
-	     		        	                var g32 = dataArray[2][1];
-	     		        	                var g41 = dataArray[3][0];
-	     		        	                var g42 = dataArray[3][1];
-	     		        	                var g51 = dataArray[4][0];
-	     		        	                var g52 = dataArray[4][1];
-	     		        	                var g61 = dataArray[5][0];
-	     		        	                var g62 = dataArray[5][1];
-	     		        	           /*  alert(typeof dataArray[5][1]); */
-	     		        	                  var totalsum = 0; 
 
-	     		        	                  for (var i = 0; i < dataArray.length; i++) {
-	     		        	                      totalsum += (dataArray[i][1]);
-	     		        	                  }
+	            	// Parse inspection date
+	            	var inspectionDateParts = inspectionDate.split("-");
+	            	var year = inspectionDateParts[2];
+	            	var month = inspectionDateParts[1];
+	            	var day = inspectionDateParts[0];
 
-	     		        	                
-	     		        	               
-	     		     					  $('#g11').val(g11);
-	     		        	              $('#g12').val(g12);
-	     		        	              $('#g21').val(g21);
-	     		        	              $('#g22').val(g22);
-	     		        	              $('#g31').val(g31);
-	     		        	              $('#g32').val(g32);
-	     		        	              $('#g41').val(g41);
-	     		        	              $('#g42').val(g42);
-	     		        	              $('#g51').val(g51);
-	     		        	              $('#g52').val(g52);
-	     		        	              $('#g61').val(g61);
-	     		        	              $('#g62').val(g62);
-	     		        	              $('#g72').val(totalsum.toFixed(2)); 
-	     			                    	 
-	     			                     }
-	     			             	        } catch (error) {
-	     			             	            console.error("Error parsing JSON: " + error);
-	     			             	        }
-	     		},
-	     			                  error: function(error) {
-	     			                      console.error('Second Ajax call error:', error);
-	     			                  }
-	     			              });
-	        	            }
-	            	 }
-	        	         catch (error) {
-	        	            console.error("Error parsing JSON: " + error);
-	        	        }
-	        	           
-	        	   }
-	          }); 
+	            	// Format the date as yyyy-MM-dd
+	            	var formattedInspectionDate = year + "-" + month + "-" + day;
+
+	            	// Setting values to respective fields
+	            	$('#mill').val(millName);
+	            	$('#Dateofinspection12').val(formattedInspectionDate);
+
+	            },
+	            error: function(error) {
+	                console.error("Error: " + error);
+	                // Handle error here
+	            }
+	        });
 	    });
 	});
 
       
+      </script>  -->
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#q").hide();
+	    $('#SettlementId1').on('change', async function() {
+	        var field2Value = $("#SettlementId1").val();
+			
+	        try {
+	            const result = await $.ajax({
+	                type: 'GET',
+	                url: 'fetchSettlementData.obj',
+	                data: { "id": field2Value }
+	            });
+				
+	            var data = JSON.parse(result);
+	            console.log(result)
+	            var dateString = data[0][1];
+	            $("#mill").val( data[0][15]);
+	            $("#mrNo").val(data[0][16]);
+	            
+	            
+	           
+	            $("#mrDate").val(formattedDate1);
+
+	            var date = new Date(dateString); // Assuming dateString is defined elsewhere
+	            var day = date.getDate();
+	            var month = date.getMonth() + 1;
+	            var year = date.getFullYear();
+	            var formattedDay = day < 10 ? '0' + day : day;
+	            var formattedMonth = month < 10 ? '0' + month : month;
+	            var formattedYear = year;
+	            var formattedDate = formattedDay + '-' + formattedMonth + '-' + formattedYear;
+
+	            var tableHTML = "<table border='1'>";
+	            tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
+	                "<th style='font-weight: bold;'>Moisture Claim Percentage</th><th style='font-weight: bold;'>Moisture Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th></tr>";
+	            for (var i = 0; i < data.length; i++) {
+	            	 var grade = data[i][3];
+	            	    var readOnly = (grade === 'TDN5' || grade === 'WN5' || grade === 'M6' || grade === 'B6') ? 'readonly' : '';
+	            	 var date1 = new Date(data[i][17]);
+	 	            var day1 = date1.getDate();
+	 	            var month1 = date1.getMonth() + 1;
+	 	            var year1 = date1.getFullYear();
+	 	            var formattedDay1 = day1 < 10 ? '0' + day1 : day1;
+	 	            var formattedMonth1 = month1 < 10 ? '0' + month1 : month1;
+	 	            var formattedYear1 = year1;
+	 	            var formattedDate1 = formattedDay1 + '-' + formattedMonth1 + '-' + formattedYear1;
+	 	            alert(formattedDate1);
+	                tableHTML += "<tr>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='jv"+i+"' name='jv"+i+"' value='" + data[i][2] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='jg"+i+"' name='jg"+i+"' value='" + data[i][3] + "'></td>";
+
+	                tableHTML += "<td style='text-align:center;'> <input readonly id='cont"+i+"' name='cont"+i+"' value='" + data[i][13] + "'></input></td>";
+                    
+	                tableHTML += "<td style='text-align:center;'><input readonly id='di"+i+"' name='di"+i+"' value='" + data[i][14] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='ch"+i+"' name='ch"+i+"' value='" + data[i][12] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='mn"+i+"' name='mn"+i+"' value='" + data[i][16] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='md"+i+"' name='md"+i+"' value='" + formattedDate1 + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='nob"+i+"' name='nob"+i+"' value='" + data[i][8] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='amt"+i+"' name='amt"+i+"' value='" + data[i][4] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='pr"+i+"' name='pr"+i+"' type='number' value='" + data[i][9] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='qc"+i+"' name='qc"+i+"' value='" + data[i][5] + "%'></td>";
+	                tableHTML += "<td style='text-align:center;'>";
+	                tableHTML += "<input type='number' style='text-align:center; width:80px;' id='qs" + i + "' name='qs" + i + "' value='0.00' " + readOnly + ">";
+	                tableHTML += "</td>";
+	                tableHTML += "<td style='text-align:center;  ' id='mc"+i+"'>" + data[i][6] +"%"+ "</td>";
+	                tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ms" + i + "'   name='ms" + i + "' value='0.00'></td>";
+	                tableHTML += "<td style='text-align:center;  ' id='nc"+i+"'>" + data[i][7] +"%"+ "</td>";
+	                tableHTML += "<td style='text-align:center;  ' id='nq"+i+"'>" + data[i][11] + "</td>";
+	                tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ns"+i+"' name='ns"+i+"' value='0.00'></td>";
+	                tableHTML += "<td style='text-align:center;  '  id='dc"+i+"'>" + data[i][7]+"%" + "</td>";
+	                tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ds"+i+"'  name='ds"+i+"' value='0.00'></td>";
+	                tableHTML += "</tr>";
+	            }
+	            tableHTML += "</table>";
+	            tableHTML += "<button class='settlementButton'>Calculate</button>";
+	            $("#form2").html(tableHTML);
+	            $("#q").val(data.length);
+	           
+	            $("#CropYear1").val(data[0][10]);
+	            $("#mrDate").val(formattedDate);
+	            $("#mrNo").val(data[0][0]);
+
+	            var settle = "<label>Settlement Amount</label> <span class='text-danger'>*</span>&nbsp; <span id='Settlement_Amount' name='Settlement_Amount' class='text-danger'></span> <input class='form-control taxtbox' name='SettlementAmount' id='SettlementAmount1' readonly placeholder='Settlement Amount' required>";
+	            $("#form3").html(settle);
+
+	            $(document).on('click', '.settlementButton', async function(event) {
+	                event.preventDefault();
+	                event.stopPropagation(); 
+	                
+	                var Contract = $("#fullcontractno1").val();
+	                var len = data.length;
+	                var totalSettlementAmount = 0;
+
+	                for (var index = 0; index < len; index++) {
+	                    var nsValue = parseFloat($('#ns' + index).val()).toFixed(2);
+	                    var dsValue = parseFloat($('#ds' + index).val()).toFixed(2);
+	                    var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
+	                    var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
+	                    var price = parseFloat($('#pr'+index).val()).toFixed(2);
+	                    alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
+	                    var ms = parseFloat($('#ms'+index).val()).toFixed(2);
+	                    var dsAmount = (dsValue / 100) * amtValue;
+	                    var nsAmount = (nsValue / 100) * amtValue;
+	                    var dnsPrice= (dsAmount+nsAmount)* price;
+	                    var msQty= (ms / 100) * amtValue;
+					    var msAmount = (ms / 100) * amtValue * price;
+	                    if (!isNaN(nsValue) && !isNaN(dsValue) && !isNaN(amtValue)) {
+	                        var amti = amtValue - (dsAmount + nsAmount+msQty) ;
+	                        var amtiFixed = amti.toFixed(2);
+	                      
+	                        
+	                        try {
+	                            const result = await $.ajax({
+	                                type: 'GET',
+	                                url: 'fetchPrice.obj',
+	                                data: {
+	                                    "variety": data[index][2],
+	                                    "grade": data[index][3],
+	                                    "contract": data[index][13]
+	                                }
+	                            });
+
+	                            const fetchedData = parseFloat(JSON.parse(result));
+	                            
+	                            
+	                            const AmountSet = amtiFixed * (qsValue/100) * (price - fetchedData);
+	                         
+	                            totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
+	                            alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
+	                        } catch (error) {
+	                            alert("Error fetching data: " + error);
+	                        }
+	                    }
+	                }
+	               /*  $('#Settlement_Amount').text(totalSettlementAmount); */
+	               alert(totalSettlementAmount)
+	                $("#SettlementAmount1").val(totalSettlementAmount.toFixed(2));
+	                $("#sub").prop("disabled", false);
+	            });
+	        } catch (error) {
+	            alert("Error: " + error);
+	        }
+	    });
+	});
+ 
       </script>
 
+	
 
-	<script>
-    function deleteErrorMsg(){
-    	var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value; 
-   		 if(F_BANK_IFSC.length>1){
-	       $("#errIFSC").hide();
-	    }
-   		var F_REG_FORM = document.forms["myForm"]["F_REG_FORM"].value; 
-        if(F_REG_FORM.length>1){
-       	    $("#errRegForm").hide();
-       	}
 
-}
-	}
+
+<script>
+   
+	
     function allow_alphabets(element){
       let textInput = element.value;
         textInput = textInput.replace(/[^A-Za-z ]+$/gm, ""); 
         element.value = textInput; 
     }
 </script>
+<script>
+function myFunc(){
+/* 	var maxQ = $('#Quality_Settlement1').attr('max');
+	alert(maxQ);
+	var maxMoisture = $('#Moisture_Settlement1').attr('max');
+	alert(maxMoisture);
+	var maxN = $('#NCV_Settlement1').attr('max');
+	alert(maxN)
+	 if($('#Quality_Settlement1').attr('max') > $('#Quality_Settlement1').val() || $('#Moisture_Settlement1').attr('max' )> $('#Moisture_Settlement1').val() || $('#NCV_Settlement1').attr('max')<$('#NCV_Settlement1').val())
+	{	
+		 return false;
+	
+	
+	}
+	 else */ return true;
+}
+</script>
+
 	<script type="text/javascript">
       
 

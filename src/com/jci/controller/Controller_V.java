@@ -1,5 +1,4 @@
 package com.jci.controller;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
@@ -99,8 +99,12 @@ import com.jci.model.RoDetailsModel;
 import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
 import com.jci.model.UserRegistrationModel;
+
 import com.jci.model.UserRoleModel;
 import com.jci.model.ZoneModel;
+
+import com.jci.model.jciWeighmentEntry;
+
 import com.jci.model.settlemetCnDnModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
@@ -133,7 +137,9 @@ import com.jci.service.Impl.sendemailBOS;
 import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
+import com.jci.service_phase2.WeighmentEntryService;
 import com.lowagie.text.DocumentException;
+
 import com.microsoft.schemas.office.excel.CTClientData;
 import com.microsoft.schemas.office.excel.CTClientData.Factory;
 
@@ -147,10 +153,17 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 
+import com.jci.service_phase2.verifyClaimService;
+import antlr.TokenWithIndex;
+
 @Transactional
 @Repository
 @Controller
 public class Controller_V {
+	@Autowired
+	verifyClaimService verifyClaimService;
+	@Autowired
+	WeighmentEntryService weighmentEntryService;
 	@Autowired
 	HOInstService hoInstService;
 
@@ -3214,9 +3227,6 @@ public class Controller_V {
 		}
 	}
 
-	@Value("${upload.Confirmationsettlement}")
-	String Confirmationsettlement;
-
 	// save page of generation bill of supply
 
 	@Value("${upload.Genrationofbill}")
@@ -5006,7 +5016,7 @@ public class Controller_V {
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
 	public String fetchingdatanominactionclaim(@RequestParam("contractno") String contractno) {
 		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
-		System.err.println("resultList++++++++++" + getsettlementlist);
+		System.err.println("MILL and DOI---" + getsettlementlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(getsettlementlist);
 		return resultString;
@@ -5022,8 +5032,11 @@ public class Controller_V {
 		return resultString;
 	}
 
+	@Value("${upload.Confirmationsettlement}")
+	String ConfirmationOfClaim;
+
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
-	public ModelAndView saveConfirmationOfClaimSettelment(HttpServletRequest request,
+	public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpServletRequest request,
 			RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
 		final File theDir = new File("Confirmationsettlement");
@@ -5034,15 +5047,23 @@ public class Controller_V {
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
-
+			String count = request.getParameter("q");
+			int cnt = Integer.parseInt(count);
+			System.err.println(count);
+			System.err.println(count);
+			System.err.println(count);
+			System.err.println(count);
 			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
+			
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
 
-			int Settlement_Id12 = Integer.parseInt(Settlement_Id1);
-			String Date_of_inspection1 = request.getParameter("Dateofinspection");
-			String fullcontractno = request.getParameter("fullcontractno");
-			String Challan_No1 = request.getParameter("Challan_No1");
-			final File theDirect = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\");
+		
+			
+
+			
+			
+			
+			final File theDirect = new File(ConfirmationOfClaim);
 			if (!theDirect.exists()) {
 				theDirect.mkdirs();
 			}
@@ -5053,64 +5074,80 @@ public class Controller_V {
 
 			final String filename = SupportingDocument.getOriginalFilename();
 			System.err.println(filename + "---------");
+			String rolename = (String) session.getAttribute("rolename");
+			
+			
 
 			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
+			
+			String Claim_Amount1 = request.getParameter("SettlementAmount");
 
-			String Claim_Amount1 = request.getParameter("ClaimAmount");
+			
+          for(int i=0;i<cnt;i++) {
+        	  String fullcontractno = request.getParameter("cont"+i);
+        	  System.err.println(fullcontractno);
+        	  String Challan_No1 = request.getParameter("ch"+i);
+        	  System.err.println(Challan_No1);
+        	  String Date_of_inspection1 = request.getParameter("di"+i);
+        	  System.err.println(Date_of_inspection1);
+        	  if (Claim_Amount1 != null) {
 
-			if (Claim_Amount1 != null) {
-
-				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			} else {
-				double Claim_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
-			}
-
-			String Quality_Settlement1 = request.getParameter("Quality_Settlement1");
+  				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
+  				confirmationClaimSettlementModel.setSettlement_amt(Claim_Amount12);
+  			} else {
+  				double Claim_Amount12 = defaultValue;
+  				confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+  			}
+			String Quality_Settlement1 = request.getParameter("qs"+i);
+			System.err.println("Quality_Settlement1:" + Quality_Settlement1);
 			if (Quality_Settlement1 != null) {
 
 				double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
+				System.err.println("Quality_Settlement12:" + Quality_Settlement12);
 				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 			} else {
 				double Quality_Settlement12 = defaultValue;
 				confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 			}
 
-			String Moisture_Settlement1 = request.getParameter("Moisture_Settlement1");
+			String Moisture_Settlement1 = request.getParameter("ms"+i);
+			System.err.println("Moisture_Settlement1:" + Moisture_Settlement1);
 			if (Moisture_Settlement1 != null) {
 
 				double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
+				System.err.println("Moisture_Settlement12:" + Moisture_Settlement12);
 				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 			} else {
 				double Moisture_Settlement12 = defaultValue;
 				confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 			}
 
-			String NCV_Settlement1 = request.getParameter("NCV_Settlement1");
+			String NCV_Settlement1 = request.getParameter("ns"+i);
+			System.err.println("NCV_Settlement1:" + NCV_Settlement1);
 			if (NCV_Settlement1 != null) {
 
 				double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
+				System.err.println("NCV_Settlement12:" + NCV_Settlement12);
 				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
 			} else {
 				double NCV_Settlement12 = defaultValue;
 				confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
 			}
 
-			String Settlement_Amount1 = request.getParameter("SettlementAmount");
 
-			if (Settlement_Amount1 != null) {
-
-				double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			} else {
-				double Settlement_Amount12 = defaultValue;
-				confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
-			}
-
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
+			SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy"); // Corrected format for parsing
 			Date instdate1 = formatter1.parse(Date_of_inspection1);
-			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id12);
+			
+//			// Formatting the date for display in DD-MM-YYYY format
+//			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//			String formattedDate = formatter2.format(instdate1);
+//			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+//			Date parsedDate = originalFormat.parse(formattedDate);
+//			System.err.println(formattedDate); // Print formatted date string
+
+			// Set the original Date object to the model
+
+			confirmationClaimSettlementModel.setSettlement_id(Settlement_Id1);
 			// confirmationClaimSettlementModel.setMill(Settlement_Id12);
 			confirmationClaimSettlementModel.setDate_of_Inspection(instdate1);
 			confirmationClaimSettlementModel.setContract_No(fullcontractno);
@@ -5121,20 +5158,20 @@ public class Controller_V {
 //			confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
 
 			Date date1 = new Date();
-			confirmationClaimSettlementModel.setInspection_date(date1);
+			String millName = request.getParameter("mill");
 			confirmationClaimSettlementModel.setDispute_flag(0);
-			confirmationClaimSettlementModel.setOM_Official("vishal");
-			confirmationClaimSettlementModel.setMill("1");
-			confirmationClaimSettlementModel.setFA_Official("Pradeep");
-			confirmationClaimSettlementModel.setCreated_by("kailash");
+			confirmationClaimSettlementModel.setOM_Official(username);
+			confirmationClaimSettlementModel.setMill(millName);
+			confirmationClaimSettlementModel.setFA_Official("");
+			confirmationClaimSettlementModel.setCreated_by(username);
 			confirmationClaimSettlementModel.setCreated_on(date1);
+
 			File file = null;
 			String url = "";
 			String pathurl = "";
 			if (!SupportingDocument.isEmpty()) {
 				try {
-					file = new File("C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\"
-							+ SupportingDocument.getOriginalFilename());
+					file = new File(ConfirmationOfClaim + SupportingDocument.getOriginalFilename());
 					final OutputStream os = new FileOutputStream(file);
 					os.write(SupportingDocument.getBytes());
 					os.close();
@@ -5149,11 +5186,14 @@ public class Controller_V {
 				System.err.println("outside catch file----");
 			}
 			this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
+          }
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
 		} catch (Exception e) {
 			System.err.println("overall catch inside----");
+			redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\">" +
+	                "<b>Error!</b> Failed to save record.</div>");
 
 		}
 		if (username == null) {
@@ -5181,7 +5221,7 @@ public class Controller_V {
 
 	@RequestMapping("downloadSupportDocument")
 	public void downloadDocs(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imagePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\ClaimSettlement\\" + filename;
+		String imagePath = ConfirmationOfClaim + filename;
 		File imageFile = new File(imagePath);
 
 		// Check if the file exists
@@ -5215,178 +5255,172 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-
-/// ///////////////////////////////////////////////mill registration//////////////////////////////////////
-
-	@RequestMapping("millRegisteration")
-	public ModelAndView Vi(Model model, HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		ModelAndView mv = new ModelAndView("millRegistration");
-
-		if (username == null) {
-
-			mv = new ModelAndView("index");
-
-		}
-		List<String> millid = millRegistrationService.MillName();
-		mv.addObject("millid", millid);
-
-		// model.addAttribute("AllList", AllList);
-		return mv;
-	}
-
+	
 	@ResponseBody
-	@RequestMapping(value = "millcodefetch", method = RequestMethod.GET)
-	public String MillCodeFetch(@RequestParam("millid") String millid) {
-
-		List<Object> millReceiptData = millRegistrationService.FetchMillReceiptData(millid);
-
+	@RequestMapping(value = {"fetchChallan"}, method = {RequestMethod.GET})
+	public String fetchClaim(@RequestParam("id") String id, HttpServletRequest request,HttpSession session) {
+		System.err.println("Reached challan");
+		String username = (String) request.getSession().getAttribute("usrname");
+		List<Object[]> list =confirmationofClaimSettlementService.fetchChallan(id);
 		Gson gson = new Gson();
-		String jsonResponse = gson.toJson(millReceiptData);
-
-		return jsonResponse;
-
+		String resultString = new Gson().toJson(list);
+		System.err.println("-----------------------"+list);
+		return resultString;
+		
+		
 	}
-
-//@ResponseBody
-//@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
-//public boolean validatemillEmail(@RequestParam("emailAddress") String emailAddress) {
-//	
-//    final Gson gson = new Gson();
-//   return this.millRegistrationService.validatemillEmail(emailAddress);
-//        // return emailNotExist;
-//}
-	@ResponseBody
-	@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
-	public String validatemillEmail(final HttpServletRequest request) {
-
-		final Gson gson = new Gson();
-		return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
-	}
-
-	@RequestMapping("savemillregister")
-	public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
-			HttpSession s) throws IllegalStateException, IOException {
+	// Verification of Weighment Slip
+	@RequestMapping({ "WeightmentSlipList" })
+	public ModelAndView WeightmentSlipList(HttpSession session, HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
-
-		String mill_name = request.getParameter("mill_name");
-
-		String mill_password = request.getParameter("mill_password");
-		String confirm_mill_password = request.getParameter("confirm_mill_password");
-
-		String mill_code = request.getParameter("mill_code");
-		String mill_emailaddress = request.getParameter("mill_emailaddress");
-
-		String mill_mobile = request.getParameter("mill_mobile");
-		String official_name = request.getParameter("official_name");
-		String official_designation = request.getParameter("official_designation");
-
-		// Creating object of
-
-		MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
-		millRegistrationModel.setMill_name(mill_name);
-		millRegistrationModel.setOfficial_name(official_name);
-		millRegistrationModel.setOfficial_designation(official_designation);
-		millRegistrationModel.setMill_code(mill_code);
-		millRegistrationModel.setMill_emailaddress(mill_emailaddress);
-		millRegistrationModel.setMill_mobile(mill_mobile);
-		millRegistrationModel.setMill_password(mill_password);
-		millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
-		// ModelAndView mv = new ModelAndView();
-		final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
-		if (emailNotExist) {
-			millRegistrationService.create(millRegistrationModel);
-			// final boolean emailNotExist =
-			// this.UserRegistrationService.validateEmail(email);
-			redirectAttributes.addFlashAttribute("msg",
-					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-			return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-		} else {
-			redirectAttributes.addFlashAttribute("msg",
-					(Object) "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with  another email.</div>\r\n");
-			return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		}
-//return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-
-	}
-
-	@RequestMapping("viewmillRegistration")
-
-	public String ViewmillRegistration(Model model, HttpServletRequest request) {
-
-		List<MillRegistrationModel> AllList = (List<MillRegistrationModel>) millRegistrationService.getAll();
-
-		Collections.reverse(AllList);
-
-		model.addAttribute("AllList", AllList);
-		// int MillRegistrationId =
-		// Integer.parseInt(request.getParameter("MillRegistration_id"));
-
-		return "viewMillRegistration";
-
-	}
-
-	@RequestMapping({ "updateMillRegistration" })
-	public ModelAndView updateMillRegistration(HttpServletRequest request, RedirectAttributes redirectAttributes)
-			throws NumberFormatException, Exception {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView();
 		if (username == null) {
-			mv = new ModelAndView("index");
+			return new ModelAndView("index");
 		}
-		int MillRegistrationId = Integer.parseInt(request.getParameter("id"));
-
-		millRegistrationService.ResetPassword(MillRegistrationId);
-
-		redirectAttributes.addFlashAttribute("msg",
-				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
-		return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-	}
-
-///////////////////////////////////////// mill login ////////////////////////////////////////////////////////////////////////////////////////////
-	@RequestMapping("millLogin")
-	public ModelAndView login(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.invalidate();
-
-		ModelAndView mv = new ModelAndView("millLogin");
-
+		String Ro_id = (String) session.getAttribute("region");
+		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+		ModelAndView mv = new ModelAndView("WeightmentSlipList");
+		mv.addObject("WeightmentList", list);
+		System.err.println(list.toString());
 		return mv;
 	}
 
-	@RequestMapping("millloginAction")
-	public ModelAndView loginDetailsCheck1(HttpServletRequest request, RedirectAttributes redirectAttributes,
+	@RequestMapping(value = { "WeightmentById" }, method = RequestMethod.GET)
+	public ModelAndView ListOFWeightmentSlipById(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String id = request.getParameter("id");
+		System.err.println(id);
+		System.err.println(id);
+		System.err.println(id);
+		ModelAndView mv = new ModelAndView("VerificationOfWeightment");
+		List<Object[]> list = weighmentEntryService.getSlipDetails(id);
+		mv.addObject("Data", list);
+		/*
+		 * jciWeighmentEntry list =
+		 * weighmentEntryService.ListOFWeightmentSlipById(Weighment_id);
+		 */
+
+		/*
+		 * if(list!=null) { return new ServiceResponse<>(new
+		 * BaseMessageResponse<>(HttpStatus.OK.value(), list, "true", "Success"),
+		 * HttpStatus.OK);}else { return new ServiceResponse<>(new
+		 * BaseMessageResponse<>(HttpStatus.NOT_FOUND.value(), list, "false",
+		 * "No Data Found"), HttpStatus.NOT_FOUND); }
+		 */
+		return mv;
+	}
+
+	@RequestMapping(value = { "verifyWeightmentSlip" }, method = RequestMethod.POST)
+	public ModelAndView saveWeightmentSlip(@ModelAttribute jciWeighmentEntry weighmentSlip, HttpServletRequest request,
 			HttpSession session) {
-		ModelAndView mv = new ModelAndView("millLogin");
-
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		System.err.println(weighmentSlip);
 		try {
-			String email = request.getParameter("email");
-			String password = request.getParameter("password");
+			Date currDate = new Date();
 
-			if (email != null && password != null) {
-				String ifExist = millRegistrationService.checkLogin(email, password);
-				String millcode = millRegistrationService.checkmillcode(email);
-				String useremail = millRegistrationService.checkmillemail(email);
+			String BosNo = request.getParameter("billNo");
+			Double gross = Double.parseDouble(request.getParameter("DPCGrossWt"));
+			Double actual = Double.parseDouble(request.getParameter("DPCqty"));
+			Double net = Double.parseDouble(request.getParameter("DPCNetqty"));
 
-				if (ifExist == null) {
-					mv.addObject("msg",
-							"<div class=\"alert alert-danger\"><b>Failure !</b>Please Enter correct username and password.</div> \r\n");
-				} else {
-					// session.setAttribute("email", email);
-					session.setAttribute("millcode", millcode);
-					session.setAttribute("useremail", useremail);
-					mv = new ModelAndView(new RedirectView("viewmillAcc.obj"));
-
-				}
-			}
+			weighmentEntryService.editVerification(gross, actual, net, currDate, BosNo);
 
 		} catch (Exception e) {
-			System.out.println(e);
+			// Handle IO exception
+
 		}
+		String Ro_id = (String) session.getAttribute("region");
+		List<Object[]> list = weighmentEntryService.WeightmentSlipList(Ro_id);
+
+		ModelAndView model = new ModelAndView("WeightmentSlipList");
+		model.addObject("WeightmentList", list);
+		return model;
+	}
+
+	// Verify Claim by FA official
+	@RequestMapping(value = { "verifyClaimReport" }, method = RequestMethod.GET)
+	public ModelAndView VerifyClaimReport(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
+		String Ro_id = (String) session.getAttribute("region");
+
+		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		System.err.println(getSettlementidlist);
+		redirectAttributes.addFlashAttribute("msg",
+				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+		ModelAndView mv = new ModelAndView("verifyClaimReport");
+		mv.addObject("getSettlementidlist", getSettlementidlist);
+
 		return mv;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "fetchClaims.obj", method = RequestMethod.GET)
+	public String fetchClaims(@RequestParam("id") String settlementId) {
+		System.err.println("Reached");
+		List<Object[]> list1 = verifyClaimService.fetchClaimsMill(settlementId);
+
+		System.err.println(list1.toString());
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(list1);
+		return resultString;
+
+	}
+
+	@ResponseBody
+	@RequestMapping(value = {"acceptClaim"}, method = RequestMethod.GET)
+	public String acceptClaim(@RequestParam("id") Integer id, HttpSession session, HttpServletRequest request) {
+	    System.err.println("Reached Accept");
+	    String username = (String) request.getSession().getAttribute("usrname");
+	    verifyClaimService.acceptClaim(id, username);
+	    System.out.println("username" + username);
+	    return "true";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = {"rejectClaim"}, method = {RequestMethod.GET})
+	public String rejectClaim(@RequestParam("id") Integer id, HttpServletRequest request,HttpSession session) {
+		System.err.println("Reached Reject");
+		String username = (String) request.getSession().getAttribute("usrname");
+		verifyClaimService.rejectClaim(id, username);
+		
+		return "true";
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = {"fetchPrice"}, method = {RequestMethod.GET})
+	public String fetchPrice(@RequestParam("variety") String var,@RequestParam("grade") String gr,@RequestParam("contract") String Contract, HttpServletRequest request,HttpSession session) {
+		System.err.println("Reached Price"+gr+"var"+var);
+		System.err.println(var+"0000000000000"+ gr);
+		char lastChar = gr.charAt(gr.length() - 1); // Extract the last character
+		int gradeNumber = Character.getNumericValue(lastChar); // Convert the character to an integer
+		gradeNumber++; // Increment the integer by 1
+		String grade = "grade" + gradeNumber; // Concatenate with "grade_"
+
+		String username = (String) request.getSession().getAttribute("usrname");
+		String dpcId = (String) request.getSession().getAttribute("dpcId");
+		
+		String cropyear = (String) request.getSession().getAttribute("currCropYear");
+		System.err.println(dpcId+"-"+cropyear+"--"+var+"--"+grade+"--"+Contract);
+		String priceString= confirmationofClaimSettlementService.fetchPrice(var,grade,dpcId,cropyear,Contract);
+//		verifyClaimService.rejectClaim(id, username);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(priceString);
+		System.err.println("----------------"+resultString);
+		return resultString;
+		
+		
+	}
+	
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

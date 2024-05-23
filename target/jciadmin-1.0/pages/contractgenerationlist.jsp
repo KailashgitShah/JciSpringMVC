@@ -120,7 +120,6 @@
 										<%-- <div class="col-sm-2"><%=contract.getContract_date()%></div> --%>
 										<div class="col-sm-2"><%=contract.getContract_qty()%></div>
 									</div>
-
 								</button>
 							</h5>
 						</div>
