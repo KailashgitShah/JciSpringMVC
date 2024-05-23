@@ -512,7 +512,8 @@ $(document).ready(function(){
 	                                data: {
 	                                    "variety": data[index][2],
 	                                    "grade": data[index][3],
-	                                    "contract": data[index][13]
+	                                    "contract": data[index][13],
+	                                    "challan": data[index][12]
 	                                }
 	                            });
 

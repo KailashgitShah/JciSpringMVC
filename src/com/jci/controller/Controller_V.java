@@ -4847,7 +4847,7 @@ public class Controller_V {
 	
 	@ResponseBody
 	@RequestMapping(value = {"fetchPrice"}, method = {RequestMethod.GET})
-	public String fetchPrice(@RequestParam("variety") String var,@RequestParam("grade") String gr,@RequestParam("contract") String Contract, HttpServletRequest request,HttpSession session) {
+	public String fetchPrice(@RequestParam("variety") String var,@RequestParam("grade") String gr,@RequestParam("contract") String Contract,@RequestParam("challan") String Challan, HttpServletRequest request,HttpSession session) {
 		System.err.println("Reached Price"+gr+"var"+var);
 		System.err.println(var+"0000000000000"+ gr);
 		char lastChar = gr.charAt(gr.length() - 1); // Extract the last character
@@ -4856,11 +4856,11 @@ public class Controller_V {
 		String grade = "grade" + gradeNumber; // Concatenate with "grade_"
 
 		String username = (String) request.getSession().getAttribute("usrname");
-		String dpcId = (String) request.getSession().getAttribute("dpcId");
+		/* String dpcId = (String) request.getSession().getAttribute("dpcId"); */
 		
 		String cropyear = (String) request.getSession().getAttribute("currCropYear");
-		System.err.println(dpcId+"-"+cropyear+"--"+var+"--"+grade+"--"+Contract);
-		String priceString= confirmationofClaimSettlementService.fetchPrice(var,grade,dpcId,cropyear,Contract);
+		System.err.println(Challan+"-"+cropyear+"--"+var+"--"+grade+"--"+Contract);
+		String priceString= confirmationofClaimSettlementService.fetchPrice(var,grade,Challan,cropyear,Contract);
 //		verifyClaimService.rejectClaim(id, username);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(priceString);
