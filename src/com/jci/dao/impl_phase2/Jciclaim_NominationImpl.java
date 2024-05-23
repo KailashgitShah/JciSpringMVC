@@ -36,7 +36,9 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	}
 
 	@Override
-	public void create(Jciclaim_NominationModel nominal) {
+	public void create(Jciclaim_NominationModel nominal ) {
+		
+		
 		currentSession().save(nominal);
 
 	}
@@ -111,7 +113,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		           "WHERE jcimilldetailchild.unit_name = '" + millid + "'";
 
 		List<Object> ContractListData = (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
-		System.out.println(ContractListData);
+		//System.out.println(ContractListData);
 
 		return ContractListData;
 	}
@@ -130,7 +132,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		// TODO Auto-generated method stub
 		String q = "SELECT username from where roles_name = '" + role + "'";
 		List<String> OmUsername = (List<String>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
-		System.out.println(OmUsername);
+		//System.out.println(OmUsername);
 
 		return OmUsername;
 	}
@@ -141,7 +143,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		String q = "SELECT username from where roles_name = '" + role + "'";
 
 		List<String> FMUsername = (List<String>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
-		System.out.println(FMUsername);
+		//System.out.println(FMUsername);
 
 		return FMUsername;
 	}
@@ -221,6 +223,14 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 		// TODO Auto-generated method stub
 		return MillEmail;
+	}
+
+	@Override
+	public void claimStatusUpdate(String ContractNoForClaimStatusUpdate) {
+		String Contract_Staus_Change = "Official Nomination done";
+		String hql = "UPDATE jcicontract set  Contract_status = 'Official Nomination done' where Contract_no = '" + ContractNoForClaimStatusUpdate + "' ";
+	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+		
 	}
 
 }

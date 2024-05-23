@@ -450,7 +450,6 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 		Session session = sessionFactory.getCurrentSession();
 		SQLQuery query = session.createSQLQuery(querystr);
 		String password = (String)query.uniqueResult();
-		System.err.println("flag"+password);
 		return password;
 	}
 

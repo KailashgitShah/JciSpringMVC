@@ -11,7 +11,7 @@ public interface CreditNoteGenerationService {
 
 	public void create(CreditNotes creditNotes);
 
-	public List<CreditNotes> getAllCreditNotes();
+	public List<Object[]> getAllCreditNotes();
 
 	public void chageStatusTo1(int id);
 
@@ -22,4 +22,20 @@ public interface CreditNoteGenerationService {
 	public List<Object[]> findDetails(String string, String contractNoString);
 
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel);
+
+	public List<String> getParamenterDetails(String parameter);
+
+	public List<Object[]> showFilterData(String parameter, String basedOn);
+
+	public double getAvgJuteValue(String challanNo);
+
+	public List<Object[]> getShipmentDetailsByChallanNo(String challanNo);
+
+	public List<Object[]> getMillDetailsByCode(String millcode);
+
+	public List<Object[]> getDispatchDetails(String challanNo);
+
+	public List<Object> getGradeRatio(String challanNo);
+
+	public List<Object> getChallanDetails(String challan);
 }

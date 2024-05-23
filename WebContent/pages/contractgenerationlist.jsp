@@ -109,7 +109,7 @@
 						<div class="card-header" id="heading<%=i%>">
 							<h5 class="mb-0">
 								<button class="btn text-dark btn-link w-100" type="button"
-									onclick="findDetails('<%=contract.getContract_identification_no()%>','<%=i%>')"
+									onclick="findDetails('<%=contract.getContract_identification_no()%>' ,'<%=contract.getPcso_date()%>','<%=i%>')"
 									data-toggle="collapse" data-target="#collapse<%=i%>"
 									aria-expanded="false" aria-controls="collapse<%=i%>">
 
@@ -120,7 +120,6 @@
 										<%-- <div class="col-sm-2"><%=contract.getContract_date()%></div> --%>
 										<div class="col-sm-2"><%=contract.getContract_qty()%></div>
 									</div>
-
 								</button>
 							</h5>
 						</div>
@@ -183,14 +182,15 @@
 
 		<script type="text/javascript">
 			//get conract details on the basis of the contractno
-			function findDetails(contractId, id) {
+			function findDetails(contractId,pcsodates,  id) {
 
 				$
 						.ajax({
 							type : "GET",
 							url : "getAllContractDetails.obj",
 							data : {
-								"contract" : contractId
+								"contract" : contractId,
+								"pcsoDates" : pcsodates
 							},
 							success : function(result) {
 								var data = jQuery.parseJSON(result);

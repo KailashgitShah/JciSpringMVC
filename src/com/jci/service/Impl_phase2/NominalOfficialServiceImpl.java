@@ -18,9 +18,9 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	NominalOfficialDao nominalOfficialDao;
 	
 	@Override
-	public void create(Jciclaim_NominationModel nominal) {
+	public void create(Jciclaim_NominationModel nominal ) {
 		// TODO Auto-generated method stub
-		nominalOfficialDao.create(nominal);
+		nominalOfficialDao.create(nominal );
 		
 	}
 
@@ -124,6 +124,13 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	@Override
 	public String getEmaiformills(String Mill) {
 		return nominalOfficialDao.getEmaiformills( Mill);
+	}
+
+	@Override
+	public void claimStatusUpdate(String ContractNoForClaimStatusUpdate) {
+		this.nominalOfficialDao.claimStatusUpdate(ContractNoForClaimStatusUpdate);
+		// TODO Auto-generated method stub
+		
 	}
 
 }
