@@ -11,7 +11,7 @@ public interface CreditNoteGenerationService {
 
 	public void create(CreditNotes creditNotes);
 
-	public List<CreditNotes> getAllCreditNotes();
+	public List<Object[]> getAllCreditNotes();
 
 	public void chageStatusTo1(int id);
 
@@ -34,4 +34,8 @@ public interface CreditNoteGenerationService {
 	public List<Object[]> getMillDetailsByCode(String millcode);
 
 	public List<Object[]> getDispatchDetails(String challanNo);
+
+	public List<Object> getGradeRatio(String challanNo);
+
+	public List<Object> getChallanDetails(String challan);
 }

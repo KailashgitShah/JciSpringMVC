@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="com.jci.service_phase2.CreditNoteGenerationService"%>
 <%@page import="org.springframework.beans.factory.annotation.Autowired"%>
 <%@page import="org.apache.commons.lang3.ObjectUtils.Null"%>
@@ -58,32 +59,61 @@ input[type="radio"] {
 <body class="fixed-navbar">
 
 	<%
-	String ContractNo = (String) request.getSession().getAttribute("ContractNo");
-	String roId = (String) request.getSession().getAttribute("roId");
-	
-	String  bosNo= (String) request.getSession().getAttribute("bosNo");
-	String  bosDate= (String) request.getSession().getAttribute("bosDate");
-	String diNo = (String) request.getSession().getAttribute("diNo");
-	String millcode = (String) request.getSession().getAttribute("millcode");
- 
-	String ChallanNo = (String) request.getSession().getAttribute("ChallanNo");
-	int Count = (int) request.getSession().getAttribute("Count") + 1;
-	Double nominalWt = (Double) request.getSession().getAttribute("nominalWeight");
+	// String id = (String) request.getAttribute("id");
 
-	Double actualWt = (Double) request.getSession().getAttribute("ActualWeight");
-	Double invoiceVal = Double.parseDouble((String) request.getSession().getAttribute("invoiceVal"));
-	Double avgJuteValue = (Double) request.getSession().getAttribute("avgJuteVal");
+	String roId = (String) request.getAttribute("roId");
+
+	System.err.println("from jsp page => " + roId);
+
+	String bosNo = (String) request.getAttribute("bosNo");
+	String bosDate = (String) request.getAttribute("bosDate");
+	String diNo = (String) request.getAttribute("diNo");
+	String millcode = (String) request.getAttribute("millcode");
+	String ContractNo = (String) request.getAttribute("ContractNo");
+
+	String ChallanNo = (String) request.getAttribute("ChallanNo");
+	int Count = (int) request.getAttribute("Count") + 1;
+	Double nominalWt = (Double) request.getAttribute("nominalWeight");
+	Double actualWt = (Double) request.getAttribute("ActualWeight");
+	String invoiceVal = (String) request.getAttribute("invoiceVal");
+	Double avgJuteValue = (Double) request.getAttribute("avgJuteVal");
+	List<Object[]> dispetchDetails = (List<Object[]>) request.getAttribute("dispetchDetails");
+	List<Object> gradeRatio = (List<Object>) request.getAttribute("gradeRatio");
+
+	/*
+
+		for (Object p : gradeRatio) {
+			System.err.println("gradeRatio => " + (Double) p);
+		} */
+
+	int sumOfBale = 0;
+	for (Object[] details : dispetchDetails) {
+		sumOfBale += (int) details[3];
+	}
+
+	//double factor = Double.parseDouble(new DecimalFormat("#.##").format(actualWt / sumOfBale));
+	double factor = actualWt / sumOfBale;
+
+	/* 	System.err.println("nominalWt => " + nominalWt);
+		System.err.println("actualWt => " + actualWt);
+		System.err.println("sumOfBale => " + sumOfBale);
+		System.err.println("factor => " + factor); */
+
 	Double shortQty = nominalWt - actualWt;
-
-	long crnAmount =  Math.round(avgJuteValue * shortQty);
- 
+	long crnAmount = Math.round(avgJuteValue * shortQty);
 
 	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 	//generation of credit Note No.
 	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
 	String indiaSerialNo = "001640";
 	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+
+	double sumNmlQty = 0;
+	double sumActQty = 0;
+	double sumShrtQty = 0;
+	double sumTtlCrnAmt = 0;
 	%>
+
 
 	<div class="page-wrapper">
 
@@ -142,54 +172,127 @@ input[type="radio"] {
 												value="<%=ChallanNo%>" readonly>
 										</div>
 
-
-
-										<div class="col-sm-4 form-group">
-											<label>Actual Qty. </label> <input class="form-control"
-												id="actualQty" name="actualQty" value="<%=actualWt%>"
-												readonly>
-										</div>
-										<div class="col-sm-4 form-group" id="dpc">
-											<label>Short Qty.</label> <input class="form-control"
-												name="shortQty" id="shortQty" value="<%=shortQty%>"
-												type="text" readonly>
-										</div>
-									</div>
-
-
-									<div class="row">
-
 										<div class="col-sm-4 form-group">
 											<label>BOS Qty.</label> <input class="form-control"
 												name="bosQty" id="bosQty" type="text" value="<%=nominalWt%>"
 												readonly>
 										</div>
+
+										<div class="col-sm-4 form-group">
+											<label>Actual Qty. </label> <input class="form-control"
+												id="actualQty" name="actualQty" value="<%=actualWt%>"
+												<%-- value="<%=new DecimalFormat("#.##").format(actualWt)%>" --%>
+												readonly>
+										</div>
+
+									</div>
+
+
+									<div class="row">
+										<div class="col-sm-4 form-group" id="dpc">
+											<label>Short Qty.</label> <input class="form-control"
+												name="shortQty" id="shortQty"
+												value="<%=new DecimalFormat("#.####").format(shortQty)%>"
+												type="text" readonly>
+										</div>
+
 										<div class="col-sm-4 form-group" id="dpc">
 											<label>Credit Note Amount </label> <input
 												class="form-control" name="creditAmt" id="creditAmt"
 												type="text" value="<%=crnAmount%>" readonly>
 										</div>
-									
+
 
 										<input class="form-control " name="ChallanNo" id="ChallanNo"
-											type="hidden" value="<%=ChallanNo%>" readonly>
+											type="hidden" value="<%=ChallanNo%>" readonly> <input
+											class="form-control " name="diNo" id="diNo" type="hidden"
+											value="<%=diNo%>" readonly> <input
+											class="form-control " name="bosNo" id="bosNo" type="hidden"
+											value="<%=bosNo%>" readonly> <input
+											class="form-control " name="bosDate" id="bosDate"
+											type="hidden" value="<%=bosDate%>" readonly> <input
+											class="form-control " name="millcode" id="millcode"
+											type="hidden" value="<%=millcode%>" readonly> <input
+											class="form-control " name="roId" id="roId" type="hidden"
+											value="<%=roId%>" readonly>
 
-										<input class="form-control " name="diNo" id="diNo"
-											type="hidden" value="<%=diNo%>" readonly>
-
-										<input class="form-control " name="bosNo" id="bosNo"
-											type="hidden" value="<%=bosNo%>" readonly>
-											
-										<input class="form-control " name="bosDate" id="bosDate"
-											type="hidden" value="<%=bosDate%>" readonly>
-											
-										<input class="form-control " name="millcode" id="millcode"
-											type="hidden" value="<%=millcode%>" readonly>
-  
 									</div>
 									<br>
-									<div class="row">
 
+									<div>
+										<table class="table table-bordered">
+											<thead class="thead-light">
+												<tr>
+													<th>Crop Year</th>
+													<th>Bale Mark</th>
+													<th>Variety</th>
+													<th>No Of Bale</th>
+													<th>Nominal Wt</th>
+													<th>Rate</th>
+													<th>Nominal Qty</th>
+													<th>Act Qty</th>
+													<th>Short Qty</th>
+													<th>Amount</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+												/* 				select Crop_year,Bale_mark,Jute_grade,No_of_bales,Nominal_qty,Rate,Nominal_wt 
+														from  jcidispatch_details_child where  Challan_no='242503270002' 
+												*/
+
+												for (Object[] p : dispetchDetails) {
+													int noOfBale = (int) p[3];
+													double rate = (double) p[5];
+													double nmnlQty = (double) p[4];
+
+													double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
+													double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+													double shortAmtPrice = Math.round(rate * shtQty);
+													/*  double shtQty = nmnlQty - actQty;
+													double shortAmtPrice = rate * shtQty; */
+													sumNmlQty += nmnlQty;
+													sumActQty += actQty;
+													sumShrtQty += shtQty;
+													sumTtlCrnAmt += shortAmtPrice;
+													System.err.println("shtQty " + shtQty);
+												%>
+												<tr>
+													<td><div class="table-cell"><%=(String) p[0]%></div></td>
+													<td><div class="table-cell"><%=(String) p[1]%></div></td>
+													<td><div class="table-cell"><%=(String) p[2]%></div></td>
+													<td><div class="table-cell"><%=(int) p[3]%></div></td>
+													<td><div class="table-cell"><%=(double) p[6]%></div></td>
+													<td><div class="table-cell"><%=rate%></div></td>
+													<td><div class="table-cell"><%=(double) p[4]%></div></td>
+													<td><div class="table-cell"><%=actQty%></div></td>
+													<td><div class="table-cell"><%=shtQty%></div></td>
+													<td><div class="table-cell"><%=shortAmtPrice%></div></td>
+												</tr>
+												<%
+												}
+
+												sumShrtQty = Double.parseDouble(new DecimalFormat("#.####").format(sumShrtQty));
+												sumActQty = Double.parseDouble(new DecimalFormat("#.####").format(sumActQty));
+												sumNmlQty = Double.parseDouble(new DecimalFormat("#.####").format(sumNmlQty));
+												%>
+												<tr>
+													<td><div class="table-cell"></div></td>
+													<td><div class="table-cell"></div></td>
+													<td><div class="table-cell"></div></td>
+													<td><div class="table-cell"></div></td>
+													<td><div class="table-cell"></div></td>
+													<td><div class="table-cell">Total</div></td>
+													<td><div class="table-cell"><%=sumNmlQty%></div></td>
+													<td><div class="table-cell"><%=sumActQty%></div></td>
+													<td><div class="table-cell"><%=sumShrtQty%></div></td>
+													<td><div class="table-cell"><%=sumTtlCrnAmt%></div></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<div class="row">
 										<div class="col-sm-12 form-group">
 											<input type="submit" value="Submit" class="btn btn-primary"
 												id="submit">

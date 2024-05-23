@@ -79,7 +79,7 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 										<th>Sl.No</th>
 										<th>Credit Note Date</th>
 										<th>Credit Note No</th>
-										<th>Shipment Details</th>
+										<!-- <th>Shipment Details</th> -->
 										<th>BOS Qty.</th>
 										<th>Actual Qty</th>
 										<th>Short Qty.</th>
@@ -96,7 +96,7 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 
 										<td><%=crn.getCrnDate()%></td>
 										<td><%=crn.getCrnNo()%></td>
-										<td><%=crn.getShipmentDetails()%></td>
+										<%-- <td><%=crn.getShipmentDetails()%></td> --%>
 										<td><%=crn.getBosQty()%></td>
 										<td><%=crn.getActualQty()%></td>
 										<td><%=crn.getShortQty()%></td>

@@ -58,7 +58,6 @@
 			</div>
 			<%
 			List<String> refNos = (List<String>) request.getAttribute("refNos");
-	
 			%>
 			<div class="page-content fade-in-up">
 				<div class="ibox-head">

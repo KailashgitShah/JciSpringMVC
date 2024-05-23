@@ -45,11 +45,16 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	}
 
 	@Override
-	public List<CreditNotes> getAllCreditNotes() {
+	public List<Object[]> getAllCreditNotes() {
 		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(CreditNotes.class)
 				.addOrder(Order.desc("creationDate")).add(Restrictions.eq("crnStatus", 0));
 		List<CreditNotes> ll = c.list();
-		return ll;
+
+		String sql = "SELECT Credit_note_date,  Credit_note_no,ChallanNo,SUM(BOS_qty) as bos_qty,"
+				+ "  SUM(Actual_qty) as actual_qty ,SUM(Short_qty) as shrt_qty ,SUM(Credit_note_amount) as crn_amt , MAX(document) as docs, MAX(Creation_date)"
+				+ " as Max_Creation_date FROM jcicredit_note WHERE Crn_status = 0 "
+				+ "GROUP BY  Credit_note_date, Credit_note_no, ChallanNo ORDER BY Max_Creation_date DESC";
+		return (List<Object[]>) currentSession().createSQLQuery(sql).list();
 	}
 
 	@Override
@@ -88,11 +93,13 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<String> getParamenterDetails(String parameter) {
 		String sqlString = "";
 		if (parameter.equals("Region")) {
-			sqlString = "select distinct(b.Ro_id) from jcibos_generation a INNER JOIN "
-					+ "jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no";
+			sqlString = " select distinct(b.Ro_id) from jcibos_generation a INNER JOIN "
+					+ " jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
+					+ " a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0))";
 		} else {
-			sqlString = "select distinct(a.Contract_no) " + "from jcibos_generation a INNER JOIN "
-					+ "jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no";
+			sqlString = " select distinct(a.Contract_no) from jcibos_generation a INNER JOIN "
+					+ " jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
+					+ " a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0))";
 		}
 
 		List<String> datalist = currentSession().createSQLQuery(sqlString).list();
@@ -105,12 +112,14 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 		String sqlString = "";
 		if (parameter.equals("Region")) {
-			sqlString = "select a.Bill_of_supply_no,a.BOS_date,a.Contract_no ,a.Challan_No, a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt, c.Mill_name , c.DI_No , a.Ro_id , c.Mill_code from "
-					+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and b.Ro_id = '"
+			sqlString = "select a.Bill_of_supply_no,a.BOS_date,a.Contract_no ,a.Challan_No, a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt, c.Mill_name , c.DI_No , a.Ro_id , c.Mill_code,a.Bos_file_path,b.Dpc_wt_doc , c.Consignment_note from "
+					+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
+					+ " a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) and b.Ro_id = '"
 					+ basedOn + "' inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
 		} else {
-			sqlString = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No, a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No ,a.Ro_id,c.Mill_code from  "
-					+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Contract_no = '"
+			sqlString = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No, a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No ,a.Ro_id,c.Mill_code,a.Bos_file_path,b.Dpc_wt_doc,c.Consignment_note from  "
+					+ "jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
+					+ " a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) and a.Contract_no = '"
 					+ basedOn + "' inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
 		}
 
@@ -120,7 +129,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public double getAvgJuteValue(String challanNo) {
-		String sql = "select Sum(Jute_value)/SUM(No_of_bales) from jcidispatch_details_child where Challan_no = '"
+		String sql = "select Sum(Jute_value)/SUM(Nominal_qty) from jcidispatch_details_child where Challan_no = '"
 				+ challanNo + "'";
 
 		double result = (double) currentSession().createSQLQuery(sql).uniqueResult();
@@ -149,9 +158,31 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public List<Object[]> getDispatchDetails(String challanNo) {
-		String sql = "select Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty  from  jcidispatch_details_child where  Challan_no='"
+		String sql = "select Crop_year,Bale_mark,Jute_grade,No_of_bales,Nominal_qty,Rate,Nominal_wt from  jcidispatch_details_child where  Challan_no='"
 				+ challanNo + "' ";
 		List<Object[]> resultList1 = (List<Object[]>) currentSession().createSQLQuery(sql).list();
+		return resultList1;
+	}
+
+	@Override
+	public List<Object> getGradeRatio(String challanNo) {
+		String sql = "SELECT Nominal_wt / (SELECT SUM(Nominal_wt) FROM jcidispatch_details_child where Challan_no = '"
+				+ challanNo + "' ) FROM jcidispatch_details_child where Challan_no = '" + challanNo + "' ";
+
+		List<Object> resultList1 = (List<Object>) currentSession().createSQLQuery(sql).list();
+		return resultList1;
+
+	}
+
+	@Override
+	public List<Object> getChallanDetails(String challan) {
+		String sql = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No,"
+				+ " a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No"
+				+ "  ,a.Ro_id,c.Mill_code from  jcibos_generation a INNER JOIN jciweighment_entry b"
+				+ "  on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Challan_No = '" + challan
+				+ "'" + " inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
+
+		List<Object> resultList1 = (List<Object>) currentSession().createSQLQuery(sql).list();
 		return resultList1;
 	}
 

@@ -114,20 +114,24 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 										<th>Generate Credit Note</th>
 										<th>BOS No</th>
 										<th>BOS Date</th>
+										<th>DI No</th>
 										<th>Contract No</th>
 										<th>Challan No</th>
+										<th>Mill Name</th>
 										<th>Invoice Amount</th>
 										<th>Nominal Weight</th>
 										<th>Actual Weight</th>
-										<th>Mill Name</th>
-										<th>DI No</th>
+										<th>Short Weight</th>
+										<th>Bos Doc</th>
+										<th>Weigment Doc</th>
+										<th>Challan Doc</th>
 								</thead>
 								<tbody class="tbody">
 
 								</tbody>
 
 							</table>
-
+							<h3 class="text-center">Shipment Details</h3>
 							<table id="shipmentTable" class="table table-bordered">
 								<thead class="thead-light">
 									<tr>
@@ -195,7 +199,8 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 		})
 
 		function saveCreditNote(contractNo, ChallanNo, invoiceVal,
-				nominalWeight, ActualWeight, roId, bosNo, diNo, bosDate,millCode) {
+				nominalWeight, ActualWeight, roId, bosNo, diNo, bosDate,
+				millCode) {
 
 			$.ajax({
 				type : "POST",
@@ -243,6 +248,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 											$("#filter").html(decisionOptions);
 											$('#shipmentTable tbody').html(
 													'<div></div>');
+											$(".tbody").html('<div></div>');
 										}
 									})
 						})
@@ -263,22 +269,23 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 											"basedOn" : $(this).val()
 										},
 										success : function(result) {
-											console.log("Inside the result ");
+
 											var filterOption = jQuery
 													.parseJSON(result);
-											console.log("filterOption",
-													filterOption);
+
 											var htmlTable = '';
 
 											for (var i = 0; i < filterOption.length; i++) {
 												var counter = i + 1;
+												var shortQty = (filterOption[i][5] - filterOption[i][6])
+														.toFixed(2);
 
 												htmlTable += '<tr border="2px"><td style="text-align:center">'
 														+ counter + '</td>';
 												/*  htmlTable += '<td><a onclick="saveCreditNote()"' + 
 													'class="btn btn-warning btn-sm">Generate credit Note </a></td>'; */
-													//234569081	
-												htmlTable += '<td><a onclick="saveCreditNote('
+												//234569081	
+												/* htmlTable += '<td><a onclick="saveCreditNote('
 														+ "'"
 														+ filterOption[i][2]
 														+ "','"
@@ -300,14 +307,20 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 														+ "','"
 														+ filterOption[i][10]
 														+ "')"
-														+ '" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
+														+ '" class="btn btn-warning btn-sm">Generate credit Note </a></td>'; */
 
+												htmlTable += '<td><a href="generateCrn.obj?challan='
+														+ filterOption[i][3]
+														+ '" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
 
 												htmlTable += '<td style="text-align:center" name="bosNo">'
 														+ filterOption[i][0]
 														+ '</td>';
 												htmlTable += '<td style="text-align:center" name="bosDate">'
 														+ filterOption[i][1]
+														+ '</td>';
+												htmlTable += '<td style="text-align:center" name="diNo">'
+														+ filterOption[i][8]
 														+ '</td>';
 												htmlTable += '<td style="text-align:center" name="contractNo">'
 														+ filterOption[i][2]
@@ -329,12 +342,29 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 												htmlTable += '<td style="text-align:center" name="actWt">'
 														+ filterOption[i][6]
 														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="diNo">'
-														+ filterOption[i][8]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="millCode">'
+
+												htmlTable += '<td style="text-align:center" name="shortWt">'
+														+ shortQty + '</td>';
+
+												htmlTable += '<td><a style="color : blue" target="_blank" href=downloadCreditNoteDocs.obj?imagePath='
+														+ filterOption[i][11] + " " + "bos"
+														+ '>View</a></td>';
+
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/WeightSlipment/'
+														+ filterOption[i][12]
+														+ '>View</a></td>';
+/* 												htmlTable += '<td><a style="color : blue" target="_blank" href=downloadCreditNoteDocs.obj?imagePath='
+														+ filterOption[i][12] + " " + "weightment"
+														+ '>View</a></td>'; */
+
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/DispatchDetail/'
+														+ filterOption[i][13] 														+ '>View</a></td>';
+/* 														+ filterOption[i][13] + " " + "consignment"
+														+ '>View</a></td>'; */
+
+												htmlTable += '<td style="text-align:center;display:none" name="millCode">'
 														+ filterOption[i][10]
-														+ '</td>';	
+														+ '</td>';
 
 												htmlTable += '</tr>';
 											}

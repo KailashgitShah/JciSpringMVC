@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Struct;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -75,6 +76,7 @@ import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
 import com.jci.model.ConfirmationClaimSettlementModel;
 import com.jci.model.Contractgeneration;
+import com.jci.model.CreditNoteDTO;
 import com.jci.model.CreditNotes;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.EntryPaymentDetailsModel;
@@ -136,6 +138,14 @@ import com.microsoft.schemas.office.excel.CTClientData;
 import com.microsoft.schemas.office.excel.CTClientData.Factory;
 
 import kotlin.Unit;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 
 @Transactional
 @Repository
@@ -1636,7 +1646,7 @@ public class Controller_V {
 
 	// update grade comp.
 	@RequestMapping("updateGradeComp")
-	public ModelAndView updateEGC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public ModelAndView updateEGC(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
@@ -1696,71 +1706,88 @@ public class Controller_V {
 
 	// set all the contract details in session and redirect to the generate credit
 	// note form page in the ajax response
-	@ResponseBody
-	@RequestMapping(value = { "generateCrn" }, method = { RequestMethod.POST })
+//	@ResponseBody
+	@RequestMapping("generateCrn")
 	public ModelAndView generateCrn(final HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		final Double nominalWt = Double.parseDouble(request.getParameter("nominalWeight"));
-		final Double actualWt = Double.parseDouble(request.getParameter("ActualWeight"));
-		final String roId = request.getParameter("roId");
-		final String invoiceVal = request.getParameter("invoiceValue");
-		final String ChallanNo = request.getParameter("ChallanNo");
-		final String contractNo = request.getParameter("contractNo");
-		final String diNo = request.getParameter("diNo");
-		final String bosNo = request.getParameter("bosNo");
-		final String bosDate = request.getParameter("bosDate");
-		final String millCode = request.getParameter("millCode");
+
+		String challan = (String) request.getParameter("challan");
+
+		List<Object> list = creditNoteGenerationService.getChallanDetails(challan);
+
+		Object[] rowObject = (Object[]) list.get(0);
+
+//	 select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No,
+//	 a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No
+//	  ,a.Ro_id,c.Mill_code from  jcibos_generation a INNER JOIN jciweighment_entry b 
+//	  on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Challan_No = '242503270002'
+//	 inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no
+
+		String bosNo = (String) rowObject[0];
+		String bosDate = (String) rowObject[1];
+		String contractNo = (String) rowObject[2];
+		String ChallanNo = (String) rowObject[3];
+		String invoiceVal = (String) rowObject[4];
+		double nominalWt = (Double) rowObject[5];
+		double actualWt = (Double) rowObject[6];
+		String diNo = (String) rowObject[8];
+		String roId = (String) rowObject[9];
+		String millCode = (String) rowObject[10];
+
+		System.err.println("roId from controller => " + roId);
 
 		int Count = creditNoteGenerationService.getCountOfRo(roId);
-		
 		double avgJuteVal = creditNoteGenerationService.getAvgJuteValue(ChallanNo);
 
-		session.setAttribute("ContractNo", contractNo);
-		session.setAttribute("nominalWeight", nominalWt);
-		session.setAttribute("ActualWeight", actualWt);
-		session.setAttribute("ChallanNo", ChallanNo);
-		session.setAttribute("roId", roId);
-		session.setAttribute("Count", Count);
-		session.setAttribute("invoiceVal", invoiceVal);
-		session.setAttribute("avgJuteVal", avgJuteVal);
-		session.setAttribute("diNo", diNo);
-		session.setAttribute("bosNo", bosNo);
-		session.setAttribute("bosDate", bosDate);
-		session.setAttribute("millcode", millCode);
-		
+		List<Object[]> dispetchDetails = creditNoteGenerationService.getDispatchDetails(ChallanNo);
+		List<Object> gradeRatio = creditNoteGenerationService.getGradeRatio(ChallanNo);
 
-		ModelAndView mView = new ModelAndView("generationOfCreditNote");
- 
-		return mView;
+		ModelAndView mv = new ModelAndView("generationOfCreditNote");
+		mv.addObject("ContractNo", contractNo);
+		mv.addObject("nominalWeight", nominalWt);
+		mv.addObject("ActualWeight", actualWt);
+		mv.addObject("ChallanNo", ChallanNo);
+		mv.addObject("roId", roId);
+		mv.addObject("Count", Count);
+		mv.addObject("invoiceVal", invoiceVal);
+		mv.addObject("avgJuteVal", avgJuteVal);
+		mv.addObject("diNo", diNo);
+		mv.addObject("bosNo", bosNo);
+		mv.addObject("bosDate", bosDate);
+		mv.addObject("millcode", millCode);
+		mv.addObject("dispetchDetails", dispetchDetails);
+		mv.addObject("gradeRatio", gradeRatio);
+		return mv;
 	}
 
 	// credit note form page
-	@RequestMapping("creditNoteForm")
-	public ModelAndView creditNoteForm(HttpServletRequest request) {
+//	@RequestMapping("creditNoteForm")
+//	public ModelAndView creditNoteForm(HttpServletRequest request) {
+//
+//		String username = (String) request.getSession().getAttribute("usrname");
+//
+//		if (username == null) {
+//			return new ModelAndView("index");
+//		}
+//
+//		ModelAndView mView = new ModelAndView("generationOfCreditNote");
+//		return mView;
+//	}
 
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		ModelAndView mView = new ModelAndView("generationOfCreditNote");
-		return mView;
-	}
-
-//	@Value("${upload.creditNoteDetails}")
-//	String creditNoteDetails;
+	@Value("${upload.creditNoteDetails}")
+	String creditNoteFilePath;
 
 	// save credit note
-	@ResponseBody
-	@RequestMapping(value = { "saveCreditNote" }, method = { RequestMethod.POST })
-	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request) throws IllegalStateException, IOException {
+
+	@RequestMapping(value = { "saveCreditNote" })
+	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request ,HttpServletResponse response)
+			throws IllegalStateException, IOException {
 
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-	 ;
+		;
 		final String shipmentDetails = request.getParameter("shipment");
 		final String crnDate = request.getParameter("cnDate");
 		final String crnNo = request.getParameter("cnNo");
@@ -1770,132 +1797,179 @@ public class Controller_V {
 		final String diNo = request.getParameter("diNo");
 		final String bosDate = request.getParameter("bosDate");
 		final String millcode = request.getParameter("millcode");
+		final String roId = request.getParameter("roId");
+		final String invoiceValue = request.getParameter("invoiceValue");
 
 		final Double shortQty = Double.parseDouble(request.getParameter("shortQty"));
 		final Double nominalWt = Double.parseDouble(request.getParameter("bosQty"));
 		final Double actualWt = Double.parseDouble(request.getParameter("actualQty"));
 		final Double crnAmount = Double.parseDouble(request.getParameter("creditAmt"));
-		String roId = (String) request.getSession().getAttribute("roId");
 		int refId = (int) request.getSession().getAttribute("userId");
 
-		CreditNotes creditNotes = new CreditNotes();
 
-		creditNotes.setActualQty(actualWt);
-		creditNotes.setBosQty(nominalWt);
-		creditNotes.setCreated_by(refId + "");
-		creditNotes.setCreationDate(new Date());
-		creditNotes.setCrnAmount(crnAmount);
-		creditNotes.setChallanNo(ChallanNo);
-		creditNotes.setContractNo(contractNo);
-		creditNotes.setCrnNo(crnNo);
-		creditNotes.setCrnDate(crnDate);
-		creditNotes.setShipmentDetails(shipmentDetails);
-		creditNotes.setRoId(roId);
-		creditNotes.setShortQty(shortQty);
-		
-		
 		PdfGenerator pdfGenerator = new PdfGenerator();
-		
+
 		String supplier_Name = "The Jute Corporation of India Limited";
 		String supplier_GSTN = "19AABCT8820B1ZH";
 		String unit_GSTN = supplier_GSTN;
 		String supplier_Address = "Vill-Dhaipukur, RMC Complex, PO-Pandua Dist-Hooghly, 712449";
-		
-		
+
 //		 a.unit_name, a.unit_address1,  a.unit_state,   a.unit_location, b.client_gstin, b.client_pan,
 //		 b.client_state, b.client_address1,  b.client_name, a.client_unit_code 
-		 //Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty 
-		
-		String invocieValue = "433"; 
-		String unit_name = ""; 
-		String unit_address = ""; 
-		String client_name = ""; 
-		String client_GSTN = ""; 
-		String client_state = ""; 
-		String client_code = ""; 
-		String client_address1 = ""; 
-		String client_pan = ""; 
-		   
-		
+		// Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty
+
+		String unit_name = "";
+		String unit_address = "";
+		String client_name = "";
+		String client_GSTN = "";
+		String client_state = "";
+		String client_code = "";
+		String client_address1 = "";
+		String client_pan = "";
+
 		List<Object[]> millFullDetailsList = creditNoteGenerationService.getMillDetailsByCode(millcode);
-		List<Object[]> dispetchDetails = creditNoteGenerationService.getDispatchDetails(ChallanNo);	
+		List<Object[]> dispetchDetails = creditNoteGenerationService.getDispatchDetails(ChallanNo);
+		// List<Object> gradeRatio =
+		// creditNoteGenerationService.getGradeRatio(ChallanNo);
+
+		for (Object[] row : millFullDetailsList) {
+			unit_name = (String) row[0];
+			unit_address = (String) row[1];
+			client_name = (String) row[8];
+			client_GSTN = (String) row[4];
+			client_state = (String) row[6];
+			client_code = (String) row[2];
+			client_address1 = (String) row[7];
+			client_pan = (String) row[5];
+		}
+
+		int sumOfBale = 0;
+		for (Object[] details : dispetchDetails) {
+			sumOfBale += (int) details[3];
+		}
+
+		List<Object[]> finalList = new ArrayList<>();
+		List<CreditNoteDTO> creditNoteDtoList = new ArrayList<>();
+		// double factor = Double.parseDouble(new DecimalFormat("#.##").format(actualWt
+		// / sumOfBale));
+		double factor = actualWt / sumOfBale;
+		int counter = 1;
+
+		for (Object[] p : dispetchDetails) {
+			
+			CreditNoteDTO creditNoteDTO = new CreditNoteDTO();
+			CreditNotes creditNotes = new CreditNotes();
+
+			Object[] data = new Object[11];
+
+			int noOfBale = (int) p[3];
+			double rate = (double) p[5];
+			double nmnlQty = (double) p[4];
+
+			double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
+			double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+			double shortAmtPrice = Math.round(rate * shtQty);
+
+			data[0] = (String) p[0]; // crop year
+			data[1] = (String) p[1]; // bale mark
+			data[2] = (String) p[2];// jute grade
+			data[3] = (int) p[3]; // no of bale
+			data[4] = (double) p[4]; // nominal qty
+			data[5] = (double) p[5]; // rate
+			data[6] = (double) p[6]; // nominal wt
+			data[7] = rate;
+			data[8] = actQty;
+			data[9] = shtQty;
+			data[10] = shortAmtPrice;
+			finalList.add(data);
+			
+			creditNoteDTO.setSnNo(counter++);
+			creditNoteDTO.setCropYear((String) p[0]);
+			creditNoteDTO.setBaleMark((String) p[1]);
+			creditNoteDTO.setJuteGrade((String) p[2]);	
+			creditNoteDTO.setNoOfBales(noOfBale);
+			creditNoteDTO.setNominalQty(nmnlQty);
+			creditNoteDTO.setRate(rate);
+			creditNoteDTO.setNominalWt((double) p[6]);
+			creditNoteDTO.setActQty(actQty);
+			creditNoteDTO.setShrtQty(shtQty);
+			creditNoteDTO.setAmt(shortAmtPrice);
+			creditNoteDtoList.add(creditNoteDTO);
+			
+			creditNotes.setActualQty(actQty);
+			creditNotes.setBosQty(nmnlQty);
+			creditNotes.setCreated_by(refId + "");
+			creditNotes.setCreationDate(new Date());
+			creditNotes.setCrnAmount(shortAmtPrice);
+			creditNotes.setChallanNo(ChallanNo);
+			creditNotes.setContractNo(contractNo);
+			creditNotes.setCrnNo(crnNo);
+			creditNotes.setCrnDate(crnDate);
+			creditNotes.setJuteGrade((String) p[2]);
+			// creditNotes.setShipmentDetails(shipmentDetails);
+			creditNotes.setRoId(roId);
+			creditNotes.setShortQty(shtQty);
 		
-		for(Object[] row : millFullDetailsList) {
-			unit_name = (String)row[0];
-			unit_address = (String)row[1];
-			client_name = (String)row[8];
-			client_GSTN = (String)row[4];
-			client_state = (String)row[6];
-			client_code = (String)row[2];
-			client_address1 = (String)row[7];
-			client_pan = (String)row[5];
+			String documentName = "creditNote" + ChallanNo + ".pdf";
+			creditNotes.setDocument(documentName);
+			creditNoteGenerationService.create(creditNotes);
+
 		}
 		
 		
-		System.err.println("invoiceValue: " + invocieValue);
-//		System.err.println("unit_name: " + unit_name);
-//		System.err.println("unit_address: " + unit_address);
-//		System.err.println("client_name: " + client_name);
-//		System.err.println("client_GSTN: " + client_GSTN);
-//		System.err.println("client_state: " + client_state);
-//		System.err.println("client_code: " + client_code);
-//		System.err.println("client_address1: " + client_address1);
-//		System.err.println("client_pan: " + client_pan);
-//		System.err.println("bosDate: " + bosDate);
-//		System.err.println("diNo" + diNo);
-
-		pdfGenerator.generatePdfOfCreditNoteDoc(invocieValue , ChallanNo,  supplier_Name,  supplier_GSTN,
-				 supplier_Address,  unit_name, unit_GSTN, unit_address,
-				 client_name,  client_GSTN ,  client_address1 ,  bosNo,
-				 contractNo,  client_state,  client_code , bosDate, client_pan,
-				 dispetchDetails , diNo , bosNo);
-	
-//		recipent = Unit
-//		consinee = clien
-//		supplier = static
-//     	 
-//		(String Invoice_Value, String challan_No1, String , String client_gstin,
-//				String unit_address1, String client_name, String client_gstin, String client_address1,
-//				String client_name, String consignee_GSTN, String consignee_Address, String bill_of_Supply,
-//				String conract_no, String unit_location, String Clientcode, String BOS_Date, String client_pan,
-//				String TrnasitPolicyNo, List<Object[]> list, String Vehicle_no, String Driver_Lic_no, String Driver_name,
-//				String TCS_Amt) 
-		
-	
-		
-//        	 
-//        	 generatePdfOfCreditNoteDoc(String Invoice_Value, String challan_No1, String supplier_Name, String supplier_GSTN,
-//        				String supplier_Address, String recipient_Name, String recipient_GSTN, String recipient_Address,
-//        				String consignee_Name, String consignee_GSTN, String consignee_Address, String bill_of_Supply,
-//        				String conract_no, String Clientstate, String client_unit_code, String BOS_Date, String ClientPan,
-//        				String TrnasitPolicyNo, List<Object[]> dis)
-//		
-		
-		//pdfGenerator.generatePdfOfCreditNoteDoc(Invoice_Value, ChallanNo, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, roId, username, shipmentDetails, crnDate, null, crnNo, ChallanNo, contractNo, roId)
-		
-		
-
-//		if (file == null || file.isEmpty()) {
-//			creditNotes.setDocument("");
-//		} else {
-//			final String originalFileName = file.getOriginalFilename();
-//			String dirString = creditNoteDetails;
+//	     try {
+//			JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
+//	        Map<String, Object> parameters = new HashMap<String, Object>();
+//	        
+//	        parameters.put("crnNo", crnNo);
+//	        parameters.put("crnDate", crnDate);
+//	        parameters.put("ChallanNo", ChallanNo);
+//	        parameters.put("supplier_Name", supplier_Name);
+//	        parameters.put("supplier_GSTN", supplier_GSTN);
+//	        parameters.put("supplier_Address", supplier_Address);
+//	        parameters.put("contractNo", contractNo);
+//	        parameters.put("bosNo", bosNo);
+//	        parameters.put("diNo", diNo);
+//	        parameters.put("bosDate", bosDate);
+//	            
+////			pdfGenerator.generatePdfOfCreditNoteDoc(supplier_Name, supplier_GSTN,
+////			supplier_Address, unit_name, unit_GSTN, unit_address, client_name, client_GSTN, client_address1, ,
+////			client_state, client_code, bosDate, client_pan);
+//	        
+//	        
+//	        
+//	        // Prepare data sources
+//	        JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(creditNoteDtoList);
 //
-//			File fileStoreAt = new File(dirString);
+//	        // Fill JasperPrints
+//	        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+//	        response.setContentType("application/pdf");
+//	        response.setHeader("Content-Disposition", "attachment; filename=TestCreditNote.pdf");
+//	        try (OutputStream out = response.getOutputStream()) {
+//	            JRPdfExporter exporter = new JRPdfExporter();
+//	            exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+//	         //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+//	            exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+//	            exporter.exportReport();}
+//	        catch (Exception e) {
+//		            System.out.println(e.getLocalizedMessage());
+//		        }
 //
-//			if (!fileStoreAt.exists()) {
-//				fileStoreAt.mkdir();
-//			}
-//
-//			File tranferFile = new File(dirString, originalFileName);
-//			file.transferTo(tranferFile);
-//			creditNotes.setDocument(originalFileName);
+//		} catch (JRException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 //		}
 
-		///creditNoteGenerationService.create(creditNotes);
+//		pdfGenerator.generatePdfOfCreditNoteDoc(crnNo, crnDate, invoiceValue, ChallanNo, supplier_Name, supplier_GSTN,
+//				supplier_Address, unit_name, unit_GSTN, unit_address, client_name, client_GSTN, client_address1, bosNo,
+//				contractNo, client_state, client_code, bosDate, client_pan, creditNoteDTO, diNo, bosNo, creditNoteFilePath);
+//		
+		pdfGenerator.generatePdfOfCreditNoteDoc(crnNo, crnDate, invoiceValue, ChallanNo, supplier_Name, supplier_GSTN,
+				supplier_Address, unit_name, unit_GSTN, unit_address, client_name, client_GSTN, client_address1, bosNo,
+				contractNo, client_state, client_code, bosDate, client_pan, finalList, diNo, bosNo, creditNoteFilePath);
 
+		
 		return new ModelAndView(new RedirectView("creditNoteList.obj"));
-
 	}
 
 	// status update of credit note
@@ -1924,49 +1998,147 @@ public class Controller_V {
 
 		ModelAndView mView = new ModelAndView("creditNoteList");
 
-		List<CreditNotes> ListingCreditNotes = creditNoteGenerationService.getAllCreditNotes();
+		List<Object[]> ListingCreditNotesObject =  (List<Object[]>) creditNoteGenerationService.getAllCreditNotes();
+		
+		List<CreditNotes> ListingCreditNotes = new ArrayList<>();
+		for(Object[] obj : ListingCreditNotesObject) {
+			
+//			
+//			System.err.println((String) obj[0]);
+//			System.err.println((String) obj[1]);
+//			System.err.println((String) obj[2]);
+//			System.err.println((double) obj[3]);
+//			System.err.println((double) obj[4]);
+//			System.err.println((double) obj[5]);
+//			System.err.println((double) obj[6]);
+//			System.err.println((String) obj[7]);
+		
+			CreditNotes creditNote = new CreditNotes();	
+			creditNote.setCrnDate((String) obj[0]);
+			creditNote.setCrnNo((String) obj[1]);
+			creditNote.setChallanNo((String) obj[2]);
+			creditNote.setBosQty((double) obj[3]);
+			creditNote.setActualQty((double) obj[4]);
+			creditNote.setShortQty((double) obj[5]);
+			creditNote.setCrnAmount((double) obj[6]);
+			creditNote.setDocument((String) obj[7]);
+			ListingCreditNotes.add(creditNote);
+		
+			//System.err.println(creditNote.toString() + "toString");
+		}
 
 		mView.addObject("list", ListingCreditNotes);
+		
+	
 		return mView;
 	}
-	
-	
+
 	// get mill code for the particular pco date
 	@ResponseBody
 	@RequestMapping(value = { "showCrdNoteBy" }, method = { RequestMethod.GET })
 	public String showCrdNoteBy(final HttpServletRequest request) {
 		String parameter = request.getParameter("parameter");
-		System.err.println("parameter => " + parameter);
+	 
 		List<String> details = this.creditNoteGenerationService.getParamenterDetails(parameter);
 
 		Gson gson = new Gson();
 		return gson.toJson(details);
 
 	}
-	
+
 	// get mill code for the particular pco date
 	@ResponseBody
 	@RequestMapping(value = { "showFilterdData" }, method = { RequestMethod.GET })
 	public String showFilterdData(final HttpServletRequest request) {
 		String parameter = request.getParameter("parameter");
 		String basedOn = request.getParameter("basedOn");
-		List<Object[]> details = this.creditNoteGenerationService.showFilterData(parameter,basedOn);
+		List<Object[]> details = this.creditNoteGenerationService.showFilterData(parameter, basedOn);
 		Gson gson = new Gson();
 		return gson.toJson(details);
-		
+
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = { "getShipmentDetailsByChallanNo" }, method = { RequestMethod.GET })
 	public String getShipmentDetailsByChallanNo(final HttpServletRequest request) {
 		final String challanNo = request.getParameter("challanNo");
 		List<Object[]> shipmentDetails = creditNoteGenerationService.getShipmentDetailsByChallanNo(challanNo);
-	 
+
 		Gson gson = new Gson();
 
 		return gson.toJson(shipmentDetails);
 
 	}
+	
+
+	@Value("${upload.weightmentDoc}")
+	String weightmentDoc;
+	
+	@Value("${upload.dispatchDoc}")
+	String dispatchDoc;
+	
+	// pcso letter download
+		@RequestMapping(value = "downloadCreditNoteDocs", method = RequestMethod.GET)
+		public void downloadCreditNoteDocs(HttpServletRequest request, HttpServletResponse response) throws IOException {
+			String[] fileName = request.getParameter("imagePath").split(" ");
+			
+			String fullPath = "";
+			
+			if(fileName[1].equals("creditNote"))			
+			fullPath = creditNoteFilePath + File.separator + fileName[0];
+			else if(fileName[1].equals("weightment")) {
+				fullPath = weightmentDoc + File.separator + fileName[0];
+			}else if(fileName[1].equals("consignment")) {
+				fullPath = dispatchDoc + File.separator + fileName[0];
+			}else {
+				fullPath = creditNoteFilePath + File.separator + fileName[0];
+			}
+			
+			
+
+			File imageFile = new File(fullPath);
+
+			if (imageFile.exists()) {
+				try {
+					// Set the content type based on the file type
+					response.setContentType("application/pdf");
+
+					// download
+					// response.setHeader("Content-Disposition", "attachment; filename=" +
+					// fileName);
+
+					// view
+					response.setHeader("Content-Disposition", "");
+
+					// Stream the file content to the response
+					FileInputStream fileInputStream = new FileInputStream(imageFile);
+					OutputStream responseOutputStream = response.getOutputStream();
+
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+
+					fileInputStream.close();
+					responseOutputStream.close();
+				} catch (IOException e) {
+					// Handle IO exception
+					e.printStackTrace();
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				}
+			} else {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+
+		}
+
+	
+	
+	
+	
+	
+	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -5043,7 +5215,6 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-
 
 /// ///////////////////////////////////////////////mill registration//////////////////////////////////////
 

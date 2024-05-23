@@ -30,7 +30,7 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	}
 
 	@Override
-	public List<CreditNotes> getAllCreditNotes() {
+	public List<Object[]> getAllCreditNotes() {
 		return creditNoteGenerationDao.getAllCreditNotes();
 	}
 
@@ -89,6 +89,16 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	@Override
 	public List<Object[]> getDispatchDetails(String challanNo) {
 		return creditNoteGenerationDao.getDispatchDetails(challanNo);
+	}
+
+	@Override
+	public List<Object> getGradeRatio(String challanNo) {
+		return creditNoteGenerationDao.getGradeRatio(challanNo);
+	}
+
+	@Override
+	public List<Object> getChallanDetails(String challan) {
+		return creditNoteGenerationDao.getChallanDetails(challan);
 	}
 
 }

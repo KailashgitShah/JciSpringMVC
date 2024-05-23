@@ -8,7 +8,7 @@ import com.jci.model.settlemetCnDnModel;
 public interface CreditNoteGenerationDao {
 	List<Object[]> getAllVerifiedWeighment();
 	void create(CreditNotes creditNotes);
-	List<CreditNotes> getAllCreditNotes();
+	List<Object[]> getAllCreditNotes();
 	void chageStatusTo1(int id);
 	int getCountRO(String ro);
 	List<Object[]> getAllMillsOfContracts();
@@ -20,4 +20,6 @@ public interface CreditNoteGenerationDao {
 	List<Object[]> getShipmentDetailsByChallanNo(String challanNo);
 	List<Object[]> getMillDetailsByCode(String millcode);
 	List<Object[]> getDispatchDetails(String challanNo);
+	List<Object> getGradeRatio(String challanNo);
+	List<Object> getChallanDetails(String challan);
 }

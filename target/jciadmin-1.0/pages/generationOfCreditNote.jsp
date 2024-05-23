@@ -12,17 +12,24 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-    <!-- GLOBAL MAINLY STYLES-->
-    <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    <!-- PLUGINS STYLES-->
-    <link href="./assets/vendors/DataTables/datatables.min.css" rel="stylesheet" />
-    <!-- THEME STYLES-->
-    <link href="assets/css/main.min.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- GLOBAL MAINLY STYLES-->
+<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="./assets/vendors/themify-icons/css/themify-icons.css"
+	rel="stylesheet" />
+<!-- PLUGINS STYLES-->
+<link href="./assets/vendors/DataTables/datatables.min.css"
+	rel="stylesheet" />
+<!-- THEME STYLES-->
+<link href="assets/css/main.min.css" rel="stylesheet" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
 .field-icon {
 	float: right;
@@ -45,53 +52,37 @@
 input[type="radio"] {
 	display: inline;
 }
-
 </style>
 </head>
 
 <body class="fixed-navbar">
 
 	<%
-	String shipmentDetails = (String) request.getSession().getAttribute("shipmentDetails");
 	String ContractNo = (String) request.getSession().getAttribute("ContractNo");
 	String roId = (String) request.getSession().getAttribute("roId");
+	
+	String  bosNo= (String) request.getSession().getAttribute("bosNo");
+	String  bosDate= (String) request.getSession().getAttribute("bosDate");
+	String diNo = (String) request.getSession().getAttribute("diNo");
+	String millcode = (String) request.getSession().getAttribute("millcode");
+ 
 	String ChallanNo = (String) request.getSession().getAttribute("ChallanNo");
 	int Count = (int) request.getSession().getAttribute("Count") + 1;
 	Double nominalWt = (Double) request.getSession().getAttribute("nominalWeight");
 
 	Double actualWt = (Double) request.getSession().getAttribute("ActualWeight");
 	Double invoiceVal = Double.parseDouble((String) request.getSession().getAttribute("invoiceVal"));
+	Double avgJuteValue = (Double) request.getSession().getAttribute("avgJuteVal");
 	Double shortQty = nominalWt - actualWt;
 
-	Double price = invoiceVal / nominalWt;
-	int crnAmount = (int) (price * shortQty);
+	long crnAmount =  Math.round(avgJuteValue * shortQty);
+ 
 
 	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 	//generation of credit Note No.
 	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
 	String indiaSerialNo = "001640";
 	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
-	
-	//default data for testing
-/* 	String shipmentDetails = "";
-	String ContractNo ="";
-	String roId = "";
-	String ChallanNo ="";
-	int Count = 1;
-	Double nominalWt = 0.0;
-
-	Double actualWt = 0.0;
-	Double invoiceVal =0.0;
-	Double shortQty = nominalWt - actualWt;
-
-	Double price = 0.0;
-	int crnAmount = 0;
-
-	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
-	//generation of credit Note No.
-	String lastDigitOfCropYear ="";
-	String indiaSerialNo = "001640";
-	String creditNoteIdnNo = "sdfb"; */
 	%>
 
 	<div class="page-wrapper">
@@ -133,7 +124,7 @@ input[type="radio"] {
 												name="cnNo" id="cnNo" type="text"
 												value="<%=creditNoteIdnNo%>" readonly>
 										</div>
-										
+
 										<div class="col-sm-4 form-group">
 											<label>Contract No </label> <input class="form-control"
 												name="contractNo" id="contractNo" type="text"
@@ -146,10 +137,12 @@ input[type="radio"] {
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
-											<label>BOS Qty.</label> <input class="form-control"
-												name="bosQty" id="bosQty" type="text" value="<%=nominalWt%>"
-												readonly>
+											<label>Challan No</label> <input class="form-control"
+												name="challan" id="challan" type="text"
+												value="<%=ChallanNo%>" readonly>
 										</div>
+
+
 
 										<div class="col-sm-4 form-group">
 											<label>Actual Qty. </label> <input class="form-control"
@@ -166,28 +159,33 @@ input[type="radio"] {
 
 									<div class="row">
 
+										<div class="col-sm-4 form-group">
+											<label>BOS Qty.</label> <input class="form-control"
+												name="bosQty" id="bosQty" type="text" value="<%=nominalWt%>"
+												readonly>
+										</div>
 										<div class="col-sm-4 form-group" id="dpc">
 											<label>Credit Note Amount </label> <input
 												class="form-control" name="creditAmt" id="creditAmt"
 												type="text" value="<%=crnAmount%>" readonly>
 										</div>
-										<div class="col-sm-4 form-group">
-											<label>Shipment Details</label> <input class="form-control "
-												name="shipment" id="shipment" type="text"
-												value="<%=shipmentDetails%>" readonly>
-										</div>
-										
-										 <input class="form-control "
-												name="ChallanNo" id="ChallanNo" type="hidden"
-												value="<%=ChallanNo%>" readonly>
 									
-										<div class="col-sm-4 form-group" for="formFile">
-											<label>File Upload </label> <input class="form-control"
-												name="file" id="formFile" type="file">
-										</div>
 
+										<input class="form-control " name="ChallanNo" id="ChallanNo"
+											type="hidden" value="<%=ChallanNo%>" readonly>
 
+										<input class="form-control " name="diNo" id="diNo"
+											type="hidden" value="<%=diNo%>" readonly>
 
+										<input class="form-control " name="bosNo" id="bosNo"
+											type="hidden" value="<%=bosNo%>" readonly>
+											
+										<input class="form-control " name="bosDate" id="bosDate"
+											type="hidden" value="<%=bosDate%>" readonly>
+											
+										<input class="form-control " name="millcode" id="millcode"
+											type="hidden" value="<%=millcode%>" readonly>
+  
 									</div>
 									<br>
 									<div class="row">
@@ -214,15 +212,22 @@ input[type="radio"] {
 
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
-	    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL PLUGINS-->
-    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <!-- CORE SCRIPTS-->
-    <script src="assets/js/app.min.js" type="text/javascript"></script>
+	<script src="./assets/vendors/jquery/dist/jquery.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script
+		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- PAGE LEVEL PLUGINS-->
+	<script src="./assets/vendors/DataTables/datatables.min.js"
+		type="text/javascript"></script>
+	<!-- CORE SCRIPTS-->
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 </body>
 </html>

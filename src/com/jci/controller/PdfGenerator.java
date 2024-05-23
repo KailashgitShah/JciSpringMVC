@@ -307,28 +307,34 @@ public class PdfGenerator {
 
 	}
 
-	public String generatePdfOfCreditNoteDoc(String Invoice_Value, String challan_No1, String supplier_Name,
-			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
-			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
-			String bill_of_Supply, String conract_no, String Clientstate, String Clientcode, String BOS_Date,
-			String ClientPan, List<Object[]> list , String diNo , String bosNo) throws FileNotFoundException {
+	public String generatePdfOfCreditNoteDoc(String crnNo, String crnDate, String Invoice_Value, String challan_No1,
+			String supplier_Name, String supplier_GSTN, String supplier_Address, String recipient_Name,
+			String recipient_GSTN, String recipient_Address, String consignee_Name, String consignee_GSTN,
+			String consignee_Address, String bill_of_Supply, String conract_no, String Clientstate, String Clientcode,
+			String BOS_Date, String ClientPan, List<Object[]> list, String diNo, String bosNo, String filePath) throws FileNotFoundException {
 
-		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
-		String fileName = "generatedfile_" + timestamp + ".pdf";
+		final File theDir = new File(filePath);
+		if (!theDir.exists()) {
+			theDir.mkdirs();
+		}
+
+		//String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
+		String fileName = "creditNote" + challan_No1 + ".pdf";
 
 		// String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
-		String filePath = "C:\\Users\\pradeep.rathor\\Desktop\\JCIStuff\\CreditNote" + fileName;
+		String FinalfilePath = filePath + "\\" + fileName;
 
-		PdfWriter pdfWriter = new PdfWriter(filePath);
+		PdfWriter pdfWriter = new PdfWriter(FinalfilePath);
 		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 		try {
 			pdfDocument.setDefaultPageSize(PageSize.A4);
 			PdfFont boldFont = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
 			Document document = new Document(pdfDocument);
-			document.setMargins(5, 5, 5, 5);
+			//document.setMargins(5, 5, 5, 5);
+			//document.setMargins(0, document.getLeftMargin(), document.getBottomMargin(), document.getRightMargin());
 			addHeader(document, filePath, filePath, filePath);
 			float columnWidth = PageSize.A4.getWidth() * 0.5f;
-			float borderWidth = 1.0f;
+			float borderWidth = 0.5f;
 			Table contentTable1 = new Table(new float[] { columnWidth, columnWidth });
 			Cell cell1199 = createCell("THE JUTE CORPORATION OF INDIA", Border.NO_BORDER, TextAlignment.LEFT)
 					.setFont(boldFont);
@@ -490,6 +496,26 @@ public class PdfGenerator {
 			cell664.add(paragraph10);
 			contentTable.addCell(cell664);
 
+			contentTable.addCell(createCell("", null));
+
+			Cell cell6664 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+			cell6664.setBorderLeft(new SolidBorder(borderWidth));
+
+			Paragraph paragraph110 = new Paragraph().add(new Text("CREDIT NOTE NO : ").setFont(boldFont))
+					.add(new Text(crnNo).setFont(normalFont));
+			cell6664.add(paragraph110);
+			contentTable.addCell(cell6664);
+
+			contentTable.addCell(createCell("", null));
+
+			Cell cell6665 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+			cell6665.setBorderLeft(new SolidBorder(borderWidth));
+
+			Paragraph paragraph111 = new Paragraph().add(new Text("CREDIT NOTE DATE : ").setFont(boldFont))
+					.add(new Text(crnDate).setFont(normalFont));
+			cell6665.add(paragraph111);
+			contentTable.addCell(cell6665);
+
 			Cell cell21 = createCell("DETAILS OF  RECIEPIENTS", Border.NO_BORDER, TextAlignment.LEFT);
 			cell21.setBorderRight(new SolidBorder(borderWidth));
 			cell21.setBorderBottom(new SolidBorder(borderWidth));
@@ -601,17 +627,16 @@ public class PdfGenerator {
 			Paragraph spacingParagraph1 = new Paragraph("").setFixedLeading(10f);
 			document.add(spacingParagraph1);
 
-			String[] columnNames = { "SI NO", "HSN", "DESCRIPTION", "CROP YEAR", "BALE MARK", "VARIETY",
-					"NO OF BALES", "NOMINAL WT./BALE", "UNIT", "RATE (RS/UNIT)", "Inv QTY" , "Act QTY" , "Short QTY", "TOTAL" };
-			float[] columnWidths = { 2, 4, 4, 3, 3, 2, 2, 1, 5, 2, 2, 2, 2, 2 , PageSize.A4.getWidth() * 0.1f,
-					PageSize.A4.getWidth() * 0.1f };
+			String[] columnNames = { "SI NO", "HSN", "DESCRIPTION", "CROP YEAR", "BALE MARK", "VARIETY", "NO OF BALES",
+					"NOMINAL WT./BALE", "UNIT", "RATE (RS/UNIT)", "Inv QTY", "Act QTY", "Short_QTY", "TOTAL" };
+			float[] columnWidths = { 1, 1, 3, 3, 1, 2, 1, 1, 1, 2, 2, 2, 4, 4 };
 			float totalWidth = 0;
 			for (float width : columnWidths) {
 				totalWidth += width;
 			}
 
 			float columnWidth1 = PageSize.A4.getWidth() * 0.3f;
-			float columnWidth2 = PageSize.A4.getWidth() * 0.52f;
+			float columnWidth2 = PageSize.A4.getWidth() * 0.4f;
 
 //float largerFontSize = 14f;
 
@@ -620,7 +645,6 @@ public class PdfGenerator {
 			float minimumHeight = 20f;
 			Cell cell1134 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 			cell1134.setBorderRight(new SolidBorder(borderWidth));
-//cell1134.setBorderBottom(new SolidBorder(borderWidth));
 			cell1134.setBorderTop(new SolidBorder(borderWidth));
 			cell1134.setFont(boldFont);
 			cell1134.setHeight(minimumHeight);
@@ -646,7 +670,7 @@ public class PdfGenerator {
 // Add headers
 
 			for (int i = 0; i < columnNames.length; i++) {
-				Cell headerCell = createCell(columnNames[i], Border.NO_BORDER, TextAlignment.CENTER).setBold();
+				Cell headerCell = createCell(columnNames[i], Border.NO_BORDER, TextAlignment.CENTER).setBold().setFontSize(6f);
 				headerCell.setBorderTop(new SolidBorder(1f));
 //headerCell.setBorderBottom(new SolidBorder(1f));
 
@@ -661,41 +685,53 @@ public class PdfGenerator {
 			String cropYear = "";
 			String baleMark = "";
 			String strNoOfBales = "";
-			String strNominalWt = "";
-			String Jute_variety = "";
 			String Jute_grade = "";
-			String strRate = "";
 			String strNominalQty = "";
- 
-			float totalqty1 = 0;
-			float totalqty2 = 0;
-			for (Object[] row : list) {
+			
+			
+	
+
+			int total = 0;
+			double totalActQty = 0;
+			double totalInvQty = 0;
+			double totalShortQty = 0;
+		
+			for (int i = 0; i < list.size(); i++) {
+				
+				Object[] row = list.get(i);
+
+				//Object gradeObject = gradeRatio.get(i);
+
+				//double perticularShortQty = (Double) gradeObject * shortQty;
 				cropYear = (String) row[0];
-
 				baleMark = (String) row[1];
-
-				Jute_variety = (String) row[2];
-
-				Jute_grade = (String) row[3];
-
-				int noOfBales = ((Number) row[4]).intValue();
-
-				float nominalWt = ((Number) row[5]).floatValue();
-
-				float rate7 = ((Number) row[6]).floatValue();
-
-				float nominalQty = ((Number) row[7]).floatValue();
-
+				Jute_grade = (String) row[2];
+				int noOfBales = (int) row[3];
+				Double nominalQty = (Double) row[4];
+				Double rate = (Double) row[5];
+				Double nominalWt = (Double) row[6];
+				Double actwt = (Double) row[8];
+				Double shrtWt = (Double) row[9];
+				double amt = (double) row[10];
+		
+				
 				strNoOfBales = String.valueOf(noOfBales);
-				strNominalWt = String.valueOf(nominalWt);
-				strRate = String.valueOf(rate7);
 				strNominalQty = String.valueOf(nominalQty);
+				
+//				System.err.println("cropYear: " + cropYear + ", baleMark: " + baleMark +
+//		                   ", Jute_grade: " + Jute_grade + ", noOfBales: " + noOfBales +
+//		                   ", nominalQty: " + nominalQty + ", rate: " + rate +
+//		                   ", nominalWt: " + nominalWt + ", actwt: " + actwt +
+//		                   ", shrtWt: " + shrtWt + ", amt: " + amt);
+//		 
+				
 
-				for (int j = 0; j < row.length; j++) {
+				for (int j = 0; j < columnNames.length; j++) {
+				
 					String cellData;
 					if (j == 0) {
 // SI NO
-						cellData = String.valueOf(list.indexOf(row) + 1);
+						cellData = (i + 1) + "";
 					} else if (j == 1) {
 // HSN
 						cellData = "53031010";
@@ -704,6 +740,7 @@ public class PdfGenerator {
 						cellData = "Raw Jute";
 					} else if (j == 3) {
 // CROP YEAR
+						
 						cellData = cropYear;
 
 					} else if (j == 4) {
@@ -711,44 +748,38 @@ public class PdfGenerator {
 						cellData = baleMark;
 					} else if (j == 5) {
 // VARIETY/GRADE
-						cellData = Jute_variety;
+						cellData = Jute_grade;
 					} else if (j == 6) {
 // NO OF BALES
-						cellData = Jute_grade;
+						cellData = strNoOfBales;
 					} else if (j == 7) {
 // NO OF BALES
-						cellData = strNoOfBales;
+						cellData = nominalWt + "";
 					} else if (j == 8) {
 // NOMINAL WT./BALE
-						cellData = strNominalWt;
+						cellData = "Qtls.";
 					} else if (j == 9) {
 // UNIT
-						cellData = "Qtls.";
-
+					   cellData = rate + "";
 					} else if (j == 10) {
 // RATE (RS/UNIT)
-						cellData = strRate;
+						totalInvQty += nominalQty;
+						cellData = nominalQty + "";
 					} else if (j == 11) {
-// QTY
-						cellData = strNominalQty;
-						float rate1 = Float.parseFloat(strNominalQty);
-						totalqty1 += rate1;
+// QTY               
+						cellData = actwt + "";
+						totalActQty += actwt;
+						
 					} else if (j == 12) {
-// TOTAL
-						float rate = Float.parseFloat(strRate);
-						float rate1 = Float.parseFloat(strNominalQty);
-						float total = rate * rate1;
-						String stringValue = Float.toString(total);
-
-						cellData = stringValue;
-						float rate3 = Float.parseFloat(stringValue);
-						// float TCS_Amt1 = Float.parseFloat(TCS_Amt);
-						totalqty2 += rate3;
-						// totalqty2 += TCS_Amt1;
-					}
-
-					else {
-						cellData = "N/A";
+// QTY              
+						totalShortQty += shrtWt;
+						cellData = shrtWt + "";
+					} else {
+						// QTY
+						double totalAmt = Math.round(amt);
+						cellData = totalAmt + "";
+						total += totalAmt;
+				
 					}
 
 					Cell cell = createCell(cellData, Border.NO_BORDER, TextAlignment.CENTER);
@@ -757,7 +788,7 @@ public class PdfGenerator {
 //cell.setBorderBottom(new SolidBorder(1f));
 					cell.setBorderLeft(new SolidBorder(1f));
 
-					if (j < columnNames.length - 1) {
+					if (j <= columnNames.length - 1) {
 						cell.setBorderRight(new SolidBorder(1f));
 					}
 
@@ -765,56 +796,62 @@ public class PdfGenerator {
 				}
 
 			}
+
 			document.add(contentTable11);
 
-			float columnWidth7 = PageSize.A4.getWidth() * 0.9f;
-			float columnWidth8 = PageSize.A4.getWidth() * 0.1f;
-			Table contentTable35 = new Table(new float[] { columnWidth7, columnWidth8 })
-					.setBorder(new SolidBorder(borderWidth)).setFont(boldFont);
-
 //float minimumHeight = 20f;
-			Cell cell11371 = createCell("TCS U/S 206C(1H) @ 0.1 %", Border.NO_BORDER, TextAlignment.CENTER);
-			cell11371.setBorderRight(new SolidBorder(borderWidth));
 
-			cell11371.setFont(boldFont);
-			cell11371.setHeight(minimumHeight);
-			contentTable35.addCell(cell11371);
 			// Cell cell11372 = createCell(TCS_Amt, Border.NO_BORDER, TextAlignment.CENTER);
 			// cell11372.setBorderRight(new SolidBorder(borderWidth));
 
 			// cell11372.setFont(boldFont);
 			// contentTable35.addCell(cell11372);
 
-			document.add(contentTable35);
+			float columnWidth4 = PageSize.A4.getWidth() * 0.705f;
+			float columnWidth5 = PageSize.A4.getWidth() * 0.048f;
+			float columnWidth6 = PageSize.A4.getWidth() * 0.065f;
+			
+			totalActQty = Double.parseDouble(new DecimalFormat("#.####").format(totalActQty));
+			totalShortQty = Double.parseDouble(new DecimalFormat("#.####").format(totalShortQty));
+			totalInvQty = Double.parseDouble(new DecimalFormat("#.####").format(totalInvQty));
 
-			float columnWidth4 = PageSize.A4.getWidth() * 0.8f;
-			float columnWidth5 = PageSize.A4.getWidth() * 0.1f;
-
-			Table contentTable36 = new Table(new float[] { columnWidth4, columnWidth5, columnWidth5 })
+			Table contentTable36 = new Table(new float[] { columnWidth4, columnWidth5,columnWidth5,columnWidth6,columnWidth5 })
 					.setBorder(new SolidBorder(borderWidth)).setFont(boldFont);
 //float minimumHeight = 20f;
 			Cell cell11374 = createCell("TOTAL", Border.NO_BORDER, TextAlignment.CENTER);
 			cell11374.setBorderRight(new SolidBorder(borderWidth));
 			cell11374.setBorderBottom(new SolidBorder(borderWidth));
-//cell11374.setBorderTop(new SolidBorder(borderWidth));
 			cell11374.setFont(boldFont);
 			cell11374.setHeight(minimumHeight);
 			contentTable36.addCell(cell11374);
+			
+			Cell cell001 = createCell(totalInvQty+"", Border.NO_BORDER, TextAlignment.CENTER);
+			cell001.setBorderRight(new SolidBorder(borderWidth));
+			cell001.setBorderTop(new SolidBorder(borderWidth));
+			cell001.setFont(boldFont);
+			cell001.setHeight(minimumHeight);
+			contentTable36.addCell(cell001);
+			
+		
+			
+			
+			Cell cell002 = createCell(totalActQty+"", Border.NO_BORDER, TextAlignment.CENTER);
+			cell002.setBorderRight(new SolidBorder(borderWidth));
+			cell002.setBorderTop(new SolidBorder(borderWidth));
+			cell002.setFont(boldFont);
+			cell002.setHeight(minimumHeight);
+			contentTable36.addCell(cell002);
+			
+			Cell cell003 = createCell(totalShortQty+"", Border.NO_BORDER, TextAlignment.CENTER);
+			cell003.setBorderRight(new SolidBorder(borderWidth));
+			cell003.setBorderTop(new SolidBorder(borderWidth));
+			cell003.setFont(boldFont);
+			cell003.setHeight(minimumHeight);
+			contentTable36.addCell(cell003);
+			
+			
 
-			String stringValue1 = Float.toString(totalqty1);
-
-			Cell cell11375 = createCell(stringValue1, Border.NO_BORDER, TextAlignment.CENTER);
-			cell11375.setBorderRight(new SolidBorder(borderWidth));
-			cell11375.setBorderBottom(new SolidBorder(borderWidth));
-//cell11375.setBorderTop(new SolidBorder(borderWidth));
-			cell11375.setFont(boldFont);
-
-			cell11375.setHeight(minimumHeight);
-
-			contentTable36.addCell(cell11375);
-
-			String stringValue2 = Float.toString(totalqty2);
-			Cell cell11376 = createCell(stringValue2, Border.NO_BORDER, TextAlignment.LEFT);
+			Cell cell11376 = createCell(total + "", Border.NO_BORDER, TextAlignment.CENTER);
 			cell11376.setBorderRight(new SolidBorder(borderWidth));
 			cell11376.setBorderBottom(new SolidBorder(borderWidth));
 			cell11376.setFont(boldFont);
@@ -823,7 +860,7 @@ public class PdfGenerator {
 
 			document.add(contentTable36);
 			ConvertWord_k convertWord_k = new ConvertWord_k();
-			String stringValue5 = Float.toString(totalqty2);
+			String stringValue5 = Float.toString(total);
 			double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
 			int convertInt = (int) invoiceDouble;
 			String InvoiceNO = convertWord_k.convertToWords(convertInt);
@@ -842,48 +879,6 @@ public class PdfGenerator {
 			document.add(spacingParagraph12);
 
 			float columnWidth11 = PageSize.A4.getWidth() * 0.7f;
-//			Table contentTable22 = new Table(new float[] { columnWidth11 }).setBorder(new SolidBorder(borderWidth))
-//					.setFont(boldFont);
-//
-//			Cell cell1122 = createCell("DETAILS OF TRANSPORTER", Border.NO_BORDER, TextAlignment.LEFT);
-//			cell1122.setBorderRight(new SolidBorder(borderWidth));
-//			cell1122.setBorderBottom(new SolidBorder(borderWidth));
-//			cell1122.setBorderTop(new SolidBorder(borderWidth));
-//			cell1122.setFont(boldFont);
-//			contentTable22.addCell(cell1122);
-//
-//			Cell cell11223 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-//			cell11223.setBorderRight(new SolidBorder(borderWidth));
-////cell11223.setBorderTop(new SolidBorder(borderWidth));
-//			Paragraph paragraph224 = new Paragraph().add(new Text("TRANSIT POLICY NO :").setFont(boldFont))
-//					.add(new Text(TrnasitPolicyNo).setFont(normalFont));
-//			cell11223.add(paragraph224);
-//			contentTable22.addCell(cell11223);
-//
-//			Cell cell11224 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-//			cell11224.setBorderRight(new SolidBorder(borderWidth));
-////cell11224.setBorderTop(new SolidBorder(borderWidth));
-//			Paragraph paragraph225 = new Paragraph().add(new Text("TRANSPORTER NAME:").setFont(boldFont))
-//					.add(new Text(Driver_name).setFont(normalFont));
-//			cell11224.add(paragraph225);
-//			contentTable22.addCell(cell11224);
-//
-//			Cell cell11225 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-//			cell11225.setBorderRight(new SolidBorder(borderWidth));
-////cell11225.setBorderTop(new SolidBorder(borderWidth));
-//			Paragraph paragraph226 = new Paragraph().add(new Text("TRUCK NO :").setFont(boldFont))
-//					.add(new Text(Vehicle_no).setFont(normalFont));
-//			cell11225.add(paragraph226);
-//			contentTable22.addCell(cell11225);
-//
-//			Cell cell11228 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-//			cell11228.setBorderRight(new SolidBorder(borderWidth));
-////cell11225.setBorderTop(new SolidBorder(borderWidth));
-//			Paragraph paragraph228 = new Paragraph().add(new Text("DRIVER LIC NO :").setFont(boldFont))
-//					.add(new Text(Driver_Lic_no).setFont(normalFont));
-//			cell11228.add(paragraph228);
-//			contentTable22.addCell(cell11228);
-//			document.add(contentTable22);
 
 			Paragraph spacingParagraph123 = new Paragraph("\n\n").setFixedLeading(10f);
 			document.add(spacingParagraph123);
@@ -893,9 +888,6 @@ public class PdfGenerator {
 
 			Cell cell3164 = createCell("", Border.NO_BORDER, TextAlignment.CENTER);
 
-			Paragraph paragraph345 = new Paragraph().add(new Text("Driver's Name :").setFont(boldFont))
-					.add(new Text("").setFont(normalFont));
-			cell3164.add(paragraph345);
 			contentTable364.addCell(cell3164);
 
 //

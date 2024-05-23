@@ -66,6 +66,9 @@ public class CreditNotes {
 
 	    @Column(name = "Created_by")
 	    private String Created_by;
+	    
+	    @Column(name = "Jute_grade")
+	    private String juteGrade;
 
 	    @Column(name = "Creation_date")
 	    @NotNull
@@ -171,7 +174,6 @@ public class CreditNotes {
 			this.creationDate = creationDate;
 		}
 		
-		
 
 		public String getDocument() {
 			return document;
@@ -200,21 +202,31 @@ public class CreditNotes {
 		public void setChallanNo(String challanNo) {
 			ChallanNo = challanNo;
 		}
+		
+		
+		public String getJuteGrade() {
+			return juteGrade;
+		}
+
+		public void setJuteGrade(String juteGrade) {
+			this.juteGrade = juteGrade;
+		}
+		
+		
+
 
 		@Override
 		public String toString() {
-			return "CreditNotes [crnId=" + crnId + ", crnDate=" + crnDate + ", crnNo=" + crnNo + ", shipmentDetails="
-					+ shipmentDetails + ", contractNo=" + contractNo + ", bosQty=" + bosQty + ", actualQty=" + actualQty
-					+ ", shortQty=" + shortQty + ", crnAmount=" + crnAmount + ", RoId=" + RoId + ", crnStatus="
-					+ crnStatus + ", Created_by=" + Created_by + ", creationDate=" + creationDate + ", document="
-					+ document + "]";
+			return "CreditNotes [crnId=" + crnId + ", crnDate=" + crnDate + ", crnNo=" + crnNo + ", ChallanNo="
+					+ ChallanNo + ", shipmentDetails=" + shipmentDetails + ", contractNo=" + contractNo + ", bosQty="
+					+ bosQty + ", actualQty=" + actualQty + ", shortQty=" + shortQty + ", crnAmount=" + crnAmount
+					+ ", RoId=" + RoId + ", crnStatus=" + crnStatus + ", Created_by=" + Created_by + ", juteGrade="
+					+ juteGrade + ", creationDate=" + creationDate + ", document=" + document + "]";
 		}
 
 		public CreditNotes() {
 			super();
 			// TODO Auto-generated constructor stub
 		}
-
-
-		
+	
 }
