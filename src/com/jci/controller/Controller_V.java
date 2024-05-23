@@ -4506,10 +4506,10 @@ public class Controller_V {
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
 
 		
-			String Date_of_inspection1 = request.getParameter("Dateofinspection");
+			
 
-			String fullcontractno = request.getParameter("fullcontractno");
-			String Challan_No1 = request.getParameter("Challan_No1");
+			
+			
 			
 			final File theDirect = new File(ConfirmationOfClaim);
 			if (!theDirect.exists()) {
@@ -4523,7 +4523,7 @@ public class Controller_V {
 			final String filename = SupportingDocument.getOriginalFilename();
 			System.err.println(filename + "---------");
 			String rolename = (String) session.getAttribute("rolename");
-			/* if(rolename == "") */
+			
 			
 
 			ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
@@ -4532,6 +4532,12 @@ public class Controller_V {
 
 			
           for(int i=0;i<cnt;i++) {
+        	  String fullcontractno = request.getParameter("cont"+i);
+        	  System.err.println(fullcontractno);
+        	  String Challan_No1 = request.getParameter("ch"+i);
+        	  System.err.println(Challan_No1);
+        	  String Date_of_inspection1 = request.getParameter("di"+i);
+        	  System.err.println(Date_of_inspection1);
         	  if (Claim_Amount1 != null) {
 
   				double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
@@ -4577,15 +4583,15 @@ public class Controller_V {
 			}
 
 
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd"); // Corrected format for parsing
+			SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy"); // Corrected format for parsing
 			Date instdate1 = formatter1.parse(Date_of_inspection1);
-
-			// Formatting the date for display in DD-MM-YYYY format
-			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
-			String formattedDate = formatter2.format(instdate1);
-			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
-			Date parsedDate = originalFormat.parse(formattedDate);
-			System.err.println(formattedDate); // Print formatted date string
+			
+//			// Formatting the date for display in DD-MM-YYYY format
+//			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//			String formattedDate = formatter2.format(instdate1);
+//			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+//			Date parsedDate = originalFormat.parse(formattedDate);
+//			System.err.println(formattedDate); // Print formatted date string
 
 			// Set the original Date object to the model
 
@@ -4634,6 +4640,8 @@ public class Controller_V {
 
 		} catch (Exception e) {
 			System.err.println("overall catch inside----");
+			redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\">" +
+	                "<b>Error!</b> Failed to save record.</div>");
 
 		}
 		if (username == null) {
@@ -4840,7 +4848,7 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = {"fetchPrice"}, method = {RequestMethod.GET})
 	public String fetchPrice(@RequestParam("variety") String var,@RequestParam("grade") String gr,@RequestParam("contract") String Contract, HttpServletRequest request,HttpSession session) {
-		System.err.println("Reached Price");
+		System.err.println("Reached Price"+gr+"var"+var);
 		System.err.println(var+"0000000000000"+ gr);
 		char lastChar = gr.charAt(gr.length() - 1); // Extract the last character
 		int gradeNumber = Character.getNumericValue(lastChar); // Convert the character to an integer

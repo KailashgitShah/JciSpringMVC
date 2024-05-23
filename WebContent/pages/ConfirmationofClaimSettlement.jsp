@@ -45,6 +45,29 @@
 	content: " *";
 	color: red;
 }
+.ibox {
+    padding: 0 0px;
+}
+.page-content .ibox .ibox-body .col-sm-12.form-group {
+    padding: 0 0px;
+}
+div.scrollmenu {
+ /*  background-color: #333; */
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
 </style>
 </head>
 <body class="fixed-navbar" onload="myFunction()">
@@ -99,65 +122,8 @@
 
 												</select>
 											</div>
-											<div class="col-sm-4 form-group">
-												<label>Contract No.</label> <span class="text-danger">*
-												</span>&nbsp; <span id="contractno" name="contractno"
-													class="text-danger"> </span> <select name="fullcontractno"
-													id="fullcontractno1" class="form-control taxtbox" required>
-
-													<option value="-1" selected disabled>-Select-</option>
-
-												</select>
-
-
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>Date_of_inspection</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Date_of_inspection"
-													name="Date_of_inspection" class="text-danger"> </span> <input
-													class="form-control" name="Dateofinspection"
-													id="Dateofinspection12" value="" type="date" required>
-											</div>
-											
-
-
-
-										</div>
-
-
-										<div class="row">
-
-
-
-											<div class="col-sm-4 form-group">
-												<label>Challan No</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Challan_No" name="Challan_No "
-													class="text-danger"> </span> 
-													<select name="Challan_No1"
-													id="ChallanNo1" class="form-control taxtbox" required>
-
-													<option value="-1" selected disabled>-Select-</option>
-
-												</select>
-													
-											</div>
-
-											<!-- <div class="col-sm-4 form-group">
-												<label>MR No</label> <span class="text-danger">* </span>&nbsp;
-												<span id="MR_No" name="MR_No " class="text-danger"> </span>
-												<input class="form-control taxtbox" name="MR_No1" id="MRNo1"
-													value="" placeholder="MR No" required readonly>
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Bale Mark</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Bale_Mark" name="Bale_Mark "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Bale_Mark1" value=""
-													id="BaleMark1" placeholder="Bale Mark" required readonly>
-											</div>
- -->
-											<div class="col-sm-4 form-group">
+										
+<div class="col-sm-4 form-group">
 												<label class="required">Supporting Document
 													(330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
 													class="text-danger"> </span> <img id="imgPreview" /><input
@@ -174,9 +140,15 @@
 													name="mill" id="mill"  readonly
 													placeholder="Mill name" required>
 											</div>
+											
+											
+
 
 
 										</div>
+
+
+									
 
 										<div class="row">
 
@@ -202,16 +174,16 @@
 											
 											
 											
-											 <div class="col-sm-4 form-group">
+											<!--  <div class="col-sm-4 form-group">
 												<label>MR No. </label> <span class="text-danger">*
 												</span>&nbsp; <span 
 													class="text-danger"> </span> <input
 													class="form-control taxtbox" name="mrNo"
 													id="mrNo" value="" placeholder="MR No."
 													readonly required>
-											</div> 
+											</div>  -->
 										</div>
-										<div class="row">
+										<!-- <div class="row">
 										 <div class="col-sm-4 form-group">
 												<label>MR Date </label> <span class="text-danger">*
 												</span>&nbsp; <span 
@@ -221,14 +193,15 @@
 													readonly required>
 											</div> 
 										</div>
-
+ -->
 										<div class="row">
-										<div class="col-sm-4 form-group">
+									 	<div class="scrollmenu"> 
+										<div class="col-sm-12 form-group">
 														<label id="lblName"></label>
 														<div id="form2"></div>
 														<span id="misQty"></span>
 													</div>
-											
+										 	</div> 
 										
 
 
@@ -246,7 +219,7 @@
 </div>
 
 
-											<div class="col-sm-4 form-group">
+											<div class="col-sm-12 form-group">
     <label id="lblName"></label>
     <input
 													class="form-control taxtbox" name="q"
@@ -287,7 +260,7 @@
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $("#fullcontractno1").on('change', function() {
     var id = $(this).val();
     // Instead of alerting the ID directly, you might want to do something more meaningful with it
@@ -329,7 +302,7 @@ data.forEach(function(value) {
 });
 
 </script>
-	
+	 -->
 
 	<script>
 $(document).ready(function(){
@@ -373,7 +346,7 @@ $(document).ready(function(){
 
 </script>
 
-	<script type="text/javascript">
+ 	<!-- <script type="text/javascript">
       
 	$(document).ready(function() {
 	    $('#fullcontractno1').on('change', function() {
@@ -420,23 +393,31 @@ $(document).ready(function(){
 	});
 
       
-      </script>
+      </script>  -->
 	<script type="text/javascript">
 	$(document).ready(function() {
-		 $("#q").hide();
-	    $('#ChallanNo1').on('change', async function() {
-	        var field2Value = $("#ChallanNo1").val();
-
+		$("#q").hide();
+	    $('#SettlementId1').on('change', async function() {
+	        var field2Value = $("#SettlementId1").val();
+			
 	        try {
 	            const result = await $.ajax({
 	                type: 'GET',
 	                url: 'fetchSettlementData.obj',
 	                data: { "id": field2Value }
 	            });
-
+				
 	            var data = JSON.parse(result);
+	            console.log(result)
 	            var dateString = data[0][1];
-	            var date = new Date(dateString);
+	            $("#mill").val( data[0][15]);
+	            $("#mrNo").val(data[0][16]);
+	            
+	            
+	           
+	            $("#mrDate").val(formattedDate1);
+
+	            var date = new Date(dateString); // Assuming dateString is defined elsewhere
 	            var day = date.getDate();
 	            var month = date.getMonth() + 1;
 	            var year = date.getFullYear();
@@ -446,17 +427,37 @@ $(document).ready(function(){
 	            var formattedDate = formattedDay + '-' + formattedMonth + '-' + formattedYear;
 
 	            var tableHTML = "<table border='1'>";
-	            tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Grade</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
+	            tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
 	                "<th style='font-weight: bold;'>Moisture Claim Percentage</th><th style='font-weight: bold;'>Moisture Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th></tr>";
 	            for (var i = 0; i < data.length; i++) {
+	            	 var grade = data[i][3];
+	            	    var readOnly = (grade === 'TDN5' || grade === 'WN5' || grade === 'M6' || grade === 'B6') ? 'readonly' : '';
+	            	 var date1 = new Date(data[i][17]);
+	 	            var day1 = date1.getDate();
+	 	            var month1 = date1.getMonth() + 1;
+	 	            var year1 = date1.getFullYear();
+	 	            var formattedDay1 = day1 < 10 ? '0' + day1 : day1;
+	 	            var formattedMonth1 = month1 < 10 ? '0' + month1 : month1;
+	 	            var formattedYear1 = year1;
+	 	            var formattedDate1 = formattedDay1 + '-' + formattedMonth1 + '-' + formattedYear1;
+	 	            alert(formattedDate1);
 	                tableHTML += "<tr>";
-	                tableHTML += "<td style='text-align:center;'  id='jv"+i+"'>" + data[i][2] + "</td>";
-	                tableHTML += "<td style='text-align:center;  'id='jg"+i+"'>" + data[i][3] + "</td>";
-	                tableHTML += "<td style='text-align:center;  'id='nob"+i+"'>" + data[i][8] + "</td>";
-	                tableHTML += "<td style='text-align:center;  'id='amt"+i+"'>" + data[i][4] + "</td>";
-	                tableHTML += "<td style='text-align:center;  'id='pr"+i+"'>" + data[i][9] + "</td>";
-	                tableHTML += "<td style='text-align:center;  ' id='qc"+i+"'>" + data[i][5]+"%" + "</td>";
-	                tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='qs"+i+"'  name='qs"+i+"' value='0.00'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='jv"+i+"' name='jv"+i+"' value='" + data[i][2] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='jg"+i+"' name='jg"+i+"' value='" + data[i][3] + "'></td>";
+
+	                tableHTML += "<td style='text-align:center;'> <input readonly id='cont"+i+"' name='cont"+i+"' value='" + data[i][13] + "'></input></td>";
+                    
+	                tableHTML += "<td style='text-align:center;'><input readonly id='di"+i+"' name='di"+i+"' value='" + data[i][14] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='ch"+i+"' name='ch"+i+"' value='" + data[i][12] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='mn"+i+"' name='mn"+i+"' value='" + data[i][16] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='md"+i+"' name='md"+i+"' value='" + formattedDate1 + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='nob"+i+"' name='nob"+i+"' value='" + data[i][8] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='amt"+i+"' name='amt"+i+"' value='" + data[i][4] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='pr"+i+"' name='pr"+i+"' type='number' value='" + data[i][9] + "'></td>";
+	                tableHTML += "<td style='text-align:center;'><input readonly id='qc"+i+"' name='qc"+i+"' value='" + data[i][5] + "%'></td>";
+	                tableHTML += "<td style='text-align:center;'>";
+	                tableHTML += "<input type='number' style='text-align:center; width:80px;' id='qs" + i + "' name='qs" + i + "' value='0.00' " + readOnly + ">";
+	                tableHTML += "</td>";
 	                tableHTML += "<td style='text-align:center;  ' id='mc"+i+"'>" + data[i][6] +"%"+ "</td>";
 	                tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ms" + i + "'   name='ms" + i + "' value='0.00'></td>";
 	                tableHTML += "<td style='text-align:center;  ' id='nc"+i+"'>" + data[i][7] +"%"+ "</td>";
@@ -487,20 +488,23 @@ $(document).ready(function(){
 	                var totalSettlementAmount = 0;
 
 	                for (var index = 0; index < len; index++) {
-	                    var nsValue = parseFloat($('#ns' + index).val());
-	                    var dsValue = parseFloat($('#ds' + index).val());
-	                    var amtValue = parseFloat($('#amt' + index).text());
-	                    var qsValue = parseFloat($('#qs' + index).val());
-	                    var price = parseFloat($('#pr'+index).text());
-	                    var ms = parseFloat($('#ms'+index).val());
+	                    var nsValue = parseFloat($('#ns' + index).val()).toFixed(2);
+	                    var dsValue = parseFloat($('#ds' + index).val()).toFixed(2);
+	                    var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
+	                    var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
+	                    var price = parseFloat($('#pr'+index).val()).toFixed(2);
+	                    alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
+	                    var ms = parseFloat($('#ms'+index).val()).toFixed(2);
 	                    var dsAmount = (dsValue / 100) * amtValue;
 	                    var nsAmount = (nsValue / 100) * amtValue;
-					   
+	                    var dnsPrice= (dsAmount+nsAmount)* price;
+	                    var msQty= (ms / 100) * amtValue;
+					    var msAmount = (ms / 100) * amtValue * price;
 	                    if (!isNaN(nsValue) && !isNaN(dsValue) && !isNaN(amtValue)) {
-	                        var amti = amtValue - (dsAmount + nsAmount);
+	                        var amti = amtValue - (dsAmount + nsAmount+msQty) ;
 	                        var amtiFixed = amti.toFixed(2);
 	                      
-	                        var msAmount = (ms/100)*amtiFixed * price;
+	                        
 	                        try {
 	                            const result = await $.ajax({
 	                                type: 'GET',
@@ -508,24 +512,25 @@ $(document).ready(function(){
 	                                data: {
 	                                    "variety": data[index][2],
 	                                    "grade": data[index][3],
-	                                    "contract": Contract
+	                                    "contract": data[index][13]
 	                                }
 	                            });
 
 	                            const fetchedData = parseFloat(JSON.parse(result));
-	                            alert(qsValue+"---"+amtiFixed+"-----"+(price - fetchedData)+"ms:"+msAmount);
+	                            
 	                            
 	                            const AmountSet = amtiFixed * (qsValue/100) * (price - fetchedData);
-	                            alert("AmtSet"+AmountSet);
-	                            alert("msAmt"+msAmount);
-	                            totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount);
+	                         
+	                            totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
+	                            alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
 	                        } catch (error) {
 	                            alert("Error fetching data: " + error);
 	                        }
 	                    }
 	                }
 	               /*  $('#Settlement_Amount').text(totalSettlementAmount); */
-	                $("#SettlementAmount1").val(totalSettlementAmount);
+	               alert(totalSettlementAmount)
+	                $("#SettlementAmount1").val(totalSettlementAmount.toFixed(2));
 	                $("#sub").prop("disabled", false);
 	            });
 	        } catch (error) {

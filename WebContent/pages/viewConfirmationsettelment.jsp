@@ -218,14 +218,7 @@ th {
 
 				fixedHeader : true
 
-			//"ajax": './assets/demo/data/table_data.json',
-			/*"columns": [
-			    { "S": "name" },
-			    { "data": "office" },
-			    { "data": "extn" },
-			    { "data": "start_date" },
-			    { "data": "salary" }
-			] */
+			
 			});
 		})
 	</script>

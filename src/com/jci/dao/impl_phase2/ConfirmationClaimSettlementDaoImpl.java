@@ -63,7 +63,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 //	
 	@Override
 	public List<Object[]> fetchdataofclaim(String st) {
-		String sql = " select jcimill_receipt.Mr_no,jcimill_receipt.Mr_date,jcimill_receipt.Jute_Variety,jcimill_receipt.Jute_Grade,jcimill_receipt.Actual_qty,jcimill_receipt.QualityPercentage,jcimill_receipt.MoistureContent,jcimill_receipt.NCV_percentage,jcidispatch_details_child.No_of_bales,jcidispatch_details_child.Rate,jcimill_receipt.Crop_year,jcimill_receipt.NCV_qty from jcimill_receipt inner join jcidispatch_details_child on jcimill_receipt.Jute_Grade = jcidispatch_details_child.Jute_grade  WHERE jcimill_receipt.Challan_no = '"+ st + "'";
+		String sql = " select jcimill_receipt.Mr_no,jcimill_receipt.Mr_date,jcimill_receipt.Jute_Variety,jcimill_receipt.Jute_Grade,jcimill_receipt.Actual_qty,jcimill_receipt.QualityPercentage,jcimill_receipt.MoistureContent,jcimill_receipt.NCV_percentage,jcidispatch_details_child.No_of_bales,jcidispatch_details_child.Rate,jcimill_receipt.Crop_year,jcimill_receipt.NCV_qty,jcimill_receipt.Challan_no,jciclaim_nomination.ContractNo,jciclaim_nomination.DateofInspection,jciclaim_nomination.Mill,jciclaim_nomination.Mr_number,jciclaim_nomination.Mr_Date from jcimill_receipt left  join jcidispatch_details_child on jcimill_receipt.Jute_Grade = jcidispatch_details_child.Jute_grade inner join jciclaim_nomination on jciclaim_nomination.Challans = jcimill_receipt.Challan_no   WHERE jciclaim_nomination.Settlement_id_generated =  '"+ st + "'";
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.list();
 		return resultList1;
