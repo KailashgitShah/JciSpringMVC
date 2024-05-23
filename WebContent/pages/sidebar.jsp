@@ -363,7 +363,16 @@ body {
 								List</b></a></li>
 
 				</ul></li>
+			<li><a href="javascript:void(0);"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label">&nbsp;Verification of Weightment Slip</span> <i
+					class="fa fa-angle-left arrow"></i></a>
+				<ul class="nav-2-level ">
 
+					
+					<li data-pre="" id=""><a href="WeightmentSlipList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li>
+				</ul></li>
 
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
@@ -380,8 +389,8 @@ body {
 					<li data-pre="" id=""><a href="WeightmentSlipList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li>
 				</ul></li>
-
-
+              
+			
 
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
