@@ -21,7 +21,7 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 
 	@Override
 	public void create(GenerationOfBillSupplyModel generationOfBillSupplyModel) {
-		System.out.println(generationOfBillSupplyModel);
+	
 		generationofBillDao.create(generationOfBillSupplyModel);
 		
 	}
@@ -97,9 +97,9 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 
 
 	@Override
-	public List<Object> millnamefromTCS() {
+	public boolean millnamefromTCS(String millname) {
 	
-		return  generationofBillDao.millnamefromTCS();
+		return  generationofBillDao.millnamefromTCS(millname);
 	}
 
 
@@ -108,6 +108,30 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	public List<Object[]> ShipmentDetails(String st) {
 		
 		return generationofBillDao.ShipmentDetails(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> dispatchChildlist(String st) {
+		
+		return generationofBillDao.dispatchChildlist(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> GenrationAginstLCs(String st) {
+	
+		return generationofBillDao.GenrationAginstLCs(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> DocumentLcsEntry(String st) {
+		
+		return generationofBillDao.DocumentLcsEntry(st);
 	}
 
 

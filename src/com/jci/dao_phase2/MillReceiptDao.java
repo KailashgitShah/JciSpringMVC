@@ -15,12 +15,15 @@ public interface MillReceiptDao {
 	 
 		public MillRecieptModel find(int id);
 		public void delete(int id);
-		public List<Object> fetchHODINO();
+		public List<Object> fetchHODINO(String millname);
 	
 		public  List<Object[]> fetchdata(String st);
-		public  List<Object[]> fetchMill_NameR();
+		public  List<Object[]> challanbaseddetails(String st);
+		public  List<Object[]> childdata(String st);
+		public  List<Object> fetchMill_NameR();
 		
 		public void UpdateContractstatus( String s);
 		public MillRecieptModel Creditqty(String st);
+		public boolean  findmillreceiptNOlist(String st);
 		
 }

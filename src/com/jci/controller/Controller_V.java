@@ -64,6 +64,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.common.base.Supplier;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.ColumnText;
@@ -85,6 +86,7 @@ import com.jci.model.EntryofpcsoModel;
 import com.jci.model.FactorssInvolvedCommercial;
 import com.jci.model.FinancialConcurenceModel;
 import com.jci.model.GenerationOfBillSupplyModel;
+import com.jci.model.GenerationofDocumentLCsModel;
 import com.jci.model.GenrationDEmandDto;
 import com.jci.model.GenrationDemandNoteModel;
 import com.jci.model.JciDIHoModel;
@@ -118,6 +120,7 @@ import com.jci.service_phase2.EntryofGradeCompositionService;
 import com.jci.service_phase2.EntryofTdsService;
 import com.jci.service_phase2.FactorssInvolvedCommercialService;
 import com.jci.service_phase2.FinancialConcurenceService;
+import com.jci.service_phase2.GenerationAgaistLCsService;
 import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
 import com.jci.service_phase2.GenrationCashDocumentService;
@@ -257,6 +260,9 @@ public class Controller_V {
 
 	@Autowired
 	GenrationCashDocumentService genrationCashDocumentService;
+	
+	@Autowired
+	GenerationAgaistLCsService generationAgaistLCsService;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -2808,37 +2814,85 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 
-		List<Object> getdataList1 = this.millRecieptService.fetchHODINO();
-		List<Object[]> fetchMill_NameR = this.millRecieptService.fetchMill_NameR();
+		
+		//List<Object> getdataList1 = this.millRecieptService.fetchHODINO();
+		List<Object> fetchMill_NameR = this.millRecieptService.fetchMill_NameR();
 
-		mv.addObject("getdataList1", getdataList1);
+		//mv.addObject("getdataList1", getdataList1);
 		mv.addObject("fetchMill_NameR", fetchMill_NameR);
 		return mv;
 	}
+	
+	  @RequestMapping(value = "EntryofMillreceiptChild.obj", method = RequestMethod.GET)
+      public ModelAndView entryOfMillReceiptChild(@RequestParam("contarctno") String contractNo,
+    		  @RequestParam("millName") String millName,
+    		    @RequestParam("hoDate") String hoDate,
+    		    HttpServletRequest request) {
+        System.err.println("EntryofMillreceiptChild");
+        String username = (String) request.getSession().getAttribute("usrname");
+        ModelAndView mv;
+
+        if (username == null) {
+            mv = new ModelAndView("index");
+        } else {
+            mv = new ModelAndView("EntryOFMillReceipt");
+            System.err.println("EntryofMillreceiptChild");
+            // Add any model attributes or business logic here if needed
+        }
+        mv.addObject("hoDate", hoDate);
+        mv.addObject("millName", millName);
+        mv.addObject("contractNo", contractNo);
+        return mv;
+    }
 
 	// ajax controller for mill reciept service
-	@ResponseBody
-	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
-	public String hodinofetch(@RequestParam("contractno") String contractno) {
+		@ResponseBody
+		@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
+		public String hodinofetch(@RequestParam("contractno") String contractno) {
+			
+			List<Object[]> millRecieptModelt1 = millRecieptService.fetchdata(contractno);
+			System.err.println("resultList++++++++++" + millRecieptModelt1);
+			Gson gson = new Gson();
+			String resultString = new Gson().toJson(millRecieptModelt1);
+			return resultString;
+		}
+		
+		@ResponseBody
+		@RequestMapping(value = "challanbaseddata", method = RequestMethod.GET)
+		public String challanbaseddata(@RequestParam("contractno") String contractno) {
+			
+			List<Object[]> millRecieptModelt1 = millRecieptService.challanbaseddetails(contractno);
+			System.err.println("resultList++++++++++" + millRecieptModelt1);
+			Gson gson = new Gson();
+			String resultString = new Gson().toJson(millRecieptModelt1);
+			return resultString;
+		}
+		
+		
 
-		List<Object[]> millRecieptModelt1 = millRecieptService.fetchdata(contractno);
-		System.err.println("resultList++++++++++" + millRecieptModelt1);
-		Gson gson = new Gson();
-		String resultString = new Gson().toJson(millRecieptModelt1);
-		return resultString;
+		@ResponseBody
+		@RequestMapping(value = "millreceiptbased", method = RequestMethod.GET)
+		public String millreceiptbased(@RequestParam("millname") String millname) {
+			List<Object> Mill_NameR = millRecieptService.fetchHODINO(millname);
+			System.err.println("resultList++++++++++" + Mill_NameR);
+			Gson gson = new Gson();
+			String resultString = new Gson().toJson(Mill_NameR);
+			return resultString;
+		}
+	
+	@ResponseBody
+	@RequestMapping(value = "findmillreceiptNO", method = RequestMethod.GET)
+	public String findmillreceiptNO(@RequestParam("hodino") String hodino) {
+
+		 boolean dataFound = millRecieptService.findmillreceiptNOlist(hodino);
+
+		    // Convert boolean result to JSON format
+		    JsonObject jsonObject = new JsonObject();
+		    jsonObject.addProperty("dataFound", dataFound);
+		    
+		    return jsonObject.toString();
 	}
 
-//	
-//	@ResponseBody
-//	@RequestMapping(value = "millreceiptbased", method = RequestMethod.GET)
-//	public String millreceiptbased(@RequestParam("contractno") String contractno) {
-//		List<Object[]> Mill_NameR = millRecieptService.fetchHODINO(contractno);
-//		System.err.println("resultList++++++++++" + Mill_NameR);
-//		Gson gson = new Gson();
-//		String resultString = new Gson().toJson(Mill_NameR);
-//		return resultString;
-//	}
-//	
 
 	@ResponseBody
 	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
@@ -2881,123 +2935,151 @@ public class Controller_V {
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
+			
+            
+           
+            String secondcount = request.getParameter("rowindex2");
+            String checkcondition = request.getParameter("firstloop");
+         
+            int count = Integer.parseInt(secondcount);
+          
 
-			String HO_DI = request.getParameter("HO_DI_&_Date");
-			String Challan_No = request.getParameter("Challan_No");
-			// Date Date_of_Shipment = new
-			// SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("Date_of_Shipment"));
-
-			String Date_of_Shipment = request.getParameter("Date_of_Shipment");
-			System.out.println(Date_of_Shipment + "Date_of_Shipment");
-			String Vehicle_No = request.getParameter("Vehicle_No.");
-			String Challan_Qty = request.getParameter("Challan_Qty");
+           
+            String[] jutegrade = request.getParameterValues("jutegrade[]");
+            String[] challanQty = request.getParameterValues("challanQty[]");
+            String[] baleMark = request.getParameterValues("baleMark[]");
+            String[] juteVariety = request.getParameterValues("juteVariety[]");
+            String[] cropYear = request.getParameterValues("cropYear[]");
+          
+           
+          
+//			
+           
+          //  String[] Quality_Claim34 = request.getParameterValues("Quality_Claim_");
+           
+           
+            String[] Qualitypercentage = request.getParameterValues("Qualitypercentage[]");
+            String[] QuantityInqtl = request.getParameterValues("QuantityInqtl[]");
+            String[] Nomination = request.getParameterValues("Nomination[]");
+            String[] NCVamt = request.getParameterValues("NCVamt[]");
+            String[] ncvdust = request.getParameterValues("ncvdust[]");
+            
+            
+            String HO_DINO = request.getParameter("HO_DINO");
+            String dateOfShipmentValue1 = request.getParameter("dateOfShipmentValue1");
+            String vehicleNo1 = request.getParameter("vehicleNo1");
+            String diDate1 = request.getParameter("diDate1");
+            String actualqty = request.getParameter("actualqty1");
+//            String shortqty = request.getParameter("shortqty1");
+            String MR_No2 = request.getParameter("MR_No1");
+            String MR_Date1 = request.getParameter("MR_Date1");
+            String millcode1 = request.getParameter("millcode");
+            String challanno1 = request.getParameter("challanno1");
+            String shortqty = request.getParameter("InvoiceQty");
+            String Mill_receiptQty1 = request.getParameter("Mill_receiptQty1");
+            
+            for (int i = 0; i < count; i++) {
+            	 
+        	     	
+        	            String Challan_Qty = challanQty[i];
+        	            System.err.println(Challan_Qty);
+        	            String Bale_Mark = baleMark[i];
+        	            System.err.println(Bale_Mark);
+        	            String juteewiseqty = juteVariety[i];
+        	            String jutegrade1 = jutegrade[i];
+        	            System.err.println(juteewiseqty);
+        	            String cropYear1 = cropYear[i];
+        	            System.err.println(cropYear1);
+      	               
+        	           String Qualitypercentage1 = Qualitypercentage[i];
+        	            System.err.println(Qualitypercentage1);
+        	            String QuantityInqtl1 = QuantityInqtl[i];
+        	            System.err.println(QuantityInqtl1);
+        	            String Nomination1 = Nomination[i];
+        	            System.err.println(Nomination1);
+        	            
+        	           
+        	            
+        	         
+      				   
+      				  
+        	
 			double Challan_Qty1 = Double.parseDouble(Challan_Qty);
-			String Actual_Qty = request.getParameter("Actual_Qty");
-			double Actual_Qty1 = Double.parseDouble(Actual_Qty);
-			// float Actual_Qty1 = Float.parseFloat(Actual_Qty);
-			String Quality_Claim = request.getParameter("Quality_Claim");
-
-			String Bale_Mark = request.getParameter("Bale_Mark");
-			String juteewiseqty = request.getParameter("juteewiseqty");
-			String Crop_Year = request.getParameter("Crop_Year");
-
-			String MR_No = request.getParameter("MR_No");
-			String MR_Date1 = request.getParameter("MR_Date");
-			String HR_Date1 = request.getParameter("HO_Date");
-			// String Mill_code = request.getParameter("Millcode2");
-			String Mill_code = request.getParameter("875");
-
-			// String mill_id = request.getParameter("HO_Date");
-
-			String Mill_Reciept_Qty = request.getParameter("Mill_Reciept_Qty");
-			double Mill_Reciept_Qty1 = Double.parseDouble(Mill_Reciept_Qty);
-			String Short_Qty = request.getParameter("Short_Qty");
-			double Short_Qty1 = Double.parseDouble(Short_Qty);
-			// float Short_Qty1 = Float.parseFloat(Short_Qty);
-
+			 double Actual_Qty1 = Double.parseDouble(actualqty);
+			double Mill_Reciept_Qty2 = Double.parseDouble(Mill_receiptQty1);
+			double Short_Qty1 = Double.parseDouble(shortqty);
 			MillRecieptModel millRecieptModel = new MillRecieptModel();
-
-			Double flag = 0.0;
-
-			if ("Quality".equalsIgnoreCase(Quality_Claim)) {
-				millRecieptModel.setNCV_percentage(flag);
-				millRecieptModel.setNCV_qty(flag);
-				millRecieptModel.setMoistureContent(flag);
-			} else if ("Quantity".equalsIgnoreCase(Quality_Claim)) {
-				millRecieptModel.setNCV_percentage(flag);
-				millRecieptModel.setNCV_qty(flag);
-				millRecieptModel.setMoistureContent(flag);
-			} else if ("Moisture_Gain".equalsIgnoreCase(Quality_Claim)) {
-
-				String Moisture_Content = request.getParameter("MoistureContent12");
-				System.out.println("Moisture_Content===" + Moisture_Content);
-				double moistureContent1 = Double.parseDouble(Moisture_Content);
-				millRecieptModel.setMoistureContent(moistureContent1);
-				millRecieptModel.setNCV_percentage(flag);
-				millRecieptModel.setNCV_qty(flag);
-			} else if ("Dust_NCV".equalsIgnoreCase(Quality_Claim)) {
-				String NCV_Percentage = request.getParameter("NCVPercentage12");
-				double NCV_Percentage1 = Double.parseDouble(NCV_Percentage);
-				millRecieptModel.setNCV_percentage(NCV_Percentage1);
-				String NCV_Qty = request.getParameter("NCVQty12");
-				double NCV_Qty1 = Double.parseDouble(NCV_Qty);
-				millRecieptModel.setNCV_qty(NCV_Qty1);
-				millRecieptModel.setMoistureContent(flag);
-			}
-
-			millRecieptModel.setHO_di(HO_DI);
-			millRecieptModel.setChallan_no(Challan_No);
-
-//			SimpleDateFormat inputFormatter = new SimpleDateFormat("MM/dd/yyyy");
-//	        SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			// Date date4 = inputFormatter.parse(Date_of_Shipment);
-			// Format the date to the desired format
-			// String formattedDate = outputFormatter.format(date4);
-			// System.out.println("Formatted date: " + formattedDate);
-			// Date shipmentDate = dateFormat.parse(Date_of_Shipment);
-
-			millRecieptModel.setDate_shipment(Date_of_Shipment);
-			millRecieptModel.setVehicle_no(Vehicle_No);
+            Double flag = 0.0;
+            double Qualitypercentage2 = Double.parseDouble(Qualitypercentage1);
+			millRecieptModel.setQualityPercentage(Qualitypercentage2);
+            double QuantityInqtl12 = Double.parseDouble(QuantityInqtl1);
+			millRecieptModel.setQuantity(QuantityInqtl12);
+			double moistureContent1 = Double.parseDouble(Nomination1);
+			millRecieptModel.setMoistureContent(moistureContent1);
+			
+			
+			if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
+				  
+		        String ncvdust1 = ncvdust[i];
+		        System.err.println(ncvdust1);
+		        double NCV_Percentage1 = Double.parseDouble(ncvdust1);
+		        millRecieptModel.setNCV_percentage(NCV_Percentage1);
+		        millRecieptModel.setNCV_qty(flag);
+		    } else if (NCVamt != null && i < NCVamt.length && NCVamt[i] != null && !NCVamt[i].equals("null")) {
+		    	    String NCVamt1 = NCVamt[i];
+		        System.err.println(NCVamt1);
+		        double NCV_Qty1 = Double.parseDouble(NCVamt1);
+		        millRecieptModel.setNCV_qty(NCV_Qty1);
+		        millRecieptModel.setNCV_percentage(flag);
+		    } else {
+		        // Handle other cases
+		    	if (NCVamt == null || i >= NCVamt.length || NCVamt[i] == null || NCVamt[i].equals("null")) {
+		    	       millRecieptModel.setNCV_percentage(flag);
+		        }
+		    	if (ncvdust == null || i >= ncvdust.length || ncvdust[i] == null || ncvdust[i].equals("null")) {
+		    	       millRecieptModel.setNCV_qty(flag);
+		        }
+		    }
+			millRecieptModel.setHO_di(HO_DINO);
+			millRecieptModel.setChallan_no(challanno1);
+			millRecieptModel.setJute_Grade(jutegrade1);
+			millRecieptModel.setJute_Variety(juteewiseqty);
+			millRecieptModel.setDate_shipment(dateOfShipmentValue1);
+			millRecieptModel.setVehicle_no(vehicleNo1);
 			millRecieptModel.setChallan_qty(Challan_Qty1);
 			millRecieptModel.setActual_qty(Actual_Qty1);
-			millRecieptModel.setQuality_claim(Quality_Claim);
-			// millRecieptModel.setMoistureContent(Moisture_Content);
-			// millRecieptModel.setNCV_percentage(NCV_Percentage);
-			millRecieptModel.setBale_mark(Bale_Mark);
-
-			millRecieptModel.setCrop_year(Crop_Year);
-			// millRecieptModel.setNCV_qty(NCV_Qty);
-			millRecieptModel.setMR_no(MR_No);
-			// Date date= new Date();
-
+		    millRecieptModel.setBale_mark(Bale_Mark);
+            millRecieptModel.setCrop_year(cropYear1);
+		    millRecieptModel.setMR_no(MR_No2);
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
 			Date MR_Date = formatter1.parse(MR_Date1);
 			millRecieptModel.setMr_date(MR_Date);
-
-			Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(HR_Date1);
-			// Date MR_Date3 = formatter1.parse(HR_Date1);
+            Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(diDate1);
 			millRecieptModel.setHo_date(date2);
-
-			// millRecieptModel.setMr_date(MR_Date);
-			// millRecieptModel.setMi(Mill_Reciept_Qty);
-			millRecieptModel.setShort_qty(Short_Qty1);
-			millRecieptModel.setMR_qty(Mill_Reciept_Qty1);
-			System.out.println(Mill_code);
-			millRecieptModel.setMill_id(Mill_code);
-			// millRecieptModel.setDie(Mill_code);
+            millRecieptModel.setShort_qty(Short_Qty1);
+			millRecieptModel.setMR_qty(Mill_Reciept_Qty2);
+			millRecieptModel.setMill_id(millcode1);
 			Date date = new Date();
-			// Date currdate = date.toString();
 			millRecieptModel.setCreated_on(date);
-			// millRecieptModel.setHo_date(date);
-			millRecieptModel.setCreated_by("kailash");
-			// millRecieptModel.setMR_qty(123.0);
-			millRecieptModel.setClaim_status(2);
+			millRecieptModel.setCreated_by("Mill rceipt");
+			if(moistureContent1==0) {
+			 millRecieptModel.setClaim_status(0);
+			}
+			else {
+				millRecieptModel.setClaim_status(2);
+			}
 
 			this.millRecieptService.create(millRecieptModel);
-			this.millRecieptService.UpdateContractstatus(HO_DI);
+			//this.millRecieptService.UpdateContractstatus(HO_DI);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-
+		
+			 
+        	     	 }
+        	    
+              
+           
+           
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -3035,6 +3117,20 @@ public class Controller_V {
 		return resultString;
 	}
 
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "millchildbased", method = RequestMethod.GET)
+	public String childdatamill(@RequestParam("contarctno") String millname) {
+
+		List<Object[]> millnamecontract = (List<Object[]>) millRecieptService.childdata(millname);
+		System.err.println("resultList++++++++++" + millnamecontract);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millnamecontract);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
+	
+	
 	// entry controller of generation demand note
 	@RequestMapping("EntryofGenrationDeamandNote")
 	public ModelAndView EntryofGenrationDemand(HttpServletRequest request) {
@@ -3229,12 +3325,13 @@ public class Controller_V {
 
 	// save page of generation bill of supply
 
+
 	@Value("${upload.Genrationofbill}")
 	String Genrationofbill;
 
 	@RequestMapping("saveentryofGenrationbill")
-	public ModelAndView saveentryofGenrationbill(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		final File theDir = new File(Genrationofbill);
+	public ModelAndView saveentryofGenrationbill(HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		final File theDir = new File("Genrationofbill");
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
@@ -3244,7 +3341,7 @@ public class Controller_V {
 
 			String Challan_No1 = request.getParameter("Challan_No1");
 			String Challan_Date1 = request.getParameter("Challan_Date1");
-			// String Shipment_Details = request.getParameter("Shipment_Details");
+			//String Shipment_Details = request.getParameter("Shipment_Details");
 			String Shipment_Value1 = request.getParameter("Shipment_Value1");
 			String SGST_Amt = request.getParameter("SGST_Amt");
 			String CGST_Amt = request.getParameter("CGST_Amt");
@@ -3283,7 +3380,7 @@ public class Controller_V {
 			GenerationOfBillSupplyModel generationOfBillSupplyModel = new GenerationOfBillSupplyModel();
 			generationOfBillSupplyModel.setChallan_No(Challan_No1);
 			generationOfBillSupplyModel.setChallan_date(Challan_Date1);
-			// generationOfBillSupplyModel.setShipment_details(Shipment_Details);
+			//generationOfBillSupplyModel.setShipment_details(Shipment_Details);
 			generationOfBillSupplyModel.setShipment_value(Shipment_Value1);
 			generationOfBillSupplyModel.setSGST_amt(SGST_Amt);
 			generationOfBillSupplyModel.setCGST_amt(CGST_Amt);
@@ -3307,63 +3404,115 @@ public class Controller_V {
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
-			String ro_id = (String) request.getSession().getAttribute("regionId");
-			generationOfBillSupplyModel.setRo_id("1");
+			 String ro_id = (String) request.getSession().getAttribute("regionId");
+			 System.out.println(ro_id);
+			generationOfBillSupplyModel.setRo_id(ro_id);
 			// generationOfBillSupplyModel.setBos_file_path("documents");
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
+		    List<Object> Non_lc = genrationCashDocumentService.Non_lc(Conract_no);
+		    for (Object obj : Non_lc) {
+		    	String strValue = (String) obj;
+		    	if (!strValue.equals("Letter_of_Credit")) {
+		    		CashDocumentModel cashDocumentModel = new CashDocumentModel();
+					cashDocumentModel.setCAD_Date(date);
+					cashDocumentModel.setBOS_No(Bill_of_Supply);
+					cashDocumentModel.setBOS_Date(BOS_Date);
+					this.genrationCashDocumentService.create(cashDocumentModel);
 
-			CashDocumentModel cashDocumentModel = new CashDocumentModel();
-			cashDocumentModel.setCAD_Date(date);
-			cashDocumentModel.setBOS_No(Bill_of_Supply);
-			cashDocumentModel.setBOS_Date(BOS_Date);
-
+		    	}
+		    }
+			
 //		          cashDocumentModel.setBOS_Date(BOS_Date);
 //		          cashDocumentModel.setBOS_No(Bill_of_Supply);
 
 			PdfGenerator_K pdfgenereatorK = new PdfGenerator_K();
-
-			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
-					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
-					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name);
+			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1,
+					Supplier_Name, Supplier_GSTN, Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address,
+					Consignee_Name, Consignee_GSTN, Consignee_Address, Bill_of_Supply, Conract_no, Clientstate,
+					Clientcode, ClientPan, BOS_Date,TrnasitPolicyNo,list,Vehicle_no,Driver_Lic_no,Driver_name,TCS_Amt);
 
 			generationOfBillSupplyModel.setBos_file_path(filePath);
-			System.err.println("filePath = " + filePath);
+
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
+			
+			//this.generationofBillService.billUpdation(Conract_no);
 
-			this.genrationCashDocumentService.create(cashDocumentModel);
-			this.generationofBillService.billUpdation(Conract_no);
+			List<Object[]> ListLCs = this.generationofBillService.GenrationAginstLCs(Conract_no);
 
-//		        
+			if (ListLCs == null || ListLCs.isEmpty()) {
+			    System.err.println("No results found for Contract No: " + Conract_no);
+			} else {
+			    GenerationofDocumentLCsModel generationofDocumentLCsModel = null; // Declare and initialize the model outside the loop
 
-//			sendemailBOS email = new sendemailBOS();
-//			InternetAddress[] toAddresses = null;
-//			String subject = "Bill of Supply attachement";
-//			String body = "In this All information regarding Bill of supply . ";
-			// String filename=Genrationofbill;
+			    for (Object[] row : ListLCs) {
+			        String instNo = (String) row[0];
+			        String payentType = (String) row[1];
 
-			// String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
-			String filePathDir = "C:\\Users\\vishwdeep.singharia\\Desktop\\jcidocs" + File.separator + filePath;
-			System.err.println("filePathDir = " + filePathDir);
-			String username1 = "";
-//			try {
-//				// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
-//				// InternetAddress("animesh.anand@cyfuture.com")};
-//				toAddresses = new InternetAddress[] { new InternetAddress("kailashshahbro@gmail.com"),
-//						new InternetAddress("kailashshahsha81@gmail.com") };
-//			} catch (AddressException e) {
-//
-//				e.printStackTrace();
-//			}
-//			email.sendEmailBos(toAddresses, body, subject, filePathDir, username1);
-//
-////		       
+			        if (payentType.equalsIgnoreCase("Letter_of_Credit")) {
+			            generationofDocumentLCsModel = new GenerationofDocumentLCsModel(); // Initialize the model inside the loop for each "Letter_of_Credit" row
+
+			            generationofDocumentLCsModel.setBoe_Date(date);
+			            generationofDocumentLCsModel.setBOS_No(Bill_of_Supply);
+			            generationofDocumentLCsModel.setIvoice_value(Invoice_Value);
+			            generationofDocumentLCsModel.setInstrument_no(instNo);
+			            generationofDocumentLCsModel.setMill_code(instNo);
+			            generationofDocumentLCsModel.setHo_di_No(BOS_Date);
+			            generationofDocumentLCsModel.setHo_di_date(Bill_of_Supply);
+			            generationofDocumentLCsModel.setQuantity(Bill_of_Supply);
+			            generationofDocumentLCsModel.setBos_Amt(BOS_Date);
+
+			            this.generationAgaistLCsService.create(generationofDocumentLCsModel);
+			            
+			            List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Conract_no);
+						
+			          
+						
+						TopSheetPdf_k pdfTopSheetPdf_k = new TopSheetPdf_k();
+						String filePath1 = pdfTopSheetPdf_k.generatePdfReport(list1);
+						
+			        }
+			    }
+
+			    if (generationofDocumentLCsModel == null) {
+			        System.err.println("No results found for Contract No: " + Conract_no);
+			    }
+			}
+
+
+			
+			 sendemailBOS email=new sendemailBOS();
+	           InternetAddress[] toAddresses=null;
+	           String subject="Bill of Supply attachement";
+	           String body = "In this All information regarding Bill of supply . ";
+	            // String filename=Genrationofbill;
+	             
+	             
+	           // String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
+	            String filePathDir  = "C:\\Users\\kailash.shah\\documentimage" + File.separator + filePath;
+	             String username1="";
+	             try {
+	                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+	           toAddresses = new InternetAddress[]{
+	                                new InternetAddress("kailashshahbro@gmail.com"),
+	                                new InternetAddress("kailashshahsha81@gmail.com")
+	                            };
+	           } catch (AddressException e) {
+	                 
+	                 e.printStackTrace();
+	           }
+	           email.sendEmailBos( toAddresses ,  body , subject,filePathDir, username1);
+	        
+
+//		       
 //		        this.paymentDetailService.contratTable(contractno);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+			
+			
 
 		} catch (Exception e) {
+
 
 			e.printStackTrace();
 		}
@@ -3371,13 +3520,29 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		// Starting Email Sender
-
-		// End Email
-
 		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
+
 	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 	@RequestMapping("downloadPDF")
 	public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
@@ -3475,14 +3640,27 @@ public class Controller_V {
 		return resultString;
 	}
 
+	
+	@ResponseBody
+	@RequestMapping(value = "listofdispatchChild", method = RequestMethod.GET)
+	public String listofdispatchChildinbos(@RequestParam("challanNo") String challanNo) {
+		
+		List<Object[]> ObjdispatchChildlist = generationofBillService.dispatchChildlist(challanNo);
+		System.err.println("resultList++++++++++" + ObjdispatchChildlist);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(ObjdispatchChildlist);
+		return resultString;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "fetchingdataMillname", method = RequestMethod.GET)
 	public String millnamedetails(@RequestParam("millname") String millname) {
-		List<Object> listofaddress = generationofBillService.millnamefromTCS();
+		boolean listofaddress = generationofBillService.millnamefromTCS(millname);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(listofaddress);
 		return resultString;
 	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "greadewiseqty", method = RequestMethod.GET)

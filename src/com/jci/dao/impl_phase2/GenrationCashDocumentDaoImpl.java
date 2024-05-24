@@ -41,4 +41,12 @@ public class GenrationCashDocumentDaoImpl implements GenrationCashDocumentDao {
 		  //String resultList12= this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    return null;
 	}
+
+	@Override
+	public List<Object> Non_lc( String st) {
+		String sql="select Payment_type  from jcipayment_arrangement where Contract_No='" + st + "' ";
+	    List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    return resultList1;
+
+	}
 }

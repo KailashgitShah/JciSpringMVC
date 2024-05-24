@@ -107,10 +107,10 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		  
 		  }
 		 @Override
-			public List<Object> fetchHODINO() {
+			public List<Object> fetchHODINO(String millname) {
 			
-			  	String sql=  "SELECT  distinct b.DI_no,a.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_no where b.Contract_no is not null ";
-				
+			  	String sql=  "SELECT  distinct a.DI_no,b.Mill_code,a.Contract_No from jciDI_ho as a Left join jcicontract as b on b.Contract_no = a.Contract_No "
+			  			+ "where b.Mill_name= '" + millname + "' ";
 			  	 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			    return resultList1;
 
@@ -135,29 +135,58 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 
 	@Override
 	public List<Object[]> fetchdata(String st) {
-		 String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, c.Bale_mark, c.Jute_variety, c.Crop_year, a.DI_Date,s.Actual_qty, s.Short_qty ,c.Nominal_qty \r\n"
-		 		+ "FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No\r\n"
-		 		+ "LEFT JOIN(SELECT d.Bale_mark,  d.Jute_variety,d.Crop_year, e.Challan_No,  e.Contract_No,d.Nominal_qty FROM jcidispatch_details AS e \r\n"
-		 		+ "LEFT JOIN jcidispatch_details_child AS d ON d.Challan_no = e.Challan_no) AS c\r\n"
-		 		+ "ON  c.Contract_No = a.Contract_No WHERE a.Contract_No =  '" +st+"'"; 
-		 				  		  
-			 
+	      String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code "
+	      		+ "		 			FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.ChallanNo = a.Challan_no"
+		 		+ " WHERE a.DI_No =  '" +st+"'"; 
+			 		
 			
 			 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			 return resultList1;
 	}
 
 	@Override
-	public List<Object[]> fetchMill_NameR() {
+	public List<Object> fetchMill_NameR() {
 		
-		String sql ="SELECT a.Mill_name, b.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
-			
-		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		//String sql ="  SELECT  distinct a.Mill_name,b.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
+//		String sql ="  SELECT  distinct a.Mill_name FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
+//		
+		String sql =" SELECT  distinct c.Recipient_name FROM  jcibos_generation AS c  left JOIN  jciDI_ho as b on b.Contract_No=c.Contract_no ";
+		
+		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		 return resultList1;
 	}
 
-	  //  
- }
+	@Override
+	public boolean findmillreceiptNOlist(String st) {
+	    String sql = "SELECT DISTINCT MR_no FROM jcimill_receipt WHERE HO_di = '" + st + "'";
+	    List<Object> resultList = (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    
+	    // Check if resultList is not empty
+	    boolean dataFound = !resultList.isEmpty();
+	    
+	    return dataFound;
+	}
 
+	@Override
+	public List<Object[]> childdata(String st) {
+		 String sql =" SELECT distinct d.Challan_No,d.Bale_mark,  d.Jute_variety,d.Jute_grade,  d.Crop_year,d.Nominal_qty,d.No_of_bales,s.Actual_qty FROM "
+		 		+ "		 	 jcidispatch_details_child AS d  Inner join jcicredit_note as s on s.ChallanNo = d.Challan_no   WHERE d.Challan_no = '" +st+"' and  Crn_status='0'  and d.Jute_grade=s.Jute_grade ";
+		 		
+				
+				 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+				 return resultList1;
 		
+	}
 
+	@Override
+	public List<Object[]> challanbaseddetails(String st) {
+		 String sql = "SELECT distinct  CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,s.Actual_qty, s.Short_qty,a.Contract_No,a.Mill_code "
+			 		+ "		      	FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.ChallanNo = a.Challan_no"
+			 		+ "			 	 WHERE a.Challan_no =  '" +st+"'"; 
+
+				 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+				 return resultList1;
+	}
+
+	  
+ }

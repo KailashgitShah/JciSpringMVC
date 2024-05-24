@@ -12,4 +12,5 @@ public interface GenrationCashDocumentService {
 	public void create(CashDocumentModel cashDocumentModel);
 	 public List<CashDocumentModel>getAll();
 	public String fetchBos_No();
+	public List<Object> Non_lc(String St);
 }

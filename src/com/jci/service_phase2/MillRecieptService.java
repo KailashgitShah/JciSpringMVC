@@ -16,13 +16,16 @@ public interface MillRecieptService {
 		 public  void updatePaymentInstrument(MillRecieptModel millRecieptModel);
 		public MillRecieptModel find(int id);
 		public void delete(int id);
-		public List<Object> fetchHODINO();
+		public List<Object> fetchHODINO(String millname);
 		
 		public List<Object[]> fetchdata(String st);
-		public List<Object[]> fetchMill_NameR();
+		public List<Object[]> challanbaseddetails(String st);
+		public List<Object[]> childdata(String st);
+		public List<Object> fetchMill_NameR();
 		
 		public MillRecieptModel Creditqty(String contractno);
 		public void UpdateContractstatus( String s);
+		public boolean  findmillreceiptNOlist( String s);
 		
 		
 		

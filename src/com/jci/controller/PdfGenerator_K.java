@@ -59,29 +59,21 @@ public class PdfGenerator_K {
 	public String generateBillPdf( String  Invoice_Value, String challan_No1, String supplier_Name,
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
 			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
-			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name) throws FileNotFoundException {
-		
-
+			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt) throws FileNotFoundException {
+		 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 	     String fileName = "generatedfile_" + timestamp + ".pdf";
-//
-			/* String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName; */
-	     String filePath = "C:\\Users\\vishwdeep.singharia\\Desktop\\jcidocs" + fileName;
 
-		     PdfWriter pdfWriter = new PdfWriter(filePath);
-
-		   
-		     PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
-		
-		
+	     String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
+	   //  String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\BillofSupply" + fileName;
+	    
+            PdfWriter pdfWriter = new PdfWriter(filePath);
+            PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
  try {
-	 
-	  pdfDocument.setDefaultPageSize(PageSize.A4);
-	  
+	 pdfDocument.setDefaultPageSize(PageSize.A4);
 	  PdfFont boldFont = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
-
-     Document document = new Document(pdfDocument);
-	 document.setMargins(5, 5, 5, 5);
+      Document document = new Document(pdfDocument);
+	  document.setMargins(5, 5, 5, 5);
 		addHeader(document, filePath, filePath, filePath);
 		float columnWidth = PageSize.A4.getWidth() * 0.5f;
 		float borderWidth = 1.0f; 
@@ -129,24 +121,13 @@ public class PdfGenerator_K {
         contentTable1.addCell(cell1190);
 
         document.add(contentTable1);
-
-        
-        Paragraph spacingParagraph = new Paragraph("\n\n").setFixedLeading(10f); 
+        Paragraph spacingParagraph = new Paragraph("\n").setFixedLeading(10f); 
         document.add(spacingParagraph);
-       
-        
-       
         PdfFont normalFont = PdfFontFactory.createFont(FontConstants.HELVETICA);
         
 		Table contentTable = new Table(new float[]{columnWidth, columnWidth})
 		        .setBorder(new SolidBorder(borderWidth)).setFont(boldFont);
-
-	
-		
-
-	
-        
-		Cell cell11 = createCell("DETAILS OF SUPPLIER", Border.NO_BORDER, TextAlignment.LEFT);
+        Cell cell11 = createCell("DETAILS OF SUPPLIER", Border.NO_BORDER, TextAlignment.LEFT);
 		cell11.setBorderRight(new SolidBorder(borderWidth));
 		cell11.setBorderBottom(new SolidBorder(borderWidth));
 		cell11.setBorderTop(new SolidBorder(borderWidth));
@@ -154,9 +135,7 @@ public class PdfGenerator_K {
 		contentTable.addCell(cell11);
 		 
 
-
-		
-		Cell cell12 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+     Cell cell12 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		cell12.setBorderLeft(new SolidBorder(borderWidth));
 		cell12.setBorderBottom(new SolidBorder(borderWidth));
 		cell12.setBorderTop(new SolidBorder(borderWidth));
@@ -208,8 +187,6 @@ public class PdfGenerator_K {
 		cell42.add(paragraph4);
         contentTable.addCell(cell42);
         
-     
-        
         Cell cell51 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
         cell51.setBorderRight(new SolidBorder(borderWidth));
        
@@ -228,24 +205,19 @@ public class PdfGenerator_K {
 		cell52.add(paragraph6);
         contentTable.addCell(cell52);
         
-//		
-//		
+	
         Cell cell61 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
         cell61.setBorderRight(new SolidBorder(borderWidth));
-       
-		Paragraph paragraph7 = new Paragraph()
+       Paragraph paragraph7 = new Paragraph()
 		        .add(new Text("STATE NAME:").setFont(boldFont))
 		        .add(new Text(Clientstate).setFont(normalFont));
 		cell61.add(paragraph7);
         contentTable.addCell(cell61);
         
-		
-
-		
-		 Cell cell62 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+       
+        Cell cell62 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		 cell62.setBorderRight(new SolidBorder(borderWidth));
-	       
-			Paragraph paragraph23 = new Paragraph()
+	       Paragraph paragraph23 = new Paragraph()
 			        .add(new Text("LC REF(if applicable): not any:").setFont(boldFont))
 			        .add(new Text("").setFont(normalFont));
 			cell62.add(paragraph23);
@@ -272,8 +244,7 @@ public class PdfGenerator_K {
 		cell662.add(paragraph8);
         contentTable.addCell(cell662);
 		
-//
-        
+    
 
         Cell cell663 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
         cell663.setBorderRight(new SolidBorder(borderWidth));
@@ -286,8 +257,7 @@ public class PdfGenerator_K {
         
         
 
-//
-        
+    
 
         Cell cell664 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
         cell664.setBorderRight(new SolidBorder(borderWidth));
@@ -326,8 +296,6 @@ public class PdfGenerator_K {
 		
 		
 
-		
-		
 		Cell cell72 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		cell72.setBorderRight(new SolidBorder(borderWidth));
 		cell72.setBorderTop(new SolidBorder(borderWidth));
@@ -345,12 +313,8 @@ public class PdfGenerator_K {
 			        .add(new Text(recipient_Name).setFont(normalFont));
 			cell73.add(paragraph13);
 	        contentTable.addCell(cell73);
-		
-		
-
-		
-		
-		Cell cell74 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		 
+	        Cell cell74 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		cell74.setBorderRight(new SolidBorder(borderWidth));
 		
 			Paragraph paragraph14 = new Paragraph()
@@ -402,11 +366,7 @@ public class PdfGenerator_K {
 			        .add(new Text(Clientstate).setFont(normalFont));
 			cell78.add(paragraph18);
 	        contentTable.addCell(cell78);
-	        
-
-		
-		
-		Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+	    Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		cell778.setBorderRight(new SolidBorder(borderWidth));
 		
 			Paragraph paragraph19 = new Paragraph()
@@ -443,31 +403,28 @@ public class PdfGenerator_K {
 		
 		contentTable.addCell(cell774);
 		        
-		            
-		
-	
 		document.add(contentTable);
 		
-		Paragraph spacingParagraph1 = new Paragraph("\n\n").setFixedLeading(10f); 
+		Paragraph spacingParagraph1 = new Paragraph("").setFixedLeading(10f); 
         document.add(spacingParagraph1);
         
 		
-     String[] columnNames = {"SI NO", "HSN", "DESCRIPTION", "CROP YEAR", "BALE MARK", "VARIETY/GRADE", "NO OF BALES", "NOMINAL WT./BALE", "UNIT", "RATE (RS/UNIT)", "QTY", "TOTAL"};
-     float[] columnWidths = {2, 5, 5, 4, 4, 2, 1, 6, 2, 2, PageSize.A4.getWidth() * 0.1f, PageSize.A4.getWidth() * 0.1f};
+     String[] columnNames = {"SI NO", "HSN", "DESCRIPTION", "CROP YEAR", "BALE MARK", "VARIETY","GRADE", "NO OF BALES", "NOMINAL WT./BALE", "UNIT", "RATE (RS/UNIT)", "QTY", "TOTAL"};
+     float[] columnWidths = {2, 4, 4, 3, 3, 2, 2,1, 5, 2, 2, PageSize.A4.getWidth() * 0.1f, PageSize.A4.getWidth() * 0.1f};
      float totalWidth = 0;
      for (float width : columnWidths) {
          totalWidth += width;
      }
      
-     float columnWidth1 = PageSize.A4.getWidth() * 0.38f;
+     float columnWidth1 = PageSize.A4.getWidth() * 0.3f;
      float columnWidth2 = PageSize.A4.getWidth() * 0.52f;
-     float columnWidth3 = PageSize.A4.getWidth() * 0.3f;
+    
 
-     float largerFontSize = 14f;
+     //float largerFontSize = 14f;
      
      
      
-     Table contentTable34 = new Table(new float[]{columnWidth1,columnWidth2,columnWidth3})
+     Table contentTable34 = new Table(new float[]{columnWidth1,columnWidth2,columnWidth1})
 		        .setBorder(new SolidBorder(borderWidth)).setFont(boldFont);
      float minimumHeight = 20f;
  	Cell cell1134 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
@@ -517,35 +474,39 @@ public class PdfGenerator_K {
      String strNoOfBales = "";
      String strNominalWt = "";
      String Jute_variety = "";
+     String Jute_grade = "";
      String strRate = "";
      String strNominalQty = "";
      // Iterate over dispatchList data
-     for (Object[] row : list) {
-    	 
-	        // Assuming you need to extract values
-			  cropYear = (String) row[0];
-		        baleMark = (String) row[1];
-		        Jute_variety = (String) row[2];
-		        int noOfBales = ((Number) row[3]).intValue(); 
-		        float nominalWt = ((Number) row[4]).floatValue(); 
-		        float rate = ((Number) row[5]).floatValue();  
-		        float nominalQty = ((Number) row[6]).floatValue(); 
-		         strNoOfBales = String.valueOf(noOfBales);
-		        strNominalWt = String.valueOf(nominalWt);
-		         strRate = String.valueOf(rate);
-		        strNominalQty = String.valueOf(nominalQty);
-
-	        
-	    }
+   
 		
   // Iterate over dispatchList data
      float totalqty1=0;
      float totalqty2=0;
-     for (Object[] row : list) {
+    	 for (Object[] row : list) {
+    		 cropYear = (String) row[0];
+			 
+		        baleMark = (String) row[1];
+		     
+		        Jute_variety = (String) row[2];
+		       
+		        Jute_grade = (String) row[3];
+		        
+		        int noOfBales = ((Number) row[4]).intValue(); 
+		        
+		        float nominalWt = ((Number) row[5]).floatValue();
+		        
+		        float rate7 = ((Number) row[6]).floatValue(); 
+		      
+		        float nominalQty = ((Number) row[7]).floatValue(); 
+		       
+		         strNoOfBales = String.valueOf(noOfBales);
+		        strNominalWt = String.valueOf(nominalWt);
+		         strRate = String.valueOf(rate7);
+		        strNominalQty = String.valueOf(nominalQty);
+
          for (int j = 0; j < columnNames.length; j++) {
              String cellData;
-
-             // Check the index and assign either static or dynamic value
              if (j == 0) {
                  // SI NO
             	 cellData = String.valueOf(list.indexOf(row) + 1);
@@ -558,31 +519,37 @@ public class PdfGenerator_K {
              } else if (j == 3) {
                  // CROP YEAR
                  cellData = cropYear;
+                
              } else if (j == 4) {
                  // BALE MARK
                  cellData = baleMark;
              } else if (j == 5) {
                  // VARIETY/GRADE
                  cellData = Jute_variety; 
-             } else if (j == 6) {
+             }
+             else if (j == 6) {
+                 // NO OF BALES
+                 cellData = Jute_grade;
+             }else if (j == 7) {
                  // NO OF BALES
                  cellData = strNoOfBales;
-             } else if (j == 7) {
+             } else if (j == 8) {
                  // NOMINAL WT./BALE
                  cellData = strNominalWt;
-             } else if (j == 8) {
+             } else if (j == 9) {
                  // UNIT
                  cellData = "Qtls."; 
                 
-             } else if (j == 9) {
+             }
+            else if (j == 10) {
                  // RATE (RS/UNIT)
                  cellData = strRate;
-             } else if (j == 10) {
+             } else if (j == 11) {
                  // QTY
                  cellData = strNominalQty;
                  float rate1=Float.parseFloat(strNominalQty);
                  totalqty1+=rate1;
-             } else if (j == 11) {
+             } else if (j == 12) {
                  // TOTAL
             	 float rate=Float.parseFloat(strRate);
             	 float rate1=Float.parseFloat(strNominalQty);
@@ -591,7 +558,9 @@ public class PdfGenerator_K {
             	 
             	 cellData = stringValue ; 
             	 float rate3=Float.parseFloat(stringValue);
+            	 float TCS_Amt1=Float.parseFloat(TCS_Amt);
             	 totalqty2+=rate3;
+            	 totalqty2+=TCS_Amt1;
              } 
           
           
@@ -611,6 +580,7 @@ public class PdfGenerator_K {
 
              contentTable11.addCell(cell);
          }
+        
      }
      document.add(contentTable11);
      
@@ -630,7 +600,7 @@ public class PdfGenerator_K {
 	cell11371.setFont(boldFont);
 	cell11371.setHeight(minimumHeight);
 	contentTable35.addCell(cell11371);
-	Cell cell11372 = createCell("", Border.NO_BORDER, TextAlignment.CENTER);
+	Cell cell11372 = createCell(TCS_Amt, Border.NO_BORDER, TextAlignment.CENTER);
 	cell11372.setBorderRight(new SolidBorder(borderWidth));
 	
 	cell11372.setFont(boldFont);
@@ -642,9 +612,9 @@ public class PdfGenerator_K {
 	
 	 float columnWidth4 = PageSize.A4.getWidth() * 0.8f;
      float columnWidth5 = PageSize.A4.getWidth() * 0.1f;
-     float columnWidth6 = PageSize.A4.getWidth() * 0.1f;
+   
 	 
-	Table contentTable36 = new Table(new float[]{columnWidth4,columnWidth5,columnWidth6})
+	Table contentTable36 = new Table(new float[]{columnWidth4,columnWidth5,columnWidth5})
 	        .setBorder(new SolidBorder(borderWidth)).setFont(boldFont);
  //float minimumHeight = 20f;
 	Cell cell11374 = createCell("TOTAL", Border.NO_BORDER, TextAlignment.CENTER);
@@ -696,7 +666,7 @@ public class PdfGenerator_K {
             
     document.add(dynamicParagraph);
   
-    Paragraph spacingParagraph12 = new Paragraph("\n\n").setFixedLeading(10f); 
+    Paragraph spacingParagraph12 = new Paragraph("\n").setFixedLeading(10f); 
     document.add(spacingParagraph12);
  
   
@@ -751,16 +721,11 @@ public class PdfGenerator_K {
     document.add(contentTable22);
     
  
-    Paragraph spacingParagraph123 = new Paragraph("\n\n\n").setFixedLeading(10f); 
+    Paragraph spacingParagraph123 = new Paragraph("\n\n").setFixedLeading(10f); 
     document.add(spacingParagraph123);
-   
-    
-    
-    
     float columnWidth64 = PageSize.A4.getWidth() * 0.5f;
-    float columnWidth65 = PageSize.A4.getWidth() * 0.5f;
-
-    Table contentTable364 = new Table(new float[]{columnWidth64,columnWidth65})
+   
+    Table contentTable364 = new Table(new float[]{columnWidth64,columnWidth64})
 	        .setFont(boldFont);
    
     
