@@ -12,7 +12,6 @@ import javax.persistence.Table;
 public class Jciclaim_NominationModel {
 
 	@Id
-	//@GeneratedValue()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Settlement_id")
 	private Long Settlement_id; // Primary key, assumed to be BigInt
@@ -22,12 +21,12 @@ public class Jciclaim_NominationModel {
 
 	@Column(name = "ContractNo", nullable = false)
 	private String ContractNo;
-
-	@Column(name = "ChallanNo", nullable = false)
-	private String ChallanNo;
-
-	@Column(name = "ClaimAmount", nullable = false)
-	private double ClaimAmount;
+	
+	@Column(name="HoDi")
+	private String  HoDi;
+	
+	@Column(name="Challans")
+	private String Challans;
 
 	@Column(name = "OMOfficial", nullable = false)
 	private String OMOfficial;
@@ -38,21 +37,6 @@ public class Jciclaim_NominationModel {
 	@Column(name = "DateofInspection", nullable = false)
 	private String DateofInspection;
 	
-	@Column(name = "Quality_settlement")
-	private double Quality_settlement;
-
-	@Column(name = "Moisture_settlement")
-	private double Moisture_settlement;
-	
-	
-	
-	
-	@Column(name = "Ncv_settlement")
-	private double Ncv_settlement;
-
-	@Column(name = "Settlement_amt")
-	private double Settlement_amt;
-
 	@Column(name = "Inspection_by")
 	private String Inspection_by;
 
@@ -71,143 +55,46 @@ public class Jciclaim_NominationModel {
 	@Column(name = "Created_on")
 	private String Created_on;
 	
-	@Column(name = "grade1")
-	private String grade1;
-	
-	@Column(name = "grade2")
-	private String grade2;
-	
-	@Column(name = "grade3")
-	private String grade3;
-	
-	@Column(name = "grade4")
-	private String grade4;
-	
-	@Column(name = "grade5")
-	private String grade5;
-	
-	@Column(name = "grade6")
-	private String grade6;
-	
-	@Column(name = "qty1")
-	private String qty1;
-	
-	@Column(name = "qty2")
-	private String qty2;
-	
-	@Column(name = "qty3")
-	private String qty3;
-	
-	@Column(name = "qty4")
-	private String qty4;
-	
-	@Column(name = "qty5")
-	private String qty5;
-	
-	@Column(name = "qty6")
-	private String qty6;
-	
-	@Column(name = "Mr_No")
-	private String Mr_No;
-	@Column(name="QualityClaim")
-	private String QualityClaim;
 	@Column(name = "Settlement_id_generated")
 	private String Settlement_id_generated;
+	
+	@Column(name = "ChallanNo", nullable = false)
+	private String ChallanNo;
 
-	public String getGrade1() {
-		return grade1;
+	@Column(name = "ClaimAmount", nullable = false)
+	private double ClaimAmount;
+	
+	@Column(name = "Mr_number")
+	private String Mr_number;
+	
+	@Column(name = "Mr_Date")
+	private String Mr_Date;
+	
+	@Column(name = "billOfSupply_number")
+	private String  billOfSupply_number;
+	
+	@Column(name = "dateofshipment")
+	private String  dateofshipment;
+	
+	
+	@Column(name = "shipmentquantity")
+	private String  shipmentquantity;
+	
+
+	public String getChallanNo() {
+		return ChallanNo;
 	}
 
-	public void setGrade1(String grade1) {
-		this.grade1 = grade1;
+	public void setChallanNo(String challanNo) {
+		ChallanNo = challanNo;
 	}
 
-	public String getGrade2() {
-		return grade2;
+	public double getClaimAmount() {
+		return ClaimAmount;
 	}
 
-	public void setGrade2(String grade2) {
-		this.grade2 = grade2;
-	}
-
-	public String getGrade3() {
-		return grade3;
-	}
-
-	public void setGrade3(String grade3) {
-		this.grade3 = grade3;
-	}
-
-	public String getGrade4() {
-		return grade4;
-	}
-
-	public void setGrade4(String grade4) {
-		this.grade4 = grade4;
-	}
-
-	public String getGrade5() {
-		return grade5;
-	}
-
-	public void setGrade5(String grade5) {
-		this.grade5 = grade5;
-	}
-
-	public String getGrade6() {
-		return grade6;
-	}
-
-	public void setGrade6(String grade6) {
-		this.grade6 = grade6;
-	}
-
-	public String getQty1() {
-		return qty1;
-	}
-
-	public void setQty1(String qty1) {
-		this.qty1 = qty1;
-	}
-
-	public String getQty2() {
-		return qty2;
-	}
-
-	public void setQty2(String qty2) {
-		this.qty2 = qty2;
-	}
-
-	public String getQty3() {
-		return qty3;
-	}
-
-	public void setQty3(String qty3) {
-		this.qty3 = qty3;
-	}
-
-	public String getQty4() {
-		return qty4;
-	}
-
-	public void setQty4(String qty4) {
-		this.qty4 = qty4;
-	}
-
-	public String getQty5() {
-		return qty5;
-	}
-
-	public void setQty5(String qty5) {
-		this.qty5 = qty5;
-	}
-
-	public String getQty6() {
-		return qty6;
-	}
-
-	public void setQty6(String qty6) {
-		this.qty6 = qty6;
+	public void setClaimAmount(double claimAmount) {
+		ClaimAmount = claimAmount;
 	}
 
 	public Long getSettlement_id() {
@@ -234,20 +121,20 @@ public class Jciclaim_NominationModel {
 		ContractNo = contractNo;
 	}
 
-	public String getChallanNo() {
-		return ChallanNo;
+	public String getHoDi() {
+		return HoDi;
 	}
 
-	public void setChallanNo(String challanNo) {
-		ChallanNo = challanNo;
+	public void setHoDi(String hoDi) {
+		HoDi = hoDi;
 	}
 
-	public double getClaimAmount() {
-		return ClaimAmount;
+	public String getChallans() {
+		return Challans;
 	}
 
-	public void setClaimAmount(double claimAmount) {
-		ClaimAmount = claimAmount;
+	public void setChallans(String challans) {
+		Challans = challans;
 	}
 
 	public String getOMOfficial() {
@@ -272,38 +159,6 @@ public class Jciclaim_NominationModel {
 
 	public void setDateofInspection(String dateofInspection) {
 		DateofInspection = dateofInspection;
-	}
-
-	public double getQuality_settlement() {
-		return Quality_settlement;
-	}
-
-	public void setQuality_settlement(double quality_settlement) {
-		Quality_settlement = quality_settlement;
-	}
-
-	public double getMoisture_settlement() {
-		return Moisture_settlement;
-	}
-
-	public void setMoisture_settlement(double moisture_settlement) {
-		Moisture_settlement = moisture_settlement;
-	}
-
-	public double getNcv_settlement() {
-		return Ncv_settlement;
-	}
-
-	public void setNcv_settlement(double ncv_settlement) {
-		Ncv_settlement = ncv_settlement;
-	}
-
-	public double getSettlement_amt() {
-		return Settlement_amt;
-	}
-
-	public void setSettlement_amt(double settlement_amt) {
-		Settlement_amt = settlement_amt;
 	}
 
 	public String getInspection_by() {
@@ -354,22 +209,6 @@ public class Jciclaim_NominationModel {
 		Created_on = created_on;
 	}
 
-	public String getMr_No() {
-		return Mr_No;
-	}
-
-	public void setMr_No(String mr_No) {
-		Mr_No = mr_No;
-	}
-
-	public String getQualityClaim() {
-		return QualityClaim;
-	}
-
-	public void setQualityClaim(String qualityClaim) {
-		QualityClaim = qualityClaim;
-	}
-
 	public String getSettlement_id_generated() {
 		return Settlement_id_generated;
 	}
@@ -378,10 +217,45 @@ public class Jciclaim_NominationModel {
 		Settlement_id_generated = settlement_id_generated;
 	}
 
-	
+	public String getMr_number() {
+		return Mr_number;
+	}
 
+	public void setMr_number(String mr_number) {
+		Mr_number = mr_number;
+	}
 
-	
-	
+	public String getMr_Date() {
+		return Mr_Date;
+	}
+
+	public void setMr_Date(String mr_Date) {
+		Mr_Date = mr_Date;
+	}
+
+	public String getBillOfSupply_number() {
+		return billOfSupply_number;
+	}
+
+	public void setBillOfSupply_number(String billOfSupply_number) {
+		this.billOfSupply_number = billOfSupply_number;
+	}
+
+	public String getDateofshipment() {
+		return dateofshipment;
+	}
+
+	public void setDateofshipment(String dateofshipment) {
+		this.dateofshipment = dateofshipment;
+	}
+
+	public String getShipmentquantity() {
+		return shipmentquantity;
+	}
+
+	public void setShipmentquantity(String shipmentquantity) {
+		this.shipmentquantity = shipmentquantity;
+	}
+
 
 }

@@ -130,7 +130,7 @@ th {
 										<th>Sl.No</th>
 										<th>Challan No </th>
 										<th>Challan Date</th>
-										<th>Shipment Details</th>
+										<!-- <th>Shipment Details</th> -->
 										<th>Shipment Value</th>
 										<th>SGST Amt</th>
 										<th>CGST Amt</th>
@@ -149,6 +149,7 @@ th {
 										<th>Consignee Name</th>
 										<th>Consignee GSTN</th>
 										<th>Consignee Address</th>
+										<th>Trnasit Policy no</th>
 										<th></th>
 
 									</tr>
@@ -164,7 +165,7 @@ th {
 										<td><%=i%></td>
 										<td><%= generationOfBillSupplyModel.getChallan_No() %></td>
 										<td><%= generationOfBillSupplyModel.getChallan_date() %></td>
-										<td><%= generationOfBillSupplyModel.getShipment_details() %></td>
+										<%-- <td><%= generationOfBillSupplyModel.getShipment_details() %></td> --%>
 										<td><%= generationOfBillSupplyModel.getShipment_value() %></td>
 										<td><%= generationOfBillSupplyModel.getSGST_amt() %></td>
 										<td><%= generationOfBillSupplyModel.getCGST_amt() %></td>
@@ -183,11 +184,9 @@ th {
 										<td><%= generationOfBillSupplyModel.getConsignee_name() %></td>
 										<td><%= generationOfBillSupplyModel.getConsignee_gSTN()%></td>
 										<td><%= generationOfBillSupplyModel.getConsignee_address() %></td>
+										<td><%= generationOfBillSupplyModel.getTrnasitPolicyno() %></td>
 										
-										
-							
-										
-                                       <td>
+									 <td>
 								            <a href="downloadPDF.obj?filename=<%= generationOfBillSupplyModel.getBos_file_path()%>"
 								               class="btn btn-primary btn-sm" target="_blank"> Generate BOS</a>
 								        </td>

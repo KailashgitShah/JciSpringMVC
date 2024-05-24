@@ -57,8 +57,8 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 
     
 	 @Override
-		public List<Object> fetchHODINO() {
-	    	return millRecieptDao.fetchHODINO();
+		public List<Object> fetchHODINO(String millname) {
+	    	return millRecieptDao.fetchHODINO(millname);
 		}
 	
 	@Override
@@ -75,7 +75,23 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 		return millRecieptDao.fetchdata(st);
 	}
 	@Override
-	public List<Object[]> fetchMill_NameR() {
+	public List<Object> fetchMill_NameR() {
 		return millRecieptDao.fetchMill_NameR();
 	}
+	@Override
+	public boolean findmillreceiptNOlist(String s) {
+	
+		return millRecieptDao.findmillreceiptNOlist(s);
+	}
+	@Override
+	public List<Object[]> childdata(String st) {
+		return millRecieptDao.childdata(st);
+	}
+	@Override
+	public List<Object[]> challanbaseddetails(String st) {
+		
+		return millRecieptDao.challanbaseddetails(st);
+	}
+	
+	
 }

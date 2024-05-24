@@ -104,24 +104,29 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	}
 
 	@Override
-	public String fetchPrice(String var, String gr, String Challan, String cropyear,String contract) {
-		// TODO Auto-generated method stub
-		String resultString = "SELECT jcientry_derivative_price." + gr + "\n"
-		        + "FROM jcientry_derivative_price\n"
-		        + "INNER JOIN jcicontract ON jcientry_derivative_price.delivery_type = jcicontract.Delivery_type\n"
-		        + "INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = jcientry_derivative_price.district\n"
-		        + "INNER JOIN jcidispatch_details ON jcidispatch_details.Challan_no = '" + Challan + "'\n"
-		        + "WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\n"
-		        + "AND jcicontract.Contract_no = '" + contract + "'\n"
-		        + "AND jcientry_derivative_price.crop_year = '" + cropyear + "'\n"
-		        + "AND jcientry_derivative_price.jute_variety = '" + var + "'";
 
 
-		// Execute the query without casting to String
-		BigDecimal result = (BigDecimal) this.sessionFactory.getCurrentSession().createSQLQuery(resultString).uniqueResult();
-		return result.toString(); // Convert BigDecimal to String
- // Return the result without casting to String
+    public String fetchPrice(String var, String gr, String Challan, String cropyear,String contract) {
+           // TODO Auto-generated method stub
+           String resultString = "SELECT jcientry_derivative_price." + gr + "\n"
+                   + "FROM jcientry_derivative_price\n"
+                   + "INNER JOIN jcicontract ON jcientry_derivative_price.delivery_type = jcicontract.Delivery_type\n"
+                   + "INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = jcientry_derivative_price.district\n"
+                   + "INNER JOIN jcidispatch_details ON jcidispatch_details.Challan_no = '" + Challan + "'\n"
+                   + "WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\n"
+                   + "AND jcicontract.Contract_no = '" + contract + "'\n"
+                   + "AND jcientry_derivative_price.crop_year = '" + cropyear + "'\n"
+                   + "AND jcientry_derivative_price.jute_variety = '" + var + "'";
 
-	}
+
+           // Execute the query without casting to String
+           BigDecimal result = (BigDecimal) this.sessionFactory.getCurrentSession().createSQLQuery(resultString).uniqueResult();
+           return result.toString(); // Convert BigDecimal to String
+//Return the result without casting to String
+
+    }
+
+
+
 
 }

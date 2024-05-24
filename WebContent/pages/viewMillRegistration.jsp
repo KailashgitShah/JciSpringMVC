@@ -129,7 +129,7 @@ th {
 										<th>Mill Mobile Number</th>
 										<th>Mill Official Name</th>
 										<th>Designation</th>
-										<th>RESET</th>
+										<th>Password Reset</th>
 
 
 									</tr>
@@ -158,7 +158,7 @@ th {
 
 											<td><a href="#"
 												onclick="confirmReset('${item.getMillRegistration_id()}')">
-													<button class="btn btn-secondary" type="button">RESET</button>
+													<button class="btn btn-secondary" type="button">RESET PASSWORD</button>
 											</a></td>
 
 											<%--    <td>

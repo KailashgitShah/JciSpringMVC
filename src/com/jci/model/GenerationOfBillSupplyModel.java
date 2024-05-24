@@ -85,7 +85,7 @@ public class GenerationOfBillSupplyModel {
 	@Column(name = "Bos_file_path")
 	private String Bos_file_path;
 
-	@Column(name = "Ro_id", nullable = false)
+	@Column(name = "Ro_id")
 	private String Ro_id;
 
 	@Column(name = "Creation_date", nullable = false)

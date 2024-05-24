@@ -5,6 +5,7 @@
 <%@page import="java.io.File"%>
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
+<%@ page import="java.text.SimpleDateFormat" %>
  <%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@page isELIgnored="false"%>
 
@@ -139,7 +140,7 @@ th {
 										<th>Actual Qty</th>
 										<th>Bale Mark</th>
 										<th>Crop Year</th>
-										<th>Quality Claim</th>
+									<!-- 	<th>Quality Claim</th> -->
 										<th>Moisture Content</th>
 										<th>NCV Percentage</th>
 										<th>NCV Qty.</th>
@@ -149,6 +150,8 @@ th {
 										<th>Mill id</th>
 										<th>Mill Reciept Qty.</th>
 										<th>Short Qty</th>
+										<th>Jute Variety</th>
+										<th>Jute Grade</th>
 										
 
 									</tr>
@@ -156,6 +159,7 @@ th {
 								<tbody>
 									<%
 									int i = 1;
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (MillRecieptModel  millRecieptModel : millList) {
 
 										if (i <= 200) {
@@ -170,31 +174,20 @@ th {
 										<td><%= millRecieptModel.getActual_qty() %></td>
 										<td><%= millRecieptModel.getBale_mark() %></td>
 										<td><%= millRecieptModel.getCrop_year() %></td>
-										<td><%= millRecieptModel.getQuality_claim() %></td>
+										<%-- <td><%= millRecieptModel.getQuality_claim() %></td> --%>
 										<td><%= millRecieptModel.getMoistureContent() %></td>
 										<td><%= millRecieptModel.getNCV_percentage() %></td>
 										<td><%= millRecieptModel.getNCV_qty() %></td>
 										<td><%= millRecieptModel.getMR_no() %></td>
-										<td><%= millRecieptModel.getMr_date() %></td>
-										<td><%= millRecieptModel.getHo_date() %></td>
+										<td><%= sdf.format(millRecieptModel.getMr_date()) %></td>
+										<td><%= sdf.format(millRecieptModel.getHo_date()) %></td>
 										<td><%= millRecieptModel.getMill_id() %></td>
 										<td><%= millRecieptModel.getMR_qty() %></td>
 										<td><%= millRecieptModel.getShort_qty() %></td>
+										<td><%= millRecieptModel.getJute_Variety() %></td>
+										<td><%= millRecieptModel.getJute_Grade() %></td>
 
 										
-
-
-
-										<%-- <td><%=bnaList.getEnable()==1?"Active":"Inactive"%></td> --%>
-										<%-- <td><a
-											href="updatePaymentInstrument.obj?id=<%=PaymentInstrumentList.getEopiid()%>"><button
-													class="btn btn-default" type="button">Edit</button></a></td> --%>
-
-<%-- 
-										<td><a
-											href="editPaymentDetail.obj?id=<%=entryPaymentDetailsModel.getDopiid() %>">
-												<button class="btn btn-primary btn-sm" type="button">Edit</button>
-										</a></td> --%>
 
 										
 
