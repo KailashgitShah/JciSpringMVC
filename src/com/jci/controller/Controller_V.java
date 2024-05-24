@@ -3489,7 +3489,7 @@ public class Controller_V {
 	             
 	             
 	           // String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
-	            String filePathDir  = "C:\\Users\\kailash.shah\\documentimage" + File.separator + filePath;
+	            String filePathDir  = Genrationofbill + File.separator + filePath;
 	             String username1="";
 	             try {
 	                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};

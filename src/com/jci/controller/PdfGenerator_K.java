@@ -64,8 +64,8 @@ public class PdfGenerator_K {
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 	     String fileName = "generatedfile_" + timestamp + ".pdf";
 
-	     String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
-	   //  String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\BillofSupply" + fileName;
+	     //String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
+	     String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\BillofSupply" + fileName;
 	    
             PdfWriter pdfWriter = new PdfWriter(filePath);
             PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
