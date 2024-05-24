@@ -106,6 +106,9 @@ body {
 								<li data-pre="5" id="o5"><a href="viewmillRegistration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Mill Registration
 								List</b></a></li>
+								<li data-pre="5" id="o5"><a href="privacypolicy.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Privacy policy 
+								</b></a></li>
 
 				</ul></li>
 			<li><a href="javascript:void(0);;"><i
@@ -328,16 +331,13 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-<<<<<<< HEAD
 					<li data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment Details</b></a></li>
 					<li data-pre="" id=""><a href="viewPaymentEntryDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
 								Payment list</b></a></li>
-=======
 
->>>>>>> 9a0e8fb2b216f0e657cc82c9ee586602bc02b150
 					<li data-pre="" id=""><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
 								Payment list</b></a></li>

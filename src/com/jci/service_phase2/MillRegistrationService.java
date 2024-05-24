@@ -19,6 +19,7 @@ public interface MillRegistrationService {
 	public String  checkmillcode(String email);
 	public String checkmillemail (String email);
 	public boolean validatemillEmail(String Email);
+	public boolean validatemill(String millName);
 	
 	
 }

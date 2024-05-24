@@ -103,7 +103,8 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Settlement Schedule</h1>
+				<h1 class="page-title">
+					Settlement Schedule</h1>
 
 			</div>
 
@@ -121,15 +122,12 @@ th {
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-									<th>Settlement ID</th>
-									<th>Date Of Entry</th>
-									<th>Date of Inspection</th>
-									<th>Mill</th>
-									<th>Contract No</th>
-									<th>HO DI No</th>
-									<th>O&M Official</th> 
-									<th>Details	</th>	
-									<th>Nominate F&A Official</th>															
+									<th>Challan</th>
+									<th>Mr_No</th>
+									<th>Mr_Date</th>
+									<th>Bill_Of_Supply_Number</th>
+									<th>Date_Of_Shipment</th>	
+									<th>Shipment_Quantity</th>														
 									</tr>
 								</thead>
 								<tbody>
@@ -140,27 +138,15 @@ th {
 
 										<tr>
 										<td  class="sorting_1"><%=i%></td>
-                                            <td >${item.getSettlement_id_generated()}</td>
-                                           <td>${item.getCreated_on()}</td>
-                                            <td>${item.getDateofInspection()}</td>
-											<td >${item.getMill()}</td>
-											 <td>${item.getContractNo()}</td>
-											 <td>${item.getHoDi()}</td>
-											 <td>${item.getOMOfficial()}</td>																
-                                         <td><a href="nominationdetails.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
-                                         
-                                <c:choose>
-							    <c:when test="${empty item.getFAOfficial()}">
-							        <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-primary" type="button">Add F&A Official</button></a></td>
-							    </c:when>
-							    <c:otherwise>
-							        <td>${item.getFAOfficial()}</td>
-							    </c:otherwise>
-							</c:choose>
-
-
-<%-- <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-											
+										<td>${item.getChallans()}</td>
+										<td>${item.getMr_number()}</td>
+										<td>${item.getMr_Date()}</td>
+										<td>${item.getBillOfSupply_number()}</td>
+										<td>${item.getDateofshipment()}</td>
+										<td>${item.getShipmentquantity()}</td>
+										
+                                          
+									
 
 
 
