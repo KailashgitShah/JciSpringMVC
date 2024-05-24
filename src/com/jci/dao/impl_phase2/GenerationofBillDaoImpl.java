@@ -1,10 +1,12 @@
 package com.jci.dao.impl_phase2;
 
+
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.persistence.criteria.Order;
 import javax.activation.*;
 
 import org.hibernate.Criteria;
@@ -18,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.GenerationofBillDao;
 import com.jci.model.CashDocumentModel;
+
+import org.hibernate.SQLQuery;
+
 import com.jci.model.GenerationOfBillSupplyModel;
 
 
@@ -37,8 +42,9 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	}
 	@Override
     public List<GenerationOfBillSupplyModel> getAll(){
-        Criteria criteria = currentSession().createCriteria(GenerationOfBillSupplyModel.class);
-        return criteria.list();
+		 String sqlQuery = "SELECT * FROM jcibos_generation ORDER BY Bos_id DESC";
+		    SQLQuery query = currentSession().createSQLQuery(sqlQuery).addEntity(GenerationOfBillSupplyModel.class);
+		    return query.list();
     }
 	
 	
@@ -55,21 +61,8 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	
 	@Override
 	public  List<Object[]>contarctnoformaster(String st) {
-		String sql = "SELECT\r\n"
-				+ "            a.unit_name,\r\n"
-				+ "            a.unit_address1,\r\n"
-				+ "            a.unit_state,\r\n"
-				+ "            a.unit_location,\r\n"
-				+ "            b.client_gstin,\r\n"
-				+ "            b.client_pan,\r\n"
-				+ "            b.client_state,\r\n"
-				+ "            b.client_address1,\r\n"
-				+ "            b.client_name,\r\n"
-				+ "            a.client_unit_code\r\n"
-				+ "        FROM\r\n"
-				+ "            jcimilldetailchild AS a\r\n"
-				+ "        LEFT JOIN\r\n"
-				+ "            jcimilldetailmaster AS b ON a.client_code = b.client_code where a.client_unit_code='"+ st+"'";
+		String sql = "SELECT  a.unit_name, a.unit_address1,  a.unit_state,   a.unit_location, b.client_gstin, b.client_pan, b.client_state, b.client_address1,  b.client_name, a.client_unit_code "
+				+ " FROM  jcimilldetailchild AS a LEFT JOIN jcimilldetailmaster AS b ON a.client_code = b.client_code where a.client_unit_code='"+ st+"'";
    List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql) .list();
    System.out.println(resultList1);
    return resultList1;
@@ -78,7 +71,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	
 	@Override
 	public  List<Object[]> Dispatchentry(String st) {
-		String sql="select  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Rate,Nominal_qty  from  jcidispatch_details_child where  Challan_no='" + st + "' ";
+		String sql="select  Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty  from  jcidispatch_details_child where  Challan_no='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
     }
@@ -138,18 +131,55 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	}
 
 	@Override
-	public List<Object> millnamefromTCS() {
+	public boolean millnamefromTCS(String millname) {
 		String sql="select Mill from  jcitds_entry ";
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-		    return resultList1;
+		 for (Object mill : resultList1) {
+		        if (millname.equals(mill.toString())) {
+		            return true; // Mill name found
+		        }
+		    }
+		    
+		    return false; // Mill name not found
 	}
 
 	@Override
 	public List<Object[]> ShipmentDetails(String st) {
-		String sql="SELECT  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+		String sql="SELECT  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Rate,Nominal_qty FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> dispatchChildlist(String st) {
+        String sql="SELECT Challan_no,Bale_mark,Crop_year,Jute_grade,Jute_value,Jute_variety,No_of_bales,Nominal_wt, Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+		
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> GenrationAginstLCs(String st) {
+		 String sql="SELECT Instrument_No,Payment_type FROM jcipayment_arrangement where Contract_No ='" + st + "' ";
+			
+			List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+			 if (resultList1.isEmpty()) {
+		            return null; // Return an integer 0 if no results found
+		        } else {
+		            return resultList1; // Return the resultList if results are found
+		        }
+	}
+
+	@Override
+	public List<Object[]> DocumentLcsEntry(String st) {
+		
+		String sql="  select  distinct a.Mill_code,CONVERT(VARCHAR, a.Date_of_shipment,105 ) AS Date_of_shipment,b.DI_Date,b.DI_no from  jcidispatch_details as a LEFT JOIN jciDI_ho\r\n"
+				+ "			 as b on a.Contract_No=b.Contract_No  where a.Contract_No ='" + st + "'";
+			
+		
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
 	}
 
 

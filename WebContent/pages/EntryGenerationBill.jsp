@@ -643,7 +643,7 @@
             url: 'fetchingdata1.obj',
             data: { "contractno": field2Value },
             success: function(data) {
-            	alert(data);
+            	
                
                 try {
                     var dataArray = JSON.parse(data);
@@ -665,7 +665,7 @@
                             url: 'contrcatnotomill.obj',
                             data: { "contractno": contractNo },
                             success: function(secondData) {
-                            	alert(secondData);
+                            	
                             
                                 var dataArray = JSON.parse(secondData);
                               

@@ -271,10 +271,10 @@ body {
 						href="contractgenerationPCSOWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation PCO Wise</b></a></li>
-					 <li data-pre="39" id="o39"><a
+					<!--  <li data-pre="39" id="o39"><a
 						href="contractgenerationMillWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
-								Generation Mill Wise</b></a></li>
+								Generation Mill Wise</b></a></li> -->
 					<li data-pre="40" id="o40"><a
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
@@ -331,12 +331,12 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-					<li data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i
+				<!-- 	<li data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment Details</b></a></li>
 					<li data-pre="" id=""><a href="viewPaymentEntryDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
-								Payment list</b></a></li>
+								Payment list</b></a></li> -->
 
 					<li data-pre="" id=""><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
@@ -344,7 +344,7 @@ body {
 					<li data-pre="" id=""><a href="viewFinancialConcurence.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Financial Concuerence list</b></a></li>
-					<li data-pre="" id=""><a href="EntryofMillreceipt.obj"><i
+					<!-- <li data-pre="" id=""><a href="EntryofMillreceipt.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill
 								Receipt</b></a></li>
 					<li data-pre="" id=""><a href="viewMillReciept.obj"><i
@@ -384,7 +384,7 @@ body {
 								U/s 194Q Declaration </b></a></li>
 					<li data-pre="52" id="o52"><a href="viewentryoftds.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> View Entry
-								of TDS U/s 194Q Declaration </b></a></li>
+								of TDS U/s 194Q Declaration </b></a></li> -->
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i
@@ -439,9 +439,9 @@ body {
 								Dispatch Details</b></a></li>
 					<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of
-								Generation Bill of supply</b></a></li>
+								Generation Bill of supply</b></a></li><!-- 
 					<li data-pre="" id=""><a href="WeightmentSlipList.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li>
+							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li> -->
 				</ul></li>
               
 			

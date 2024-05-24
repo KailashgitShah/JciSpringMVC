@@ -36,6 +36,12 @@ public class GenrationCashDocumentServiceImpl implements GenrationCashDocumentSe
 		return genrationCashDocumentDao.fetchBos_No();
 	}
 
+	@Override
+	public List<Object> Non_lc(String St) {
+		
+		return genrationCashDocumentDao.Non_lc(St);
+	}
+
 	
 
 }

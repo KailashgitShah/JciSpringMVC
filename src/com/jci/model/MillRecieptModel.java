@@ -117,6 +117,62 @@ public class MillRecieptModel {
 	@Column( name = "Created_by")
 	private String Created_by;
 	
+	
+	@Column( name = "Jute_Grade")
+	private String Jute_Grade;
+	
+	@Column( name = "Jute_Variety")
+	private String Jute_Variety;
+	
+	@Column( name = "QualityPercentage")
+	private Double QualityPercentage;
+	
+	@Column( name = "Quantity")
+	private Double Quantity;
+	
+
+	
+	
+
+	public String getJute_Variety() {
+		return Jute_Variety;
+	}
+
+
+	public void setJute_Variety(String jute_Variety) {
+		Jute_Variety = jute_Variety;
+	}
+
+
+	public Double getQualityPercentage() {
+		return QualityPercentage;
+	}
+
+
+	public void setQualityPercentage(Double qualityPercentage) {
+		QualityPercentage = qualityPercentage;
+	}
+
+
+	public Double getQuantity() {
+		return Quantity;
+	}
+
+
+	public void setQuantity(Double quantity) {
+		Quantity = quantity;
+	}
+
+
+	public String getJute_Grade() {
+		return Jute_Grade;
+	}
+
+
+	public void setJute_Grade(String jute_Grade) {
+		Jute_Grade = jute_Grade;
+	}
+
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "Created_on")

@@ -50,6 +50,19 @@
   padding: 14px;
   text-decoration: none;
 }
+
+.single-click {
+    color: blue; 
+    cursor: pointer; 
+}
+.single-click:hover {
+    text-decoration: underline;
+}
+
+#childTable {
+    display: none; 
+}
+
 </style>
 
 </head>
@@ -68,6 +81,8 @@
 				<h1 class="page-title">Dispatch Detail List</h1>
 
 			</div>
+			
+			
 
 			
 <%
@@ -106,15 +121,7 @@
 										<th>Place_of_Shipment</th>
 										<th>Regional_Office</th>
 										<th>Vehicle_no</th>
-										<th>Bale_mark</th>
-										<th>Crop_year</th>
-										<th>Jute_grade</th>
-										<th>Jute_value</th>
-										<th>Jute_variety</th>
-										<th>No_of_bales</th>
-										<th>Nominal_qty</th>
-										<th>Nominal_wt</th>
-										<th>Rate</th>
+									
 										<th></th>
 										
 										
@@ -123,25 +130,8 @@
 								
 								
                            <tbody>
-<script>
-// Function to format the date as "DD-MM-YYYY"
-function formatDate(dateString) {
-    try {
-        if (dateString) {
-            const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}-${month}-${year}`;
-        } else {
-            return ""; // Return empty string if date string is null or empty
-        }
-    } catch (error) {
-        console.error('Error formatting date:', error);
-        return dateString; // Return original date string if unable to parse
-    }
-}
-</script>    
+                           
+					
 						 			<%
 									int i = 1;
 						 			
@@ -152,8 +142,11 @@ function formatDate(dateString) {
 									if (i <= 200) {
 									%>
 									<tr>
-										<td><%=i%></td>
-										<td><%= row[0] %></td>
+										<td><%=i%></td>	
+										  <td>
+							                <span class="single-click" data-id="<%=row[0]%>" > <%= row[0] %></span>
+							            </td>
+										<%-- <td><%= row[0] %></td> --%>
 										<%-- <td><%= row[1] %></td> --%>
 										<td><%= row[2] %></td>
 										<td><%= row[3] %></td>
@@ -174,15 +167,7 @@ function formatDate(dateString) {
 										<td><%= row[14] %></td>
 										<td><%= row[15] %></td>
 										<td><%= row[16] %></td>
-										<td><%= row[17] %></td>
-										<td><%= row[18] %></td>
-										<td><%= row[19] %></td>
-										<td><%= row[20] %></td>
-										<td><%= row[21] %></td>
-										<td><%= row[22] %></td>
-										<td><%= row[23] %></td>
-										<td><%= row[24] %></td>
-										<td><%= row[25] %></td>
+									
 										
 											<td>
 									    <a href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%= row[12]%>">
@@ -204,6 +189,27 @@ function formatDate(dateString) {
 								</tbody>
 
                         </table>
+                            <table id="childTable" class="table table-bordered">
+											    <thead class="thead-light">
+											        <tr>
+											            
+											             <th>Challan NO</th>
+											             <th>Bale Mark</th>
+											             <th>Crop_year</th>
+											            <th>Jute_grade</th>
+											            <th>Jute_value</th>
+											            <th>Jute_variety</th>
+											            <th>No of bales</th>
+											            <th>Nominal wt/bale</th>
+											            <th>Nominal_qty</th>
+											            <th>Rate</th>
+											        </tr>
+											    </thead>
+											    <tbody>
+											        <!-- Data rows will be dynamically added here -->
+											    </tbody>
+											</table>
+											
                         
                      
                      </div>
@@ -215,7 +221,50 @@ function formatDate(dateString) {
         </div>
     </div>
     
-    
+   
+
+
+
+ <script type="text/javascript">
+        $(document).ready(function() {
+            $('.single-click').on('click', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+               
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'listofdispatchChild.obj', 
+                    data: { "challanNo": id},
+                    success: function(data) {
+                      
+                        var dataArray = JSON.parse(data);
+
+                        $('#childTable tbody').empty();
+
+                        dataArray.forEach(function(row) {
+                            var newRow = $('<tr>');
+                           
+                            for (var i = 0; i < row.length; i++) {
+                                newRow.append($('<td>').text(row[i]));
+                            }
+                            $('#childTable tbody').append(newRow);
+                        });
+                        $('#childTable').show();
+                       
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            
+            $('#childTable').on('dblclick', function(e) {
+                $('#childTable').hide();
+            });
+        });
+    </script>
+ 
  
     <!-- BEGIN THEME CONFIG PANEL-->
      

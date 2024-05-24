@@ -11,15 +11,19 @@ public interface GenerationofBillDao {
 	  public List<GenerationOfBillSupplyModel> getAll();
 	  public List<Object[]>ChallanNo( String st);
 	  public List<Object[]>ShipmentDetails( String st);
+	  public List<Object[]>dispatchChildlist( String st);
 	  public  List<Object[]> contarctno(String st);
-	  public  List<Object> millnamefromTCS();
+	  public  boolean millnamefromTCS(String millname);
 	  public  List<Object[]> contrcatnotomill(String st);
+	  public  List<Object[]> GenrationAginstLCs(String st);
 	  public  List<Object[]>contarctnoformaster(String st);
 	  public  List<Object[]> Dispatchentry(String st);
+	  public  List<Object[]> DocumentLcsEntry(String st);
 	  public String  billofsupplyno(String st);
 	  public String billUpdation(String st);
 	  public void remark(String cont_no,String  con_No);
 	  public GenerationOfBillSupplyModel find(int id);
+	
 	
 	
 }
