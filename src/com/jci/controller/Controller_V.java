@@ -5248,25 +5248,161 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 
 /// ///////////////////////////////////////////////mill registration Start//////////////////////////////////////
 
-	@RequestMapping("millRegisteration")
-	public ModelAndView millregistration(Model model, HttpServletRequest request) {
-		//String username = (String) request.getSession().getAttribute("usrname");
 
-		ModelAndView mv = new ModelAndView("millRegistration");
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
+		@RequestMapping("millRegisteration")
+		public ModelAndView millregistration(Model model, HttpServletRequest request) {
+			//String username = (String) request.getSession().getAttribute("usrname");
 
-			mv = new ModelAndView("index");
+			ModelAndView mv = new ModelAndView("millRegistration");
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
+
+				mv = new ModelAndView("index");
+
+			}
+			List<String> millid = millRegistrationService.MillName();
+			mv.addObject("millid", millid);
+
+			// model.addAttribute("AllList", AllList);
+			return mv;
+		}
+
+		
+		@ResponseBody
+		@RequestMapping(value = "millcodefetch", method = RequestMethod.GET)
+		public String MillCodeFetch(@RequestParam("millid") String millid) {
+
+			List<Object> millReceiptData = millRegistrationService.FetchMillReceiptData(millid);
+
+			Gson gson = new Gson();
+			String jsonResponse = gson.toJson(millReceiptData);
+
+			return jsonResponse;
 
 		}
-		List<String> millid = millRegistrationService.MillName();
-		mv.addObject("millid", millid);
 
-		// model.addAttribute("AllList", AllList);
-		return mv;
-	}
 
-	
+		@ResponseBody
+		@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
+		public String validatemillEmail(final HttpServletRequest request) {
+
+			final Gson gson = new Gson();
+			return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
+		}
+
+		
+		@ResponseBody
+		@RequestMapping(value = { "validatemill" }, method = { RequestMethod.GET })
+		public String validatemill(final HttpServletRequest request) {
+
+			final Gson gson = new Gson();
+			return this.millRegistrationService.validatemill(request.getParameter("millName")) + "";
+		}
+		@RequestMapping("savemillregister")
+		public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
+				HttpSession s) throws IllegalStateException, IOException {
+			
+			
+			String username = (String) request.getSession().getAttribute("usrname");
+			
+
+			String mill_name = request.getParameter("mill_name");
+
+			String mill_password = request.getParameter("mill_password");
+			String confirm_mill_password = request.getParameter("confirm_mill_password");
+
+			String mill_code = request.getParameter("mill_code");
+			String mill_emailaddress = request.getParameter("mill_emailaddress");
+
+			String mill_mobile = request.getParameter("mill_mobile");
+			String official_name = request.getParameter("official_name");
+			String official_designation = request.getParameter("official_designation");
+
+			// Creating object of
+
+			MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
+			millRegistrationModel.setMill_name(mill_name);
+			millRegistrationModel.setOfficial_name(official_name);
+			millRegistrationModel.setOfficial_designation(official_designation);
+			millRegistrationModel.setMill_code(mill_code);
+			millRegistrationModel.setMill_emailaddress(mill_emailaddress);
+			millRegistrationModel.setMill_mobile(mill_mobile);
+			millRegistrationModel.setMill_password(mill_password);
+			millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
+			// ModelAndView mv = new ModelAndView();
+			final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
+			final boolean millNotRegistered = this.millRegistrationService.validatemill(mill_name);
+
+			if (emailNotExist && mill_password.equals(confirm_mill_password)  && millNotRegistered ==false) {
+			    // Create mill registration
+			    millRegistrationService.create(millRegistrationModel);
+			    // Redirect with success message
+			    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+			    return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+			} else if (!mill_password.equals(confirm_mill_password)) {
+			    // Redirect with password mismatch message
+			    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Password and Confirm Mill Password are different. Please fill in the same Mill Password and Confirm Mill Password. </div>\r\n");
+			    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+			} else if(millNotRegistered==true) {
+				   redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Already Registered.Please Select another Mill Name.</div>\r\n");
+				    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+			}
+			else {
+			    // Redirect with duplicate email message
+			    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with another email.</div>\r\n");
+			    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+			}
+	//return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+
+		}
+
+		@RequestMapping("viewmillRegistration")
+
+		public ModelAndView ViewmillRegistration(Model model, HttpServletRequest request) {
+			ModelAndView mv = new ModelAndView("viewMillRegistration");	
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
+
+				mv = new ModelAndView("index");
+
+			}
+
+			List<MillRegistrationModel> AllList = (List<MillRegistrationModel>) millRegistrationService.getAll();
+
+			Collections.reverse(AllList);
+
+			model.addAttribute("AllList", AllList);
+			// int MillRegistrationId =
+			// Integer.parseInt(request.getParameter("MillRegistration_id"));
+
+			//return "viewMillRegistration";
+			return mv;
+
+		}
+
+		@RequestMapping({ "updateMillRegistration" })
+		public ModelAndView updateMillRegistration(HttpServletRequest request, RedirectAttributes redirectAttributes)
+				throws NumberFormatException, Exception {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView();
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+			int MillRegistrationId = Integer.parseInt(request.getParameter("id"));
+
+			millRegistrationService.ResetPassword(MillRegistrationId);
+
+			redirectAttributes.addFlashAttribute("msg",
+					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
+			return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+		}
+		
+	///////////////////////////////////////// mill registration end //////////////////////////////////////////////////////////////////////////
+		
+
+
+
+//	
 	@ResponseBody
 	@RequestMapping(value = {"fetchChallan"}, method = {RequestMethod.GET})
 	public String fetchClaim(@RequestParam("id") String id, HttpServletRequest request,HttpSession session) {
@@ -5281,164 +5417,53 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		
 	}
 
-//	// Verification of Weighment Slip
+//
+//
+//
+	// Verification of Weighment Slip
 //	@RequestMapping({ "WeightmentSlipList" })
 //	public ModelAndView WeightmentSlipList(HttpSession session, HttpServletRequest request) {
 //		String username = (String) request.getSession().getAttribute("usrname");
 //	}
-
-	@ResponseBody
-	@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
-	public String validatemillEmail(final HttpServletRequest request) {
-
-		final Gson gson = new Gson();
-		return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
-	}
-
-	
-	@ResponseBody
-	@RequestMapping(value = { "validatemill" }, method = { RequestMethod.GET })
-	public String validatemill(final HttpServletRequest request) {
-
-		final Gson gson = new Gson();
-		return this.millRegistrationService.validatemill(request.getParameter("millName")) + "";
-	}
-	@RequestMapping("savemillregister")
-	public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
-			HttpSession s) throws IllegalStateException, IOException {
-		
-		
-		String username = (String) request.getSession().getAttribute("usrname");
-		
-
-		String mill_name = request.getParameter("mill_name");
-
-		String mill_password = request.getParameter("mill_password");
-		String confirm_mill_password = request.getParameter("confirm_mill_password");
-
-		String mill_code = request.getParameter("mill_code");
-		String mill_emailaddress = request.getParameter("mill_emailaddress");
-
-		String mill_mobile = request.getParameter("mill_mobile");
-		String official_name = request.getParameter("official_name");
-		String official_designation = request.getParameter("official_designation");
-
-		// Creating object of
-
-		MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
-		millRegistrationModel.setMill_name(mill_name);
-		millRegistrationModel.setOfficial_name(official_name);
-		millRegistrationModel.setOfficial_designation(official_designation);
-		millRegistrationModel.setMill_code(mill_code);
-		millRegistrationModel.setMill_emailaddress(mill_emailaddress);
-		millRegistrationModel.setMill_mobile(mill_mobile);
-		millRegistrationModel.setMill_password(mill_password);
-		millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
-		// ModelAndView mv = new ModelAndView();
-		final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
-		final boolean millNotRegistered = this.millRegistrationService.validatemill(mill_name);
-
-		if (emailNotExist && mill_password.equals(confirm_mill_password)  && millNotRegistered ==false) {
-		    // Create mill registration
-		    millRegistrationService.create(millRegistrationModel);
-		    // Redirect with success message
-		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-		    return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-		} else if (!mill_password.equals(confirm_mill_password)) {
-		    // Redirect with password mismatch message
-		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Password and Confirm Mill Password are different. Please fill in the same Mill Password and Confirm Mill Password. </div>\r\n");
-		    return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		} else if(millNotRegistered==true) {
-			   redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Already Registered.Please Select another Mill Name.</div>\r\n");
-			    return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		}
-		else {
-		    // Redirect with duplicate email message
-		    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with another email.</div>\r\n");
-		    return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		}
-//return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-
-	}
-
-	@RequestMapping("viewmillRegistration")
-
-	public ModelAndView ViewmillRegistration(Model model, HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("viewMillRegistration");	
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-
-			mv = new ModelAndView("index");
-
-		}
-
-		List<MillRegistrationModel> AllList = (List<MillRegistrationModel>) millRegistrationService.getAll();
-
-		Collections.reverse(AllList);
-
-		model.addAttribute("AllList", AllList);
-		// int MillRegistrationId =
-		// Integer.parseInt(request.getParameter("MillRegistration_id"));
-
-		//return "viewMillRegistration";
-		return mv;
-
-	}
-
-	@RequestMapping({ "updateMillRegistration" })
-	public ModelAndView updateMillRegistration(HttpServletRequest request, RedirectAttributes redirectAttributes)
-			throws NumberFormatException, Exception {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView();
-
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		int MillRegistrationId = Integer.parseInt(request.getParameter("id"));
-
-		millRegistrationService.ResetPassword(MillRegistrationId);
-
-		redirectAttributes.addFlashAttribute("msg",
-				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
-		return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-	}
-	
-///////////////////////////////////////// mill registration end //////////////////////////////////////////////////////////////////////////
-	
-///////////////////////////////////////// mill login start ////////////////////////////////////////////////////////////////////////////////////////////
-	@RequestMapping("millLogin")
-	public ModelAndView login(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.invalidate();
-
-		ModelAndView mv = new ModelAndView("millLogin");
-		return mv;
-	}
+////
 
 
-
-	
-
-	// Verify Claim by FA official
-	@RequestMapping(value = { "verifyClaimReport" }, method = RequestMethod.GET)
-	public ModelAndView VerifyClaimReport(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		String Ro_id = (String) session.getAttribute("region");
-
-		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
-		System.err.println(getSettlementidlist);
-		redirectAttributes.addFlashAttribute("msg",
-				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-		ModelAndView mv = new ModelAndView("verifyClaimReport");
-		mv.addObject("getSettlementidlist", getSettlementidlist);
-
-		return mv;
-	}
+//	
+/////////////////////////////////////////// mill registration end //////////////////////////////////////////////////////////////////////////
+//	
+/////////////////////////////////////////// mill login start ////////////////////////////////////////////////////////////////////////////////////////////
+//	@RequestMapping("millLogin")
+//	public ModelAndView login(HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		session.invalidate();
+//
+//		ModelAndView mv = new ModelAndView("millLogin");
+//		return mv;
+//	}
+//
+//
+//
+//	
+//
+//	// Verify Claim by FA official
+//	@RequestMapping(value = { "verifyClaimReport" }, method = RequestMethod.GET)
+//	public ModelAndView VerifyClaimReport(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+//		String username = (String) request.getSession().getAttribute("usrname");
+//		if (username == null) {
+//			return new ModelAndView("index");
+//		}
+//
+//		String Ro_id = (String) session.getAttribute("region");
+//
+//		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+//		System.err.println(getSettlementidlist);
+//		redirectAttributes.addFlashAttribute("msg",
+//				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+//		ModelAndView mv = new ModelAndView("verifyClaimReport");
+//		mv.addObject("getSettlementidlist", getSettlementidlist);
+//
+//		return mv;
+//	}
 ///////////////////////////////////// mill login end ////////////////////////////////////////////////////////////////////////////////////////////
 	
 ////////////////////////////////////// Privacy policy page start ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
