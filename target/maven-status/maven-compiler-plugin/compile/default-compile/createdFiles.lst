@@ -239,6 +239,8 @@ com\jci\service\Impl\DistributionoftallyslipServiceImpl.class
 com\jci\dao\impl\VerifyFarmerDaoImpl.class
 com\jci\dao\impl\PurchaseCenterDaoImpl.class
 com\jci\dao\AddOrganizationDao.class
+com\jci\model\MarkerArrivalModelDTO.class
+com\jci\model\BalePrepDto.class
 com\jci\controller\ContractgenerationcommercialController.class
 com\jci\service\Impl\PoliceStationServiceImpl.class
 com\jci\securityfilters\MySessionListener.class

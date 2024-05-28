@@ -48,8 +48,103 @@ public class MarkerArrivalModelDTO {
 	  
 	  private double qtytotal;
 	  
-
+	  private String m_min;
+	  private String m_max;
 	  
+	  private double TD1_min;
+	  private double TD2_min;
+	  private double TD3_min;
+	  private double TD4_min;
+	  private double TD5_min;
+	  
+	  private double TD5_max;
+	  private double TD4_max;
+	  private double TD3_max;
+	  private double TD2_max;
+	  private double TD1_max;
+	  
+	  
+
+	public double getTD1_min() {
+		return TD1_min;
+	}
+
+	public void setTD1_min(double tD1_min) {
+		TD1_min = tD1_min;
+	}
+
+	public double getTD2_min() {
+		return TD2_min;
+	}
+
+	public void setTD2_min(double tD2_min) {
+		TD2_min = tD2_min;
+	}
+
+	public double getTD3_min() {
+		return TD3_min;
+	}
+
+	public void setTD3_min(double tD3_min) {
+		TD3_min = tD3_min;
+	}
+
+	public double getTD4_min() {
+		return TD4_min;
+	}
+
+	public void setTD4_min(double tD4_min) {
+		TD4_min = tD4_min;
+	}
+
+	public double getTD5_min() {
+		return TD5_min;
+	}
+
+	public void setTD5_min(double tD5_min) {
+		TD5_min = tD5_min;
+	}
+
+	public double getTD5_max() {
+		return TD5_max;
+	}
+
+	public void setTD5_max(double tD5_max) {
+		TD5_max = tD5_max;
+	}
+
+	public double getTD4_max() {
+		return TD4_max;
+	}
+
+	public void setTD4_max(double tD4_max) {
+		TD4_max = tD4_max;
+	}
+
+	public double getTD3_max() {
+		return TD3_max;
+	}
+
+	public void setTD3_max(double tD3_max) {
+		TD3_max = tD3_max;
+	}
+
+	public double getTD2_max() {
+		return TD2_max;
+	}
+
+	public void setTD2_max(double tD2_max) {
+		TD2_max = tD2_max;
+	}
+
+	public double getTD1_max() {
+		return TD1_max;
+	}
+
+	public void setTD1_max(double tD1_max) {
+		TD1_max = tD1_max;
+	}
+
 		public double getG2total() {
 		return g2total;
 	}
@@ -226,10 +321,21 @@ public class MarkerArrivalModelDTO {
 			this.grade5 = grade5;
 		}
 
-		
+		public String getM_min() {
+			return m_min;
+		}
 
-		
+		public void setM_min(String m_min) {
+			this.m_min = m_min;
+		}
 
+		public String getM_max() {
+			return m_max;
+		}
+
+		public void setM_max(String m_max) {
+			this.m_max = m_max;
+		}
 		@Override
 		public String toString() {
 			return "MarkerArrivalModelDTO [cropyr=" + cropyr + ", centername=" + centername + ", datearrival="
@@ -238,15 +344,20 @@ public class MarkerArrivalModelDTO {
 					+ grade_rate5 + ", mixmois=" + mixmois + ", maxmois=" + maxmois + ", grade2=" + grade2 + ", grade3="
 					+ grade3 + ", grade4=" + grade4 + ", grade5=" + grade5 + ", ro_name=" + ro_name + ", jute_verity="
 					+ jute_verity + ", g2total=" + g2total + ", g3total=" + g3total + ", g4total=" + g4total
-					+ ", g5total=" + g5total + ", qtytotal=" + qtytotal + "]";
+					+ ", g5total=" + g5total + ", qtytotal=" + qtytotal + ", m_min=" + m_min + ", m_max=" + m_max
+					+ ", TD1_min=" + TD1_min + ", TD2_min=" + TD2_min + ", TD3_min=" + TD3_min + ", TD4_min=" + TD4_min
+					+ ", TD5_min=" + TD5_min + ", TD5_max=" + TD5_max + ", TD4_max=" + TD4_max + ", TD3_max=" + TD3_max
+					+ ", TD2_max=" + TD2_max + ", TD1_max=" + TD1_max + "]";
 		}
 
-		
+	
 
 		public MarkerArrivalModelDTO(String cropyr, String centername, String datearrival, String arrivedqty,
 				int grade_rate1, int grade_rate2, int grade_rate3, int grade_rate4, int grade_rate5, String mixmois,
 				String maxmois, double grade2, double grade3, double grade4, double grade5, String ro_name,
-				String jute_verity, double g2total, double g3total, double g4total, double g5total, double qtytotal) {
+				String jute_verity, double g2total, double g3total, double g4total, double g5total, double qtytotal,
+				String m_min, String m_max, double tD1_min, double tD2_min, double tD3_min, double tD4_min,
+				double tD5_min, double tD5_max, double tD4_max, double tD3_max, double tD2_max, double tD1_max) {
 			super();
 			this.cropyr = cropyr;
 			this.centername = centername;
@@ -270,6 +381,18 @@ public class MarkerArrivalModelDTO {
 			this.g4total = g4total;
 			this.g5total = g5total;
 			this.qtytotal = qtytotal;
+			this.m_min = m_min;
+			this.m_max = m_max;
+			TD1_min = tD1_min;
+			TD2_min = tD2_min;
+			TD3_min = tD3_min;
+			TD4_min = tD4_min;
+			TD5_min = tD5_min;
+			TD5_max = tD5_max;
+			TD4_max = tD4_max;
+			TD3_max = tD3_max;
+			TD2_max = tD2_max;
+			TD1_max = tD1_max;
 		}
 
 		public MarkerArrivalModelDTO() {

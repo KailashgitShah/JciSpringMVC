@@ -106,15 +106,6 @@
 			alert("CheckBox Not Selected !..Please Select");
 			return false;
 		}
-	/* 	 $.ajax({
-              type:'GET',
-              url:'update_paymentstatus.obj',
-              data:{"tallyno":JSON.stringify(array),"roho":roho},
-              //async: false,
-              success:function(result){
-					alert("hello"+result);
-				}	
-       }); */
        $(".loader").show();
 		 $.ajax({
 				type:"GET",
@@ -202,15 +193,6 @@
 										<td><%=verificationlists.getDop()%></td> 
 										<td><%=verificationlists.getNetquantity()%></td> 
 						                <td><%=verificationlists.getAmountpayable()%></td>
-						              <!-- <td><a href="update_paymentstatus.obj?tallyno=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">Payment</a></td>
-						                 <td><a href="edittallyslip.obj?id=verificationlists.getTallyslipno()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>-->
-										<%-- <td><a onclick="return confirm('Are you sure you want to delete this item?');" href="deletetallyslip.obj?id=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-						
-										
-										
-										<%-- <td><%=bnaList.getEnable()==1?"Active":"Inactive"%></td>
-	<td><a href="bnaDelete.obj?id=<%=bnaList.getId()%>" class="btn btn-danger btn-sm btn-block" onclick="return confirm('Are you sure you want to delete this BNA')">Delete</a></td> --%>
- 						 
 
 									</tr>
 									<% 

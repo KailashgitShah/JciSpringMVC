@@ -1,5 +1,7 @@
 package com.jci.dao.impl;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -670,7 +672,17 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	@Override
 	public List<String> getexcelpath(String regionId) {
 		// TODO Auto-generated method stub
-		return null;
+		List<String> result = new ArrayList<>();
+		try {
+		    String querystr = "select distinct excel_link from jcitallyslippayment where region_id = '"+regionId+"'";
+		    Session session = sessionFactory.getCurrentSession();
+		    Transaction tx = session.beginTransaction();
+		    SQLQuery query = session.createSQLQuery(querystr);
+		    result = query.list();
+		} catch (Exception e) {
+		    System.out.println(e.getLocalizedMessage());
+		}
+		return result;
 	}
 
 

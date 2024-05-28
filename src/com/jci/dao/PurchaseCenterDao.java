@@ -18,5 +18,6 @@ public interface PurchaseCenterDao {
 	public List<String> getAllDpc();
 	public String findDpcname(String dpccode);
 	public Map<String, String> getdpcbyregionid(String regionid);
+	public float findNominalWt(String dpc);
 
 }

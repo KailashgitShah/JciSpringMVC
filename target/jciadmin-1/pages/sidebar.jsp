@@ -160,8 +160,20 @@ body {
 					<li  data-pre="31" id="o31"><a href="binPurchasemapping.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>BIN Purchase Mapping</b></a></li>				
 					<li  data-pre="32" id="o32"><a href="fingain.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>FinGainAnd WeightGain</b></a></li>
 					<li  data-pre="33" id="o33"><a href="BinListfromDb.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>BIN Gain List</b></a></li>
-					<li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register list</b></a></li>				
 				</ul> </li> 
+				
+				<li>
+				<a href="javascript:void(0);"><i class="sidebar-item-icon fa fa-th-large"></i> 
+				<span class="nav-label"> &nbsp;Report</span> 
+				<i class="fa fa-angle-left arrow"></i></a> 
+					<ul class="nav-2-level ">
+				      <li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register list</b></a></li>				
+					  <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Market Arrival Report</b></a></li>				 
+					  <li  data-pre="" id=""><a href="downloadexcelregionwise.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Download Excel Region wise</b></a></li>				 
+					  <li  data-pre="26" id="o26"><a href="viewbalePreparationList.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale Preparation</b></a></li>
+					</ul> 
+				</li>
+				
 				<!-- <li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">6.&nbsp;Contract</span> <i

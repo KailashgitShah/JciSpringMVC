@@ -41,22 +41,18 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Packing Register</h1>
+                <h1 class="page-title">Bin Wise Packing Register</h1>
                  
             </div>
 				
-				<%
-					List<BalePreparation> viewBalePreparation = (List<BalePreparation>) request.getAttribute("viewBalePreparation");
-					//out.println(viewBalePreparation);
 				
-				%>
 			 <div class="page-content fade-in-up">
                 <div class="ibox">
                     <span>${msg}</span>
                     <div class="ibox-body">
                     <form action = "getBalesData.obj"  onsubmit = "return validation()">
                     <div class="row">
-				<div class="col-sm-3 form-group">
+				<div class="col-sm-4 form-group">
 											<label id="zoneLabel" class="required">Zone</label>  &nbsp;&nbsp;&nbsp; <span id="errZone" name="errZone" class="text-danger"> </span>
 											<%
 												List<ZoneModel> zoneList = (List<ZoneModel>) request.getAttribute("zoneList");
@@ -72,7 +68,7 @@
 												%>
 											</select>
 												</div>
-			<div class="col-sm-3 form-group">
+			<div class="col-sm-4 form-group">
 											<label id="regionLabel" class="required">Region</label>&nbsp;&nbsp;&nbsp; <span id="errRegion" name="errRegion" class="text-danger"> </span>
 											<!-- <input class="form-control" type="text" name="region" placeholder="Region" required> -->
 											<select class="form-control" name="region" id="region">
@@ -80,136 +76,71 @@
 											</select>
 										</div>
 										
-		   <div class="col-sm-3 form-group">
+		   <div class="col-sm-4 form-group">
 											<label id="dpclabel" class="required">DPC</label> &nbsp;&nbsp;&nbsp; <span id="errDPC" name="errDPC" class="text-danger"> </span>
 											<select class="form-control" name="dpc" id="dpc">
 												<option disabled selected value>-Select-</option>
 											</select>
 										</div>
-		   <div class="col-sm-3 form-group">
-											<label>From Date</label> 
-											<span class="text-danger">* </span>&nbsp; <span id="errfromdate" name="errfromdate"
-												class="text-danger"> </span>
-											<input class="form-control" name="fromdate" id="fromdate"  placeholder="dd-mm-yyyy" value="" readonly>
-										</div>
+									
 			</div>
-			<div class ="row">
-			
-			<div class="col-sm-3 form-group">
-											<label>To Date</label> 
-											<span class="text-danger">* </span>&nbsp; <span id="errtodate" name="errtodate"
-												class="text-danger"> </span>
-											<input class="form-control" name="todate" id="todate"  placeholder="dd-mm-yyyy" value="" readonly>
-										</div>
-			
-			 <div class="col-sm-3 form-group">
-											<label class="required">Crop Year</label> 
+			 <div class="row">
+				<div class="col-sm-4 form-group">
+												<label id="regionLabel" class="required">cropyear</label>&nbsp;&nbsp;&nbsp; <span id="errRegion" name="errRegion" class="text-danger"> </span>
+											<!-- <input class="form-control" type="text" name="region" placeholder="Region" required> -->
 											<select class="form-control" name="cropyear" id="cropyear">
 												<option disabled selected value>-Select-</option>
 												<option value="2022-2023">2022-2023</option>
 												<option value="2023-2024">2023-2024</option>
 											</select>
+												</div>
+		<div class="col-sm-4 form-group">
+    <label id="basisLabel" class="required">Basis</label>&nbsp;&nbsp;&nbsp;
+    <span id="errBasis" name="errBasis" class="text-danger"> </span>
+    <select class="form-control" name="basis" id="basis">
+        <option disabled selected value>-Select-</option>
+        <option value="MSP">MSP</option>
+        <option value="Commercial">COMMERCIAL</option>
+    </select>
+</div>
+
+<div class="col-sm-4 form-group">
+    <label id="juteVarietyLabel" class="required">Jute Variety</label>&nbsp;&nbsp;&nbsp;
+    <span id="errJuteVariety" name="errJuteVariety" class="text-danger"> </span>
+    <select class="form-control" name="juteVariety" id="juteVariety">
+     <option disabled selected value>-Select-</option>
+        <option value="">-Jute Variety-</option>
+                                        	
+                                        	</select>
+        <!-- Options will be dynamically updated based on the selection in the "Basis" dropdown -->
+    </select>
+</div>
+</div>
+			
+			<div class ="row">
+			 <div class="col-sm-4 form-group">
+											<label>From Date</label> 
+											<span class="text-danger">* </span>&nbsp; <span id="errfromdate" name="errfromdate"
+												class="text-danger"> </span>
+											<input class="form-control" name="fromdate" id="fromdate"  placeholder="dd-mm-yyyy" value="" readonly>
 										</div>
-			 <div class="col-sm-3 form-group">
-											<label class="required">Basis</label>
-											<select class="form-control" name="basis" id="basis">
-												<option disabled selected value>-Select-</option>
-												 <option value="MSP">MSP</option>
-                                                 <option value="Commercial">Commercial</option>
-											</select>
+			<div class="col-sm-4 form-group">
+											<label>To Date</label> 
+											<span class="text-danger">* </span>&nbsp; <span id="errtodate" name="errtodate"
+												class="text-danger"> </span>
+											<input class="form-control" name="todate" id="todate"  placeholder="dd-mm-yyyy" value="" readonly>
 										</div>
-			<div class="col-sm-3 form-group">
-										<label> </label>
-										<input type = "submit" id="search" value ="search" class="btn btn-primary"/ style ="display: block;">
-										</div>																					
+			<div class="col-sm-4 form-group">
+										<label> </label> &nbsp;&nbsp;&nbsp; 
+										
+										<input type = "submit" id="submit" value ="submit" class="btn btn-primary"/ style ="display: block;">
+										</div>
 			</div>
 			</form>
-                        <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
-							<%
-							int ho= (int)session.getAttribute("is_ho");
-							if (ho==1){
-							%>
-								
-								<thead>
-									<tr>
-										<th>S.No.</th> 
-									    <th>Packing Date</th>
-									    <th>Crop Year</th>	
-									    <th>Jute Variety</th>
-									    <th>Jute Grade</th>
-										<th>Place Of Packing</th>
-									    <th>Bale No</th>							
-									</tr>
-								</thead>
-								<tbody>
-									<% 
-									int i= 1;
-									for(BalePreparation balePreparationLists : viewBalePreparation){
-									
-									%>
-									<tr>
-										<td><%=i%></td>
-										<td><%=balePreparationLists.getPlace_of_packing()%></td>
-										<td><%=balePreparationLists.getPacking_date()%></td>
-										
-										<td><%=balePreparationLists.getJute_grade()%></td>
-										<td><%=balePreparationLists.getBale_no()%></td>
-										<td><%=balePreparationLists.getCrop_year()%></td>
-			          					<td><a href="editBaleP.obj?id=<%=balePreparationLists.getBaleId()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-				                     	<td><a  href="deleteBaleP.obj?id=<%=balePreparationLists.getBaleId()%>" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-									</tr>
-									<%
-							i++; }
+                       
+	
 							
-							%>
-								</tbody>
-   		<% 
-							 }
-							else{
-								%>
-									
-									<thead>
-										<tr>
-											<th>S.No.</th> 
-									    <th>Packing Date</th>
-									    <th>Crop Year</th>	
-									    <th>Jute Variety</th>
-									    <th>Jute Grade</th>
-										<th>Place Of Packing</th>
-									    <th>Bale No</th>	
-											<!-- <th></th>
-											<th></th> -->
-										</tr>
-									</thead>
-									<tbody>
-										<% 
-										int i= 1;
-										for(BalePreparation balePreparationLists : viewBalePreparation){
-										
-										%>
-										<tr>
-											<td><%=i%></td>
-											
-											<td><%=balePreparationLists.getPacking_date()%></td>
-											<td><%=balePreparationLists.getCrop_year()%></td>
-											<td><%=balePreparationLists.getJute_variety()%></td>
-											<td><%=balePreparationLists.getJute_grade()%></td>
-											<td><%=balePreparationLists.getPlace_of_packing()%></td>
-											<td><%=balePreparationLists.getBale_no()%></td> 
-				          					<td><a href="editBaleP.obj?id=<%=balePreparationLists.getBaleId()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-					                     	<td><a  href="deleteBaleP.obj?id=<%=balePreparationLists.getBaleId()%>" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-										</tr>
-										<%
-								i++; }
-								
-								%>
-									</tbody>
-	   		<% 
-								 }
-								
-								%>
-							
-                        </table>
+                        
                     </div>
                 </div>
                  
@@ -259,7 +190,38 @@
 $( "#todate" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 $( "#fromdate" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 </script>
+<script>
+    // Get references to the dropdowns
+    var basisDropdown = document.getElementById("basis");
+    var juteVarietyDropdown = document.getElementById("juteVariety");
 
+    // Add event listener to the "Basis" dropdown
+    basisDropdown.addEventListener("change", function() {
+        // Clear existing options
+        juteVarietyDropdown.innerHTML = "";
+
+        // Get the selected value from the "Basis" dropdown
+        var selectedBasis = basisDropdown.value;
+
+        // Add options to the "Jute Variety" dropdown based on the selected value
+        if (selectedBasis === "MSP") {
+      
+            juteVarietyDropdown.options.add(new Option("Mesta", "Mesta"));
+            juteVarietyDropdown.options.add(new Option("Bimli", "Bimli"));
+            juteVarietyDropdown.options.add(new Option("Tossa (New)", "Tossa (New)"));
+            juteVarietyDropdown.options.add(new Option("White (New)", "White (New)"));
+        } else if (selectedBasis === "Commercial") {
+  
+            juteVarietyDropdown.options.add(new Option("Mesta", "Mesta"));
+            juteVarietyDropdown.options.add(new Option("Bimli", "Bimli"));
+            juteVarietyDropdown.options.add(new Option("Tossa", "Tossa"));
+            juteVarietyDropdown.options.add(new Option("White", "White"));
+        } else {
+            // Default options if no selection is made
+            juteVarietyDropdown.options.add(new Option("-Jute Variety-", ""));
+        }
+    });
+</script>
 <script>
 		$("#zone").on("change", function() {
 			var id = (this.value);

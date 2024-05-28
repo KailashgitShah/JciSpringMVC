@@ -1,6 +1,6 @@
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
-<%@page import="com.jci.model.MSPPriceCalculationModel"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
@@ -73,14 +73,8 @@
             </div>
 				
 				<%
-				//File excelFolder = new File("E:/Program Files/Apache Software Foundation/Tomcat 8.5/webapps/TallySlipPayments");
-				File excelFolder = new File("C:/Users/vishal.vishwakarma/Downloads");
-				//File excelFolder = new File("D:/JCI/AllExcel");
-			        File[] excelFilesArray = excelFolder.listFiles();
-			
-			        if (excelFilesArray != null && excelFilesArray.length > 0) {
-			            List<File> excelFiles = Arrays.asList(excelFilesArray);
-			            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				
+				List<String> excellinks = (List<String>) request.getAttribute("excelpathS");
 				%>
 			 <div class="page-content fade-in-up">
                 <div class="ibox">
@@ -102,14 +96,17 @@
 								<tbody>
 							<% 
 										int i= 1;
-									 for (File excelFile : excelFiles) {
-			                                String lastModified = dateFormat.format(excelFile.lastModified());
+							if(excellinks != null)
+								{
+									 for (String excelFile : excellinks) {
+										 File filename = new File(excelFile);
+										 Date lastModified = new Date(filename.lastModified());
 									%>
 								<tr>
 										<td><%=i%></td>
-										<td><%=excelFile.getName()%></td>
+										<td><%=filename.getName()%></td>
 										<td><%=lastModified%></td>
-<td><a href="downloadexcels.obj?filename=<%=excelFile.getName()%>"><button type="button" class="btn btn-danger btn-sm">Download Excel</button></a></td>
+<td><a href="downloadexcels.obj?filename=<%=filename.getName()%>"><button type="button" class="btn btn-danger btn-sm">Download Excel</button></a></td>
 									</tr>
 									<% 
 								    

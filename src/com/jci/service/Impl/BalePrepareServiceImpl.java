@@ -51,8 +51,26 @@ public class BalePrepareServiceImpl implements BalePrepareService	{
 		return balePrepare.submitform(BalePreparation);
 	}
 
-	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate,String cropyear, String basis){
-		return balePrepare.getbyFilter(dpc,fromdate, todate,cropyear,basis);
+	public List<BalePreparation> getbyFilter(String dpc,String fromdate,  String todate, String cropyear, String basis,String jutevariety){
+		return balePrepare.getbyFilter(dpc,fromdate, todate,cropyear,basis, jutevariety);
+	}
+
+	@Override
+	public String getcropYear(String cropyear) {
+		// TODO Auto-generated method stub
+		return balePrepare.getcropYear(cropyear);
+	}
+
+	@Override
+	public String getjuteVariety(String juteVariety) {
+		// TODO Auto-generated method stub
+		return balePrepare.getjuteVariety(juteVariety);
+	}
+
+	@Override
+	public String getbasis(String basis) {
+		// TODO Auto-generated method stub
+		return balePrepare.getbasis(basis);
 	}
 
 }

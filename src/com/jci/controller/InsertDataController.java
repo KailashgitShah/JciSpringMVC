@@ -33,6 +33,8 @@ import com.jci.model.RawJuteProcurementAndPayment;
 import com.jci.model.RoDetailsModel;
 import com.jci.model.JbaModel;
 import com.jci.model.AreaDetailCode;
+import com.jci.model.BalePrepDto;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -68,6 +70,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.ImageVerificationModel;
@@ -80,6 +83,8 @@ import com.jci.model.PoliceStationModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -5020,6 +5025,7 @@ System.out.println();
 
 	     String usrname = ""; 
 	     String usermail = (String) session.getAttribute("usrname"); 
+	     String regionid = (String) session.getAttribute("regionId"); 
 	     Random num = new Random();
 	     int random_no = 10000 + num.nextInt(90000);
 	     usrname = cropyear +"-"+ random_no +".xlsx";
@@ -5083,6 +5089,7 @@ System.out.println();
 	                //createpayment.setUTR_no("UTR NO");
 	                //createpayment.setDate(paymentlist.getDate());
 	                createpayment.setExcel_link(filename);
+	                createpayment.setRegion_id(regionid);
 	                //System.out.println("create payment controller = "+createpayment.toString());
 	                try {
 		                   verifyTallySlipService.savedata(createpayment);
@@ -5131,11 +5138,11 @@ System.out.println();
 		        	  //mail to RM-Finance(fa approver) and RM(Regional Manager(jo login kiya h))
 		        	//  toEmail = FA_approver_email+","+usermail;
 		        	  InternetAddress[] toAddresses  = {  new InternetAddress(FA_approver_email) , new InternetAddress(usermail) ,new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com"),new InternetAddress("saumyadeep@jcimail.in")};
-		        	  toEmail =  FA_approver_email+", "+usermail+", vishal.vishwakarma@cyfuture.com, animesh.anand@cyfuture.com";
+		        	  toEmail =  FA_approver_email+","+usermail+",vishal.vishwakarma@cyfuture.com,animesh.anand@cyfuture.com";
 		              //String subject = "Invoice Generated";
 		        	  SendMail sendMail = new SendMail();
 		              String body = "PFA This is your payment details . ";
-		              //sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
 		              System.err.println("Mail sent succesfully by RO = "+toEmail);
 		          }
 		          else if(roho.equalsIgnoreCase("HO"))
@@ -5162,8 +5169,6 @@ System.out.println();
 		              System.err.println("Mail sent succesfully by ZMHO = "+toEmail);
 		          }
 	             
-		    	 
-	            
 	    }
 	            catch (Exception e)   
 		        {  
@@ -5738,11 +5743,31 @@ System.out.println();
 	        return mv;
 	    }
 	    
+	    @RequestMapping(value = { "viewbalePreparationList" })
+	      public ModelAndView viewbalePreparationList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	      	String username =(String)request.getSession().getAttribute("usrname");
+	      	ModelAndView mv = new ModelAndView("viewbalePreparation");
+	      	 if(username == null) {
+	           	return new ModelAndView("index");
+	               }
+	          try {
+	            
+	        	  final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+	  	        mv.addObject("zoneList", (Object)zoneList);
+	             
+	          }
+	          catch (Exception e) {
+	              System.out.println(e.getLocalizedMessage());
+	          }
+	           
+	          return mv;
+	      }
+	    
 	    
 	    @RequestMapping(value = { "getBalesData" })
-	    public ModelAndView getBalesData(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	    public ModelAndView getBalesData(final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) {
 	    	String username =(String)request.getSession().getAttribute("usrname");
-	    	ModelAndView mv = new ModelAndView("viewbalePreparation");
+	    	ModelAndView mv = new ModelAndView("balePrepartionReport");
 	    	 if(username == null) {
 	         	return new ModelAndView("index");
 	             }
@@ -5752,13 +5777,100 @@ System.out.println();
 	            final String todate = request.getParameter("todate");
 	            final String cropyear = request.getParameter("cropyear");
 	            final String basis = request.getParameter("basis");
-	            
+	            final String juteVariety = request.getParameter("juteVariety");
+
+	           // final String jutevariety = request.getParameter("jute");
+	            System.out.println("todate=="+todate);
+	            System.out.println("fromdate=="+fromdate);
+	            DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+		    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+		    	final String datearrival = request.getParameter("fromdate");
+		    	Date date = inputFormat.parse(datearrival);
+	             //System.out.println("arrivaldate=="+datearrival);
+	            String purchasesdateFrom = outputFormat.format(date);
+	            final String datearrival1 = request.getParameter("todate");
+			    Date date1 = inputFormat.parse(datearrival1);
+		        System.out.println("arrivaldate1=="+datearrival1);
+		        String purchasesdateTo = outputFormat.format(date1);
 	            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
-	    		viewBale = (List<BalePreparation>)this.balePrepareService.getbyFilter(dpc,fromdate,todate,cropyear,basis);
-	    		final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
-	            mv.addObject("zoneList", (Object)zoneList);
-	            mv.addObject("viewBalePreparation", (Object)viewBale);
-	           
+	    		viewBale = (List<BalePreparation>)this.balePrepareService.getbyFilter(dpc,purchasesdateFrom,  purchasesdateTo,cropyear,basis,juteVariety);
+	    		List<BalePreparation> newbalelist = new ArrayList<BalePreparation>();
+	    		 Set<String> uniqueCombos = new HashSet<>();
+	    		 List<BalePreparation> filteredList = new ArrayList<>();
+	    		for(BalePreparation baleprep : viewBale) {
+	    			 String combo = baleprep.getBin_no() + "-" + baleprep.getPacking_date();
+		        	String binNo =   baleprep.getBin_no();
+		        	String packaingDate =     baleprep.getPacking_date();
+		        	String juteGrade =    baleprep.getJute_grade();
+		        	BalePrepDto bprip = new BalePrepDto();
+			        	for(BalePreparation prepBale : viewBale) {
+			        		if(prepBale.getBin_no().equalsIgnoreCase(binNo) && prepBale.getPacking_date().equalsIgnoreCase(packaingDate))
+			        		{
+			        			if(prepBale.getJute_grade().contains("1"))
+			        			{
+			        				bprip.setGarde1(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("2"))
+			        			{
+			        				bprip.setGarde2(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("3"))
+			        			{
+			        				bprip.setGarde3(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("4"))
+			        			{
+			        				bprip.setGarde4(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("5"))
+			        			{
+			        				bprip.setGarde5(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("6"))
+			        			{
+			        				bprip.setGarde6(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("7"))
+			        			{
+			        				bprip.setGarde7(prepBale.getBale_no());
+			        			}
+			        			if(prepBale.getJute_grade().contains("8"))
+			        			{
+			        				bprip.setGarde8(prepBale.getBale_no());
+			        			}
+			        		}
+			        	}
+			      baleprep.setGarde1(bprip.getGarde1());
+			      baleprep.setGarde2(bprip.getGarde2());
+			      baleprep.setGarde3(bprip.getGarde3());
+			      baleprep.setGarde4(bprip.getGarde4());
+			      baleprep.setGarde5(bprip.getGarde5());
+			      baleprep.setGarde6(bprip.getGarde6());
+			      baleprep.setGarde7(bprip.getGarde7());
+			      baleprep.setGarde8(bprip.getGarde8());
+			      if (!uniqueCombos.contains(combo)) {
+	                    uniqueCombos.add(combo);
+	                    newbalelist.add(baleprep);
+	                }  
+	           }
+	    		System.err.println(newbalelist.toString());
+	    		
+	    		String cropYear = this.balePrepareService.getcropYear(cropyear);
+	            String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
+	            String Basises = this.balePrepareService.getbasis(basis);
+
+	            String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+	    		//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+	            mv.addObject("placeOfPurchase", (Object)placeOfPurchase);
+	            mv.addObject("newbalelist", (Object)newbalelist);
+	            mv.addObject("cropYear", (Object)cropYear);
+	            mv.addObject("jutevariety", (Object)jutevariety);  
+	            mv.addObject("Basises", (Object)Basises);
+	            mv.addObject("fromdate", (Object)fromdate);
+	            mv.addObject("todate", (Object)todate);
+
+	            mv.addObject("dpc", (Object)dpc);
+
 	        }
 	        catch (Exception e) {
 	            System.out.println(e.getLocalizedMessage());
@@ -5766,6 +5878,222 @@ System.out.println();
 	         
 	        return mv;
 	    }
+	    
+	    
+	    @RequestMapping(value = { "pdfBalePrep" })
+	    public ModelAndView pdfBalePrep(final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) {
+	    	String username =(String)request.getSession().getAttribute("usrname");
+	    	System.out.println("username=="+username);
+	    	ModelAndView mv = new ModelAndView("balePrepartionReport");
+	    	 if(username == null) {
+	         	return new ModelAndView("index");
+	             }
+	        try {
+	            final String dpc = request.getParameter("dpc");
+	            System.out.println("dpc=="+dpc);
+	            final String fromdate = request.getParameter("fromdate");
+	            final String todate = request.getParameter("todate");
+	            final String cropyear = request.getParameter("cropyear");
+	            final String basis = request.getParameter("basis");
+	            final String juteVariety = request.getParameter("juteVariety");
+	            float nominalWt = this.purchaseCenterService.findNominalWt(dpc);
+	            String name = this.userRegService.getName(username);
+	            System.out.println("nominalWt=="+nominalWt);
+	           // final String jutevariety = request.getParameter("jute");
+	            System.out.println("todate=="+todate);
+	            System.out.println("fromdate=="+fromdate);
+	            DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+		    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+		    	final String datearrival = request.getParameter("fromdate");
+		    	Date date = inputFormat.parse(datearrival);
+	             //System.out.println("arrivaldate=="+datearrival);
+	            String purchasesdateFrom = outputFormat.format(date);
+	            final String datearrival1 = request.getParameter("todate");
+			    Date date1 = inputFormat.parse(datearrival1);
+		        System.out.println("arrivaldate1=="+datearrival1);
+		        String purchasesdateTo = outputFormat.format(date1);
+	            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+	    		viewBale = (List<BalePreparation>)this.balePrepareService.getbyFilter(dpc,purchasesdateFrom,  purchasesdateTo,cropyear,basis,juteVariety);
+	    		List<BalePreparation> newbalelist = new ArrayList<BalePreparation>();
+	    		 Set<String> uniqueCombos = new HashSet<>();
+	    		 List<BalePreparation> filteredList = new ArrayList<>();
+	    		
+
+	    		for(BalePreparation baleprep : viewBale) {
+	    			 String combo = baleprep.getBin_no() + "-" + baleprep.getPacking_date();
+		        	String binNo =   baleprep.getBin_no();
+		        	String packaingDate =     baleprep.getPacking_date();
+		        	String juteGrade =    baleprep.getJute_grade();
+		        	BalePrepDto bprip = new BalePrepDto();
+		        	bprip.setGarde1(0);
+		        	bprip.setGarde2(0);
+		        	bprip.setGarde3(0);
+		        	bprip.setGarde4(0);
+		        	bprip.setGarde5(0);
+		        	bprip.setGarde6(0);
+		        	bprip.setGarde7(0);
+		        	bprip.setGarde8(0);
+
+			        	for(BalePreparation prepBale : viewBale) {
+			        		if(prepBale.getBin_no().equalsIgnoreCase(binNo) && prepBale.getPacking_date().equalsIgnoreCase(packaingDate))
+			        		{
+			        			if(prepBale.getJute_grade().contains("1"))
+			        			{
+
+			        				
+			        				bprip.setGarde1(prepBale.getBale_no());
+						    	
+
+			        			
+			        			}
+			        			if(prepBale.getJute_grade().contains("2"))
+			        			{
+			        				bprip.setGarde2(prepBale.getBale_no());
+			        		
+
+			        			}
+			        			if(prepBale.getJute_grade().contains("3"))
+			        			{
+			        				bprip.setGarde3(prepBale.getBale_no());
+			        			
+
+			        			}
+			        			if(prepBale.getJute_grade().contains("4"))
+			        			{
+			        				bprip.setGarde4(prepBale.getBale_no());
+			        			
+
+
+			        			}
+			        			if(prepBale.getJute_grade().contains("5"))
+			        			{
+			        				bprip.setGarde5(prepBale.getBale_no());
+			        	
+
+
+			        			}
+			        			if(prepBale.getJute_grade().contains("6"))
+			        			{
+			        				bprip.setGarde6(prepBale.getBale_no());
+			        				
+			        
+
+
+			        			}
+			        			if(prepBale.getJute_grade().contains("7"))
+			        			{
+			        				bprip.setGarde7(prepBale.getBale_no());
+			        			
+			        			
+
+
+			        			}
+			        			if(prepBale.getJute_grade().contains("8"))
+			        			{
+			        				bprip.setGarde8(prepBale.getBale_no());
+			        				
+			        				
+
+			        			}
+			        		}
+			        	}
+			        	
+			    	
+			      baleprep.setGarde1(bprip.getGarde1());
+			      baleprep.setGarde2(bprip.getGarde2());
+			      baleprep.setGarde3(bprip.getGarde3());
+			      baleprep.setGarde4(bprip.getGarde4());
+			      baleprep.setGarde5(bprip.getGarde5());
+			      baleprep.setGarde6(bprip.getGarde6());
+			      baleprep.setGarde7(bprip.getGarde7());
+			      baleprep.setGarde8(bprip.getGarde8());
+			      baleprep.setNominalWt(nominalWt);
+			      baleprep.setUsername(name);
+			
+			      int total = baleprep.getGarde1() + baleprep.getGarde2() + baleprep.getGarde3() + baleprep.getGarde4() + baleprep.getGarde5() + baleprep.getGarde6() + baleprep.getGarde7() +baleprep.getGarde8();
+			    	
+
+			      baleprep.setTotal(total);
+			     
+			   
+			      
+			      if (!uniqueCombos.contains(combo)) {
+	                    uniqueCombos.add(combo);
+	                    newbalelist.add(baleprep);
+	                }  
+	           }
+	    		int g1sum = 0;
+	    		int g2sum = 0;
+	    		int g3sum = 0;
+	    		int g4sum = 0;
+	    		int g5sum = 0;
+	    		int g6sum = 0;
+	    		int g7sum = 0;
+	    		int g8sum = 0;
+	    		 int totalsum = 0;
+	    		for(BalePreparation balelist:newbalelist )
+	    		{
+	    			g1sum += balelist.getGarde1();
+	    			g2sum += balelist.getGarde2();
+	    			g3sum += balelist.getGarde3();
+	    			g4sum += balelist.getGarde4();
+	    			g5sum += balelist.getGarde5();
+	    			g6sum += balelist.getGarde6();
+	    			g7sum += balelist.getGarde7();
+	    			g8sum += balelist.getGarde8();
+	    			System.out.println("g1sum==="+g1sum);
+	    			balelist.setSum1(g1sum);
+	    			balelist.setSum2(g2sum);
+	    			balelist.setSum3(g3sum);
+	    			balelist.setSum4(g4sum);
+	    			balelist.setSum5(g5sum);
+	    			balelist.setSum6(g6sum);
+	    			balelist.setSum7(g7sum);
+	    			balelist.setSum8(g8sum);
+	    			
+	    			 
+	 			      totalsum += balelist.getTotal();
+	 			      System.out.println("totalsum12=="+totalsum);
+	 			     balelist.setSum9(totalsum);
+	    			
+	    			
+	    		}
+	    		System.err.println("hdhdh"+newbalelist.toString());
+	    		
+	    		String cropYear = this.balePrepareService.getcropYear(cropyear);
+	            String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
+	            String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+	        
+	    		//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll()
+                //JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\vishal.vishwakarma\\git\\JCI-CMS\\baleReport.jrxml");
+                JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\baleReport.jrxml");
+
+	    		Map<String, Object> parameters = new HashMap<String, Object>();
+                // Prepare data sources
+                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
+
+                // Fill JasperPrints
+                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+                response.setContentType("application/pdf");
+                response.setHeader("Content-Disposition", "attachment; filename=BalePreparation.pdf");
+                try (OutputStream out = response.getOutputStream()) {
+                    JRPdfExporter exporter = new JRPdfExporter();
+                    exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+                 //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+                    exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+                    exporter.exportReport();}
+                catch (Exception e) {
+        	            System.out.println(e.getLocalizedMessage());
+        	        }
+
+	        }
+	        catch (Exception e) {
+	            System.out.println(e.getLocalizedMessage());
+	        }
+	         
+	        return mv;
+	    }
+	    
 	    @RequestMapping({ "viewmarketArrivalDetails" })
 	    public ModelAndView viewmarketArrivalDetails(final HttpServletRequest request, RedirectAttributes red) {
 	    	String username =(String)request.getSession().getAttribute("usrname");
@@ -5837,33 +6165,6 @@ System.out.println();
            }
             return mv;
         }
-
-	    @RequestMapping({ "downloadexcelregionwise" })
-        public ModelAndView downloadexcelregionwise(final HttpServletRequest request, RedirectAttributes red) {
-           String username =(String)request.getSession().getAttribute("usrname");
-	    	String regionId =(String)request.getSession().getAttribute("regionId");
-           ModelAndView mv = new ModelAndView("downloadAllExcelSheet");
-           if(username == null)
-              {
-                  return mv = new ModelAndView("index");
-              }
-           try 
-           {
-        	   String pagename = "downloadexcel";
-   	        int i = checkprivileges(pagename);
-   	        if(i != 1)
-   	        {
-   	        	 red.addFlashAttribute("errorMessage","Access denied");
-   				   return mv=new ModelAndView("Home");
-   	        } 
-            List<String> excelpathS = verifyTallySlipService.getexcelpath(regionId);
-           } 
-           catch(Exception e) {
-        	   e.printStackTrace();
-           }
-            return mv;
-        }
-	    
 	    @RequestMapping(value = { "downloadexcels" }, method = { RequestMethod.GET })
 	    public ResponseEntity<byte[]> downloadExcelFile() throws IOException {
 	        String EXCEL_FOLDER_PATH = "E:/Program Files/Apache Software Foundation/Tomcat 8.5/webapps/TallySlipPayments";
@@ -5883,6 +6184,29 @@ System.out.println();
 
 	        return new ResponseEntity<>(excelBytes, headers, org.springframework.http.HttpStatus.OK);
 	    }
+
+	    @RequestMapping({ "downloadexcelregionwise" })
+        public ModelAndView downloadexcelregionwise(final HttpServletRequest request, RedirectAttributes red) {
+           String username =(String)request.getSession().getAttribute("usrname");
+	    	String regionId =(String)request.getSession().getAttribute("regionId");
+           ModelAndView mv = new ModelAndView("downloadexcel_regionwise");
+           if(username == null)
+              {
+                  return mv = new ModelAndView("index");
+              }
+           try 
+           {
+            List<String> excelpathS = verifyTallySlipService.getexcelpath(regionId);
+            System.out.println("excelpathS+++++++++"+excelpathS);
+            mv.addObject("excelpathS", (Object)excelpathS);
+           } 
+           catch(Exception e) {
+        	   e.printStackTrace();
+           }
+            return mv;
+        }
+	    
+	    
 	    @RequestMapping({ "PurchaseRegisterlist" })
 	    public ModelAndView PurchaseRegisterlist(final HttpServletRequest request,RedirectAttributes red) {
 	    	String username =(String)request.getSession().getAttribute("usrname");
@@ -5981,9 +6305,14 @@ System.out.println();
                     Map<String, Object> parameters = new HashMap<String, Object>();
                     // Prepare data sources
                     JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(purchaselist);
+                    JRBeanCollectionDataSource dataSource2 = new JRBeanCollectionDataSource(purchaselist);
 
                     // Fill JasperPrints
                     JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+                    int totalpages = jasperPrint1.getPages().size();
+                    parameters.put("TotalPages", totalpages);
+                    JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource2);
+
 
 
 
@@ -5991,7 +6320,7 @@ System.out.println();
                  response.setHeader("Content-Disposition", "attachment; filename=PurchaseRegister.pdf");
                  try (OutputStream out = response.getOutputStream()) {
                      JRPdfExporter exporter = new JRPdfExporter();
-                     exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+                     exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint2);
                   //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
                      exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
                      exporter.exportReport();
@@ -6051,7 +6380,6 @@ System.out.println();
 	            String roName = this.roService.getRoname(region_id);
 	            String dateArrival = this.rulingMarketService.getdatArrival(arrivaldate);
 	            System.out.println("allMarketArrival==="+allMarketArrival);
-	            
 	               mv.addObject("allMarketArrival", (Object)allMarketArrival);
 	               mv.addObject("roName", (Object)roName);
 	               mv.addObject("region_id", (Object)region_id);
@@ -6078,14 +6406,56 @@ System.out.println();
 	        try {
 	            final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldate,region_id);
 	            String roname =   roService.getRoname(region_id);
-	            
+	            MarkerArrivalModelDTO marketlists = allMarketArrival.get(0);
+	            boolean flag1 = false;
+	            boolean flag2 = false;
+	            boolean flag3 = false;
+	            boolean flag4 = false;
+	            boolean flag5 = false;
+	            double td1min = 0;
+	            double td1max = marketlists.getGrade_rate1();
+	            double td2min = 0;
+	            double td2max = marketlists.getGrade_rate2();
+	            double td3min = 0;
+	            double td3max = marketlists.getGrade_rate3();
+	            double td4min = 0;
+	            double td4max = marketlists.getGrade_rate4();
+	            double td5min = 0;
+	            double td5max = marketlists.getGrade_rate5();
+	            int Mmin =0;
+	            int Mmax =0;
+	             Mmin = Integer.valueOf(marketlists.getMixmois());
+	             Mmax = Integer.valueOf(marketlists.getMaxmois());
 	            double qtytotal = 0.0;
 	            double g2total = 0.0;
 	            double g3total = 0.0;
 	            double g4total = 0.0;
 	            double g5total = 0.0;
+	            List<MarkerArrivalModelDTO> marketlistt = new ArrayList<MarkerArrivalModelDTO>();
 	            for(MarkerArrivalModelDTO marketlist : allMarketArrival)
 	            {
+				    if (marketlist.getGrade_rate1() !=0	 &&(!flag1 || marketlist.getGrade_rate1() < td1min))
+				       { td1min = marketlist.getGrade_rate1(); flag1 = true;}
+		            if (marketlist.getGrade_rate1() > td1max) {td1max = marketlist.getGrade_rate1(); }
+		            if (marketlist.getGrade_rate2() !=0	 &&(!flag2 || marketlist.getGrade_rate2() < td2min))
+				       { td2min = marketlist.getGrade_rate2(); flag2 = true;}	
+	                if (marketlist.getGrade_rate2() > td2max) {td2max = marketlist.getGrade_rate2(); }
+	                if (marketlist.getGrade_rate3() !=0	 &&(!flag3 || marketlist.getGrade_rate3() < td3min))
+					   { td3min = marketlist.getGrade_rate3(); flag3 = true;}
+	                if (marketlist.getGrade_rate3() > td3max) {td3max = marketlist.getGrade_rate3(); }
+	                if (marketlist.getGrade_rate4() !=0	 &&(!flag4 || marketlist.getGrade_rate4() < td4min))
+					   { td4min = marketlist.getGrade_rate4(); flag4 = true;}
+	                if (marketlist.getGrade_rate4() > td4max) {td4max = marketlist.getGrade_rate4(); }
+	                if (marketlist.getGrade_rate5() !=0	 &&(!flag5 || marketlist.getGrade_rate5() < td5min))
+					   { td5min = marketlist.getGrade_rate5(); flag5 = true;}
+	                if (marketlist.getGrade_rate5() > td5max) {td5max = marketlist.getGrade_rate5(); }
+	                
+	                if (Integer.valueOf(marketlist.getMixmois()) < Mmin) {
+	                	Mmin = Integer.valueOf(marketlist.getMixmois());
+	                }
+	                if (Integer.valueOf(marketlist.getMaxmois()) > Mmax) {
+	                	Mmax = Integer.valueOf(marketlist.getMaxmois());
+	                }
 	                qtytotal += Double.valueOf(marketlist.getArrivedqty());
 	            	g2total += marketlist.getGrade2();
 	            	g3total += marketlist.getGrade3();
@@ -6098,8 +6468,24 @@ System.out.println();
 	            	marketlist.setG4total(g4total);
 	            	marketlist.setG5total(g5total);
 	            	marketlist.setRo_name(roname);
+	            	
+	            	marketlist.setTD1_max(td1max);
+	            	marketlist.setTD2_max(td2max);
+	            	marketlist.setTD3_max(td3max);
+	            	marketlist.setTD4_max(td4max);
+	            	marketlist.setTD5_max(td5max);
+	            	marketlist.setTD1_min(td1min);
+	            	marketlist.setTD2_min(td2min);
+	            	marketlist.setTD3_min(td3min);
+	            	marketlist.setTD4_min(td4min);
+	            	marketlist.setTD5_min(td5min);
+	            	marketlist.setM_min(Mmin+"");
+	            	marketlist.setM_max(Mmax+"");
+	            	
+	            	marketlistt.add(marketlist);
 	            }
-	            mv.addObject("allMarketArrival", (Object)allMarketArrival);
+	            mv.addObject("allMarketArrival", (Object)marketlistt);
+	            System.out.println(marketlistt.toString());
 	               
 			        	//local file location
 			        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\MarketArrival.jrxml");
@@ -6109,7 +6495,7 @@ System.out.println();
 			        	
 	                    Map<String, Object> parameters = new HashMap<String, Object>();
 	                    // Prepare data sources
-	                    JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allMarketArrival);
+	                    JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(marketlistt);
 
 	                    // Fill JasperPrints
 	                    JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
@@ -6124,7 +6510,7 @@ System.out.println();
 	               
 	        }
 	        catch (Exception e) {
-	            System.out.println(e.getLocalizedMessage());
+	            System.out.println("catch ="+e.getLocalizedMessage());
 	        }
 	         
 	        return mv;

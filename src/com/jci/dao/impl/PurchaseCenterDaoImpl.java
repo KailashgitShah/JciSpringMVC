@@ -159,4 +159,16 @@ public class PurchaseCenterDaoImpl implements PurchaseCenterDao {
 		return result;
 	
 	}
+
+	@Override
+	public float findNominalWt(String dpc) {
+		String querystr = "SELECT nominal_wt FROM jcipurchasecenter where center_code = '"+dpc+"'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object> rows = query.list();
+		 Double resultDouble = (Double) rows.get(0); // Cast to Double
+		    float result = resultDouble.floatValue();
+		    return result;
+	}
 }

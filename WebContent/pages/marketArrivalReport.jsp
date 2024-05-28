@@ -55,7 +55,7 @@ th     { background:#eee; }
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Market Arrival Report</h1>
+                <h1 class="page-title">Daily Market Report</h1>
             </div>
                             <% List<MarkerArrivalModelDTO> marketList = (List<MarkerArrivalModelDTO>) request.getAttribute("allMarketArrival"); 
                  String region =  (String)request.getAttribute("roName"); 
@@ -69,15 +69,17 @@ th     { background:#eee; }
             <div class="row">
               <div class="col-sm-4 form-group">
 									<label class="required">Region</label> <input class="form-control"
-										type="text" name="binnumb" placeholder="Farmer Address" value="<%=region %>">
+										type="text" name="binnumb" placeholder="Farmer Address" value="<%=region %>" readonly>
 								<input type="hidden" name="region_id" value="<%=region_id %>">
 								</div>
 								  <div class="col-sm-4 form-group">
 									<label class="required">Arival Dtae</label> <input class="form-control"
-										type="text" name="datearrival" value="<%=dateArrival %>">
+										type="text" name="datearrival" value="<%=dateArrival %>" readonly>
 								</div>
 								<div class="form-group">
-                                        <button class="btn btn-default" type="submit">Download</button>
+								<label></label> <br>
+										<a href="MarketArrival.obj" class="btn btn-primary">Go Back</a>
+                                        <button class="btn btn-primary" type="submit">Download</button>
                                     </div>
 			</div>
 			</form>
@@ -152,20 +154,21 @@ th     { background:#eee; }
     <!-- CORE SCRIPTS-->
     <script src="assets/js/app.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS-->
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         $(function () {
             $('#example-table').DataTable({
-                pageLength: 10,
+                pageLength: 25,
             });
         })
-    </script>
+    </script> -->
  <script type="text/javascript">
     $(document).ready(function() {
         $('#example-table').DataTable({
             fixedHeader: true,
             scrollX: true,
-            "paging": true,
-            "pageLength": 25
+            pageLength : 25,
+            "paging": true
+            
         });
     });
 </script>

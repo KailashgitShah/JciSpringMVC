@@ -32,7 +32,7 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Add Farmer Details</h1>
+                <h1 class="page-title">Daily Market Report</h1>
                 <%
 			List<RoDetailsModel> Regions = (List<RoDetailsModel>) request.getAttribute("regionList");
 			%>
@@ -53,6 +53,7 @@
                                             <input class="form-control" type="date" name="datearrival" id="datearrival" placeholder="Arrival Dta">
                                         </div>
                                         <div class="col-sm-4 form-group">
+                                        <label>Region</label>
                                                               <select class="form-control" name="region_id" id="region_id">
                                  <option disabled selected value>-Select-</option>
                                  <%

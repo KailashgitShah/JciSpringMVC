@@ -88,6 +88,12 @@ public class PurchaseCenterServiceImpl implements PurchaseCenterService {
 		return purchaseCenterDao.getdpcbyregionid(regionid);
 	}
 
+	@Override
+	public float findNominalWt(String dpc) {
+		// TODO Auto-generated method stub
+		return purchaseCenterDao.findNominalWt(dpc);
+	}
+
 //	@Override
 //	public List<PurchaseCenterModel> getCenterCodeByCode(int rocode) {
 //		purchaseCenterDao.

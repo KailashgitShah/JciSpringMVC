@@ -83,6 +83,7 @@ C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\Impl\RawJuteProcurem
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\Impl\CommercialCeilingPriceIntimationServiceImpl.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\dao\impl\PoliceStationDaoImpl.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\model\VerifyTallySlip.java
+C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\model\MarkerArrivalModelDTO.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\dao_phase2\PcsoentryDao.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\ContractgenerationcommercialService.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\Impl\PCSOServiceImpl.java
@@ -231,6 +232,7 @@ C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\CommercialJuteVariet
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\dao\impl\FarmerRegistrationDaoImpl.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\model\DistributionoftallyslipModel.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\dao\impl\StateDaoImpl.java
+C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\model\BalePrepDto.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\Impl\SalesServiceImpl.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\service\UserRoleService.java
 C:\Users\vishal.vishwakarma\git\JCI-CMS\src\com\jci\model\Entryofoperationcost.java
