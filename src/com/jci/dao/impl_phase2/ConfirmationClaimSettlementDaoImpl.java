@@ -44,6 +44,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 				+ "FROM jciclaim_nomination nom\r\n"
 				+ "LEFT JOIN jciclaim_report_mill rep ON nom.Settlement_id_generated = rep.Settlement_id\r\n"
 				+ "WHERE rep.Settlement_id IS NULL;";
+
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		return resultList1;
 	}
@@ -125,6 +126,34 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 //Return the result without casting to String
 
     }
+
+	@Override
+	public List<Object[]> getSettlementData(String username) {
+		// TODO Auto-generated method stub
+		
+		 String resultString= "Select jciclaim_report_mill.Settlement_id,jciclaim_report_mill.Challan_No,jciclaim_report_mill.Contract_No,jciclaim_report_mill.Date_of_Inspection,jciclaim_report_mill.Inspection_by,jciclaim_report_mill.Mill,jciclaim_report_mill.Moisture_settlement,jciclaim_report_mill.Ncv_settlement,jciclaim_report_mill.Quality_settlement,jciclaim_report_mill.Settlement_amt,jciclaim_report_mill.Dust_settlement,jciclaim_report_mill.Dispute_flag,jciclaim_report_mill.Claim_Amount from jciclaim_report_mill INNER JOIN jciclaim_nomination on jciclaim_nomination.Settlement_id_generated = jciclaim_report_mill.Settlement_id where jciclaim_nomination.FAOfficial='"+username+"';";
+		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(resultString)
+					.list();
+			System.err.println(resultList1);
+			return resultList1;
+	
+	}
+
+	@Override
+	public void acceptClaim(String challan,String username,String filename) {
+		// TODO Auto-generated method stub
+		String resultString ="Update jciclaim_report_mill SET Dispute_flag=2 ,FA_Official='"+username+"',FA_doc='"+filename+"' where Settlement_id='"+challan+"';";
+		currentSession().createSQLQuery(resultString).executeUpdate();
+		return;
+	}
+
+	@Override
+	public void rejectClaim(String challan, String username) {
+		// TODO Auto-generated method stub
+		String resultString ="Update jciclaim_report_mill SET Dispute_flag=1 ,FA_Official='"+username+"' where Settlement_id='"+challan+"';";
+		currentSession().createSQLQuery(resultString).executeUpdate();
+		return;
+	}
 
 
 

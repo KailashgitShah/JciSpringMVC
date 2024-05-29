@@ -22,4 +22,10 @@ public interface ConfirmationClaimSettlementDao {
 	public List<Object[]> fetchChallan(String id);
 
 	public String fetchPrice(String var, String gr, String dpcId, String cropyear, String contract);
+
+	public List<Object[]> getSettlementData(String username);
+
+	public void acceptClaim(String challan, String username, String filename);
+
+	public void rejectClaim(String challan, String username);
 }

@@ -71,6 +71,26 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 		// TODO Auto-generated method stub
 		return confirmationClaimSettlementDao.fetchPrice(var,gr,dpcId,cropyear,Contract);
 	}
+
+	@Override
+	public List<Object[]> getSettlementData(String username) {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.getSettlementData(username);
+	}
+
+	@Override
+	public void acceptClaim(String challan,String username,String filename) {
+		// TODO Auto-generated method stub
+		confirmationClaimSettlementDao.acceptClaim(challan,username,filename);
+		return;
+	}
+
+	@Override
+	public void rejectClaim(String challan, String username) {
+		// TODO Auto-generated method stub
+		confirmationClaimSettlementDao.rejectClaim(challan,username);
+		return;
+	}
 	
 
 }

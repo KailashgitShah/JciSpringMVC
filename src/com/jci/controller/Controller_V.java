@@ -2,6 +2,8 @@ package com.jci.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -76,7 +78,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
 import com.jci.model.ConfirmationClaimSettlementModel;
@@ -4367,26 +4369,36 @@ public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpS
               
               
 
-              ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
               
-              String Claim_Amount1 = request.getParameter("SettlementAmount");
+              
+              String Settlement_Amount1 = request.getParameter("SettlementAmount");
 
               
    for(int i=0;i<cnt;i++) {
+	   ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
         String fullcontractno = request.getParameter("cont"+i);
         System.err.println(fullcontractno);
         String Challan_No1 = request.getParameter("ch"+i);
         System.err.println(Challan_No1);
         String Date_of_inspection1 = request.getParameter("di"+i);
         System.err.println(Date_of_inspection1);
-        if (Claim_Amount1 != null) {
+        String claim_Amt1 = request.getParameter("cl"+i);
+        if (Settlement_Amount1 != null) {
 
-                    double Claim_Amount12 = Double.parseDouble(Claim_Amount1);
-                    confirmationClaimSettlementModel.setSettlement_amt(Claim_Amount12);
+                    double Settlement_Amount12 = Double.parseDouble(Settlement_Amount1);
+                    confirmationClaimSettlementModel.setSettlement_amt(Settlement_Amount12);
              } else {
-                    double Claim_Amount12 = defaultValue;
-                    confirmationClaimSettlementModel.setClaim_Amount(Claim_Amount12);
+                    double Settlement_Amount12 = defaultValue;
+                    confirmationClaimSettlementModel.setClaim_Amount(Settlement_Amount12);
              }
+        if (claim_Amt1 != null) {
+
+            double claim_Amt12 = Double.parseDouble(claim_Amt1);
+            confirmationClaimSettlementModel.setClaim_Amount(claim_Amt12);
+     } else {
+            double claim_Amt12 = defaultValue;
+            confirmationClaimSettlementModel.setClaim_Amount(claim_Amt12);
+     }
               String Quality_Settlement1 = request.getParameter("qs"+i);
               System.err.println("Quality_Settlement1:" + Quality_Settlement1);
               if (Quality_Settlement1 != null) {
@@ -4398,6 +4410,16 @@ public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpS
                     double Quality_Settlement12 = defaultValue;
                      confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
               }
+              String Dust_settlement1 = request.getParameter("ds"+i);
+              if (Dust_settlement1 != null) {
+
+                  double Dust_Settlement12 = Double.parseDouble(Dust_settlement1);
+                  System.err.println("Dust_Settlement12:" + Dust_Settlement12);
+                   confirmationClaimSettlementModel.setDust_settlement(Dust_Settlement12);
+            } else {
+                  double Dust_Settlement12 = defaultValue;
+                  confirmationClaimSettlementModel.setDust_settlement(Dust_Settlement12);
+            }
 
               String Moisture_Settlement1 = request.getParameter("ms"+i);
               System.err.println("Moisture_Settlement1:" + Moisture_Settlement1);
@@ -4442,7 +4464,7 @@ public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpS
               confirmationClaimSettlementModel.setContract_No(fullcontractno);
               confirmationClaimSettlementModel.setChallan_No(Challan_No1);
 
-              confirmationClaimSettlementModel.setInspection_by(Inspection_by1);
+              confirmationClaimSettlementModel.setInspection_by(username);
 
 //           confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
 
@@ -4473,11 +4495,11 @@ public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpS
                     final String path = url = SupportingDocument.getOriginalFilename();
                     confirmationClaimSettlementModel.setSupporting_doc(url);
                     System.err.println("outside catch file----");
+                   
               }
               this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
    }
-              redirectAttributes.addFlashAttribute("msg",
-                           "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+           
 
        } catch (Exception e) {
               System.err.println("overall catch inside----");
@@ -4488,7 +4510,8 @@ public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpS
        if (username == null) {
               return new ModelAndView("index");
        }
-
+       redirectAttributes.addFlashAttribute("msg",
+               "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
        return new ModelAndView(new RedirectView("entryofConfirmationSettelment.obj"));
 }
 
@@ -5430,7 +5453,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 
 		String Ro_id = (String) session.getAttribute("region");
 
-		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementData(username);
 		System.err.println(getSettlementidlist);
 		redirectAttributes.addFlashAttribute("msg",
 				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -5558,9 +5581,50 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
            model.addObject("WeightmentList", list);
            return model;
     }
-
-
-
+    @Value("${upload.ConfirmationsettlementFA}")
+    String ConfirmationOfClaimFA;
+    @ResponseBody
+    @RequestMapping(value = {"acceptClaim"}, method = {RequestMethod.POST})
+    public String acceptClaim(@RequestParam("settleId") String settleId, @RequestParam("file") MultipartFile SupportingDocument, HttpServletRequest request, HttpSession session) {
+    	System.err.println(":Reached Accept");
+    	String username = (String) request.getSession().getAttribute("usrname");
+    	System.err.println("File"+SupportingDocument.getOriginalFilename());
+    	 final File theDir = new File("Confirmationsettlement");
+         if (!theDir.exists()) {
+                theDir.mkdirs();
+         }
+         File file = null;
+         String url = "";
+         String pathurl = "";
+         if (!SupportingDocument.isEmpty()) {
+               try {
+                      file = new File(ConfirmationOfClaimFA + SupportingDocument.getOriginalFilename());
+                      final OutputStream os = new FileOutputStream(file);
+                      os.write(SupportingDocument.getBytes());
+                      os.close();
+               } catch (Exception e) {
+                      System.err.println(e.getLocalizedMessage());
+                      e.printStackTrace();
+                      System.err.println("inside catch file----");
+               }
+               pathurl = file.getAbsolutePath();
+               final String path = url = SupportingDocument.getOriginalFilename();
+              
+               System.err.println("outside catch file----");
+              
+         }
+    	this.confirmationofClaimSettlementService.acceptClaim(settleId,username,SupportingDocument.getOriginalFilename());
+    return null;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = {"rejectClaim"}, method = {RequestMethod.POST})
+    public String rejectClaim(@RequestParam("settleId") String settleId, @RequestParam("file") MultipartFile file, HttpServletRequest request,HttpSession session) {
+    	System.err.println(":Reached Rejecr");
+    	String username = (String) request.getSession().getAttribute("usrname");
+    	this.confirmationofClaimSettlementService.rejectClaim(settleId,username);
+    return null;
+    }
 //////////////////////////////////////////////////// privacy policy page end /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
