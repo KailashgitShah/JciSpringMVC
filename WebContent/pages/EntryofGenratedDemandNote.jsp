@@ -78,8 +78,8 @@
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveentryofGenrationDeamandNote.obj" method="POST">
-									 <!-- <div class="child-checkbox" id="disableform"> -->
-									 <!--   <div class="col-4">
+									<!--  <div class="child-checkbox" id="disableform">  -->
+									   <div class="col-4">
 											    <div class="form-check mb-4">
 											      <input class="form-check-input" type="checkbox" id="inlineFormCheck" name ="Waiver_flag" >
 											      
@@ -87,7 +87,7 @@
 											       Waiver_flag
 											      </label> 
 											    </div>
-											  </div> -->
+											  </div>  
 										<div class="row">
 											<div class="col-sm-4 form-group">
 												<label>Contract No </label> <span class="text-danger">*
@@ -186,12 +186,12 @@
 
 										<div class="row">
 
-											<!-- <div class="col-sm-4 form-group">
+											<!--  <div class="col-sm-4 form-group">
 												<label>Waiver_flag</label> <input
 													class="form-control taxtbox" name="Waiver_flag"
 													type="number" min="1" step="1" placeholder="Waiver_flag"
 													required>
-											</div> -->
+											</div>  -->
 
 											<div class="col-sm-4 form-group">
 												<label>Remarks </label> <input class="form-control taxtbox"
@@ -221,7 +221,7 @@
 											
 
 											
-											<!--  <div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;">
+											  <div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;">
 														  <label>Waiver Approved By</label>
 														  <span class="text-danger">*</span>&nbsp;
 														  <span id="WaiverApprovedBy1" name="Waiver_Approved_By" class="text-danger"></span>
@@ -230,10 +230,10 @@
 														        <option value="JCI_Mill_officer_1">JCI_Mill_officer_1</option>
 														        <option value="MllOfficer_2">MllOfficer_2</option>
 														       <option value="Mill_officer_3">Mill_officer_3</option>
-														        Add more options as needed
+														       <!--  Add more options as needed -->
 														    </select>
 														  
-				                                    </div>  -->
+				                                    </div>  
 				                                    
 
 
@@ -305,20 +305,20 @@
 				  $(document).ready(function() {
 					  const checkbox = $('#inlineFormCheck');
 				      const carryingCostFormGroup = $('#carryingCostFormGroup');
-					 /*  const waiverApprovedByLabel = $('#WaiverApprovedBy1');
-					  const waiverApprovedBySelect = $('#WaiverApprovedBy2'); */
+					  const waiverApprovedByLabel = $('#WaiverApprovedBy1');
+					  const waiverApprovedBySelect = $('#WaiverApprovedBy2'); 
 
 					  // ...
 
 					  checkbox.change(function() {
 					      if (checkbox.is(':checked')) {
 					          carryingCostFormGroup.show();
-					        /*   waiverApprovedByLabel.show();
-					          waiverApprovedBySelect.show(); */
+					           waiverApprovedByLabel.show();
+					          waiverApprovedBySelect.show(); 
 					      } else {
 					          carryingCostFormGroup.hide();
-					     /*      waiverApprovedByLabel.hide();
-					          waiverApprovedBySelect.hide(); */
+					         waiverApprovedByLabel.hide();
+					          waiverApprovedBySelect.hide(); 
 					      }
 					  });
 				  });
@@ -348,6 +348,7 @@
 			            data: { "contractno": field2Value },
 			            success: function (data) {
 			                console.log(data);
+			                alert(data);
 			                var data1 = JSON.parse(data);
 
 			                var Contract_date = new Date(data1.Contract_date);
@@ -365,7 +366,7 @@
 			                $('#PaymentDueDate234').val(formattedDate1);
 			                $('#CancellationDate1').val(formattedDate2);
 			                $('#Delayperiod234').val(daysDifference);
-			                $('#PaymentRef1').val(data1.Payment_id);
+			                $('#PaymentRef1').val(data1.Instrument_No);
 			                $('#Contracted_Qty').val(data1.Contracted_qty);
 			                $('#Carrying_cost').val(data1.Carrying_Cost_Charged);
 			            },

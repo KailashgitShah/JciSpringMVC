@@ -5,6 +5,7 @@ import com.jci.model.RulingMarket;
 import com.jci.model.BatchIdentificationModel;
 import com.jci.model.BinListFromDbDTO;
 import com.jci.model.BinPurchaseMappingDTO;
+import com.jci.model.CashDocumentModel;
 import com.jci.model.CommercialJuteVarietyModel;
 import com.jci.model.VerifyTallySlip;
 import com.jci.model.DistributionoftallyslipModel;
@@ -63,6 +64,7 @@ import java.util.GregorianCalendar;
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.FinancialConcurenceModel;
 import com.jci.model.GenerationOfBillSupplyModel;
+import com.jci.model.GenerationofDocumentLCsModel;
 import com.jci.model.GenrationDemandNoteModel;
 import com.jci.model.ImageVerificationModel;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -86,8 +88,10 @@ import com.jci.service.blockService;
 import com.jci.service.Impl.SendMail;
 import com.jci.service_phase2.DispatchService;
 import com.jci.service_phase2.FinancialConcurenceService;
+import com.jci.service_phase2.GenerationAgaistLCsService;
 import com.jci.service_phase2.GenerationofBillService;
 import com.jci.service_phase2.GenratedDemandNoteService;
+import com.jci.service_phase2.GenrationCashDocumentService;
 import com.jci.service_phase2.PaymentDetailService;
 import com.jci.service.CommercialJuteVarietyGradesPriceService;
 import com.jci.service.MSPPriceCalculationService;
@@ -240,6 +244,12 @@ public class InsertDataController
     
     @Autowired
     DispatchService dispatchService;
+    
+    @Autowired
+	GenerationAgaistLCsService generationAgaistLCsService;
+
+    @Autowired
+    GenrationCashDocumentService genrationCashDocumentService;
     
     public InsertDataController() {
         this.slipUpload = "E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlip\\";
@@ -6182,6 +6192,40 @@ public class InsertDataController
 			final List<GenrationDemandNoteModel> allUserRegistration = (List<GenrationDemandNoteModel>)
 					this.genratedDemandNoteService.getAll();
 			mv.addObject("genrationDemandNoteModel", allUserRegistration);
+			
+
+			return mv;
+		}
+		
+		@RequestMapping({ "viewCash_against_Dispatch_document" })
+		public ModelAndView DispatchDocuent(final HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView("View_CAD_Document");
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+												
+
+			final List<CashDocumentModel> allUserRegistration = (List<CashDocumentModel>)
+					this.genrationCashDocumentService.getAll();
+			mv.addObject("genrationcashDocument", allUserRegistration);
+			
+
+			return mv;
+		}
+		
+		@RequestMapping({ "viewCash_against_LCs" })
+		public ModelAndView LCsdocs(final HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+												
+
+			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
+					this.generationAgaistLCsService.getAll();
+			mv.addObject("genrationAgainstLcs", allUserRegistration);
 			
 
 			return mv;

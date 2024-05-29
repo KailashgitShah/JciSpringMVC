@@ -68,11 +68,11 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		List<Object[]> result = new ArrayList<>();
 		try 
 		  {
-			String sql = "select a.Contract_no, a.Contract_date,c.Payment_duedate, c.Contract_cancel_date ,d.Payment_id, f.Contracted_qty, f.Carrying_Cost_Charged\r\n"
-					+ "		from jcidispatch_details a left join jcicontract c on c.Contract_no = a.Contract_No left join\r\n"
-					+ "		jcipayment_arrangement d on d.Contract_No = a.Contract_No \r\n"
-					+ "		left join jcifinancial_concurrence f on f.Contractno = a.Contract_No \r\n"
-					+ "		  where f.Contractno = '" + st + "' ";
+			String sql = "select a.Contract_no, a.Contract_date,c.Payment_duedate, c.Contract_cancel_date ,d.Instrument_No, f.Contracted_qty, f.Carrying_Cost_Charged\r\n"
+					+ "from      jcidispatch_details a \r\n"
+					+ "left join jcicontract c on c.Contract_no = a.Contract_No \r\n"
+					+ "left join jcipayment_arrangement d on d.Contract_No = a.Contract_No \r\n"
+					+ "left join jcifinancial_concurrence f on f.Contractno = a.Contract_No  where f.Contractno = '" + st + "' ";
     		
 	
 		
@@ -86,7 +86,7 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 	    	  resultList12.setContract_date((Date)element[1]);
 		      resultList12.setPayment_duedate((String) element[2]);
 		      resultList12.setContract_cancel_date((String) element[3]);
-		      resultList12.setPayment_id((int) element[4]);
+		      resultList12.setInstrument_No((String) element[4]);
 		      resultList12.setContracted_qty( (String) element[5]);
 		      resultList12.setCarrying_Cost_Charged((String) element[6]);
 		     
@@ -106,7 +106,7 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 	@Override
 	public List<Object> fetchcon_no() {
 	
-	  	String sql="select ContractNo from jciclaim_nomination   ";
+	  	String sql="select Contract_No from jciclaim_report_mill   ";
 				
 		//String sql=" select dd.Challan_no,dd.Date_of_shipment,dd.Vehicle_no,dd.Bale_mark,dd.Jute_variety,dd.Crop_year,mr.MR_No from  jcidispatch_details as dd join jcimill_receipt as mr on dd.Dientry_id=mr.Mr_id ";
 

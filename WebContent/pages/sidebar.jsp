@@ -328,63 +328,15 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-<<<<<<< HEAD
-					<li data-pre="" id=""><a href="EntryofPaymentDetails.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-								payment Details</b></a></li>
-					<li data-pre="" id=""><a href="viewPaymentEntryDetails.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View User
-								Payment list</b></a></li>
-=======
 
->>>>>>> 9a0e8fb2b216f0e657cc82c9ee586602bc02b150
 					<li data-pre="" id=""><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
 								Payment list</b></a></li>
 					<li data-pre="" id=""><a href="viewFinancialConcurence.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Financial Concuerence list</b></a></li>
-					<li data-pre="" id=""><a href="EntryofMillreceipt.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill
-								Receipt</b></a></li>
-					<li data-pre="" id=""><a href="viewMillReciept.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View of Mill
-								Receipt</b></a></li>
-					<li data-pre="" id=""><a
-						href="EntryofGenrationDeamandNote.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-
-								Generation demand Note</b></a></li>
-					<li data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View
-								Generation demand Note list</b></a></li>
-					<li data-pre="" id=""><a
-						href="EntryofGenerationBillsupply.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-								Generation Bill of supply</b></a></li>
-					<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View of
-								Generation Bill of supply</b></a></li>
-					<li data-pre="" id=""><a
-						href="entryofConfirationSettelment.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
-								Confirmation of Claim Settlement Report </b></a></li>
-					<li data-pre="" id=""><a href="ViewConfirmationsettelment.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View of
-								Confirmation of Claim Settlement Report </b></a></li>
-
-					<li data-pre="52" id="o52"><a href="viewmnominalform.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Nomination of
-								Officials for Claim Settlement</b></a></li>
-					<li data-pre="52" id="o52"><a href="viewlistnominal.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View
-								Nomination of Officials for Claim Settlement</b></a></li>
-					<li data-pre="52" id="o52"><a href="entryoftds.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b> Entry of TDS
-								U/s 194Q Declaration </b></a></li>
-					<li data-pre="52" id="o52"><a href="viewentryoftds.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b> View Entry
-								of TDS U/s 194Q Declaration </b></a></li>
+								
+					
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i
@@ -440,8 +392,7 @@ body {
 					<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of
 								Generation Bill of supply</b></a></li>
-					<li data-pre="" id=""><a href="WeightmentSlipList.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li>
+					
 				</ul></li>
               
 			
@@ -516,6 +467,13 @@ body {
 					<li data-pre="" id=""><a href="viewGenrationdemandNote.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Generation demand Note list</b></a></li>
+								<li data-pre="" id=""><a href="viewCash_against_Dispatch_document.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Cash Against Dispatch document</b></a></li>
+									<li data-pre="" id=""><a href="viewCash_against_LCs.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Against  LCs  list</b></a></li>
+								
+								
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i

@@ -2939,65 +2939,68 @@ public class Controller_V {
             
            
             String secondcount = request.getParameter("rowindex2");
+            System.err.println(secondcount);
             String checkcondition = request.getParameter("firstloop");
          
             int count = Integer.parseInt(secondcount);
           
 
-           
-            String[] jutegrade = request.getParameterValues("jutegrade[]");
-            String[] challanQty = request.getParameterValues("challanQty[]");
             String[] baleMark = request.getParameterValues("baleMark[]");
+            String[] jutegrade = request.getParameterValues("jutegrade[]");
             String[] juteVariety = request.getParameterValues("juteVariety[]");
             String[] cropYear = request.getParameterValues("cropYear[]");
+            String[] challanQty = request.getParameterValues("challanQty[]");
+            String[] actualqty = request.getParameterValues("actualQty[]");
+            String[] no_of_bales = request.getParameterValues("No_of_bales[]");
+            
           
-           
-          
-//			
-           
-          //  String[] Quality_Claim34 = request.getParameterValues("Quality_Claim_");
-           
-           
             String[] Qualitypercentage = request.getParameterValues("Qualitypercentage[]");
-            String[] QuantityInqtl = request.getParameterValues("QuantityInqtl[]");
+//          
             String[] Nomination = request.getParameterValues("Nomination[]");
             String[] NCVamt = request.getParameterValues("NCVamt[]");
             String[] ncvdust = request.getParameterValues("ncvdust[]");
+           
+            String[] dustAmt = request.getParameterValues("DustAMt_[]");
+            String[] dustQty = request.getParameterValues("DustQty_[]");
+            String[] claimAmmount = request.getParameterValues("claimAmmount[]");
             
             
             String HO_DINO = request.getParameter("HO_DINO");
             String dateOfShipmentValue1 = request.getParameter("dateOfShipmentValue1");
             String vehicleNo1 = request.getParameter("vehicleNo1");
             String diDate1 = request.getParameter("diDate1");
-            String actualqty = request.getParameter("actualqty1");
+            //String actualqty = request.getParameter("actualqty1");
 //            String shortqty = request.getParameter("shortqty1");
             String MR_No2 = request.getParameter("MR_No1");
             String MR_Date1 = request.getParameter("MR_Date1");
             String millcode1 = request.getParameter("millcode");
             String challanno1 = request.getParameter("challanno1");
-            String shortqty = request.getParameter("InvoiceQty");
+            //String shortqty = request.getParameter("InvoiceQty");
             String Mill_receiptQty1 = request.getParameter("Mill_receiptQty1");
             
             for (int i = 0; i < count; i++) {
             	 
         	     	
         	            String Challan_Qty = challanQty[i];
-        	            System.err.println(Challan_Qty);
         	            String Bale_Mark = baleMark[i];
-        	            System.err.println(Bale_Mark);
         	            String juteewiseqty = juteVariety[i];
         	            String jutegrade1 = jutegrade[i];
-        	            System.err.println(juteewiseqty);
         	            String cropYear1 = cropYear[i];
-        	            System.err.println(cropYear1);
-      	               
-        	           String Qualitypercentage1 = Qualitypercentage[i];
-        	            System.err.println(Qualitypercentage1);
-        	            String QuantityInqtl1 = QuantityInqtl[i];
-        	            System.err.println(QuantityInqtl1);
-        	            String Nomination1 = Nomination[i];
-        	            System.err.println(Nomination1);
+        	            String no_of_bales1 = no_of_bales[i];
+        	            String actualqty1 = actualqty[i];
         	            
+        	            
+        	            
+        	            
+        	            
+        	            String Qualitypercentage1 = Qualitypercentage[i];
+        	            String Nomination1 = Nomination[i];
+        	            //String NCVamt1 = NCVamt[i];
+        	           // String ncvdust1 = ncvdust[i];
+        	           // String dustAmt1 = dustAmt[i];
+        	            //String dustQty1 = dustQty[i];
+        	            String claimAmmount1 = claimAmmount[i];
+        	            String Contractno1 = request.getParameter("Contractno");
         	           
         	            
         	         
@@ -3005,15 +3008,15 @@ public class Controller_V {
       				  
         	
 			double Challan_Qty1 = Double.parseDouble(Challan_Qty);
-			 double Actual_Qty1 = Double.parseDouble(actualqty);
+			double Actual_Qty1 = Double.parseDouble(actualqty1);
 			double Mill_Reciept_Qty2 = Double.parseDouble(Mill_receiptQty1);
-			double Short_Qty1 = Double.parseDouble(shortqty);
+			//double Short_Qty1 = Double.parseDouble(shortqty);
 			MillRecieptModel millRecieptModel = new MillRecieptModel();
             Double flag = 0.0;
             double Qualitypercentage2 = Double.parseDouble(Qualitypercentage1);
 			millRecieptModel.setQualityPercentage(Qualitypercentage2);
-            double QuantityInqtl12 = Double.parseDouble(QuantityInqtl1);
-			millRecieptModel.setQuantity(QuantityInqtl12);
+           // double QuantityInqtl12 = Double.parseDouble(QuantityInqtl1);
+			//millRecieptModel.setQuantity(QuantityInqtl12);
 			double moistureContent1 = Double.parseDouble(Nomination1);
 			millRecieptModel.setMoistureContent(moistureContent1);
 			
@@ -3040,6 +3043,29 @@ public class Controller_V {
 		    	       millRecieptModel.setNCV_qty(flag);
 		        }
 		    }
+			
+			if (dustAmt != null && i < dustAmt.length && dustAmt[i] != null && !dustAmt[i].equals("null")) {
+				  
+		        String dustAmt1 = dustAmt[i];
+		        System.err.println(dustAmt1);
+		        double dustAmt2 = Double.parseDouble(dustAmt1);
+		        millRecieptModel.setDustAmt(dustAmt2);
+		        millRecieptModel.setDustQty(flag);
+		    } else if (dustQty != null && i < dustQty.length && dustQty[i] != null && !dustQty[i].equals("null")) {
+		    	    String dustQty1 = dustQty[i];
+		        System.err.println(dustQty1);
+		        double dustQty2 = Double.parseDouble(dustQty1);
+		        millRecieptModel.setDustQty(dustQty2);
+		        millRecieptModel.setDustAmt(flag);
+		    } else {
+		        // Handle other cases
+		    	if (dustAmt == null || i >= dustAmt.length || dustAmt[i] == null || dustAmt[i].equals("null")) {
+		    	       millRecieptModel.setDustAmt(flag);
+		        }
+		    	if (dustQty == null || i >= dustQty.length || dustQty[i] == null || dustQty[i].equals("null")) {
+		    	       millRecieptModel.setDustQty(flag);
+		        }
+		    }
 			millRecieptModel.setHO_di(HO_DINO);
 			millRecieptModel.setChallan_no(challanno1);
 			millRecieptModel.setJute_Grade(jutegrade1);
@@ -3056,9 +3082,14 @@ public class Controller_V {
 			millRecieptModel.setMr_date(MR_Date);
             Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(diDate1);
 			millRecieptModel.setHo_date(date2);
-            millRecieptModel.setShort_qty(Short_Qty1);
+           // millRecieptModel.setShort_qty(Short_Qty1);
 			millRecieptModel.setMR_qty(Mill_Reciept_Qty2);
 			millRecieptModel.setMill_id(millcode1);
+			
+			double no_of_bales2 = Double.parseDouble(no_of_bales1);
+			millRecieptModel.setNo_of_Bales(no_of_bales2);
+			double claimAmmount2 = Double.parseDouble(claimAmmount1);
+			millRecieptModel.setClaimAmmount(claimAmmount2);
 			Date date = new Date();
 			millRecieptModel.setCreated_on(date);
 			millRecieptModel.setCreated_by("Mill rceipt");
@@ -3070,16 +3101,13 @@ public class Controller_V {
 			}
 
 			this.millRecieptService.create(millRecieptModel);
-			//this.millRecieptService.UpdateContractstatus(HO_DI);
+			this.millRecieptService.UpdateContractstatus(Contractno1);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 		
 			 
         	     	 }
-        	    
-              
-           
-           
+            
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -3090,6 +3118,9 @@ public class Controller_V {
 
 		return new ModelAndView(new RedirectView("EntryofMillreceipt.obj"));
 	}
+	
+	
+	
 
 	@RequestMapping({ "viewMillReciept" })
 	public ModelAndView viewMillReciept(final HttpServletRequest request) {
@@ -3119,16 +3150,35 @@ public class Controller_V {
 
 	
 	
+
+	
+	
+	
+	
 	@ResponseBody
 	@RequestMapping(value = "millchildbased", method = RequestMethod.GET)
-	public String childdatamill(@RequestParam("contarctno") String millname) {
-
-		List<Object[]> millnamecontract = (List<Object[]>) millRecieptService.childdata(millname);
-		System.err.println("resultList++++++++++" + millnamecontract);
+	public String millchildbased(@RequestParam("contractno") String contractno) {
+		
+		List<Object[]> millRecieptModelt1 = millRecieptService.childdata(contractno);
+		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
-		String resultString = new Gson().toJson(millnamecontract);
-		return resultString;// gson.toJson((Object)millRecieptModelt1);
+		String resultString = new Gson().toJson(millRecieptModelt1);
+		return resultString;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "GradePrice", method = RequestMethod.GET)
+	public String GradePricecalculation(@RequestParam("contNo") String contNo,
+			           @RequestParam("challanno") String challanno) {
+		
+		List<Object[]> millRecieptModelt1 = millRecieptService.gradeprice(challanno,contNo);
+		System.err.println("resultList++++++++++" + millRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millRecieptModelt1);
+		return resultString;
+	}
+	
 	
 	
 	// entry controller of generation demand note
@@ -3429,7 +3479,7 @@ public class Controller_V {
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1,
 					Supplier_Name, Supplier_GSTN, Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address,
 					Consignee_Name, Consignee_GSTN, Consignee_Address, Bill_of_Supply, Conract_no, Clientstate,
-					Clientcode, ClientPan, BOS_Date,TrnasitPolicyNo,list,Vehicle_no,Driver_Lic_no,Driver_name,TCS_Amt);
+					Clientcode, ClientPan, BOS_Date,TrnasitPolicyNo,list,Vehicle_no,Driver_Lic_no,Driver_name,TCS_Amt,Genrationofbill);
 
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 

@@ -130,7 +130,60 @@ public class MillRecieptModel {
 	@Column( name = "Quantity")
 	private Double Quantity;
 	
+	@Column( name = "claimAmmount")
+	private Double claimAmmount;
+	
+	@Column( name = "DustAmt")
+	private Double DustAmt;
+	
+	
 
+	@Column( name = "No_of_Bales")
+	private Double No_of_Bales;
+	
+	public Double getNo_of_Bales() {
+		return No_of_Bales;
+	}
+
+
+	public void setNo_of_Bales(Double no_of_Bales) {
+		No_of_Bales = no_of_Bales;
+	}
+
+
+	public Double getClaimAmmount() {
+		return claimAmmount;
+	}
+
+
+	public void setClaimAmmount(Double claimAmmount) {
+		this.claimAmmount = claimAmmount;
+	}
+
+
+	public Double getDustAmt() {
+		return DustAmt;
+	}
+
+
+	public void setDustAmt(Double dustAmt) {
+		DustAmt = dustAmt;
+	}
+
+
+	public Double getDustQty() {
+		return DustQty;
+	}
+
+
+	public void setDustQty(Double dustQty) {
+		DustQty = dustQty;
+	}
+
+
+	@Column( name = "DustQty")
+	private Double DustQty;
+	
 	
 	
 
