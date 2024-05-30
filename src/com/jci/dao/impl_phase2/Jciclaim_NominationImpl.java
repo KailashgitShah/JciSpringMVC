@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao_phase2.NominalOfficialDao;
+import com.jci.model.ClaimSettlementReport;
 import com.jci.model.Contractgeneration;
 import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.FarmerRegModel;
@@ -73,7 +74,8 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<Jciclaim_NominationModel> getAll() {
 		// TODO Auto-generated method stub
-		String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial from jciclaim_nomination";
+	String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial from jciclaim_nomination";
+	   
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 		List<Jciclaim_NominationModel> list = new ArrayList<>();
@@ -279,22 +281,22 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	public List<Object[]> getchallan(String hodi) {
 
 		///////////////////correct
-		String q = 
-			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt " +
-			    "FROM jcimill_receipt jcimr " +
-			    "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
-			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
-			    "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
-			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
-			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
-		
+//		String q = 
+//			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt " +
+//			    "FROM jcimill_receipt jcimr " +
+//			    "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
+//			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
+//			    "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
+//			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
+//			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
+//		
 
-//		String q = "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt, jcimr.claimAmmount " +
-//		           "FROM jcimill_receipt jcimr " +
-//		           "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
-//		           "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
-//		           "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
-//		           "WHERE jcimr.Ho_di = '" + hodi + "'";
+		String q = "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt, jcimr.claimAmmount " +
+		           "FROM jcimill_receipt jcimr " +
+		           "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
+		           "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
+		           "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
+		           "WHERE jcimr.Ho_di = '" + hodi + "'";
 
 
 	    List<Object[]> contractListData = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
@@ -420,6 +422,42 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		}
 
 		return list;
+	}
+
+	
+	@Override
+	public List<ClaimSettlementReport> getNominationReportData(String settlement_id) {
+		  String sqlQuery = "SELECT DISTINCT jciclaim_nomination.ContractNo, jciclaim_nomination.HoDi, jciclaim_nomination.Challans, jcimill_receipt.Bale_mark, jciclaim_nomination.Mr_number, jcimill_receipt.Jute_Grade, jcimill_receipt.No_of_Bales,  jcimill_receipt.QualityPercentage, jcimill_receipt.MoistureContent , jcimill_receipt.Actual_qty, jcimill_receipt.DustAmt, jcimill_receipt.NCV_percentage " +
+                       "FROM jciclaim_nomination " +
+                       "INNER JOIN jcimill_receipt ON jcimill_receipt.MR_no = jciclaim_nomination.Mr_number " +
+                       "WHERE jciclaim_nomination.Settlement_id_generated = '" + settlement_id + "'";
+		
+		  List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+
+		List<ClaimSettlementReport> list1 = new ArrayList<>();
+
+		for (Object[] eleObject : contracts) {
+			ClaimSettlementReport nomination = new ClaimSettlementReport();
+
+			nomination.setContract_no((String) eleObject[0]);
+     		nomination.setDi_no((String) eleObject[1]);
+			nomination.setChallan((String) eleObject[2]);
+			nomination.setBale_mark((String) eleObject[3]);
+			nomination.setMr_no((String) eleObject[4]);
+			nomination.setGrade((String) eleObject[5]);
+			nomination.setNo_of_bales((Double) eleObject[6]);
+			nomination.setQualityPercent((Double) eleObject[7]);
+			nomination.setMoisturePercent((Double) eleObject[8]);
+			nomination.setQuantity((Double) eleObject[9]);
+			nomination.setDustAmount((Double) eleObject[10]);
+			nomination.setNcvPercentage((Double) eleObject[11]);
+			list1.add(nomination);
+
+		}
+		
+
+		return list1;
+		
 	}
 
 	

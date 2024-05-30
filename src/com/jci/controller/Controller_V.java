@@ -80,6 +80,7 @@ import com.itextpdf.text.pdf.PdfStamper;
 
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
+import com.jci.model.ClaimSettlementReport;
 import com.jci.model.ConfirmationClaimSettlementModel;
 import com.jci.model.Contractgeneration;
 import com.jci.model.CreditNoteDTO;
@@ -4786,6 +4787,18 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 	@RequestMapping("savenominal")
 	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {	
 		int rows = Integer.parseInt(request.getParameter("rows"));
+		
+//		String[] rowvalue =  request.getParameterValues("rowCheckbox[]");
+		
+		
+	
+
+//		for (int i = 0; i < rows; i++) {
+//		    System.out.println("Row " + (i+1) + ":");
+//		    System.out.println(rowvalue[i] + "rowvalue" );
+//		    System.out.println("Challan Number: " + challanNos[i]);
+//		    System.out.println("MR Number: " + mr_no[i]);
+//		}
 		String Settlement_id_generated = request.getParameter("Settlement_id_generated");
 		String HoDI = request.getParameter("HO_DI_&_Date");
 		int total = nominalOfficialService.CountRecord();
@@ -4805,6 +4818,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		String[] challanNos = request.getParameterValues("challans[]");
 		String[] mr_no= request.getParameterValues("mr_no[]");
 		String[] mr_date = request.getParameterValues("mr_date[]");
+		
 		
 		String[] billofsupply = request.getParameterValues("billofsupply[]");
 		String[] dateofshipment=request.getParameterValues("dateofshipment[]");
@@ -4887,6 +4901,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
 		nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
 		/////// It will change claim status on Jcimill_receipt on form submit//////////////////
+		
+		
 	return new ModelAndView(new RedirectView("viewlistnominal.obj"));
 	}
 
@@ -4949,6 +4965,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 			   String Mill = request.getParameter("millname");
 				String omofficial = request.getParameter("omoofficial");
 				String DateofInpection = request.getParameter("DateofInpection");
+				List<ClaimSettlementReport> pdfnomination = nominalOfficialService.getNominationReportData(id);
+				System.err.println(pdfnomination);
 			   //1- This email is for  FaOfficial
 			   EmailSender emailfa=new EmailSender();
 				InternetAddress[] toAddresses= null;
