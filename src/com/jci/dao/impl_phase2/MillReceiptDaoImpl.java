@@ -110,7 +110,8 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		 @Override
 			public List<Object> fetchHODINO(String millname) {
 			
-			  	String sql=  "SELECT  distinct a.DI_no,b.Mill_code,a.Contract_No from jciDI_ho as a Left join jcicontract as b on b.Contract_no = a.Contract_No "
+			  	String sql=  " SELECT  distinct a.DI_no,b.Mill_code,a.Contract_No from jcidispatch_details as a Left join jcicontract as b on b.Contract_no = a.Contract_No \r\n"
+			  			+ " INNER JOIN jcicredit_note AS d ON d.Contract_no = a.Contract_No "
 			  			+ "where b.Mill_name= '" + millname + "' ";
 			  	 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			    return resultList1;
@@ -151,8 +152,9 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		//String sql ="  SELECT  distinct a.Mill_name,b.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
 //		String sql ="  SELECT  distinct a.Mill_name FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
 //		
-		String sql =" SELECT  distinct c.Recipient_name FROM  jcibos_generation AS c  left JOIN  jciDI_ho as b on b.Contract_No=c.Contract_no ";
-		
+		String sql =" SELECT distinct  c.Recipient_name FROM  jcibos_generation AS c  left JOIN  jciDI_ho as b on b.Contract_No=c.Contract_no\r\n"
+				+ "   LEFT JOIN jcidispatch_details as a  on\r\n"
+				+ " a.Contract_No=b.Contract_No LEFT join jcicredit_note as d on d.Contract_no=a.Contract_No";
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		 return resultList1;
 	}
