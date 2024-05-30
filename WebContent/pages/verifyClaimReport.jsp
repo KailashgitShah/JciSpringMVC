@@ -115,7 +115,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
             <th style="width: 10%">Challan No</th>
             <th style="width: 10%">Contract No</th>
             <th style="width: 10%">Date of Inspection</th>
-            <th style="width: 10%">Entry by</th>
+            
            <!--  <th style="width: 10%">Mill Name</th> -->
            <th style="width: 10%">Quality Settlement</th>
             <th style="width: 10%">Moisture Content Settlement</th>
@@ -125,6 +125,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
              <th style="width: 5%">HO DI </th>
             <th style="width: 10%">Claim Amount</th>
             <th style="width: 10%">Settlement Amount</th>
+            <th style="width: 10%">Entry by</th>
             <th style="width: 10%">File Upload</th>
             
             <th style="width: 5%">Confirm/Reject</th>
@@ -149,7 +150,7 @@ String formattedDate = outputFormat.format(date);
 %>
 
             <td style="width: 10%"><%= formattedDate %></td>
-            <td style="width: 10%"><%= row[4] %></td> 
+            
             <td style="width: 10%"><%= row[8] %></td> 
            <%--  <td style="width: 10%"><%= row[5] %></td>    --%>
             <td style="width: 10%"><%= row[6] %></td> 
@@ -159,6 +160,7 @@ String formattedDate = outputFormat.format(date);
              <td style="width: 10%"><%= row[13] %></td>    
              <td style="width: 10%"><%= row[12] %></td>  
             <td style="width: 10%"><%= row[9] %></td> 
+            <td style="width: 10%"><%= row[4] %></td> 
                     <% 
                     
                  // Assuming row[11] is of type Integer
