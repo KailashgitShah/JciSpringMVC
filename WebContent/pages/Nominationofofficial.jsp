@@ -115,18 +115,12 @@
 											</select>
 										</div>
                                     
-										<div class="col-sm-4 form-group">
-											<label>Contract No</label> <select name="ContractNo"
-												id="ContractNo" class="form-control taxtbox" required>
-												<option value="">Select</option>
-
-												<c:forEach items="${contractno}" var="item">
-													<option value="${item}">${item}</option>
-												</c:forEach>
-
-
-											</select>
-										</div>
+									<div class="col-sm-4 form-group" id="contractNoContainer" style="display:none;">
+									<label>Contract No</label>
+									<select name="ContractNo" id="ContractNo" class="form-control taxtbox" required>
+							        <option disabled selected value="-Select-">-Select-</option>
+									 </select>
+									</div>						
 										  <div class="col-sm-4 form-group">
 	                                             <label>HO DI </label>
 	                                              <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
@@ -171,12 +165,14 @@
 									        <table class="table table-bordered">
 									            <thead>
 									                <tr>
+									                     <th></th> 
 									                    <th>Challan</th>
 									                    <th>Mr_No</th>
 									                     <th>Mr_Date</th>
 									                      <th>Bill_Of_Supply_Number</th>
 									                    <th>Date_Of_Shipment</th>									                   
 									                    <th>Shipment_Quantity</th>
+									                    <th>Claim Valuation</th>
 									                    
 									                 
 									                </tr>
@@ -190,12 +186,17 @@
 						            			   
 									    <div class="row">
                                         
-                                            <div class="col-sm-4 form-group">
+                                           <%--  <div class="col-sm-4 form-group">
 											<input type="hidden"
-												class="form-control taxtbox" name="Settlement_id_generated"
+												class="form-control taxtbox"  name="Settlement_id_generated"
 												id="SettlementId" type="text" required readonly="readonly">
-										</div> 
+										</div>  --%>
 										
+										 <div class="col-sm-4 form-group">
+											<input type="hidden"
+												class="form-control taxtbox" value = "${total}" name="Settlement_id_generated"
+												type="text" required readonly="readonly">
+										</div> 
 									</div>
                                    
                                     <input type="hidden" id="numRows" name="rows">
@@ -203,12 +204,16 @@
 									<br>
 									
 									<div class="row">
-
-										<div class="col-sm-12 form-group">
-											<input type="submit" value="Submit" class="btn btn-primary"
+								   <div class="col-sm-12 form-group">
+										<br>
+									    <br>
+									    <br>
+									    <br>
+									
+										<input type="submit" value="Submit" class="btn btn-primary"
 												id="submit">
 										</div>
-									</div>
+									</div> 
 
 
 								</form>
@@ -250,108 +255,6 @@
 
 
 
-<!-- <script type="text/javascript">
-    // Initialize the Datepicker
-    $("#DateofInpection").datepicker({
-        dateFormat: 'dd-mm-yy',
-        onSelect: function(selectedDate) {
-            var selectedOption = selectedDate;
-            // alert(selectedOption); // Uncomment this line for debugging
-            $.ajax({
-                type: 'GET',
-                url: 'fetchdateOfInspection.obj',
-                data: {
-                    DateOfInspection: selectedOption
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);                
-                 
-                    var selectedOmofficial = document.getElementById("omofficial").value;
-                    var selectedFafficial = document.getElementById("FAofficial").value;
-                    var omMessageElement = document.getElementById("omMessage");
-                    var faMessageElement = document.getElementById("faMessage");
-
-                    for (var i = 0; i < response.length; i++) {
-                        var innerArray = response[i];
-                        var omoofficial = innerArray[0];
-                        var faofficial = innerArray[1];
-                           
-                        // Check if the selected date is still in the input field and if the names match
-                        if (selectedOption == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial && faofficial == selectedFafficial) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            faMessageElement.innerText = selectedFafficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            return;
-                        } 
-                        else if (faofficial == selectedFafficial && omoofficial != selectedOmofficial) {
-                            faMessageElement.innerText = selectedFafficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            omMessageElement.innerText = "";
-                            return;
-                        } else if (faofficial != selectedFafficial && omoofficial == selectedOmofficial) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            faMessageElement.innerText = "";
-                            return;
-                        }
-                    }
-                    // If no conflicting dates found, clear any existing messages
-                    omMessageElement.innerText = "";
-                    faMessageElement.innerText = "";
-                },
-                error: function(err) {
-                    console.error('AJAX request failed: ' + err);
-                }
-            });
-        }
-    });
-
-    // Event handler for omofficial select element
-    $("#omofficial, #FAofficial").change(function() {
-        // Execute the logic when omofficial selection changes
-        var selectedOmofficial = document.getElementById("omofficial").value;
-        var selectedFafficial = document.getElementById("FAofficial").value;
-        var selectedDate = document.getElementById("DateofInpection").value;
-        var omMessageElement = document.getElementById("omMessage");
-        var faMessageElement = document.getElementById("faMessage");
-
-        
-            $.ajax({
-                type: 'GET',
-                url: 'fetchdateOfInspection.obj',
-                data: {
-                    DateOfInspection: selectedDate
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    for (var i = 0; i < response.length; i++) {
-                        var innerArray = response[i];
-                        var omoofficial = innerArray[0];
-                        var faofficial = innerArray[1];
-                        if (selectedDate  == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial && faofficial == selectedFafficial) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            faMessageElement.innerText = selectedFafficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            return;
-                        }
-                        else if (selectedDate == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial && faofficial != selectedFafficial) {
-                        	  omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                              faMessageElement.innerText = "";
-                              return;
-                        } 
-                        else if (selectedDate == document.getElementById("DateofInpection").value && omoofficial != selectedOmofficial && faofficial == selectedFafficial) {
-                        	faMessageElement.innerText = selectedFafficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                        	omMessageElement.innerText = "";
-                            return;
-                      } 
-                    }
-                    // If no conflicting dates found, clear any existing messages
-                    omMessageElement.innerText = "";
-                    faMessageElement.innerText = "";
-                },
-                error: function(err) {
-                    console.error('AJAX request failed: ' + err);
-                }
-            });
-        
-    });
-</script> -->
 
 
  <script type="text/javascript">
@@ -429,7 +332,8 @@
     });
 </script>
  
-  <script>
+ 
+ <script>
 	 	$(document).ready(function() {
 	 	    // Hide the milldetailsTable initially
 	 	    $('#milldetailsTable').hide();
@@ -464,12 +368,15 @@
 	 	                for (var i = 0; i < dataArray.length; i++) {
 	 	                	  var newRow = "<tr>";
 		 	                    newRow +=
+		 	                    	/*  '<td><input type="checkbox" onchange="myFunction()" id ="checkbox" class="row-checkbox" name="rowCheckbox" value ="0"></td>' + */
+		 	                    '<td><input type="checkbox"  class="row-checkbox" name="rowCheckbox" value =""></td>' +
 	 	                    	 '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +	                  
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +	                  
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +	                  
 	 	                    	'<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>';                  	 	                 
+	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
+	 	                    	'<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
 	 	                    newRow += "</tr>";
 	 	                    $("#binDataBody").append(newRow);
 	 	                }
@@ -485,77 +392,37 @@
 
 </script> 
 
+	 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#Mill').on('change', function() {
+            var selectedOption = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: 'fetchmillreceiptdata.obj',
+                data: {
+                    millid: selectedOption
+                },
+                success: function(data) {
+                    var response = JSON.parse(data);
+                    var html = "<option disabled selected value='-Select-'>-Select-</option>";
 
+                    for (var i = 0; i < response.length; i++) {
+                        html += "<option value='" + response[i] + "'>" + response[i] + "</option>";
+                    }
 
-
+                    $("#ContractNo").html(html);
+                    $("#contractNoContainer").show(); // Show contract number container
+                },
+                error: function(err) {
+                    console.error('AJAX request failed: ' + err);
+                }
+            });
+        });
+    });
+</script>
 	<!-- 	AJAX Call for Fetching Mill Receipt Data -->
 
-	<script type="text/javascript">
-		// Wait for the document to be ready
-		$(document).ready(function() {
-			// Add an event listener for the change event on the dropdown
-
-			$('#Mill').on('change', function() {
-				// Get the selected option value
-				var selectedOption = $(this).val();
-				
-				$.ajax({
-					type : 'GET', // You can adjust the HTTP method as needed (e.g., POST)
-					url : 'fetchmillreceiptdata.obj', // Replace with the actual API endpoint
-					data : {
-				
-						millid : selectedOption
-						
-					}, // Pass the selected option to the server
-					success : function(data) {
-					
-					var response = JSON.parse(data);
-             	
-                      
-						var innerArray1 = response[0];
-
-						// Access the elements within the inner array
-						var ChallanNo = innerArray1[0];
-						var MRNo = innerArray1[1];
-						var BaleMark = innerArray1[2];
-						var CropYear = innerArray1[3];
-						var QualityClaim = innerArray1[4];
-						var MoistureContent = innerArray1[5];
-						var NCVPercentage = innerArray1[6];
-						//var mill_name = innerArray1[7];
-						//alert(mill_name)
-						
-						
-						
-
-						// For DateofInpection value settingbased on MRs
-						var DateofInpection = MRNo + "0";
-
-						$('#ChallanNo').val(ChallanNo); // Setting Data In JSP Text Field
-
-						$('#MRNo').val(MRNo);
-						$('#BaleMark').val(BaleMark);
-						$('#CropYear').val(CropYear);
-						$('#QualityClaim').val(QualityClaim);
-						$('#MoistureContent').val(MoistureContent);
-						$('#NCVPercentage').val(NCVPercentage);
-
-						// Generating the Settlement id using MRNo and For Increment using Count
-
-						var Settlementid =  ${total};
-
-						$('#SettlementId').val(Settlementid);
-
-					},
-					error : function(err) {
-						// Handle errors here
-						console.error('AJAX request failed: ' + err);
-					}
-
-				});
-			});
-		});
-	</script>
+	
 
 	<!--  For Fetching the Grade_Composition based on Contract Number -->
 

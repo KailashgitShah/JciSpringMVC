@@ -113,25 +113,27 @@
 										    </c:forEach>
 										</select> 
 										</div>
+										</div>
 										
 										   <%
 			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
 										   
 		                                    %>
-                                        <input type="hidden" class="form-control taxtbox" id="DateofInpection" 
-                                        name="DateofInpection" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getDateofInspection()%>"  required>                                   
-										<input  type ="hidden" 
-                                        name="Settlement_id_generated" placeholder="dd-mm-yyyy" value="<%=nominationProfile.getSettlement_id_generated()%>"  required>      
-										      
+                                        <input type = "hidden"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
+										<input type = "hidden"  name="Settlement_id_generated"   value="<%=nominationProfile.getSettlement_id_generated()%>">      
+										<input type = "hidden"  name="millname"                  value="<%=nominationProfile.getMill()%>">      
+										<input type =  "hidden" name="omoofficial"               value="<%=nominationProfile.getOMOfficial()%>">      
+										           
      
 										        
 									
 									<div class="row">
 
-										<div class="col-sm-12 form-group">
-											<input type="submit" value="Submit" class="btn btn-primary"
-												id="submit">
+										<div class="col-sm-4 form-group">
+												<a href="viewlistnominal.obj"><button class="btn btn-warning" type="button">Back</button></a>
+										        <input type="submit" value="Submit" class="btn btn-primary"id="submit">
 										</div>
+										
 									</div>
 
 

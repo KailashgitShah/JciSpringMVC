@@ -45,9 +45,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -91,6 +92,7 @@ import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.EntryofGradeCompositionModel;
 import com.jci.model.EntryofpcsoModel;
 import com.jci.model.FactorssInvolvedCommercial;
+import com.jci.model.FarmerRegModel;
 import com.jci.model.FinancialConcurenceModel;
 import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenerationofDocumentLCsModel;
@@ -4725,10 +4727,7 @@ public class Controller_V {
 	}
 
 //////////////////////////////////////////MILL ACCEPTENCE END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////// NOMINATION OF OFFICIAL START
-	/////////////////////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+ 
 //---------------------------------------------------------
 //Nomination of official for claim settlement
 //---------------------------------------------------------
@@ -4748,12 +4747,12 @@ public class Controller_V {
 		List<String> DI_no = nominalOfficialService.gethodi();
 
 		// for counting the total Number of row.
-		int total = nominalOfficialService.CountRecord();
-		mv.addObject("total", total);
+//		BigDecimal total = nominalOfficialService.CountRecord();
+//		mv.addObject("total", total);
 
 		mv.addObject("OM_official", OM_official);
 		mv.addObject("FA_official", FA_official);
-		mv.addObject("contractno", contractno);
+	//	mv.addObject("contractno", contractno);
 		mv.addObject("millid", millid);
 		mv.addObject("DI_no", DI_no);
 		return mv;
@@ -4816,58 +4815,75 @@ public class Controller_V {
 		return jsonResponse;
 
 	}
+ 
 
-	@Value("${upload.OMOofficialDocumentDownload}")
-	String OmoOfficialDocumentDownload;
-
-//	@Value("${upload.FAofficialDocumentDownload}")
-//	String FAofficialDocumentDownload;
-//	@Value("${upload.MillDocumentDownload}")
-//	String MillDocumentDownload;
 	@RequestMapping("savenominal")
 	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		int rows = Integer.parseInt(request.getParameter("rows"));
+		String Settlement_id_generated = request.getParameter("Settlement_id_generated");
+		String HoDI = request.getParameter("HO_DI_&_Date");
+		int total = nominalOfficialService.CountRecord();
+		String SetllementIdGenerated;
+		SetllementIdGenerated = HoDI +"/"+ total;
+//		if(total=null) {
+//			SetllementIdGenerated = HoDI +"/1";
+//			
+//		}
+//		else {
+//		 SetllementIdGenerated = HoDI +"/"+ total;
+//		}
+//		String[] rowCheckbox = request.getParameterValues("rowCheckbox[]");
+//		for(int i = 0; i < rows; i++) {
+//			System.err.println(rowCheckbox[i] +"kkkkkk");
+//			}
 		String[] challanNos = request.getParameterValues("challans[]");
 		String[] mr_no = request.getParameterValues("mr_no[]");
 		String[] mr_date = request.getParameterValues("mr_date[]");
+		
 		String[] billofsupply = request.getParameterValues("billofsupply[]");
-		String[] dateofshipment = request.getParameterValues("dateofshipment[]");
-		String[] shipmentquantity = request.getParameterValues("shipmentquantity[]");
+
+		String[] dateofshipment=request.getParameterValues("dateofshipment[]");
+	     String[] shipmentquantity= request.getParameterValues("shipmentquantity[]");
+	     String[] claimamount = request.getParameterValues("claimamount[]");
+
 		String username = (String) request.getSession().getAttribute("usrname");
 		String millname = request.getParameter("client_name");
 		String Mill = request.getParameter("Mill");
 		String ContractNo = request.getParameter("ContractNo");
-		String Settlement_id_generated = request.getParameter("Settlement_id_generated");
+		
 		String omofficial = request.getParameter("omofficial");
 		String FAofficial = request.getParameter("FAomofficial");
 		String DateofInpection = request.getParameter("DateofInpection");
-		String HoDI = request.getParameter("HO_DI_&_Date");
 
+		
 		String contractIdentificationnumber = nominalOfficialService.getcontractidentification(ContractNo);
-		String millcode = nominalOfficialService.getmillcode(Mill);
-		String SetllementIdGenerated = HoDI + "//" + Settlement_id_generated;
-
+		String millcode= nominalOfficialService.getmillcode(Mill);
+		
+		
 		for (int i = 0; i < rows; i++) {
-			// Creating object of
-			Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+		
+		// Creating object of
+		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+		
+		jciclaim_NominationModel.setMill(Mill);
+		jciclaim_NominationModel.setContractNo(ContractNo);
+		jciclaim_NominationModel.setOMOfficial(omofficial);
+		jciclaim_NominationModel.setFAOfficial(FAofficial);
+		jciclaim_NominationModel.setCreated_by(username);
+		jciclaim_NominationModel.setHoDi(HoDI);
+		jciclaim_NominationModel.setDateofInspection(DateofInpection);
+		jciclaim_NominationModel.setChallans(challanNos[i]);
+		jciclaim_NominationModel.setMr_number(mr_no[i]);
+		jciclaim_NominationModel.setMr_Date(mr_date[i]);
+		jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
+		jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
+		jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
+		jciclaim_NominationModel.setClaimValuation(claimamount[i]);
+		// backend generated settlement id
+		jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);		
+		// have confusion on name
+		// Inspection_date confusion
 
-			jciclaim_NominationModel.setMill(Mill);
-			jciclaim_NominationModel.setContractNo(ContractNo);
-			jciclaim_NominationModel.setOMOfficial(omofficial);
-			jciclaim_NominationModel.setFAOfficial(FAofficial);
-			jciclaim_NominationModel.setCreated_by(username);
-			jciclaim_NominationModel.setHoDi(HoDI);
-			jciclaim_NominationModel.setDateofInspection(DateofInpection);
-			jciclaim_NominationModel.setChallans(challanNos[i]);
-			jciclaim_NominationModel.setMr_number(mr_no[i]);
-			jciclaim_NominationModel.setMr_Date(mr_date[i]);
-			jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
-			jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
-			jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
-			// backend generated settlement id
-			jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);
-			// have confusion on name
-			// Inspection_date confusion
 //
 //		SimpleDateFormat idf = new SimpleDateFormat("dd-MM-yyyy");
 //		Date create_date = new Date();
@@ -4899,134 +4915,157 @@ public class Controller_V {
 		}
 		redirectAttributes.addFlashAttribute("msg",
 				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-
-		// 1- These Email is for fa official
-		EmailSender emailfa = new EmailSender();
-		InternetAddress[] toAddresses = null;
-
-		String subjectfa = "Nomination for Claim Settlement";
-		String bodyfa = "Dear " + FAofficial + ",\n" + "I hope this email finds you well.\n"
-				+ "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill
-				+ " on Date: " + DateofInpection + ".\n" + "\n" + "Thanks & Regards,\n" + "Jute Corporation of India";
-
-		String filenamefa = OmoOfficialDocumentDownload;
-		String usernamefa = "";
-		String userEmailFA = nominalOfficialService.getEmailForFA(FAofficial);
-		try {
-			toAddresses = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com") };
-
-		} catch (AddressException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
-		// 1- email is for omoofficial
-		EmailSender emailomo = new EmailSender();
-		InternetAddress[] toAddressesomo = null;
-		String subjectomo = "Nomination for Claim Settlement";
-		String bodyomo = "Dear " + omofficial + ",\n" + "I hope this email finds you well.\n"
-				+ "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill
-				+ " on Date: " + DateofInpection + ".\n" + "\n" + "Thanks & Regards,\n" + "Jute Corporation of India";
-		String filenameomo = OmoOfficialDocumentDownload;
-		String username1 = "";
-		String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
-		try {
-			toAddressesomo = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
-
-			};
-
-		} catch (AddressException e) {
-
-			e.printStackTrace();
-		}
-		emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo, filenameomo, username1);
-		// 3- email is for mill
-		EmailSender emailmill = new EmailSender();
-		InternetAddress[] toAddressesmill = null;
-		String subjectmill = "Nomination for Claim Settlement";
-		String bodymill = "Dear " + Mill + ",\n" + "I hope this email finds you well.\n"
-				+ "We are pleased to inform you that " + Mill
-				+ " have been nominated for the claim settlement on Date: " + DateofInpection + ".\n" + "\n"
-				+ "Thanks & Regards,\n" + "Jute Corporation of India";
-		String filenamemill = OmoOfficialDocumentDownload;
-		String usernamemill = "";
-		String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
-		try {
-			toAddressesmill = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
-
-			};
-
-		} catch (AddressException e) {
-
-			e.printStackTrace();
-		}
-
-		emailmill.sendEmail(toAddressesmill, bodymill, subjectmill, filenamemill, usernamemill);
-
-		// 3- These email is for MILL
-		//////// It will change the contract_status on jci contract on form
-		// submit////////////
+			
+		  // 3- These email is for MILL
+		//////// It will change the contract_status on jci contract on form submit////////////
 		String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
 		nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
-		/////// It will change claim status on Jcimill_receipt on form
-		/////// submit//////////////////
-		return new ModelAndView(new RedirectView("viewlistnominal.obj"));
+		/////// It will change claim status on Jcimill_receipt on form submit//////////////////
+	return new ModelAndView(new RedirectView("viewlistnominal.obj"));
 	}
 
-	@RequestMapping(value = "updatenominalform", method = RequestMethod.GET)
+	
+	@RequestMapping(value ="updatenominalform"  , method = RequestMethod.GET)
 	public ModelAndView updateNominalform(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("editnominationofofficial");
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		String id = request.getParameter("id");
-		// int id = Integer.parseInt(request.getParameter("id"));
-		Jciclaim_NominationModel nomination = nominalOfficialService.find(id);
-		mv.addObject("nomination", nomination);
+		String  id = request.getParameter("id");
+		//int id = Integer.parseInt(request.getParameter("id"));
+	     Jciclaim_NominationModel nomination = nominalOfficialService.find(id);
+	     mv.addObject("nomination", nomination);
+	      List<Jciclaim_NominationModel> findnominationdetails = this.nominalOfficialService.findnominationdetails(id); 
+	    // Jciclaim_NominationModel findnominationdetails = this.nominalOfficialService.findnominationdetails(id); 
+	     mv.addObject("findnominationdetails", findnominationdetails);
 		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
-		mv.addObject("FA_official", FA_official);
-		return mv;
+		mv.addObject("FA_official", FA_official);	
+		return mv;	
 	}
-
-	@RequestMapping(value = "nominationdetails", method = RequestMethod.GET)
-	public ModelAndView NominationDetails(HttpServletRequest request, Model model) {
+	
+	@RequestMapping(value ="nominationdetails"  , method = RequestMethod.GET)
+	public ModelAndView NominationDetails(HttpServletRequest request , Model model) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("nominationdetails");
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		String settlement_id = request.getParameter("id");
-		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService
-				.getAlldetails(settlement_id);
+
+		String  settlement_id= request.getParameter("id");
+		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAlldetails( settlement_id);
 //		Collections.reverse(AllList);
 		model.addAttribute("jciclaim_NominationModel", AllList);
-		// Jciclaim_NominationModel nomination =
-		// nominalOfficialService.getAllDetails(id);
-		// mv.addObject("nomination", nomination);
-		return mv;
+	    //  Jciclaim_NominationModel nomination = nominalOfficialService.getAllDetails(id);
+	   //   mv.addObject("nomination", nomination);	
+		return mv;	
 	}
-
+	
+	@Value("${upload.OMOofficialDocumentDownload}")
+	String OmoOfficialDocumentDownload;
+//	@Value("${upload.FAofficialDocumentDownload}")
+//	String FAofficialDocumentDownload;
+//	@Value("${upload.MillDocumentDownload}")
+//	String MillDocumentDownload;
 	@RequestMapping("updatesavenominalform")
-	public ModelAndView updatesavenominatiion(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		String username = (String) request.getSession().getAttribute("usrname");
+	public ModelAndView updatesavenominatiion(HttpServletRequest request,RedirectAttributes redirectAttributes)
+	{
+		String username =(String)request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("editnominationofofficial");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
+		if(username == null) {
+        	return new ModelAndView("index");
+            }
 		try {
-			String FAomofficial = request.getParameter("FAomofficial");
-			final String id = request.getParameter("Settlement_id_generated");
-			nominalOfficialService.updatefa(id, FAomofficial);
-			redirectAttributes.addFlashAttribute("msg",
-					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-			return new ModelAndView(new RedirectView("viewlistnominal.obj"));
-		} catch (Exception e) {
-			System.out.println("Error in update user profile" + e.getStackTrace());
-		}
+			  String FAomofficial = request.getParameter("FAomofficial");
+			  final String id = request.getParameter("Settlement_id_generated");
+			   nominalOfficialService.updatefa(id ,FAomofficial);
+			   redirectAttributes.addFlashAttribute("msg",(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+			  
+			   String Mill = request.getParameter("millname");
+				String omofficial = request.getParameter("omoofficial");
+				String DateofInpection = request.getParameter("DateofInpection");
+			   //1- This email is for  FaOfficial
+			   EmailSender emailfa=new EmailSender();
+				InternetAddress[] toAddresses= null;
+				String subjectfa = "Nomination for Claim Settlement";
+				String bodyfa = "Dear "+ FAomofficial + ",\n" +	
+								"I hope this email finds you well.\n" +
+								"We are pleased to inform you that you have been nominated for the claim settlement for "+ Mill +" on Date: "+ DateofInpection +" .\n" +
+								 "\n" +
+								"Thanks & Regards,\n" +
+								"Jute Corporation of India";
+				
+			    String filenamefa =OmoOfficialDocumentDownload;		
+				String usernamefa = "";
+			    String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
+				try {
+					toAddresses = new InternetAddress[] {
+							new InternetAddress("mansi.gupta@cyfuture.com")
+					};
 
+				} catch (AddressException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			   emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
+			   
+			   // 2- email is for omoofficial
+				EmailSender emailomo = new EmailSender();
+				InternetAddress[] toAddressesomo = null;		
+				String subjectomo = "Nomination for Claim Settlement";	
+				String bodyomo ="Dear "+ omofficial  + ",\n" +	
+						     "I hope this email finds you well.\n" +
+						     "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill + " on Date: " + DateofInpection+ ".\n" +
+						     "\n"+ 
+						     "Thanks & Regards,\n" +
+						     "Jute Corporation of India";
+			   String filenameomo = OmoOfficialDocumentDownload;
+			   String username1 = "";		
+			   String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
+				try {		
+					toAddressesomo = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
+		
+					};
+		
+				} catch (AddressException e) {
+		
+					e.printStackTrace();
+				}
+				emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo , filenameomo , username1);
+				
+	         // 3- email is for mill
+				EmailSender emailmill = new EmailSender();
+				InternetAddress[] toAddressesmill = null;		
+				String subjectmill = "Nomination for Claim Settlement";	
+
+				String bodymill=	"Dear "+ Mill + ",\n" +		
+			                         "I hope this email finds you well.\n" +
+			                         "We are pleased to inform you that "+ Mill +" have been nominated for the claim settlement  on Date: " + DateofInpection+ ".\n" +
+			                         "\n"+ 
+			                         "Thanks & Regards,\n" +
+									     "Jute Corporation of India";
+									   String filenamemill = OmoOfficialDocumentDownload;
+									   String usernamemill = "";		
+									   String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
+										try {		
+					toAddressesmill = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
+		
+					};
+		
+				} catch (AddressException e) {
+		
+					e.printStackTrace();
+				}
+		
+				emailmill.sendEmail(toAddressesmill, bodymill, subjectmill , filenamemill , usernamemill);
+				 return new ModelAndView(new RedirectView("viewlistnominal.obj"));
+			
+		} catch(Exception e){
+			System.out.println("Error in update user profile"+ e.getStackTrace());
+		}
 		return mv;
 	}
+
 
 	@RequestMapping("viewlistnominal")
 	public ModelAndView ViewNominal(Model model, HttpServletRequest request) {
@@ -5037,7 +5076,7 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
-//		Collections.reverse(AllList);
+		Collections.reverse(AllList);
 		model.addAttribute("jciclaim_NominationModel", AllList);
 		String omofficial = request.getParameter("omofficial");
 		return mv;
@@ -5276,25 +5315,223 @@ public class Controller_V {
 ////////////////////////////////////////////////////// Entry of TDS END ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// ///////////////////////////////////////////////mill registration Start//////////////////////////////////////
+ 
+		@RequestMapping("millRegisteration")
+		public ModelAndView millregistration(Model model, HttpServletRequest request) {
+			//String username = (String) request.getSession().getAttribute("usrname");
 
-	@RequestMapping("millRegisteration")
-	public ModelAndView millregistration(Model model, HttpServletRequest request) {
-		// String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView("millRegistration");
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
 
-		ModelAndView mv = new ModelAndView("millRegistration");
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
+				mv = new ModelAndView("index");
 
-			mv = new ModelAndView("index");
+			}
+			List<String> millid = millRegistrationService.MillName();
+			mv.addObject("millid", millid);
+
+			// model.addAttribute("AllList", AllList);
+			return mv;
+		}
+
+		
+		@ResponseBody
+		@RequestMapping(value = "millcodefetch", method = RequestMethod.GET)
+		public String MillCodeFetch(@RequestParam("millid") String millid) {
+
+			List<Object> millReceiptData = millRegistrationService.FetchMillReceiptData(millid);
+
+			Gson gson = new Gson();
+			String jsonResponse = gson.toJson(millReceiptData);
+
+			return jsonResponse;
 
 		}
-		List<String> millid = millRegistrationService.MillName();
-		mv.addObject("millid", millid);
 
-		// model.addAttribute("AllList", AllList);
-		return mv;
+
+		@ResponseBody
+		@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
+		public String validatemillEmail(final HttpServletRequest request) {
+
+			final Gson gson = new Gson();
+			return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
+		}
+
+		
+		@ResponseBody
+		@RequestMapping(value = { "validatemill" }, method = { RequestMethod.GET })
+		public String validatemill(final HttpServletRequest request) {
+
+			final Gson gson = new Gson();
+			return this.millRegistrationService.validatemill(request.getParameter("millName")) + "";
+		}
+		@RequestMapping("savemillregister")
+		public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
+				HttpSession s) throws IllegalStateException, IOException {
+			
+			
+			String username = (String) request.getSession().getAttribute("usrname");
+			
+
+			String mill_name = request.getParameter("mill_name");
+
+			String mill_password = request.getParameter("mill_password");
+			String confirm_mill_password = request.getParameter("confirm_mill_password");
+
+			String mill_code = request.getParameter("mill_code");
+			String mill_emailaddress = request.getParameter("mill_emailaddress");
+
+			String mill_mobile = request.getParameter("mill_mobile");
+			String official_name = request.getParameter("official_name");
+			String official_designation = request.getParameter("official_designation");
+
+			// Creating object of
+
+			MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
+			millRegistrationModel.setMill_name(mill_name);
+			millRegistrationModel.setOfficial_name(official_name);
+			millRegistrationModel.setOfficial_designation(official_designation);
+			millRegistrationModel.setMill_code(mill_code);
+			millRegistrationModel.setMill_emailaddress(mill_emailaddress);
+			millRegistrationModel.setMill_mobile(mill_mobile);
+			millRegistrationModel.setMill_password(mill_password);
+			millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
+			// ModelAndView mv = new ModelAndView();
+			final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
+			final boolean millNotRegistered = this.millRegistrationService.validatemill(mill_name);
+
+			if (emailNotExist && mill_password.equals(confirm_mill_password)  && millNotRegistered ==false) {
+			    // Create mill registration
+			    millRegistrationService.create(millRegistrationModel);
+			    // Redirect with success message
+			    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+			    return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+			} else if (!mill_password.equals(confirm_mill_password)) {
+			    // Redirect with password mismatch message
+			    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Password and Confirm Mill Password are different. Please fill in the same Mill Password and Confirm Mill Password. </div>\r\n");
+			    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+			} else if(millNotRegistered==true) {
+				   redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Mill Already Registered.Please Select another Mill Name.</div>\r\n");
+				    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+			}
+			else {
+			    // Redirect with duplicate email message
+			    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with another email.</div>\r\n");
+			    return new ModelAndView(new RedirectView("millRegisteration.obj"));
+			}
+	//return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+
+		}
+
+		@RequestMapping("viewmillRegistration")
+
+		public ModelAndView ViewmillRegistration(Model model, HttpServletRequest request) {
+			ModelAndView mv = new ModelAndView("viewMillRegistration");	
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
+
+				mv = new ModelAndView("index");
+
+			}
+
+			List<MillRegistrationModel> AllList = (List<MillRegistrationModel>) millRegistrationService.getAll();
+
+			Collections.reverse(AllList);
+
+			model.addAttribute("AllList", AllList);
+			// int MillRegistrationId =
+			// Integer.parseInt(request.getParameter("MillRegistration_id"));
+
+			//return "viewMillRegistration";
+			return mv;
+
+		}
+
+		@RequestMapping({ "updateMillRegistration" })
+		public ModelAndView updateMillRegistration(HttpServletRequest request, RedirectAttributes redirectAttributes)
+				throws NumberFormatException, Exception {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView();
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+			int MillRegistrationId = Integer.parseInt(request.getParameter("id"));
+
+			millRegistrationService.ResetPassword(MillRegistrationId);
+
+			redirectAttributes.addFlashAttribute("msg",
+					(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
+			return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
+		}
+		
+	///////////////////////////////////////// mill registration end //////////////////////////////////////////////////////////////////////////
+		
+/////////////////////////////////////////// mill login start ////////////////////////////////////////////////////////////////////////////////////////////
+@RequestMapping("millLogin")
+public ModelAndView login(HttpServletRequest request) {
+HttpSession session = request.getSession();
+session.invalidate();
+
+ModelAndView mv = new ModelAndView("millLogin");
+return mv;
+}
+@RequestMapping("millloginAction")
+public ModelAndView loginDetailsCheck1(HttpServletRequest request, RedirectAttributes redirectAttributes,
+		HttpSession session) {
+	ModelAndView mv = new ModelAndView("millLogin");
+
+	try {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+
+		if (email != null && password != null) {
+			String ifExist = millRegistrationService.checkLogin(email, password);
+			String millcode = millRegistrationService.checkmillcode(email);
+			String useremail = millRegistrationService.checkmillemail(email);
+
+			if (ifExist == null) {
+				mv.addObject("msg",
+						"<div class=\"alert alert-danger\"><b>Failure !</b>Please Enter correct username and password.</div> \r\n");
+			} else {
+				// session.setAttribute("email", email);
+				session.setAttribute("millcode", millcode);
+				session.setAttribute("useremail", useremail);
+				mv = new ModelAndView(new RedirectView("viewmillAcc.obj"));
+
+			}
+		}
+
+	} catch (Exception e) {
+		System.out.println(e);
 	}
+	return mv;
+}
+ 
+///////////////////////////////////// mill login end ////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////Privacy policy page start ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@RequestMapping("privacypolicy")
+public ModelAndView privacy_policy(HttpServletRequest request) {
+
+String username = (String) request.getSession().getAttribute("usrname");
+
+ModelAndView mv = new ModelAndView("privacy_policy");
+
+if (username == null) {
+
+mv = new ModelAndView("index");
+
+}
+
+
+
+
+return mv;
+}
+////////////////////////////////////////////////////privacy policy page end /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//	
 	@ResponseBody
 	@RequestMapping(value = { "fetchChallan" }, method = { RequestMethod.GET })
 	public String fetchClaim(@RequestParam("id") String id, HttpServletRequest request, HttpSession session) {
@@ -5308,182 +5545,7 @@ public class Controller_V {
 
 	}
 
-//	// Verification of Weighment Slip
-//	@RequestMapping({ "WeightmentSlipList" })
-//	public ModelAndView WeightmentSlipList(HttpSession session, HttpServletRequest request) {
-//		String username = (String) request.getSession().getAttribute("usrname");
-//	}
 
-	@ResponseBody
-	@RequestMapping(value = { "validatemillEmail" }, method = { RequestMethod.GET })
-	public String validatemillEmail(final HttpServletRequest request) {
-
-		final Gson gson = new Gson();
-		return this.millRegistrationService.validatemillEmail(request.getParameter("Email")) + "";
-	}
-
-	@ResponseBody
-	@RequestMapping(value = { "validatemill" }, method = { RequestMethod.GET })
-	public String validatemill(final HttpServletRequest request) {
-
-		final Gson gson = new Gson();
-		return this.millRegistrationService.validatemill(request.getParameter("millName")) + "";
-	}
-
-	@RequestMapping("savemillregister")
-	public ModelAndView saveMillRegisration(HttpServletRequest request, RedirectAttributes redirectAttributes,
-			HttpSession s) throws IllegalStateException, IOException {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		String mill_name = request.getParameter("mill_name");
-
-		String mill_password = request.getParameter("mill_password");
-		String confirm_mill_password = request.getParameter("confirm_mill_password");
-
-		String mill_code = request.getParameter("mill_code");
-		String mill_emailaddress = request.getParameter("mill_emailaddress");
-
-		String mill_mobile = request.getParameter("mill_mobile");
-		String official_name = request.getParameter("official_name");
-		String official_designation = request.getParameter("official_designation");
-
-		// Creating object of
-
-		MillRegistrationModel millRegistrationModel = new MillRegistrationModel();
-		millRegistrationModel.setMill_name(mill_name);
-		millRegistrationModel.setOfficial_name(official_name);
-		millRegistrationModel.setOfficial_designation(official_designation);
-		millRegistrationModel.setMill_code(mill_code);
-		millRegistrationModel.setMill_emailaddress(mill_emailaddress);
-		millRegistrationModel.setMill_mobile(mill_mobile);
-		millRegistrationModel.setMill_password(mill_password);
-		millRegistrationModel.setConfirm_mill_password(confirm_mill_password);
-		// ModelAndView mv = new ModelAndView();
-		final boolean emailNotExist = this.millRegistrationService.validatemillEmail(mill_emailaddress);
-		final boolean millNotRegistered = this.millRegistrationService.validatemill(mill_name);
-
-		if (emailNotExist && mill_password.equals(confirm_mill_password) && millNotRegistered == false) {
-			// Create mill registration
-			millRegistrationService.create(millRegistrationModel);
-			// Redirect with success message
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-			return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-		} else if (!mill_password.equals(confirm_mill_password)) {
-			// Redirect with password mismatch message
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-warning\"><b>OOps!</b> Mill Password and Confirm Mill Password are different. Please fill in the same Mill Password and Confirm Mill Password. </div>\r\n");
-			return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		} else if (millNotRegistered == true) {
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-warning\"><b>OOps!</b> Mill Already Registered.Please Select another Mill Name.</div>\r\n");
-			return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		} else {
-			// Redirect with duplicate email message
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-warning\"><b>OOps!</b> Duplicate email id Can't Submit Please fill Form with another email.</div>\r\n");
-			return new ModelAndView(new RedirectView("millRegisteration.obj"));
-		}
-//return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-
-	}
-
-	@RequestMapping("viewmillRegistration")
-
-	public ModelAndView ViewmillRegistration(Model model, HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("viewMillRegistration");
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-
-			mv = new ModelAndView("index");
-
-		}
-
-		List<MillRegistrationModel> AllList = (List<MillRegistrationModel>) millRegistrationService.getAll();
-
-		Collections.reverse(AllList);
-
-		model.addAttribute("AllList", AllList);
-		// int MillRegistrationId =
-		// Integer.parseInt(request.getParameter("MillRegistration_id"));
-
-		// return "viewMillRegistration";
-		return mv;
-
-	}
-
-	@RequestMapping({ "updateMillRegistration" })
-	public ModelAndView updateMillRegistration(HttpServletRequest request, RedirectAttributes redirectAttributes)
-			throws NumberFormatException, Exception {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView();
-
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		int MillRegistrationId = Integer.parseInt(request.getParameter("id"));
-
-		millRegistrationService.ResetPassword(MillRegistrationId);
-
-		redirectAttributes.addFlashAttribute("msg",
-				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Password has been Reset.</div>\r\n");
-		return new ModelAndView(new RedirectView("viewmillRegistration.obj"));
-	}
-
-///////////////////////////////////////// mill registration end //////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////// mill login start ////////////////////////////////////////////////////////////////////////////////////////////
-	@RequestMapping("millLogin")
-	public ModelAndView login(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.invalidate();
-
-		ModelAndView mv = new ModelAndView("millLogin");
-		return mv;
-	}
-
-	// Verify Claim by FA official
-	@RequestMapping(value = { "verifyClaimReport" }, method = RequestMethod.GET)
-	public ModelAndView VerifyClaimReport(HttpSession session, HttpServletRequest request,
-			RedirectAttributes redirectAttributes) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		String Ro_id = (String) session.getAttribute("region");
-
-		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementData(username);
-		System.err.println(getSettlementidlist);
-		redirectAttributes.addFlashAttribute("msg",
-				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-		ModelAndView mv = new ModelAndView("verifyClaimReport");
-		mv.addObject("getSettlementidlist", getSettlementidlist);
-
-		return mv;
-	}
-///////////////////////////////////// mill login end ////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////// Privacy policy page start ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@RequestMapping("privacypolicy")
-	public ModelAndView privacy_policy(HttpServletRequest request) {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		ModelAndView mv = new ModelAndView("privacy_policy");
-
-		if (username == null) {
-
-			mv = new ModelAndView("index");
-
-		}
-
-		// Adding the Mill Name as a Drop Down List In Entry Of TDS Form
-
-		return mv;
-	}
 
 	@ResponseBody
 	@RequestMapping(value = { "fetchPrice" }, method = { RequestMethod.GET })
@@ -5632,8 +5694,29 @@ public class Controller_V {
 		this.confirmationofClaimSettlementService.rejectClaim(settleId, username);
 		return null;
 	}
+	
+	
+    @RequestMapping(value = { "verifyClaimReport" }, method = RequestMethod.GET)
+    public ModelAndView VerifyClaimReport(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+           String username = (String) request.getSession().getAttribute("usrname");
+           if (username == null) {
+                  return new ModelAndView("index");
+           }
 
-//////////////////////////////////////////////////// privacy policy page end /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+           String Ro_id = (String) session.getAttribute("region");
+
+           List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementData(username);
+           System.err.println(getSettlementidlist);
+           redirectAttributes.addFlashAttribute("msg",
+                        "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+           ModelAndView mv = new ModelAndView("verifyClaimReport");
+           mv.addObject("getSettlementidlist", getSettlementidlist);
+
+           return mv;
+    }
+
+
+
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

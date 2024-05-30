@@ -114,6 +114,14 @@ th {
 					<span>${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
+						<div text-center><a href="viewlistnominal.obj"><button class="btn btn-primary" type="button">Back</button></a></div>
+							<%-- <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
+                        <div text-center>Settlement Id : ${firstItem.settlement_id_generated}</div> --%>
+                        <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
+							<div style="text-align: center;">
+                          <p style="font-weight: bold; ">Settlement Id: ${firstItem.settlement_id_generated}</p>
+                         </div>
+							
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
@@ -127,7 +135,8 @@ th {
 									<th>Mr_Date</th>
 									<th>Bill_Of_Supply_Number</th>
 									<th>Date_Of_Shipment</th>	
-									<th>Shipment_Quantity</th>														
+									<th>Shipment_Quantity</th>	
+									<th>Claim Valuation</th>													
 									</tr>
 								</thead>
 								<tbody>
@@ -144,20 +153,9 @@ th {
 										<td>${item.getBillOfSupply_number()}</td>
 										<td>${item.getDateofshipment()}</td>
 										<td>${item.getShipmentquantity()}</td>
+										<td>${item.getClaimValuation()}</td>
 										
-                                          
-									
-
-
-
-
-
-
-
-
-
-
-
+                                       
 										</tr>
 										<%i++; %>
 									</c:forEach>

@@ -80,6 +80,9 @@ public class Jciclaim_NominationModel {
 	@Column(name = "shipmentquantity")
 	private String  shipmentquantity;
 	
+	@Column(name = "claimValuation")
+	private String claimValuation;
+	
 
 	public String getChallanNo() {
 		return ChallanNo;
@@ -257,5 +260,14 @@ public class Jciclaim_NominationModel {
 		this.shipmentquantity = shipmentquantity;
 	}
 
+	public String getClaimValuation() {
+		return claimValuation;
+	}
+
+	public void setClaimValuation(String claimValuation) {
+		this.claimValuation = claimValuation;
+	}
+
+	
 
 }
