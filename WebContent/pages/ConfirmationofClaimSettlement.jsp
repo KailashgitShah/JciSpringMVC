@@ -162,13 +162,13 @@ div.scrollmenu a:hover {
 													id="CropYear1" value="" placeholder="Crop Year" readonly
 													required>
 											</div>
-											<div class="col-sm-4 form-group">
+											<!-- <div class="col-sm-4 form-group">
 												<label>Inspection by</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Inspection_by" name="Inspection_by "
 													class="text-danger"> </span> <input
 													class="form-control taxtbox" name="Inspectionby1"
 													placeholder="Inspection by" required>
-											</div>
+											</div> -->
 											
 											
 											
@@ -427,8 +427,8 @@ $(document).ready(function(){
                     var formattedDate = formattedDay + '-' + formattedMonth + '-' + formattedYear;
 
                     var tableHTML = "<table border='1'>";
-                    tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
-                        "<th style='font-weight: bold;'>Moisture Claim Percentage</th><th style='font-weight: bold;'>Moisture Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th></tr>";
+                    tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Variety/Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
+                        "<th style='font-weight: bold;'>Moisture Content Claim Percentage</th><th style='font-weight: bold;'>Moisture Content Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th><th style='font-weight: bold;'>Claim Amount</th></tr>";
                     for (var i = 0; i < data.length; i++) {
                         var grade = data[i][3];
                            var readOnly = (grade === 'TDN5' || grade === 'WN5' || grade === 'M6' || grade === 'B6') ? 'readonly' : '';
@@ -443,21 +443,22 @@ $(document).ready(function(){
                            alert(formattedDate1);
                         tableHTML += "<tr>";
                         tableHTML += "<td style='text-align:center;'><input readonly id='jv"+i+"' name='jv"+i+"' value='" + data[i][2] + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='jg"+i+"' name='jg"+i+"' value='" + data[i][3] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='jg"+i+"' name='jg"+i+"' value='" + data[i][3] + "'></td>";
 
-                        tableHTML += "<td style='text-align:center;'> <input readonly id='cont"+i+"' name='cont"+i+"' value='" + data[i][13] + "'></input></td>";
-                    
-                        tableHTML += "<td style='text-align:center;'><input readonly id='di"+i+"' name='di"+i+"' value='" + data[i][14] + "'></td>";
-                       tableHTML += "<td style='text-align:center;'><input readonly id='ch"+i+"' name='ch"+i+"' value='" + data[i][12] + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='mn"+i+"' name='mn"+i+"' value='" + data[i][16] + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='md"+i+"' name='md"+i+"' value='" + formattedDate1 + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='nob"+i+"' name='nob"+i+"' value='" + data[i][8] + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='amt"+i+"' name='amt"+i+"' value='" + data[i][4] + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='pr"+i+"' name='pr"+i+"' type='number' value='" + data[i][9] + "'></td>";
-                        tableHTML += "<td style='text-align:center;'><input readonly id='qc"+i+"' name='qc"+i+"' value='" + data[i][5] + "%'></td>";
-                        tableHTML += "<td style='text-align:center;'>";
-                        tableHTML += "<input type='number' style='text-align:center; width:80px;' id='qs" + i + "' name='qs" + i + "' value='0.00' " + readOnly + ">";
-                        tableHTML += "</td>";
+    	                tableHTML += "<td style='text-align:center;'> <input readonly id='cont"+i+"' name='cont"+i+"' value='" + data[i][13] + "'></input></td>";
+                        
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='di"+i+"' name='di"+i+"' value='" + data[i][14] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='ch"+i+"' name='ch"+i+"' value='" + data[i][12] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='mn"+i+"' name='mn"+i+"' value='" + data[i][16] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='md"+i+"' name='md"+i+"' value='" + formattedDate1 + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='nob"+i+"' name='nob"+i+"' value='" + data[i][8] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='amt"+i+"' name='amt"+i+"' value='" + data[i][4] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='pr"+i+"' name='pr"+i+"' type='number' value='" + data[i][9] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='qc"+i+"' name='qc"+i+"' value='" + data[i][5] + "%'></td>";
+    	                tableHTML += "<td style='text-align:center;'>";
+    	                tableHTML += "<input type='number' style='text-align:center; width:80px;' id='qs" + i + "' name='qs" + i + "' value='0.00' " + readOnly + ">";
+    	                tableHTML += "</td>";
+
                         tableHTML += "<td style='text-align:center;  ' id='mc"+i+"'>" + data[i][6] +"%"+ "</td>";
                         tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ms" + i + "'   name='ms" + i + "' value='0.00'></td>";
                         tableHTML += "<td style='text-align:center;  ' id='nc"+i+"'>" + data[i][7] +"%"+ "</td>";
@@ -465,11 +466,64 @@ $(document).ready(function(){
                         tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ns"+i+"' name='ns"+i+"' value='0.00'></td>";
                         tableHTML += "<td style='text-align:center;  '  id='dc"+i+"'>" + data[i][7]+"%" + "</td>";
                         tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ds"+i+"'  name='ds"+i+"' value='0.00'></td>";
+                        tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='cl"+i+"'  name='cl"+i+"' value='0.00' readonly></td>";
                         tableHTML += "</tr>";
                     }
                     tableHTML += "</table>";
                     tableHTML += "<button class='settlementButton'>Calculate</button>";
                     $("#form2").html(tableHTML);
+                 // Add event listeners to input fields
+                    for (let i = 0; i < data.length; i++) {
+                        document.getElementById('qs' + i).addEventListener('change', validateQualitySettlement);
+                        document.getElementById('ms' + i).addEventListener('change', validateMoistureSettlement);
+                        document.getElementById('ns' + i).addEventListener('change', validateNcvSettlement);
+                        document.getElementById('ds' + i).addEventListener('change', validateDustSettlement);
+                    }
+
+                    // Validation functions
+                    function validateQualitySettlement(event) {
+                        const index = parseInt(event.target.id.substring(2));
+                        const qualitySettlement = parseFloat(event.target.value);
+                        const qc = parseFloat(document.getElementById('qc' + index).value);
+                        if (qualitySettlement > qc) {
+                            alert("Quality Settlement should not exceed Quality Check!");
+                            event.target.value = 0.00;
+                        }
+                    }
+
+                    function validateMoistureSettlement(event) {
+                        const index = parseInt(event.target.id.substring(2));
+                        const moistureSettlement = parseFloat(event.target.value);
+                        const mc = parseFloat(document.getElementById('mc' + index).textContent);
+                        if (moistureSettlement > mc) {
+                            alert("Moisture Settlement should not exceed Moisture Check!");
+                            event.target.value = 0.00;
+                        }
+                    }
+
+                    function validateNcvSettlement(event) {
+                        const index = parseInt(event.target.id.substring(2));
+                        const ncvSettlement = parseFloat(event.target.value);
+                        const nc = parseFloat(document.getElementById('nc' + index).textContent);
+                        if (ncvSettlement > nc) {
+                            alert("NCV Settlement should not exceed NCV Check!");
+                            event.target.value = 0.00;
+                        }
+                    }
+
+                    function validateDustSettlement(event) {
+                        const index = parseInt(event.target.id.substring(2));
+                        const dustSettlement = parseFloat(event.target.value);
+                        const dc = parseFloat(document.getElementById('dc' + index).textContent);
+                        if (dustSettlement > dc) {
+                            alert("Dust Settlement should not exceed Dust Check!");
+                            event.target.value = 0.00;
+                        }
+                    }
+
+                    
+                    
+                    
                     $("#q").val(data.length);
                    
                     $("#CropYear1").val(data[0][10]);
@@ -478,7 +532,7 @@ $(document).ready(function(){
 
                     var settle = "<label>Settlement Amount</label> <span class='text-danger'>*</span>&nbsp; <span id='Settlement_Amount' name='Settlement_Amount' class='text-danger'></span> <input class='form-control taxtbox' name='SettlementAmount' id='SettlementAmount1' readonly placeholder='Settlement Amount' required>";
                     $("#form3").html(settle);
-
+					
                     $(document).on('click', '.settlementButton', async function(event) {
                         event.preventDefault();
                         event.stopPropagation(); 
@@ -488,50 +542,112 @@ $(document).ready(function(){
                         var totalSettlementAmount = 0;
 
                         for (var index = 0; index < len; index++) {
-                            var nsValue = parseFloat($('#ns' + index).val()).toFixed(2);
-                            var dsValue = parseFloat($('#ds' + index).val()).toFixed(2);
-                            var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
-                            var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
-                            var price = parseFloat($('#pr'+index).val()).toFixed(2);
-                            alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
-                            var ms = parseFloat($('#ms'+index).val()).toFixed(2);
+                        	  var nsValue = parseFloat($('#ns' + index).val()).toFixed(2);
+      	                    var dsValue = parseFloat($('#ds' + index).val()).toFixed(2);
+      	                    var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
+      	                    var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
+      	                    var price = parseFloat($('#pr'+index).val()).toFixed(2);
+      	                    alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
+      	                    var ms = parseFloat($('#ms'+index).val()).toFixed(2);
+      	                    var quot=0;
+      	                    var rem=0;
+							if(qsValue >100){
+								quot = qsValue/100;
+								rem= qsValue%100;
+								
+							}
+      	                    
+      	                    
                             var dsAmount = (dsValue / 100) * amtValue;
                             var nsAmount = (nsValue / 100) * amtValue;
                             var dnsPrice= (dsAmount+nsAmount)* price;
-                            var msQty= (ms / 100) * amtValue;
-                                          var msAmount = (ms / 100) * amtValue * price;
+    	                    var msQty= (ms / 100) * amtValue;
+    					    var msAmount = (ms / 100) * amtValue * price;
+
                             if (!isNaN(nsValue) && !isNaN(dsValue) && !isNaN(amtValue)) {
-                                var amti = amtValue - (dsAmount + nsAmount+msQty) ;
+                            	  var amti = amtValue - (dsAmount + nsAmount+msQty) ;
                                 var amtiFixed = amti.toFixed(2);
                               
                                 
                                 try {
+                                	var grade = data[index][3];
+                                	
+                                	if (quot >= 1) {
+                                	   
+                                	   
+
+                                	    const result = await $.ajax({
+                                	        type: 'GET',
+                                	        url: 'fetchPrice.obj',
+                                	        data: {
+                                	            "variety": data[index][2],
+                                	            "grade": grade,
+                                	            "contract": data[index][13],
+                                	            "challan": data[index][12]
+                                	        }
+                                	    });
+                                	    alert(result)
+                                	    var lastDigit = parseInt(grade.slice(-1)); // Extract the last digit and convert it to an integer
+                                	    var newLastDigit = (lastDigit + (parseInt(quot))) % 10; // Ensure the result stays within the range 0-9
+                                	    grade = grade.slice(0, -1) + newLastDigit; // Concatenate the modified last digit with the rest of the grade
+                                	    alert(grade);
+                                	    const result2 = await $.ajax({
+                                	        type: 'GET',
+                                	        url: 'fetchPrice.obj',
+                                	        data: {
+                                	            "variety": data[index][2],
+                                	            "grade": grade,
+                                	            "contract": data[index][13],
+                                	            "challan": data[index][12]
+                                	        }
+                                	    });
+                                	    alert(result2);
+                                	    const fetchedData1 = parseFloat(JSON.parse(result));
+                                	    const fetchedData2 = parseFloat(JSON.parse(result2));
+                                	    
+                                	    const AmountSet1 = amtiFixed * (100-rem)/100 * (price - fetchedData1);
+                                	    const AmountSet2 = amtiFixed * (rem)/100 * (price - fetchedData2);
+                                	    alert(AmountSet1 +"------------"+AmountSet2);
+                                
+                                	    totalSettlementAmount += parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2);
+                                	    alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
+                                	}
+
+                                	else{
                                     const result = await $.ajax({
                                         type: 'GET',
                                         url: 'fetchPrice.obj',
                                         data: {
                                             "variety": data[index][2],
-                                            "grade": data[index][3],
+                                            "grade": grade,
                                             "contract": data[index][13],
                                             "challan": data[index][12]
                                         }
                                     });
-
+                                    
                                     const fetchedData = parseFloat(JSON.parse(result));
-                                    
-                                    
+                                    alert(fetchedData);
                                     const AmountSet = amtiFixed * (qsValue/100) * (price - fetchedData);
-                                 
+                                    
+                                    $("#cl"+index).val(parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice));
                                     totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
-                                    alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
+    	                            alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
+                                	}
+
+                                    
+                                    
+                                    
+                                   
+
                                 } catch (error) {
                                     alert("Error fetching data: " + error);
                                 }
                             }
                         }
                        /*  $('#Settlement_Amount').text(totalSettlementAmount); */
-                       alert(totalSettlementAmount)
-                        $("#SettlementAmount1").val(totalSettlementAmount.toFixed(2));
+                      alert(totalSettlementAmount)
+	                $("#SettlementAmount1").val(totalSettlementAmount.toFixed(2));
+
                         $("#sub").prop("disabled", false);
                     });
                 } catch (error) {
@@ -539,6 +655,7 @@ $(document).ready(function(){
                 }
             });
         });
+
 
       </script>
 
@@ -570,7 +687,10 @@ function myFunc(){
 	
 	
 	}
-	 else */ return true;
+	 else */
+	/* alert( $("#q").val()); */
+	 
+	 return true;
 }
 </script>
 

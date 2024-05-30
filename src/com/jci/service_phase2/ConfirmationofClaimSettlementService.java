@@ -12,7 +12,7 @@ public interface ConfirmationofClaimSettlementService {
 
 	public List<ConfirmationClaimSettlementModel> getAll();
 
-	public List<Object[]> SettlementId();
+	public List<Object[]> SettlementId(String username);
 
 	public List<Object[]> fetchdataofclaim(String st);
 
@@ -25,6 +25,12 @@ public interface ConfirmationofClaimSettlementService {
 	public List<Object[]> fetchChallan(String id);
 
 	public String fetchPrice(String var, String gr, String dpcId, String cropyear, String contract);
+
+	public List<Object[]> getSettlementData(String username);
+
+	public void acceptClaim(String challan, String username, String string);
+
+	public void rejectClaim(String challan, String username);
 
 	
 }

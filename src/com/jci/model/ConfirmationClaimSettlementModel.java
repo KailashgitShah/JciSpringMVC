@@ -51,7 +51,8 @@ public class ConfirmationClaimSettlementModel {
 
 	@Column(name = "Moisture_settlement")
 	private Double Moisture_settlement;
-
+	@Column(name = "Dust_settlement")
+	private Double Dust_settlement;
 	@Column(name = "Ncv_settlement")
 	private Double Ncv_settlement;
 
@@ -63,7 +64,9 @@ public class ConfirmationClaimSettlementModel {
 
 	@Column(name = "Supporting_doc")
 	private String Supporting_doc;
-
+	
+	@Column(name = "FA_doc")
+	private String FA_doc;
 	
 	@Column(name = "Dispute_flag")
 	private int Dispute_flag;
@@ -219,26 +222,39 @@ public class ConfirmationClaimSettlementModel {
 		Created_on = created_on;
 	}
 
+	public Double getDust_settlement() {
+		return Dust_settlement;
+	}
+
+	public void setDust_settlement(Double dust_settlement) {
+		Dust_settlement = dust_settlement;
+	}
+
+	public String getFA_doc() {
+		return FA_doc;
+	}
+
+	public void setFA_doc(String fA_doc) {
+		FA_doc = fA_doc;
+	}
+
 	@Override
 	public String toString() {
 		return "ConfirmationClaimSettlementModel [id=" + id + ", Settlement_id=" + Settlement_id + ", Mill=" + Mill
 				+ ", Contract_No=" + Contract_No + ", Challan_No=" + Challan_No + ", Claim_Amount=" + Claim_Amount
 				+ ", OM_Official=" + OM_Official + ", FA_Official=" + FA_Official + ", Date_of_Inspection="
 				+ Date_of_Inspection + ", Quality_settlement=" + Quality_settlement + ", Moisture_settlement="
-				+ Moisture_settlement + ", Ncv_settlement=" + Ncv_settlement + ", Settlement_amt=" + Settlement_amt
-				+ ", Inspection_by=" + Inspection_by + ", Supporting_doc=" + Supporting_doc + ", Dispute_flag="
-				+ Dispute_flag + ", Created_by=" + Created_by + ", Created_on=" + Created_on + "]";
-	}
-
-	public ConfirmationClaimSettlementModel() {
-		super();
-		// TODO Auto-generated constructor stub
+				+ Moisture_settlement + ", Dust_settlement=" + Dust_settlement + ", Ncv_settlement=" + Ncv_settlement
+				+ ", Settlement_amt=" + Settlement_amt + ", Inspection_by=" + Inspection_by + ", Supporting_doc="
+				+ Supporting_doc + ", FA_doc=" + FA_doc + ", Dispute_flag=" + Dispute_flag + ", Created_by="
+				+ Created_by + ", Created_on=" + Created_on + "]";
 	}
 
 	public ConfirmationClaimSettlementModel(int id, String settlement_id, String mill, String contract_No,
 			String challan_No, Double claim_Amount, String oM_Official, String fA_Official, Date date_of_Inspection,
-			Double quality_settlement, Double moisture_settlement, Double ncv_settlement, Double settlement_amt,
-			String inspection_by, String supporting_doc, int dispute_flag, String created_by, Date created_on) {
+			Double quality_settlement, Double moisture_settlement, Double dust_settlement, Double ncv_settlement,
+			Double settlement_amt, String inspection_by, String supporting_doc, String fA_doc, int dispute_flag,
+			String created_by, Date created_on) {
 		super();
 		this.id = id;
 		Settlement_id = settlement_id;
@@ -251,15 +267,23 @@ public class ConfirmationClaimSettlementModel {
 		Date_of_Inspection = date_of_Inspection;
 		Quality_settlement = quality_settlement;
 		Moisture_settlement = moisture_settlement;
+		Dust_settlement = dust_settlement;
 		Ncv_settlement = ncv_settlement;
 		Settlement_amt = settlement_amt;
 		Inspection_by = inspection_by;
 		Supporting_doc = supporting_doc;
+		FA_doc = fA_doc;
 		Dispute_flag = dispute_flag;
 		Created_by = created_by;
 		Created_on = created_on;
 	}
 
+	public ConfirmationClaimSettlementModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	
 
+	
 }
