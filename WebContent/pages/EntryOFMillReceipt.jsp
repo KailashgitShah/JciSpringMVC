@@ -575,7 +575,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table2-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="double" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0">' +
+                    '<input type="double" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0"  readonly>' +
                     '</div>' +
                     '</td>' +
                     '<td>' +
@@ -616,7 +616,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="MoistureValue' + index + '"></label>' +
-                    '<input type="double" id="MoistureValue' + index + '" name="MoistureValue[]"  value="0" >' +
+                    '<input type="double" id="MoistureValue' + index + '" name="MoistureValue[]"  value="0"  readonly>' +
                     '</div>' +
                     '</td>' +
                     
@@ -639,7 +639,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="double" id="NCV_Value' + index + '" name="NCV_Value[]" value="0"  >' +
+                    '<input type="double" id="NCV_Value' + index + '" name="NCV_Value[]" value="0" readonly >' +
                     '</div>' +
                     '</td>' +
                     
@@ -663,7 +663,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     
                     '<td>' +
                     '<div class="table3-cell">' +
-                    '<input type="double" id="DustValue' + index + '" name="DustValue[]"  value="0">' +
+                    '<input type="double" id="DustValue' + index + '" name="DustValue[]"  value="0" readonly>' +
                     '</div>' +
                     '</td>' +
                    
@@ -671,7 +671,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                    
                    '<td>' +
                    '<div class="table3-cell">' +
-                   '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]"  value="0">' +
+                   '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]"  value="0"  readonly>' +
                    '</div>' +
                    '</td>' +
                   '</tr>';
