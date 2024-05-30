@@ -38,4 +38,10 @@ public interface CreditNoteGenerationService {
 	public List<Object> getGradeRatio(String challanNo);
 
 	public List<Object> getChallanDetails(String challan);
+
+	public List<Object[]> getDetailsofSpp_Con_Rec(String bosNo);
+
+	public List<Object[]> getStateAndPan(String millcode);
+
+	public List<Object[]> getStateAndCodeOfSupplier(String dpc);
 }
