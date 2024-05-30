@@ -35,8 +35,8 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 	}
 
 	@Override
-	public  List<Object[]> SettlementId() {
-		return confirmationClaimSettlementDao.SettlementId();
+	public  List<Object[]> SettlementId(String username) {
+		return confirmationClaimSettlementDao.SettlementId(username);
 	}
 	
 	@Override

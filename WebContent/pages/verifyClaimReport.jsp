@@ -42,6 +42,23 @@ table {
 tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
+div.scrollmenu {
+ /*  background-color: #333; */
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
 </style>
 
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
@@ -88,6 +105,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 			<c:if test="${not empty msg}">
 				<div class="">${msg}</div>
 			</c:if>
+			<div class="scrollmenu"> 
 			<div class="table-responsive" style="margin-top: 20px;">
 <table id="farmerVerific" class="table table-striped table-bordered table-hover" cellspacing="0" style="width: 100%">
     <thead>
@@ -101,12 +119,14 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
            <!--  <th style="width: 10%">Mill Name</th> -->
            <th style="width: 10%">Quality Settlement</th>
             <th style="width: 10%">Moisture Content Settlement</th>
-            <th style="width: 10%">NCV Settlement</th>
+            <th style="width: 5%">NCV Settlement</th>
             
              <th style="width: 10%">Dust Settlement</th>
+             <th style="width: 5%">HO DI </th>
             <th style="width: 10%">Claim Amount</th>
             <th style="width: 10%">Settlement Amount</th>
             <th style="width: 10%">File Upload</th>
+            
             <th style="width: 5%">Confirm/Reject</th>
         </tr>
     </thead>
@@ -134,35 +154,33 @@ String formattedDate = outputFormat.format(date);
            <%--  <td style="width: 10%"><%= row[5] %></td>    --%>
             <td style="width: 10%"><%= row[6] %></td> 
             <td style="width: 10%"><%= row[7] %></td> 
-             
+            
             <td style="width: 10%"><%= row[10] %></td>  
+             <td style="width: 10%"><%= row[13] %></td>    
              <td style="width: 10%"><%= row[12] %></td>  
             <td style="width: 10%"><%= row[9] %></td> 
-                       <% 
-// Assuming row[11] is of type Integer
-if (row[11] != null && ((Integer)row[11]) != 0) { %>
-             <td style="width: 5%"> <input type="file" id="fileUpload-<%= i %>" name="fileUpload-<%= i %>" accept=".pdf,.doc,.docx"></td>
-             <% } else { %>
-    <td style="width: 5%">Verification Completed</td>
-<% } %>
-            <% 
-// Assuming row[11] is of type Integer
-if (row[11] != null && ((Integer)row[11]) != 0) { %>
-    <td style="width: 5%">
-        
-        <button id="confirm-btn-<%= i %>" class="confirm-btn" data-row-id="<%= i %>">Confirm</button>
-        <button id="reject-btn-<%= i %>" class="reject-btn" data-row-id="<%= i %>">Reject</button>
-    </td>
-<% } else { %>
-    <td style="width: 5%">Verification Completed</td>
-<% } %>
+                    <% 
+                    
+                 // Assuming row[11] is of type Integer
+                 if (row[11] != null && ((Integer)row[11]) == 0) { %>
+                     <td style="width: 5%">
+                         <input type="file" id="fileUpload-<%= i %>" name="fileUpload-<%= i %>" accept=".pdf,.doc,.docx">
+                     </td>
+                     <td style="width: 5%">
+                         <button id="confirm-btn-<%= i %>" class="confirm-btn" data-row-id="<%= i %>">Confirm</button>
+                         <button id="reject-btn-<%= i %>" class="reject-btn" data-row-id="<%= i %>">Reject</button>
+                     </td>
+                 <% } else { %>
+                     <td colspan="2" style="width: 10%">Verification Completed</td>
+                 <% } %>
+
 
         </tr>
         <% i++; } %>
     </tbody>
 </table>
 
-
+</div>
 
 			</div>
 			<!-- END PAGE CONTENT-->
@@ -218,6 +236,7 @@ if (row[11] != null && ((Integer)row[11]) != 0) { %>
         processData: false,
         success: function(response) {
             // Handle success response
+        	  window.location.reload();
         },
         error: function(xhr, status, error) {
             // Handle error
@@ -233,7 +252,7 @@ function handleRejection(settleId, file) {
 
     var formData = new FormData();
     formData.append('settleId', settleId);
-    formData.append('file', file);
+   /*  formData.append('file', file); */
 
     $.ajax({
         url: 'rejectClaim.obj',
@@ -243,6 +262,7 @@ function handleRejection(settleId, file) {
         processData: false,
         success: function(response) {
             // Handle success response
+        	  window.location.reload();
             
         },
         error: function(xhr, status, error) {
@@ -251,13 +271,6 @@ function handleRejection(settleId, file) {
     }); 
 }
 </script>
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

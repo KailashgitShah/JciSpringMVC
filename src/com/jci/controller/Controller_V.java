@@ -4287,7 +4287,7 @@ ModelAndView mv = new ModelAndView("ConfirmationofClaimSettlement");
 if (username == null) {
 mv = new ModelAndView("index");
 }
-List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId();
+List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId(username);
 System.err.println(getSettlementidlist);
 mv.addObject("getSettlementidlist", getSettlementidlist);
 return mv;
@@ -5619,7 +5619,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
     
     @ResponseBody
     @RequestMapping(value = {"rejectClaim"}, method = {RequestMethod.POST})
-    public String rejectClaim(@RequestParam("settleId") String settleId, @RequestParam("file") MultipartFile file, HttpServletRequest request,HttpSession session) {
+    public String rejectClaim(@RequestParam("settleId") String settleId,  HttpServletRequest request,HttpSession session) {
     	System.err.println(":Reached Rejecr");
     	String username = (String) request.getSession().getAttribute("usrname");
     	this.confirmationofClaimSettlementService.rejectClaim(settleId,username);

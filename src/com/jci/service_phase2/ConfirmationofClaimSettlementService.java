@@ -12,7 +12,7 @@ public interface ConfirmationofClaimSettlementService {
 
 	public List<ConfirmationClaimSettlementModel> getAll();
 
-	public List<Object[]> SettlementId();
+	public List<Object[]> SettlementId(String username);
 
 	public List<Object[]> fetchdataofclaim(String st);
 
