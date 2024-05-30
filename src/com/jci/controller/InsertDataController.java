@@ -6036,8 +6036,6 @@ public class InsertDataController
 			if (username == null) {
 				mv = new ModelAndView("index");
 			}
-												
-
 			final List<Object[]> allUserRegistration = (List<Object[]>) this.dispatchService
 					.getviewDispatchChallan();
 			mv.addObject("viewDispatchChallan", allUserRegistration);

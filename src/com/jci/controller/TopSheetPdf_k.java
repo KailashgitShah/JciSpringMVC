@@ -62,8 +62,8 @@ public class TopSheetPdf_k {
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 	     String fileName = "generatedfile_" + timestamp + ".pdf";
 
-	     //String filePath = "C:\\Users\\kailash.shah\\Topsheet\\" + fileName;
-	     String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\JCIStuff\\documentimage" + fileName;
+	     String filePath = "C:\\Users\\kailash.shah\\Topsheet\\" + fileName;
+	     //String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\JCIStuff\\documentimage" + fileName;
 	     
 	 	
 	     
@@ -295,7 +295,240 @@ public class TopSheetPdf_k {
                 .setMarginBottom(5); // Adjust margin as needed
     }
    
-	 
+	public String BOE() throws DocumentException, IOException {
+		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
+	     String fileName = "generatedfile_" + timestamp + ".pdf";
+
+	     String filePath = "C:\\Users\\kailash.shah\\Topsheet\\BOE\\" + fileName;
+	     
+	     
+         PdfWriter pdfWriter = new PdfWriter(filePath);
+         PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
+try {
+	 pdfDocument.setDefaultPageSize(PageSize.A4);
+	  PdfFont boldFont = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+   Document document = new Document(pdfDocument);
+	  document.setMargins(5, 5, 5, 5);
+		addHeader(document, filePath, filePath, filePath);
+		float columnWidth = PageSize.A4.getWidth() * 0.6f;
+		float columnWidth1 = PageSize.A4.getWidth() * 0.4f;
+		float borderWidth = 1.0f; 
+		Table contentTable1 = new Table(new float[]{columnWidth, columnWidth1});
+		Cell cell1199 = createCell("THE JUTE CORPORATION OF INDIA LIMITED", Border.NO_BORDER, TextAlignment.RIGHT).setFont(boldFont);
+		contentTable1.addCell(cell1199);
+		
+		  Cell cell1198 = createCell("PHONE : 2252-6720 / 6951 / 6770-74 / 6777-79", Border.NO_BORDER, TextAlignment.RIGHT).setFont(boldFont);
+		     contentTable1.addCell(cell1198);
+		
+		 Cell cell1197 = createCell("", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont); 
+	     contentTable1.addCell(cell1197);
+	     
+	     Cell cell1196 = createCell("GRAM : JUTECORPIND", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont);
+	     contentTable1.addCell(cell1196);
+	     
+	     // Row 3
+	     Cell cell1195 = createCell("Registered Office", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont); 
+	     contentTable1.addCell(cell1195);
+	     
+	     
+
+	     Cell cell1194 = createCell("FAX NO : 91-033-2252-1771", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont); 
+	     contentTable1.addCell(cell1194);
+
+	     // Row 5
+	     Cell cell1191 = createCell("15N, NELLIE SENGUPTA SARANI", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont); 
+	     contentTable1.addCell(cell1191);
+	     
+	     
+
+
+	     Cell cell1192 = createCell("E-MAIL : jci@jcimail.in", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont); 
+	     contentTable1.addCell(cell1192);
+
+	     // Row 4
+	     Cell cell1193 = createCell("Kolkata - 700 087", Border.NO_BORDER, TextAlignment.RIGHT)
+	             .setPaddingBottom(2f).setFont(boldFont); 
+	     contentTable1.addCell(cell1193);
+	     
+
+     Cell cell1190 = createCell("WEBSITE : www.jutecorp.in", Border.NO_BORDER, TextAlignment.RIGHT)
+             .setPaddingBottom(2f).setFont(boldFont); 
+     contentTable1.addCell(cell1190);
+
+     document.add(contentTable1);
+     Paragraph spacingParagraph = new Paragraph("\n").setFixedLeading(10f); 
+     document.add(spacingParagraph);
+     PdfFont normalFont = PdfFontFactory.createFont(FontConstants.HELVETICA);
+     Table contentTable = new Table(new float[]{columnWidth, columnWidth1})
+		        .setBorder(new SolidBorder(borderWidth)).setFont(boldFont);
+    
+		
+		Cell cell21 = createCell("DETAILS OF  RECIEPIENTS", Border.NO_BORDER, TextAlignment.LEFT);
+		cell21.setBorderRight(new SolidBorder(borderWidth));
+		cell21.setBorderBottom(new SolidBorder(borderWidth));
+		cell21.setBorderTop(new SolidBorder(borderWidth));
+		contentTable.addCell(cell21);
+
+		
+		  Cell cell22 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		  cell22.setBorderRight(new SolidBorder(borderWidth));
+		  cell22.setBorderTop(new SolidBorder(borderWidth));
+			Paragraph paragraph24 = new Paragraph()
+			        .add(new Text("DETAILS OF  CONSIGNEE: ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell22.add(paragraph24);
+	        contentTable.addCell(cell22);
+		
+
+		  Cell cell71 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		  cell71.setBorderRight(new SolidBorder(borderWidth));
+		  cell71.setBorderTop(new SolidBorder(borderWidth));
+			Paragraph paragraph11 = new Paragraph()
+			        .add(new Text("GSTIN : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell71.add(paragraph11);
+	        contentTable.addCell(cell71);
+		
+		
+
+		Cell cell72 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell72.setBorderRight(new SolidBorder(borderWidth));
+		cell72.setBorderTop(new SolidBorder(borderWidth));
+			Paragraph paragraph12 = new Paragraph()
+			        .add(new Text("GSTIN : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell72.add(paragraph12);
+	        contentTable.addCell(cell72);
+
+		Cell cell73 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell73.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph13 = new Paragraph()
+			        .add(new Text("NAME : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell73.add(paragraph13);
+	        contentTable.addCell(cell73);
+		 
+	        Cell cell74 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell74.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph14 = new Paragraph()
+			        .add(new Text("NAME : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell74.add(paragraph14);
+	        contentTable.addCell(cell74);
+	
+		
+		Cell cell75 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell75.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph15 = new Paragraph()
+			        .add(new Text("ADDRESS : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell75.add(paragraph15);
+	        contentTable.addCell(cell75);
+
+		
+		Cell cell76 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell76.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph16 = new Paragraph()
+			        .add(new Text("ADDRESS : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell76.add(paragraph16);
+	        contentTable.addCell(cell76);
+		
+		
+
+		
+		Cell cell77 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell77.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph17 = new Paragraph()
+			        .add(new Text("STATE NAME : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell77.add(paragraph17);
+	        contentTable.addCell(cell77);
+
+
+		
+		
+		Cell cell78 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell78.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph18 = new Paragraph()
+			        .add(new Text("STATE NAME : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell78.add(paragraph18);
+	        contentTable.addCell(cell78);
+	    Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		cell778.setBorderRight(new SolidBorder(borderWidth));
+		
+			Paragraph paragraph19 = new Paragraph()
+			        .add(new Text("STATE CODE : ").setFont(boldFont))
+			        .add(new Text("").setFont(normalFont));
+			cell778.add(paragraph19);
+	        contentTable.addCell(cell778);
+	        
+
+	        
+	        Cell cell776 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+	        cell776.setBorderRight(new SolidBorder(borderWidth));
+			
+				Paragraph paragraph20 = new Paragraph()
+				        .add(new Text("STATE CODE : ").setFont(boldFont))
+				        .add(new Text("").setFont(normalFont));
+				cell776.add(paragraph20);
+		        contentTable.addCell(cell776);
+		        
+		        
+
+		
+		  Cell cell775 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+		  cell775.setBorderRight(new SolidBorder(borderWidth));
+			
+				Paragraph paragraph21 = new Paragraph()
+				        .add(new Text("PAN : ").setFont(boldFont))
+				        .add(new Text("").setFont(normalFont));
+				cell775.add(paragraph21);
+		        contentTable.addCell(cell775);
+
+		Cell cell774 = createCell("", Border.NO_BORDER, TextAlignment.RIGHT);
+		cell774.setBorderLeft(new SolidBorder(borderWidth));
+		
+		contentTable.addCell(cell774);
+		        
+		document.add(contentTable);
+		
+		
+ 
+ 
+		document.close(); 
+//		 return filePath;
+		pdfDocument.close(); 
+	}catch (Exception e) {
+     e.printStackTrace();
+ } finally {
+     try {
+         if (pdfDocument != null) {
+             pdfDocument.close(); 
+         }
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
+ }
+
+return filePath;
+		
+
+	}
+ 
 	
 
 }

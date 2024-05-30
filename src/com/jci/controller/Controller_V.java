@@ -3101,7 +3101,7 @@ public class Controller_V {
 			}
 
 			this.millRecieptService.create(millRecieptModel);
-			this.millRecieptService.UpdateContractstatus(Contractno1);
+			//this.millRecieptService.UpdateContractstatus(Contractno1);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 		
@@ -3521,6 +3521,9 @@ public class Controller_V {
 						TopSheetPdf_k pdfTopSheetPdf_k = new TopSheetPdf_k();
 						String filePath1 = pdfTopSheetPdf_k.generatePdfReport(list1);
 						
+					
+						String filePath2 = pdfTopSheetPdf_k.BOE();
+						
 			        }
 			    }
 
@@ -3531,31 +3534,31 @@ public class Controller_V {
 
 
 			
-			 sendemailBOS email=new sendemailBOS();
-	           InternetAddress[] toAddresses=null;
-	           String subject="Bill of Supply attachement";
-	           String body = "In this All information regarding Bill of supply . ";
-	            // String filename=Genrationofbill;
-	             
-	             
-	           // String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
-	            String filePathDir  = Genrationofbill + File.separator + filePath;
-	             String username1="";
-	             try {
-	                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
-	           toAddresses = new InternetAddress[]{
-	                                new InternetAddress("kailashshahbro@gmail.com"),
-	                                new InternetAddress("kailashshahsha81@gmail.com")
-	                            };
-	           } catch (AddressException e) {
-	                 
-	                 e.printStackTrace();
-	           }
-	           email.sendEmailBos( toAddresses ,  body , subject,filePathDir, username1);
+//			 sendemailBOS email=new sendemailBOS();
+//	           InternetAddress[] toAddresses=null;
+//	           String subject="Bill of Supply attachement";
+//	           String body = "In this All information regarding Bill of supply . ";
+//	            // String filename=Genrationofbill;
+//	             
+//	             
+//	           // String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
+//	            String filePathDir  = Genrationofbill + File.separator + filePath;
+//	             String username1="";
+//	             try {
+//	                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+//	           toAddresses = new InternetAddress[]{
+//	                                new InternetAddress("kailashshahbro@gmail.com"),
+//	                                new InternetAddress("kailashshahsha81@gmail.com")
+//	                            };
+//	           } catch (AddressException e) {
+//	                 
+//	                 e.printStackTrace();
+//	           }
+//	           email.sendEmailBos( toAddresses ,  body , subject,filePathDir, username1);
 	        
 
 //		       
-//		        this.paymentDetailService.contratTable(contractno);
+	   //     this.paymentDetailService.contratTable(Conract_no);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 			

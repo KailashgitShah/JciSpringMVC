@@ -569,13 +569,13 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table2-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="number" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0" max="100" step="any" value="0"  oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
+                    '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0"  step="any" value="0"  oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
                     '</div>' +
                     '</td>' +
                     '<td>' +
                     '<div class="table2-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="number" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0">' +
+                    '<input type="double" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0">' +
                     '</div>' +
                     '</td>' +
                     '<td>' +
