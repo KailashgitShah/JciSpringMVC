@@ -1,4 +1,5 @@
 package com.jci.dao_phase2;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,4 +50,5 @@ public interface NominalOfficialDao {
 	     public void millrecieptstatus(String mr);
 	     public void updatefa(String id, String FAomofficial);
 	     public List<Jciclaim_NominationModel>getAlldetails(String settlement_id);
+	     public List<Jciclaim_NominationModel>findnominationdetails(String id) ;
 }
