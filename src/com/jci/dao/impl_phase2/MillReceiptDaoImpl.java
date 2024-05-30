@@ -1,5 +1,6 @@
 package com.jci.dao.impl_phase2;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -187,6 +188,39 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 				 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 				 return resultList1;
 	}
+
+	@Override
+	public List<Object[]> gradeprice( String Challan, String contract) {
+	
+	
+	         
+//		 String sql= "a.grade1, a.grade2, a.grade3, a.grade4, a.grade5, a.grade6\n"
+//	                   + "FROM jcientry_derivative_price as a \n"
+//	                   + "INNER JOIN jcicontract ON a.delivery_type = jcicontract.Delivery_type\n"
+//	                   + "INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = a.district\n"
+//	                   + "INNER JOIN jcidispatch_details ON jcidispatch_details.Challan_no = '" + Challan + "'\n"
+//	                   + "WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\n"
+//	                   + "AND jcicontract.Contract_no = '" + contract + "'\n"
+//	                   + "AND a.crop_year = '" + cropyear + "'\n"
+//	                   + "AND a.jute_variety = '" + var + "'";
+		 
+		 String sql= "SELECT distinct  a.grade1, a.grade2, a.grade3, a.grade4, a.grade5, a.grade6\n"
+		 		+ "FROM jcientry_derivative_price as a\n"
+		 		+ "INNER JOIN jcicontract ON a.delivery_type = jcicontract.Delivery_type\n"
+		 		+ "INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = a.district\n"
+		 		+ "INNER JOIN jcidispatch_details ON jcidispatch_details.Challan_no ='" + Challan + "'\n"
+		 		+ "INNER join(select  b.Crop_year,b.jute_variety from  jcidispatch_details as a LEFT JOIN jcidispatch_details_child  as b on a.Challan_no=b.Challan_no\n"
+		 		+ ")  as s   ON s.Crop_year = a.Crop_year \n"
+		 		+ "    AND s.jute_variety = a.jute_variety\n"
+		 		+ "WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\n"
+		 		+ "AND jcicontract.Contract_no = '" + contract + "'\n";
+
+
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		 return resultList1;
+}
+
+	
 
 	  
  }

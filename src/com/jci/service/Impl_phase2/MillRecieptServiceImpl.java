@@ -92,6 +92,11 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 		
 		return millRecieptDao.challanbaseddetails(st);
 	}
+	@Override
+	public List<Object[]> gradeprice(String st,String st1) {
+		
+		return millRecieptDao.gradeprice(st,st1);
+	}
 	
 	
 }

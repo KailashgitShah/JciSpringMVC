@@ -14,10 +14,18 @@ public class GenrationDEmandDto {
 	private Date   Contract_date;
 	private String Payment_duedate;
 	private String Contract_cancel_date;
-	private int Payment_id;
+	private String Instrument_No;
 	private String Contracted_qty;
 	private String Carrying_Cost_Charged;
 	
+	
+	
+	public String getInstrument_No() {
+		return Instrument_No;
+	}
+	public void setInstrument_No(String instrument_No) {
+		Instrument_No = instrument_No;
+	}
 	
 	
 	public Date getContract_date() {
@@ -38,12 +46,7 @@ public class GenrationDEmandDto {
 	public void setContract_cancel_date(String contract_cancel_date) {
 		Contract_cancel_date = contract_cancel_date;
 	}
-	public int getPayment_id() {
-		return Payment_id;
-	}
-	public void setPayment_id(int payment_id) {
-		Payment_id = payment_id;
-	}
+
 	public String getContracted_qty() {
 		return Contracted_qty;
 	}
@@ -65,7 +68,6 @@ public class GenrationDEmandDto {
 		Contract_date = contract_date;
 		Payment_duedate = payment_duedate;
 		Contract_cancel_date = contract_cancel_date;
-		Payment_id = payment_id;
 		Contracted_qty = contracted_qty;
 		Carrying_Cost_Charged = carrying_Cost_Charged;
 		
@@ -74,7 +76,7 @@ public class GenrationDEmandDto {
 	public String toString() {
 		return "GenrationDEmandDto [ Contract_date=" + Contract_date
 				+ ", Payment_duedate=" + Payment_duedate + ", Contract_cancel_date=" + Contract_cancel_date
-				+ ", Payment_id=" + Payment_id + ", Contracted_qty=" + Contracted_qty + ", Carrying_Cost_Charged="
+				+ ",Contracted_qty=" + Contracted_qty + ", Carrying_Cost_Charged="
 				+ Carrying_Cost_Charged +  "]";
 	}
 	public GenrationDEmandDto() {

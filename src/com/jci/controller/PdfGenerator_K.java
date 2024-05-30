@@ -65,7 +65,8 @@ public class PdfGenerator_K {
 	     String fileName = "generatedfile_" + timestamp + ".pdf";
 
 	     //String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
-	     String filePath = Genrationofbill+File.separator + fileName;
+
+	     String filePath = Genrationofbill + fileName;
 	    
             PdfWriter pdfWriter = new PdfWriter(filePath);
             PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
