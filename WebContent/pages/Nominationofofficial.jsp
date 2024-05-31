@@ -333,156 +333,71 @@
 </script>
  
  
-<!--  <script>
-	 	$(document).ready(function() {
-	 	    // Hide the milldetailsTable initially
-	 	    $('#milldetailsTable').hide();
+   
+   <script>
+$(document).ready(function() {
+    // Hide the milldetailsTable initially
+    $('#milldetailsTable').hide();
 
-	 	    // Add an event listener for the change event on the dropdown
-	 	    $('#HODate').on('change', function() {
-	 	        
-	 	        var selectedOption = $(this).val();
-	 	          //alert(selectedOption)
+    // Add an event listener for the change event on the dropdown
+    $('#HODate').on('change', function() {
+        
+        var selectedOption = $(this).val();
+        
+        // Make an AJAX request to fetch data based on the selected HO DI
+        $.ajax({
+            type: 'GET',
+            url: 'findByHoDi.obj',
+            data: {
+                hodino: selectedOption
+            },
+            dataType: 'json', // Set the dataType to 'json'
+            success: function(data) {
+                // Parse the JSON response
+                var dataArray = data;
+                $("#binDataBody").empty();
+               
+                var num_of_rows = dataArray.length;
+                
+                $('#numRows').val(num_of_rows);
+             
+                for (var i = 0; i < dataArray.length; i++) {
+                    var newRow = "<tr>";
+                    newRow +=
+                       /*  '<td><input type="checkbox" onclick="myFunction(this)" id="checkbox_' + i + '" class="row-checkbox" name="rowCheckbox[]" value="0"></td>' + */
+                        '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
+                        '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>'+
+                        '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+i+'" class="row-checkbox" name="rowCheckbox'+i+'" value="0"></td>' ;
+                    newRow += "</tr>";
+                    $("#binDataBody").append(newRow);
+                }
+            },
+            error: function(err) {
+                console.error('AJAX request failed: ' + err);
+            }
+        });
+    });
+});
 
-	 	        // Make an AJAX request to fetch data based on the selected HO DI
-	 	        $.ajax({
-	 	            type: 'GET',
-	 	            url: 'findByHoDi.obj',
-	 	            data: {
-	 	                hodino: selectedOption
-	 	            },
-	 	            dataType: 'json', // Set the dataType to 'json'
-	 	            success: function(data) {
-	 	                // Parse the JSON response
-	 	               // alert("kkkkkkkkkkkkk")
-	 	              // alert(data)
-	 	                var dataArray = data;
-	 	               // alert(dataArray)
-	 	                $("#binDataBody").empty();
-	 	               
-	 	               var num_of_rows = dataArray.length;
-	 	                
-	 	               // alert(num_of_rows)
-	 	                $('#numRows').val(num_of_rows);
-	 	             
-	 	                for (var i = 0; i < dataArray.length; i++) {
-	 	                	  var newRow = "<tr>";
-		 	                    newRow +=
-		 	                    	/*  '<td><input type="checkbox" onchange="myFunction()" id ="checkbox" class="row-checkbox" name="rowCheckbox" value ="0"></td>' + */
-		 	                    '<td><input type="checkbox"  class="row-checkbox" name="rowCheckbox" value =""></td>' +
-	 	                    	 '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
-	 	                    newRow += "</tr>";
-	 	                    $("#binDataBody").append(newRow);
-	 	                }
-	 	            },
-	 	            error: function(err) {
-	 	                // Handle errors here
-	 	               // alert("error")
-	 	                console.error('AJAX request failed: ' + err);
-	 	            }
-	 	        });
-	 	    });
-	 	});
+ function myFunction(checking,i) {
+	
+    if (!checking.checked) {
+        $(checking).val(0);
+      
+    } else {
+        $(checking).val(1);
+     
+    }
+}  
 
-</script>  -->
- <script>
-	 	$(document).ready(function() {
-	 	    // Hide the milldetailsTable initially
-	 	    $('#milldetailsTable').hide();
-
-	 	    // Add an event listener for the change event on the dropdown
-	 	    $('#HODate').on('change', function() {
-	 	        
-	 	        var selectedOption = $(this).val();
-	 	          //alert(selectedOption)
-
-	 	        // Make an AJAX request to fetch data based on the selected HO DI
-	 	        $.ajax({
-	 	            type: 'GET',
-	 	            url: 'findByHoDi.obj',
-	 	            data: {
-	 	                hodino: selectedOption
-	 	            },
-	 	            dataType: 'json', // Set the dataType to 'json'
-	 	            success: function(data) {
-	 	                // Parse the JSON response
-	 	               // alert("kkkkkkkkkkkkk")
-	 	              // alert(data)
-	 	                var dataArray = data;
-	 	               // alert(dataArray)
-	 	                $("#binDataBody").empty();
-	 	               
-	 	               var num_of_rows = dataArray.length;
-	 	                
-	 	               // alert(num_of_rows)
-	 	                $('#numRows').val(num_of_rows);
-	 	             
-	 	                for (var i = 0; i < dataArray.length; i++) {
-	 	                	  var newRow = "<tr>";
-		 	                    newRow +=
-		 	                    	  '<td><input type="checkbox" onclick="myFunction(this)" id="checkbox' + i + '" class="row-checkbox" name="rowCheckbox[]" value="0"></td>'+
-		 	                    /* '<td><input type="checkbox" onclick="myFunction()" id ="checkbox1" class="row-checkbox" name="rowCheckbox" value ="0"></td>' + */
-		 	                    /* '<td><input type="checkbox"  class="row-checkbox" name="rowCheckbox" value =""></td>' + */
-	 	                    	 '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +	                  
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
-	 	                    	'<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
-	 	                    newRow += "</tr>";
-	 	                    $("#binDataBody").append(newRow);
-	 	                }
-	 	            },
-	 	            error: function(err) {
-	 	                // Handle errors here
-	 	               // alert("error")
-	 	                console.error('AJAX request failed: ' + err);
-	 	            }
-	 	        });
-	 	    });
-	 	});
 
 </script> 
-<script type="text/javascript">
-    function myFunction(checkbox) {
-        if (!checkbox.checked) {
-           
-            checkbox.value = 0;
-            alert(checkbox.value)
-            
-        } else {
-           
-            checkbox.value = 1;
-            alert(checkbox.value)
-          
-        }
-    }
-</script>
- <!-- 
-                <script type="text/javascript">
-                function myFunction()() 
-                {
-                    if (!document.getElementById("checkbox1").checked) {
-                    	alert("rrrrr")
-                             var k =   $('#checkbox1').val(0);
-                                alert(k)
-                    }else{
-                              var k =  $('#checkbox1').val(1);
-                              alert(K)
-                    }
-                }
-                
-             
-   </script> -->
-   
-    
+ 
 	 <script type="text/javascript">
     $(document).ready(function() {
         $('#Mill').on('change', function() {

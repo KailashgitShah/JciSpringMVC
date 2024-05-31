@@ -1,5 +1,6 @@
 package com.jci.controller;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.io.File;
@@ -4569,7 +4570,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 //		
 		String millcode = (String) request.getSession().getAttribute("millcode");
 		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll(millcode);
-
+		Collections.reverse(AllList);
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}
@@ -4781,122 +4782,79 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 	}
 
 
-
-
-
 	@RequestMapping("savenominal")
 	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {	
 		int rows = Integer.parseInt(request.getParameter("rows"));
-		
-//		String[] rowvalue =  request.getParameterValues("rowCheckbox[]");
-		
-		
-	
-
-//		for (int i = 0; i < rows; i++) {
-//		    System.out.println("Row " + (i+1) + ":");
-//		    System.out.println(rowvalue[i] + "rowvalue" );
-//		    System.out.println("Challan Number: " + challanNos[i]);
-//		    System.out.println("MR Number: " + mr_no[i]);
-//		}
-		String Settlement_id_generated = request.getParameter("Settlement_id_generated");
-		String HoDI = request.getParameter("HO_DI_&_Date");
-		int total = nominalOfficialService.CountRecord();
-		String SetllementIdGenerated;
-		SetllementIdGenerated = HoDI +"/"+ total;
-//		if(total=null) {
-//			SetllementIdGenerated = HoDI +"/1";
-//			
-//		}
-//		else {
-//		 SetllementIdGenerated = HoDI +"/"+ total;
-//		}
-//		String[] rowCheckbox = request.getParameterValues("rowCheckbox[]");
-//		for(int i = 0; i < rows; i++) {
-//			System.err.println(rowCheckbox[i] +"kkkkkk");
-//			}
+		//String[] rowvalue =  request.getParameterValues("rowCheckbox[]");
 		String[] challanNos = request.getParameterValues("challans[]");
 		String[] mr_no= request.getParameterValues("mr_no[]");
-		String[] mr_date = request.getParameterValues("mr_date[]");
-		
-		
+        String[] mr_date = request.getParameterValues("mr_date[]");
 		String[] billofsupply = request.getParameterValues("billofsupply[]");
 		String[] dateofshipment=request.getParameterValues("dateofshipment[]");
-	     String[] shipmentquantity= request.getParameterValues("shipmentquantity[]");
-	     String[] claimamount = request.getParameterValues("claimamount[]");
+	    String[] shipmentquantity= request.getParameterValues("shipmentquantity[]");
+	    String[] claimamount = request.getParameterValues("claimamount[]");
+	    String Settlement_id_generated = request.getParameter("Settlement_id_generated");
+		String HoDI = request.getParameter("HO_DI_&_Date");
+		int total = nominalOfficialService.CountRecord();
+		//String SetllementIdGenerated;
+	
+		String SetllementIdGenerated = HoDI +"/"+ total;
 		String username = (String) request.getSession().getAttribute("usrname");
 		String millname = request.getParameter("client_name");
 		String Mill = request.getParameter("Mill");
 		String ContractNo = request.getParameter("ContractNo");
-		
 		String omofficial = request.getParameter("omofficial");
 		String FAofficial = request.getParameter("FAomofficial");
 		String DateofInpection = request.getParameter("DateofInpection");
-		
-		
 		String contractIdentificationnumber = nominalOfficialService.getcontractidentification(ContractNo);
 		String millcode= nominalOfficialService.getmillcode(Mill);
 		
-		
+//	    String check = request.getParameter("rowCheckbox"+i);
 		for (int i = 0; i < rows; i++) {
-		
-		// Creating object of
-		Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
-		
-		jciclaim_NominationModel.setMill(Mill);
-		jciclaim_NominationModel.setContractNo(ContractNo);
-		jciclaim_NominationModel.setOMOfficial(omofficial);
-		jciclaim_NominationModel.setFAOfficial(FAofficial);
-		jciclaim_NominationModel.setCreated_by(username);
-		jciclaim_NominationModel.setHoDi(HoDI);
-		jciclaim_NominationModel.setDateofInspection(DateofInpection);
-		jciclaim_NominationModel.setChallans(challanNos[i]);
-		jciclaim_NominationModel.setMr_number(mr_no[i]);
-		jciclaim_NominationModel.setMr_Date(mr_date[i]);
-		jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
-		jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
-		jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
-		jciclaim_NominationModel.setClaimValuation(claimamount[i]);
-		// backend generated settlement id
-		jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);		
-		// have confusion on name
-		// Inspection_date confusion
-//
-//		SimpleDateFormat idf = new SimpleDateFormat("dd-MM-yyyy");
-//		Date create_date = new Date();
-//		String Inspection_date = idf.format(create_date);
-//
-//		jciclaim_NominationModel.setInspection_date(Inspection_date);
+			String check = request.getParameter("rowCheckbox"+i);
+			if(check != null) {
+			Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+			
+			jciclaim_NominationModel.setMill(Mill);
+			jciclaim_NominationModel.setContractNo(ContractNo);
+			jciclaim_NominationModel.setOMOfficial(omofficial);
+			jciclaim_NominationModel.setFAOfficial(FAofficial);
+			jciclaim_NominationModel.setCreated_by(username);
+			jciclaim_NominationModel.setHoDi(HoDI);
+			jciclaim_NominationModel.setDateofInspection(DateofInpection);
+			jciclaim_NominationModel.setChallans(challanNos[i]);
+			jciclaim_NominationModel.setMr_number(mr_no[i]);
+			jciclaim_NominationModel.setMr_Date(mr_date[i]);
+			jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
+			jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
+			jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
+			jciclaim_NominationModel.setClaimValuation(claimamount[i]);
+			// backend generated settlement id
+			jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);		
+			// have confusion on name
+			// setting Static Value for Remaining
 
-		// setting Static Value for Remaining
+			jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
+			jciclaim_NominationModel.setDispute_flag(0);
+			jciclaim_NominationModel.setChallanNo("challans");
+			jciclaim_NominationModel.setClaimAmount(2);
 
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate currentDate = LocalDate.now();
+			String formattedDate = currentDate.format(formatter);
+			jciclaim_NominationModel.setCreated_on(formattedDate);	
+			
 		
-		jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
-		jciclaim_NominationModel.setDispute_flag(0);
-//		jciclaim_NominationModel.setInspection_by("official");
-		jciclaim_NominationModel.setChallanNo("challans");
-		jciclaim_NominationModel.setClaimAmount(2);
-//      Date- created_on
-//	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//		Date currentDate = new Date();
-//		String formattedDate = sdf.format(currentDate);
-//		jciclaim_NominationModel.setCreated_on(formattedDate);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LocalDate currentDate = LocalDate.now();
-		String formattedDate = currentDate.format(formatter);
-		jciclaim_NominationModel.setCreated_on(formattedDate);		
-		nominalOfficialService.create(jciclaim_NominationModel);
-		 String mr = mr_no[i];
-	     nominalOfficialService.millrecieptstatus(mr);	
-		
-		// email is working for static and dynamic both
+			nominalOfficialService.create(jciclaim_NominationModel);
+			 String mr = mr_no[i];
+		     nominalOfficialService.millrecieptstatus(mr);	
+			}
+		  
 		}
+	
 		redirectAttributes.addFlashAttribute("msg",
 				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-
 	
-			
-		  // 3- These email is for MILL
 		//////// It will change the contract_status on jci contract on form submit////////////
 		String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
 		nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
@@ -4941,7 +4899,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 	   //   mv.addObject("nomination", nomination);	
 		return mv;	
 	}
-	
+
 	@Value("${upload.OMOofficialDocumentDownload}")
 	String OmoOfficialDocumentDownload;
 //	@Value("${upload.FAofficialDocumentDownload}")
