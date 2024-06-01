@@ -346,7 +346,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 												htmlTable += '<td style="text-align:center" name="shortWt">'
 														+ shortQty + '</td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=downloadCreditNoteDocs.obj?imagePath='
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/JCIStuff/billofsupply/'
 														+ filterOption[i][11] + " " + "bos"
 														+ '>View</a></td>';
 

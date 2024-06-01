@@ -22,4 +22,7 @@ public interface CreditNoteGenerationDao {
 	List<Object[]> getDispatchDetails(String challanNo);
 	List<Object> getGradeRatio(String challanNo);
 	List<Object> getChallanDetails(String challan);
+	List<Object[]> getDetailsofSpp_Con_Rec(String bosNo);
+	List<Object[]> getStateAndPan(String millcode);
+	List<Object[]> getStateAndCodeOfSupplier(String dpc);
 }

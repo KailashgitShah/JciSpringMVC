@@ -106,6 +106,9 @@ body {
 								<li data-pre="5" id="o5"><a href="viewmillRegistration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Mill Registration
 								List</b></a></li>
+								<li data-pre="5" id="o5"><a href="privacypolicy.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Privacy policy 
+								</b></a></li>
 
 				</ul></li>
 			<li><a href="javascript:void(0);;"><i
@@ -268,10 +271,10 @@ body {
 						href="contractgenerationPCSOWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
 								Generation PCO Wise</b></a></li>
-					 <li data-pre="39" id="o39"><a
+					<!--  <li data-pre="39" id="o39"><a
 						href="contractgenerationMillWise.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
-								Generation Mill Wise</b></a></li>
+								Generation Mill Wise</b></a></li> -->
 					<li data-pre="40" id="o40"><a
 						href="viewcontractgeneration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Contract
@@ -327,16 +330,13 @@ body {
 					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-
-
 					<li data-pre="" id=""><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
 								Payment list</b></a></li>
 					<li data-pre="" id=""><a href="viewFinancialConcurence.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Financial Concuerence list</b></a></li>
-								
-					
+
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i
@@ -391,8 +391,9 @@ body {
 								Dispatch Details</b></a></li>
 					<li data-pre="" id=""><a href="ViewofGenerationBillsupply.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of
+
 								Generation Bill of supply</b></a></li>
-					
+
 				</ul></li>
               
 			

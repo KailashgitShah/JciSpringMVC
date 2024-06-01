@@ -101,4 +101,19 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 		return creditNoteGenerationDao.getChallanDetails(challan);
 	}
 
+	@Override
+	public List<Object[]> getDetailsofSpp_Con_Rec(String bosNo) {
+		return creditNoteGenerationDao.getDetailsofSpp_Con_Rec(bosNo);
+	}
+
+	@Override
+	public List<Object[]> getStateAndPan(String millcode) {
+		return creditNoteGenerationDao.getStateAndPan(millcode);
+	}
+
+	@Override
+	public List<Object[]> getStateAndCodeOfSupplier(String dpc) {
+		return creditNoteGenerationDao.getStateAndCodeOfSupplier(dpc);
+	}
+
 }

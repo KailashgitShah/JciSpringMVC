@@ -21,15 +21,18 @@ public class EmailSender {
                     //  String password = "Jute@1234";
                       
 
-            	// String smtpHost = "smtp.gmail.com";
-            	  String smtpHost = "smtp.gmailllll.com";
-          		int smtpPort = 587; // Use 587 for TLS or 465 for SSL
 
-          		String username = "guptamansi7867@gmail.com";
-          		String password = "xhoaypvcvzsctmrm";
-                      
-                     // String recipient = "vishal.vishwakarma@cyfuture.com"; // Recipient's email address
-                      
+            	 String smtpHost = "smtp.gmail.com";
+            	 //String smtpHost = "smtp.gmailllll.com";
+          		int smtpPort = 587; 
+          		// Use 587 for TLS or 465 for SSL
+
+//          		String username = "guptamansi7867@gmail.com";
+//          		String password = "xhoaypvcvzsctmrm";
+//                      
+        	// String username = "shristicyfuture0902@gmail.com";
+          	String username = "shristicyfuture090@gmail.com";
+ 		      String password = "tvualzhmftylavuh";
                       
                       Properties props = new Properties();
                       props.put("mail.smtp.auth", "true");
@@ -83,13 +86,9 @@ public class EmailSender {
 	                      
 	            	  
 	                 String smtpHost = "smtp.gmail.com";
-	            	  //String smtpHost = "smtp.gmailllll.com";
-	          		int smtpPort = 587; // Use 587 for TLS or 465 for SSL
-
-	          		String username = "guptamansi7867@gmail.com";
-	          		String password = "xhoaypvcvzsctmrm";
-	                      
-	                     // String recipient = "vishal.vishwakarma@cyfuture.com"; // Recipient's email address
+	          		int smtpPort = 587; // Use 587 for TLS or 465 for SSL 
+	          	  String username = "shristicyfuture0902@gmail.com";
+     		      String password = "tvualzhmftylavuh";
 	                      
 	          		
 	          		 Properties props = new Properties();

@@ -1,4 +1,5 @@
 package com.jci.service.Impl_phase2;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -131,6 +132,66 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 		this.nominalOfficialDao.claimStatusUpdate(ContractNoForClaimStatusUpdate);
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<String> gethodi() {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.gethodi();
+	}
+
+	@Override
+	public List<Object[]> getchallan(String hodi) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getchallan(hodi);
+	}
+
+	@Override
+	public List<Object[]> dateofInspection(String dateOfInspection) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.dateofInspection(dateOfInspection);
+	}
+
+	@Override
+	public String getcontractidentification(String ContractNo) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getcontractidentification(ContractNo);
+	}
+
+	@Override
+	public String getmillcode(String millname) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getmillcode(millname);
+	}
+
+	@Override
+	public Jciclaim_NominationModel find(String id) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.find(id);
+	}
+
+	@Override
+	public void millrecieptstatus(String mr) {
+		nominalOfficialDao.millrecieptstatus(mr);
+		
+	}
+
+	@Override
+	public void updatefa(String id, String FAomofficial) {
+		nominalOfficialDao.updatefa( id,  FAomofficial);
+	
+	}
+
+	@Override
+	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getAlldetails(settlement_id);
+	}
+
+	@Override
+	public List<Jciclaim_NominationModel> findnominationdetails(String id) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.findnominationdetails(id);
 	}
 
 }

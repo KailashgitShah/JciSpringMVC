@@ -282,7 +282,7 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao {
 				querystr = "SELECT top 1 grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8 FROM jcijutepricesforcommercial where CONVERT( date, effectDate ,105) <= GETDATE() and crop_yr='"
 						+ cropyr + "' and jute_variety like '" + variety + "%' and dpc like '%" + dpcid + "%'"
 						+ "order by id desc ";
-			} else if (basis.equalsIgnoreCase("msp")) {
+			} else if (basis.equalsIgnoreCase("MSP")) {
 				querystr = "SELECT  grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8 FROM jcimspgradesprice where crop_yr='"
 						+ cropyr + "' and jute_variety like '" + variety + "%'";
 
@@ -391,27 +391,29 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao {
 
 			}
 		}
+		System.out.println("result2" + result2);
 		return result2;
 	}
 
 	@Override
 	public List<Integer> firstLevelbale(String cropyr, String basis) {
 
-		String qry = "	 select NULLIF(sum(bale_no), 0)  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%1' and crop_year = '2022-2023' and basis = 'msp'\n"
-				+ "			 union all\n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%2' and crop_year = '2022-2023' and basis = 'msp'\n"
-				+ "			    union all\n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%3' and crop_year = '2022-2023' and basis = 'msp'\n"
-				+ "			     union all\n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%4' and crop_year = '2022-2023' and basis = 'msp'\n"
-				+ "			     union all\n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%5' and crop_year = '2022-2023' and basis = 'msp' \n"
-				+ "			     union all \n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%6' and crop_year = '2022-2023' and basis = 'msp' \n"
-				+ "						     union all \n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%7' and crop_year = '2022-2023' and basis = 'msp'\n"
-				+ "               			     union all \n"
-				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%8' and crop_year = '2022-2023' and basis = 'msp'	";
+		String qry = "	 select NULLIF(sum(bale_no), 0)  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%1' and crop_year = ' "
+				+ cropyr + "' and basis = 'MSP'\n" + "			 union all\n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%2'  and crop_year = ' "
+				+ cropyr + "' and basis = 'MSP'\n" + "			    union all\n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%3'  and crop_year = ' "
+				+ cropyr + "' and basis = 'MSP'\n" + "			     union all\n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%4'  and crop_year = ' "
+				+ cropyr + "' and basis = 'MSP'\n" + "			     union all\n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%5' and crop_year =  '"
+				+ cropyr + "' and basis = 'MSP' \n" + "			     union all \n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%6' and crop_year =  '"
+				+ cropyr + "' and basis = 'MSP' \n" + "						     union all \n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%7'  and crop_year = ' "
+				+ cropyr + "' and basis = 'MSP'\n" + "               			     union all \n"
+				+ "			   select NULLIF(sum(bale_no), 0 )  FROM [XMWJCI].[dbo].[jcibalepreparation] where jute_grade like '%8' and crop_year =  '"
+				+ cropyr + "' and basis = 'MSP'	";
 		Session session2 = sessionFactory.getCurrentSession();
 		Transaction tx2 = session2.beginTransaction();
 		Query query2 = session2.createSQLQuery(qry);
