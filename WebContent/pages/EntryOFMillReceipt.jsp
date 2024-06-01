@@ -168,8 +168,8 @@
                                       
                                        <div class="col-sm-4 form-group">
 												<label>Challan no</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="challanno" name="challanno" class="text-danger"> </span>
-												<input class="form-control" name="challanno1" id="challanno" value="<%=contractNo %>" readonly="readonly" required>
+												<span class="text-danger">* </span>&nbsp; <span id="challanno2" name="challanno3" class="text-danger"> </span>
+												<input class="form-control" name="challanno1" id="challanno4" value="<%=contractNo %>" readonly="readonly" required>
 										</div>
                                        <div class="col-sm-4 form-group">
 												<label>Date of Shipment</label> 
@@ -224,6 +224,14 @@
 												<input class="form-control" name="Mill_receiptQty1" id="Mill_receiptQty" type="double" required>
 										</div>
                                  </div>
+                                 
+                                  <div class="row">
+                                <div class="col-sm-4 form-group">
+												<label>Contractno</label> 
+												<span class="text-danger">* </span>&nbsp; <span id="Contractno3" name="Contractno4" class="text-danger"> </span>
+												<input class="form-control" name="Contractno" id="Contractno12"  value="" required>
+										</div>
+                                 </div>
 								
 								
 						
@@ -253,6 +261,7 @@
 											               <th>Dust percent </th>
 											              <th> Dust Qty</th>
 											              <th> Dust Value</th>
+											              <th> Claim Ammount</th>
 											            <!--  <th>
 													        <div class="form-check">
 													            
@@ -289,7 +298,7 @@
 												    <label "display:none;">MIllCode</label> <span
 													class="text-danger">* </span>&nbsp;  <input
 													type="hidden" class="form-control" name="millcode"
-													id="millcode1" value="<%=millcode %>" readonly="readonly">
+													id="millcode1" value="" readonly="readonly">
 											</div>
 											  <div class="col-sm-2 form-group"  style= "display:none;">
 												    <label "display:none;">firstloop</label> <span
@@ -297,8 +306,8 @@
 													 class="form-control" name="firstloop"
 													id="firstloop1" value="" readonly="readonly">
 											</div>
-											  <div class="col-sm-2 form-group" style= "display:none;">
-												    <label "display:none;" >rowindex </label> <span
+										 <div class="col-sm-2 form-group" style= "display:none;" >
+												    <label  "display:none;" >rowindex </label> <span
 													class="text-danger">* </span>&nbsp;  <input
 													class="form-control" name="rowindex2"
 													id="rowindex2" value="" readonly="readonly">
@@ -309,7 +318,7 @@
 	                                
 	                              
                                     <div class="row">
-                                      
+                                      	 
                                     	
                                                 <div class="col-sm-12 form-group">
 									             <input type="submit" value="Submit"class="btn btn-primary" id="submit">
@@ -415,65 +424,110 @@
 
 
 <script type="text/javascript">
+
+var resultsArray = [];
+var some = [];
+var claimAmount=[];
+var numberOfElements = 10; 
+
+
+for (var i = 0; i < numberOfElements; i++) {
+ some.push(0.00);
+}
+
+
+
+
+for (var i = 0; i < numberOfElements; i++) {
+	claimAmount.push(0.00);
+}
+
 $(document).ready(function() {
     var contractNo = "<%= contractNo %>"; // Make sure contractNo is properly formatted
+    var Contract_No;
     var actualqty;
     var checkcondition = 0;
     var loadedIds = [];
-    var rowIndex = 0;
+    var index = 0;
+  
 
     console.log(actualqty);
-    alert(contractNo);
-
-    
-        $.ajax({
-            type: 'GET',
-            url: 'challanbaseddata.obj',
-            data: { "contractno": contractNo },
-            success: function(data) {
-                alert(data);
-                var dataArray = JSON.parse(data);
-                if (dataArray.length > 0) {
-                    var dateOfShipmentValue = dataArray[0][0]; 
-                    var vehicleNo = dataArray[0][1];
-                    var diDate = dataArray[0][2];
-                    actualqty = dataArray[0][3];
-                    console.log(actualqty);
-
-                    $('#diDate').val(diDate);
-                    $('#vehicleNo').val(vehicleNo);
-                    $('#dateOfShipmentValue').val(dateOfShipmentValue);
-                  
-                }
-
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX error:', error);
-            }
-        });
-    
-
-    // Call the AJAX function with contractNo
    
 
-    /* $('#childTable').on('dblclick', function(e) {
-        $('#childTable').hide();
-    }); */
+    $.ajax({
+        type: 'GET',
+        url: 'challanbaseddata.obj',
+        data: { "contractno": contractNo },
+        success: function(data) {
+         
+            var dataArray = JSON.parse(data);
+            if (dataArray.length > 0) {
+                var dateOfShipmentValue = dataArray[0][0]; 
+                var vehicleNo = dataArray[0][1];
+                var diDate = dataArray[0][2];
+                actualqty = dataArray[0][3];
+                Contract_No = dataArray[0][5];
+                Millcode = dataArray[0][6];
+                
+                console.log(actualqty);
+
+                $('#diDate').val(diDate);
+                $('#vehicleNo').val(vehicleNo);
+                $('#dateOfShipmentValue').val(dateOfShipmentValue);
+                $('#Contractno12').val(Contract_No);
+                $('#millcode1').val(Millcode);
+
+                var contNo1 = document.getElementById('Contractno12').value;
+                var challanno = document.getElementById('challanno4').value;
+
+             
+
+             
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'GradePrice.obj',
+                    data: { 
+                        "contNo": contNo1,
+                        "challanno": challanno,
+                    },
+                    success: function(data) {
+                         var dataArray = JSON.parse(data);
+                         if (dataArray.length > 0) {
+                           
+                             
+                             resultsArray = dataArray[0].slice(0); // Copy the elements from dataArray[0] to resultsArray
+                             resultsArray.push(dataArray);
+                
+                        	 loadMillChildBasedData(contractNo,resultsArray);
+                        }
+                        
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                    }
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX error:', error);
+        }
+    });
+
+
 });
 
-</script>
-<script type="text/javascript">
-$(document).ready(function() {
-    var contractNo = "<%= contractNo %>"; // Make sure contractNo is properly formatted
-
-    alert("KKKKK");
+function loadMillChildBasedData(contractNo,resultsArray) {
+  
+    
 
     $.ajax({
         type: 'GET',
         url: 'millchildbased.obj',
         data: { "contractno": contractNo },
         success: function(data) {
-            alert(data);
+          
             var dataArray = JSON.parse(data);
 
             dataArray.forEach(function(row, index) {
@@ -481,6 +535,7 @@ $(document).ready(function() {
                 var match = str.match(/\d+/);
                 var numericPartStr = match ? match[0] : "";
                 var intValue = parseInt(numericPartStr, 10);
+                
 
                 var rowHtml = '<tr>' +
                     '<td>' +
@@ -514,18 +569,18 @@ $(document).ready(function() {
                     '<td>' +
                     '<div class="table2-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="number" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0" max="100" step="any" value="0">' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    '<div class="table3-cell">' +
-                    '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="number" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0">' +
+                    '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0"  step="any" value="0"  oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
                     '</div>' +
                     '</td>' +
                     '<td>' +
                     '<div class="table2-cell">' +
-                    '<select id="Nomination_' + index + '" name="Nomination[]" required oninput="calculateQtyfrompercent(this);">'+
+                    '<label for="Qualitypercentage_' + index + '"></label>' +
+                    '<input type="double" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0"  readonly>' +
+                    '</div>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="table2-cell">' +
+                    '<select id="Nomination_' + index + '" name="Nomination[]" required oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">'+
                     '<option value="0">0</option>' +
                     '<option value="15">15</option>'+
                     '<option value="16">16</option>'+
@@ -561,7 +616,7 @@ $(document).ready(function() {
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="MoistureValue' + index + '"></label>' +
-                    '<input type="number" id="MoistureValue' + index + '" name="MoistureValue[]"  value="0" >' +
+                    '<input type="double" id="MoistureValue' + index + '" name="MoistureValue[]"  value="0"  readonly>' +
                     '</div>' +
                     '</td>' +
                     
@@ -569,7 +624,7 @@ $(document).ready(function() {
                     '<div class="table3-cell">' +
                     '<label for="NCVamt_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkNcvPercentage' + index + '">' +
-                    '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="" oninput="calculateQtyfrompercent(this);">' +
+                    '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="" oninput="calculateQtyfrompercent(this,this.id, ' + intValue + ',resultsArray,' + index + ');">' +
                     '</div>' +
                     '</td>' +
 
@@ -577,14 +632,14 @@ $(document).ready(function() {
                     '<div class="table3-cell">' +
                     '<label for="ncvdust_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkNcvQty' + index + '">' +
-                    '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="" oninput="calculateQtyfromQty(this);">' +
+                    '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="" oninput="calculateQtyfromQty(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
                     '</div>' +
                     '</td>' +
                    
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="number" id="NCV_Value' + index + '" name="NCV_Value[]" value="0"  >' +
+                    '<input type="double" id="NCV_Value' + index + '" name="NCV_Value[]" value="0" readonly >' +
                     '</div>' +
                     '</td>' +
                     
@@ -593,7 +648,7 @@ $(document).ready(function() {
                     '<div class="table3-cell">' +
                     '<label for="DustAMt_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkDustAMt_Percentage' + index + '">' +
-                    '<input type="number" id="DustAMt_' + index + '" name="DustAMt_[]" min="0" max="10" step="any" value="" oninput="calculateQtyfrompercent(this);">' +
+                    '<input type="number" id="DustAMt_' + index + '" name="DustAMt_[]" min="0" max="10" step="any" value="" oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
                     '</div>' +
                     '</td>' +
 
@@ -601,21 +656,31 @@ $(document).ready(function() {
                     '<div class="table3-cell">' +
                     '<label for="DustQty_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkDustQty_' + index + '">' +
-                    '<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" oninput="calculateQtyfromQty(this);">' +
+                    '<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" oninput="calculateQtyfromQty(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
                     '</div>' +
                     '</td>' +
                     
                     
                     '<td>' +
                     '<div class="table3-cell">' +
-                    '<input type="number" id="DustValue' + index + '" name="DustValue[]"  value="0">' +
+                    '<input type="double" id="DustValue' + index + '" name="DustValue[]"  value="0" readonly>' +
                     '</div>' +
                     '</td>' +
+                   
+                   
+                   
+                   '<td>' +
+                   '<div class="table3-cell">' +
+                   '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]"  value="0"  readonly>' +
+                   '</div>' +
+                   '</td>' +
+                  '</tr>';
+                   
+
+           
+               	
                   
-                    
-             
-                    
-                    '</tr>';
+                
 
                 $('#childTable1 tbody').append(rowHtml); // Append rowHtml to your table or container
                 
@@ -624,6 +689,10 @@ $(document).ready(function() {
                 $('#ncvdust_' + index).prop('disabled', true).val('0');
                 $('#DustAMt_' + index).prop('disabled', true).val('0');
                 $('#DustQty_' + index).prop('disabled', true).val('0');
+                
+                index++;
+                document.getElementById("rowindex2").value = index;
+                
             });
         },
         error: function(xhr, status, error) {
@@ -634,138 +703,338 @@ $(document).ready(function() {
     /* $('#childTable').on('dblclick', function(e) {
         $('#childTable').hide();
     }); */
-});
+}
+
 
 
 $(document).ready(function() {
     // Initial disabling of input fields
-    $('input[name="NCVamt[]"], input[name="ncvdust[]"],input[name="DustAMt_[]"], input[name="DustQty_[]"]').prop('disabled', true);
-    $('input[name="NCVamt[]"], input[name="ncvdust[]"],input[name="DustAMt_[]"], input[name="DustQty_[]"]').val('0');
-    // Event handler for Ncv percentage checkbox
-    $(document).on('change', 'input[id^="checkNcvPercentage"]', function() {
-        var checkbox = $(this);
-        var tableRow = checkbox.closest('tr');
-        var inputFields = tableRow.find('input[name="NCVamt[]"]');
+   $('input[name="NCVamt[]"], input[name="ncvdust[]"], input[name="DustAMt_[]"], input[name="DustQty_[]"]').prop('disabled', true).val('0');
+// Event handler for Ncv percentage checkbox
+   $(document).on('change', 'input[id^="checkNcvPercentage"]', function() {
+       var checkbox = $(this);
+       var tableRow = checkbox.closest('tr');
+       var index = checkbox.attr('id').replace('checkNcvPercentage', '');
+       var inputFields = tableRow.find('input[id="NCVamt_' + index + '"]');
        
-        checkcondition = 1; 
-        toggleInputFields(checkbox, inputFields);
-        $('input[name="ncvdust[]"]').val('0');
-      
-    });
-    
-    $(document).on('change', 'input[id^="checkDustAMt_Percentage"]', function() {
-        var checkbox = $(this);
-        var tableRow = checkbox.closest('tr');
-    
-        var inputFields = tableRow.find('input[name="DustAMt_[]"]');
-        checkcondition = 1; 
-        toggleInputFields1(checkbox, inputFields);
-     
-        $('input[name="DustQty_[]"]').val('0');
-    });
+       checkcondition = 1; 
+       toggleInputFields(checkbox, inputFields, index);
+       tableRow.find('input[id="ncvdust_' + index + '"]').val('0');
+   });
 
-    // Event handler for Ncv Qty checkbox
-    $(document).on('change', 'input[id^="checkNcvQty"]', function() {
-        var checkbox = $(this);
-        var tableRow = checkbox.closest('tr');
-        var inputFields = tableRow.find('input[name="ncvdust[]"]');
-       
-        checkcondition = 2; 
-        toggleInputFields(checkbox, inputFields);
-        $('input[name="NCVamt[]"]').val('0');
-     
-    });
-   
-    $(document).on('change', 'input[id^="checkDustQty_"]', function() {
-        var checkbox = $(this);
-        var tableRow = checkbox.closest('tr');
+   // Event handler for DustAMt percentage checkbox
+   $(document).on('change', 'input[id^="checkDustAMt_Percentage"]', function() {
+       var checkbox = $(this);
+       var tableRow = checkbox.closest('tr');
+       var index = checkbox.attr('id').replace('checkDustAMt_Percentage', '');
+       var inputFields = tableRow.find('input[name="DustAMt_[]"]');
       
-        var inputFields = tableRow.find('input[name="DustQty_[]"]');
-        checkcondition = 2; 
-        toggleInputFields1(checkbox, inputFields);
-       
-        $('input[name="DustAMt_[]"]').val('0');
-    });
+       checkcondition = 1; 
+       toggleInputFields1(checkbox, inputFields, index);
+       tableRow.find('input[id="DustQty_' + index + '"]').val('0');
+   });
 
-    function toggleInputFields(checkbox, inputFields) {
-        inputFields.prop('disabled', !checkbox.is(':checked'));
-       
-        if (checkbox.attr('id').startsWith('checkNcvPercentage')) {
-            checkbox.closest('tr').find('input[name="NCVamt[]"]').prop('disabled', !checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[name="ncvdust[]"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[id^="checkNcvQty"]').prop('disabled', checkbox.is(':checked'));
-            if (!checkbox.is(':checked')) {
-                checkbox.closest('tr').find('input[name="NCVamt[]"]').val('');
-            }
-        } else if (checkbox.attr('id').startsWith('checkNcvQty')) {
-            checkbox.closest('tr').find('input[name="ncvdust[]"]').prop('disabled', !checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[name="NCVamt[]"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[id^="checkNcvPercentage"]').prop('disabled', checkbox.is(':checked'));
-            $('input[name="NCVamt[]"]').val('');
-            if (!checkbox.is(':checked')) {
-                checkbox.closest('tr').find('input[name="ncvdust[]"]').val('');
-            }
-        } else {
-        	
-            console.log('Unknown checkbox triggered.'); // Log if an unknown checkbox triggers the function
-        }
-    }
-    
-    
-    
-    function toggleInputFields1(checkbox, inputFields) {
-        inputFields.prop('disabled', !checkbox.is(':checked'));
-       
-        if (checkbox.attr('id').startsWith('checkDustAMt_Percentage')) {
-            checkbox.closest('tr').find('input[name="DustAMt_[]"]').prop('disabled', !checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[name="DustQty_[]"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[id^="checkDustQty_"]').prop('disabled', checkbox.is(':checked'));
-            if (!checkbox.is(':checked')) {
-                checkbox.closest('tr').find('input[name="DustAMt_[]"]').val('');
-            }
-        } else if (checkbox.attr('id').startsWith('checkDustQty_')) {
-            checkbox.closest('tr').find('input[name="DustQty_[]"]').prop('disabled', !checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[name="DustAMt_[]"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-            checkbox.closest('tr').find('input[id^="checkDustAMt_Percentage"]').prop('disabled', checkbox.is(':checked'));
-            $('input[name="NCVamt[]"]').val('');
-            if (!checkbox.is(':checked')) {
-                checkbox.closest('tr').find('input[name="DustQty_[]"]').val('');
-            }
-        } else {
-        	
-            console.log('Unknown checkbox triggered.'); // Log if an unknown checkbox triggers the function
-        }
-    }
+   // Event handler for Ncv Qty checkbox
+   $(document).on('change', 'input[id^="checkNcvQty"]', function() {
+       var checkbox = $(this);
+       var tableRow = checkbox.closest('tr');
+       var index = checkbox.attr('id').replace('checkNcvQty', '');
+       var inputFields = tableRow.find('input[name="ncvdust[]"]');
+      
+       checkcondition = 2; 
+       toggleInputFields(checkbox, inputFields, index);
+       tableRow.find('input[id="NCVamt_' + index + '"]').val('0');
+   });
+  
+   // Event handler for DustQty checkbox
+   $(document).on('change', 'input[id^="checkDustQty_"]', function() {
+       var checkbox = $(this);
+       var tableRow = checkbox.closest('tr');
+       var index = checkbox.attr('id').replace('checkDustQty_', '');
+       var inputFields = tableRow.find('input[name="DustQty_[]"]');
+       checkcondition = 2; 
+       toggleInputFields1(checkbox, inputFields, index);
+      
+       tableRow.find('input[id="DustAMt_' + index + '"]').val('0');
+   });
 });
+    
+   
+
+       
+    
+    
+function toggleInputFields(checkbox, inputFields, index) {
+    inputFields.prop('disabled', !checkbox.is(':checked'));
+
+    if (checkbox.attr('id').startsWith('checkNcvPercentage')) {
+        checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id="ncvdust_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkNcvQty_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        // $('input[name="ncvdust[]"]').val('0'); // Commented out as it might not be necessary
+        if (!checkbox.is(':checked')) {
+            checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').val('');
+        }
+    } else if (checkbox.attr('id').startsWith('checkNcvQty')) {
+        checkbox.closest('tr').find('input[id="ncvdust_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkNcvPercentage_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        // $('input[name="NCVamt[]"]').val('0'); // Commented out as it might not be necessary
+        if (!checkbox.is(':checked')) {
+            checkbox.closest('tr').find('input[name="ncvdust_' + index + '"]').val('');
+        }
+    } else {
+        console.log('Unknown checkbox triggered.'); // Log if an unknown checkbox triggers the function
+    }
+}
+
+function toggleInputFields1(checkbox, inputFields, index) {
+    inputFields.prop('disabled', !checkbox.is(':checked'));
+
+    if (checkbox.attr('id').startsWith('checkDustAMt_Percentage')) {
+        checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkDustQty_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        // $('input[name="DustQty_[]"]').val('0'); // Commented out as it might not be necessary
+        if (!checkbox.is(':checked')) {
+            checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').val('');
+        }
+    } else if (checkbox.attr('id').startsWith('checkDustQty_')) {
+        checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkDustAMt_Percentage_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        // $('input[name="DustAMt_[]"]').val('0'); // Commented out as it might not be necessary
+        if (!checkbox.is(':checked')) {
+            checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').val('');
+        }
+    } else {
+        console.log('Unknown checkbox triggered.'); // Log if an unknown checkbox triggers the function
+    }
+}
 
 $('#firstloop1').val(checkcondition);
 
-document.getElementById("rowindex2").value = rowIndex;
+
 
 loadedIds.push(id);
 $('#childTable1').show();
 </script>
 
+  <script>
+  function calculateQtyfrompercent(input, elementId, intvalue, resultsArray, index) {
+	    let gradeprice = resultsArray[intvalue - 1];
+	    let tableRow = $(input).closest('tr');
+	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());
+	    let inputElement = document.getElementById(elementId);
+	    let previousValue;
+	    let qty, valueinprice;
 
+	    if (inputElement.id.startsWith('NCVamt_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="NCV_Value[]"]').val()) || 0;
 
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
+	        } else {
+	            qty = ((actualQty * parseFloat(input.value)) / 100);
+	            valueinprice = (gradeprice * qty).toFixed(2);
 
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
 
- 
- <script>
-        function myFunction() {
-          
-           	
-      	   $("#Moisture_Cont").hide();
-      	  $("#Moisture_Content").hide();
-      	   $("#NCV_Percent").hide();
-      	  $("#NCV_Percentage1").hide();
-      	  
-      	   $("#NCV_Qty34").hide();
-      	  $("#NCV_Qty12").hide();  
-      	 
-      	   
-        }
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
+	        }
+	    } else if (inputElement.id.startsWith('DustAMt_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="DustValue[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val('0'); // Clear DustValue input field
+	        } else {
+	            qty = ((actualQty * parseFloat(input.value)) / 100);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val(valueinprice); // Update DustValue input field
+	        }
+	    } else if (inputElement.id.startsWith('Nomination_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="MoistureValue[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="MoistureValue[]"]').val('0'); // Clear MoistureValue input field
+	        } else {
+	            qty = ((actualQty * parseFloat(input.value)) / 100);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="MoistureValue[]"]').val(valueinprice); // Update MoistureValue input field
+	        }
+	    } else if (inputElement.id.startsWith('Qualitypercentage_')) {
+	        actualQty = actualQty - some[index];
+	        let gradeprice1 = resultsArray[intvalue - 1];
+	        var qs = Math.floor(parseFloat(input.value) / 100);
+	        previousValue = parseFloat(tableRow.find('input[name="QualityValue_[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
+	            tableRow.find('input[name="QualityValue_[]"]').val(''); // Clear QualityValue_ input field
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	        } else {
+	            if (qs == 0) {
+	                intvalue++;
+	                let gradeprice = resultsArray[intvalue - 1];
+	                gradeprice = gradeprice1 - gradeprice;
+
+	                qty = ((actualQty * parseFloat(input.value)) / 100);
+	                valueinprice = (gradeprice * qty).toFixed(2);
+	                claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+	            } else if (qs == 1) {
+	                let rem = parseFloat(input.value) % 100;
+	                if (rem == 0) {
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = gradeprice1 - gradeprice;
+
+	                    qty = ((actualQty * parseFloat(input.value)) / 100);
+	                    valueinprice = (gradeprice * qty).toFixed(2);
+	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+	                } else {
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    let grade = gradeprice;
+	                    gradeprice = gradeprice1 - gradeprice;
+	                    qty = actualQty;
+	                    let valueinprice1 = (gradeprice * qty).toFixed(2);
+
+	                    intvalue++;
+	                    gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = grade - gradeprice;
+	                    qty = (actualQty * rem) / 100;
+	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty).toFixed(2);
+	                    valueinprice = valueinprice1;
+	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+	                }
+	            } else if (qs == 2) {
+	                let rem = parseFloat(input.value) % 100;
+	                if (rem == 0) {
+	                    intvalue++;
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = gradeprice1 - gradeprice;
+
+	                    qty = ((actualQty * parseFloat(input.value)) / 100);
+	                    valueinprice = (gradeprice * qty).toFixed(2);
+	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+	                } else {
+	                    intvalue++;
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    let grade = gradeprice;
+	                    gradeprice = gradeprice1 - gradeprice;
+	                    qty = actualQty;
+	                    let valueinprice1 = (gradeprice * qty).toFixed(2);
+
+	                    intvalue++;
+	                    intvalue++;
+	                    gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = grade - gradeprice;
+	                    qty = (actualQty * rem) / 100;
+	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty).toFixed(2);
+	                    valueinprice = valueinprice1;
+	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+	                }
+	            }
+	            tableRow.find('input[name="QualityValue_[]"]').val(valueinprice);
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2));
+	        }
+	    }
+	}
+
+        
+  function calculateQtyfromQty(input, elementId, intvalue, resultsArray, index) {
+	    let gradeprice = resultsArray[intvalue - 1];
+	    let tableRow = $(input).closest('tr');
+	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());
+	    let inputElement = document.getElementById(elementId);
+	    let previousValue;
+	    let qty, valueinprice;
+
+	    if (inputElement.id.startsWith('ncvdust_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="NCV_Value[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= previousValue / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
+	        } else {
+	            qty = parseFloat(input.value);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - previousValue / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
+	        }
+	    } else if (inputElement.id.startsWith('DustQty_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="DustValue[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= previousValue / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val('0'); // Clear DustValue input field
+	        } else {
+	            qty = parseFloat(input.value);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - previousValue / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val(valueinprice); // Update DustValue input field
+	        }
+	    }
+	}
+
     </script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	
+});
+</script>
+
+
+
 <!-- <script>
 $(document).ready(function() {
   $("#Quality_Claim").on("change", function() {
@@ -787,7 +1056,7 @@ $(document).ready(function() {
     }
   });
 });
-</script> -->
+</script> 
 
 <script>
     $(document).ready(function(){

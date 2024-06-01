@@ -1,4 +1,5 @@
 package com.jci.service.Impl_phase2;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -185,6 +186,12 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
 		// TODO Auto-generated method stub
 		return nominalOfficialDao.getAlldetails(settlement_id);
+	}
+
+	@Override
+	public List<Jciclaim_NominationModel> findnominationdetails(String id) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.findnominationdetails(id);
 	}
 
 }

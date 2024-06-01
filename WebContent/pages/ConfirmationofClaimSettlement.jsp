@@ -440,7 +440,7 @@ $(document).ready(function(){
                            var formattedMonth1 = month1 < 10 ? '0' + month1 : month1;
                            var formattedYear1 = year1;
                            var formattedDate1 = formattedDay1 + '-' + formattedMonth1 + '-' + formattedYear1;
-                           alert(formattedDate1);
+                           //alert(formattedDate1);
                         tableHTML += "<tr>";
                         tableHTML += "<td style='text-align:center;'><input readonly id='jv"+i+"' name='jv"+i+"' value='" + data[i][2] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='jg"+i+"' name='jg"+i+"' value='" + data[i][3] + "'></td>";
@@ -547,7 +547,7 @@ $(document).ready(function(){
       	                    var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
       	                    var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
       	                    var price = parseFloat($('#pr'+index).val()).toFixed(2);
-      	                    alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
+      	                   // alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
       	                    var ms = parseFloat($('#ms'+index).val()).toFixed(2);
       	                    var quot=0;
       	                    var rem=0;
@@ -586,11 +586,11 @@ $(document).ready(function(){
                                 	            "challan": data[index][12]
                                 	        }
                                 	    });
-                                	    alert(result)
+                                	  //  alert(result)
                                 	    var lastDigit = parseInt(grade.slice(-1)); // Extract the last digit and convert it to an integer
                                 	    var newLastDigit = (lastDigit + (parseInt(quot))) % 10; // Ensure the result stays within the range 0-9
                                 	    grade = grade.slice(0, -1) + newLastDigit; // Concatenate the modified last digit with the rest of the grade
-                                	    alert(grade);
+                                	  //  alert(grade);
                                 	    const result2 = await $.ajax({
                                 	        type: 'GET',
                                 	        url: 'fetchPrice.obj',
@@ -601,16 +601,16 @@ $(document).ready(function(){
                                 	            "challan": data[index][12]
                                 	        }
                                 	    });
-                                	    alert(result2);
+                                	    //alert(result2);
                                 	    const fetchedData1 = parseFloat(JSON.parse(result));
                                 	    const fetchedData2 = parseFloat(JSON.parse(result2));
                                 	    
                                 	    const AmountSet1 = amtiFixed * (100-rem)/100 * (price - fetchedData1);
                                 	    const AmountSet2 = amtiFixed * (rem)/100 * (price - fetchedData2);
-                                	    alert(AmountSet1 +"------------"+AmountSet2);
+                                	    //alert(AmountSet1 +"------------"+AmountSet2);
                                 
                                 	    totalSettlementAmount += parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2);
-                                	    alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
+                                	    //alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
                                 	}
 
                                 	else{
@@ -626,12 +626,12 @@ $(document).ready(function(){
                                     });
                                     
                                     const fetchedData = parseFloat(JSON.parse(result));
-                                    alert(fetchedData);
+                                    //alert(fetchedData);
                                     const AmountSet = amtiFixed * (qsValue/100) * (price - fetchedData);
                                     
                                     $("#cl"+index).val(parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice));
                                     totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
-    	                            alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
+    	                           // alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
                                 	}
 
                                     

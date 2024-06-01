@@ -545,11 +545,8 @@ var gradeArray = [];
 							//async: false,
 							contentType: "application/json",
 							success : async (result) => {
-							  	$(".contractLoader").hide()
-			
+							  	$(".contractLoader").hide();
 								window.location.href = "authorization.obj";
-							
-								
 							},
 							error: function(xhr, status, error) {
 								alert("error");

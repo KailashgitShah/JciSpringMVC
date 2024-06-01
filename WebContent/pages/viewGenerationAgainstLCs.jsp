@@ -1,14 +1,16 @@
-<%@page import="com.jci.model.JciDIHoModel"%>
+<%@page import="com.jci.model.MillRecieptModel"%>
+<%@page import="com.jci.model.EntryPaymentDetailsModel"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
 <%@page import="com.jci.model.RoleMasterModel"%>
+<%@page import="com.jci.model.GenerationofDocumentLCsModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
-
-<%@page import="com.jci.model.UserRegistrationModel"%>
-
+<%@ page import="java.text.SimpleDateFormat" %>
+ <%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@page isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -103,25 +105,26 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">
-					Settlement Schedule</h1>
+				<h1 class="page-title">View Generation Against LCs list</h1>
 
 			</div>
 
-
+			<%
+			List<GenerationofDocumentLCsModel> genrationAgainstLcs = (List<GenerationofDocumentLCsModel>)request.getAttribute("genrationAgainstLcs");
+			
+			
+		%>
+		
+		
+			
+		
+	    
+			
 			<div class="page-content fade-in-up">
 				<div class="ibox">
 					<span>${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
-						<div text-center><a href="viewlistnominal.obj"><button class="btn btn-primary" type="button">Back</button></a></div>
-							<%-- <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
-                        <div text-center>Settlement Id : ${firstItem.settlement_id_generated}</div> --%>
-                        <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
-							<div style="text-align: center;">
-                          <p style="font-weight: bold; ">Settlement Id: ${firstItem.settlement_id_generated}</p>
-                         </div>
-							
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
@@ -129,45 +132,69 @@ th {
 
 								<thead>
 									<tr>
-									<th>Sl.NO</th>
-									<th>Challan</th>
-									<th>Mr_No</th>
-									<th>Mr_Date</th>
-									<th>Bill_Of_Supply_Number</th>
-									<th>Date_Of_Shipment</th>	
-									<th>Shipment_Quantity</th>	
-									<th>Claim Valuation</th>													
+										<th>Sl.No</th>
+										<!-- <th>BOS Date</th> -->
+										<th>BOS No</th>
+										<th>Boe Date</th>
+										<!-- <th>Bos Amt</th>
+										<th>Ho DiNo</th>
+										<th>Ho DiDate</th> -->
+										<th>LC No</th>
+										<th>Invoice Value</th>
+									<!-- 	<th>Mill Code</th> -->
+										<!-- <th>Quantity</th> -->
+										 <th>Top Sheet</th>
+										 <th>Bank Draft</th>
+										 <th>Bill Of Supply docs</th>
+										 <th>Bill Of Exchange</th>
+								
+										
+
 									</tr>
 								</thead>
 								<tbody>
-								<%int i=1; %>
+									<%
+									int i = 1;
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+									for (GenerationofDocumentLCsModel  generationofDocumentLCsModel : genrationAgainstLcs) {
 
-									<c:forEach items="${jciclaim_NominationModel}" var="item">
-
-
-										<tr>
-										<td  class="sorting_1"><%=i%></td>
-										<td>${item.getChallans()}</td>
-										<td>${item.getMr_number()}</td>
-										<td>${item.getMr_Date()}</td>
-										<td>${item.getBillOfSupply_number()}</td>
-										<td>${item.getDateofshipment()}</td>
-										<td>${item.getShipmentquantity()}</td>
-										<td>${item.getClaimValuation()}</td>
+										if (i <= 200) {
+									%>
+									<tr>
+										<td><%=i%></td>
+									<%-- 	<td><%= generationofDocumentLCsModel.getBOS_Date() %></td> --%>
+										<td><%= generationofDocumentLCsModel.getBOS_No() %></td>
+									<%-- 	<td><%= generationofDocumentLCsModel.getBoe_Date()%></td> --%>
+									 	<td><%= generationofDocumentLCsModel.getBos_Amt() %></td>
+										<%-- <td><%= generationofDocumentLCsModel.getHo_di_date() %></td>
+										<td><%= generationofDocumentLCsModel.getHo_di_No()%></td>  --%>
+										<td><%= generationofDocumentLCsModel.getInstrument_no() %></td>
+										<td><%= generationofDocumentLCsModel.getIvoice_value()%></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
 										
-                                       
-										</tr>
-										<%i++; %>
-									</c:forEach>
+									<%-- 	<td><%= generationofDocumentLCsModel.getMill_code() %></td> --%>
+									<%-- 	<td><%= generationofDocumentLCsModel.getQuantity() %></td> --%>
+										
+									
+
+										
+
+										
 
 
-
-
-
-
+									</tr>
+									<%
+									}
+									i++;
+									}
+									%>
 								</tbody>
 
 							</table>
+						
 						</div>
 					</div>
 				</div>

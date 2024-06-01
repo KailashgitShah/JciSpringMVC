@@ -171,7 +171,7 @@
 		                                         
                                    </div>
                                    <div class="row">
-								    <div class="col-sm-12">
+								    <div class="col-sm-10">
 								        <div class="table-responsive">
 								            <table id="milldetailsTable" class="table table-bordered">
 								                <thead class="thead-light">
@@ -180,10 +180,8 @@
 								                        <th>Date of Shipment</th>
 								                        <th>Vehicle No</th>
 								                        <th>DI date</th>
-								                       <!--  <th>Actual Qty</th>
-								                        <th>Short Qty</th> -->
-								                       <!--   <th>Mr no</th>
-								                        <th>Mr Date</th> -->
+								                        <th>ContractNO</th>
+								                      
 								                    </tr>
 								                </thead>
 								                <tbody>
@@ -249,6 +247,10 @@
 													class="form-control" name="rowindex2"
 													id="rowindex2" value="" readonly="readonly">
 											</div>
+											
+										
+											
+											
 	                                      
 												
 	                                </div>  
@@ -349,7 +351,8 @@ $(document).ready(function() {
                     
                     field0Values.push(innerArray[0]);
                     field1Values.push(innerArray[1]);
-                    $('#millcode1').val(field1Values[0]); 
+                    $('#millcode1').val(field1Values[0]);
+                   
                     field2Values.push(innerArray[2]);
                 });
                 
@@ -372,7 +375,7 @@ $(document).ready(function() {
     $('#HODate').on('change', function() {
         var field2Value = $(this).find(':selected').attr('data-value2');
         var field1Value = $(this).find(':selected').attr('data-value1');
-        
+      
     
 
         // Function to format date
@@ -418,8 +421,8 @@ $(document).ready(function() {
                                        '<td><div class="table-cell"><input type="hidden" name="dateOfShipment[]" value="' + formatDate(new Date(rowData[1])) + '">' + formatDate(new Date(rowData[1])) + '</div></td>' +
                                          '<td><div class="table-cell"><input type="hidden" name="vehicleNo[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
                                          '<td><div class="table-cell"><input type="hidden" name="diDate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
-                                       /*   '<td><div class="table-cell"><input type="hidden" name="actualQty[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
-                                        '<td><div class="table-cell"><input type="hidden" name="shortQty[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                                        '<td><div class="table-cell"><input type="hidden" name="ContractNo[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
+                                        /*  '<td><div class="table-cell"><input type="hidden" name="shortQty[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
                                         */ '<td style="display:none;"><div class="table-cell"><input type="hidden" name="millcode[]" value="' + rowData[4] + '">' + rowData[7] + '</div></td>' +
                                         
                                         '</tr>';
@@ -460,12 +463,14 @@ $(document).ready(function() {
         var id = $(this).data('id');
         var millNameValue = $('#Mill_name1').val(); // Get the value from #Mill_name1
         var hoDateValue = $('#HODate').find(':selected').attr('data-value1'); // Get the data-value2 attribute
+      // Get the data-value2 attribute
 
         // Construct the URL with the parameters
         var url = 'EntryofMillreceiptChild.obj';
         url += '?contarctno=' + encodeURIComponent(id);
-        url += '&millName=' + encodeURIComponent(millNameValue); // Encode special characters
+        url += '&millName=' + encodeURIComponent(millNameValue); 
         url += '&hoDate=' + encodeURIComponent(hoDateValue);
+        
 
         window.open(url, '_blank');
     });

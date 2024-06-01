@@ -72,6 +72,7 @@ input[type="radio"] {
 	String ContractNo = (String) request.getAttribute("ContractNo");
 
 	String ChallanNo = (String) request.getAttribute("ChallanNo");
+	String dpc = (String) request.getAttribute("dpc");
 	int Count = (int) request.getAttribute("Count") + 1;
 	Double nominalWt = (Double) request.getAttribute("nominalWeight");
 	Double actualWt = (Double) request.getAttribute("ActualWeight");
@@ -214,7 +215,9 @@ input[type="radio"] {
 											class="form-control " name="millcode" id="millcode"
 											type="hidden" value="<%=millcode%>" readonly> <input
 											class="form-control " name="roId" id="roId" type="hidden"
-											value="<%=roId%>" readonly>
+											value="<%=roId%>" readonly><input
+											class="form-control " name="dpc" id="dpc" type="hidden"
+											value="<%=dpc%>" readonly>
 
 									</div>
 									<br>

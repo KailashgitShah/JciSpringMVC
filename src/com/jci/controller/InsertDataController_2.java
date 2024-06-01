@@ -749,8 +749,8 @@ public class InsertDataController_2 {
 			} else {
 
 				ModelAndView mv = new ModelAndView("Inventory");
-				List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2022-2023", "msp");
-				List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2022-2023", "msp");
+				List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2022-2023", "MSP");
+				List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2022-2023", "MSP");
 				mv.addObject("jute", jute);
 				mv.addObject("bale", bale);
 
@@ -758,32 +758,32 @@ public class InsertDataController_2 {
 			}
 		}
 
-		@ResponseBody
-		@RequestMapping(value = { "inventoryjute" }, method = { RequestMethod.GET })
-		public String inventoryjute(HttpServletRequest request, RedirectAttributes redirectAttributes,
-				HttpSession session) {
+		  @ResponseBody
+		  @RequestMapping(value = {"inventoryjute"}, method = { RequestMethod.GET })
+		  public String  inventoryjute(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+			
+		    		  String cropyr =  request.getParameter("cropyr");
+		    		  String basis =  request.getParameter("basis");
+			
+			  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr, basis);
+			   final Gson gson = new Gson();  
+			  return gson.toJson((Object)(jute));
 
-			String cropyr = request.getParameter("cropyr");
-			String basis = request.getParameter("basis");
+		  }
 
-			List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr, basis);
-			final Gson gson = new Gson();
-			return gson.toJson((Object) (jute));
 
-		}
+		 @ResponseBody
+	   	  @RequestMapping(value = {"inventorybale"}, method = { RequestMethod.GET })
+	   	  public String  inventorybale(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	   		
+	   	    		  String cropyr =  request.getParameter("cropyr");
+	   	    		  String basis =  request.getParameter("basis");
+	   		  List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis);
+	   		   final Gson gson = new Gson();	   		   
+	   		  return gson.toJson((Object)(bale));
 
-		@ResponseBody
-		@RequestMapping(value = { "inventorybale" }, method = { RequestMethod.GET })
-		public String inventorybale(HttpServletRequest request, RedirectAttributes redirectAttributes,
-				HttpSession session) {
+	   	  }	
 
-			String cropyr = request.getParameter("cropyr");
-			String basis = request.getParameter("basis");
-			List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis);
-			final Gson gson = new Gson();
-			return gson.toJson((Object) (bale));
-
-		}
 
 
 /////////////////////////////////////////////////  Finalization of lot sizes and Reserve Sale Price - START///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

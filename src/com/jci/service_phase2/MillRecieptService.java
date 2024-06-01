@@ -21,6 +21,7 @@ public interface MillRecieptService {
 		public List<Object[]> fetchdata(String st);
 		public List<Object[]> challanbaseddetails(String st);
 		public List<Object[]> childdata(String st);
+		public List<Object[]> gradeprice(String st,String st1);
 		public List<Object> fetchMill_NameR();
 		
 		public MillRecieptModel Creditqty(String contractno);
