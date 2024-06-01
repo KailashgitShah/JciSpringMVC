@@ -101,122 +101,95 @@
 							<div class="ibox-body">
 								<form action="savenominal.obj" method="POST">
 									<div class="row">
-
 										<div class="col-sm-4 form-group">
 											<label> Mill</label> <span class="text-danger">* </span> <select
 												name="Mill" id="Mill" class="form-control taxtbox" required>
 											 	<option value="">Select</option> 
-												
-											<c:forEach items="${millid}" var="item">
-												 <option value="${item}">${item}</option> 
+											    <c:forEach items="${millid}" var="item">
+												  <option value="${item}">${item}</option> 
 												</c:forEach> 
-
-
 											</select>
 										</div>
                                     
-									<div class="col-sm-4 form-group" id="contractNoContainer" style="display:none;">
-									<label>Contract No</label>
-									<select name="ContractNo" id="ContractNo" class="form-control taxtbox" required>
-							        <option disabled selected value="-Select-">-Select-</option>
-									 </select>
-									</div>						
-										  <div class="col-sm-4 form-group">
-	                                             <label>HO DI </label>
-	                                              <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
-	                                        	<select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
+										<div class="col-sm-4 form-group" id="contractNoContainer" style="display:none;">
+											<label>Contract No</label>
+												<select name="ContractNo" id="ContractNo" class="form-control taxtbox" required>
+										             <option disabled selected value="-Select-">-Select-</option>
+												</select>
+										</div>						
+										 <div class="col-sm-4 form-group">
+	                                           <label>HO DI </label>
+	                                            <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
+	                                        	 <select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
 													   <option value="">-Select-</option>
 													   <c:forEach items="${DI_no}" var="item">
-												      <option value="${item}">${item}</option> 
-												     </c:forEach> 
-													</select>
-										             </div>
-										              </div>
+												          <option value="${item}">${item}</option> 
+												       </c:forEach> 
+												 </select>
+										 </div>
+									</div>
 										              
-										        <div class="row">										        
+								 <div class="row">										        
 									
-										 <div class="col-sm-4 form-group">
-										<div id="omMessage" class="text-danger"></div>
+								  <div class="col-sm-4 form-group">
+								   <div id="omMessage" class="text-danger"></div>
 										<label>O&M Official</label>
 										<span class="text-danger">*</span>
 										<select name="omofficial" id="omofficial" class="form-control taxtbox" required>
 										    <option value="">Select</option>
-										    <c:forEach items="${OM_official}" var="item">
-										        <option value="${item}">${item}</option>
-										    </c:forEach>
+										<c:forEach items="${OM_official}" var="item">
+										    <option value="${item}">${item}</option>
+										</c:forEach>
 										</select>
-										</div>
+								  </div>
+								  
+								  <div class="col-sm-4 form-group">
+                                       <label>Date of Inspection</label>
+                                       <input class="form-control taxtbox" id="DateofInpection" name="DateofInpection" placeholder="dd-mm-yyyy" required>                                   
+								 </div>
 									
-										
-										
-										<div class="col-sm-4 form-group">
-                                         <label>Date of Inspection</label>
-                                        <input class="form-control taxtbox" id="DateofInpection" 
-                                        name="DateofInpection" placeholder="dd-mm-yyyy" required>                                   
-									 </div>
-										        
-										      
-     
-										        	<div class="row">
+					          <div class="row">
 
-										
-						            
-						             <div class="row mt-3">
-									        <table class="table table-bordered">
-									            <thead>
-									                <tr>
-									                     <th></th> 
-									                    <th>Challan</th>
-									                    <th>Mr_No</th>
-									                     <th>Mr_Date</th>
-									                      <th>Bill_Of_Supply_Number</th>
-									                    <th>Date_Of_Shipment</th>									                   
-									                    <th>Shipment_Quantity</th>
-									                    <th>Claim Valuation</th>
-									                    
-									                 
-									                </tr>
-									            </thead>
-									            <tbody id="binDataBody">
-									            
-									                <!-- Data rows will be dynamically populated -->
-									            </tbody>
-									        </table>
-									    </div>		
+						      <div class="row mt-3">
+								<table class="table table-bordered">
+									  <thead>
+									       <tr>
+									         <th></th> 
+									          <th>Challan</th>
+									           <th>Mr_No</th>
+									            <th>Mr_Date</th>
+									            <th>Bill_Of_Supply_Number</th>
+									             <th>Date_Of_Shipment</th>									                   
+									              <th>Shipment_Quantity</th>
+									               <th>Claim Valuation</th>
+									              
+									            </tr>
+									      </thead>
+								 <tbody id="binDataBody">
+							     <!-- Data rows will be dynamically populated -->
+								</tbody>
+							 </table>
+						 </div>		
 						            			   
-									    <div class="row">
-                                        
-                                           <%--  <div class="col-sm-4 form-group">
-											<input type="hidden"
-												class="form-control taxtbox"  name="Settlement_id_generated"
-												id="SettlementId" type="text" required readonly="readonly">
-										</div>  --%>
-										
-										 <div class="col-sm-4 form-group">
-											<input type="hidden"
-												class="form-control taxtbox" value = "${total}" name="Settlement_id_generated"
-												type="text" required readonly="readonly">
-										</div> 
-									</div>
-                                   
-                                    <input type="hidden" id="numRows" name="rows">
-                                    
-									<br>
-									
-									<div class="row">
-								   <div class="col-sm-12 form-group">
-										<br>
-									    <br>
-									    <br>
-									    <br>
-									
-										<input type="submit" value="Submit" class="btn btn-primary"
-												id="submit">
-										</div>
-									</div> 
+					 <div class="row">
+								<div class="col-sm-4 form-group">
+								 <input type="hidden"
+								   class="form-control taxtbox" value = "${total}" name="Settlement_id_generated"type="text" required readonly="readonly">
+								</div> 
+					</div>
+                     <input type="hidden" id="numRows" name="rows">
+					  <br>
+					 <div class="row">
+						<div class="col-sm-12 form-group">
+								<br>
+								 <br>
+								 <br>
+								 <br>
+					      <input type="submit" value="Submit" class="btn btn-primary"id="submit">
+						</div>
+					</div>  
 
-
-								</form>
+			</form>
 							</div>
 						</div>
 					</div>
@@ -224,9 +197,18 @@
 			</div>
 			<!-- END PAGE CONTENT-->
 			<%@ include file="footer.jsp"%>
+			 
 		</div>
 	</div>
-
+<!-- <div class="row">
+						<div class="col-sm-12 form-group">
+								<br>
+								 <br>
+								 <br>
+								 <br>
+					      <input type="submit" value="Submit" class="btn btn-primary"id="submit">
+						</div>
+					</div>  -->
 	<div class="sidenav-backdrop backdrop"></div>
 
 
@@ -238,9 +220,6 @@
 	
 </script> -->
 
-
-
-
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#submit").click(function() {
@@ -251,19 +230,12 @@
 	</script>
 
 
-
-
-
-
-
-
  <script type="text/javascript">
     // Initialize the Datepicker
     $("#DateofInpection").datepicker({
         dateFormat: 'dd-mm-yy',
         onSelect: function(selectedDate) {
             var selectedOption = selectedDate;
-            // alert(selectedOption); // Uncomment this line for debugging
             $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
@@ -300,9 +272,6 @@
         var selectedOmofficial = document.getElementById("omofficial").value;       
         var selectedDate = document.getElementById("DateofInpection").value;
         var omMessageElement = document.getElementById("omMessage");
-        
-
-        
             $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
@@ -395,9 +364,8 @@ $(document).ready(function() {
     }
 }  
 
-
 </script> 
- 
+
 	 <script type="text/javascript">
     $(document).ready(function() {
         $('#Mill').on('change', function() {
@@ -426,15 +394,6 @@ $(document).ready(function() {
         });
     });
 </script>
-     
-
-	<!-- 	AJAX Call for Fetching Mill Receipt Data -->
-
-	
-
-	<!--  For Fetching the Grade_Composition based on Contract Number -->
-
-	<!--   For Hinding and Showing the  Grade Wise Alloction-->
 
 	<script type="text/javascript">
 		$(document).ready(function() {

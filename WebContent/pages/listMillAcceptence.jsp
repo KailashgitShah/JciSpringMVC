@@ -284,7 +284,7 @@ input[type="file"] {
  
                                          <td><button class="btn btn-success" disabled>Recieved</button></td>
 
-
+                                              <!-- this will work in free sales and commercial  -->
 											<%-- <form action="saveMillAcceptenceFile.obj" method="POST"
 												enctype="multipart/form-data">
 											
