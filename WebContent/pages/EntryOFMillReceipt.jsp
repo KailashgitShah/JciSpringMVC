@@ -834,15 +834,17 @@ $('#childTable1').show();
 
 	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
 	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
 	        } else {
 	            qty = ((actualQty * parseFloat(input.value)) / 100);
-	            some[index] += qty;
 	            valueinprice = (gradeprice * qty).toFixed(2);
 
 	            // Update claim amount value by subtracting the old value and adding the new value
 	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
 	        }
@@ -851,15 +853,17 @@ $('#childTable1').show();
 
 	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
 	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="DustValue[]"]').val('0'); // Clear DustValue input field
 	        } else {
 	            qty = ((actualQty * parseFloat(input.value)) / 100);
-	            some[index] += qty;
 	            valueinprice = (gradeprice * qty).toFixed(2);
 
 	            // Update claim amount value by subtracting the old value and adding the new value
 	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="DustValue[]"]').val(valueinprice); // Update DustValue input field
 	        }
@@ -868,15 +872,17 @@ $('#childTable1').show();
 
 	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
 	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="MoistureValue[]"]').val('0'); // Clear MoistureValue input field
 	        } else {
 	            qty = ((actualQty * parseFloat(input.value)) / 100);
-	            some[index] += qty;
 	            valueinprice = (gradeprice * qty).toFixed(2);
 
 	            // Update claim amount value by subtracting the old value and adding the new value
 	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="MoistureValue[]"]').val(valueinprice); // Update MoistureValue input field
 	        }
@@ -888,6 +894,7 @@ $('#childTable1').show();
 
 	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
 	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
 	            tableRow.find('input[name="QualityValue_[]"]').val(''); // Clear QualityValue_ input field
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	        } else {
@@ -899,6 +906,7 @@ $('#childTable1').show();
 	                qty = ((actualQty * parseFloat(input.value)) / 100);
 	                valueinprice = (gradeprice * qty).toFixed(2);
 	                claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
 	            } else if (qs == 1) {
 	                let rem = parseFloat(input.value) % 100;
 	                if (rem == 0) {
@@ -909,6 +917,7 @@ $('#childTable1').show();
 	                    qty = ((actualQty * parseFloat(input.value)) / 100);
 	                    valueinprice = (gradeprice * qty).toFixed(2);
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
 	                } else {
 	                    intvalue++;
 	                    let gradeprice = resultsArray[intvalue - 1];
@@ -924,6 +933,7 @@ $('#childTable1').show();
 	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty).toFixed(2);
 	                    valueinprice = valueinprice1;
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
 	                }
 	            } else if (qs == 2) {
 	                let rem = parseFloat(input.value) % 100;
@@ -936,6 +946,7 @@ $('#childTable1').show();
 	                    qty = ((actualQty * parseFloat(input.value)) / 100);
 	                    valueinprice = (gradeprice * qty).toFixed(2);
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
 	                } else {
 	                    intvalue++;
 	                    intvalue++;
@@ -953,6 +964,7 @@ $('#childTable1').show();
 	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty).toFixed(2);
 	                    valueinprice = valueinprice1;
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
 	                }
 	            }
 	            tableRow.find('input[name="QualityValue_[]"]').val(valueinprice);
@@ -962,51 +974,55 @@ $('#childTable1').show();
 	}
 
         
-        function calculateQtyfromQty(input,elementId,intvalue,resultsArray,index) {
-        	 let gradeprice = resultsArray[intvalue - 1];
-     	    let tableRow = $(input).closest('tr');
-     	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());
-     	    let inputElement = document.getElementById(elementId);
-     	    let previousValue;
-     	    let qty, valueinprice;
+  function calculateQtyfromQty(input, elementId, intvalue, resultsArray, index) {
+	    let gradeprice = resultsArray[intvalue - 1];
+	    let tableRow = $(input).closest('tr');
+	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());
+	    let inputElement = document.getElementById(elementId);
+	    let previousValue;
+	    let qty, valueinprice;
 
-     	    if (inputElement.id.startsWith('ncvdust_')) {
-     	        previousValue = parseFloat(tableRow.find('input[name="NCV_Value[]"]').val()) || 0;
+	    if (inputElement.id.startsWith('ncvdust_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="NCV_Value[]"]').val()) || 0;
 
-     	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
-     	            claimAmount[index] -= previousValue; // Subtract the previous value
-     	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
-     	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
-     	        } else {
-     	            qty = parseFloat(input.value);
-     	            some[index] += qty;
-     	            valueinprice = (gradeprice * qty).toFixed(2);
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= previousValue / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
+	        } else {
+	            qty = parseFloat(input.value);
+	            valueinprice = (gradeprice * qty).toFixed(2);
 
-     	            // Update claim amount value by subtracting the old value and adding the new value
-     	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
-     	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
-     	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
-     	        }
-     	    } else if (inputElement.id.startsWith('DustQty_')) {
-     	        previousValue = parseFloat(tableRow.find('input[name="DustValue[]"]').val()) || 0;
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - previousValue / gradeprice + qty; // Update some array
 
-     	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
-     	            claimAmount[index] -= previousValue; // Subtract the previous value
-     	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
-     	            tableRow.find('input[name="DustValue[]"]').val('0'); // Clear DustValue input field
-     	        } else {
-     	        	 qty = parseFloat(input.value);
-     	            some[index] += qty;
-     	            valueinprice = (gradeprice * qty).toFixed(2);
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
+	        }
+	    } else if (inputElement.id.startsWith('DustQty_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="DustValue[]"]').val()) || 0;
 
-     	            // Update claim amount value by subtracting the old value and adding the new value
-     	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
-     	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
-     	            tableRow.find('input[name="DustValue[]"]').val(valueinprice); // Update DustValue input field
-     	        }
-     	    }
-            
-        }
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= previousValue / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val('0'); // Clear DustValue input field
+	        } else {
+	            qty = parseFloat(input.value);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - previousValue / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val(valueinprice); // Update DustValue input field
+	        }
+	    }
+	}
+
     </script>
 
 

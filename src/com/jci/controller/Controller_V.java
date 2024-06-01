@@ -3381,7 +3381,7 @@ public class Controller_V {
 
 	@RequestMapping("saveentryofGenrationbill")
 	public ModelAndView saveentryofGenrationbill(HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		final File theDir = new File("Genrationofbill");
+		final File theDir = new File(Genrationofbill);
 		if (!theDir.exists()) {
 			theDir.mkdirs();
 		}
