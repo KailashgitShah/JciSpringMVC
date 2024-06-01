@@ -125,22 +125,44 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 
 
+//	@Override
+//	public List<Object> FetchMillReceiptData(String millid) {
+//		// TODO Auto-generated method stub
+//
+//		String MillNamenomination = millid;
+//
+//
+//		 String q = "SELECT DISTINCT c.Contract_no " +
+//	               "FROM jcicontract c " +
+//	               "JOIN jcimilldetailchild m ON c.Mill_code = m.client_unit_code " +
+//	               "WHERE m.unit_name = '" + MillNamenomination + "'";      
+//		List<Object> ContractListData = (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+//		//System.out.println(ContractListData);
+//
+//		return ContractListData;
+//	}
 	@Override
-	public List<Object> FetchMillReceiptData(String millid) {
-		// TODO Auto-generated method stub
+    public List<Object> FetchMillReceiptData(String millid) {
+        // MillNamenomination is the unit name passed to the method
+        String MillNamenomination = millid;
 
-		String MillNamenomination = millid;
+        // Constructing the SQL query
+        String q = "SELECT DISTINCT c.Contract_no " +
+                   "FROM jcicontract c " +
+                   "JOIN jcimilldetailchild m ON c.Mill_code = m.client_unit_code " +
+                   "WHERE m.unit_name = '" + MillNamenomination + "' " +
+                   "AND c.Contract_no NOT IN ( " +
+                   "    SELECT DISTINCT ContractNo " +
+                   "    FROM jciclaim_nomination " +
+                   ")";
 
+        // Executing the SQL query and fetching the result
+        List<Object> ContractListData = (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+        
+        // Returning the fetched data
+        return ContractListData;
+    }
 
-		 String q = "SELECT DISTINCT c.Contract_no " +
-	               "FROM jcicontract c " +
-	               "JOIN jcimilldetailchild m ON c.Mill_code = m.client_unit_code " +
-	               "WHERE m.unit_name = '" + MillNamenomination + "'";      
-		List<Object> ContractListData = (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
-		//System.out.println(ContractListData);
-
-		return ContractListData;
-	}
 
 	@Override
 	public List<String> contractno_ContractTable() {
@@ -209,7 +231,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		
 		    String q = "SELECT COUNT(*) FROM jciclaim_nomination";
 		  int result = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
-		    return result;
+		    return result +1;
 		
 
 	}

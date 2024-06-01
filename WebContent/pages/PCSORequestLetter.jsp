@@ -246,10 +246,8 @@ if (bale.get(7) != null) {
 												<td id="grade5"><%=grade5%></td>
 												<td id="grade6"><%=grade6%></td>
 												<td id="grade7"><%=grade7%></td>
-												<td id="total"><%=formattedTotal%></td>
-
+												<td id="total" ><%=formattedTotal%></td>
 											</tr>
-
 
 										</tbody>
 										<tbody>
@@ -337,9 +335,9 @@ if (bale.get(7) != null) {
 
 									</div>
 									<div class="row">
-										<%-- 	<input class="form-control" name="uncontractedQty"
+										 	<input class="form-control" name="uncontractedQty"
 											id="uncontractedQty" type="hidden"
-											value="<%=totalUnContractedQty%>" readonly> --%>
+											value="<%=formattedTotal%>" readonly>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty.</label> <input
