@@ -414,7 +414,7 @@
 											    <thead class="thead-light">
 											        <tr>
 											            <th>Contract No</th>
-											            <th>Contract Qty</th>
+											            <th>Contracted Qty</th>
 											            <th>Contract value</th>
 											            <th>Contract Date</th>
 											            <th>Payment_due Date</th>
@@ -812,107 +812,56 @@ $(document).ready(function() {
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        //getting details of grade composition and contract table
-        $('#contractno12').on('change', function() {
-            var field2Value = $(this).val();
+$(document).ready(function() {
+    $('#contractno12').on('change', function() {
+        var field2Value = $(this).val();
 
-            if (field2Value === "select") {
-                document.getElementById("gradesDiv").style.setProperty("display", 'none');
-                document.getElementById("dataofHistory").style.setProperty("display", 'none');
-                $('#GradeComposition2').val('');
-                $('#Contract_date1').val('');
-                $('#contract_Value1').val('');
-                $('#payment_dueDate1').val('');
-                $('#Mill_name1').val('');
-                $('#ContracQty1').val('');
-            } else {
-                $.ajax({
-                    type: 'GET',
-                    url: 'paymentdetailsforshow.obj',
-                    data: {
-                        "contractno": field2Value
-                    },
-                    success: function(data) {
-                        try {
-                            var dataArray = JSON.parse(data);
-                            if (dataArray && dataArray.length > 0) {
-                                var Contarctqty = dataArray[0][0];
-                                var Contarctdate = dataArray[0][2];
-                                var ContarctValue = dataArray[0][1];
-                                var Paymentduedate = dataArray[0][3];
-                                var mill_name = dataArray[0][4];
+        if (field2Value === "select") {
+            $('#gradesDiv').hide();
+            $('#dataofHistory').hide();
+            $('#GradeComposition2').val('');
+            $('#Contract_date1').val('');
+            $('#contract_Value1').val('');
+            $('#payment_dueDate1').val('');
+            $('#Mill_name1').val('');
+            $('#ContracQty1').val('');
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: 'paymentdetailsforshow.obj',
+                data: {
+                    "contractno": field2Value
+                },
+                success: function(data) {
+                 // This should display the data returned by the server
 
-                                var GradeComposition = dataArray[0][5];
-                                $('#GradeComposition2').val(GradeComposition);
-                                $('#Contract_date1').val(Contarctdate);
-                                $('#contract_Value1').val(ContarctValue);
-                                $('#payment_dueDate1').val(Paymentduedate);
-                                $('#Mill_name1').val(mill_name);
-                                $('#ContracQty1').val(Contarctqty);
+                    try {
+                        var dataArray = JSON.parse(data);
+                        if (dataArray && dataArray.length > 0) {
+                            var Contarctqty = dataArray[0][0];
+                            var Contarctdate = dataArray[0][2];
+                            var ContarctValue = dataArray[0][1];
+                            var Paymentduedate = dataArray[0][3];
+                            var mill_name = dataArray[0][4];
+                            var GradeComposition = dataArray[0][5];
 
-                                $.ajax({
-                                    type: 'GET',
-                                    url: 'greadewiseqty.obj',
-                                    data: {
-                                        "contractno": GradeComposition,
-                                        "contractqty": Contarctqty
-                                    },
-                                    success: function(secondData) {
-                                        try {
-                                            var dataArray = JSON.parse(secondData);
-                                            if (dataArray && dataArray.length > 0) {
-                                                var g11 = dataArray[0][0];
-                                                var g12 = dataArray[0][1];
-                                                var g21 = dataArray[1][0];
-                                                var g22 = dataArray[1][1];
-                                                var g31 = dataArray[2][0];
-                                                var g32 = dataArray[2][1];
-                                                var g41 = dataArray[3][0];
-                                                var g42 = dataArray[3][1];
-                                                var g51 = dataArray[4][0];
-                                                var g52 = dataArray[4][1];
-                                                var g61 = dataArray[5][0];
-                                                var g62 = dataArray[5][1];
+                            $('#GradeComposition2').val(GradeComposition);
+                            $('#Contract_date1').val(Contarctdate);
+                            $('#contract_Value1').val(ContarctValue);
+                            $('#payment_dueDate1').val(Paymentduedate);
+                            $('#Mill_name1').val(mill_name);
+                            $('#ContracQty1').val(Contarctqty);
 
-                                                var totalsum = 0;
-
-                                                for (var i = 0; i < dataArray.length; i++) {
-                                                    totalsum += dataArray[i][1];
-                                                }
-
-                                                $('#g11').val(g11);
-                                                $('#g12').val(g12);
-                                                $('#g21').val(g21);
-                                                $('#g22').val(g22);
-                                                $('#g31').val(g31);
-                                                $('#g32').val(g32);
-                                                $('#g41').val(g41);
-                                                $('#g42').val(g42);
-                                                $('#g51').val(g51);
-                                                $('#g52').val(g52);
-                                                $('#g61').val(g61);
-                                                $('#g62').val(g62);
-                                                $('#g72').val(totalsum);
-
-                                                document.getElementById("gradesDiv").style.setProperty("display", 'block');
-                                            }
-                                        } catch (error) {
-                                            console.error("Error parsing JSON: " + error);
-                                        }
-                                    },
-                                    error: function(error) {
-                                        console.error('Second Ajax call error:', error);
-                                    }
-                                });
-
-                                $.ajax({
-                                    type: 'GET',
-                                    url: 'PreviousEntry.obj',
-                                    data: {
-                                        "contractno": field2Value
-                                    },
-                                    success: function(data) {
+                            $.ajax({
+                                type: 'GET',
+                                url: 'PreviousEntry.obj',
+                                data: {
+                                    "contractno": field2Value
+                                },
+                                success: function(data) {
+                                
+                                	 console.log("data"+data)
+                                    try {
                                         var data1 = JSON.parse(data);
                                         if (data1 && data1.length > 0) {
                                             var tableBody = $('#tableBody');
@@ -921,55 +870,64 @@ $(document).ready(function() {
                                             data1.forEach(function(rowData) {
                                                 var newRow = $('<tr>');
 
-                                                var contractNoCell = $('<td>').appendTo(newRow);
-                                                $('<input>').attr({
-                                                    type: 'text',
-                                                    id: 'Contarct-NO',
-                                                    name: 'g11',
-                                                    readonly: 'readonly',
-                                                    value: rowData[0],
-                                                    style: 'width: 300px; height: 30px;'
-                                                }).appendTo(contractNoCell);
+                                                $('<td>').append(
+                                                    $('<input>').attr({
+                                                        type: 'text',
+                                                        readonly: true,
+                                                        value: rowData[0],
+                                                        style: 'width: 300px; height: 30px;'
+                                                    })
+                                                ).appendTo(newRow);
 
-                                                var instrumentNoCell = $('<td>').appendTo(newRow);
-                                                $('<input>').attr({
-                                                    type: 'text',
-                                                    id: 'Instrument-NO',
-                                                    name: 'g12',
-                                                    readonly: 'readonly',
-                                                    value: rowData[1],
-                                                    style: 'width: 200px; height: 30px;'
-                                                }).appendTo(instrumentNoCell);
+                                                $('<td>').append(
+                                                    $('<input>').attr({
+                                                        type: 'text',
+                                                        readonly: true,
+                                                        value: rowData[1],
+                                                        style: 'width: 200px; height: 30px;'
+                                                    })
+                                                ).appendTo(newRow);
 
-                                                var instrumentValueCell = $('<td>').appendTo(newRow);
                                                 var date = new Date(rowData[2]);
                                                 var formattedDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
-                                                $('<input>').attr({
-                                                    type: 'text',
-                                                    id: 'Instrument-value',
-                                                    name: 'g12',
-                                                    readonly: 'readonly',
-                                                    value: formattedDate,
-                                                    style: 'width: 200px; height: 30px;'
-                                                }).appendTo(instrumentValueCell);
+
+                                                $('<td>').append(
+                                                    $('<input>').attr({
+                                                        type: 'text',
+                                                        readonly: true,
+                                                        value: formattedDate,
+                                                        style: 'width: 200px; height: 30px;'
+                                                    })
+                                                ).appendTo(newRow);
 
                                                 tableBody.append(newRow);
                                             });
-                                            document.getElementById("dataofHistory").style.setProperty("display", 'block');
+
+                                            $('#dataofHistory').show();
                                         } else {
-                                            document.getElementById("dataofHistory").style.setProperty("display", 'none');
+                                            $('#dataofHistory').hide();
                                         }
+                                    } catch (error) {
+                                        console.error("Error parsing JSON from PreviousEntry: " + error);
                                     }
-                                });
-                            }
-                        } catch (error) {
-                            console.error("Error parsing JSON: " + error);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("AJAX error in PreviousEntry: " + status + " - " + error);
+                                }
+                            });
                         }
+                    } catch (error) {
+                        console.error("Error parsing JSON from paymentdetailsforshow: " + error);
                     }
-                });
-            }
-        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error in paymentdetailsforshow: " + status + " - " + error);
+                }
+            });
+        }
     });
+});
+
 </script>
 
 

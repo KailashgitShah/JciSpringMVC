@@ -6081,8 +6081,10 @@ public class InsertDataController
 			
 				String  Con_no = entryPaymentDetailsModel.getContractno();
 				int  Payment_id = entryPaymentDetailsModel.getPayment_id();
-				this.paymentDetailService.update2(Con_no);
-				String Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
+				
+				String  Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
+				System.out.println(Contrated_quanity);
+				System.out.println(Contrated_quanity);
 				List<Object> datesconcur = (List<Object>) this.fiannacialConcurenceService.dataofdates(Con_no,Payment_id);
 				
 				for (Object obj : datesconcur) {

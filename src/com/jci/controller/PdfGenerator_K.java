@@ -62,11 +62,13 @@ public class PdfGenerator_K {
 			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill) throws FileNotFoundException {
 		 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
+
 	     String fileName = "generatedfile_" + bill_of_Supply + ".pdf";
 
 	     //String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
 
 	     String filePath = Genrationofbill +File.separator+ fileName;
+
 	    
             PdfWriter pdfWriter = new PdfWriter(filePath);
             PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
