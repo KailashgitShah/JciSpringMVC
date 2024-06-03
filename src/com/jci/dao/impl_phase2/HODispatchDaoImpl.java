@@ -41,16 +41,20 @@ public class HODispatchDaoImpl implements DispatchHODao {
 	HttpServletRequest request;
 
 	@Override
-	public List<String> getContract() {
+	public List<Object[]> getContract() {
 		// For getting Contract No from jcifinancialconcurrence which has not met the
 		// required criteria
-		String sqlString = " SELECT Distinct fc.Contractno  " + "  FROM jcifinancial_concurrence fc  " + "  LEFT JOIN ("
-				+ "  SELECT ho.Contract_No, SUM(ho.Gr1_qty + ho.Gr2_qty + ho.Gr3_qty + ho.Gr4_qty + ho.Gr5_qty + ho.Gr6_qty + ho.Gr7_qty + ho.Gr8_qty) AS TotalQty, MAX(ho.Allowed_qty) AS MaxAllowedQty  "
-				+ "  FROM jciDI_ho ho" + "  GROUP BY ho.Contract_No  " + ") subquery  "
-				+ "  ON subquery.Contract_No = fc.Contractno  "
-				+ "  WHERE subquery.Contract_No IS NULL OR subquery.TotalQty < subquery.MaxAllowedQty;  ";
+		String sqlString = " SELECT DISTINCT fc.Contractno, fc.FC_Ref_No "+
+			"	FROM jcifinancial_concurrence fc"
+			+"	LEFT JOIN ("
+			+"	    SELECT ho.Contract_No, SUM(ho.Gr1_qty + ho.Gr2_qty + ho.Gr3_qty + ho.Gr4_qty + ho.Gr5_qty + ho.Gr6_qty + ho.Gr7_qty + ho.Gr8_qty) AS TotalQty, MAX(ho.Allowed_qty) AS MaxAllowedQty"
+			+"	    FROM jciDI_ho ho"
+			+"	    GROUP BY ho.Contract_No"
+			+"	) subquery ON subquery.Contract_No = fc.Contractno"
+			+"	WHERE subquery.Contract_No IS NULL OR subquery.TotalQty < subquery.MaxAllowedQty;"
+
 		;
-		List<String> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 
 		return list;
 	}

@@ -3890,7 +3890,7 @@ public class Controller_V {
 	public ModelAndView HODispatchInstructionModel(HttpServletRequest request, HttpSession session) {
 
 		String username = (String) request.getSession().getAttribute("usrname");
-		List<String> contractList = (List<String>) hoInstService.getContract();
+		List<Object[]> contractList = (List<Object[]>) hoInstService.getContract();
 
 		System.err.println(contractList);
 		ModelAndView mv = new ModelAndView("HOdispatchinstruction");

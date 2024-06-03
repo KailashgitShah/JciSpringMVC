@@ -92,7 +92,7 @@ input[type="radio"] {
 			%>
 
 			<%
-			List<String> contractList = (List<String>) request.getAttribute("ContractList");
+			List<Object[]> contractList = (List<Object[]>) request.getAttribute("ContractList");
 			%>
 			<%
 			List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
@@ -123,9 +123,9 @@ input[type="radio"] {
 															class="form-control textbox" required>
 															<option value="" disabled selected>Select</option>
 															<%
-															for (String Contract : contractList) {
+															for (Object[] Contract : contractList) {
 															%>
-															<option value="<%=Contract%>" readonly><%=Contract%></option>
+															<option value="<%=Contract[0]%>" readonly><%=Contract[0]+"("+Contract[1]+")"%></option>
 															<%
 															}
 															%>
@@ -541,21 +541,20 @@ input[type="radio"] {
 								contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";
 
 								for (var i = 8; i <= 13; i++) {
-									if (d[14][i - 8] == null) {
-										d[14][i - 8] = 0;
-									}
-									var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8])
-											.toFixed(2);
-									console.log(parseFloat(d[i][1] * d[2] / 100)
-											- parseFloat(d[14][i - 8]));
-									contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>"
-											+ d[i][0]
-											+ "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>"
-											+ (d[i][1] * d[2] / 100)
-											+ "</span></td>"
-											+ "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>"
-											+ no + "</span></td></tr>";
+								    if (d[14][i - 8] == null) {
+								        d[14][i - 8] = 0;
+								    }
+								    var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8]).toFixed(2); // Apply toFixed(2) here
+								    console.log(parseFloat(d[i][1] * d[2] / 100) - parseFloat(d[14][i - 8]));
+								    contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>" +
+								        d[i][0] +
+								        "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
+								        (d[i][1] * d[2] / 100) +
+								        "</span></td>" +
+								        "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
+								        no + "</span></td></tr>";
 								}
+
 
 								contentToDisplay += "</table><br>";
 
@@ -629,7 +628,7 @@ input[type="radio"] {
 
 												var id = (this.value);
 
-												var html = "<label id='dpclabel' class='required'>DPC</label> <select data-placeholder='Choose DPC...'  class='chosen-select' name='dpc_name' multiple tabindex='4' id = 'centerordpc'>";
+												var html = "<label id='dpclabel' class='required'>DPC</label> <select data-placeholder='Choose DPC...'  class='form-control textbox' name='dpc_name'  tabindex='4' id = 'centerordpc'  size='1'>";
 												if (id != null) {
 													$
 															.ajax({
@@ -663,57 +662,7 @@ input[type="radio"] {
 																			.html(
 																					html);
 
-																	$(
-																			"#centerordpc")
-																			.chosen();
-																	$(
-																			"#centerordpc")
-																			.addClass(
-																					"chosen-select");
-																	var selected_val = $(
-																			'input[name="opt"]:checked')
-																			.val();
-																	/*  var selected_val =$('input[name="radioselect"]:checked').val();  */
-																	if (selected_val === 'head') {
-																		//alert('Region selected'); // Optional: Providing a message in the alert
-																		$(
-																				"#centerordpc option")
-																				.prop(
-																						'selected',
-																						true);
-																		$(
-																				'#centerordpc')
-																				.trigger(
-																						'chosen:updated');
-
-																		$(
-																				"#dpc_div")
-																				.html(
-																						"");
-																	}
-																	if (selected_val === 'bod') {
-																		//alert('DPC selected'); // Optional: Providing a message in the alert
-																		$(
-																				"#centerordpc option")
-																				.prop(
-																						'selected',
-																						true);
-																		$(
-																				'#centerordpc')
-																				.trigger(
-																						'chosen:updated');
-
-																	} else {
-																		$(
-																				"#centerordpc option:selected")
-																				.removeAttr(
-																						'selected');
-																		$(
-																				'#centerordpc')
-																				.trigger(
-																						'chosen:updated');
-																	}
-
+																	
 																}
 															});
 												}
@@ -791,9 +740,13 @@ input[type="radio"] {
 
 			console.log("issued: " + issued);
 			console.log("total: " + total);
-			console.log("allow: " + allow);
+			console.log("contract: " + allow);
 
 			if (issued + total <= allow && total>0) {
+				var selectedValue = $("input[name='opt']:checked").val();
+				if(selectedValue == "head") {
+					$("#centerordpc").val(""); 
+				}
 				// alert("Form submitted successfully!");
 				return true; // Proceed with form submission
 			} else {
@@ -824,6 +777,7 @@ input[type="radio"] {
 					/*  $("#head").show(); */
 					$("#dpclabel").hide();
 					$("#dpc_div").hide();
+					$("#centerordpc").val("");
 				} else {
 					/*  $("#head").hide(); */
 					$("#region").val("");
