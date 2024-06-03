@@ -328,20 +328,22 @@ $('#hoDiNo, #dpc').change(function() {
 	            var allOptions = [];
 
 	            dataArray.forEach(function(value) {
-	                allOptions.push(value);
-	            });
-
-
-	            <%
-	            for (String no : allCooperative) {
-	                String[] commaSD = no.split(",");
-	                for(String s : commaSD) { 
-	            %>
-	                allOptions.push("<%=s%>");
-	            <%
+	                if (value !== null && value !== undefined && value !=='') {
+	                    allOptions.push(value);
 	                }
-	            }
-	            %>
+	            });
+	            dataArray.forEach(function(value) {
+	                // Check if value is null, undefined, or an empty string
+	                if (value === null || value === undefined || value === '') {
+	                    // If the value meets the condition, execute the following code
+	                    <% for (String no : allCooperative) {
+	                        String[] commaSD = no.split(",");
+	                        for(String s : commaSD) { %> 
+	                            allOptions.push("<%= s %>");
+	                        <% }
+	                    } %>
+	                }
+	            });
 
 	            
 	           

@@ -108,6 +108,7 @@ tr:nth-child(even) {
 							<th>Grade-6</th>
 							<th>Grade-7</th>
 							<th>Grade-8</th>
+							<th>Total</th>
 							<th>Delete</th>
 						</tr>
 					</thead>
@@ -132,7 +133,8 @@ tr:nth-child(even) {
 								<td style="text-align: center">${item.getGr6_qty()}</td>
 								<td style="text-align: center">${item.getGr7_qty()}</td>
 								<td style="text-align: center">${item.getGr8_qty()}</td>
-								<td><a href="deleteHO.obj?id=${item.getDI_HO_ID()}"
+							<td style="text-align: center">${item.getGr8_qty() + item.getGr7_qty() + item.getGr6_qty() + item.getGr5_qty() + item.getGr4_qty() + item.getGr3_qty() + item.getGr2_qty() + item.getGr1_qty()}</td>
+	<td><a href="deleteHO.obj?id=${item.getDI_HO_ID()}"
 									onclick="return confirm('Are you sure you want to delete this item?');"><i
 										class="btn btn-danger btn-sm btn-block"><i
 											class="fa fa-trash" aria-hidden="true"

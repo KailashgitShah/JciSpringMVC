@@ -8,7 +8,7 @@ import com.jci.model.HODispatchInstructionModel;
 import com.jci.model.JciDIHoModel;
 
 public interface HOInstService {
-   List<String> getContract();
+   List<Object[]> getContract();
 
 List<String> getDetails(String contractNo);
 
