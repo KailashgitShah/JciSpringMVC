@@ -2842,6 +2842,7 @@ public class Controller_V {
 			financialConcurenceModel.setRemarks(remarks);
 			System.out.print(financialConcurenceModel);
 			this.financialConcurenceservice.create(financialConcurenceModel);
+			this.paymentDetailService.update2(fullcontractno);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
