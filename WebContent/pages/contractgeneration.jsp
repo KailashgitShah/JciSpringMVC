@@ -89,7 +89,7 @@ String contactIdnNo = "BT-" + count;
 										<div class="row">
 
 											<div class="col-sm-4 form-group">
-												<label class="required">Available Qty</label> <input
+												<label class="required">Available Qty (Qtls.)</label> <input
 													name="available_qty" id="available_qty" type="number"
 													class="form-control" min='0' />
 											</div>

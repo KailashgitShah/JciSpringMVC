@@ -109,7 +109,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			dateJoiner.add(date);
 		});
 		// querystr.deleteCharAt(uerystr.length() - 1);
-		querystr += dateJoiner + ") GROUP BY mill_name, mill_code";
+		querystr += dateJoiner + ") GROUP BY mill_name, mill_code ORDER by mill_name";
 
 		SQLQuery query = currentSession().createSQLQuery(querystr.toString());
 		rows = query.list();

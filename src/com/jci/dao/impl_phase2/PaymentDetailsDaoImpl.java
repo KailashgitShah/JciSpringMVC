@@ -140,19 +140,11 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	 
 	@Override
 	public List<Object> ContractNo() {
-		String sql=" SELECT c.Contract_no, d.Difference "
-				+ "FROM ("
-				+ "    SELECT a.Contract_no, a.Contract_value, COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,"
-				+ "           (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference"
-				+ "    FROM jcicontract AS a  "
-				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No"
-				+ "    GROUP BY a.Contract_no, a.Contract_value"
-				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL"
-				+ ") AS d "
-				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no "
-				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;"
-				;
-		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		String sql2 = "SELECT a.Contract_no, a.Contract_value - COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))), 0) "
+				+ " AS Difference from jcicontract  as a left join jcipayment_arrangement as b on a.Contract_no = b.Contract_No group by "
+				+ " a.Contract_no, a.Contract_value having a.Contract_value > COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))), 0)"
+				+ " OR SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))) IS NULL";
+		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql2).list();
 	    return resultList1;
 	}
 

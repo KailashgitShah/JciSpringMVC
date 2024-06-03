@@ -167,13 +167,14 @@
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">JCI Linkage Percentage.</label> <input
-													class="form-control" type="number" name="juteRatio" value=""
-													id="juteRatio" min="0" step="0.01" max="100" required>
+													class="form-control" type="number" name="juteRatio"
+													value="" id="juteRatio" min="0" step="0.01" max="100"
+													required>
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">PCO Qty. (M.T)</label> <input
-													class="form-control" type="number" min="0" step="0.01" value=""
-													name="pcsoQty" id="pcsoQty">
+													class="form-control" type="number" min="0" step="0.01"
+													value="" name="pcsoQty" id="pcsoQty">
 											</div>
 											<div class="col-sm-3 form-group">
 												<label class="required">Dispatch Period</label> <input
@@ -249,11 +250,9 @@
 
 	<div class="sidenav-backdrop backdrop"></div>
 	<script>
-	$(document).ready(function() {
-		 var currentDate = new Date();
-		  var formattedDate = currentDate.toISOString().split('T')[0];
-		  document.getElementById("pcsoDate").max = formattedDate;
+	$(document).ready(function() { 
 		  $("#dispatchPeriod").prop("readonly", true);	
+		 $("#pcsoDate").prop("readonly", true);	
 		 /*  document.getElementById("refNo").value = "";
 		  $("#pcsoQty").val(""); */
 	});
@@ -289,6 +288,45 @@
 		mybutton.addEventListener('click', () => { window.scroll(options) });
 				 
 	</script>
+	
+	<script>
+		$("#refNo").on("change", function() {
+			var val = $(this).val();
+
+			$.ajax({
+				type : "GET",
+				url : "getRequestLetterDetails.obj",
+				data : {
+					"refNo" : val
+				},
+				success : function(result) {
+					var data = jQuery.parseJSON(result);
+                    
+					var details = data[0]
+					var pcsoReqdate = data[0][6].split("-");
+					var newDate = pcsoReqdate[2]+"-"+pcsoReqdate[1]+"-"+pcsoReqdate[0];
+					
+				    
+					var reqQty = data[0][7]/10;
+					// $("#pcsoDate").prop("readonly", false);
+					$("#pcsoReqdate").val(newDate);
+					$("#pcsoReqQty").val(reqQty);
+					document.getElementById("pcsoDate").min = newDate;
+					 $("#pcsoDate").prop("readonly", false);
+
+				}
+			})
+		});
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	<script>
 		$("#pcsoDate").on(
@@ -324,40 +362,19 @@
 								   }else{
 									   $("#totalallocation"+j).attr('readonly' , false); 
 								   }
-							 
 							   }
-							   
-							
 							}
 						})
-					 
-					 
-					 
-					 
-					 
-					 
-					 
-					 
 					})
-					
-					
-		
-					
-					
-					
+
 				//jute ratio validation
-				
-				
+
 				$("#juteRatio").on("input" , function(){
 					var ratio = $(this).val();
 					if(ratio > 100){
 						$(this).val(0);
 					}
-				
-				})
-				
-				
-				
+				})	
 	</script>
 
 
@@ -454,37 +471,6 @@
 											});
 						});
 	</script>
-
-
-
-	<script>
-		$("#refNo").on("change", function() {
-			var val = $(this).val();
-
-			$.ajax({
-				type : "GET",
-				url : "getRequestLetterDetails.obj",
-				data : {
-					"refNo" : val
-				},
-				success : function(result) {
-					var data = jQuery.parseJSON(result);
-
-					var details = data[0]
-					var pcsoReqdate = data[0][6].split("-");
-					var newDate = pcsoReqdate[2]+"-"+pcsoReqdate[1]+"-"+pcsoReqdate[0];
-					
-
-					var reqQty = data[0][7];
-
-					$("#pcsoReqdate").val(newDate);
-					$("#pcsoReqQty").val(reqQty);
-
-				}
-			})
-		});
-	</script>
-
 
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"

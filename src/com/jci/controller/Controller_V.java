@@ -713,8 +713,8 @@ public class Controller_V {
 			pcsoReqdate = formateDate(pcsoReqdate);
 			dispatchPeriod = formateDate(dispatchPeriod);
 
-			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
-			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
+			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"))*10;
+			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"))*10;
 
 			String juteRatio = request.getParameter("juteRatio");
 			String letterRef = request.getParameter("letterRefNo");
@@ -737,7 +737,7 @@ public class Controller_V {
 				// dynamic values
 				String millcode = request.getParameter("millcode" + i);
 				String millname = request.getParameter("millname" + i);
-				Double tallocation = Double.parseDouble(request.getParameter("totalallocation" + i));
+				Double tallocation = Double.parseDouble(request.getParameter("totalallocation" + i))*10;
 				entryofpcso.setMill_code(millcode);
 				entryofpcso.setMill_name(millname);
 				entryofpcso.setAllocatedQty(tallocation);

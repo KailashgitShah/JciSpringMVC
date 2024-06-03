@@ -129,14 +129,14 @@ public class DistrictdaoImpl implements DistrictDao {
 
 		String hql;
 		
-		if (idsWithoutBounderies != "") {
+		if (idsWithoutBounderies.length() != 0) {
 		hql = "select id, dist_name, dist_code from tbl_districts_new where state_code ='" + state_code + "' AND id not in ("
 				+ idsWithoutBounderies + ")";
 	} else {
 		hql = "select id, dist_name, dist_code from tbl_districts_new where state_code ='" + state_code + "'";
 	}
 
-		System.out.println(state_code + "state_code<<<<<<<<<<<<<<<<<<<<<");
+ 
 
 		//hql = "select id, dist_name, new_dist_code from tbl_districts_new where state_code ='" + state_code + "'";
 

@@ -340,7 +340,7 @@ if (bale.get(7) != null) {
 											value="<%=formattedTotal%>" readonly>
 
 										<div class="col-sm-4 form-group">
-											<label class="required">Requested Qty.</label> <input
+											<label class="required">Requested Qty. (Qtls.)</label> <input
 												class="form-control" name="reqQty" id="reqQty" type="number"
 												min="0" required /> <span id="errMsg" class="text-danger"></span>
 										</div>
