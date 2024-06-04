@@ -1,5 +1,9 @@
 package com.jci.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
 public class ClaimSettlementReport {
 	private String contract_no;
 	private String di_no;
@@ -13,6 +17,13 @@ public class ClaimSettlementReport {
 	private Double moisturePercent;
 	private Double dustAmount;
 	private Double ncvPercentage;
+	private String millname;
+	private String juteVariety;
+	private String invoiceValue;
+	private String consigneeAddress;
+	private String dateIns;
+	private String cropYear;
+	private String settlement;
 	
 	public String getContract_no() {
 		return contract_no;
@@ -103,12 +114,62 @@ public class ClaimSettlementReport {
 	public void setNcvPercentage(Double ncvPercentage) {
 		this.ncvPercentage = ncvPercentage;
 	}
+	
+	public String getMillname() {
+		return millname;
+	}
+	public void setMillname(String millname) {
+		this.millname = millname;
+	}
+	
+	public String getJuteVariety() {
+		return juteVariety;
+	}
+	public void setJuteVariety(String juteVariety) {
+		this.juteVariety = juteVariety;
+	}
+	
+	public String getInvoiceValue() {
+		return invoiceValue;
+	}
+	public void setInvoiceValue(String invoiceValue) {
+		this.invoiceValue = invoiceValue;
+	}
+	
+	
+	public String getConsigneeAddress() {
+		return consigneeAddress;
+	}
+	public void setConsigneeAddress(String consigneeAddress) {
+		this.consigneeAddress = consigneeAddress;
+	}
+	
+	public String getDateIns() {
+		return dateIns;
+	}
+	public void setDateIns(String dateIns) {
+		this.dateIns = dateIns;
+	}
+	
+	public String getCropYear() {
+		return cropYear;
+	}
+	public void setCropYear(String cropYear) {
+		this.cropYear = cropYear;
+	}
+	public String getSettlement() {
+		return settlement;
+	}
+	public void setSettlement(String settlement) {
+		this.settlement = settlement;
+	}
 	public ClaimSettlementReport() {
 		super();
 	}
 	public ClaimSettlementReport(String contract_no, String di_no, String challan, String bale_mark, String mr_no,
 			String grade, Double no_of_bales, Double quantity, Double qualityPercent, Double moisturePercent,
-			Double dustAmount, Double ncvPercentage) {
+			Double dustAmount, Double ncvPercentage, String millname, String juteVariety, String invoiceValue,
+			String consigneeAddress, String dateIns, String cropYear, String settlement) {
 		super();
 		this.contract_no = contract_no;
 		this.di_no = di_no;
@@ -122,15 +183,26 @@ public class ClaimSettlementReport {
 		this.moisturePercent = moisturePercent;
 		this.dustAmount = dustAmount;
 		this.ncvPercentage = ncvPercentage;
+		this.millname = millname;
+		this.juteVariety = juteVariety;
+		this.invoiceValue = invoiceValue;
+		this.consigneeAddress = consigneeAddress;
+		this.dateIns = dateIns;
+		this.cropYear = cropYear;
+		this.settlement = settlement;
 	}
 	@Override
 	public String toString() {
 		return "ClaimSettlementReport [contract_no=" + contract_no + ", di_no=" + di_no + ", challan=" + challan
 				+ ", bale_mark=" + bale_mark + ", mr_no=" + mr_no + ", grade=" + grade + ", no_of_bales=" + no_of_bales
 				+ ", quantity=" + quantity + ", qualityPercent=" + qualityPercent + ", moisturePercent="
-				+ moisturePercent + ", dustAmount=" + dustAmount + ", ncvPercentage=" + ncvPercentage + "]";
+				+ moisturePercent + ", dustAmount=" + dustAmount + ", ncvPercentage=" + ncvPercentage + ", millname="
+				+ millname + ", juteVariety=" + juteVariety + ", invoiceValue=" + invoiceValue + ", consigneeAddress="
+				+ consigneeAddress + ", dateIns=" + dateIns + ", cropYear=" + cropYear + ", settlement=" + settlement
+				+ "]";
 	}
-
+	
+	
 	
 	
 
