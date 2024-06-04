@@ -6,6 +6,8 @@
 <%@page import="com.jci.model.FarmerRegModelDTO"%>
 <%@page import="com.jci.model.StateList"%>
 <%@page isELIgnored="false"%>
+<%@page import="java.math.BigDecimal"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +68,9 @@ tr:nth-child(even) {
 	});
 </script>
 </head>
-
+<%
+				List<Object[]> hoDiList = (List<Object[]>) request.getAttribute("AllList");
+				%>
 <body class="fixed-navbar">
 	<div class="page-wrapper">
 		<!-- START HEADER-->
@@ -94,7 +98,7 @@ tr:nth-child(even) {
 						<tr>
 							<th>S.No</th>
 							<th>Contract No.</th>
-							<th>Regional Office</th>
+							<th>Regional Office Code</th>
 							<th>Last date of Shipment</th>
 							<th>DI No</th>
 							<th>DI Date</th>
@@ -115,35 +119,45 @@ tr:nth-child(even) {
 					<tbody>
 						<%
 						int i = 1;
+						for (Object[] row : hoDiList) {
+							String s1 = (String)row[10];
 						%>
-						<c:forEach items="${AllList}" var="item">
+						
 							<tr>
 								<td class="sorting_1" style="text-align: center"><%=i%></td>
-								<td style="text-align: center">${item.getContract_No()}</td>
-								<td style="text-align: center">${item.getRegional_office()}</td>
-								<td style="text-align: center">${item.getLast_date_of_Shipment()}</td>
-								<td style="text-align: center">${item.getDI_no()}</td>
-								<td style="text-align: center">${item.getDI_Date()}</td>
-								<td style="text-align: center">${item.getJute_variety()}</td>
-								<td style="text-align: center">${item.getGr1_qty()}</td>
-								<td style="text-align: center">${item.getGr2_qty()}</td>
-								<td style="text-align: center">${item.getGr3_qty()}</td>
-								<td style="text-align: center">${item.getGr4_qty()}</td>
-								<td style="text-align: center">${item.getGr5_qty()}</td>
-								<td style="text-align: center">${item.getGr6_qty()}</td>
-								<td style="text-align: center">${item.getGr7_qty()}</td>
-								<td style="text-align: center">${item.getGr8_qty()}</td>
-							<td style="text-align: center">${item.getGr8_qty() + item.getGr7_qty() + item.getGr6_qty() + item.getGr5_qty() + item.getGr4_qty() + item.getGr3_qty() + item.getGr2_qty() + item.getGr1_qty()}</td>
-	<td><a href="deleteHO.obj?id=${item.getDI_HO_ID()}"
+								<td style="text-align: center"><%= row[4] %></td>
+								<td style="text-align: center"><%= row[0] %></td>
+								<td style="text-align: center"><%= row[22] %></td>
+								<td style="text-align: center"><%= row[10] %></td>
+								<td style="text-align: center"><%= row[9] %></td>
+								<td style="text-align: center"><%= row[21] %></td>
+								<td style="text-align: center"><%= row[13] %></td>
+								<td style="text-align: center"><%= row[14] %></td>
+								<td style="text-align: center"><%= row[15] %></td>
+								<td style="text-align: center"><%= row[16] %></td>
+								<td style="text-align: center"><%= row[17] %></td>
+								<td style="text-align: center"><%= row[18] %></td>
+								<td style="text-align: center"><%= row[19] %></td>
+								<td style="text-align: center"><%= row[20] %></td>
+							<td style="text-align: center">
+    <%-- Calculate the sum of values from row[13] to row[20] --%>
+    <% BigDecimal sum = BigDecimal.ZERO;
+    for(int j = 13; j <= 20; j++) {
+        sum = sum.add((BigDecimal)row[j]);
+    }
+    out.print(sum); // Output the sum in the <td> element
+    %>
+</td>
+	<td><a href="deleteHO.obj?id=<%= s1 %>"
 									onclick="return confirm('Are you sure you want to delete this item?');"><i
 										class="btn btn-danger btn-sm btn-block"><i
 											class="fa fa-trash" aria-hidden="true"
 											style="font-size: 15px;"></i></i></a></td>
 							</tr>
 							<%
-							i++;
+							i++;}
 							%>
-						</c:forEach>
+						
 					</tbody>
 
 				</table>

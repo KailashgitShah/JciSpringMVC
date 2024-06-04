@@ -4114,7 +4114,7 @@ public class Controller_V {
 	@RequestMapping("jcilist")
 	public String jciHoList(Model model) {
 
-		List<JciDIHoModel> AllList = (List<JciDIHoModel>) hoInstService.getAll();
+		List<Object[]> AllList = (List<Object[]>) hoInstService.getAll();
 		model.addAttribute("AllList", AllList);
 
 		return "ViewJCIHO";
@@ -4127,23 +4127,27 @@ public class Controller_V {
 		ModelAndView mv = new ModelAndView("ViewJCIHO");
 		try {
 			String id = request.getParameter("id");
-			String string = hoInstService.getContractNo(id);
-			String flag = hoInstService.check(string);
+			System.err.println(id);
+			/*
+			 * String string = hoInstService.getContractNo(id); String flag =
+			 * hoInstService.check(string);
+			 * 
+			 * System.err.println(flag);
+			 */ // Assuming these print statements are for debugging
 
-			System.err.println(flag); // Assuming these print statements are for debugging
-
-			if ("0".equals(flag)) {
-				List<JciDIHoModel> allList = hoInstService.getAll();
-				mv.addObject("AllList", allList);
-				redirectAttributes.addFlashAttribute("msg",
-						"<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>");
-			} else if ("1".equals(flag)) {
-				hoInstService.delete(Integer.parseInt(id));
-				List<JciDIHoModel> allList = hoInstService.getAll();
-				mv.addObject("AllList", allList);
-				redirectAttributes.addFlashAttribute("msg",
-						"<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>");
-			}
+			/*
+			 * if ("0".equals(flag)) { List<Object[]> allList = hoInstService.getAll();
+			 * mv.addObject("AllList", allList); redirectAttributes.addFlashAttribute("msg",
+			 * "<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>"
+			 * ); } else if ("1".equals(flag)) { hoInstService.delete(id); List<Object[]>
+			 * allList = hoInstService.getAll(); mv.addObject("AllList", allList);
+			 * redirectAttributes.addFlashAttribute("msg",
+			 * "<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>"
+			 * ); }
+			 */
+			 hoInstService.delete(id); 
+			 List<Object[]>allList = hoInstService.getAll(); 
+			 mv.addObject("AllList", allList);
 		} catch (Exception e) {
 			System.out.println("Error in deleting ruling market: " + e.getMessage());
 			redirectAttributes.addFlashAttribute("msg",

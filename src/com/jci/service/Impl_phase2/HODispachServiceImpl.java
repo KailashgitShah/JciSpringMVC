@@ -52,12 +52,12 @@ public class HODispachServiceImpl implements HOInstService{
                                 
                 }
                 @Override
-                public List<JciDIHoModel> getAll() {
+                public List<Object[]> getAll() {
                                 return dispatchHODao.getAll();
                 }
 
                 @Override
-                public void delete(int parseInt) {
+                public void delete(String parseInt) {
                                 dispatchHODao.delete(parseInt);
                                 
                 }
