@@ -4917,8 +4917,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
 		           try {
 		                  toAddresses = new InternetAddress[] {
-		//                               new InternetAddress("mansi.gupta@cyfuture.com")
-		                		  new InternetAddress("mansigupta18001@gmail.com")
+		                               new InternetAddress("mansi.gupta@cyfuture.com")
+		                		//  new InternetAddress("mansigupta18001@gmail.com")
 		                  };
 		
 		           } catch (AddressException e) {
