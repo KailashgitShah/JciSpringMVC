@@ -23,7 +23,7 @@ public interface PaymentDetailService {
 		
 		public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry();
 		public List<Object>ContractNo();
-		public List<Object>Millname();
+		public List<Object[]>Millname();
 		public List<Object>getsumofInstrumentValue(String continstValue);
 		public void contratTable(String cont_no);
 		  public  List<Object[]>paymentdetails(String  st);

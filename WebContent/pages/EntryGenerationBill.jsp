@@ -6,6 +6,8 @@
 <%@ page import="java.util.Calendar"%>
 <%@ page import="java.util.Locale"%>
 <%@page import="java.util.Date"%>
+<%@ page import="java.util.*" %>
+
 <%@ page import="java.text.ParseException"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +74,45 @@
 			String millname = (String) request.getAttribute("millname");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			List<Object[]>  Perticulargoods = (List<Object[]>) request.getAttribute("Perticulargoods");
+			List<Object[]>  Suplierdetails = (List<Object[]>) request.getAttribute("Suplierdetails");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String serverCurrentDate = dateFormat.format(new Date());
+			
+			 String StateName = "";
+		     int StateCode = 0;
+		     String StateGSTIN = "";
+		     String Address1 = "";
+		     String Address2 = "";
+		     String Address3 = "";
+		     String Address4 = "";
+		     String PAN = "";
+		     String concatenatedString = "";
+		     for (Object[] row : Suplierdetails) {
+		    	 
+			        
+		    	     StateName= (String )row[0];
+		    	  /*    Integer Statecode1= (Integer )row[2];
+		    	     StateCode = String.valueOf(Statecode1); */
+		    	     
+		    	     if (row[1] instanceof Integer) {
+		    	    	 StateCode = (Integer) row[1];
+		    	         }
+		    	     
+					 
+					 StateGSTIN= (String )row[2];
+					 PAN = StateGSTIN.substring(2, StateGSTIN.length() - 3);
+					 Address1= (String )row[4];
+					 Address2= (String )row[5];
+					 Address3= (String )row[6];
+					 Address4= (String )row[7];
+				
+					 
+					 concatenatedString = Address1 + " " + Address2 + " " + Address3 + " " + Address4;
+					
+				
+				      
+			    }
+		    
 			
 			
 			     String strNominalWt = "";
@@ -288,12 +327,12 @@
 
 											<div class="col-sm-4 form-group">
 												<label>Supplier GSTN</label> <input class="form-control"
-													name="Supplier_GSTN" id="Supplier_GSTN" value="19AABCT8820B1ZH"
+													name="Supplier_GSTN" id="Supplier_GSTN" value="<%=StateGSTIN %>"
 													placeholder="Supplier_GSTN" readonly="readonly">
 											</div>
 											<div class="col-sm-4 form-group">
 												<label>Supplier Address</label> <input class="form-control"
-													name="Supplier_Address" id="Supplier_Address" VALUE =" Sribash Angan Ghat(South) Road,PO+Bloc-Nabadwip Sub Div Krishnanagar,Dist-Nadia,741302"
+													name="Supplier_Address" id="Supplier_Address" VALUE ="<%=concatenatedString %>"
 													placeholder="Supplier_Address" readonly="readonly">
 											</div>
 
@@ -351,6 +390,13 @@
 													type="hidden" class="form-control" name="ClientPan"
 													id="ClientPan" value="" readonly="readonly">
 											</div>
+												<div class="col-sm-2 form-group" style="display: none;">
+												<label "display:none;">PAN </label> <span
+													class="text-danger">* </span>&nbsp; <span id="Contarct_no"
+													name="Contarct_no" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="PAN23"
+													id="PAN1" value="<%=PAN %>" readonly="readonly">
+											</div>
 											
 											
 									     	<%
@@ -397,6 +443,29 @@
 													name="TrnasitPolicyNo" id="TrnasitPolicyno" required 
 													>
 											</div>
+											
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label"display:none;">Contarctqty </label> <span
+													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
+													name="Contarctqty" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="Statename23"
+													id="Statename2" value="<%=StateName %>" readonly="readonly">
+											</div>
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label"display:none;">Contarctqty </label> <span
+													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
+													name="Contarctqty" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="StaeCode23"
+													id="StaeCode2" value="<%=StateCode %>" readonly="readonly">
+											</div>
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label"display:none;">MIllcode </label> <span
+													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
+													name="Contarctqty" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="millcode"
+													id="millcode23" value="<%=StateCode %>" readonly="readonly">
+											</div>
+											
 											
 										</div> 
 										
@@ -674,7 +743,7 @@
                                     var cropyear = dataArray[0][1];
                                     $('#Financial_year1').val(cropyear);
                                   
-                                    $('#Millcode').val(millcode);
+                                    $('#millcode23').val(millcode);
                                     
 
                                     $.ajax({

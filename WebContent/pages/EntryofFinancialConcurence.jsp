@@ -93,16 +93,20 @@
 		   
 		  
 		     BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
+		    
 		     BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue)); 
-		   
+		    
 
 
 		    BigDecimal qtdsub = contractValueBigInt.subtract(instrumentValueBigInt);
-
+		 
 		    BigDecimal contractqty = new BigDecimal(String.valueOf(Cont_qty));
+		   
 		    BigDecimal qtdiv = contractValueBigInt.divide(contractqty,2, RoundingMode.HALF_UP);
+		
 		  
-		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP); 
+		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP);
+		    
 		    
 	 	    
 	 	    
@@ -182,12 +186,12 @@
 															    <span id="error-message" class="text-danger"></span>
 															</div>
 				                                            <div class="col-sm-4 form-group">
-					                                            <label>Contracted Qty</label> 
+					                                            <label>Contracted Qty(Qtls)</label> 
 					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
 																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0"  placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
 					                                     </div>
 					                       						<div class="col-sm-4 form-group">
-																	    <label>Qty. Allowed ( max Allowed =  <%=qtdivtotal %> )</label>
+																	    <label>Qty. Allowed (Qtls) ( max Allowed =  <%=qtdivtotal %> )</label>
 																	    <span class="text-danger">*</span>
 																	    <span id="Shipment_Value" class="text-danger"></span>
 																	    <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" type ="number" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">

@@ -5764,7 +5764,7 @@ public class InsertDataController
 			
 			ModelAndView mv = new ModelAndView("editPaymentDetails");
 			List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
-			List<Object> getcontractList2 = this.paymentDetailService.Millname();
+			List<Object[]> getcontractList2 = this.paymentDetailService.Millname();
 
 			mv.addObject("getcontractList1", getcontractList1);
 			mv.addObject("getcontractList2", getcontractList2);

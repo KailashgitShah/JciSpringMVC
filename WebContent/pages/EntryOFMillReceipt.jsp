@@ -459,7 +459,7 @@ $(document).ready(function() {
         url: 'challanbaseddata.obj',
         data: { "contractno": contractNo },
         success: function(data) {
-         
+        
             var dataArray = JSON.parse(data);
             if (dataArray.length > 0) {
                 var dateOfShipmentValue = dataArray[0][0]; 
@@ -468,6 +468,10 @@ $(document).ready(function() {
                 actualqty = dataArray[0][3];
                 Contract_No = dataArray[0][5];
                 Millcode = dataArray[0][6];
+                var  cropyear  = dataArray[0][7];
+             
+                var  jutevariety = dataArray[0][8];
+               
                 
                 console.log(actualqty);
 
@@ -478,8 +482,9 @@ $(document).ready(function() {
                 $('#millcode1').val(Millcode);
 
                 var contNo1 = document.getElementById('Contractno12').value;
+           
                 var challanno = document.getElementById('challanno4').value;
-
+              
              
 
              
@@ -490,8 +495,11 @@ $(document).ready(function() {
                     data: { 
                         "contNo": contNo1,
                         "challanno": challanno,
+                        "cropyear": cropyear,
+                        "jutevariety": jutevariety,
                     },
                     success: function(data) {
+                    
                          var dataArray = JSON.parse(data);
                          if (dataArray.length > 0) {
                            
@@ -517,6 +525,7 @@ $(document).ready(function() {
 
 
 });
+
 
 function loadMillChildBasedData(contractNo,resultsArray) {
   
@@ -886,92 +895,122 @@ $('#childTable1').show();
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
 	            tableRow.find('input[name="MoistureValue[]"]').val(valueinprice); // Update MoistureValue input field
 	        }
-	    } else if (inputElement.id.startsWith('Qualitypercentage_')) {
+	    }else if (inputElement.id.startsWith('Qualitypercentage_')) {
 	        actualQty = actualQty - some[index];
 	        let gradeprice1 = resultsArray[intvalue - 1];
-	        var qs = Math.floor(parseFloat(input.value) / 100);
-	        previousValue = parseFloat(tableRow.find('input[name="QualityValue_[]"]').val()) || 0;
+	        let qs = Math.floor(parseFloat(input.value) / 100);
+	        let previousValue = parseFloat(tableRow.find('input[name="QualityValue_[]"]').val()) || 0;
+	        let valueinprice = 0; // Initialize valueinprice here
+
+	        console.log('Initial Values:', {
+	            actualQty: actualQty,
+	            gradeprice1: gradeprice1,
+	            qs: qs,
+	            previousValue: previousValue
+	        });
 
 	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
 	            claimAmount[index] -= previousValue; // Subtract the previous value
-	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
+	            some[index] -= (actualQty * previousValue) / gradeprice1; // Update some array
 	            tableRow.find('input[name="QualityValue_[]"]').val(''); // Clear QualityValue_ input field
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            console.log('Input is empty, updated claim amount:', claimAmount[index]);
 	        } else {
-	            if (qs == 0) {
+	            if (qs === 0) {
 	                intvalue++;
 	                let gradeprice = resultsArray[intvalue - 1];
 	                gradeprice = gradeprice1 - gradeprice;
 
-	                qty = ((actualQty * parseFloat(input.value)) / 100);
+	                let qty = ((actualQty * parseFloat(input.value)) / 100);
 	                valueinprice = (gradeprice * qty).toFixed(2);
 	                claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
 	                some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
-	            } else if (qs == 1) {
+
+	                console.log('qs is 0, valueinprice:', valueinprice);
+	            } else if (qs === 1) {
 	                let rem = parseFloat(input.value) % 100;
-	                if (rem == 0) {
+	                if (rem === 0) {
 	                    intvalue++;
 	                    let gradeprice = resultsArray[intvalue - 1];
 	                    gradeprice = gradeprice1 - gradeprice;
 
-	                    qty = ((actualQty * parseFloat(input.value)) / 100);
+	                    let qty = ((actualQty * parseFloat(input.value)) / 100);
 	                    valueinprice = (gradeprice * qty).toFixed(2);
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
 	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	                    console.log('qs is 1, rem is 0, valueinprice:', valueinprice);
 	                } else {
+	                    intvalue++;
 	                    intvalue++;
 	                    let gradeprice = resultsArray[intvalue - 1];
 	                    let grade = gradeprice;
 	                    gradeprice = gradeprice1 - gradeprice;
-	                    qty = actualQty;
+
+	                    let inputValue = parseFloat(input.value) || 0; // Use 0 or any other default value
+	                    let qty2 = inputValue - 100.0;
+	                    let qty = ((actualQty * qty2) / 100);
 	                    let valueinprice1 = (gradeprice * qty).toFixed(2);
 
-	                    intvalue++;
+	                    intvalue--;
 	                    gradeprice = resultsArray[intvalue - 1];
 	                    gradeprice = grade - gradeprice;
-	                    qty = (actualQty * rem) / 100;
-	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty).toFixed(2);
+	                    let qty24 = 100.0 - qty2;
+	                    let qty5 = ((actualQty * qty24) / 100);
+	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty5).toFixed(2);
 	                    valueinprice = valueinprice1;
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
 	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	                    console.log('qs is 1, rem is not 0, valueinprice:', valueinprice);
 	                }
-	            } else if (qs == 2) {
+	            } else if (qs === 2) {
 	                let rem = parseFloat(input.value) % 100;
-	                if (rem == 0) {
+	                if (rem === 0) {
 	                    intvalue++;
 	                    intvalue++;
 	                    let gradeprice = resultsArray[intvalue - 1];
 	                    gradeprice = gradeprice1 - gradeprice;
 
-	                    qty = ((actualQty * parseFloat(input.value)) / 100);
+	                    let qty = actualQty;
 	                    valueinprice = (gradeprice * qty).toFixed(2);
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
 	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	                    console.log('qs is 2, rem is 0, valueinprice:', valueinprice);
 	                } else {
 	                    intvalue++;
 	                    intvalue++;
 	                    let gradeprice = resultsArray[intvalue - 1];
 	                    let grade = gradeprice;
 	                    gradeprice = gradeprice1 - gradeprice;
-	                    qty = actualQty;
-	                    let valueinprice1 = (gradeprice * qty).toFixed(2);
+	                    let inputValue = parseFloat(input.value) || 0; // Use 0 or any other default value
+	                    let qty2 = inputValue - 200.0;
+	                    let qty6 = ((actualQty * qty2) / 100);
+	                    let valueinprice1 = (gradeprice * qty6).toFixed(2);
 
-	                    intvalue++;
-	                    intvalue++;
+	                    intvalue--;
 	                    gradeprice = resultsArray[intvalue - 1];
 	                    gradeprice = grade - gradeprice;
-	                    qty = (actualQty * rem) / 100;
-	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty).toFixed(2);
+	                    let qty23 = 100.0 - qty2;
+	                    let qty7 = ((actualQty * qty23) / 100);
+	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty7).toFixed(2);
 	                    valueinprice = valueinprice1;
 	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
 	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	                    console.log('qs is 2, rem is not 0, valueinprice:', valueinprice);
 	                }
 	            }
+
+	            console.log('Updating QualityValue with valueinprice:', valueinprice);
 	            tableRow.find('input[name="QualityValue_[]"]').val(valueinprice);
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2));
 	        }
 	    }
-	}
+
+	  }
+
 
         
   function calculateQtyfromQty(input, elementId, intvalue, resultsArray, index) {

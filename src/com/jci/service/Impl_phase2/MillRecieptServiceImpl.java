@@ -75,7 +75,7 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 		return millRecieptDao.fetchdata(st);
 	}
 	@Override
-	public List<Object> fetchMill_NameR() {
+	public List<Object[]> fetchMill_NameR() {
 		return millRecieptDao.fetchMill_NameR();
 	}
 	@Override
@@ -93,9 +93,9 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 		return millRecieptDao.challanbaseddetails(st);
 	}
 	@Override
-	public List<Object[]> gradeprice(String st,String st1) {
+	public List<Object[]> gradeprice(String st,String st1,String st2,String st3) {
 		
-		return millRecieptDao.gradeprice(st,st1);
+		return millRecieptDao.gradeprice(st,st1,st2,st3);
 	}
 	
 	

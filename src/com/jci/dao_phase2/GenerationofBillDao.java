@@ -18,7 +18,9 @@ public interface GenerationofBillDao {
 	  public  List<Object[]> GenrationAginstLCs(String st);
 	  public  List<Object[]>contarctnoformaster(String st);
 	  public  List<Object[]> Dispatchentry(String st);
+	  public  List<Object[]> PANSTATE(String st);
 	  public  List<Object[]> DocumentLcsEntry(String st);
+	  public  List<Object[]> Supplieradd(String st);
 	  public String  billofsupplyno(String st);
 	  public String billUpdation(String st);
 	  public void remark(String cont_no,String  con_No);

@@ -135,6 +135,22 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 
+
+	@Override
+	public List<Object[]> Supplieradd(String st) {
+		
+		return generationofBillDao.Supplieradd(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> PANSTATE(String st) {
+		
+		return  generationofBillDao.PANSTATE(st);
+	}
+
+
 	
 
 

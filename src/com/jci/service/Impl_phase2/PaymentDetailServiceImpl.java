@@ -110,7 +110,7 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 	
 	}
 	@Override
-	public List<Object> Millname() {
+	public List<Object[]> Millname() {
 		return paymentDetailsdao.Millname();
 	}
 	@Override
