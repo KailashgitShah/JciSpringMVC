@@ -459,7 +459,7 @@ $(document).ready(function() {
         url: 'challanbaseddata.obj',
         data: { "contractno": contractNo },
         success: function(data) {
-         alert(data);
+        
             var dataArray = JSON.parse(data);
             if (dataArray.length > 0) {
                 var dateOfShipmentValue = dataArray[0][0]; 
@@ -469,9 +469,9 @@ $(document).ready(function() {
                 Contract_No = dataArray[0][5];
                 Millcode = dataArray[0][6];
                 var  cropyear  = dataArray[0][7];
-                alert(cropyear);
+             
                 var  jutevariety = dataArray[0][8];
-                alert(jutevariety);
+               
                 
                 console.log(actualqty);
 
@@ -482,9 +482,9 @@ $(document).ready(function() {
                 $('#millcode1').val(Millcode);
 
                 var contNo1 = document.getElementById('Contractno12').value;
-                alert(contNo1);
+           
                 var challanno = document.getElementById('challanno4').value;
-                alert(challanno);
+              
              
 
              
@@ -499,7 +499,7 @@ $(document).ready(function() {
                         "jutevariety": jutevariety,
                     },
                     success: function(data) {
-                    	alert(data);
+                    
                          var dataArray = JSON.parse(data);
                          if (dataArray.length > 0) {
                            
