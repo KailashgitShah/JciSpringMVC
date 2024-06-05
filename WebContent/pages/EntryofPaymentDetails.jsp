@@ -77,7 +77,7 @@
 
 			<%
 			List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
-			List<Object> getcontractList2 = (List<Object>) request.getAttribute("getcontractList2");
+			List<Object[]> getcontractList2 = (List<Object[]>) request.getAttribute("getcontractList2");
 			%>
 
 
@@ -101,11 +101,11 @@
 
 													<option value="select">-Select-</option>
 													<%
-													for (Object row : getcontractList2) {
-
-														String millname = (String) row;
+													for (Object[] row : getcontractList2) {
+														String millname = (String) row[0];  
+													    String millcode = (String) row[1]; 
 													%>
-													<option value="<%=millname%>"><%=millname%></option>
+													<option value="<%=millcode%>"><%=millname%></option>
 													<%
 													}
 													%>

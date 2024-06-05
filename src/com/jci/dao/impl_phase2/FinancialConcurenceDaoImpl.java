@@ -53,7 +53,7 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 	public List<FinancialConcurenceModel> getAllPaymentInstruments() {
 //	        Criteria criteria = currentSession().createCriteria(FinancialConcurenceModel.class);
 //	        return criteria.list();
-		String sql = " SELECT * FROM jcifinancial_concurrence ";
+		String sql = " SELECT * FROM jcifinancial_concurrence ORDER BY Fc_id DESC";
 		List<FinancialConcurenceModel> fCList = sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.addEntity(FinancialConcurenceModel.class).list();
 		return fCList;

@@ -84,6 +84,17 @@ public class EntryPaymentDetailsModel {
 
 	@Column(name = "Millname")
 	private String Millname ;
+	
+	@Column(name = "millcode")
+	private String millcode ;
+
+	public String getMillcode() {
+		return millcode;
+	}
+
+	public void setMillcode(String millcode) {
+		this.millcode = millcode;
+	}
 
 	@Column(name = "PaymentDue_date")
 	private String PaymentDue_date ;

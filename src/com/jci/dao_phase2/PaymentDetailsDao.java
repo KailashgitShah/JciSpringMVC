@@ -19,7 +19,7 @@ public interface PaymentDetailsDao {
 		public void deleteEntry(int id);
 		public void contratTable(String cont_no);
 		public List<Object> ContractNo();
-		public List<Object> Millname();
+		public List<Object[]> Millname();
 		public List<Object> getsumofInstrumentValue(String instValue);
 		  public  List<Object[]>paymentdetails(String  st);
 		  public  List<Object[]>gradewiseqty(String st,String contractqty);

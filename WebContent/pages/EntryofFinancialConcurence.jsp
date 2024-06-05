@@ -93,16 +93,20 @@
 		   
 		  
 		     BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
+		    
 		     BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue)); 
-		   
+		    
 
 
 		    BigDecimal qtdsub = contractValueBigInt.subtract(instrumentValueBigInt);
-
+		 
 		    BigDecimal contractqty = new BigDecimal(String.valueOf(Cont_qty));
+		   
 		    BigDecimal qtdiv = contractValueBigInt.divide(contractqty,2, RoundingMode.HALF_UP);
+		
 		  
-		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP); 
+		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP);
+		    
 		    
 	 	    
 	 	    

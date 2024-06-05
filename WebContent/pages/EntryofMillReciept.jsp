@@ -114,9 +114,11 @@
             <% 
           
             List<Object>getdataList1=(List<Object>)request.getAttribute("getdataList1");
-            List<Object>fetchMill_NameR=(List<Object>)request.getAttribute("fetchMill_NameR");
+            List<Object[]>fetchMill_NameR=(List<Object[]>)request.getAttribute("fetchMill_NameR");
             
             String date = (String) request.getAttribute("parsed");
+            
+            String millname="";
 		%>
           <div class="page-content fade-in-up">
                 <div class="row">
@@ -136,13 +138,15 @@
 	                                        	<select name="Mill_name" id="Mill_name1" class="form-control taxtbox" required>
 													   <option value="">-Select-</option>
 													    <%
-													    for (int i = 0; i < fetchMill_NameR.size(); i++) {
-															        Object data =  (Object)fetchMill_NameR.get(i);
-															        String field1 = (String) data; 
-															      
+													    for (Object[] row : fetchMill_NameR) {
+													        String field1 = (String) row[0];
+													        millname = (String) row[0];
+													        String field2 = (String) row[1];
+													        
+													    
 															       
 													    %>
-													     <option value="<%= field1%>"><%= field1  %></option>
+													     <option value="<%= field2%>"><%= field1  %></option>
 													    <%
 													    }
 													    %>  
@@ -246,6 +250,13 @@
 													class="text-danger">* </span>&nbsp;  <input
 													class="form-control" name="rowindex2"
 													id="rowindex2" value="" readonly="readonly">
+											</div>
+											
+											 <div class="col-sm-2 form-group"  style="display: none;">
+												    <label "display:none;" >millname234 </label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													class="form-control" name="rowindex2"
+													id="millname234" value="<%=millname %>" readonly="readonly">
 											</div>
 											
 										
@@ -462,13 +473,14 @@ $(document).ready(function() {
         e.preventDefault();
         var id = $(this).data('id');
         var millNameValue = $('#Mill_name1').val(); // Get the value from #Mill_name1
+        var millNameValue1 = $('#millname234').val(); // Get the value from #Mill_name1
         var hoDateValue = $('#HODate').find(':selected').attr('data-value1'); // Get the data-value2 attribute
       // Get the data-value2 attribute
 
         // Construct the URL with the parameters
         var url = 'EntryofMillreceiptChild.obj';
         url += '?contarctno=' + encodeURIComponent(id);
-        url += '&millName=' + encodeURIComponent(millNameValue); 
+        url += '&millName=' + encodeURIComponent(millNameValue1); 
         url += '&hoDate=' + encodeURIComponent(hoDateValue);
         
 

@@ -59,7 +59,7 @@ public class PdfGenerator_K {
 	public String generateBillPdf( String  Invoice_Value, String challan_No1, String supplier_Name,
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
 			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
-			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill) throws FileNotFoundException {
+			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill,String Statename23,String StaeCode23,String PAN23,String mastterSatename,String mastterSatename2,String ReciepentsStatecode) throws FileNotFoundException {
 		 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 
@@ -213,7 +213,7 @@ public class PdfGenerator_K {
         cell61.setBorderRight(new SolidBorder(borderWidth));
        Paragraph paragraph7 = new Paragraph()
 		        .add(new Text("STATE NAME:").setFont(boldFont))
-		        .add(new Text(Clientstate).setFont(normalFont));
+		        .add(new Text(Statename23).setFont(normalFont));
 		cell61.add(paragraph7);
         contentTable.addCell(cell61);
         
@@ -233,7 +233,7 @@ public class PdfGenerator_K {
 
 		Paragraph paragraph1 = new Paragraph()
 		        .add(new Text("STATE CODE: ").setFont(boldFont))
-		        .add(new Text(Clientcode).setFont(normalFont));
+		        .add(new Text(StaeCode23).setFont(normalFont));
         cell661.add(paragraph1);
         contentTable.addCell(cell661);
 
@@ -254,7 +254,7 @@ public class PdfGenerator_K {
 
 		Paragraph paragraph9 = new Paragraph()
 		        .add(new Text("PAN : ").setFont(boldFont))
-		        .add(new Text(BOS_Date).setFont(normalFont));
+		        .add(new Text(PAN23).setFont(normalFont));
 		cell663.add(paragraph9);
         contentTable.addCell(cell663);
         
@@ -354,7 +354,7 @@ public class PdfGenerator_K {
 		
 			Paragraph paragraph17 = new Paragraph()
 			        .add(new Text("STATE NAME : ").setFont(boldFont))
-			        .add(new Text(Clientstate).setFont(normalFont));
+			        .add(new Text(mastterSatename).setFont(normalFont));
 			cell77.add(paragraph17);
 	        contentTable.addCell(cell77);
 
@@ -366,7 +366,7 @@ public class PdfGenerator_K {
 		
 			Paragraph paragraph18 = new Paragraph()
 			        .add(new Text("STATE NAME : ").setFont(boldFont))
-			        .add(new Text(Clientstate).setFont(normalFont));
+			        .add(new Text(mastterSatename2).setFont(normalFont));
 			cell78.add(paragraph18);
 	        contentTable.addCell(cell78);
 	    Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
@@ -374,7 +374,7 @@ public class PdfGenerator_K {
 		
 			Paragraph paragraph19 = new Paragraph()
 			        .add(new Text("STATE CODE : ").setFont(boldFont))
-			        .add(new Text(Clientcode).setFont(normalFont));
+			        .add(new Text(ReciepentsStatecode).setFont(normalFont));
 			cell778.add(paragraph19);
 	        contentTable.addCell(cell778);
 	        

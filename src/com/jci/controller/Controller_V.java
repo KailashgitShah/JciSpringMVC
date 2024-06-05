@@ -2462,7 +2462,7 @@ public class Controller_V {
 		// List<Object> getsumofInstrumentValue =
 		// this.paymentDetailService.getsumofInstrumentValue();
 		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
-		List<Object> getcontractList2 = this.paymentDetailService.Millname();
+		List<Object[]> getcontractList2 = this.paymentDetailService.Millname();
 
 		mv.addObject("getcontractList1", getcontractList1);
 		mv.addObject("getcontractList2", getcontractList2);
@@ -2555,7 +2555,7 @@ public class Controller_V {
 				EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 
 				entryPaymentDetailsModel.setInstrumentno(Instrument);
-				entryPaymentDetailsModel.setMillname(millname65);
+				entryPaymentDetailsModel.setMillcode(millname65);
 				entryPaymentDetailsModel.setContractno(st);
 
 				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
@@ -2869,7 +2869,7 @@ public class Controller_V {
 		}
 
 		// List<Object> getdataList1 = this.millRecieptService.fetchHODINO();
-		List<Object> fetchMill_NameR = this.millRecieptService.fetchMill_NameR();
+		List<Object[]> fetchMill_NameR = this.millRecieptService.fetchMill_NameR();
 
 		// mv.addObject("getdataList1", getdataList1);
 		mv.addObject("fetchMill_NameR", fetchMill_NameR);
@@ -3191,9 +3191,11 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "GradePrice", method = RequestMethod.GET)
 	public String GradePricecalculation(@RequestParam("contNo") String contNo,
-			@RequestParam("challanno") String challanno) {
+			@RequestParam("challanno") String challanno,
+			@RequestParam("cropyear") String cropyear,
+			@RequestParam("jutevariety") String jutevariety) {
 
-		List<Object[]> millRecieptModelt1 = millRecieptService.gradeprice(challanno, contNo);
+		List<Object[]> millRecieptModelt1 = millRecieptService.gradeprice(challanno, contNo,cropyear,jutevariety);
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(millRecieptModelt1);
@@ -3334,6 +3336,7 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 		final String challan_no = request.getParameter("id");
+		final String DPC1 = request.getParameter("DPC");
 		List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
 		final String millname = request.getParameter("millname");
 //		 List<Object[]> ShipmentDetails= (List<Object[]>)
@@ -3341,9 +3344,11 @@ public class Controller_V {
 //			final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
 //			
 		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
+		List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
 		List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
 		mv.addObject("ShipmentDetails", ShipmentDetails);
 		mv.addObject("Perticulargoods", Perticulargoods);
+		mv.addObject("Suplierdetails", Suplierdetails);
 
 		int allIndiaSerialNo = 1;
 		int stateSerialNo = 1;
@@ -3439,6 +3444,12 @@ public class Controller_V {
 			String Driver_name = request.getParameter("Driver_name");
 			String Driver_Lic_no = request.getParameter("Driver_Lic_no");
 			String Vehicle_no = request.getParameter("Vehicle_no");
+			
+			String Statename23 = request.getParameter("Statename23");
+			String StaeCode23 = request.getParameter("StaeCode23");
+			String PAN23 = request.getParameter("PAN23");
+			String millcode234 = request.getParameter("millcode");
+			
 //		       // String QtyAllowed = request.getParameter("QtyAllowed");
 ////		        final String filename = SupportingDocument.getOriginalFilename();
 ////		        File serverFile = new File(theDir, filename);
@@ -3480,6 +3491,37 @@ public class Controller_V {
 			generationOfBillSupplyModel.setRo_id(ro_id);
 			// generationOfBillSupplyModel.setBos_file_path("documents");
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
+			List<Object[]> PANSTATE = generationofBillService.PANSTATE(millcode234);
+			String mastterSatename="";
+			String mastterSatename2="";
+			String CnsigneeStatecode="";
+			String ReciepentsStatecode="";
+			for (Object[] row : PANSTATE) {
+				String strValue1 = (String) row[0];
+				String strValue2 = (String) row[1];
+				String strValue3 = (String) row[2];
+				String strValue4 = (String) row[3];
+				Integer Str= (Integer)row[4];
+				String strValue5 = String.valueOf(Str);
+				String strValue6 = (String) row[5];
+				
+				
+				if (strValue2.equals(strValue6) && strValue3.equals(strValue5)) {
+				      mastterSatename=strValue4;
+				      mastterSatename2=strValue4;
+				      ReciepentsStatecode=strValue2;
+
+					}
+				else if (strValue3.equals(strValue5)) {
+				    mastterSatename2 = strValue4;
+				}
+				else if (strValue2.equals(strValue6)) {
+				    mastterSatename = strValue4;
+				    ReciepentsStatecode = strValue2;
+				}
+				
+			}
+			
 			List<Object> Non_lc = genrationCashDocumentService.Non_lc(Conract_no);
 			for (Object obj : Non_lc) {
 				String strValue = (String) obj;
@@ -3501,7 +3543,7 @@ public class Controller_V {
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
 					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
 					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill);
+					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,Statename23,StaeCode23,PAN23,mastterSatename,mastterSatename2,ReciepentsStatecode);
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
