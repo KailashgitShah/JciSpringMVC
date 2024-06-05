@@ -2521,7 +2521,8 @@ public class Controller_V {
 				String InstrumentValue = request.getParameter("InstrumentValue");
 				double InstrumentValue1 = Double.parseDouble(InstrumentValue);
 				double instvalue = ratio * InstrumentValue1;
-				String instvalue1 = String.valueOf(instvalue);
+				int intValue1 = (int) instvalue;
+				
 
 				String millname65 = request.getParameter("millname65");
 				String Instrument = request.getParameter("Instrument");
@@ -2586,7 +2587,7 @@ public class Controller_V {
 				entryPaymentDetailsModel.setInstdate(instdate1);
 				entryPaymentDetailsModel.setPayment(payment);
 				// int instruValue= Integer.parseInt(InstrumentValue);
-				entryPaymentDetailsModel.setInstrumentValue(instvalue1);
+				entryPaymentDetailsModel.setInstrumentValue(intValue1);
 				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
 				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
 				entryPaymentDetailsModel.setFc_status(0);
@@ -3405,7 +3406,7 @@ public class Controller_V {
 	@RequestMapping("saveentryofGenrationbill")
 
 	public ModelAndView saveentryofGenrationbill(HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		final File theDir = new File(Genrationofbill);
+		final File theDir = new File("Genrationofbill");
 
 
 		if (!theDir.exists()) {
@@ -3509,7 +3510,7 @@ public class Controller_V {
 				if (strValue2.equals(strValue6) && strValue3.equals(strValue5)) {
 				      mastterSatename=strValue4;
 				      mastterSatename2=strValue4;
-				      ReciepentsStatecode=strValue2;
+				      ReciepentsStatecode=strValue5;
 
 					}
 				else if (strValue3.equals(strValue5)) {
@@ -3517,7 +3518,7 @@ public class Controller_V {
 				}
 				else if (strValue2.equals(strValue6)) {
 				    mastterSatename = strValue4;
-				    ReciepentsStatecode = strValue2;
+				    ReciepentsStatecode = strValue5;
 				}
 				
 			}
@@ -3581,10 +3582,10 @@ public class Controller_V {
 
 						List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Conract_no);
 
-						TopSheetPdf_k pdfTopSheetPdf_k = new TopSheetPdf_k();
-						String filePath1 = pdfTopSheetPdf_k.generatePdfReport(list1);
-
-						String filePath2 = pdfTopSheetPdf_k.BOE();
+//						TopSheetPdf_k pdfTopSheetPdf_k = new TopSheetPdf_k();
+//						String filePath1 = pdfTopSheetPdf_k.generatePdfReport(list1);
+//
+//						String filePath2 = pdfTopSheetPdf_k.BOE();
 
 					}
 

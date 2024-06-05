@@ -246,10 +246,10 @@
 										
 											<div class="col-sm-4 form-group">
 												<label class="required">Supporting Document
-													(330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
+													((Only accepted .jpg,.jpeg,.png.pdf)330kb-1MB))</label>&nbsp; <span id="errRegForm" name="errRegForm"
 													class="text-danger"> </span> <img id="imgPreview" /><input
 													class="form-control taxtbox" name="SupportingDocument"
-													type="file" accept=".jpg,.jpeg,.png.pdf"
+													type="file" accept=".jpg,.jpeg,.png,.pdf" 
 													oninput="validateREGFileType()"
 													placeholder="Supporting Document" id="SupportingDocument"
 													onkeypress="deleteErrorMsg()" required>
@@ -414,8 +414,8 @@
 											    <thead class="thead-light">
 											        <tr>
 											            <th>Contract No</th>
-											            <th>Contracted Qty</th>
-											            <th>Contract value</th>
+											            <th>Contracted Qty(Qtls)</th>
+											            <th>Contract value(105% of jute Value)</th>
 											            <th>Contract Date</th>
 											            <th>Payment_due Date</th>
 											          
@@ -597,7 +597,7 @@ $(document).ready(function() {
             });
            
             // Update the total contract value label
-            $('#differenceLabel').text('Instrument Value min = ' + totalContractValue);
+            $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
            
             // Recalculate ratios
             recalculateRatios();
@@ -1023,7 +1023,7 @@ $(document).ready(function() {
 			var idxDot = F_REG_FORM.lastIndexOf(".") + 1;
 			var extFile = F_REG_FORM.substr(idxDot, F_REG_FORM.length)
 					.toLowerCase();
-			if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+			if (extFile == "jpg" || extFile == "jpeg" || extFile == "png" || extFile == "pdf") {
 
 			} else {
 				alert("Only jpg/jpeg and png files are allowed!");

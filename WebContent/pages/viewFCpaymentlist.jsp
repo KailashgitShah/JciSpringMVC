@@ -68,7 +68,7 @@
 
 			<%
 			List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>)request.getAttribute("allUserRegistration");
-	
+			
 		%>
                   <div class="page-content fade-in-up">
                 <div class="ibox">

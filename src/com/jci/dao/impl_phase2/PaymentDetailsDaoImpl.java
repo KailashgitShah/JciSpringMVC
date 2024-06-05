@@ -45,7 +45,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 and Fc_status = 1 ";
-	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0)";
+	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0) ORDER BY Payment_id DESC";
 //	    String sql = " SELECT *,\r\n"
 //	    		+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
 //	    		+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
@@ -221,7 +221,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	@Override
 	public List<Object[]> Millname() {
 		
-		String sql="select s.client_name,Mill_code  from "
+		String sql="select  distinct s.client_name,Mill_code  from "
 				+ "(SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s "
 				+ "INNER join jcicontract as f on f.Mill_code=s.client_unit_code  where Contract_acceptance_flag=1";
 		 List<Object[]>millNamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
