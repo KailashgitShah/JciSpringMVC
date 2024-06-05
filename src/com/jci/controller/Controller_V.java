@@ -4575,6 +4575,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}
+	
 ///////////////////////////////// this will be used in free sales and commercial///////////////////////////////////////////
 	@RequestMapping("saveMillAcceptenceFile")
 	public ModelAndView millaccept(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession s)
@@ -4912,7 +4913,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		                                     "\n" +
 		                                     "Thanks & Regards,\n" +
 		                                     "Jute Corporation of India";
-		         String filenamefa1 = filepath;
+		         
+		           String filenamefa1 = filepath;
 		           String usernamefa = filename;
 		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
 		           try {
@@ -4943,8 +4945,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		        String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
 		           try {        
 		                  toAddressesomo = new InternetAddress[] {
-		                		  //new InternetAddress("mansi.gupta@cyfuture.com")
-		                		  new InternetAddress("mansigupta18001@gmail.com")
+		                		  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		//  new InternetAddress("mansigupta18001@gmail.com")
 		
 		                  };
 		
@@ -4972,8 +4974,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		                                               String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
 		                                                   try {        
 		                                       toAddressesmill = new InternetAddress[] {
-		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
-		                		  new InternetAddress("mansigupta18001@gmail.com")
+		                		  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		 // new InternetAddress("mansigupta18001@gmail.com")
 		
 		                  };
 		
@@ -4984,7 +4986,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		           emailmill.sendEmail(toAddressesmill, bodymill, subjectmill , filenamemill , usernamemill);
 		
 			        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-		//	        return new ModelAndView("viewlistnominal");
+		
 			        return new ModelAndView((View)new RedirectView("viewlistnominal.obj"));
 		
 			    } catch (Exception e) {

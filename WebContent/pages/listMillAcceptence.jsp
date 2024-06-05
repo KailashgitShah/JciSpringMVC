@@ -254,7 +254,7 @@ input[type="file"] {
                                         <th>Mill name</th>
 										<th>Contract Identification No.</th>
 										<th>Crop Year</th>
-										<th>Contract Quantity</th>				  
+										<th>Contract Quantity(Qtls)</th>				  
 									    <th>Contract Date</th>
 										<th>Payment Due Date</th>
 										<th>Fibre Value</th>
@@ -272,7 +272,7 @@ input[type="file"] {
 										    <td>${item.getMill_name()}</td>
 										    <td>${item. getContract_identification_no()}</td>
 											<td>${item.getCropYear()}</td> 
-										     <td>${item.getContract_qty()}</td>
+										     <td>${item.getMill_qty()}</td>
 											<td>${item.getContract_date()}</td>
 											 <td>${item. getPayment_duedate()}</td>
 											<td>${item.getJute_value()}</td> 

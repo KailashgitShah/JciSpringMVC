@@ -154,14 +154,23 @@
 								<table class="table table-bordered">
 									  <thead>
 									       <tr>
-									         <th></th> 
+									       <!--  <th></th>
 									          <th>Challan</th>
 									           <th>Mr_No</th>
 									            <th>Mr_Date</th>
 									            <th>Bill_Of_Supply_Number</th>
 									             <th>Date_Of_Shipment</th>									                   
 									              <th>Shipment_Quantity</th>
-									               <th>Claim Valuation</th>
+									               <th>Claim Valuation</th> -->
+									                <th>Challan</th>
+									          <th>Mr_No</th>
+									           <th>Mr_No</th>
+									            <th>Bill_Of_Supply_Numbe</th>
+									            <th>Date_Of_Shipment</th>
+									             <th>Shipment_Quantity</th>									                   
+									              <th>Claim Valuation</th>
+									               <th>Check Box</th>
+									               
 									              
 									            </tr>
 									      </thead>

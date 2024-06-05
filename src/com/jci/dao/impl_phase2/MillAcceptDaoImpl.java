@@ -56,6 +56,64 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	
 	
 		
+//	@Override
+//	public List<Contractgeneration> getAll(String millcode) {
+//		String millcodeget = millcode;
+//	    List<Contractgeneration> ll = new ArrayList<>();
+//	    List<Object[]> rows = new ArrayList<>();
+//	    String querystr;
+//	    
+//	    if (millcodeget == null) {
+//	      querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where Authorize_Status = 1" ;
+//	   	    
+//	    }
+//	    else {
+//	      querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where Authorize_Status = 1 and  Mill_code = "+ millcodeget ;
+//	    }
+//	    Session session = sessionFactory.getCurrentSession();
+//	    Transaction tx = session.beginTransaction();
+//	    SQLQuery query = session.createSQLQuery(querystr);
+//	    
+//	    rows = query.list();
+//	    
+//	    for (Object[] row : rows) {
+//	        String Contract_no = (String) row[0];
+//	        String Contract_date = (String) row[1];
+//	        String Contract_qty = (String) row[2];
+//	        Integer Contract_value =(Integer) row[3];
+//	        String Payment_duedate = (String) row[4];
+//	        int Contract_acceptance_flag = ((Number) row[5]).intValue();
+//	        Long contract_id = ((BigDecimal) row[6]).longValue(); // Use BigDecimal's longValue()
+//	       String Delivery_type =(String)row[7];
+//	       String Mill_name=(String)row[8];
+//	       String Contract_acceptance_doc=(String)row[9];
+//	        String CropYear =(String)row[10];
+//	        String Intial_Payment_date = (String)row[11];
+//	        Integer  Contract_value_lc =(Integer)row[12];
+//	        Integer Jute_value = (Integer)row[13];
+//	        String Contract_identification_no =(String)row[14];
+//	        
+//	        Contractgeneration cm = new Contractgeneration();
+//	        cm.setContract_no(Contract_no);
+//	        cm.setContract_date(Contract_date);
+//	        cm.setContract_qty(Contract_qty);
+//	        cm.setContract_value(Contract_value);
+//	        cm.setPayment_duedate(Payment_duedate);
+//	        cm.setContract_acceptance_flag(Contract_acceptance_flag);
+//	        cm.setContract_id(contract_id);
+//	        cm.setDelivery_type(Delivery_type);
+//	        cm.setMill_name(Mill_name);
+//	        cm.setContract_acceptance_doc(Contract_acceptance_doc);
+//	        cm.setCropYear(CropYear);
+//	        cm.setIntial_Payment_date(Intial_Payment_date);
+//	        cm.setContractValueLc(Contract_value_lc);  
+//	        cm.setJute_value(Jute_value);
+//	        cm.setContract_identification_no(Contract_identification_no);
+//	        ll.add(cm);
+//	    }
+//
+//	    return ll;
+//	}
 	@Override
 	public List<Contractgeneration> getAll(String millcode) {
 		String millcodeget = millcode;
@@ -64,11 +122,11 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	    String querystr;
 	    
 	    if (millcodeget == null) {
-	      querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where Authorize_Status = 1" ;
+	      querystr = "select Contract_no, Contract_date, Mill_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where Authorize_Status = 1" ;
 	   	    
 	    }
 	    else {
-	      querystr = "select Contract_no, Contract_date, Contract_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where Authorize_Status = 1 and  Mill_code = "+ millcodeget ;
+	      querystr = "select Contract_no, Contract_date, Mill_qty, Contract_value, Payment_duedate, Contract_acceptance_flag, contract_id,Delivery_type ,Mill_name, Contract_acceptance_doc,  CropYear , Intial_Payment_date, Contract_value_lc , Jute_value ,Contract_identification_no from jcicontract Where Authorize_Status = 1 and  Mill_code = "+ millcodeget ;
 	    }
 	    Session session = sessionFactory.getCurrentSession();
 	    Transaction tx = session.beginTransaction();
@@ -79,7 +137,7 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	    for (Object[] row : rows) {
 	        String Contract_no = (String) row[0];
 	        String Contract_date = (String) row[1];
-	        String Contract_qty = (String) row[2];
+	        Double Contract_qty = (Double) row[2];
 	        Integer Contract_value =(Integer) row[3];
 	        String Payment_duedate = (String) row[4];
 	        int Contract_acceptance_flag = ((Number) row[5]).intValue();
@@ -96,7 +154,7 @@ public class MillAcceptDaoImpl implements millAcceptDao{
 	        Contractgeneration cm = new Contractgeneration();
 	        cm.setContract_no(Contract_no);
 	        cm.setContract_date(Contract_date);
-	        cm.setContract_qty(Contract_qty);
+	        cm.setMill_qty(Contract_qty);
 	        cm.setContract_value(Contract_value);
 	        cm.setPayment_duedate(Payment_duedate);
 	        cm.setContract_acceptance_flag(Contract_acceptance_flag);
