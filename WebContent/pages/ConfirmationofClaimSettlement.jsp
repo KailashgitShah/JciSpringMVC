@@ -610,6 +610,7 @@ $(document).ready(function(){
                                 	    //alert(AmountSet1 +"------------"+AmountSet2);
                                 
                                 	    totalSettlementAmount += parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2);
+                                	    alert("AmountSet1+++"+parseFloat(AmountSet1)+"AmountSet2---"+parseFloat(AmountSet2)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
                                 	    //alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
                                 	}
 
@@ -631,6 +632,7 @@ $(document).ready(function(){
                                     
                                     $("#cl"+index).val(parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice));
                                     totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
+                                    alert("AmountSet+++"+parseFloat(AmountSet)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
     	                           // alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
                                 	}
 

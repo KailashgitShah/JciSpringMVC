@@ -132,10 +132,13 @@ public class PdfGenerator {
 		for (int i = 0; i < compList.size(); i++) {
 			Double rObject1 = Double.parseDouble(compList.get(i));
 			Object[] rObject2 = priceList.get(0);
-
+            System.err.println("grade"+i+1 + " ");
 			Double composition = (rObject1 / 100) * qty; // Qty in Qtls
 			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
 			totalContractedprice += composition * priceDouble;
+			System.err.println("composition " + composition);
+			System.err.println("gradePrice " + priceDouble);
+			System.err.println("Amount of grade " + priceDouble);
 
 			int compositionInt = (int) Math.round(composition);
 			totalCompositionInt += compositionInt;
@@ -149,7 +152,9 @@ public class PdfGenerator {
 
 		distributionTable.addCell(new Cell().add("Total").setBold());
 		distributionTable.addCell(new Cell().add(totalCompositionInt + "").setBold());
-		distributionTable.addCell(new Cell().add(finalPrice + " Rs"));
+		distributionTable.addCell(new Cell().add(" Rs" + finalPrice));
+		
+		System.err.println("Total " + finalPrice);
 
 		Paragraph footer = new Paragraph("2252-7027 / 7028 / 6952 / 6779 / 6770 / 6773 / 7108 / 6776")
 				.setTextAlignment(TextAlignment.CENTER).setFontSize(10);

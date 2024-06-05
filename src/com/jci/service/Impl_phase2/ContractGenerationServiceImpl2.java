@@ -34,8 +34,12 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	}
 
 	@Override
-	public List<Object[]> getListOfGradesPrice(String cropYear) {
-		return contractGenerationDao2.getListOfGradesPrice(cropYear);
+	public List<Object[]> getListOfGradesPriceForExGodown(String cropYear) {
+		return contractGenerationDao2.getListOfGradesPriceForExGodown(cropYear);
+	}
+	@Override
+	public List<Object[]> getListOfGradesPriceForMillDelivery(String cropYear) {
+		return contractGenerationDao2.getListOfGradesPriceForMillDelivery(cropYear);
 	}
 
 	@Override
@@ -73,6 +77,7 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 		 contractGenerationDao2.setContractAuthrizeStatus(contractNOString);
 		
 	}
+
 
  
 

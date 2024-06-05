@@ -156,7 +156,7 @@ input[type="radio"] {
 												<div class="row">
 
 													<div class="col-sm-4 form-group">
-														<label>Contract Quantity </label> <input
+														<label>Contract Quantity (Qtls) </label> <input
 															class="form-control textbox" name="contractquantity"
 															min="0" type="number" id="contractquantity"
 															placeholder="Contract Quantity" required readonly>
@@ -170,7 +170,7 @@ input[type="radio"] {
 													</div>
 
 													<div class="col-sm-4 form-group">
-														<label>Allowed Quantity </label> <input
+														<label>Allowed Quantity (Qtls) </label> <input
 															class="form-control textbox" name="qty" type="number"
 															id="qty" placeholder="Allowed Quantity" required readonly>
 													</div>
@@ -206,7 +206,7 @@ input[type="radio"] {
 													</div>
 													<span></span>
 													<div class="col-sm-4 form-group">
-														<label>Issued Quantity.</label> <input
+														<label>Issued Quantity. (Qtls)</label> <input
 															class="form-control taxtbox" name="IssQty" type="number"
 															placeholder="Issued Qty" id="IssQty" readonly required>
 													</div>

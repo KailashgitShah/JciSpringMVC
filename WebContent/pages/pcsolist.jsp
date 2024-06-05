@@ -142,6 +142,7 @@
 							},
 							success : function(result) {
 								var data = jQuery.parseJSON(result);
+							
 								
 							<%-- 	console.log(encrypter.encrypt("32", '<%=key%>')); --%>
 								
@@ -149,27 +150,27 @@
                                  
 								tableData += "<thead><tr>" + "<th>S.N.</th>"
 										+ "<th>JCI letter Ref.</th>"
-										+ "<th>PCO Requested Date</th>"
-										+ "<th>PCO Requested Qty. (M.T)</th>"
+										+ "<th>PCO Date</th>"
+										+ "<th>PCO Qty. (M.T)</th>"
 										+ "<th>Dispatch Period</th>"
 										+ "<th>Mill Code</th>"
 										+ "<th>Mill Name</th>"
-										+ "<th>Allocation</th>"
+										+ "<th>Allocation (M.T)</th>"
 										+ "</tr></thead>";
 
 								tableData += "<tbody id='tbody'>";
 
 								for (var i = 0; i < data.length; i++) {
 									var count = i + 1;
-
+                                     console.log(data[i]);
 									tableData += "<tr><td>" + count + "</td>";
 
 									tableData += "<td>" + data[i].letterRef
 											+ "</td>";
 
-									tableData += "<td>" + data[i].pcso_req_date
+									tableData += "<td>" + data[i].pcso_date
 											+ "</td>";
-									tableData += "<td>" + data[i].pcsoReqQty
+									tableData += "<td>" + data[i].pcsoQty/10
 											+ "</td>";
 									tableData += "<td>"
 											+ data[i].dispatch_period + "</td>";
@@ -177,7 +178,7 @@
 											+ "</td>";
 									tableData += "<td>" + data[i].mill_name
 											+ "</td>";
-									tableData += "<td>" + data[i].allocatedQty
+									tableData += "<td>" + data[i].allocatedQty/10
 											+ "</td>";
 									tableData += "<td><a href='updatePcso.obj?pcsorefid="
 											+ data[i].pcsorefid

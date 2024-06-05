@@ -53,50 +53,9 @@ List<PCSORequestLetter> topThreeRecords = (List<PCSORequestLetter>) request.getA
 List<String> cropYr = (List<String>) request.getAttribute("distinctCropYear");
 double totalContractedVal = (double) request.getAttribute("totalContract");
 
-double grade1 = 0.0;
-double grade2 = 0.0;
-double grade3 = 0.0;
-double grade4 = 0.0;
-double grade5 = 0.0;
-double grade6 = 0.0;
-double grade7 = 0.0;
-double grade0 = 0.0;
-List<Double> jute = new ArrayList<Double>();
-List<Integer> bale = new ArrayList<Integer>();
-jute = (List<Double>) request.getAttribute("jute");
-bale = (List<Integer>) request.getAttribute("bale");
-if (bale.get(0) != null) {
-	grade0 = bale.get(0);
-	System.err.println(grade0);
-}
-if (bale.get(1) != null) {
-	grade1 = bale.get(1);
-	System.err.println(grade1);
-}
-if (bale.get(2) != null) {
-	grade2 = bale.get(2);
-	System.err.println(grade2);
-}
-if (bale.get(3) != null) {
-	grade3 = bale.get(3);
-	System.err.println(grade3);
-}
-if (bale.get(4) != null) {
-	grade4 = bale.get(4);
-	System.err.println(grade4);
-}
-if (bale.get(5) != null) {
-	grade5 = bale.get(5);
-	System.err.println(grade5);
-}
-if (bale.get(6) != null) {
-	grade6 = bale.get(6);
-	System.err.println(grade6);
-}
-if (bale.get(7) != null) {
-	grade7 = bale.get(7);
-	System.err.println(grade7);
-}
+
+List<Double> jute = (List<Double>)request.getAttribute("jute");
+			  
 %>
 
 <body class="fixed-navbar">
@@ -180,7 +139,7 @@ if (bale.get(7) != null) {
 										<div class="col-sm-4 form-group">
 											<label>Crop Year</label> <span class="text-danger">* </span>&nbsp;
 											<span id="errcropyr" name="errcropyr" class="text-danger">
-											</span> <select name="cropyr" id="cropyr" class="form-control">
+											</span> <select name="cropyr" id="cropyr" class="form-control" readonly>
 												<option value="">-Select-</option>
 												<%
 												for (String crpyr : cropYr) {
@@ -220,34 +179,20 @@ if (bale.get(7) != null) {
 										<tbody>
 
 
-											<tr>
-												<%
-												double jutesum = 0;
-												for (int f = 0; f <= 7; f++) {
-													jutesum += jute.get(f);
-												}
-
-												double balesum = grade0 + grade1 + grade2 + grade3 + grade4 + grade5 + grade6 + grade7;
-
-												double loosejute = jutesum - balesum;
-												String formattedLooseJute = new DecimalFormat("#.##").format(loosejute);
-
-												double total = loosejute + balesum;
-												String formattedTotal = new DecimalFormat("#.##").format(total);
-												%>
-												<td>(1)</td>
-												<td><a href="regionwiseinventory.obj">Procured/Baled</a></td>
-												<td id="loosejute"><%=formattedLooseJute%></td>
-												<td id="grade0"><%=grade0%></td>
-												<td id="grade1"><%=grade1%></td>
-												<td id="grade2"><%=grade2%></td>
-												<td id="grade3"><%=grade3%></td>
-												<td id="grade4"><%=grade4%></td>
-												<td id="grade5"><%=grade5%></td>
-												<td id="grade6"><%=grade6%></td>
-												<td id="grade7"><%=grade7%></td>
-												<td id="total" ><%=formattedTotal%></td>
-											</tr>
+												<tr>
+										<td>(1)</td>
+										<td><a href = "regionwiseinventory.obj" >Procured/Baled</a></td>
+										<td id="loosejute"><%=jute.get(7) %></td>
+										<td id="grade0"><%=jute.get(0) %></td>
+										<td id="grade1"><%=jute.get(1) %></td>
+										<td id="grade2"><%=jute.get(2) %></td>
+										<td id="grade3"><%=jute.get(3) %></td>
+										<td id="grade4"><%=jute.get(4) %></td>
+										<td id="grade5"><%=jute.get(5) %></td>
+										<td id="grade6">0</td>
+										<td id="grade7">0</td>
+										<td id="total"><%=jute.get(6)%></td>
+										</tr>
 
 										</tbody>
 										<tbody>
@@ -337,7 +282,7 @@ if (bale.get(7) != null) {
 									<div class="row">
 										 	<input class="form-control" name="uncontractedQty"
 											id="uncontractedQty" type="hidden"
-											value="<%=formattedTotal%>" readonly>
+											value="<%=jute.get(6)%>" readonly>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty. (Qtls.)</label> <input

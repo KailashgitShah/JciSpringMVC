@@ -63,8 +63,6 @@ input[type="radio"] {
 
 	String roId = (String) request.getAttribute("roId");
 
-	System.err.println("from jsp page => " + roId);
-
 	String bosNo = (String) request.getAttribute("bosNo");
 	String bosDate = (String) request.getAttribute("bosDate");
 	String diNo = (String) request.getAttribute("diNo");
@@ -101,7 +99,7 @@ input[type="radio"] {
 		System.err.println("factor => " + factor); */
 
 	Double shortQty = nominalWt - actualWt;
-	long crnAmount = Math.round(avgJuteValue * shortQty);
+	//long crnAmount = Math.round(avgJuteValue * shortQty);
 
 	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
 	//generation of credit Note No.
@@ -200,7 +198,7 @@ input[type="radio"] {
 										<div class="col-sm-4 form-group" id="dpc">
 											<label>Credit Note Amount </label> <input
 												class="form-control" name="creditAmt" id="creditAmt"
-												type="text" value="<%=crnAmount%>" readonly>
+												type="text" readonly>
 										</div>
 
 
@@ -334,6 +332,14 @@ input[type="radio"] {
 		type="text/javascript"></script>
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+
+	<script>
+	$(document).ready(function(){
+		document.getElementById('creditAmt').value='<%=sumTtlCrnAmt%>';
+	});
+	
+	
+	</script>
 
 </body>
 </html>

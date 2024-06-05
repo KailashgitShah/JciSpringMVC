@@ -389,7 +389,8 @@
 					// to set ref number to alphanumeric
 					refNo.on("input", function() {
 						var inputVal = $(this).val();
-						var refVal = inputVal.replace(/[^a-zA-Z0-9-/]/g, "");
+						var refVal = inputVal.replace(/[^a-zA-Z0-9-\/()]/g, "");
+
 						$(this).val(refVal);
 					});
 

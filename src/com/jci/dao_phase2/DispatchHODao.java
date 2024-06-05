@@ -17,9 +17,9 @@ Object getCount(String reg);
 
 void save(JciDIHoModel hodispatch);
 
-List<JciDIHoModel> getAll();
+List<Object[]> getAll();
 
-void delete(int parseInt);
+void delete(String parseInt);
 
 String getContractNo(String id);
 

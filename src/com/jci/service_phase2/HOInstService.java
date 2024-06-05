@@ -17,9 +17,9 @@ List<Object[]> getRoname();
 Object getCount(String reg);
 
 void create(JciDIHoModel diHo);
-public List <JciDIHoModel> getAll();
+public List <Object[]> getAll();
 
-void delete(int parseInt) ;
+void delete(String id) ;
 
 public String   getContractNo(String id);
 

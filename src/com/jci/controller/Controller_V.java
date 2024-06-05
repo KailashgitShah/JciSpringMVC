@@ -309,10 +309,10 @@ public class Controller_V {
 
 		// get the inventory data
 		List<String> cropYearList = dailyPurchaseModelConfService.getCropYear();
-		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "MSP");
-		List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2023-2024", "MSP");
+		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "msp");
+		//List<Integer> bale = dailyPurchaseModelConfService.firstLevelbale("2023-2024", "MSP");
 		mv.addObject("jute", jute);
-		mv.addObject("bale", bale);
+		//mv.addObject("bale", bale);
 
 		mv.addObject("totalContract", contractedQty);
 		if (username == null) {
@@ -971,7 +971,7 @@ public class Controller_V {
 			entryofGradeCompositionService.create(entryofGradeCompositionModel);
 		}
 
-		List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPrice(cropYear);
+		List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPriceForMillDelivery(cropYear);
 
 		for (Map<String, String> millDetail : millDetails) {
 
@@ -1019,6 +1019,8 @@ public class Controller_V {
 			contractgeneration.setJute_value(juteValue);
 			contractgeneration.setMill_qty(millQty);
 			contractgeneration.setSortingId(SortingId);
+			
+			
 			String fileName = contractIdn + "Contract" + millCode + ".pdf";
 			contractgeneration.setContract_acceptance_doc(fileName);
 
@@ -1039,7 +1041,7 @@ public class Controller_V {
 
 			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
 
-			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty * 10,
+			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millNameString, millCode, millQty,
 					cropYear, GradePriceList, gradeArray, juteVariety, fileName, deliveryType, contractdate, filePath,
 					letterHeadPath, fullAddress, commaSeparatedPcsoDates);
 
@@ -4276,7 +4278,7 @@ public class Controller_V {
 	@RequestMapping("jcilist")
 	public String jciHoList(Model model) {
 
-		List<JciDIHoModel> AllList = (List<JciDIHoModel>) hoInstService.getAll();
+		List<Object[]> AllList = (List<Object[]>) hoInstService.getAll();
 		model.addAttribute("AllList", AllList);
 
 		return "ViewJCIHO";
@@ -4289,23 +4291,27 @@ public class Controller_V {
 		ModelAndView mv = new ModelAndView("ViewJCIHO");
 		try {
 			String id = request.getParameter("id");
-			String string = hoInstService.getContractNo(id);
-			String flag = hoInstService.check(string);
+			System.err.println(id);
+			/*
+			 * String string = hoInstService.getContractNo(id); String flag =
+			 * hoInstService.check(string);
+			 * 
+			 * System.err.println(flag);
+			 */ // Assuming these print statements are for debugging
 
-			System.err.println(flag); // Assuming these print statements are for debugging
-
-			if ("0".equals(flag)) {
-				List<JciDIHoModel> allList = hoInstService.getAll();
-				mv.addObject("AllList", allList);
-				redirectAttributes.addFlashAttribute("msg",
-						"<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>");
-			} else if ("1".equals(flag)) {
-				hoInstService.delete(Integer.parseInt(id));
-				List<JciDIHoModel> allList = hoInstService.getAll();
-				mv.addObject("AllList", allList);
-				redirectAttributes.addFlashAttribute("msg",
-						"<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>");
-			}
+			/*
+			 * if ("0".equals(flag)) { List<Object[]> allList = hoInstService.getAll();
+			 * mv.addObject("AllList", allList); redirectAttributes.addFlashAttribute("msg",
+			 * "<div class=\"alert alert-danger\"><b>Error!</b> Data cannot be deleted as Dispatch has been issued.</div>"
+			 * ); } else if ("1".equals(flag)) { hoInstService.delete(id); List<Object[]>
+			 * allList = hoInstService.getAll(); mv.addObject("AllList", allList);
+			 * redirectAttributes.addFlashAttribute("msg",
+			 * "<div class=\"alert alert-success\"><b>Success !</b> Data deleted successfully.</div>"
+			 * ); }
+			 */
+			 hoInstService.delete(id); 
+			 List<Object[]>allList = hoInstService.getAll(); 
+			 mv.addObject("AllList", allList);
 		} catch (Exception e) {
 			System.out.println("Error in deleting ruling market: " + e.getMessage());
 			redirectAttributes.addFlashAttribute("msg",
