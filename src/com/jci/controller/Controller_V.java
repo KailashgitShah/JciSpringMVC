@@ -123,6 +123,7 @@ import com.jci.service.PurchaseCenterService;
 import com.jci.service.RoDetailsService;
 import com.jci.service_phase2.ConfirmationofClaimSettlementService;
 import com.jci.service_phase2.ContractGenerationService2;
+import com.jci.service_phase2.CreditNoteClaimSettlementService;
 import com.jci.service_phase2.CreditNoteGenerationService;
 import com.jci.service_phase2.EntryDerivativePriceService2;
 import com.jci.service_phase2.EntryofGradeCompositionService;
@@ -239,6 +240,9 @@ public class Controller_V {
 
 	@Autowired
 	CreditNoteGenerationService creditNoteGenerationService;
+	
+	@Autowired
+	 CreditNoteClaimSettlementService creditNoteClaimSettlementService;
 
 	@Autowired
 	PaymentRealizationService paymentRealizationService;
@@ -2212,6 +2216,161 @@ public class Controller_V {
 
 	}
 
+	
+	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ---------------------------------------------------------
+	// Credit For Claim Settlement
+	// ---------------------------------------------------------
+
+	@RequestMapping("creditNoteForClaimSettlement")
+	public ModelAndView ViewCreditNoteForClaimSettmenet(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("creditNoteClaimSettlement");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		List<String> allSettlementId = creditNoteClaimSettlementService.getAllSettlementId();
+		mv.addObject("allSettlementId", allSettlementId);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = { "viewAllChallanOfSettlemetId" }, method = { RequestMethod.GET })
+	public String viewAllChallanAgainstSettlementId(final HttpServletRequest request) {
+		String settlementId = request.getParameter("settlementId");
+		
+		List<Object[]> details = this.creditNoteClaimSettlementService.viewAllChallan(settlementId);
+		Gson gson = new Gson();
+		return gson.toJson(details);
+
+	}	
+	
+	@ResponseBody
+	@RequestMapping(value = { "saveCrnForClaim" }, method = { RequestMethod.POST })
+	public String saveCrnForClaim(final HttpServletRequest request) {
+		String settlementId = request.getParameter("settlementId");
+
+		List<String> challans = this.creditNoteClaimSettlementService.getDistinctChallanForSettlemtId(settlementId);
+		
+		
+		
+		
+		
+		
+       for(String challan :challans ) { 
+    	  // List<Object[]> details = this.creditNoteClaimSettlementService.viewFullChallanDetails(challan); 
+//    	   
+//    		try {
+//    			JasperReport jasperReport1 = JasperCompileManager.compileReport(creditNoteJRXML);
+//    			// .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
+//    			Map<String, Object> parameters = new HashMap<String, Object>();
+//
+//    			parameters.put("crnNo", crnNo);
+//    			parameters.put("crnDate", crnDate);
+//    			parameters.put("ChallanNo", ChallanNo);
+//    			parameters.put("supplier_Name", supplier_Name);
+//    			parameters.put("supplier_Address", supplier_Address);
+//    			parameters.put("contractNo", contractNo);
+//    			parameters.put("bosNo", bosNo);
+//    			parameters.put("diNo", diNo);
+//    			parameters.put("bosDate", bosDate);
+//
+//    			for (Object[] details : getDetailsofSpp_Con_Rec) {
+//    				parameters.put("Supplier_name", details[0]);
+//    				parameters.put("Supplier_address", details[1]);
+//    				parameters.put("Supplier_gSTN", details[2]);
+//    				parameters.put("Recipient_name", details[3]);
+//    				parameters.put("Recipient_address", details[4]);
+//    				parameters.put("Recipient_gSTN", details[5]);
+//    				parameters.put("Consignee_name", details[6]);
+//    				parameters.put("Consignee_address", details[7]);
+//    				parameters.put("Consignee_gSTN", details[8]);
+//    			}
+//
+//    			for (Object[] row : getStateAndCodeOfSupplier) {
+//    				parameters.put("supplierState", row[0]);
+//    				parameters.put("supplierStateCode", row[1] + "");
+//    				String gSTIN = (String) row[2];
+//    				String pan = gSTIN.substring(2, 12);
+//
+//    				parameters.put("supplierGSTIN", gSTIN);
+//    				parameters.put("supplierPan", pan);
+//    			}
+//
+//    			if (getStateAndPan.size() == 2) {
+//    				for (Object[] obj : getStateAndPan) {
+//    					parameters.put("recipientPan", obj[0]);
+//
+//    					if (obj[2].equals(obj[4] + "")) {
+//    						parameters.put("recipientState", obj[3]);
+//    						parameters.put("recipientStateCode", obj[4] + "");
+//
+//    					} else {
+//    						parameters.put("ConsigneeState", obj[3]);
+//    						parameters.put("ConsigneeStateCode", obj[4] + "");
+//
+//    					}
+//
+//    				}
+//
+//    			} else {
+//    				for (Object[] obj : getStateAndPan) {
+//    					parameters.put("recipientPan", obj[0]);
+//    					parameters.put("recipientState", obj[3]);
+//    					parameters.put("ConsigneeState", obj[3]);
+//    					parameters.put("recipientStateCode", obj[4] + "");
+//    					parameters.put("ConsigneeStateCode", obj[4] + "");
+//
+//    				}
+//
+//    			}
+//
+////    			pdfGenerator.generatePdfOfCreditNoteDoc(supplier_Name, supplier_GSTN,
+////    			supplier_Address, unit_name, unit_GSTN, unit_address, client_name, client_GSTN, client_address1, ,
+////    			client_state, client_code, bosDate, client_pan);
+//
+//    			// Prepare data sources
+//    			JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(creditNoteDtoList);
+//
+//    			// Fill JasperPrints
+//    			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+//    			response.setContentType("application/pdf");
+//    			response.setHeader("Content-Disposition", "attachment; filename=TestCreditNote.pdf");
+//    			try (OutputStream out = response.getOutputStream()) {
+//    				JRPdfExporter exporter = new JRPdfExporter();
+//    				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+//    				// exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT,
+//    				// jasperPrint.get(1));
+//    				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+//    				exporter.exportReport();
+//    			} catch (Exception e) {
+//    				System.out.println(e.getLocalizedMessage());
+//    			}
+//
+//    		} catch (JRException e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
+    	   
+    	   
+       }
+
+		Gson gson = new Gson();
+		//return gson.toJson();
+		return "";
+		
+	}	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// ---------------------------------------------------------
