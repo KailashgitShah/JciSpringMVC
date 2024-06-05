@@ -1,6 +1,7 @@
 package com.jci.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -83,6 +84,7 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.common.Encry;
 import com.jci.model.CashDocumentModel;
+import com.jci.model.ClaimSettlementReport;
 import com.jci.model.ConfirmationClaimSettlementModel;
 import com.jci.model.Contractgeneration;
 import com.jci.model.CreditNoteDTO;
@@ -159,6 +161,7 @@ import com.microsoft.schemas.office.excel.CTClientData.Factory;
 import kotlin.Unit;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -4825,11 +4828,12 @@ public class Controller_V {
 //		
 		String millcode = (String) request.getSession().getAttribute("millcode");
 		List<Contractgeneration> AllList = (List<Contractgeneration>) millacct.getAll(millcode);
-
+		Collections.reverse(AllList);
 		model.addAttribute("AllList", AllList);
 		return "listMillAcceptence";
 	}
-
+	
+///////////////////////////////// this will be used in free sales and commercial///////////////////////////////////////////
 	@RequestMapping("saveMillAcceptenceFile")
 	public ModelAndView millaccept(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpSession s)
 			throws IllegalStateException, IOException {
@@ -4958,14 +4962,8 @@ public class Controller_V {
 		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
 		List<String> contractno = nominalOfficialService.contractno_ContractTable();
 		List<String> DI_no = nominalOfficialService.gethodi();
-
-		// for counting the total Number of row.
-//		BigDecimal total = nominalOfficialService.CountRecord();
-//		mv.addObject("total", total);
-
 		mv.addObject("OM_official", OM_official);
 		mv.addObject("FA_official", FA_official);
-	//	mv.addObject("contractno", contractno);
 		mv.addObject("millid", millid);
 		mv.addObject("DI_no", DI_no);
 		return mv;
@@ -4976,147 +4974,118 @@ public class Controller_V {
 	public String hodinofech(@RequestParam("hodino") String hodino) {
 
 		List<Object[]> millReceiptData = nominalOfficialService.getchallan(hodino);
-
 		// Convert the a JSON in string
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(millReceiptData);
-
 		return jsonResponse;
 	}
 
-	// For Handling AJAX Url for Fetching the Mill Receipt Table Data.
+	// For Handling AJAX Url for Fetching the contract number Table Data.
 	@ResponseBody
 	@RequestMapping(value = "fetchmillreceiptdata", method = RequestMethod.GET)
 	public String FetchDataMillReciept(@RequestParam("millid") String millid) {
-
 		List<Object> millReceiptData = nominalOfficialService.FetchMillReceiptData(millid);
-
-		// Convert the a JSON in string
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(millReceiptData);
-
 		return jsonResponse;
 
 	}
 
 	// AJAX fetching data from grade_composition.
-
 	@ResponseBody
 	@RequestMapping(value = "gradecomposition1", method = RequestMethod.GET)
 	public String GradeComposition1(@RequestParam("ContractNo") String ContractNo) {
-
 		List<Object> gradecmposition = nominalOfficialService.gradecomposition(ContractNo);
-
 		// Convert the a JSON in string
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(gradecmposition);
-
 		return jsonResponse;
-
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "fetchdateOfInspection", method = RequestMethod.GET)
 	public String DateOfInspection(@RequestParam("DateOfInspection") String DateOfInspection) {
-
 		List<Object[]> dateofinspection = nominalOfficialService.dateofInspection(DateOfInspection);
-
-		// Convert the a JSON in string
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(dateofinspection);
-
 		return jsonResponse;
-
 	}
- 
-
 
 
 	@RequestMapping("savenominal")
-    public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {   
-          int rows = Integer.parseInt(request.getParameter("rows"));
-          //String[] rowvalue =  request.getParameterValues("rowCheckbox[]");
-          String[] challanNos = request.getParameterValues("challans[]");
-          String[] mr_no= request.getParameterValues("mr_no[]");
-     String[] mr_date = request.getParameterValues("mr_date[]");
-          String[] billofsupply = request.getParameterValues("billofsupply[]");
-          String[] dateofshipment=request.getParameterValues("dateofshipment[]");
-        String[] shipmentquantity= request.getParameterValues("shipmentquantity[]");
-        String[] claimamount = request.getParameterValues("claimamount[]");
-        String Settlement_id_generated = request.getParameter("Settlement_id_generated");
-          String HoDI = request.getParameter("HO_DI_&_Date");
-          int total = nominalOfficialService.CountRecord();
-          //String SetllementIdGenerated;
-    
-          String SetllementIdGenerated = HoDI +"/"+ total;
-          String username = (String) request.getSession().getAttribute("usrname");
-          String millname = request.getParameter("client_name");
-          String Mill = request.getParameter("Mill");
-          String ContractNo = request.getParameter("ContractNo");
-          String omofficial = request.getParameter("omofficial");
-          String FAofficial = request.getParameter("FAomofficial");
-          String DateofInpection = request.getParameter("DateofInpection");
-          String contractIdentificationnumber = nominalOfficialService.getcontractidentification(ContractNo);
-          String millcode= nominalOfficialService.getmillcode(Mill);
-          
-//      String check = request.getParameter("rowCheckbox"+i);
-          for (int i = 0; i < rows; i++) {
-                 String check = request.getParameter("rowCheckbox"+i);
-                 if(check != null) {
-                 Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
-                 
-                 jciclaim_NominationModel.setMill(Mill);
-                 jciclaim_NominationModel.setContractNo(ContractNo);
-                 jciclaim_NominationModel.setOMOfficial(omofficial);
-                 jciclaim_NominationModel.setFAOfficial(FAofficial);
-                 jciclaim_NominationModel.setCreated_by(username);
-                 jciclaim_NominationModel.setHoDi(HoDI);
-            jciclaim_NominationModel.setDateofInspection(DateofInpection);
-                 jciclaim_NominationModel.setChallans(challanNos[i]);
-                 jciclaim_NominationModel.setMr_number(mr_no[i]);
-                 jciclaim_NominationModel.setMr_Date(mr_date[i]);
-          jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
-            jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
-          jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
-               jciclaim_NominationModel.setClaimValuation(claimamount[i]);
-                 // backend generated settlement id
-          jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);             
-                 // have confusion on name
-                 // setting Static Value for Remaining
+	public ModelAndView saveNominalform(HttpServletRequest request, RedirectAttributes redirectAttributes) {	
+		int rows = Integer.parseInt(request.getParameter("rows"));
+		String[] challanNos = request.getParameterValues("challans[]");
+		String[] mr_no= request.getParameterValues("mr_no[]");
+        String[] mr_date = request.getParameterValues("mr_date[]");
+		String[] billofsupply = request.getParameterValues("billofsupply[]");
+		String[] dateofshipment=request.getParameterValues("dateofshipment[]");
+	    String[] shipmentquantity= request.getParameterValues("shipmentquantity[]");
+	    String[] claimamount = request.getParameterValues("claimamount[]");
+	    
+		//String SetllementIdGenerated;
+	    String Settlement_id_generated = request.getParameter("Settlement_id_generated");
+		String HoDI = request.getParameter("HO_DI_&_Date");
+		int total = nominalOfficialService.CountRecord();
+		String SetllementIdGenerated = HoDI +"/"+ total;
+		String username = (String) request.getSession().getAttribute("usrname");
+		String millname = request.getParameter("client_name");
+		String Mill = request.getParameter("Mill");
+		String ContractNo = request.getParameter("ContractNo");
+		String omofficial = request.getParameter("omofficial");
+		String FAofficial = request.getParameter("FAomofficial");
+		String DateofInpection = request.getParameter("DateofInpection");
+		String contractIdentificationnumber = nominalOfficialService.getcontractidentification(ContractNo);
+		String millcode= nominalOfficialService.getmillcode(Mill);
+		
+		for (int i = 0; i < rows; i++) {
+			String check = request.getParameter("rowCheckbox"+i);
+			if(check != null) {
+			Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+			
+			jciclaim_NominationModel.setMill(Mill);
+			jciclaim_NominationModel.setContractNo(ContractNo);
+			jciclaim_NominationModel.setOMOfficial(omofficial);
+			jciclaim_NominationModel.setFAOfficial(FAofficial);
+			jciclaim_NominationModel.setCreated_by(username);
+			jciclaim_NominationModel.setHoDi(HoDI);
+			jciclaim_NominationModel.setDateofInspection(DateofInpection);
+			jciclaim_NominationModel.setChallans(challanNos[i]);
+			jciclaim_NominationModel.setMr_number(mr_no[i]);
+			jciclaim_NominationModel.setMr_Date(mr_date[i]);
+			jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
+			jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
+			jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
+			jciclaim_NominationModel.setClaimValuation(claimamount[i]);
+			jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);	
+			jciclaim_NominationModel.setDispute_flag(0);
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate currentDate = LocalDate.now();
+			String formattedDate = currentDate.format(formatter);
+			jciclaim_NominationModel.setCreated_on(formattedDate);	
+			
+			
+			// setting Static Value for Remaining 
+			jciclaim_NominationModel.setChallanNo("challans");
+			jciclaim_NominationModel.setClaimAmount(2);
 
-                 jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
-                 jciclaim_NominationModel.setDispute_flag(0);
-                 jciclaim_NominationModel.setChallanNo("challans");
-                 jciclaim_NominationModel.setClaimAmount(2);
-
-                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                 LocalDate currentDate = LocalDate.now();
-                 String formattedDate = currentDate.format(formatter);
-                 jciclaim_NominationModel.setCreated_on(formattedDate);             
-                 nominalOfficialService.create(jciclaim_NominationModel);
-                 String mr = mr_no[i];
-               nominalOfficialService.millrecieptstatus(mr);       
-                 }
-            
-          }
-          
-          
-          
-          
-          
-          redirectAttributes.addFlashAttribute("msg",
-                       (Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-
-    
-                 
-          //////// It will change the contract_status on jci contract on form submit////////////
-          String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
-    nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
-          /////// It will change claim status on Jcimill_receipt on form submit//////////////////
-          
-          
-    return new ModelAndView(new RedirectView("viewlistnominal.obj"));
-    }
+			nominalOfficialService.create(jciclaim_NominationModel);
+			 String mr = mr_no[i];
+		     nominalOfficialService.millrecieptstatus(mr);	
+			}
+		  
+		}
+	
+		redirectAttributes.addFlashAttribute("msg",
+				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+	
+/////////////// It will change the contract_status on jci contract on form submit/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		String ContractNoForClaimStatusUpdate = request.getParameter("ContractNo");
+		nominalOfficialService.claimStatusUpdate(ContractNoForClaimStatusUpdate);
+///////////////// It will change claim status on Jcimill_receipt on form submit///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	return new ModelAndView(new RedirectView("viewlistnominal.obj"));
+	}
 
 
 	
@@ -5128,11 +5097,9 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 		String  id = request.getParameter("id");
-		//int id = Integer.parseInt(request.getParameter("id"));
 	     Jciclaim_NominationModel nomination = nominalOfficialService.find(id);
 	     mv.addObject("nomination", nomination);
 	      List<Jciclaim_NominationModel> findnominationdetails = this.nominalOfficialService.findnominationdetails(id); 
-	    // Jciclaim_NominationModel findnominationdetails = this.nominalOfficialService.findnominationdetails(id); 
 	     mv.addObject("findnominationdetails", findnominationdetails);
 		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
 		mv.addObject("FA_official", FA_official);	
@@ -5149,118 +5116,137 @@ public class Controller_V {
 
 		String  settlement_id= request.getParameter("id");
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAlldetails( settlement_id);
-//		Collections.reverse(AllList);
 		model.addAttribute("jciclaim_NominationModel", AllList);
-	    //  Jciclaim_NominationModel nomination = nominalOfficialService.getAllDetails(id);
-	   //   mv.addObject("nomination", nomination);	
 		return mv;	
 	}
-	
-	@Value("${upload.OMOofficialDocumentDownload}")
-	String OmoOfficialDocumentDownload;
-//	@Value("${upload.FAofficialDocumentDownload}")
-//	String FAofficialDocumentDownload;
-//	@Value("${upload.MillDocumentDownload}")
-//	String MillDocumentDownload;
+
+	@Value("${upload.claimSettlementReportDownload}")
+	String claimSettlementReportDownload;
+	@Value("${upload.claimsetlmentJRXMLpath}")
+	String claimsetlmentJRXMLpath;
 	@RequestMapping("updatesavenominalform")
-	public ModelAndView updatesavenominatiion(HttpServletRequest request,RedirectAttributes redirectAttributes)
-	{
-		String username =(String)request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView("editnominationofofficial");
-		if(username == null) {
-        	return new ModelAndView("index");
-            }
-		try {
-			  String FAomofficial = request.getParameter("FAomofficial");
-			  final String id = request.getParameter("Settlement_id_generated");
-			   nominalOfficialService.updatefa(id ,FAomofficial);
-			   redirectAttributes.addFlashAttribute("msg",(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-			  
-			   String Mill = request.getParameter("millname");
-				String omofficial = request.getParameter("omoofficial");
-				String DateofInpection = request.getParameter("DateofInpection");
-			   //1- This email is for  FaOfficial
-			   EmailSender emailfa=new EmailSender();
-				InternetAddress[] toAddresses= null;
-				String subjectfa = "Nomination for Claim Settlement";
-				String bodyfa = "Dear "+ FAomofficial + ",\n" +	
-								"I hope this email finds you well.\n" +
-								"We are pleased to inform you that you have been nominated for the claim settlement for "+ Mill +" on Date: "+ DateofInpection +" .\n" +
-								 "\n" +
-								"Thanks & Regards,\n" +
-								"Jute Corporation of India";
-				
-			    String filenamefa =OmoOfficialDocumentDownload;		
-				String usernamefa = "";
-			    String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
-				try {
-					toAddresses = new InternetAddress[] {
-							new InternetAddress("mansi.gupta@cyfuture.com")
-					};
+	public ModelAndView updatesavenominatiion(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	    String username = (String) request.getSession().getAttribute("usrname");
+	    ModelAndView mv = new ModelAndView("editnominationofofficial");
+	    if (username == null) {
+	        return new ModelAndView("index");
+	    }
+	    try {
+	        String FAomofficial = request.getParameter("FAomofficial");
+	        String id = request.getParameter("Settlement_id_generated");
+	        nominalOfficialService.updatefa(id, FAomofficial);
 
-				} catch (AddressException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			   emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa, usernamefa);
-			   
-			   // 2- email is for omoofficial
-				EmailSender emailomo = new EmailSender();
-				InternetAddress[] toAddressesomo = null;		
-				String subjectomo = "Nomination for Claim Settlement";	
-				String bodyomo ="Dear "+ omofficial  + ",\n" +	
-						     "I hope this email finds you well.\n" +
-						     "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill + " on Date: " + DateofInpection+ ".\n" +
-						     "\n"+ 
-						     "Thanks & Regards,\n" +
-						     "Jute Corporation of India";
-			   String filenameomo = OmoOfficialDocumentDownload;
-			   String username1 = "";		
-			   String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
-				try {		
-					toAddressesomo = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
-		
-					};
-		
-				} catch (AddressException e) {
-		
-					e.printStackTrace();
-				}
-				emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo , filenameomo , username1);
-				
-	         // 3- email is for mill
-				EmailSender emailmill = new EmailSender();
-				InternetAddress[] toAddressesmill = null;		
-				String subjectmill = "Nomination for Claim Settlement";	
+	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+	        String Mill = request.getParameter("millname");
+	        String omofficial = request.getParameter("omoofficial");
+	        String DateofInpection = request.getParameter("DateofInpection");
+	        List<ClaimSettlementReport> pdfnomination = nominalOfficialService.getNominationReportData(id);
+	        System.err.println(pdfnomination);
+	        String id1 = id.replace('/', '-');
+	        String directoryPath = claimSettlementReportDownload;
+	        System.err.println(directoryPath);
+	        String filename = id1 + "claimSettlementReport.pdf"; // Change this to your desired filename
+	        String filepath = directoryPath + filename;
+	        JasperReport jasperReport1 = JasperCompileManager.compileReport(claimsetlmentJRXMLpath);
+	        Map<String, Object> parameters = new HashMap<String, Object>();
+	        // Prepare data sources
+	        JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfnomination);
+	        // Fill JasperPrints
+	        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	        // Create the file on the server
+	        JasperExportManager.exportReportToPdfFile(jasperPrint1, filepath);
 
-				String bodymill=	"Dear "+ Mill + ",\n" +		
-			                         "I hope this email finds you well.\n" +
-			                         "We are pleased to inform you that "+ Mill +" have been nominated for the claim settlement  on Date: " + DateofInpection+ ".\n" +
-			                         "\n"+ 
-			                         "Thanks & Regards,\n" +
-									     "Jute Corporation of India";
-									   String filenamemill = OmoOfficialDocumentDownload;
-									   String usernamemill = "";		
-									   String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
-										try {		
-					toAddressesmill = new InternetAddress[] { new InternetAddress("mansi.gupta@cyfuture.com")
+	        // Email sending code
+            //1- This email is for  FaOfficial
+		          EmailSender emailfa=new EmailSender();
+		           InternetAddress[] toAddresses= null;
+		           String subjectfa = "Nomination for Claim Settlement";
+		           String bodyfa = "Dear "+ FAomofficial + ",\n" +    
+		                                     "I hope this email finds you well.\n" +
+		                                     "We are pleased to inform you that you have been nominated for the claim settlement for "+ Mill +" on Date: "+ DateofInpection +" .\n" +
+		                                     "\n" +
+		                                     "Thanks & Regards,\n" +
+		                                     "Jute Corporation of India";
+		         
+		           String filenamefa1 = filepath;
+		           String usernamefa = filename;
+		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
+		           try {
+		                  toAddresses = new InternetAddress[] {
+		                               new InternetAddress("mansi.gupta@cyfuture.com")
+		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                  };
 		
-					};
+		           } catch (AddressException e) {
+		                  // TODO Auto-generated catch block
+		                  e.printStackTrace();
+		           }
+		        emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa1, usernamefa);
+		        
+		        // 2- email is for omoofficial
+		           EmailSender emailomo = new EmailSender();
+		           InternetAddress[] toAddressesomo = null;        
+		           String subjectomo = "Nomination for Claim Settlement";  
+		           String bodyomo ="Dear "+ omofficial  + ",\n" +      
+		                             "I hope this email finds you well.\n" +
+		                             "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill + " on Date: " + DateofInpection+ ".\n" +
+		                             "\n"+ 
+		                             "Thanks & Regards,\n" +
+		                             "Jute Corporation of India";
+		           String filenameomo =   filepath;
+		        		 
+		          String usernameomo = filename;        
+		        String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
+		           try {        
+		                  toAddressesomo = new InternetAddress[] {
+		                		  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		//  new InternetAddress("mansigupta18001@gmail.com")
 		
-				} catch (AddressException e) {
+		                  };
 		
-					e.printStackTrace();
-				}
+		           } catch (AddressException e) {
+                     e.printStackTrace();
+		           }
+		           emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo , filenameomo , usernameomo);
+		           
+		 // 3- email is for mill
+		           EmailSender emailmill = new EmailSender();
+		           InternetAddress[] toAddressesmill = null;        
+		           String subjectmill = "Nomination for Claim Settlement";  
 		
-				emailmill.sendEmail(toAddressesmill, bodymill, subjectmill , filenamemill , usernamemill);
-				 return new ModelAndView(new RedirectView("viewlistnominal.obj"));
-			
-		} catch(Exception e){
-			System.out.println("Error in update user profile"+ e.getStackTrace());
-		}
-		return mv;
+		           String bodymill=    "Dear "+ Mill + ",\n" +             
+		                              "I hope this email finds you well.\n" +
+		                              "We are pleased to inform you that "+ Mill +" have been nominated for the claim settlement  on Date: " + DateofInpection+ ".\n" +
+		                              "\n"+ 
+		                              "Thanks & Regards,\n" +
+		                                                 "Jute Corporation of India";
+		           
+		                                               String filenamemill = filepath;
+		                                               String usernamemill = filename;   
+		                                               
+		                                               String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
+		                                                   try {        
+		                                       toAddressesmill = new InternetAddress[] {
+		                		  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		 // new InternetAddress("mansigupta18001@gmail.com")
+		
+		                  };
+		
+		           } catch (AddressException e) {
+		
+		                  e.printStackTrace();
+		           }
+		           emailmill.sendEmail(toAddressesmill, bodymill, subjectmill , filenamemill , usernamemill);
+		
+			        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+		
+			        return new ModelAndView((View)new RedirectView("viewlistnominal.obj"));
+		
+			    } catch (Exception e) {
+			        System.out.println("Error in update user profile" + e.getStackTrace());
+			        return mv;
+			    }
 	}
-
 
 	@RequestMapping("viewlistnominal")
 	public ModelAndView ViewNominal(Model model, HttpServletRequest request) {
@@ -5276,6 +5262,8 @@ public class Controller_V {
 		String omofficial = request.getParameter("omofficial");
 		return mv;
 	}
+	
+
 ////////////////////////////////////////////// NOMINATION OF OFFICIAL FOR CLAIM SETTLEMENT END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////ENTRY OF TDS START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
