@@ -32,6 +32,8 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
 	@Autowired
 	SessionFactory sessionFactory;
+	@Autowired
+	HttpSession session1;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -195,7 +197,11 @@ public class HODispatchDaoImpl implements DispatchHODao {
 	// For Listing
 	@Override
 	public List<Object[]> getAll() {
-		String sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode;";
+		String regionString=(String)session1.getAttribute("regionId");
+		System.err.println(regionString);
+		System.err.println(regionString);
+		System.err.println(regionString);
+		String sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode where diho.Regional_office='"+regionString+"';";
 		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 		return list1;
 	}

@@ -125,7 +125,7 @@ input[type="radio"] {
 															<%
 															for (Object[] Contract : contractList) {
 															%>
-															<option value="<%=Contract[0]%>" readonly><%=Contract[0]+"("+Contract[1]+")"%></option>
+															<option value="<%=Contract[0]%>" readonly><%=Contract[0]+"( FC Ref No.: "+Contract[1]+")"%></option>
 															<%
 															}
 															%>
@@ -535,7 +535,7 @@ input[type="radio"] {
 								contentToDisplay += "<p>Contract Date: <span style='color: blue;'>"
 										+ d[0]
 										+ "</span></p><p>Contract Qty: <span style='color: blue;'>"
-										+ d[2] + "</span></p>";
+										+ d[2] + " Qtls</span></p>";
 
 								contentToDisplay += "<h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Contract Quantity</h1><br>";
 								contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";

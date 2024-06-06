@@ -494,7 +494,7 @@ body {
 
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">&nbsp;Settelment of Credit and Debit note</span>
+					class="nav-label">&nbsp;Settlement of Credit and Debit note</span>
 					<i class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
