@@ -1976,6 +1976,10 @@ public class Controller_V {
 			parameters.put("bosNo", bosNo);
 			parameters.put("diNo", diNo);
 			parameters.put("bosDate", bosDate);
+//			parameters.put("sumCrnAmt", crnAmount);
+//			parameters.put("sumAct", actualWt);
+//			parameters.put("sumInv", nominalWt);
+//			parameters.put("sumShrt", shortQty);
 
 			for (Object[] details : getDetailsofSpp_Con_Rec) {
 				parameters.put("Supplier_name", details[0]);

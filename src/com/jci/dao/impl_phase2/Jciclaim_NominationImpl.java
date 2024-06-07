@@ -306,7 +306,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 		///////////////////correct
 		String q = 
-			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt " +
+			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt , jcimr.claimAmmount " +
 			    "FROM jcimill_receipt jcimr " +
 			    "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
 			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
