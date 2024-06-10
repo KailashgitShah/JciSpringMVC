@@ -389,7 +389,7 @@ $('#hoDiNo, #dpc').change(function() {
 	            var juteArray = [];
 	            $("#form2").html("");
 	            var elementToUpdate = $("#form2");
-	            var contentToDisplay = "<table id='table_r' style='border-collapse: collapse;'>";
+	            var contentToDisplay = "<table id='table_r' style='border-collapse: collapse;width: 100%;'>";
 	            var headerDisplayed = false;
 
 	            for (var k = 0; k < numberOfContractDetails; k++) {

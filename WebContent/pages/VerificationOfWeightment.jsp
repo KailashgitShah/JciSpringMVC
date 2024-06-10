@@ -115,7 +115,7 @@
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
                                             <label>DPC End Actual Weight (Qtls)</label>
-                                            <input class="form-control textbox" name="DpcEndWt" min="0" type="number" id="DpcEndWt" placeholder="DpcEndWt" required readonly value="<%=Data.get(0)[4]%>">
+                                            <input class="form-control textbox" name="DpcEndWt" min="0" type="number" id="DpcEndWt" placeholder="DpcEndWt" required readonly value="<%=Data.get(0)[4] %>">
                                         </div>
                                         <div class="col-sm-4 form-group">
                                             <label>Mill End Actual Weight (Qtls)</label>
@@ -205,7 +205,7 @@ function calculateNetWeight() {
         var netWeight = grossWeight - tareWeight;
         
         // Update the value of DPC End Truck Net Weight input field
-        document.getElementById('DPCNetqty').value = netWeight.toFixed(1);
+        document.getElementById('DPCNetqty').value = netWeight.toFixed(2);
     } else {
         // Handle invalid input (optional)
     	/*  var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight" ;

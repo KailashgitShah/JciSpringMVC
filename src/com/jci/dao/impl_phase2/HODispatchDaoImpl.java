@@ -201,7 +201,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		System.err.println(regionString);
 		System.err.println(regionString);
 		System.err.println(regionString);
-		String sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode where diho.Regional_office='"+regionString+"';";
+		String sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode ;";
 		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 		return list1;
 	}

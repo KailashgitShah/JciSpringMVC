@@ -478,16 +478,12 @@ input[type="radio"] {
 								//alert(d[4]);//Label name
 								document.getElementById("fc").value = d[5];
 								document.getElementById("qty").value = d[6];
+								alert(data)
 								if (d[15] == "Letter_of_Credit") {
 
-									const today = new Date();
-
-									// Format the date in YYYY-MM-DD format
-									const formattedDate = today.toISOString()
-											.slice(0, 10);
-
-									// Set the value of the "instdate" element
-									document.getElementById("instdate").value = formattedDate;
+									document.getElementById("instdate")
+									.setAttribute("max", d[7]);
+							document.getElementById("instdate").value = d[7];
 									//alert(instdate);
 								} else {
 									document.getElementById("instdate")
@@ -540,11 +536,16 @@ input[type="radio"] {
 								contentToDisplay += "<h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Contract Quantity</h1><br>";
 								contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";
 
+								var total = 0;
+								var good = 0;
+
 								for (var i = 8; i <= 13; i++) {
 								    if (d[14][i - 8] == null) {
 								        d[14][i - 8] = 0;
 								    }
-								    var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8]).toFixed(2); // Apply toFixed(2) here
+								    var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8]).toFixed(2);
+								    total += parseFloat(d[i][1] * d[2] / 100);
+								    good += parseFloat(no);
 								    console.log(parseFloat(d[i][1] * d[2] / 100) - parseFloat(d[14][i - 8]));
 								    contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>" +
 								        d[i][0] +
@@ -554,6 +555,9 @@ input[type="radio"] {
 								        "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
 								        no + "</span></td></tr>";
 								}
+
+								contentToDisplay += "<tr><td colspan='1' style='text-align: right;'><strong>Total:</strong></td><td style='border: 1px solid black;'><span style='color: blue;'>"
+								    + total.toFixed(2) + "</span></td><td><span style='color: blue;'>" + good.toFixed(2) + "</span></td></tr>";
 
 
 								contentToDisplay += "</table><br>";
