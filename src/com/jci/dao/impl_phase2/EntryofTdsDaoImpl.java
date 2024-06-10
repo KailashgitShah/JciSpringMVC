@@ -52,7 +52,7 @@ public class EntryofTdsDaoImpl implements EntryofTdsDao {
 
 	@Override
 	public List<String> MillName() {
-		String q = "SELECT DISTINCT Mill_name FROM jcicontract";
+		String q = "SELECT DISTINCT unit_name FROM jcimilldetailchild";
 		List r = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 		return r;
 

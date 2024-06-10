@@ -80,6 +80,16 @@ public class Jciclaim_NominationModel {
 	@Column(name = "claimValuation")
 	private String claimValuation;
 	
+	@Column(name = "Bos_file_path")
+	private String Bos_file_path;
+	
+	@Column(name = "MR_qty")
+	private Double MR_qty;
+	
+
+	@Column(name = "QualityPercentage")
+	private Double QualityPercentage;
+	
 
 	public String getChallanNo() {
 		return ChallanNo;
@@ -257,6 +267,32 @@ public class Jciclaim_NominationModel {
 
 	public void setClaimValuation(String claimValuation) {
 		this.claimValuation = claimValuation;
+	}
+
+	public String getBos_file_path() {
+		return Bos_file_path;
+	}
+
+	public void setBos_file_path(String bos_file_path) {
+		Bos_file_path = bos_file_path;
+	}
+
+
+
+	public Double getMR_qty() {
+		return MR_qty;
+	}
+
+	public void setMR_qty(Double mR_qty) {
+		MR_qty = mR_qty;
+	}
+
+	public Double getQualityPercentage() {
+		return QualityPercentage;
+	}
+
+	public void setQualityPercentage(Double qualityPercentage) {
+		QualityPercentage = qualityPercentage;
 	}
 
 	

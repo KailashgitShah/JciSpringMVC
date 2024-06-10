@@ -4593,7 +4593,6 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 
 	@Value("${upload.millAcceptDownolad}")
 	String millAcceptDownolad;
-
 	@RequestMapping("downloadSupportingDocumententMillAccept")
 	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 
@@ -4791,6 +4790,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 			if(check != null) {
 			Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
 			
+			
 			jciclaim_NominationModel.setMill(Mill);
 			jciclaim_NominationModel.setContractNo(ContractNo);
 			jciclaim_NominationModel.setOMOfficial(omofficial);
@@ -4945,8 +4945,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		        String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
 		           try {        
 		                  toAddressesomo = new InternetAddress[] {
-		                		  new InternetAddress("mansi.gupta@cyfuture.com")
-		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		  new InternetAddress("mansigupta18001@gmail.com")
 		
 		                  };
 		
@@ -4974,8 +4974,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		                                               String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
 		                                                   try {        
 		                                       toAddressesmill = new InternetAddress[] {
-		                		  new InternetAddress("mansi.gupta@cyfuture.com")
-		                		 // new InternetAddress("mansigupta18001@gmail.com")
+		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		 new InternetAddress("mansigupta18001@gmail.com")
 		
 		                  };
 		
@@ -5009,7 +5009,59 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		String omofficial = request.getParameter("omofficial");		
 		return mv;
 	}
-	
+	@Value("${upload.GenrationofbillDownload}")
+	String GenrationofbillDownload;
+	@RequestMapping("downloadBillOfSupplyDocument")
+	public void downloadbosdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
+		// String imageDirectory = "upload.Imagedownload";
+
+		String imagePath = GenrationofbillDownload + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		try {
+
+			if (imageFile.exists()) {
+
+				String contentType = determineContentType4(filename);
+				response.setContentType(contentType);
+
+				response.setContentLength((int) imageFile.length());
+				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
+//			                //response.setHeader("Content-Disposition", "");
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					responseOutputStream.write(buffer, 0, bytesRead);
+				}
+
+				fileInputStream.close();
+				responseOutputStream.close();
+			} else {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	private String determineContentType4(String filePath4) {
+		if (filePath4.endsWith(".pdf")) {
+			return "application/pdf";
+		} else if (filePath4.endsWith(".jpg") || filePath4.endsWith(".jpeg")) {
+			return "image/jpeg";
+		} else if (filePath4.endsWith(".png")) {
+			return "image/png";
+		} else {
+			return "application/octet-stream";
+		}
+	}
 
 ////////////////////////////////////////////// NOMINATION OF OFFICIAL FOR CLAIM SETTLEMENT END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -69,7 +69,9 @@
     border-style: solid; /* Use solid border style */
     border-color: #ccc; /* Set border color (e.g., light gray) */
 }   
-   
+ #millsListDiv {
+         color: #007bff; /* Change "red" to any color you prefer */
+    }
 </style>
 
 
@@ -104,6 +106,7 @@
 
 										<div class="col-sm-4 form-group">
 										<div id="faMessage" class="text-danger"></div>
+										<div id="millsListDiv"></div> 
 										<label>F&A Official</label>
 										<span class="text-danger">*</span>
 										<select name="FAomofficial" id="FAofficial" class="form-control taxtbox" required>
@@ -119,7 +122,7 @@
 			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
 										   
 		                                    %>
-                                        <input type ="hidden"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
+                                        <input id ="DateofInpection"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
 										<input type = "hidden"  name="Settlement_id_generated"   value="<%=nominationProfile.getSettlement_id_generated()%>">      
 										<input type = "hidden"  name="millname"                  value="<%=nominationProfile.getMill()%>">      
 										<input type =  "hidden" name="omoofficial"               value="<%=nominationProfile.getOMOfficial()%>">      
@@ -180,14 +183,16 @@
     // Initialize the Datepicker
  
     // Event handler for omofficial select element
-    $(" #FAofficial").change(function() {
+    $("#FAofficial").change(function() {
+    	
         // Execute the logic when omofficial selection changes
         var selectedFafficial = document.getElementById("FAofficial").value;
+      //  alert(selectedFafficial )
         var selectedDate = document.getElementById("DateofInpection").value;
+       // alert(selectedDate)
         var faMessageElement = document.getElementById("faMessage");
 
-        
-            $.ajax({
+          $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
                 data: {
@@ -195,19 +200,36 @@
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
+                  //  alert(response)
+                    
+                      var millNamesList = []; // Array to store mill names
+					  for (var i = 0; i < response.length; i++) {
+					      var innerArray = response[i];
+					      var Faofficial =innerArray[1]
+					      var millName = innerArray[2];
+					      if(Faofficial == selectedFafficial ){
+					      millNamesList.push(millName); // Collecting mill names
+					      }
+					  }
+					  var millNamesString = millNamesList.join(" , ");
+					  var millsListDiv = document.getElementById("millsListDiv");
+						// Set the inner HTML of the div to the mill names string
+					   millsListDiv.innerHTML = millNamesString;
+                    
                     for (var i = 0; i < response.length; i++) {
                         var innerArray = response[i];
                         var omoofficial = innerArray[0];
                         var faofficial = innerArray[1];
                         if (selectedDate  == document.getElementById("DateofInpection").value  && faofficial == selectedFafficial) {
-                            faMessageElement.innerText = selectedFafficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
+                            faMessageElement.innerText = selectedFafficial + " - is Already Occupied on this date for another claim settlement For Mill";
                             return;
                         }
                        
                     }
                     // If no conflicting dates found, clear any existing messages
                     faMessageElement.innerText = "";
-                },
+                }, 
+             
                 error: function(err) {
                     console.error('AJAX request failed: ' + err);
                 }
