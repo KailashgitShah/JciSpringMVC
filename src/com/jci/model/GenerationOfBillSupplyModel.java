@@ -99,6 +99,17 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "TrnasitPolicyno")
 	private String TrnasitPolicyno;
+	
+	@Column(name = "Statecode_forBOs")
+	private String Statecode_forBOs;
+
+	public String getStatecode_forBOs() {
+		return Statecode_forBOs;
+	}
+
+	public void setStatecode_forBOs(String statecode_forBOs) {
+		Statecode_forBOs = statecode_forBOs;
+	}
 
 	public String getTrnasitPolicyno() {
 		return TrnasitPolicyno;

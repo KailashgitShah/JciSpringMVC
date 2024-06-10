@@ -68,18 +68,25 @@ public class ConvertWord_k {
         // Define a HashMap mapping place values and their corresponding words (in English)
         Map<Integer, String> placeValuesMap = new HashMap<>();
         placeValuesMap.put(3, "thousand");
-        placeValuesMap.put(6, "million");
-        placeValuesMap.put(9, "billion");
-        placeValuesMap.put(12, "trillion");
+        placeValuesMap.put(5, "lakh");
+        placeValuesMap.put(7, "crore");
 
         StringBuilder words = new StringBuilder();
 
-        // Process the number in chunks of three digits
-        int chunkSize = 3;
+        // Process the number in chunks of two or three digits
+        int chunkSize = 2;
         int i = 0; // Counter for place values
+        boolean firstChunk = true;
         while (number > 0) {
-            int chunk = (int) (number % 1000); // Extract the last three digits
-            number /= 1000; // Remove the last three digits from the number
+            int chunk;
+            if (firstChunk) {
+                chunk = (int) (number % 1000); // Extract the last three digits for the first chunk
+                firstChunk = false;
+                chunkSize = 3;
+            } else {
+                chunk = (int) (number % 100); // Extract the last two digits for subsequent chunks
+            }
+            number /= chunkSize == 3 ? 1000 : 100; // Remove the last two or three digits from the number
 
             if (chunk > 0) {
                 String groupWords = convertGroup(chunk);
@@ -88,6 +95,7 @@ public class ConvertWord_k {
                 }
             }
             i += chunkSize; // Increment the counter for the next chunk
+            chunkSize = 2; // From now on, process chunks of two digits
         }
 
         return words.toString().trim();

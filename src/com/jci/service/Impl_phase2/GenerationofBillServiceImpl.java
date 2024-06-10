@@ -51,9 +51,9 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 	@Override
-	public String billofsupplyno(String st) {
+	public String billofsupplyno() {
 		
-		return generationofBillDao.billofsupplyno(st);
+		return generationofBillDao.billofsupplyno();
 	}
 
 	@Override
@@ -148,6 +148,38 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	public List<Object[]> PANSTATE(String st) {
 		
 		return  generationofBillDao.PANSTATE(st);
+	}
+
+
+
+	@Override
+	public String statecode(String st) {
+	
+		return generationofBillDao.statecode(st);
+	}
+
+
+
+	@Override
+	public String statecount(String St) {
+		
+		return generationofBillDao.statecount(St);
+	}
+
+
+
+	@Override
+	public List<Object[]> ForDate(String st) {
+	
+		return  generationofBillDao.ForDate(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> Dpcname(String st,String st1) {
+	
+		return  generationofBillDao.Dpcname(st,st1);
 	}
 
 

@@ -71,6 +71,8 @@
 			List<Object[]> list = (List<Object[]>) request.getAttribute("list");
 			String billOfSupplyNo = (String) request.getAttribute("billOfSupplyNo");
 			String challan_no = (String) request.getAttribute("challan_no");
+			String Stategstcode = (String) request.getAttribute("Stategstcode");
+			String DPC1code = (String) request.getAttribute("DPC1");
 			String millname = (String) request.getAttribute("millname");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			List<Object[]>  Perticulargoods = (List<Object[]>) request.getAttribute("Perticulargoods");
@@ -87,6 +89,7 @@
 		     String Address4 = "";
 		     String PAN = "";
 		     String concatenatedString = "";
+		     String financialYear = "";
 		     for (Object[] row : Suplierdetails) {
 		    	 
 			        
@@ -105,6 +108,19 @@
 					 Address2= (String )row[5];
 					 Address3= (String )row[6];
 					 Address4= (String )row[7];
+					 
+					 LocalDate currentDate = LocalDate.now();
+				        int currentYear = currentDate.getYear();
+				        int currentMonth = currentDate.getMonthValue();
+
+				      
+				        if (currentMonth >= 4) {
+				            // If the current month is April or later, the financial year is currentYear-currentYear+1
+				            financialYear = currentYear + "-" + (currentYear + 1);
+				        } else {
+				            // If the current month is before April, the financial year is (currentYear-1)-currentYear
+				            financialYear = (currentYear - 1) + "-" + currentYear;
+				        }
 				
 					 
 					 concatenatedString = Address1 + " " + Address2 + " " + Address3 + " " + Address4;
@@ -118,6 +134,7 @@
 			     String strNominalWt = "";
 			     String strRate = "";
 			     String strNominalQty = "";
+			     String Tcsname = "";
 			     float total=0;
 			     // Iterate over dispatchList data
 			     for (Object[] row : list) {
@@ -127,7 +144,9 @@
 					        float nominalWt = ((Number) row[4]).floatValue(); 
 					        float rate = ((Number) row[5]).floatValue();  
 					        float nominalQty = ((Number) row[6]).floatValue(); 
-					        total+=rate*nominalQty;
+					        float shipmentvalue = ((Number) row[8]).floatValue(); 
+					   /*      total+=rate*nominalQty; */
+					        total+=shipmentvalue;
 					      
 				    }
 			%>
@@ -359,14 +378,14 @@
 											<div class="col-sm-4 form-group">
 												<label>TCS Amt</label> <input class="form-control taxtbox"
 													name="TCS_Amt" min="0" step="0.01" 
-													id="TCS_Amt" placeholder="TCS_Amt">
+													id="TCS_Amt" placeholder="TCS_Amt" readonly="readonly">
 											</div>
 
 											<div class="col-sm-4 form-group">
 												<label>TDS Amt</label><span class="text-danger">*
 												</span> <input class="form-control taxtbox"
 													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*" required
-													id="TDS_Amt" placeholder="TDS_Amt">
+													id="TDS_Amt" placeholder="TDS_Amt" value="0" readonly="readonly">
 											</div>
 											
 											<div class="col-sm-2 form-group" style="display: none;">
@@ -396,6 +415,22 @@
 													name="Contarct_no" class="text-danger"> </span> <input
 													type="hidden" class="form-control" name="PAN23"
 													id="PAN1" value="<%=PAN %>" readonly="readonly">
+											</div>
+											
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label "display:none;">Sategstcode </label> <span
+													class="text-danger">* </span>&nbsp; <span id="Stategstcode"
+													name="Stategstcode" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="Stategstcode"
+													id="Stategstcode" value="<%=Stategstcode %>" readonly="readonly">
+											</div>
+											
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label "display:none;">DPC1 </label> <span
+													class="text-danger">* </span>&nbsp; <span id="ro_id"
+													name="ro_id" class="text-danger"> </span> <input
+													type="hidden" class="form-control" name="DPC1"
+													id="DPC12" value="<%=DPC1code %>" readonly="readonly">
 											</div>
 											
 											
@@ -431,7 +466,7 @@
 												<label>Financial year</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
 													class="text-danger"> </span> <input class="form-control"
-													name="Financial_year2" id="Financial_year1" value=""
+													name="Financial_year2" id="Financial_year1" value="<%=financialYear %>"
 													readonly="readonly">
 											</div>
 											
@@ -520,6 +555,7 @@
 											            <th>Variety Grade</th>
 											            <th> No of bales</th>
 											            <th>Nominal wt/bale</th>
+											            <th>Nominal Qty</th>
 											            <th>Rate(RS/UNIT)</th>
 											          
 											        </tr>
@@ -536,6 +572,7 @@
 															<td><%= row[3] %></td>
 															<td><%= row[4] %></td>
 															<td><%= row[5] %></td>
+															<td><%= row[6] %></td>
 															
 															<% 
 															}
@@ -705,6 +742,7 @@
         }
 
         var field2Value = <%= challan_no %>;
+    
         console.log(field2Value);
 
         $.ajax({
@@ -741,7 +779,7 @@
                                 if (dataArray && dataArray.length > 0) {
                                     var millcode = dataArray[0][0];
                                     var cropyear = dataArray[0][1];
-                                    $('#Financial_year1').val(cropyear);
+                                    /* $('#Financial_year1').val(cropyear); */
                                   
                                     $('#millcode23').val(millcode);
                                     
@@ -757,24 +795,47 @@
                                             try {
                                                 var dataArray = JSON.parse(thirdData);
                                                 if (dataArray && dataArray.length > 0) {
-                                                    var unit_name = dataArray[0][0];
-                                                    var unit_address1 = dataArray[0][1];
-                                                    var unit_state = dataArray[0][2];
-                                                    var unit_state_location = dataArray[0][3];
-                                                    var client_gstin = dataArray[0][4];
-                                                    var client_pan = dataArray[0][5];
-                                                    var client_state = dataArray[0][6];
-                                                    var client_address1 = dataArray[0][7];
-                                                    var client_name = dataArray[0][8];
+                                                	 var  unit_name = dataArray[0][0];
+                                                     
+                                                     var unit_address1 = dataArray[0][1] || '';
+                                                     var unit_address2 = dataArray[0][2] || '';
+                                                     var unit_address3 = dataArray[0][3] || '';
+                                                     var unit_address4 = dataArray[0][4] || '';
+
+                                                     var full_address = (unit_address1 + ' ' + unit_address2 + ' ' + unit_address3 + ' ' + unit_address4).trim();
+
+                                                     
+                                                     
+                                                     var unit_address5 = dataArray[0][9] || '';
+                                                     var unit_address6 = dataArray[0][10] || '';
+                                                     var unit_address7 = dataArray[0][11] || '';
+                                                     var unit_address8 = dataArray[0][12] || '';
+
+                                                     var full_address1 = (unit_address5 + ' ' + unit_address6 + ' ' + unit_address7 + ' ' + unit_address8).trim();
+
+                                                     
+                                                    
+                                                     var unit_state = dataArray[0][5];
+                                                
+                                                     var client_gstin = dataArray[0][6];
+                                                     
+                                                     var client_pan = dataArray[0][7];
+                                                     var client_state = dataArray[0][8];
+                                                    var client_name = dataArray[0][9];
+                                                   
                                                     $('#Recipient_Name').val(unit_name);
                                                     $('#Recipient_GSTN').val(client_gstin);
-                                                    $('#Recipient_Address').val(unit_address1);
+                                                    $('#Recipient_Address').val(full_address);
                                                     $('#Consignee_Name').val(client_name);
                                                     $('#Consignee_GSTN').val(client_gstin);
-                                                    $('#Consignee_Address').val(client_address1);
+                                                    $('#Consignee_Address').val(full_address1);
                                                     $('#Clientstate').val(client_state);
                                                     $('#Clientcode').val(unit_state);
                                                     $('#ClientPan').val(client_pan);
+                                                    
+                                                     calculateTCS(unit_name);
+                                                    
+                                                    
                                                 }
                                             } catch (error) {
                                                 console.error("Error parsing JSON: " + error);
@@ -817,7 +878,7 @@
             window.addEventListener('load', function() {
 
 		    calculateGST();
-		    calculateTCS();
+		   
 		});
 		</script>
          
@@ -852,33 +913,27 @@
 	
 	
 	<script>
-    function calculateTCS() {
+    function calculateTCS(unit_name) {
      
       /*   var shipmentValue = parseFloat(document.getElementsByName("Shipment_Value1")[0].value);
         */
         var shipmentValue =<%=total%>;
        
-        var millname = '<%= millname %>';
-        
-        console.log("Millname:", millname);
-        
+
         
         if (!isNaN(shipmentValue)) {
            
             $.ajax({
                 type: 'GET',
                 url: 'fetchingdataMillname.obj',
-                data: { "millname": millname },
+                data: { "millname": unit_name },
                 success: function(milldata) {
                   
                     console.log("Mill data:", milldata);
                     
-                    if(milldata===millname){
-                    	 var tsccount = 0.0;	
-                    }
-                    else {
-                    	  var tsccount = 0.01;
-                    }
+                    var tsccount = (milldata === 'true') ? 0.0 : 0.01;
+                    var Tcsammount = (tsccount / 100) * shipmentValue;
+                    
                    
                     var Tcsammount = (tsccount / 100) * shipmentValue;
                     

@@ -59,7 +59,8 @@ public class PdfGenerator_K {
 	public String generateBillPdf( String  Invoice_Value, String challan_No1, String supplier_Name,
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
 			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
-			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill,String Statename23,String StaeCode23,String PAN23,String mastterSatename,String mastterSatename2,String ReciepentsStatecode) throws FileNotFoundException {
+			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill,String Statename23,String StaeCode23,String PAN23,String mastterSatename,String mastterSatename2,
+			String ReciepentsStatecode,List<Object[]> dateData,List<Object[]> Dpcname) throws FileNotFoundException {
 		 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 
@@ -68,7 +69,28 @@ public class PdfGenerator_K {
 	     String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
 
 	     //String filePath = Genrationofbill +File.separator+ fileName;
+	     
 
+	        String contaractdate = "";
+	        String DiNo = "";
+	        String DiDate = "";
+	        String Challandate = "";
+	        String InstrumentNo = "";
+	        String Instrumentdate = "";
+	        String dpcname = " ";
+	       
+	       
+	    
+	        for (Object[] row : dateData) {
+	            if (row[0] != null) contaractdate = row[0].toString();
+	            if (row[1] != null) DiNo = row[1].toString();
+	            if (row[2] != null) DiDate = row[2].toString();
+	            if (row[3] != null) Challandate = row[3].toString();
+	            if (row[4] != null) InstrumentNo = row[5].toString();
+	            if (row[5] != null) Instrumentdate = row[6].toString();
+	        }
+
+	       
 	    
             PdfWriter pdfWriter = new PdfWriter(filePath);
             PdfDocument pdfDocument = new PdfDocument(pdfWriter);       
@@ -124,8 +146,11 @@ public class PdfGenerator_K {
         contentTable1.addCell(cell1190);
 
         document.add(contentTable1);
+       
+        
         Paragraph spacingParagraph = new Paragraph("\n").setFixedLeading(10f); 
         document.add(spacingParagraph);
+        
         PdfFont normalFont = PdfFontFactory.createFont(FontConstants.HELVETICA);
         
 		Table contentTable = new Table(new float[]{columnWidth, columnWidth})
@@ -165,7 +190,7 @@ public class PdfGenerator_K {
 		cell32.setBorderTop(new SolidBorder(borderWidth));
 		Paragraph paragraph2 = new Paragraph()
 		        .add(new Text("CONTRACT REF:").setFont(boldFont))
-		        .add(new Text(conract_no).setFont(normalFont));
+		        .add(new Text(conract_no+"dt."+contaractdate).setFont(normalFont));
 		cell32.add(paragraph2);
         contentTable.addCell(cell32);
 
@@ -186,7 +211,7 @@ public class PdfGenerator_K {
        
 		Paragraph paragraph4 = new Paragraph()
 		        .add(new Text("DI REF :").setFont(boldFont))
-		        .add(new Text("").setFont(normalFont));
+		        .add(new Text(DiNo+"dt."+DiDate).setFont(normalFont));
 		cell42.add(paragraph4);
         contentTable.addCell(cell42);
         
@@ -204,7 +229,7 @@ public class PdfGenerator_K {
        
 		Paragraph paragraph6 = new Paragraph()
 		        .add(new Text("CHALLAN REF:").setFont(boldFont))
-		        .add(new Text(challan_No1).setFont(normalFont));
+		        .add(new Text(challan_No1+"dt."+Challandate).setFont(normalFont));
 		cell52.add(paragraph6);
         contentTable.addCell(cell52);
         
@@ -221,8 +246,8 @@ public class PdfGenerator_K {
         Cell cell62 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		 cell62.setBorderRight(new SolidBorder(borderWidth));
 	       Paragraph paragraph23 = new Paragraph()
-			        .add(new Text("LC REF(if applicable): not any:").setFont(boldFont))
-			        .add(new Text("").setFont(normalFont));
+			        .add(new Text("LC REF(if applicable):").setFont(boldFont))
+			        .add(new Text(InstrumentNo+Instrumentdate).setFont(normalFont));
 			cell62.add(paragraph23);
 	        contentTable.addCell(cell62);
 		
@@ -412,8 +437,8 @@ public class PdfGenerator_K {
         document.add(spacingParagraph1);
         
 		
-     String[] columnNames = {"SI NO", "HSN", "DESCRIPTION", "CROP YEAR", "BALE MARK", "VARIETY","GRADE", "NO OF BALES", "NOMINAL WT./BALE", "UNIT", "RATE (RS/UNIT)", "QTY", "TOTAL"};
-     float[] columnWidths = {2, 4, 4, 3, 3, 2, 2,1, 5, 2, 2, PageSize.A4.getWidth() * 0.1f, PageSize.A4.getWidth() * 0.1f};
+     String[] columnNames = {"SI NO", "HSN", "Description", "Crop Year", "Bale Mark", "Variety/Grade", "No Of Bales", "Nominal WT./Bale", "Unit", "Rate (RS/UNIT)", "QTY", "TOTAL"};
+     float[] columnWidths = {2, 4, 4, 3, 3, 2,1, 5, 2, 2, PageSize.A4.getWidth() * 0.1f, PageSize.A4.getWidth() * 0.1f};
      float totalWidth = 0;
      for (float width : columnWidths) {
          totalWidth += width;
@@ -491,7 +516,7 @@ public class PdfGenerator_K {
 			 
 		        baleMark = (String) row[1];
 		     
-		        Jute_variety = (String) row[2];
+//		        Jute_variety = (String) row[2];
 		       
 		        Jute_grade = (String) row[3];
 		        
@@ -526,33 +551,39 @@ public class PdfGenerator_K {
              } else if (j == 4) {
                  // BALE MARK
                  cellData = baleMark;
-             } else if (j == 5) {
-                 // VARIETY/GRADE
-                 cellData = Jute_variety; 
-             }
-             else if (j == 6) {
+             } 
+             else if (j == 5) {
                  // NO OF BALES
                  cellData = Jute_grade;
-             }else if (j == 7) {
+             }else if (j == 6) {
                  // NO OF BALES
                  cellData = strNoOfBales;
-             } else if (j == 8) {
+             } else if (j == 7) {
                  // NOMINAL WT./BALE
                  cellData = strNominalWt;
-             } else if (j == 9) {
+             } else if (j == 8) {
                  // UNIT
                  cellData = "Qtls."; 
                 
              }
-            else if (j == 10) {
+            else if (j == 9) {
                  // RATE (RS/UNIT)
                  cellData = strRate;
-             } else if (j == 11) {
+             } else if (j == 10) {
                  // QTY
-                 cellData = strNominalQty;
-                 float rate1=Float.parseFloat(strNominalQty);
-                 totalqty1+=rate1;
-             } else if (j == 12) {
+            	 
+		         strNoOfBales = String.valueOf(noOfBales);
+		         strNominalWt = String.valueOf(nominalWt);
+		         float rate=Float.parseFloat(strNoOfBales);
+            	 float rate1=Float.parseFloat(strNominalWt);
+            	 
+            	 float total=rate*rate1;
+            	 String stringValue3 = Float.toString(total);
+		        
+                 cellData = stringValue3;
+                 float rate9=Float.parseFloat(stringValue3);
+                 totalqty1+=rate9;
+             } else if (j == 11) {
                  // TOTAL
             	 float rate=Float.parseFloat(strRate);
             	 float rate1=Float.parseFloat(strNominalQty);
@@ -699,7 +730,7 @@ public class PdfGenerator_K {
     //cell11224.setBorderTop(new SolidBorder(borderWidth));
 	Paragraph paragraph225 = new Paragraph()
 	        .add(new Text("TRANSPORTER NAME:").setFont(boldFont))
-	        .add(new Text(Driver_name).setFont(normalFont));
+	        .add(new Text(Driver_Lic_no).setFont(normalFont));
 	cell11224.add(paragraph225);
     contentTable22.addCell(cell11224);
     
@@ -718,7 +749,7 @@ public class PdfGenerator_K {
     //cell11225.setBorderTop(new SolidBorder(borderWidth));
 	Paragraph paragraph228 = new Paragraph()
 	        .add(new Text("DRIVER LIC NO :").setFont(boldFont))
-	        .add(new Text(Driver_Lic_no).setFont(normalFont));
+	        .add(new Text(Driver_name).setFont(normalFont));
 	cell11228.add(paragraph228);
     contentTable22.addCell(cell11228);
     document.add(contentTable22);
@@ -745,10 +776,28 @@ public class PdfGenerator_K {
 	Cell cell3165 = createCell("", Border.NO_BORDER, TextAlignment.CENTER);
 
 	Paragraph paragraph2354 = new Paragraph()
-	        .add(new Text("Signature (I/C):").setFont(boldFont))
-	        .add(new Text("").setFont(normalFont));
+	        .add(new Text("Full Name (DPC I/C):").setFont(boldFont))
+	        .add(new Text(" "+ dpcname).setFont(normalFont));
 	cell3165.add(paragraph2354);
     contentTable364.addCell(cell3165);
+    
+    Cell cell31645 = createCell("", Border.NO_BORDER, TextAlignment.CENTER);
+    
+	Paragraph paragraph3455 = new Paragraph()
+	        .add(new Text("").setFont(boldFont))
+	        .add(new Text("").setFont(normalFont));
+	cell3164.add(paragraph3455);
+    contentTable364.addCell(cell31645);
+	
+
+//	
+	Cell cell31656 = createCell("", Border.NO_BORDER, TextAlignment.CENTER);
+
+	Paragraph paragraph23546 = new Paragraph()
+	        .add(new Text("Signature     (DPC I/C):").setFont(boldFont))
+	        .add(new Text("").setFont(normalFont));
+	cell3165.add(paragraph23546);
+    contentTable364.addCell(cell31656);
     
     
     document.add(contentTable364);

@@ -5855,7 +5855,8 @@ public class InsertDataController
 			        String InstrumentValue = request.getParameter("InstrumentValue");
 			        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
 			        double instvalue=ratio*InstrumentValue1;
-			        String instvalue1 = String.valueOf(instvalue);
+			        int intValue1 = (int) instvalue;
+			       
 			       
 			        
 				String millname65 = request.getParameter("millname65");
@@ -5925,7 +5926,7 @@ public class InsertDataController
 				entryPaymentDetailsModel.setInstdate(instdate1);
 				entryPaymentDetailsModel.setPayment(payment);
 				//int  instruValue= Integer.parseInt(InstrumentValue);
-				entryPaymentDetailsModel.setInstrumentValue(instvalue1);
+				entryPaymentDetailsModel.setInstrumentValue(intValue1);
 				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
 				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
 				entryPaymentDetailsModel.setFc_status(0);

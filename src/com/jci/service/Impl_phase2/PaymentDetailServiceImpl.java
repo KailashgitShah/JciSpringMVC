@@ -127,6 +127,11 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		paymentDetailsdao.deleteEntry(id);
 		
 	}
+	@Override
+	public List<Object[]> difrencecandsum(String st) {
+		
+		return paymentDetailsdao.difrencecandsum(st);
+	}
 	
 
 }

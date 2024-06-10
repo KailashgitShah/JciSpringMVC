@@ -352,16 +352,34 @@ $(document).ready(function() {
                 var field2Values = [];
                 dataArray.forEach(function(innerArray) {
                     var option = document.createElement('option');
-                    option.textContent = innerArray[0];
+                     option.textContent = innerArray[0];
                     option.value = innerArray[0]; 
                     
-                    option.setAttribute('data-value1', innerArray[0]); // Value for backend
-                    option.setAttribute('data-value2', innerArray[2]); // Value for AJAX
+                /*     let lastSlashIndex = innerArray[0].lastIndexOf('/');
+                    let remainingPart = innerArray[0].substring(0, lastSlashIndex);
+                    let lastPart = innerArray[0].substring(lastSlashIndex + 1);
+                    alert(remainingPart); */
+                    
+             /*        
+                    option.textContent = remainingPart;
+                    option.value = remainingPart;  */
+	                    
+                    option.setAttribute('data-value1', innerArray[0]);  // Value for backend
+                    option.setAttribute('data-value2', innerArray[2]); 
+                    
+                   /*  option.setAttribute('data-value1', remainingPart); */ // Value for backend
+              
+                    
+                    // Value for AJAX
                  
                     dropdownElement.appendChild(option);
                     
-                    field0Values.push(innerArray[0]);
+                   /*  field0Values.push(remainingPart); */
+                    field0Values.push(innerArray[0]); 
                     field1Values.push(innerArray[1]);
+                  /*   alert(field0Values);
+                    alert(field1Values); */
+                    
                     $('#millcode1').val(field1Values[0]);
                    
                     field2Values.push(innerArray[2]);
