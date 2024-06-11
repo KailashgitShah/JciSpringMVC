@@ -286,6 +286,135 @@ public class Controller_V {
 
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
+	
+	
+	
+	//number to string
+	
+	 public String convertDigitToWord(int digit) {
+	        if (digit < 0 || digit > 9) {
+	            return "Invalid digit";
+	        }
+
+	        String[] digitsInWords = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+	        return digitsInWords[digit];
+	    }
+
+	    public String convertGroup(int group) {
+	        if (group == 0) {
+	            return ""; // Return empty string for zero group
+	        }
+
+	        StringBuilder groupWords = new StringBuilder();
+	        int hundreds = group / 100;
+	        int tensOnes = group % 100;
+
+	        if (hundreds > 0) {
+	            groupWords.append(convertDigitToWord(hundreds)).append(" hundred ");
+	        }
+
+	        if (tensOnes > 0) {
+	            if (tensOnes < 20) {
+	                groupWords.append(convertToWordsBelowTwenty(tensOnes));
+	            } else {
+	                int tens = tensOnes / 10;
+	                int ones = tensOnes % 10;
+	                if (tens > 0) {
+	                    String[] tensInWords = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+	                    groupWords.append(tensInWords[tens]);
+	                }
+	                if (ones > 0) {
+	                    groupWords.append(" ");
+	                    groupWords.append(convertDigitToWord(ones));
+	                }
+	            }
+	        }
+
+	        return groupWords.toString().trim();
+	    }
+
+	    private String convertToWordsBelowTwenty(int number) {
+	        String[] wordsBelowTwenty = {
+	            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+	            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+	        };
+	        return wordsBelowTwenty[number];
+	    }
+
+	    public String convertToWords(long number) {
+	        if (number < 0) {
+	            return "minus " + convertToWords(-number); // Handle negative numbers
+	        }
+	        if (number == 0) {
+	            return "zero"; // Handle zero separately
+	        }
+
+	        // Define a HashMap mapping place values and their corresponding words (in English)
+	        Map<Integer, String> placeValuesMap = new HashMap<>();
+	        placeValuesMap.put(3, "thousand");
+	        placeValuesMap.put(5, "lakh");
+	        placeValuesMap.put(7, "crore");
+
+	        StringBuilder words = new StringBuilder();
+
+	        // Process the number in chunks of two or three digits
+	        int chunkSize = 2;
+	        int i = 0; // Counter for place values
+	        boolean firstChunk = true;
+	        while (number > 0) {
+	            int chunk;
+	            if (firstChunk) {
+	                chunk = (int) (number % 1000); // Extract the last three digits for the first chunk
+	                firstChunk = false;
+	                chunkSize = 3;
+	            } else {
+	                chunk = (int) (number % 100); // Extract the last two digits for subsequent chunks
+	            }
+	            number /= chunkSize == 3 ? 1000 : 100; // Remove the last two or three digits from the number
+
+	            if (chunk > 0) {
+	                String groupWords = convertGroup(chunk);
+	                if (!groupWords.isEmpty()) {
+	                    words.insert(0, groupWords + " " + placeValuesMap.getOrDefault(i, "") + " ");
+	                }
+	            }
+	            i += chunkSize; // Increment the counter for the next chunk
+	            chunkSize = 2; // From now on, process chunks of two digits
+	        }
+
+	        return words.toString().trim();
+	    }
+
+	    public String convertDecimalPartToWords(String decimalPart) {
+	        StringBuilder words = new StringBuilder("point");
+	        for (char digitChar : decimalPart.toCharArray()) {
+	            int digit = Character.getNumericValue(digitChar);
+	            if (digit < 0 || digit > 9) {
+	                return "Invalid digit";
+	            }
+	            words.append(" ").append(convertDigitToWord(digit));
+	        }
+	        return words.toString();
+	    }
+
+	    public String convertNumberToWords(double number) {
+	        long integerPart = (long) number;
+	        String words = convertToWords(integerPart);
+
+	        String decimalPart = String.valueOf(number).split("\\.")[1];
+	        if (!decimalPart.equals("0")) {
+	            words += " " + convertDecimalPartToWords(decimalPart);
+	        }
+
+	        return words.trim();
+	    }
+
+	    public String convertNumberToCurrencyWords(double number) {
+	        String words = convertNumberToWords(number);
+	        return "Rupees " + words;
+	    }
+	
+	///
 
 	// convert yyyy-MM-dd to dd-MM-yyyy
 	String formateDate(String date) throws ParseException {
@@ -1910,8 +2039,8 @@ public class Controller_V {
 			int noOfBale = (int) p[3];
 			double rate = (double) p[5];
 			double nmnlQty = (double) p[4];
-			double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
-			double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+			double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
+			double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
 			double shortAmtPrice = Math.round(rate * shtQty);
 
 			data[0] = (String) p[0]; // crop year
@@ -1959,6 +2088,7 @@ public class Controller_V {
 			String documentName = "creditNote" + ChallanNo + ".pdf";
 			creditNotes.setDocument(documentName);
 			creditNoteGenerationService.create(creditNotes);
+			
 
 		}
 
@@ -1976,11 +2106,14 @@ public class Controller_V {
 			parameters.put("bosNo", bosNo);
 			parameters.put("diNo", diNo);
 			parameters.put("bosDate", bosDate);
-//			parameters.put("sumCrnAmt", crnAmount);
-//			parameters.put("sumAct", actualWt);
-//			parameters.put("sumInv", nominalWt);
-//			parameters.put("sumShrt", shortQty);
-
+			
+			parameters.put("sumCrnAmt", crnAmount);
+			parameters.put("sumAct", actualWt);
+			parameters.put("sumInv", nominalWt);
+			parameters.put("sumShrt", shortQty);
+			String amountInWord = convertNumberToCurrencyWords(crnAmount);
+			parameters.put("amountInWord", amountInWord);
+			
 			for (Object[] details : getDetailsofSpp_Con_Rec) {
 				parameters.put("Supplier_name", details[0]);
 				parameters.put("Supplier_address", details[1]);
@@ -2052,6 +2185,8 @@ public class Controller_V {
 			} catch (Exception e) {
 				System.out.println(e.getLocalizedMessage());
 			}
+			
+			return new ModelAndView(new RedirectView("creditNoteList.obj"));
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block

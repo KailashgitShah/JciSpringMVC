@@ -247,8 +247,8 @@ input[type="radio"] {
 													double rate = (double) p[5];
 													double nmnlQty = (double) p[4];
 
-													double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
-													double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+													double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
+													double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
 													double shortAmtPrice = Math.round(rate * shtQty);
 													/*  double shtQty = nmnlQty - actQty;
 													double shortAmtPrice = rate * shtQty; */
@@ -273,9 +273,10 @@ input[type="radio"] {
 												<%
 												}
 
-												sumShrtQty = Double.parseDouble(new DecimalFormat("#.####").format(sumShrtQty));
-												sumActQty = Double.parseDouble(new DecimalFormat("#.####").format(sumActQty));
-												sumNmlQty = Double.parseDouble(new DecimalFormat("#.####").format(sumNmlQty));
+												sumShrtQty = Double.parseDouble(new DecimalFormat("#.##").format(sumShrtQty));
+												sumActQty = Double.parseDouble(new DecimalFormat("#.##").format(sumActQty));
+												sumNmlQty = Double.parseDouble(new DecimalFormat("#.##").format(sumNmlQty));
+												int finalAmount = (int) Math.ceil(sumTtlCrnAmt);
 												%>
 												<tr>
 													<td><div class="table-cell"></div></td>
@@ -287,7 +288,7 @@ input[type="radio"] {
 													<td><div class="table-cell"><%=sumNmlQty%></div></td>
 													<td><div class="table-cell"><%=sumActQty%></div></td>
 													<td><div class="table-cell"><%=sumShrtQty%></div></td>
-													<td><div class="table-cell"><%=sumTtlCrnAmt%></div></td>
+													<td><div class="table-cell"><%=finalAmount%></div></td>
 												</tr>
 											</tbody>
 										</table>
@@ -335,7 +336,7 @@ input[type="radio"] {
 
 	<script>
 	$(document).ready(function(){
-		document.getElementById('creditAmt').value='<%=sumTtlCrnAmt%>';
+		document.getElementById('creditAmt').value='<%=finalAmount%>';
 	});
 	
 	
