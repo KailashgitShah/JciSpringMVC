@@ -47,7 +47,7 @@ public class EntryPaymentDetailsModel {
 	private String payment ;
 	
 	@Column(name = "Instrument_value")
-	private String InstrumentValue;
+	private int InstrumentValue;
 	
 	@Column(name = "Expiry_date")
 	//@Temporal(value=TemporalType.TIMESTAMP)
@@ -84,6 +84,17 @@ public class EntryPaymentDetailsModel {
 
 	@Column(name = "Millname")
 	private String Millname ;
+	
+	@Column(name = "millcode")
+	private String millcode ;
+
+	public String getMillcode() {
+		return millcode;
+	}
+
+	public void setMillcode(String millcode) {
+		this.millcode = millcode;
+	}
 
 	@Column(name = "PaymentDue_date")
 	private String PaymentDue_date ;
@@ -191,13 +202,7 @@ public class EntryPaymentDetailsModel {
 		this.payment = payment;
 	}
 
-	public String getInstrumentValue() {
-		return InstrumentValue;
-	}
 
-	public void setInstrumentValue(String instrumentValue) {
-		InstrumentValue = instrumentValue;
-	}
 
 	public Date getDateofexpiry() {
 		return dateofexpiry;
@@ -266,7 +271,7 @@ public class EntryPaymentDetailsModel {
 	}
 
 	public EntryPaymentDetailsModel(int payment_id, String instrumentno, String contractno, Date instdate, String iFSC,
-			String branch, String bankName, String payment, String instrumentValue, Date dateofexpiry, Date dateofship,
+			String branch, String bankName, String payment, int instrumentValue, Date dateofexpiry, Date dateofship,
 			String autorevolvingamount, String qtyAllowed, String supportingDocument, int fc_status,
 			String fc_remarks, Date fc_action_date, Date created_date) {
 		super();
@@ -287,6 +292,14 @@ public class EntryPaymentDetailsModel {
 		Fc_remarks = fc_remarks;
 		Fc_action_date = fc_action_date;
 		Created_date = created_date;
+	}
+
+	public int getInstrumentValue() {
+		return InstrumentValue;
+	}
+
+	public void setInstrumentValue(int instrumentValue) {
+		InstrumentValue = instrumentValue;
 	}
 
 	public EntryPaymentDetailsModel() {

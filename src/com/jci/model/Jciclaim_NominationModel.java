@@ -40,9 +40,6 @@ public class Jciclaim_NominationModel {
 	@Column(name = "Inspection_by")
 	private String Inspection_by;
 
-	@Column(name = "Supporting_doc")
-	private String Supporting_doc;
-
 	@Column(name = "Inspection_date")
 	private String Inspection_date;
 
@@ -172,13 +169,7 @@ public class Jciclaim_NominationModel {
 		Inspection_by = inspection_by;
 	}
 
-	public String getSupporting_doc() {
-		return Supporting_doc;
-	}
 
-	public void setSupporting_doc(String supporting_doc) {
-		Supporting_doc = supporting_doc;
-	}
 
 	public String getInspection_date() {
 		return Inspection_date;

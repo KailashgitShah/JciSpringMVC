@@ -182,6 +182,34 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 		    return resultList1;
 	}
 
+	@Override
+	public List<Object[]> Supplieradd(String st) {
+		String sql="  select top 1 a.state_name , a.gov_state_code , e.State_GSTIN,c.centername,c.address1,c.address2,c.address3,c.address4 from tbl_states_new a\r\n"
+				+ "		INNER join tbl_districts_new b on b.state_code = a.state_code\r\n"
+				+ "		INNER JOIN jcipurchasecenter c on c.district = b.dist_code \r\n"
+				+ "			INNER JOIN jcidispatch_details d ON c.CENTER_CODE = d.Place_of_Shipment\r\n"
+				+ "		INNER JOIN jcigstin e on e.State_GST_Code = a.gov_state_code \r\n"
+				+ "			WHERE c.CENTER_CODE ='" + st + "'";
+			
+		
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> PANSTATE(String st) {
+		String sql=" select a.client_pan , a.client_state , b.unit_state , c.state_name , c.gov_state_code , c.state_code from jcimilldetailmaster a \r\n"
+				+ "	inner join \r\n"
+				+ "	jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '" + st + "'"
+				+ "	INNER JOIN\r\n"
+				+ "	 tbl_states_new c on c.state_code = a.client_state or  c.gov_state_code = b.unit_state\r\n";
+			
+			
+		
+		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+	}
+
 
 
 }

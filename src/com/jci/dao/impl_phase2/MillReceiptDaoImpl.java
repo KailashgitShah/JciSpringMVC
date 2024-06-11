@@ -112,7 +112,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 			
 			  	String sql=  " SELECT  distinct a.DI_no,b.Mill_code,a.Contract_No from jcidispatch_details as a Left join jcicontract as b on b.Contract_no = a.Contract_No \r\n"
 			  			+ " INNER JOIN jcicredit_note AS d ON d.Contract_no = a.Contract_No "
-			  			+ "where b.Mill_name= '" + millname + "' ";
+			  			+ "where b.Mill_code= '" + millname + "' ";
 			  	 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			    return resultList1;
 
@@ -147,15 +147,16 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 	}
 
 	@Override
-	public List<Object> fetchMill_NameR() {
+	public List<Object[]> fetchMill_NameR() {
 		
 		//String sql ="  SELECT  distinct a.Mill_name,b.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
 //		String sql ="  SELECT  distinct a.Mill_name FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
 //		
-		String sql =" SELECT distinct  c.Recipient_name FROM  jcibos_generation AS c  left JOIN  jciDI_ho as b on b.Contract_No=c.Contract_no\r\n"
-				+ "   LEFT JOIN jcidispatch_details as a  on\r\n"
-				+ " a.Contract_No=b.Contract_No LEFT join jcicredit_note as d on d.Contract_no=a.Contract_No";
-		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		String sql ="  select  distinct s.client_name,s.client_unit_code,z.Contract_no from \r\n"
+				+ "			(SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s \r\n"
+				+ "      INNER join (SELECT a.Contract_No,b.Mill_code from jcicredit_note as a INNER JOIN  jcicontract as b on  b.Contract_no=a.Contract_No ) as z on z.Mill_code=s.client_unit_code \r\n";
+			
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		 return resultList1;
 	}
 
@@ -183,16 +184,17 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 
 	@Override
 	public List<Object[]> challanbaseddetails(String st) {
-		 String sql = "SELECT distinct  CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,s.Actual_qty, s.Short_qty,a.Contract_No,a.Mill_code "
-			 		+ "		      	FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.ChallanNo = a.Challan_no"
-			 		+ "			 	 WHERE a.Challan_no =  '" +st+"'"; 
+		 String sql = "  SELECT distinct  CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,s.Actual_qty, s.Short_qty,a.Contract_No,a.Mill_code,d.Crop_year,d.Jute_variety \r\n"
+		 		+ "		 FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.ChallanNo = a.Challan_no\r\n"
+		 		+ "        INNER join jcidispatch_details_child as d on d.Challan_no=a.Challan_no\r\n"
+		 			+ "WHERE a.Challan_no =  '" +st+"'"; 
 
 				 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 				 return resultList1;
 	}
 
 	@Override
-	public List<Object[]> gradeprice( String Challan, String contract) {
+	public List<Object[]> gradeprice( String Challan, String contract,String cropyear,String jutevarirty) {
 	
 	
 	         
@@ -204,18 +206,18 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 //	                   + "WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\n"
 //	                   + "AND jcicontract.Contract_no = '" + contract + "'\n"
 //	                   + "AND a.crop_year = '" + cropyear + "'\n"
-//	                   + "AND a.jute_variety = '" + var + "'";
+//	                   + "AND a.jute_variety = '" + jutevarirty + "'";
 		 
-		 String sql= "SELECT distinct  a.grade1, a.grade2, a.grade3, a.grade4, a.grade5, a.grade6\n"
-		 		+ "FROM jcientry_derivative_price as a\n"
-		 		+ "INNER JOIN jcicontract ON a.delivery_type = jcicontract.Delivery_type\n"
-		 		+ "INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = a.district\n"
-		 		+ "INNER JOIN jcidispatch_details ON jcidispatch_details.Challan_no ='" + Challan + "'\n"
-		 		+ "INNER join(select  b.Crop_year,b.jute_variety from  jcidispatch_details as a LEFT JOIN jcidispatch_details_child  as b on a.Challan_no=b.Challan_no\n"
-		 		+ ")  as s   ON s.Crop_year = a.Crop_year \n"
-		 		+ "    AND s.jute_variety = a.jute_variety\n"
-		 		+ "WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\n"
-		 		+ "AND jcicontract.Contract_no = '" + contract + "'\n";
+		 String sql= " SELECT jcientry_derivative_price. grade1,jcientry_derivative_price. grade2,jcientry_derivative_price. grade3,jcientry_derivative_price. grade4,"
+		 		+ "  jcientry_derivative_price. grade5,jcientry_derivative_price. grade6 "
+		 		+ "   FROM jcientry_derivative_price "
+		 		+ "   INNER JOIN jcicontract ON jcientry_derivative_price.delivery_type = jcicontract.Delivery_type "
+		 		+ "  INNER JOIN jcipurchasecenter ON jcipurchasecenter.district = jcientry_derivative_price.district "
+		 		+ "  INNER JOIN jcidispatch_details ON jcidispatch_details.Challan_no ='" + Challan + "'"
+		 		+ "   WHERE jcipurchasecenter.CENTER_CODE = jcidispatch_details.Place_of_Shipment\r\n"
+		 		+ "   AND jcicontract.Contract_no = '" + contract + "'"
+		 		+ "  AND jcientry_derivative_price.crop_year = '" + cropyear + "'"
+		 		+ " AND jcientry_derivative_price.jute_variety ='" + jutevarirty + "'";
 
 
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();

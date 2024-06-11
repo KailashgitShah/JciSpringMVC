@@ -72,8 +72,8 @@
 										<th>Reference No.</th>
 										<th>Date</th>
 										<th>Crop Year</th>
-										<th>Requested Qty.</th>
-										<th>Uncontracted Qty.</th>
+										<th>Requested Qty. (Qtls)</th>
+										<th>Uncontracted Qty. (Qtls)</th>
 										<th></th>
 										<th></th>
 								</thead>

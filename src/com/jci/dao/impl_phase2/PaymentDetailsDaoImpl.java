@@ -45,7 +45,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 or Fc_status = 1 ";
 	   // String sql = "SELECT * FROM jcipayment_arrangement WHERE Fc_status = 0 and Fc_status = 1 ";
-	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0)";
+	    String sql = " SELECT * FROM jcipayment_arrangement WHERE Fc_status IN(0) ORDER BY Payment_id DESC";
 //	    String sql = " SELECT *,\r\n"
 //	    		+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
 //	    		+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
@@ -63,7 +63,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry() {
 		
 		
-	    String sql = "SELECT * FROM jcipayment_arrangement";
+	    String sql = "SELECT * FROM jcipayment_arrangement ORDER BY Payment_id DESC";
 //				     String sql = " SELECT *,\r\n"
 //			+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
 //			+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
@@ -140,19 +140,15 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	 
 	@Override
 	public List<Object> ContractNo() {
-		String sql=" SELECT c.Contract_no, d.Difference "
-				+ "FROM ("
-				+ "    SELECT a.Contract_no, a.Contract_value, COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,"
-				+ "           (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference"
-				+ "    FROM jcicontract AS a  "
-				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No"
-				+ "    GROUP BY a.Contract_no, a.Contract_value"
-				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL"
-				+ ") AS d "
-				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no "
-				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;"
-				;
-		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+
+	 
+		
+		String sql2 = "SELECT a.Contract_no, a.Contract_value - COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))), 0) "
+				+ " AS Difference from jcicontract  as a left join jcipayment_arrangement as b on a.Contract_no = b.Contract_No group by "
+				+ " a.Contract_no, a.Contract_value having a.Contract_value > COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))), 0)"
+				+ " OR SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))) IS NULL ";
+
+		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql2).list();
 	    return resultList1;
 	}
 
@@ -173,7 +169,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	@Override
 	public  List<Object[]> paymentdetails(String st) {
 		
-		String sql="select  Contract_qty,Contract_value ,Contract_date, Payment_duedate,Mill_name,Grade_composition from  jcicontract where  Contract_no='" + st + "' ";
+		String sql="select  Contract_qty,Contract_date, Payment_duedate,Mill_name,Grade_composition from  jcicontract  where  Contract_no='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 
@@ -224,10 +220,12 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	}
 
 	@Override
-	public List<Object> Millname() {
+	public List<Object[]> Millname() {
 		
-		String sql="SELECT DISTINCT Mill_name FROM jcicontract;";
-		 List<Object>millNamelist= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		String sql="select  distinct s.client_name,Mill_code  from "
+				+ "(SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s "
+				+ "INNER join jcicontract as f on f.Mill_code=s.client_unit_code  where Contract_acceptance_flag=1";
+		 List<Object[]>millNamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millNamelist;
 	}
 
@@ -236,17 +234,19 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		
 		
 		//String sql="SELECT  Contract_no from jcicontract where Mill_name='" + st + "'";
-		String sql="SELECT c.Contract_no  FROM (SELECT  a.Contract_no, a.Contract_value, \r\n"
-				+ "        COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,\r\n"
-				+ "        (a.Contract_value - COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference\r\n"
+		String sql=" SELECT c.Contract_no FROM (\r\n"
+				+ "    SELECT a.Contract_no,  a.Contract_value, \r\n"
+				+ "    COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,\r\n"
+				+ "    (a.Contract_value - COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference\r\n"
 				+ "    FROM jcicontract AS a  \r\n"
-				+ "    LEFT JOIN jcipayment_arrangement AS b ON a.Contract_no = b.Contract_No\r\n"
-				+ "    WHERE a.Mill_name = '" + st + "' \r\n"
-				+ "    GROUP BY a.Contract_no, a.Contract_value\r\n"
-				+ "    HAVING a.Contract_value > COALESCE(SUM(CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL\r\n"
-				+ ") AS d \r\n"
-				+ "LEFT JOIN jcicontract AS c ON c.Contract_no = d.Contract_no \r\n"
-				+ "WHERE d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;";
+				+ "    LEFT JOIN jcipayment_arrangement AS b \r\n"
+				+ "    ON  a.Contract_no = b.Contract_No\r\n"
+				+ "    WHERE a.Mill_code = '" + st + "' \r\n"
+				+ "    GROUP BY  a.Contract_no, a.Contract_value\r\n"
+				+ "    HAVING  a.Contract_value > COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL\r\n"
+				+ ") AS d LEFT JOIN jcicontract AS c \r\n"
+				+ "ON c.Contract_no = d.Contract_no \r\n"
+				+ "WHERE  d.Contract_value > d.Total_Instrument_Value OR d.Total_Instrument_Value IS NULL;";
 		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millnamelist;
 		
@@ -254,7 +254,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 
 	@Override
 	public List<Object[]> contractlistfetchdata(String st) {
-		String sql="SELECT  Contract_no,Contract_qty,Contract_value,Contract_date,Payment_duedate from jcicontract where Contract_no='" + st + "'";
+		String sql="SELECT  Contract_no,Mill_qty,Contract_value,Contract_date,Payment_duedate from jcicontract where Contract_no='" + st + "'";
 		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millnamelist;
 	}

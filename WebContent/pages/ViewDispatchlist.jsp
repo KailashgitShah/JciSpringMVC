@@ -170,7 +170,7 @@
 									
 										
 											<td>
-									    <a href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%= row[12]%>">
+									    <a href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%= row[12]%>&DPC=<%= row[14]%>">
 									        <button class="btn btn-primary custom-button" type="button">Generate BOS</button>
 									    </a>
 									</td> 

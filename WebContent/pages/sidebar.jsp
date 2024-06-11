@@ -454,6 +454,10 @@ body {
 								<li data-pre="1106" id="o1106"><a href="verifyClaimReport.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Verify Claim Report
 								 </b></a></li>
+								
+								<li data-pre="" id=""><a href="creditNoteForClaimSettlement.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note For Claim Settlement 
+								 </b></a></li>
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i

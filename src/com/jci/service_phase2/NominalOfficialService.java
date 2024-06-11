@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import com.jci.model.ClaimSettlementReport;
 import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.FarmerRegModel;
 import com.jci.model.Jciclaim_NominationModel;
@@ -61,6 +62,7 @@ public interface NominalOfficialService {
 	public Jciclaim_NominationModel find(String id);
 	public void updatefa(String id , String FAomofficial);
 	public List<Jciclaim_NominationModel>findnominationdetails(String id);
+	public List <ClaimSettlementReport> getNominationReportData(String settlement_id);
 
 
 }

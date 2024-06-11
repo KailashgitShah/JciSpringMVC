@@ -57,6 +57,51 @@
     padding: 0 5px;
 }
 </style>
+<style>
+    .magnifier {
+        /* Your existing styles */
+        /* Ensure the image fits within its container */
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    #controls {
+        /* Style for control buttons */
+        
+         z-index: 1;
+    }
+</style>
+
+<script>
+    var rotation = 0;
+    var scale = 1.0;
+
+    function zoomIn() {
+        scale += 0.1;
+        applyTransform();
+    }
+
+    function zoomOut() {
+        scale -= 0.1;
+        applyTransform();
+    }
+
+    function rotateLeft() {
+        rotation -= 90;
+        applyTransform();
+    }
+
+    function rotateRight() {
+        rotation += 90;
+        applyTransform();
+    }
+
+    function applyTransform() {
+        var img = document.getElementById("uploadedImage");
+        img.style.transform = "rotate(" + rotation + "deg) scale(" + scale + ")";
+    }
+</script>
+
 <body class="fixed-navbar">
 	<div class="page-wrapper">
 		<!-- START HEADER-->
@@ -86,11 +131,19 @@
                     <form action="verifyWeightmentSlip.obj" method="POST" onsubmit="return myFunc()">
                         <div class="child-checkbox" id="disableform">
                             <div id="container" style="display: flex;">
-                                <div id="l1" style="flex: 1;">
-                                    <div id="elementId" style="text-align: left;">
-                                        <img name="uploadedImage" id="uploadedImage" src="http://49.50.118.112:8080/WeightSlipment/<%=Data.get(0)[5]%>" class="magnifier">
-                                    </div>
-                                </div>
+                          <div id="l1" style="flex: 1; position: relative; overflow: hidden;">
+    <div id="elementId" style="text-align: left; position: relative;">
+        <img name="uploadedImage" id="uploadedImage" src="http://49.50.118.112:8080/WeightSlipment/<%=Data.get(0)[5]%>" class="magnifier">
+        <div id="controls" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+            <button type="button" onclick="zoomIn()">Zoom In</button>
+            <button type="button" onclick="zoomOut()">Zoom Out</button>
+            <button type="button" onclick="rotateLeft()">Rotate Left</button>
+            <button type="button" onclick="rotateRight()">Rotate Right</button>
+        </div>
+    </div>
+</div>
+
+
                                 <div id="r1" style="flex: 1; margin-left: 10px;">
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
@@ -113,10 +166,11 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4 form-group">
-                                            <label>DPC End Actual Weight (Qtls)</label>
-                                            <input class="form-control textbox" name="DpcEndWt" min="0" type="number" id="DpcEndWt" placeholder="DpcEndWt" required readonly value="<%=Data.get(0)[4] %>">
-                                        </div>
+                                        <div class="col-sm-4 form-group d-none">
+    <label>DPC End Actual Weight (Qtls)</label>
+    <input class="form-control textbox" name="DpcEndWt" min="0" type="number" id="DpcEndWt" placeholder="DpcEndWt" required readonly value="<%=Data.get(0)[4] %>">
+</div>
+
                                         <div class="col-sm-4 form-group">
                                             <label>Mill End Actual Weight (Qtls)</label>
                                             <input class="form-control textbox" name="MillWt" type="number" id="MillWt" placeholder="MillWt" required readonly value="<%=Data.get(0)[6]%>">

@@ -344,54 +344,81 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao {
 
 	@Override
 	public List<Double> firstLeveljute(String cropyr, String basis) {
+		List<Double> result2 = new ArrayList<Double>();
 
-		String querystr1 = "";
-		querystr1 = "select cast(sum(grade1*netquantity/100)as numeric(36,2)) as grade1, cast(sum(grade2*netquantity/100)as numeric(36,2)) as grade2, cast(sum(grade3*netquantity/100)as numeric(36,2)) as grade3, cast(sum(grade4*netquantity/100)as numeric(36,2)) as grade4, cast(sum(grade5*netquantity/100)as numeric(36,2)) as grade5, cast(sum(grade6*netquantity/100)as numeric(36,2)) as grade6, cast(sum(grade7*netquantity/100)as numeric(36,2)) as grade7, cast(sum(grade8*netquantity/100)as numeric(36,2)) as grade8  FROM [XMWJCI].[dbo].[jciprocurement] where basis = '"
-				+ basis + "' and cropyr ='" + cropyr + "' ";
+		try {
+		 String querystr1="";
+		 querystr1 = "SELECT \r\n" + 
+		 		"    SUM(GRADE1) AS Total_GRADE1,\r\n" + 
+		 		"    SUM(GRADE2) AS Total_GRADE2,\r\n" + 
+		 		"    SUM(GRADE3) AS Total_GRADE3,\r\n" + 
+		 		"    SUM(GRADE4) AS Total_GRADE4,\r\n" + 
+		 		"    SUM(GRADE5) AS Total_GRADE5,\r\n" + 
+		 		"    SUM(GRADE6) AS Total_GRADE6,\r\n" + 
+		 		"    SUM(TOTAL) AS Total_Bales,\r\n" + 
+		 		"    SUM(LOOSE) AS Total_Loose\r\n" + 
+		 		"FROM (\r\n" + 
+		 		"SELECT DISTINCT\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\r\n" + 
+		 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\r\n" + 
+		 		"(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\r\n" + 
+		 		"FROM jcibalepreparation j1\r\n" + 
+		 		"WHERE\r\n" + 
+		 		"j1.crop_year='"+cropyr+"' and j1.basis = '"+basis+"'\r\n" + 
+		 		")as results;";
 		Session session1 = sessionFactory.getCurrentSession();
 		Transaction tx1 = session1.beginTransaction();
 		SQLQuery query1 = session1.createSQLQuery(querystr1);
-
+		 
 		List<Object[]> result1 = query1.list();
-		List<Double> result2 = new ArrayList<Double>();
-		if (result1 != null) {
-			for (Object[] p : result1) {
-				if (p[0] != null)
-					result2.add(((BigDecimal) p[0]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[1] != null)
-					result2.add(((BigDecimal) p[1]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[2] != null)
-					result2.add(((BigDecimal) p[2]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[3] != null)
-					result2.add(((BigDecimal) p[3]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[4] != null)
-					result2.add(((BigDecimal) p[4]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[5] != null)
-					result2.add(((BigDecimal) p[5]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[6] != null)
-					result2.add(((BigDecimal) p[6]).doubleValue());
-				else
-					result2.add(0.0);
-				if (p[7] != null)
-					result2.add(((BigDecimal) p[7]).doubleValue());
-				else
-					result2.add(0.0);
-
-			}
+		if(result1 != null) {
+		 for(Object[] p :result1) {
+			 if(p[0] != null) 
+				 result2.add(((Integer) p[0]).doubleValue());
+			 else
+				 result2.add(0.0); 
+			 if(p[1] != null) 
+				 result2.add(((Integer) p[1]).doubleValue());
+			 else
+				 result2.add(0.0); 
+			 if(p[2] != null) 
+				 result2.add(((Integer) p[2]).doubleValue());
+			 else
+				 result2.add(0.0); 
+			 if(p[3] != null) 
+				 result2.add(((Integer) p[3]).doubleValue());
+			 else
+				 result2.add(0.0); 
+             if(p[4] != null) 
+            	 result2.add(((Integer) p[4]).doubleValue());
+             else
+    			 result2.add(0.0); 
+             if(p[5] != null) 
+            	 result2.add(((Integer) p[5]).doubleValue());
+             else
+    			 result2.add(0.0); 
+             if(p[6] != null) 
+            	 result2.add(((Integer) p[6]).doubleValue());
+             else
+    			 result2.add(0.0); 
+             if(p[7] != null) 
+            	 result2.add(((BigDecimal) p[7]).doubleValue());
+             else
+    			 result2.add(0.0); 
+              
+             
+		 }
 		}
-		System.out.println("result2" + result2);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		System.err.println("result2PPPPPPPPPPPP"+result2);
 		return result2;
 	}
 
