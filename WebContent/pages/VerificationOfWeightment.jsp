@@ -177,17 +177,18 @@
                                         </div>
                                         <div class="col-sm-4 form-group">
                                             <label>DPC End Truck Gross Weight (Qtls)</label>
-                                            <input class="form-control textbox" name="DPCGrossWt" type="number" step="0.01" id="DPCGrossWt" placeholder="DPC End Truck Wt" value="0.0" required>
+                                            <input class="form-control textbox" name="DPCGrossWt" type="number" step="0.01" id="DPCGrossWt" min=0 placeholder="DPC End Truck Wt" value="0.0" required>
+                                        </div>
+                                         <div class="col-sm-4 form-group">
+                                            <label>DPC End Truck Tare Weight (Qtls)</label>
+                                            <input class="form-control textbox" name="DPCqty" type="number" step="0.01" id="DPCqty" min=0 placeholder="DPC End Truck Tare Wt" value="0.0" required>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-4 form-group">
-                                            <label>DPC End Truck Tare Weight (Qtls)</label>
-                                            <input class="form-control textbox" name="DPCqty" type="number" step="0.01" id="DPCqty" placeholder="DPC End Truck Tare Wt" value="0.0" required>
-                                        </div>
+                                       
                                         <div class="col-sm-4 form-group">
                                             <label>DPC End Truck Net Weight</label>
-                                            <input class="form-control textbox" name="DPCNetqty" type="number" step="0.01" id="DPCNetqty" placeholder="DPC End Truck Net Wt" value="0.0" required>
+                                            <input class="form-control textbox" name="DPCNetqty" type="number" step="0.01" id="DPCNetqty" min=0 placeholder="DPC End Truck Net Wt" value="0.0" required>
                                         </div>
                                     </div>
                                     <div class="row">

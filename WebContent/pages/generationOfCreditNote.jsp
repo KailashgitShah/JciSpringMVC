@@ -6,6 +6,7 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.jci.model.StateList"%>
 <%@page import="java.util.List"%>
+<%@ page import="java.util.Calendar" %>
 <html lang="en">
 <%@ page import="javax.servlet.http.HttpServletRequest"%>
 <head>
@@ -78,7 +79,7 @@ input[type="radio"] {
 	Double avgJuteValue = (Double) request.getAttribute("avgJuteVal");
 	List<Object[]> dispetchDetails = (List<Object[]>) request.getAttribute("dispetchDetails");
 	List<Object> gradeRatio = (List<Object>) request.getAttribute("gradeRatio");
-
+	String gstCode = (String) request.getAttribute("gst");
 	/*
 
 		for (Object p : gradeRatio) {
@@ -101,11 +102,31 @@ input[type="radio"] {
 	Double shortQty = nominalWt - actualWt;
 	//long crnAmount = Math.round(avgJuteValue * shortQty);
 
-	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
-	//generation of credit Note No.
-	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
-	String indiaSerialNo = "001640";
-	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+	             Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+
+        int financialYearStart, financialYearEnd;
+
+        if (currentMonth >= 4) { // April or later
+            financialYearStart = currentYear;
+            financialYearEnd = currentYear + 1;
+        } else { // January to March
+            financialYearStart = currentYear - 1;
+            financialYearEnd = currentYear;
+        } 
+        
+            String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+                
+             String yearCode = endYearLastTwoDigits;
+
+	String StateSerialNo  = "001640";
+	String indiaSerialNo1=String.format("%05d", Count);
+	String indiaSerial=String.format("%06d", Integer.parseInt(indiaSerialNo1));
+	
+	
+	
+	String creditNoteIdnNo = "C" + yearCode + indiaSerialNo1 + gstCode   ;
 
 	double sumNmlQty = 0;
 	double sumActQty = 0;

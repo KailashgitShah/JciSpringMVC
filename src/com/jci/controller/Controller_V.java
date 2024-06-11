@@ -1772,6 +1772,9 @@ public class Controller_V {
 		String roId = (String) rowObject[9];
 		String millCode = (String) rowObject[10];
 		String dpc = (String) rowObject[11];
+		String gstCode= (String) rowObject[12];
+		System.err.println("GST:"+ gstCode);
+		System.err.println("GST:"+ gstCode);
 		System.err.println("roId from controller => " + roId);
 
 		int Count = creditNoteGenerationService.getCountOfRo(roId);
@@ -1796,6 +1799,7 @@ public class Controller_V {
 		mv.addObject("dispetchDetails", dispetchDetails);
 		mv.addObject("gradeRatio", gradeRatio);
 		mv.addObject("dpc", dpc);
+		mv.addObject("gst",gstCode);
 		return mv;
 	}
 

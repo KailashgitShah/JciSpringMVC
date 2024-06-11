@@ -14,6 +14,10 @@
 
 </head>
 <style>
+/* .hidden{
+display:none;
+} */
+
 body {
 	zoom: 85%;
 }
