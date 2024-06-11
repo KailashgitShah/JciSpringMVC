@@ -143,7 +143,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]> ShipmentDetails(String st) {
-		String sql="SELECT  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+		String sql="SELECT  Crop_year,Bale_mark,Jute_grade,No_of_bales,Nominal_wt,Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
@@ -151,7 +151,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]> dispatchChildlist(String st) {
-        String sql="SELECT Challan_no,Bale_mark,Crop_year,Jute_grade,Jute_value,Jute_variety,No_of_bales,Nominal_wt, Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+        String sql="SELECT Challan_no,Bale_mark,Crop_year,Jute_grade,Jute_value,No_of_bales,Nominal_wt, Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
@@ -251,14 +251,22 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 				+ "    jcipayment_arrangement AS b \r\n"
 				+ "ON  \r\n"
 				+ "    b.Contract_No = a.Contract_No \r\n"
-				+ "where  Challan_no='" + st + "' ";
+				+ "where  Challan_no='" + st + "'  ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 	}
 
 	@Override
 	public List<Object[]> Dpcname(String st,String  st1) {
-		String sql="  select TOP 1 employeename from jciumt WHERE dpcId='" + st1 + "' ";
+		String sql="select employeename from jciumt WHERE dpcId='" + st1 + "' ";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> RegionAndCenterName(String st) {
+		String sql="  select a.centername,a.CENTER_CODE,b.roname,b.rocode  from  jcipurchasecenter as a LEFT join \r\n"
+				+ "  jcirodetails as b  on a.rocode=b.rocode   where a.centertypecode='D' and a.CENTER_CODE='" + st + "'";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 	}

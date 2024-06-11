@@ -99,6 +99,7 @@
 		    	     
 		    	     if (row[1] instanceof Integer) {
 		    	    	 StateCode = (Integer) row[1];
+		    	    
 		    	         }
 		    	     
 					 
@@ -229,9 +230,45 @@
 
 										<div class="row">
 
-
-
+                                                <div class="col-sm-4 form-group">
+												<label>Shipment Value</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
+													class="text-danger"> </span> <input
+													class="form-control taxtbox" name="Shipment_Value1" min="0" value="<%=total %>" readonly="readonly"
+													 placeholder="Shipment_Value"
+													required   >
+											</div>
+											
 											<div class="col-sm-4 form-group">
+												<label>Bill of Supply No</label> <input class="form-control"
+													name="Bill_of_Supply" id="Bill_of_Supply"
+													value="<%=billOfSupplyNo%>" placeholder="Bill_of_Supply"
+													readonly="readonly">
+											</div>
+										
+											<div class="col-sm-4 form-group">
+												<label>BOS Date</label> <input class="form-control"
+													name="BOS_Date" id="BOS_Date"
+													value="<%=serverCurrentDate%>" placeholder="BOS_Date"
+													readonly="readonly">
+											</div>
+
+											
+											
+
+
+
+
+
+
+
+
+
+										</div>
+
+										<div class="row">
+										
+										<div class="col-sm-4 form-group">
 												<label>IGST Amt</label> <input class="form-control taxtbox"
 													name="IGST_Amt" min="0" step="0.01" pattern="[0-9]*"
 													id="IGST_Amt" placeholder="IGST_Amt" readonly ="readonly">
@@ -247,37 +284,7 @@
 													name="CGST_Amt" id="CGST_Amt" min=0 step=0.01
 													placeholder="CGST_Amt" readonly="readonly">
 											</div>
-
-
-
-
-
-
-
-
-
-										</div>
-
-										<div class="row">
-
-											<div class="col-sm-4 form-group">
-												<label>Bill of Supply No</label> <input class="form-control"
-													name="Bill_of_Supply" id="Bill_of_Supply"
-													value="<%=billOfSupplyNo%>" placeholder="Bill_of_Supply"
-													readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>Invoice Value</label> <input
-													class="form-control taxtbox" name="Invoice_Value"
-													id="Invoice_Value" min="0" step="0.01" pattern="[0-9]*"
-													placeholder="Invoice_Value" readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label>BOS Date</label> <input class="form-control"
-													name="BOS_Date" id="BOS_Date"
-													value="<%=serverCurrentDate%>" placeholder="BOS_Date"
-													readonly="readonly">
-											</div>
+											
 
 
 
@@ -367,14 +374,7 @@
 											
 										<div class="row">
 										
-												<div class="col-sm-4 form-group">
-												<label>Shipment Value</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Shipment_Value " name="Shipment_Value "
-													class="text-danger"> </span> <input
-													class="form-control taxtbox" name="Shipment_Value1" min="0" value="<%=total %>" readonly="readonly"
-													 placeholder="Shipment_Value"
-													required   >
-											</div>
+												
 											<div class="col-sm-4 form-group">
 												<label>TCS Amt</label> <input class="form-control taxtbox"
 													name="TCS_Amt" min="0" step="0.01" 
@@ -386,6 +386,13 @@
 												</span> <input class="form-control taxtbox"
 													name="TDS_Amt" min="0" step="0.01" pattern="[0-9]*" required
 													id="TDS_Amt" placeholder="TDS_Amt" value="0" readonly="readonly">
+											</div>
+												<div class="col-sm-4 form-group">
+												<label>Financial year</label> <span class="text-danger">*
+												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
+													class="text-danger"> </span> <input class="form-control"
+													name="Financial_year2" id="Financial_year1" value="<%=financialYear %>"
+													readonly="readonly">
 											</div>
 											
 											<div class="col-sm-2 form-group" style="display: none;">
@@ -462,12 +469,12 @@
 										</div>
 										
 										<div class="row">
-										<div class="col-sm-4 form-group">
-												<label>Financial year</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Financial_year4" name="Financial_year3"
-													class="text-danger"> </span> <input class="form-control"
-													name="Financial_year2" id="Financial_year1" value="<%=financialYear %>"
-													readonly="readonly">
+									
+												<div class="col-sm-4 form-group">
+												<label>Invoice Value</label> <input
+													class="form-control taxtbox" name="Invoice_Value"
+													id="Invoice_Value" min="0" step="0.01" pattern="[0-9]*"
+													placeholder="Invoice_Value" readonly="readonly">
 											</div>
 											
 												<div class="col-sm-4 form-group">
@@ -552,7 +559,7 @@
 											        <tr>
 											            <th>Crop year </th>
 											            <th> Bale Mark</th>
-											            <th>Variety Grade</th>
+											            <th>Variety/Grade</th>
 											            <th> No of bales</th>
 											            <th>Nominal wt/bale</th>
 											            <th>Nominal Qty</th>
@@ -778,6 +785,7 @@
                               
                                 if (dataArray && dataArray.length > 0) {
                                     var millcode = dataArray[0][0];
+                                    alert(millcode);
                                     var cropyear = dataArray[0][1];
                                     /* $('#Financial_year1').val(cropyear); */
                                   
@@ -790,7 +798,7 @@
                                         data: { "contractno": millcode },
                                        
                                         success: function(thirdData) {
-                                           
+                                           alert(thirdData);
                                            
                                             try {
                                                 var dataArray = JSON.parse(thirdData);
@@ -821,7 +829,9 @@
                                                      
                                                      var client_pan = dataArray[0][7];
                                                      var client_state = dataArray[0][8];
-                                                    var client_name = dataArray[0][9];
+                                                    var client_name = dataArray[0][13];
+                                                    
+                                                    alert(client_name);
                                                    
                                                     $('#Recipient_Name').val(unit_name);
                                                     $('#Recipient_GSTN').val(client_gstin);

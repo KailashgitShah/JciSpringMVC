@@ -3038,6 +3038,7 @@ public class Controller_V {
 			String MR_No2 = request.getParameter("MR_No1");
 			String MR_Date1 = request.getParameter("MR_Date1");
 			String millcode1 = request.getParameter("millcode");
+			
 			String challanno1 = request.getParameter("challanno1");
 			// String shortqty = request.getParameter("InvoiceQty");
 			String Mill_receiptQty1 = request.getParameter("Mill_receiptQty1");
@@ -3521,11 +3522,14 @@ public class Controller_V {
 			generationOfBillSupplyModel.setContract_no(Conract_no);
 			generationOfBillSupplyModel.setTrnasitPolicyno(TrnasitPolicyNo);
 			generationOfBillSupplyModel.setStatecode_forBOs(statecode);
+			generationOfBillSupplyModel.setDPCID(DPC1code);
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
 			String ro_id = (String) request.getSession().getAttribute("regionId");
 			System.out.println(ro_id);
+			List<Object[]> RegionAndCenterName1 = generationofBillService.RegionAndCenterName(DPC1code);
+			
 			List<Object[]> Dpcname = generationofBillService.Dpcname(ro_id,DPC1code);
 			generationOfBillSupplyModel.setRo_id(ro_id);
 			// generationOfBillSupplyModel.setBos_file_path("documents");
@@ -3584,7 +3588,7 @@ public class Controller_V {
 					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
 					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
 					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,Statename23,StaeCode23,PAN23,mastterSatename,mastterSatename2,
-					ReciepentsStatecode,dateData,Dpcname);
+					ReciepentsStatecode,dateData,Dpcname,millcode234,RegionAndCenterName1);
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);

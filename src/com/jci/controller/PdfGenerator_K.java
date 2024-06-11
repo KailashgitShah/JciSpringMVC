@@ -60,7 +60,7 @@ public class PdfGenerator_K {
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
 			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
 			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill,String Statename23,String StaeCode23,String PAN23,String mastterSatename,String mastterSatename2,
-			String ReciepentsStatecode,List<Object[]> dateData,List<Object[]> Dpcname) throws FileNotFoundException {
+			String ReciepentsStatecode,List<Object[]> dateData,List<Object[]> Dpcname,String millcode234,List<Object[]> RegionAndCenterName1) throws FileNotFoundException {
 		 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 
@@ -89,6 +89,23 @@ public class PdfGenerator_K {
 	            if (row[4] != null) InstrumentNo = row[5].toString();
 	            if (row[5] != null) Instrumentdate = row[6].toString();
 	        }
+	        
+	        String centerName = "";
+	        String centercode = "";
+	        String Roname = "";
+	        String Rocode = "";
+	       
+	       
+	       
+	    
+	        for (Object[] row : RegionAndCenterName1) {
+	            if (row[0] != null) centerName = row[0].toString();
+	            if (row[1] != null) centercode = row[1].toString();
+	            if (row[2] != null) Roname = row[2].toString();
+	            if (row[3] != null) Rocode = row[3].toString();
+	        
+	        }
+	        
 
 	       
 	    
@@ -174,127 +191,373 @@ public class PdfGenerator_K {
         contentTable.addCell(cell12);
 
 	
-		Cell cell31 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell31.setBorderRight(new SolidBorder(borderWidth));
-		cell31.setBorderTop(new SolidBorder(borderWidth));
-		Paragraph paragraph = new Paragraph()
-		        .add(new Text("GSTIN :").setFont(boldFont))
-		        .add(new Text(supplier_GSTN).setFont(normalFont));
-		cell31.add(paragraph);
-        contentTable.addCell(cell31);
+//		Cell cell31 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell31.setBorderRight(new SolidBorder(borderWidth));
+//		cell31.setBorderTop(new SolidBorder(borderWidth));
+//		Paragraph paragraph = new Paragraph()
+//		        .add(new Text("GSTIN :").setFont(boldFont))
+//		        .add(new Text(supplier_GSTN).setFont(normalFont));
+//		cell31.add(paragraph);
+//        contentTable.addCell(cell31);
+        
+        Cell cell31 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+        cell31.setBorderRight(new SolidBorder(borderWidth));
+        //cell31.setBorderTop(new SolidBorder(borderWidth));
+        Table innerTable = new Table(new float[]{2,3}); // Adjust the column widths as needed
+        Cell labelCell = new Cell().add(new Paragraph(new Text("GSTIN :").setFont(boldFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable.addCell(labelCell);
+        Cell valueCell = new Cell().add(new Paragraph(new Text(supplier_GSTN).setFont(normalFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable.addCell(valueCell);
+         cell31.add(innerTable);
+         contentTable.addCell(cell31);
 		
 
 	
-		Cell cell32 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell32.setBorderRight(new SolidBorder(borderWidth));
-		cell32.setBorderTop(new SolidBorder(borderWidth));
-		Paragraph paragraph2 = new Paragraph()
-		        .add(new Text("CONTRACT REF:").setFont(boldFont))
-		        .add(new Text(conract_no+"dt."+contaractdate).setFont(normalFont));
-		cell32.add(paragraph2);
-        contentTable.addCell(cell32);
+//		Cell cell32 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell32.setBorderRight(new SolidBorder(borderWidth));
+//		cell32.setBorderTop(new SolidBorder(borderWidth));
+//		Paragraph paragraph2 = new Paragraph()
+//		        .add(new Text("CONTRACT REF:").setFont(boldFont))
+//		        .add(new Text(conract_no+" dt."+contaractdate).setFont(normalFont));
+//		cell32.add(paragraph2);
+//        contentTable.addCell(cell32);
+        
+        
+        
+        Cell cell32 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+        cell32.setBorderRight(new SolidBorder(borderWidth));
+        //cell32.setBorderTop(new SolidBorder(borderWidth));
+         // Adjust the column widths as needed
+        Table innerTable1 = new Table(new float[]{2,3});
+        Cell labelCell1 = new Cell().add(new Paragraph(new Text("CONTRACT REF:").setFont(boldFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable1.addCell(labelCell1);
+        Cell valueCell1 = new Cell().add(new Paragraph(new Text(conract_no+" dt."+contaractdate).setFont(normalFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable1.addCell(valueCell1);
+        cell32.add(innerTable1);
+         contentTable.addCell(cell32);
+		
 
 //		
-		Cell cell41 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell41.setBorderRight(new SolidBorder(borderWidth));
+//		Cell cell41 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell41.setBorderRight(new SolidBorder(borderWidth));
+//		
+//		Paragraph paragraph3 = new Paragraph()
+//		        .add(new Text("NAME :").setFont(boldFont))
+//		        .add(new Text(supplier_Name).setFont(normalFont));
+//		cell41.add(paragraph3);
+//        contentTable.addCell(cell41);
+        
+        Cell cell41 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+        cell41.setBorderRight(new SolidBorder(borderWidth));
+        //cell41.setBorderTop(new SolidBorder(borderWidth));
+        Table innerTable2 = new Table(new float[]{2,3});
+        Cell labelCell2 = new Cell().add(new Paragraph(new Text("NAME :").setFont(boldFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable2.addCell(labelCell2);
+        Cell valueCell2 = new Cell().add(new Paragraph(new Text(supplier_Name).setFont(normalFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable2.addCell(valueCell2);
+        cell41.add(innerTable2);
+         contentTable.addCell(cell41);
 		
-		Paragraph paragraph3 = new Paragraph()
-		        .add(new Text("NAME :").setFont(boldFont))
-		        .add(new Text(supplier_Name).setFont(normalFont));
-		cell41.add(paragraph3);
-        contentTable.addCell(cell41);
 
 
         
-        Cell cell42 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-        cell42.setBorderRight(new SolidBorder(borderWidth));
-       
-		Paragraph paragraph4 = new Paragraph()
-		        .add(new Text("DI REF :").setFont(boldFont))
-		        .add(new Text(DiNo+"dt."+DiDate).setFont(normalFont));
-		cell42.add(paragraph4);
-        contentTable.addCell(cell42);
+//        Cell cell42 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell42.setBorderRight(new SolidBorder(borderWidth));
+//       Paragraph paragraph4 = new Paragraph()
+//		        .add(new Text("DI REF :").setFont(boldFont))
+//		        .add(new Text(DiNo+" dt."+DiDate).setFont(normalFont));
+//		cell42.add(paragraph4);
+//        contentTable.addCell(cell42);
+         
+         Cell cell42 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+         cell42.setBorderRight(new SolidBorder(borderWidth));
+        // cell42.setBorderTop(new SolidBorder(borderWidth));
+         Table innerTable3 = new Table(new float[]{2,3});
+         Cell labelCell3 = new Cell().add(new Paragraph(new Text("DI REF :").setFont(boldFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable3.addCell(labelCell3);
+         Cell valueCell3 = new Cell().add(new Paragraph(new Text(DiNo+" dt."+DiDate).setFont(normalFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable3.addCell(valueCell3);
+         cell42.add(innerTable3);
+          contentTable.addCell(cell42);
+          
         
-        Cell cell51 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-        cell51.setBorderRight(new SolidBorder(borderWidth));
-       
-		Paragraph paragraph5 = new Paragraph()
-		        .add(new Text("ADDRESS:").setFont(boldFont))
-		        .add(new Text(supplier_Address).setFont(normalFont));
-		cell51.add(paragraph5);
-        contentTable.addCell(cell51);
+//        Cell cell98 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell98.setBorderRight(new SolidBorder(borderWidth));
+//       
+//		Paragraph paragraph98 = new Paragraph()
+//		        .add(new Text("AREA: ").setFont(boldFont))
+//		        .add(new Text(centerName+"("+centercode+")"+Roname+"("+Rocode+")").setFont(normalFont));
+//		cell98.add(paragraph98);
+//        contentTable.addCell(cell98);
+          
+          Cell cell98 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+          cell98.setBorderRight(new SolidBorder(borderWidth));
+          //cell98.setBorderTop(new SolidBorder(borderWidth));
+          Table innerTable4 = new Table(new float[]{2,3});
+          Cell labelCell4 = new Cell().add(new Paragraph(new Text("AREA : ").setFont(boldFont)))
+                                     .setBorder(Border.NO_BORDER)
+                                     .setTextAlignment(TextAlignment.LEFT);
+          innerTable4.addCell(labelCell4);
+          Cell valueCell4 = new Cell().add(new Paragraph(new Text(centerName+"("+centercode+")"+Roname+"("+Rocode+")").setFont(normalFont)))
+                                     .setBorder(Border.NO_BORDER)
+                                     .setTextAlignment(TextAlignment.LEFT);
+          innerTable4.addCell(valueCell4);
+          cell98.add(innerTable4);
+           contentTable.addCell(cell98);
 
+        
+      
+
+//        Cell cell52 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell52.setBorderRight(new SolidBorder(borderWidth));
+//       
+//		Paragraph paragraph6 = new Paragraph()
+//		        .add(new Text("CHALLAN /CN NO :").setFont(boldFont))
+//		        .add(new Text(challan_No1+" dt."+Challandate).setFont(normalFont));
+//		cell52.add(paragraph6);
+//        contentTable.addCell(cell52);
+        
         Cell cell52 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
         cell52.setBorderRight(new SolidBorder(borderWidth));
+        //cell52.setBorderTop(new SolidBorder(borderWidth));
+        Table innerTable5 = new Table(new float[]{2,3});
+        Cell labelCell5 = new Cell().add(new Paragraph(new Text("CHALLAN /CN NO :").setFont(boldFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable5.addCell(labelCell5);
+        Cell valueCell5 = new Cell().add(new Paragraph(new Text(challan_No1+" dt."+Challandate).setFont(normalFont)))
+                                   .setBorder(Border.NO_BORDER)
+                                   .setTextAlignment(TextAlignment.LEFT);
+        innerTable5.addCell(valueCell5);
+        cell52.add(innerTable5);
+         contentTable.addCell(cell52);
+        
+//        Cell cell51 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell51.setBorderRight(new SolidBorder(borderWidth));
+//       
+//		Paragraph paragraph5 = new Paragraph()
+//		        .add(new Text("ADDRESS:").setFont(boldFont))
+//		        .add(new Text(supplier_Address).setFont(normalFont));
+//		cell51.add(paragraph5);
+//        contentTable.addCell(cell51);
+//        
+        
+         
+         Cell cell51 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+         cell51.setBorderRight(new SolidBorder(borderWidth));
+         //cell51.setBorderTop(new SolidBorder(borderWidth));
+         Table innerTable6 = new Table(new float[]{2,3});
+         Cell labelCell6 = new Cell().add(new Paragraph(new Text("ADDRESS:").setFont(boldFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable6.addCell(labelCell6);
+         Cell valueCell6 = new Cell().add(new Paragraph(new Text(supplier_Address).setFont(normalFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable6.addCell(valueCell6);
+         cell51.add(innerTable6);
+          contentTable.addCell(cell51);
+          
+          
+        
        
-		Paragraph paragraph6 = new Paragraph()
-		        .add(new Text("CHALLAN REF:").setFont(boldFont))
-		        .add(new Text(challan_No1+"dt."+Challandate).setFont(normalFont));
-		cell52.add(paragraph6);
-        contentTable.addCell(cell52);
-        
-	
-        Cell cell61 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-        cell61.setBorderRight(new SolidBorder(borderWidth));
-       Paragraph paragraph7 = new Paragraph()
-		        .add(new Text("STATE NAME:").setFont(boldFont))
-		        .add(new Text(Statename23).setFont(normalFont));
-		cell61.add(paragraph7);
-        contentTable.addCell(cell61);
-        
-       
-        Cell cell62 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		 cell62.setBorderRight(new SolidBorder(borderWidth));
-	       Paragraph paragraph23 = new Paragraph()
-			        .add(new Text("LC REF(if applicable):").setFont(boldFont))
-			        .add(new Text(InstrumentNo+Instrumentdate).setFont(normalFont));
-			cell62.add(paragraph23);
-	        contentTable.addCell(cell62);
-		
+//        Cell cell62 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		 cell62.setBorderRight(new SolidBorder(borderWidth));
+//	       Paragraph paragraph23 = new Paragraph()
+//			        .add(new Text("LC REF(if applicable):").setFont(boldFont))
+//			        .add(new Text(InstrumentNo+Instrumentdate).setFont(normalFont));
+//			cell62.add(paragraph23);
+//	        contentTable.addCell(cell62);
+//		
+          Cell cell62 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+          cell62.setBorderRight(new SolidBorder(borderWidth));
+         // cell62.setBorderTop(new SolidBorder(borderWidth));
+          Table innerTable7 = new Table(new float[]{2,3});
+          Cell labelCell7 = new Cell().add(new Paragraph(new Text("LC REF(if applicable):").setFont(boldFont)))
+                                     .setBorder(Border.NO_BORDER)
+                                     .setTextAlignment(TextAlignment.LEFT);
+          innerTable7.addCell(labelCell7);
+          Cell valueCell7 = new Cell().add(new Paragraph(new Text(InstrumentNo+Instrumentdate).setFont(normalFont)))
+                                     .setBorder(Border.NO_BORDER)
+                                     .setTextAlignment(TextAlignment.LEFT);
+          innerTable7.addCell(valueCell7);
+          cell62.add(innerTable7);
+           contentTable.addCell(cell62);
 
 		
-		Cell cell661 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell661.setBorderRight(new SolidBorder(borderWidth));
+//	        Cell cell61 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//	        cell61.setBorderRight(new SolidBorder(borderWidth));
+//	       Paragraph paragraph7 = new Paragraph()
+//			        .add(new Text("STATE NAME:").setFont(boldFont))
+//			        .add(new Text(Statename23).setFont(normalFont));
+//			cell61.add(paragraph7);
+//	        contentTable.addCell(cell61);
+//	        
+	        
+           
+           Cell cell61 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+           cell61.setBorderRight(new SolidBorder(borderWidth));
+           //cell61.setBorderTop(new SolidBorder(borderWidth));
+           Table innerTable8 = new Table(new float[]{2,3});
+           Cell labelCell8 = new Cell().add(new Paragraph(new Text("STATE NAME:").setFont(boldFont)))
+                                      .setBorder(Border.NO_BORDER)
+                                      .setTextAlignment(TextAlignment.LEFT);
+           innerTable8.addCell(labelCell8);
+           Cell valueCell8 = new Cell().add(new Paragraph(new Text(Statename23).setFont(normalFont)))
+                                      .setBorder(Border.NO_BORDER)
+                                      .setTextAlignment(TextAlignment.LEFT);
+           innerTable8.addCell(valueCell8);
+           cell61.add(innerTable8);
+            contentTable.addCell(cell61);
 
-		Paragraph paragraph1 = new Paragraph()
-		        .add(new Text("STATE CODE: ").setFont(boldFont))
-		        .add(new Text(StaeCode23).setFont(normalFont));
-        cell661.add(paragraph1);
-        contentTable.addCell(cell661);
+		
 
         
-        Cell cell662 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-        cell662.setBorderRight(new SolidBorder(borderWidth));
-
-		Paragraph paragraph8 = new Paragraph()
-		        .add(new Text("BILL OF SUPPLY NO: ").setFont(boldFont))
-		        .add(new Text(bill_of_Supply).setFont(normalFont));
-		cell662.add(paragraph8);
-        contentTable.addCell(cell662);
+//        Cell cell662 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell662.setBorderRight(new SolidBorder(borderWidth));
+//
+//		Paragraph paragraph8 = new Paragraph()
+//		        .add(new Text("BILL OF SUPPLY NO: ").setFont(boldFont))
+//		        .add(new Text(bill_of_Supply).setFont(normalFont));
+//		cell662.add(paragraph8);
+//        contentTable.addCell(cell662);
+            
+            Cell cell662 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+            cell662.setBorderRight(new SolidBorder(borderWidth));
+            //cell662.setBorderTop(new SolidBorder(borderWidth));
+            Table innerTable9 = new Table(new float[]{2,3});
+            Cell labelCell9 = new Cell().add(new Paragraph(new Text("BILL OF SUPPLY NO: ").setFont(boldFont)))
+                                       .setBorder(Border.NO_BORDER)
+                                       .setTextAlignment(TextAlignment.LEFT);
+            innerTable9.addCell(labelCell9);
+            Cell valueCell9 = new Cell().add(new Paragraph(new Text(bill_of_Supply).setFont(normalFont)))
+                                       .setBorder(Border.NO_BORDER)
+                                       .setTextAlignment(TextAlignment.LEFT);
+            innerTable9.addCell(valueCell9);
+            cell662.add(innerTable9);
+             contentTable.addCell(cell662);
 		
+//        Cell cell661 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell661.setBorderRight(new SolidBorder(borderWidth));
+//
+//		Paragraph paragraph1 = new Paragraph()
+//		        .add(new Text("STATE CODE: ").setFont(boldFont))
+//		        .add(new Text(StaeCode23).setFont(normalFont));
+//        cell661.add(paragraph1);
+//        contentTable.addCell(cell661);
+        
+
+             Cell cell661 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+             cell661.setBorderRight(new SolidBorder(borderWidth));
+             //cell661.setBorderTop(new SolidBorder(borderWidth));
+             Table innerTable10 = new Table(new float[]{2,3});
+             Cell labelCell10 = new Cell().add(new Paragraph(new Text("STATE CODE: ").setFont(boldFont)))
+                                        .setBorder(Border.NO_BORDER)
+                                        .setTextAlignment(TextAlignment.LEFT);
+             innerTable10.addCell(labelCell10);
+             Cell valueCell10 = new Cell().add(new Paragraph(new Text(StaeCode23).setFont(normalFont)))
+                                        .setBorder(Border.NO_BORDER)
+                                        .setTextAlignment(TextAlignment.LEFT);
+             innerTable10.addCell(valueCell10);
+             cell661.add(innerTable10);
+              contentTable.addCell(cell661);
+        
+
     
 
-        Cell cell663 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-        cell663.setBorderRight(new SolidBorder(borderWidth));
-
-		Paragraph paragraph9 = new Paragraph()
-		        .add(new Text("PAN : ").setFont(boldFont))
-		        .add(new Text(PAN23).setFont(normalFont));
-		cell663.add(paragraph9);
-        contentTable.addCell(cell663);
+      //  Cell cell664 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell664.setBorderRight(new SolidBorder(borderWidth));
+//
+//		Paragraph paragraph10 = new Paragraph()
+//		        .add(new Text("BILL OF SUPPLY DATE : ").setFont(boldFont))
+//		        .add(new Text(ClientPan).setFont(normalFont));
+//		cell664.add(paragraph10);
+//        contentTable.addCell(cell664);
+//        
+             
+              
+              Cell cell664 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+              cell664.setBorderRight(new SolidBorder(borderWidth));
+             // cell664.setBorderTop(new SolidBorder(borderWidth));
+              Table innerTable11 = new Table(new float[]{2,3});
+              Cell labelCell11 = new Cell().add(new Paragraph(new Text("BILL OF SUPPLY DATE : ").setFont(boldFont)))
+                                         .setBorder(Border.NO_BORDER)
+                                         .setTextAlignment(TextAlignment.LEFT);
+              innerTable11.addCell(labelCell11);
+              Cell valueCell11 = new Cell().add(new Paragraph(new Text(ClientPan).setFont(normalFont)))
+                                         .setBorder(Border.NO_BORDER)
+                                         .setTextAlignment(TextAlignment.LEFT);
+              innerTable11.addCell(valueCell11);
+              cell664.add(innerTable11);
+               contentTable.addCell(cell664);
+              
+              
+//        Cell cell663 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell663.setBorderRight(new SolidBorder(borderWidth));
+//
+//		Paragraph paragraph9 = new Paragraph()
+//		        .add(new Text("PAN : ").setFont(boldFont))
+//		        .add(new Text(PAN23).setFont(normalFont));
+//		cell663.add(paragraph9);
+//        contentTable.addCell(cell663);
+        
+               
+               Cell cell663 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+               cell663.setBorderRight(new SolidBorder(borderWidth));
+              // cell663.setBorderTop(new SolidBorder(borderWidth));
+               Table innerTable12 = new Table(new float[]{2,3});
+               Cell labelCell12 = new Cell().add(new Paragraph(new Text("PAN : ").setFont(boldFont)))
+                                          .setBorder(Border.NO_BORDER)
+                                          .setTextAlignment(TextAlignment.LEFT);
+               innerTable12.addCell(labelCell12);
+               Cell valueCell12 = new Cell().add(new Paragraph(new Text(PAN23).setFont(normalFont)))
+                                          .setBorder(Border.NO_BORDER)
+                                          .setTextAlignment(TextAlignment.LEFT);
+               innerTable12.addCell(valueCell12);
+               cell663.add(innerTable12);
+                contentTable.addCell(cell663);
+        
+//        Cell cell6649 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//        cell664.setBorderRight(new SolidBorder(borderWidth));
+//        Paragraph paragraph109 = new Paragraph()
+//		        .add(new Text("").setFont(boldFont))
+//		        .add(new Text("").setFont(normalFont));
+//        cell6649.add(paragraph109);
+//        contentTable.addCell(cell6649);
+                
+                
+                Cell cell6649 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                cell6649.setBorderRight(new SolidBorder(borderWidth));
+               // cell6649.setBorderTop(new SolidBorder(borderWidth));
+                Table innerTable13 = new Table(new float[]{2,3});
+                Cell labelCell13 = new Cell().add(new Paragraph(new Text("").setFont(boldFont)))
+                                           .setBorder(Border.NO_BORDER)
+                                           .setTextAlignment(TextAlignment.LEFT);
+                innerTable13.addCell(labelCell13);
+                Cell valueCell13 = new Cell().add(new Paragraph(new Text("").setFont(normalFont)))
+                                           .setBorder(Border.NO_BORDER)
+                                           .setTextAlignment(TextAlignment.LEFT);
+                innerTable13.addCell(valueCell13);
+                cell6649.add(innerTable13);
+                 contentTable.addCell(cell6649);
         
         
-
-    
-
-        Cell cell664 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-        cell664.setBorderRight(new SolidBorder(borderWidth));
-
-		Paragraph paragraph10 = new Paragraph()
-		        .add(new Text("BILL OF SUPPLY DATE : ").setFont(boldFont))
-		        .add(new Text(ClientPan).setFont(normalFont));
-		cell664.add(paragraph10);
-        contentTable.addCell(cell664);
 		
 		Cell cell21 = createCell("DETAILS OF  RECIEPIENTS", Border.NO_BORDER, TextAlignment.LEFT);
 		cell21.setBorderRight(new SolidBorder(borderWidth));
@@ -305,6 +568,7 @@ public class PdfGenerator_K {
 		
 		  Cell cell22 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 		  cell22.setBorderRight(new SolidBorder(borderWidth));
+		  cell22.setBorderBottom(new SolidBorder(borderWidth));
 		  cell22.setBorderTop(new SolidBorder(borderWidth));
 			Paragraph paragraph24 = new Paragraph()
 			        .add(new Text("DETAILS OF  CONSIGNEE: ").setFont(boldFont))
@@ -313,118 +577,285 @@ public class PdfGenerator_K {
 	        contentTable.addCell(cell22);
 		
 
-		  Cell cell71 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		  cell71.setBorderRight(new SolidBorder(borderWidth));
-		  cell71.setBorderTop(new SolidBorder(borderWidth));
-			Paragraph paragraph11 = new Paragraph()
-			        .add(new Text("GSTIN : ").setFont(boldFont))
-			        .add(new Text(recipient_GSTN).setFont(normalFont));
-			cell71.add(paragraph11);
-	        contentTable.addCell(cell71);
+//		  Cell cell71 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		  cell71.setBorderRight(new SolidBorder(borderWidth));
+//		  cell71.setBorderTop(new SolidBorder(borderWidth));
+//			Paragraph paragraph11 = new Paragraph()
+//			        .add(new Text("GSTIN : ").setFont(boldFont))
+//			        .add(new Text(recipient_GSTN).setFont(normalFont));
+//			cell71.add(paragraph11);
+//	        contentTable.addCell(cell71);
+	        
+	        Cell cell71 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+	        cell71.setBorderRight(new SolidBorder(borderWidth));
+	        //cell71.setBorderTop(new SolidBorder(borderWidth));
+	        Table innerTable14 = new Table(new float[]{2,3});
+            Cell labelCell14 = new Cell().add(new Paragraph(new Text("GSTIN : ").setFont(boldFont)))
+                                       .setBorder(Border.NO_BORDER)
+                                       .setTextAlignment(TextAlignment.LEFT);
+            innerTable14.addCell(labelCell14);
+            Cell valueCell14 = new Cell().add(new Paragraph(new Text(recipient_GSTN).setFont(normalFont)))
+                                       .setBorder(Border.NO_BORDER)
+                                       .setTextAlignment(TextAlignment.LEFT);
+            innerTable14.addCell(valueCell14);
+            cell71.add(innerTable14);
+             contentTable.addCell(cell71);
 		
 		
 
-		Cell cell72 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell72.setBorderRight(new SolidBorder(borderWidth));
-		cell72.setBorderTop(new SolidBorder(borderWidth));
-			Paragraph paragraph12 = new Paragraph()
-			        .add(new Text("GSTIN : ").setFont(boldFont))
-			        .add(new Text(consignee_GSTN).setFont(normalFont));
-			cell72.add(paragraph12);
-	        contentTable.addCell(cell72);
+//		Cell cell72 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell72.setBorderRight(new SolidBorder(borderWidth));
+//		cell72.setBorderTop(new SolidBorder(borderWidth));
+//			Paragraph paragraph12 = new Paragraph()
+//			        .add(new Text("GSTIN : ").setFont(boldFont))
+//			        .add(new Text(consignee_GSTN).setFont(normalFont));
+//			cell72.add(paragraph12);
+//	        contentTable.addCell(cell72);
+             
+             Cell cell72 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+             cell72.setBorderRight(new SolidBorder(borderWidth));
+            // cell72.setBorderTop(new SolidBorder(borderWidth));
+             Table innerTable15 = new Table(new float[]{2,3});
+             Cell labelCell15 = new Cell().add(new Paragraph(new Text("GSTIN : ").setFont(boldFont)))
+                                        .setBorder(Border.NO_BORDER)
+                                        .setTextAlignment(TextAlignment.LEFT);
+             innerTable15.addCell(labelCell15);
+             Cell valueCell15 = new Cell().add(new Paragraph(new Text(consignee_GSTN).setFont(normalFont)))
+                                        .setBorder(Border.NO_BORDER)
+                                        .setTextAlignment(TextAlignment.LEFT);
+             innerTable15.addCell(valueCell15);
+             cell72.add(innerTable15);
+              contentTable.addCell(cell72);
 
-		Cell cell73 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell73.setBorderRight(new SolidBorder(borderWidth));
-		
-			Paragraph paragraph13 = new Paragraph()
-			        .add(new Text("NAME : ").setFont(boldFont))
-			        .add(new Text(recipient_Name).setFont(normalFont));
-			cell73.add(paragraph13);
-	        contentTable.addCell(cell73);
+//		Cell cell73 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell73.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph13 = new Paragraph()
+//			        .add(new Text("NAME : ").setFont(boldFont))
+//			        .add(new Text(recipient_Name+"("+millcode234+")").setFont(normalFont));
+//			cell73.add(paragraph13);
+//	        contentTable.addCell(cell73);
+              
+              Cell cell73 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+              cell73.setBorderRight(new SolidBorder(borderWidth));
+              //cell73.setBorderTop(new SolidBorder(borderWidth));
+              Table innerTable16 = new Table(new float[]{2,3});
+              Cell labelCell16 = new Cell().add(new Paragraph(new Text("NAME : ").setFont(boldFont)))
+                                         .setBorder(Border.NO_BORDER)
+                                         .setTextAlignment(TextAlignment.LEFT);
+              innerTable16.addCell(labelCell16);
+              Cell valueCell16 = new Cell().add(new Paragraph(new Text(recipient_Name+"("+millcode234+")").setFont(normalFont)))
+                                         .setBorder(Border.NO_BORDER)
+                                         .setTextAlignment(TextAlignment.LEFT);
+              innerTable16.addCell(valueCell16);
+              cell73.add(innerTable16);
+               contentTable.addCell(cell73);
 		 
-	        Cell cell74 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell74.setBorderRight(new SolidBorder(borderWidth));
-		
-			Paragraph paragraph14 = new Paragraph()
-			        .add(new Text("NAME : ").setFont(boldFont))
-			        .add(new Text(consignee_Name).setFont(normalFont));
-			cell74.add(paragraph14);
-	        contentTable.addCell(cell74);
+//	        Cell cell74 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell74.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph14 = new Paragraph()
+//			        .add(new Text("NAME : ").setFont(boldFont))
+//			        .add(new Text(consignee_Name).setFont(normalFont));
+//			cell74.add(paragraph14);
+//	        contentTable.addCell(cell74);
+               
+               Cell cell74 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+               cell74.setBorderRight(new SolidBorder(borderWidth));
+               //cell74.setBorderTop(new SolidBorder(borderWidth));
+               Table innerTable17 = new Table(new float[]{2,3});
+               Cell labelCell17 = new Cell().add(new Paragraph(new Text("NAME : ").setFont(boldFont)))
+                                          .setBorder(Border.NO_BORDER)
+                                          .setTextAlignment(TextAlignment.LEFT);
+               innerTable17.addCell(labelCell17);
+               Cell valueCell17 = new Cell().add(new Paragraph(new Text(consignee_Name).setFont(normalFont)))
+                                          .setBorder(Border.NO_BORDER)
+                                          .setTextAlignment(TextAlignment.LEFT);
+               innerTable17.addCell(valueCell17);
+               cell74.add(innerTable17);
+                contentTable.addCell(cell74);
 	
 		
-		Cell cell75 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell75.setBorderRight(new SolidBorder(borderWidth));
+//		Cell cell75 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell75.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph15 = new Paragraph()
+//			        .add(new Text("ADDRESS : ").setFont(boldFont))
+//			        .add(new Text(recipient_Address).setFont(normalFont));
+//			cell75.add(paragraph15);
+//	        contentTable.addCell(cell75);
+
+                
+                Cell cell75 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                cell75.setBorderRight(new SolidBorder(borderWidth));
+                //cell75.setBorderTop(new SolidBorder(borderWidth));
+                Table innerTable18 = new Table(new float[]{2,3});
+                Cell labelCell18 = new Cell().add(new Paragraph(new Text("ADDRESS : ").setFont(boldFont)))
+                                           .setBorder(Border.NO_BORDER)
+                                           .setTextAlignment(TextAlignment.LEFT);
+                innerTable18.addCell(labelCell18);
+                Cell valueCell18 = new Cell().add(new Paragraph(new Text(recipient_Address).setFont(normalFont)))
+                                           .setBorder(Border.NO_BORDER)
+                                           .setTextAlignment(TextAlignment.LEFT);
+                innerTable18.addCell(valueCell18);
+                cell75.add(innerTable18);
+                 contentTable.addCell(cell75);
 		
-			Paragraph paragraph15 = new Paragraph()
-			        .add(new Text("ADDRESS : ").setFont(boldFont))
-			        .add(new Text(recipient_Address).setFont(normalFont));
-			cell75.add(paragraph15);
-	        contentTable.addCell(cell75);
+//		Cell cell76 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell76.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph16 = new Paragraph()
+//			        .add(new Text("ADDRESS : ").setFont(boldFont))
+//			        .add(new Text(consignee_Address).setFont(normalFont));
+//			cell76.add(paragraph16);
+//	        contentTable.addCell(cell76);
+                 
+                 Cell cell76 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                 cell76.setBorderRight(new SolidBorder(borderWidth));
+                // cell76.setBorderTop(new SolidBorder(borderWidth));
+                 Table innerTable19 = new Table(new float[]{2,3});
+                 Cell labelCell19 = new Cell().add(new Paragraph(new Text("ADDRESS : ").setFont(boldFont)))
+                                            .setBorder(Border.NO_BORDER)
+                                            .setTextAlignment(TextAlignment.LEFT);
+                 innerTable19.addCell(labelCell19);
+                 Cell valueCell19 = new Cell().add(new Paragraph(new Text(consignee_Address).setFont(normalFont)))
+                                            .setBorder(Border.NO_BORDER)
+                                            .setTextAlignment(TextAlignment.LEFT);
+                 innerTable19.addCell(valueCell19);
+                 cell76.add(innerTable19);
+                  contentTable.addCell(cell76);
+		
+		
 
 		
-		Cell cell76 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell76.setBorderRight(new SolidBorder(borderWidth));
-		
-			Paragraph paragraph16 = new Paragraph()
-			        .add(new Text("ADDRESS : ").setFont(boldFont))
-			        .add(new Text(consignee_Address).setFont(normalFont));
-			cell76.add(paragraph16);
-	        contentTable.addCell(cell76);
-		
-		
+//		Cell cell77 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell77.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph17 = new Paragraph()
+//			        .add(new Text("STATE NAME : ").setFont(boldFont))
+//			        .add(new Text(mastterSatename).setFont(normalFont));
+//			cell77.add(paragraph17);
+//	        contentTable.addCell(cell77);
+                  
+                  Cell cell77 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                  cell77.setBorderRight(new SolidBorder(borderWidth));
+                  //cell77.setBorderTop(new SolidBorder(borderWidth));
+                  Table innerTable20 = new Table(new float[]{2,3});
+                  Cell labelCell20 = new Cell().add(new Paragraph(new Text("STATE NAME : ").setFont(boldFont)))
+                                             .setBorder(Border.NO_BORDER)
+                                             .setTextAlignment(TextAlignment.LEFT);
+                  innerTable20.addCell(labelCell20);
+                  Cell valueCell20 = new Cell().add(new Paragraph(new Text(mastterSatename).setFont(normalFont)))
+                                             .setBorder(Border.NO_BORDER)
+                                             .setTextAlignment(TextAlignment.LEFT);
+                  innerTable20.addCell(valueCell20);
+                  cell77.add(innerTable20);
+                   contentTable.addCell(cell77);
+
 
 		
-		Cell cell77 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell77.setBorderRight(new SolidBorder(borderWidth));
 		
-			Paragraph paragraph17 = new Paragraph()
-			        .add(new Text("STATE NAME : ").setFont(boldFont))
-			        .add(new Text(mastterSatename).setFont(normalFont));
-			cell77.add(paragraph17);
-	        contentTable.addCell(cell77);
-
-
-		
-		
-		Cell cell78 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell78.setBorderRight(new SolidBorder(borderWidth));
-		
-			Paragraph paragraph18 = new Paragraph()
-			        .add(new Text("STATE NAME : ").setFont(boldFont))
-			        .add(new Text(mastterSatename2).setFont(normalFont));
-			cell78.add(paragraph18);
-	        contentTable.addCell(cell78);
-	    Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		cell778.setBorderRight(new SolidBorder(borderWidth));
-		
-			Paragraph paragraph19 = new Paragraph()
-			        .add(new Text("STATE CODE : ").setFont(boldFont))
-			        .add(new Text(ReciepentsStatecode).setFont(normalFont));
-			cell778.add(paragraph19);
-	        contentTable.addCell(cell778);
+//		Cell cell78 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell78.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph18 = new Paragraph()
+//			        .add(new Text("STATE NAME : ").setFont(boldFont))
+//			        .add(new Text(mastterSatename2).setFont(normalFont));
+//			cell78.add(paragraph18);
+//	        contentTable.addCell(cell78);
+                   
+                   Cell cell78 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                   cell78.setBorderRight(new SolidBorder(borderWidth));
+                   //cell78.setBorderTop(new SolidBorder(borderWidth));
+                   Table innerTable21 = new Table(new float[]{2,3});
+                   Cell labelCell21 = new Cell().add(new Paragraph(new Text("STATE NAME : ").setFont(boldFont)))
+                                              .setBorder(Border.NO_BORDER)
+                                              .setTextAlignment(TextAlignment.LEFT);
+                   innerTable21.addCell(labelCell21);
+                   Cell valueCell21 = new Cell().add(new Paragraph(new Text(mastterSatename2).setFont(normalFont)))
+                                              .setBorder(Border.NO_BORDER)
+                                              .setTextAlignment(TextAlignment.LEFT);
+                   innerTable21.addCell(valueCell21);
+                   cell78.add(innerTable21);
+                    contentTable.addCell(cell78);
+                   
+                   
+//	    Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		cell778.setBorderRight(new SolidBorder(borderWidth));
+//		
+//			Paragraph paragraph19 = new Paragraph()
+//			        .add(new Text("STATE CODE : ").setFont(boldFont))
+//			        .add(new Text(ReciepentsStatecode).setFont(normalFont));
+//			cell778.add(paragraph19);
+//	        contentTable.addCell(cell778);
+                    
+                    Cell cell778 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                    cell778.setBorderRight(new SolidBorder(borderWidth));
+                    //cell778.setBorderTop(new SolidBorder(borderWidth));
+                    Table innerTable22 = new Table(new float[]{2,3});
+                    Cell labelCell22 = new Cell().add(new Paragraph(new Text("STATE CODE : ").setFont(boldFont)))
+                                               .setBorder(Border.NO_BORDER)
+                                               .setTextAlignment(TextAlignment.LEFT);
+                    innerTable22.addCell(labelCell22);
+                    Cell valueCell22 = new Cell().add(new Paragraph(new Text(ReciepentsStatecode).setFont(normalFont)))
+                                               .setBorder(Border.NO_BORDER)
+                                               .setTextAlignment(TextAlignment.LEFT);
+                    innerTable22.addCell(valueCell22);
+                    cell778.add(innerTable22);
+                     contentTable.addCell(cell778);
 	        
 
 	        
-	        Cell cell776 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-	        cell776.setBorderRight(new SolidBorder(borderWidth));
-			
-				Paragraph paragraph20 = new Paragraph()
-				        .add(new Text("STATE CODE : ").setFont(boldFont))
-				        .add(new Text(Clientcode).setFont(normalFont));
-				cell776.add(paragraph20);
-		        contentTable.addCell(cell776);
+//	        Cell cell776 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//	        cell776.setBorderRight(new SolidBorder(borderWidth));
+//			
+//				Paragraph paragraph20 = new Paragraph()
+//				        .add(new Text("STATE CODE : ").setFont(boldFont))
+//				        .add(new Text(Clientcode).setFont(normalFont));
+//				cell776.add(paragraph20);
+//		        contentTable.addCell(cell776);
+                     
+                     Cell cell776 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                     cell776.setBorderRight(new SolidBorder(borderWidth));
+                     //cell776.setBorderTop(new SolidBorder(borderWidth));
+                     Table innerTable23 = new Table(new float[]{2,3});
+                     Cell labelCell23 = new Cell().add(new Paragraph(new Text("STATE CODE : ").setFont(boldFont)))
+                                                .setBorder(Border.NO_BORDER)
+                                                .setTextAlignment(TextAlignment.LEFT);
+                     innerTable23.addCell(labelCell23);
+                     Cell valueCell23 = new Cell().add(new Paragraph(new Text(Clientcode).setFont(normalFont)))
+                                                .setBorder(Border.NO_BORDER)
+                                                .setTextAlignment(TextAlignment.LEFT);
+                     innerTable23.addCell(valueCell23);
+                     cell776.add(innerTable23);
+                      contentTable.addCell(cell776);
 		        
 		        
 
 		
-		  Cell cell775 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
-		  cell775.setBorderRight(new SolidBorder(borderWidth));
-			
-				Paragraph paragraph21 = new Paragraph()
-				        .add(new Text("PAN : ").setFont(boldFont))
-				        .add(new Text(BOS_Date).setFont(normalFont));
-				cell775.add(paragraph21);
-		        contentTable.addCell(cell775);
+//		  Cell cell775 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+//		  cell775.setBorderRight(new SolidBorder(borderWidth));
+//			
+//				Paragraph paragraph21 = new Paragraph()
+//				        .add(new Text("PAN : ").setFont(boldFont))
+//				        .add(new Text(BOS_Date).setFont(normalFont));
+//				cell775.add(paragraph21);
+//		        contentTable.addCell(cell775);
+                      
+                      Cell cell775 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+                      cell775.setBorderRight(new SolidBorder(borderWidth));
+                      //cell775.setBorderTop(new SolidBorder(borderWidth));
+                      Table innerTable24 = new Table(new float[]{2,3});
+                      Cell labelCell24 = new Cell().add(new Paragraph(new Text("PAN :  ").setFont(boldFont)))
+                                                 .setBorder(Border.NO_BORDER)
+                                                 .setTextAlignment(TextAlignment.LEFT);
+                      innerTable24.addCell(labelCell24);
+                      Cell valueCell24 = new Cell().add(new Paragraph(new Text(BOS_Date).setFont(normalFont)))
+                                                 .setBorder(Border.NO_BORDER)
+                                                 .setTextAlignment(TextAlignment.LEFT);
+                      innerTable24.addCell(valueCell24);
+                      cell775.add(innerTable24);
+                       contentTable.addCell(cell775);
 
 		Cell cell774 = createCell("", Border.NO_BORDER, TextAlignment.RIGHT);
 		cell774.setBorderLeft(new SolidBorder(borderWidth));
@@ -595,6 +1026,8 @@ public class PdfGenerator_K {
             	 float TCS_Amt1=Float.parseFloat(TCS_Amt);
             	 totalqty2+=rate3;
             	 totalqty2+=TCS_Amt1;
+            	 totalqty2 = Math.round(totalqty2);
+            	 
              } 
           
           
@@ -748,7 +1181,7 @@ public class PdfGenerator_K {
     cell11228.setBorderRight(new SolidBorder(borderWidth));
     //cell11225.setBorderTop(new SolidBorder(borderWidth));
 	Paragraph paragraph228 = new Paragraph()
-	        .add(new Text("DRIVER LIC NO :").setFont(boldFont))
+	        .add(new Text("DRIVER Licence NO :").setFont(boldFont))
 	        .add(new Text(Driver_name).setFont(normalFont));
 	cell11228.add(paragraph228);
     contentTable22.addCell(cell11228);
@@ -766,8 +1199,8 @@ public class PdfGenerator_K {
     Cell cell3164 = createCell("", Border.NO_BORDER, TextAlignment.CENTER);
    
 	Paragraph paragraph345 = new Paragraph()
-	        .add(new Text("Driver's Name :").setFont(boldFont))
-	        .add(new Text("").setFont(normalFont));
+	        .add(new Text("Driver's Name : ").setFont(boldFont))
+	        .add(new Text(Driver_Lic_no).setFont(normalFont));
 	cell3164.add(paragraph345);
     contentTable364.addCell(cell3164);
 	

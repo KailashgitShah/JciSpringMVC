@@ -20,6 +20,7 @@ public interface GenerationofBillDao {
 	  public  List<Object[]> Dispatchentry(String st);
 	  public  List<Object[]> ForDate(String st);
 	  public  List<Object[]> Dpcname(String st,String st1);
+	  public  List<Object[]> RegionAndCenterName(String st);
 	  public  List<Object[]> PANSTATE(String st);
 	  public  List<Object[]> DocumentLcsEntry(String st);
 	  public  List<Object[]> Supplieradd(String st);

@@ -183,6 +183,14 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 
+
+	@Override
+	public List<Object[]> RegionAndCenterName(String st) {
+		
+		return generationofBillDao.RegionAndCenterName(st);
+	}
+
+
 	
 
 

@@ -12,7 +12,7 @@ public class ConvertWord_k {
             return "Invalid digit";
         }
 
-        String[] digitsInWords = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        String[] digitsInWords = {"zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
         return digitsInWords[digit];
     }
 
@@ -36,7 +36,7 @@ public class ConvertWord_k {
                 int tens = tensOnes / 10;
                 int ones = tensOnes % 10;
                 if (tens > 0) {
-                    String[] tensInWords = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+                    String[] tensInWords = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
                     groupWords.append(tensInWords[tens]);
                 }
                 if (ones > 0) {
@@ -51,8 +51,8 @@ public class ConvertWord_k {
 
     private String convertToWordsBelowTwenty(int number) {
         String[] wordsBelowTwenty = {
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+            "zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+            "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"
         };
         return wordsBelowTwenty[number];
     }

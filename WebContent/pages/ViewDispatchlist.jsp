@@ -181,10 +181,9 @@
 											             <th>Challan NO</th>
 											             <th>Bale Mark</th>
 											             <th>Crop_year</th>
-											            <th>Jute_grade</th>
+											            <th>Variety/Grade</th>
 											            <th>Jute_value</th>
-											            <th>Jute_variety</th>
-											            <th>No of bales</th>
+											           <th>No of bales</th>
 											            <th>Nominal wt/bale</th>
 											            <th>Nominal_qty</th>
 											            <th>Rate</th>

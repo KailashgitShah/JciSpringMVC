@@ -102,6 +102,17 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "Statecode_forBOs")
 	private String Statecode_forBOs;
+	
+	@Column(name = "DPCID")
+	private String DPCID;
+
+	public String getDPCID() {
+		return DPCID;
+	}
+
+	public void setDPCID(String dPCID) {
+		DPCID = dPCID;
+	}
 
 	public String getStatecode_forBOs() {
 		return Statecode_forBOs;
