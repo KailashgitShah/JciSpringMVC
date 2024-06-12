@@ -5855,7 +5855,8 @@ public class InsertDataController
 			        String InstrumentValue = request.getParameter("InstrumentValue");
 			        double InstrumentValue1 = Double.parseDouble(InstrumentValue);
 			        double instvalue=ratio*InstrumentValue1;
-			        String instvalue1 = String.valueOf(instvalue);
+			        int intValue1 = (int) instvalue;
+			       
 			       
 			        
 				String millname65 = request.getParameter("millname65");
@@ -5925,7 +5926,7 @@ public class InsertDataController
 				entryPaymentDetailsModel.setInstdate(instdate1);
 				entryPaymentDetailsModel.setPayment(payment);
 				//int  instruValue= Integer.parseInt(InstrumentValue);
-				entryPaymentDetailsModel.setInstrumentValue(instvalue1);
+				entryPaymentDetailsModel.setInstrumentValue(intValue1);
 				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
 				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
 				entryPaymentDetailsModel.setFc_status(0);
@@ -6129,31 +6130,46 @@ public class InsertDataController
 				 System.err.println(cost);
 			    }
 			
-			int allIndiaSerialNo = 000001;
+			int allIndiaSerialNo = 1;
 //			/* int stateSerialNo = 1; */
 			 String fcref_no1 = GenerateFCNO(request.getSession(),allIndiaSerialNo);
 			    mv.addObject("fcref_no1", fcref_no1);
 
 			return mv;
+			
+			
 		}
 		
+//		private String GenerateFCNO1(HttpSession session, int allIndiaSerialNo) {
+//	     if (session.getAttribute("allIndiaSerialNo") != null) {
+//	            allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
+//	            allIndiaSerialNo++;
+//	        }
+//	        session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+//
+//	        String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
+//	        String status=this.fiannacialConcurenceService.fcref_nocheck(formattedAllIndiaSerialNo);
+//	       if ("1".equals(status)) {
+//	          
+//	           return GenerateFCNO(session, allIndiaSerialNo + 1);
+//	       } else {
+//	           
+//	           return formattedAllIndiaSerialNo;
+//	       }
+//	    }
+		///////////////
 		private String GenerateFCNO(HttpSession session, int allIndiaSerialNo) {
-	     if (session.getAttribute("allIndiaSerialNo") != null) {
-	            allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
-	            allIndiaSerialNo++;
-	        }
-	        session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+		
+			
 
-	        String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
-	        String status=this.fiannacialConcurenceService.fcref_nocheck(formattedAllIndiaSerialNo);
-	       if ("1".equals(status)) {
-	          
-	           return GenerateFCNO(session, allIndiaSerialNo + 1);
-	       } else {
-	           
-	           return formattedAllIndiaSerialNo;
-	       }
-	    }
+			 String status = String.format("%06d", Integer.parseInt(this.fiannacialConcurenceService.fcref_nocheck()));
+			
+				String laString  = status ;
+			
+			return laString;
+		}
+		
+			
 		@RequestMapping({ "updatefcstatus" })
 		public ModelAndView bnaDeletepay( HttpServletRequest request, RedirectAttributes redirectAttributes) {
 			final ModelAndView mv = new ModelAndView("viewFCpaymentlist");

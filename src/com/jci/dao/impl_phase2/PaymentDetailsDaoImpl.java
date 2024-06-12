@@ -254,7 +254,23 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 
 	@Override
 	public List<Object[]> contractlistfetchdata(String st) {
-		String sql="SELECT  Contract_no,Mill_qty,Contract_value,Contract_date,Payment_duedate from jcicontract where Contract_no='" + st + "'";
+		String sql="SELECT  a.Contract_no, a.Mill_qty, a.Contract_value, a.Contract_date,a.Payment_duedate, b.Instrument_value,"
+				
+				+ "    CONVERT(varchar(10), b.Instrument_Date, 105) AS Instrument_Date,\r\n"
+				+ "    (SELECT SUM(TRY_CAST(b2.Instrument_value AS DECIMAL(18, 2)))\r\n"
+				+ "     FROM jcipayment_arrangement b2\r\n"
+				+ "     WHERE b2.Contract_No = a.Contract_no) AS total_instrument_value,\r\n"
+			
+				+ "      a.Contract_value - \r\n"
+				+ "    (SELECT SUM(TRY_CAST(b2.Instrument_value AS DECIMAL(18, 2)))\r\n"
+				+ "     FROM jcipayment_arrangement b2\r\n"
+				+ "     WHERE b2.Contract_No = a.Contract_no) AS difference\r\n"
+			
+				+ "FROM jcicontract AS a\r\n"
+				+ "LEFT  JOIN  jcipayment_arrangement AS b \r\n"
+				+ "ON  b.Contract_No = a.Contract_no\r\n"
+				
+				+ " where a.Contract_no='" + st + "'";
 		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return millnamelist;
 	}
@@ -265,6 +281,29 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 		  this.sessionFactory.getCurrentSession().createSQLQuery(sql).executeUpdate();
 		  
 		
+	}
+
+	@Override
+	public List<Object[]> difrencecandsum(String st) {
+String sql="SELECT  a.Contract_no, a.Mill_qty, a.Contract_value, a.Contract_date,a.Payment_duedate, b.Instrument_value,"
+				
+				+ "    CONVERT(varchar(10), b.Instrument_Date, 105) AS Instrument_Date,\r\n"
+				+ "    (SELECT SUM(TRY_CAST(b2.Instrument_value AS DECIMAL(18, 2)))\r\n"
+				+ "     FROM jcipayment_arrangement b2\r\n"
+				+ "     WHERE b2.Contract_No = a.Contract_no) AS total_instrument_value,\r\n"
+			
+				+ "      a.Contract_value - \r\n"
+				+ "    (SELECT SUM(TRY_CAST(b2.Instrument_value AS DECIMAL(18, 2)))\r\n"
+				+ "     FROM jcipayment_arrangement b2\r\n"
+				+ "     WHERE b2.Contract_No = a.Contract_no) AS difference\r\n"
+			
+				+ "FROM jcicontract AS a\r\n"
+				+ "LEFT  JOIN  jcipayment_arrangement AS b \r\n"
+				+ "ON  b.Contract_No = a.Contract_no\r\n"
+				
+				+ " where a.Contract_no='" + st + "'";
+		 List<Object[]>millnamelist= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return millnamelist;
 	}
 
 

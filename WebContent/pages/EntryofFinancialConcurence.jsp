@@ -11,6 +11,7 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="java.math.MathContext" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,10 +103,18 @@
 		 
 		    BigDecimal contractqty = new BigDecimal(String.valueOf(Cont_qty));
 		   
-		    BigDecimal qtdiv = contractValueBigInt.divide(contractqty,2, RoundingMode.HALF_UP);
+/* 		    BigDecimal qtdiv = contractValueBigInt.divide(contractqty,2, RoundingMode.HALF_UP);
 		
 		  
-		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP);
+		    BigDecimal qtdivtotal = qtdsub.divide(qtdiv,2, RoundingMode.HALF_UP); */
+		    
+		    MathContext mc = new MathContext(10, RoundingMode.HALF_UP); // Specify precision and rounding mode
+
+	        BigDecimal qtdiv = contractqty.divide(contractValueBigInt, mc);
+			  
+		    BigDecimal qtdivtotal1 = qtdiv.multiply(instrumentValueBigInt);
+		    
+		    BigDecimal qtdivtotal = qtdivtotal1.setScale(2, RoundingMode.HALF_UP);
 		    
 		    
 	 	    

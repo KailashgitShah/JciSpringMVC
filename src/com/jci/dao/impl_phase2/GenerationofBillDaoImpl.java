@@ -61,8 +61,8 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	
 	@Override
 	public  List<Object[]>contarctnoformaster(String st) {
-		String sql = "SELECT  a.unit_name, a.unit_address1,  a.unit_state,   a.unit_location, b.client_gstin, b.client_pan, b.client_state, b.client_address1,  b.client_name, a.client_unit_code "
-				+ " FROM  jcimilldetailchild AS a LEFT JOIN jcimilldetailmaster AS b ON a.client_code = b.client_code where a.client_unit_code='"+ st+"'";
+		String sql = "SELECT  a.unit_name, a.unit_address1,a.unit_address2,a.unit_location,a.unit_pin,  a.unit_state,  b.client_gstin, b.client_pan, b.client_state, b.client_address1,b.client_address2,b.client_location,\r\n"
+				+ "b.client_pin,  b.client_name, a.client_unit_code FROM  jcimilldetailchild AS a LEFT JOIN jcimilldetailmaster AS b ON a.client_code = b.client_code where a.client_unit_code='"+ st+"'";
    List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql) .list();
    System.out.println(resultList1);
    return resultList1;
@@ -71,21 +71,19 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	
 	@Override
 	public  List<Object[]> Dispatchentry(String st) {
-		String sql="select  Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty  from  jcidispatch_details_child where  Challan_no='" + st + "' ";
+		String sql="select  Crop_year,Bale_mark,Jute_variety,Jute_grade,No_of_bales,Nominal_wt,Rate,Nominal_qty,Jute_value  from  jcidispatch_details_child where  Challan_no='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
     }
 
 	@Override
-	public String billofsupplyno(String st) {
-		String sql = "SELECT  count(*) FROM jcibos_generation WHERE Bill_of_supply_no = '" + st + "' ";
+	public String billofsupplyno() {
+		String sql = "SELECT  count(*) FROM jcibos_generation ";
 		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+		total++;
 		
-		
-		if(total>0)
-			return "1";
-		else 
-			return "0";
+		return String.valueOf(total);
+			
 
 	}
 
@@ -102,7 +100,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	@Override
 	public String billUpdation(String st) {
 		
-	    String hql = "UPDATE jcidispatch_details set Di_status = 1 where Contract_No = '" + st + "' ";
+	    String hql = "UPDATE jcidispatch_details set Di_status = 1 where Challan_no = '" + st + "' ";
 	    
 	    String hql1 = "UPDATE jcicontract set contract_status='Bill of Supply Generated' where Contract_no = '" + st + "' ";
 	    this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
@@ -132,7 +130,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public boolean millnamefromTCS(String millname) {
-		String sql="select Mill from  jcitds_entry ";
+		String sql="select  Distinct Mill from  jcitds_entry  ";
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		 for (Object mill : resultList1) {
 		        if (millname.equals(mill.toString())) {
@@ -145,7 +143,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]> ShipmentDetails(String st) {
-		String sql="SELECT  Crop_year,Bale_mark,Jute_variety,No_of_bales,Nominal_wt,Rate,Nominal_qty FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+		String sql="SELECT  Crop_year,Bale_mark,Jute_grade,No_of_bales,Nominal_wt,Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
@@ -153,7 +151,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]> dispatchChildlist(String st) {
-        String sql="SELECT Challan_no,Bale_mark,Crop_year,Jute_grade,Jute_value,Jute_variety,No_of_bales,Nominal_wt, Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
+        String sql="SELECT Challan_no,Bale_mark,Crop_year,Jute_grade,Jute_value,No_of_bales,Nominal_wt, Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return resultList1;
@@ -207,6 +205,69 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 			
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+	}
+
+	@Override
+	public String statecode(String st) {
+	    String sql = "SELECT c.gov_state_code FROM jcipurchasecenter AS a INNER JOIN "
+	            + "tbl_districts_new AS b ON a.district = b.dist_code INNER JOIN tbl_states_new AS c ON c.state_code = b.state_code "
+	            + "WHERE a.CENTER_CODE='" + st + "'";
+	    Integer result = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+	    return result != null ? result.toString() : null; // Convert Integer to String, handling null case
+	}
+
+
+	@Override
+	public String statecount(String st) {
+		String sql = "SELECT  count(*) FROM jcibos_generation  where Statecode_forBOs='" + st + "'";
+		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+		total++;
+		
+		return String.valueOf(total);
+			
+	}
+
+	@Override
+	public List<Object[]> ForDate(String st) {
+		String sql="    SELECT \r\n"
+				+ "    CONVERT(VARCHAR, a.Contract_date, 103) AS Contract_date,\r\n"
+				+ "    a.DI_No,\r\n"
+				+ "    CONVERT(VARCHAR, a.DI_Date, 103) AS DI_Date,\r\n"
+				+ "    CONVERT(VARCHAR, a.Date_of_shipment, 103) AS Date_of_shipment,\r\n"
+				+ "    a.Contract_No,\r\n"
+				+ "    CASE \r\n"
+				+ "        WHEN b.Payment_type = 'letter of credit' THEN b.Instrument_No \r\n"
+				+ "        ELSE 'N/A' \r\n"
+				+ "    END AS Instrument_No,\r\n"
+				+ "    CASE \r\n"
+				+ "        WHEN b.Payment_type = 'letter of credit' THEN CONVERT(VARCHAR, b.Instrument_Date, 103) \r\n"
+				+ "        ELSE '' \r\n"
+				+ "    END AS Instrument_Date,\r\n"
+				+ "    b.Payment_type \r\n"
+				+ "FROM \r\n"
+				+ "    jcidispatch_details AS a \r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcipayment_arrangement AS b \r\n"
+				+ "ON  \r\n"
+				+ "    b.Contract_No = a.Contract_No \r\n"
+				+ "where  Challan_no='" + st + "'  ";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> Dpcname(String st,String  st1) {
+		String sql="select employeename from jciumt WHERE dpcId='" + st1 + "' ";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		    return resultList1;
+	}
+
+	@Override
+	public List<Object[]> RegionAndCenterName(String st) {
+		String sql="  select a.centername,a.CENTER_CODE,b.roname,b.rocode  from  jcipurchasecenter as a LEFT join \r\n"
+				+ "  jcirodetails as b  on a.rocode=b.rocode   where a.centertypecode='D' and a.CENTER_CODE='" + st + "'";
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 	}
 

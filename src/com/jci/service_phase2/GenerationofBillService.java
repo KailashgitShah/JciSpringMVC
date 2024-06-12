@@ -19,10 +19,15 @@ public interface GenerationofBillService {
 	  public  List<Object[]>contarctnoformaster(String  st);
 	  public  List<Object[]>GenrationAginstLCs(String  st);
 	  public  List<Object[]>Dispatchentry(String  st);
+	  public  List<Object[]>ForDate(String  st);
+	  public  List<Object[]>Dpcname(String  st,String st1);
+	  public  List<Object[]>RegionAndCenterName(String  st);
 	  public  List<Object[]>PANSTATE(String  st);
 	  public  List<Object[]>DocumentLcsEntry(String  st);
 	  public  List<Object[]>Supplieradd(String  st);
-	  public   String billofsupplyno(String  st);
+	  public   String billofsupplyno();
+	  public   String statecode(String St);
+	  public   String statecount(String St);
 	  public String billUpdation(String st);
 	  public void remark(String cont_no,String  con_No);
 	  public GenerationOfBillSupplyModel find(int id);

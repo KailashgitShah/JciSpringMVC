@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -78,6 +79,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
@@ -153,8 +155,12 @@ import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
 import com.jci.service_phase2.WeighmentEntryService;
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfWriter;
 import com.microsoft.schemas.office.excel.CTClientData;
 import com.microsoft.schemas.office.excel.CTClientData.Factory;
 
@@ -1902,11 +1908,7 @@ public class Controller_V {
 		String millCode = (String) rowObject[10];
 		String dpc = (String) rowObject[11];
 		String gstCode= (String) rowObject[12];
-<<<<<<< HEAD
-=======
-		System.err.println("GST:"+ gstCode);
-		System.err.println("GST:"+ gstCode);
->>>>>>> 8df6c648e80ae013eaea123835620fc6c97ee18f
+
 		System.err.println("roId from controller => " + roId);
 
 		int getGstCount = creditNoteGenerationService.getGstCount(gstCode);
@@ -1932,13 +1934,10 @@ public class Controller_V {
 		mv.addObject("dispetchDetails", dispetchDetails);
 		mv.addObject("gradeRatio", gradeRatio);
 		mv.addObject("dpc", dpc);
-<<<<<<< HEAD
         mv.addObject("gst",gstCode);
         //state 
         mv.addObject("getGstCount",getGstCount);
-=======
-		mv.addObject("gst",gstCode);
->>>>>>> 8df6c648e80ae013eaea123835620fc6c97ee18f
+
 		return mv;
 	}
 
@@ -3288,6 +3287,18 @@ public class Controller_V {
 		String resultString = new Gson().toJson(contractRecieptModelt1);
 		return resultString;// gson.toJson((Object)millRecieptModelt1);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "difrencecandsum", method = RequestMethod.GET)
+	public String difrencecandsumcontarct(@RequestParam("contractno") String contractno) {
+		System.err.println("contractlistfetch");
+		List<Object[]> contractRecieptModelt1 = paymentDetailService.contractlistfetchdata(contractno);
+		System.err.println("resultList++++++++++" + contractRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractRecieptModelt1);
+		return resultString;// gson.toJson((Object)millRecieptModelt1);
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "millnamebasedcontract", method = RequestMethod.GET)
@@ -3353,6 +3364,7 @@ public class Controller_V {
 			String MR_No2 = request.getParameter("MR_No1");
 			String MR_Date1 = request.getParameter("MR_Date1");
 			String millcode1 = request.getParameter("millcode");
+			
 			String challanno1 = request.getParameter("challanno1");
 			// String shortqty = request.getParameter("InvoiceQty");
 			String Mill_receiptQty1 = request.getParameter("Mill_receiptQty1");
@@ -3674,6 +3686,7 @@ public class Controller_V {
 		final String DPC1 = request.getParameter("DPC");
 		List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
 		final String millname = request.getParameter("millname");
+		
 //		 List<Object[]> ShipmentDetails= (List<Object[]>)
 
 //			final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
@@ -3687,49 +3700,61 @@ public class Controller_V {
 
 		int allIndiaSerialNo = 1;
 		int stateSerialNo = 1;
-		String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo);
+		String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo,DPC1);
+		String Stategstcode = Stategstcode(DPC1);
 		mv.addObject("billOfSupplyNo", billOfSupplyNo);
+		mv.addObject("Stategstcode", Stategstcode);
 		mv.addObject("challan_no", challan_no);
 		mv.addObject("millname", millname);
 		mv.addObject("list", list);
+		mv.addObject("DPC1", DPC1);
 
 		return mv;
 
 	}
 
-	private String generateBillOfSupplyNumber(HttpSession session, int allIndiaSerialNo, int stateSerialNo) {
+	private String generateBillOfSupplyNumber(HttpSession session, int allIndiaSerialNo, int stateSerialNo,String DPC1) {
 		String prefix = "B";
 
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR) % 100;
-		String yearCode = String.format("%02d", currentYear);
+		Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
 
-		if (session.getAttribute("allIndiaSerialNo") != null) {
-			allIndiaSerialNo = (int) session.getAttribute("allIndiaSerialNo");
-			allIndiaSerialNo++;
-		}
-		session.setAttribute("allIndiaSerialNo", allIndiaSerialNo);
+        int financialYearStart, financialYearEnd;
 
-		String formattedAllIndiaSerialNo = String.format("%06d", allIndiaSerialNo);
+        if (currentMonth >= 4) { // April or later
+            financialYearStart = currentYear;
+            financialYearEnd = currentYear + 1;
+        } else { // January to March
+            financialYearStart = currentYear - 1;
+            financialYearEnd = currentYear;
+        } 
+        
+	     String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+		   
+		String yearCode = endYearLastTwoDigits;
+		
+		
+		 String statecode =  this.generationofBillService.statecode(DPC1);
 
-		String stateGSTCode = "19";
-
-		if (session.getAttribute("stateSerialNo") != null) {
-			stateSerialNo = (int) session.getAttribute("stateSerialNo");
-			stateSerialNo++;
-		}
-		session.setAttribute("stateSerialNo", stateSerialNo);
-
-		String formattedStateSerialNo = String.format("%05d", stateSerialNo);
-
-		String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
-		String status = this.generationofBillService.billofsupplyno(laString);
-		if ("1".equals(status)) {
-
-			return generateBillOfSupplyNumber(session, allIndiaSerialNo + 1, stateSerialNo + 1);
-		} else {
-
-			return laString;
-		}
+		 String status = String.format("%06d", Integer.parseInt(this.generationofBillService.billofsupplyno()));
+		
+		
+		String status1 = String.format("%05d", Integer.parseInt(this.generationofBillService.statecount(statecode)));
+		System.err.println(status1);
+		
+//		String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
+			String laString= prefix+ yearCode+ status+ statecode+status1 ;
+			System.err.print(laString);
+			System.err.print(laString);
+		return laString;
+		
+	}
+	
+	private String Stategstcode(String DPC1) {
+		 String statecode =  this.generationofBillService.statecode(DPC1);
+	
+			return statecode;
 	}
 
 	// save page of generation bill of supply
@@ -3751,6 +3776,8 @@ public class Controller_V {
 		try {
 
 			String Challan_No1 = request.getParameter("Challan_No1");
+			String statecode = request.getParameter("Stategstcode");
+			String DPC1code = request.getParameter("DPC1");
 			String Challan_Date1 = request.getParameter("Challan_Date1");
 			// String Shipment_Details = request.getParameter("Shipment_Details");
 			String Shipment_Value1 = request.getParameter("Shipment_Value1");
@@ -3818,14 +3845,20 @@ public class Controller_V {
 			generationOfBillSupplyModel.setConsignee_address(Consignee_Address);
 			generationOfBillSupplyModel.setContract_no(Conract_no);
 			generationOfBillSupplyModel.setTrnasitPolicyno(TrnasitPolicyNo);
+			generationOfBillSupplyModel.setStatecode_forBOs(statecode);
+			generationOfBillSupplyModel.setDPCID(DPC1code);
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
 			String ro_id = (String) request.getSession().getAttribute("regionId");
 			System.out.println(ro_id);
+			List<Object[]> RegionAndCenterName1 = generationofBillService.RegionAndCenterName(DPC1code);
+			
+			List<Object[]> Dpcname = generationofBillService.Dpcname(ro_id,DPC1code);
 			generationOfBillSupplyModel.setRo_id(ro_id);
 			// generationOfBillSupplyModel.setBos_file_path("documents");
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
+			List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
 			List<Object[]> PANSTATE = generationofBillService.PANSTATE(millcode234);
 			String mastterSatename="";
 			String mastterSatename2="";
@@ -3878,12 +3911,13 @@ public class Controller_V {
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
 					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
 					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,Statename23,StaeCode23,PAN23,mastterSatename,mastterSatename2,ReciepentsStatecode);
+					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,Statename23,StaeCode23,PAN23,mastterSatename,mastterSatename2,
+					ReciepentsStatecode,dateData,Dpcname,millcode234,RegionAndCenterName1);
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
 
-			this.generationofBillService.billUpdation(Conract_no);
+			this.generationofBillService.billUpdation(Challan_No1);
 
 			List<Object[]> ListLCs = this.generationofBillService.GenrationAginstLCs(Conract_no);
 
@@ -3920,6 +3954,7 @@ public class Controller_V {
 //						String filePath1 = pdfTopSheetPdf_k.generatePdfReport(list1);
 //
 //						String filePath2 = pdfTopSheetPdf_k.BOE();
+						
 
 					}
 
@@ -3936,30 +3971,25 @@ public class Controller_V {
 			String body = "In this All information regarding Bill of supply . ";
 			// String filename=Genrationofbill;
 
-//			 sendemailBOS email=new sendemailBOS();
-//	           InternetAddress[] toAddresses=null;
-//	           String subject="Bill of Supply attachement";
-//	           String body = "In this All information regarding Bill of supply . ";
-//	            // String filename=Genrationofbill;
+		
 //	             
-//	             
-//	           // String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
-//	            String filePathDir  = Genrationofbill + File.separator + filePath;
-//	             String username1="";
-//	             try {
-//	                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
-//	           toAddresses = new InternetAddress[]{
-//	                                new InternetAddress("kailashshahbro@gmail.com"),
-//	                                new InternetAddress("kailashshahsha81@gmail.com")
-//	                            };
-//	           } catch (AddressException e) {
-//	                 
-//	                 e.printStackTrace();
-//	           }
-//	           email.sendEmailBos( toAddresses ,  body , subject,filePathDir, username1);
+	           // String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
+	            String filePathDir  = Genrationofbill + File.separator + filePath;
+	             String username1="";
+	             try {
+	                 //toAddresses  = {  new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new InternetAddress("animesh.anand@cyfuture.com")};
+	           toAddresses = new InternetAddress[]{
+	                                new InternetAddress("kailashshahbro@gmail.com"),
+	                                new InternetAddress("kailashshahsha81@gmail.com")
+	                            };
+	           } catch (AddressException e) {
+	                 
+	                 e.printStackTrace();
+	           }
+	           email.sendEmailBos( toAddresses ,  body , subject,filePathDir, username1);
 
 //		       
-			// this.paymentDetailService.contratTable(Conract_no);
+			 this.paymentDetailService.contratTable(Conract_no);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
@@ -5251,8 +5281,8 @@ public class Controller_V {
 			
 			
 			// setting Static Value for Remaining 
-			jciclaim_NominationModel.setChallanNo("challans");
-			jciclaim_NominationModel.setClaimAmount(2);
+//			jciclaim_NominationModel.setChallanNo("challans");
+//			jciclaim_NominationModel.setClaimAmount(2);
 
 			nominalOfficialService.create(jciclaim_NominationModel);
 			 String mr = mr_no[i];
@@ -5463,7 +5493,12 @@ public class Controller_V {
 	public void downloadbosdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 		// String imageDirectory = "upload.Imagedownload";
 
-		String imagePath = GenrationofbillDownload + '/'+ filename;
+		String imagePath = GenrationofbillDownload + File.separator + filename;
+		
+		System.err.println(imagePath);
+		System.err.println(imagePath);
+		System.err.println(imagePath);
+		System.err.println(imagePath);
 
 		File imageFile = new File(imagePath);
 

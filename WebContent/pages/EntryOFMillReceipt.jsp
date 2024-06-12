@@ -57,6 +57,10 @@
     height: 20px;
     
 }
+.table4-cell .btn {
+    min-width: 100px;
+    height: 25px; /* Adjust the width as needed */
+}
 
  .table3-cell {
    
@@ -72,6 +76,43 @@
     width: 100%; /* Ensure the table takes the full width */
     table-layout: fixed; /* Fix the table layout */
 }
+.table-container {
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+}
+
+.table {
+    width: 100%;
+    white-space: nowrap; /* Prevents text from wrapping */
+    border-collapse: collapse; /* Prevents text from wrapping */
+}
+.table3-cell {
+  width: 80px; /* Adjust width as needed */
+  height: 30px; /* Adjust height as needed */
+  position: relative; /* Position relative for absolute positioning of inputs */
+}
+
+.table3-cell input[type="checkbox"],
+.table3-cell input[type="number"] {
+  position: absolute; /* Position absolute to overlay inputs */
+
+  margin-left: 5px; /* Adjust horizontal spacing */
+}
+
+.table3-cell input[type="checkbox"] {
+  right: -30px; /* Adjust horizontal position for checkbox */
+}
+
+/* .table3-cell input[type="number"] {
+  left: calc(100% + 5px); /* Adjust horizontal position for number input */
+}
+ */
+
+
+
+
 
 
 
@@ -235,7 +276,7 @@
 								
 								
 						
-								  
+								  <div class="table-container">
 								  <table id="childTable1" name="chilnametable1" class="table table-bordered">
 											    <thead class="thead-light">
 											        <tr>
@@ -252,15 +293,16 @@
 											              <th>Claim Type </th>
 											              <th> </th> -->
 											              <th>Quality Claim Percentage</th>
-											              <th>Quality Claim Value</th>
+											             <!--  <th>Quality Claim Value</th> -->
 											               <th> Moisture Content</th>
-											             <th> Moisture Value</th>
+											           <!--   <th> Moisture Value</th> -->
 											              <th> Ncv percent</th>
 											              <th> Ncv Qty</th>
-											              <th> Ncv Value</th>
+											            <!--   <th> Ncv Value</th> -->
 											               <th>Dust percent </th>
 											              <th> Dust Qty</th>
-											              <th> Dust Value</th>
+											           <!--    <th> Dust Value</th> -->
+											             <th> </th>
 											              <th> Claim Ammount</th>
 											            <!--  <th>
 													        <div class="form-check">
@@ -287,6 +329,7 @@
 											        <!-- Data rows will be dynamically added here -->
 											    </tbody>
 											</table>
+											</div>
 											
                                    
                              
@@ -426,6 +469,12 @@
 <script type="text/javascript">
 
 var resultsArray = [];
+var grade1 = [];
+var grade2 = [];
+var grade3 = [];
+var grade4 = [];
+var grade5 = [];
+var grade6 = [];
 var some = [];
 var claimAmount=[];
 var numberOfElements = 10; 
@@ -503,11 +552,24 @@ $(document).ready(function() {
                          var dataArray = JSON.parse(data);
                          if (dataArray.length > 0) {
                            
-                             
+                             alert(dataArray)
                              resultsArray = dataArray[0].slice(0); // Copy the elements from dataArray[0] to resultsArray
-                             resultsArray.push(dataArray);
-                
-                        	 loadMillChildBasedData(contractNo,resultsArray);
+                            
+                			 alert(resultsArray);
+                			grade1=resultsArray[0]; 
+                			alert(grade1);
+                			grade2=resultsArray[1];
+                			alert(grade2);
+                			grade3=resultsArray[2]; 
+                			alert(grade3);
+                			grade4=resultsArray[3];
+                			alert(grade4);
+                			grade5=resultsArray[4];
+                			alert(grade5);
+                			grade6=resultsArray[5];
+                			alert(grade6);
+                			
+                        	 loadMillChildBasedData(contractNo,grade1,grade2,grade3,grade4,grade5,grade6);
                         }
                         
                         
@@ -541,6 +603,8 @@ function loadMillChildBasedData(contractNo,resultsArray) {
 
             dataArray.forEach(function(row, index) {
                 var str = row[3];
+                var actualvalue1 = row[7];
+                var actualvalue = parseFloat(actualvalue1);
                 var match = str.match(/\d+/);
                 var numericPartStr = match ? match[0] : "";
                 var intValue = parseInt(numericPartStr, 10);
@@ -550,13 +614,12 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> ' + row[1] + '</div>' +
                     '</td>' +
-
                     '<td>' +
                     '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> ' + row[2] + '</div>' +
                     '</td>' +
 
                     '<td>' +
-                    '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + intValue + '">' + intValue + '</div>' +
+                    '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">' + row[3] + '</div>' +
                     '</td>' +
 
                     '<td>' +
@@ -568,7 +631,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '</td>' +
 
                     '<td>' +
-                    '<div class="table2-cell"><input type="hidden" name="actualQty[]" value="' + row[7] + '">' + row[7] + '</div>' +
+                    '<div class="table2-cell"><input type="hidden" id="actualQty_" name="actualQty[]" value="' + row[7] + '">' + row[7] + '</div>' +
                     '</td>' +
 
                     '<td>' +
@@ -578,18 +641,19 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table2-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
-                    '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0"  step="any" value="0"  oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
+                    '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0"  step="any" value="0" >' +
                     '</div>' +
                     '</td>' +
-                    '<td>' +
+                   /*  '<td>' +
                     '<div class="table2-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
                     '<input type="double" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0"  readonly>' +
                     '</div>' +
-                    '</td>' +
+                    '</td>' + */
+                    
                     '<td>' +
                     '<div class="table2-cell">' +
-                    '<select id="Nomination_' + index + '" name="Nomination[]" required oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">'+
+                    '<select id="Nomination_' + index + '" name="Nomination[]" required >'+
                     '<option value="0">0</option>' +
                     '<option value="15">15</option>'+
                     '<option value="16">16</option>'+
@@ -622,18 +686,18 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '</td>' +
 
                     
-                    '<td>' +
+                  /*   '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="MoistureValue' + index + '"></label>' +
                     '<input type="double" id="MoistureValue' + index + '" name="MoistureValue[]"  value="0"  readonly>' +
                     '</div>' +
-                    '</td>' +
+                    '</td>' + */
                     
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="NCVamt_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkNcvPercentage' + index + '">' +
-                    '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="" oninput="calculateQtyfrompercent(this,this.id, ' + intValue + ',resultsArray,' + index + ');">' +
+                    '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
 
@@ -641,23 +705,23 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table3-cell">' +
                     '<label for="ncvdust_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkNcvQty' + index + '">' +
-                    '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="" oninput="calculateQtyfromQty(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
+                    '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
                    
-                    '<td>' +
+                  /*   '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="Qualitypercentage_' + index + '"></label>' +
                     '<input type="double" id="NCV_Value' + index + '" name="NCV_Value[]" value="0" readonly >' +
                     '</div>' +
-                    '</td>' +
+                    '</td>' + */
                     
                     
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="DustAMt_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkDustAMt_Percentage' + index + '">' +
-                    '<input type="number" id="DustAMt_' + index + '" name="DustAMt_[]" min="0" max="10" step="any" value="" oninput="calculateQtyfrompercent(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
+                    '<input type="number" id="DustAMt_' + index + '" name="DustAMt_[]" min="0" max="10" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
 
@@ -665,25 +729,29 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table3-cell">' +
                     '<label for="DustQty_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkDustQty_' + index + '">' +
-                    '<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" oninput="calculateQtyfromQty(this,this.id,' + intValue + ',resultsArray,' + index + ');">' +
+                    '<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
                     
                     
-                    '<td>' +
+                  /*   '<td>' +
                     '<div class="table3-cell">' +
                     '<input type="double" id="DustValue' + index + '" name="DustValue[]"  value="0" readonly>' +
                     '</div>' +
-                    '</td>' +
-                   
-                   
-                   
-                   '<td>' +
-                   '<div class="table3-cell">' +
-                   '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]"  value="0"  readonly>' +
+                    '</td>' + */
+                    
+                    
+                    '<td>' +
+                    '<div class="table4-cell">' +
+                    '<button type="button" class="btn btn-primary" id="DustValue1_' + index + '" name="calculate"' +
+                    '<button onclick="calculateQtyfrompercent(\'Qualitypercentage_' + index + '\', \'Nomination_' + index + '\', \'NCVamt_' + index + '\', \'DustAMt_' + index + '\', \'' + actualvalue + '\', ' + intValue + ', ' + index + ')">Calculate</button>'
                    '</div>' +
-                   '</td>' +
-                  '</tr>';
+                    '</td>' +
+                        '<div class="table3-cell">' +
+                            '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]" value="0" readonly>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
                    
 
            
@@ -828,36 +896,161 @@ $('#firstloop1').val(checkcondition);
 loadedIds.push(id);
 $('#childTable1').show();
 </script>
+<script>
 
-  <script>
-  function calculateQtyfrompercent(input, elementId, intvalue, resultsArray, index) {
-	    let gradeprice = resultsArray[intvalue - 1];
-	    let tableRow = $(input).closest('tr');
-	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());
-	    let inputElement = document.getElementById(elementId);
-	    let previousValue;
-	    let qty, valueinprice;
 
-	    if (inputElement.id.startsWith('NCVamt_')) {
-	        previousValue = parseFloat(tableRow.find('input[name="NCV_Value[]"]').val()) || 0;
+ 
+ 
+ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, DustAmtId, actualvalue, intvalue, index) {
+	    // Retrieve the actual input values using the IDs
+	    var Qualitypercentage = document.getElementById(QualitypercentageId).value;
+	    var Nomination = document.getElementById(NominationId).value;
+	    var NCVamt = document.getElementById(NCVamtId).value;
+	    var DustAmt = document.getElementById(DustAmtId).value;
+	   
+	    // Log the values to console for debugging
+	    console.log('Actual Value: ' + actualvalue);
+	    console.log('Int Value: ' + intvalue);
+	    console.log('Index: ' + index);
+	    console.log('Qualitypercentage: ' + Qualitypercentage);
+	    console.log('Nomination: ' + Nomination);
+	    console.log('NCVamt: ' + NCVamt);
+	    console.log('DustAmt: ' + DustAmt);
+	   
 
-	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
-	            claimAmount[index] -= previousValue; // Subtract the previous value
-	            some[index] -= (actualQty * previousValue) / gradeprice; // Update some array
-	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
-	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
-	        } else {
-	            qty = ((actualQty * parseFloat(input.value)) / 100);
-	            valueinprice = (gradeprice * qty).toFixed(2);
+	    // Alert the values
+	    alert('Qualitypercentage: ' + Qualitypercentage + '\n' +
+	        'Nomination: ' + Nomination + '\n' +
+	        'NCVamt: ' + NCVamt + '\n' +
+	        'DustAmt: ' + DustAmt + '\n' +
+	        'Actual Value: ' + actualvalue + '\n' +
+	        'Int Value: ' + intvalue + '\n' +
+	        'Index: ' + index);
+	    
+	    
+	    
+	    
+	     let gradeprice = resultsArray[intvalue - 1];
+	     alert("fghj"+gradeprice);
+         let previousValue;
+	     let qty1, valueinprice,qty2, valueinprice1,qty3, valueinprice2;
+             qty1 = ((actualvalue * parseFloat(NCVamt)) / 100);
+	            valueinprice = (gradeprice * qty1).toFixed(2);
+	            var ncvValue= parseFloat(valueinprice);
+	            alert(ncvValue);
+	            qty2 = ((actualvalue * parseFloat(DustAmt)) / 100);
+	            valueinprice1 = (gradeprice * qty2).toFixed(2);
+	            var dustValue= parseFloat(valueinprice1);
+	            alert(dustValue);
+	            qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
+	            valueinprice2 = (gradeprice * qty3).toFixed(2);
+	            var moisturevalue= parseFloat(valueinprice2);
+	            alert(moisturevalue);
+	            var totalvalue =ncvValue+dustValue+moisturevalue;
+	            var totalqty =qty1+qty2+qty3;
+	            alert("totalvalue"+totalvalue);
+	            alert("totalqty"+totalqty);
+	            var newactualqty= (actualvalue-totalqty).toFixed(2);
+	            alert( "newqty"+newactualqty);
+	            var integerResult =(parseInt(Qualitypercentage) / 100);
+	            alert(integerResult);
+	            var qs = integerResult;
+	            var rem =parseFloat(Qualitypercentage)%100;
+	            alert(rem);
+	            alert(intvalue);
+	            if (qs < 1) {
+	            	alert("<1------------"+intvalue);
+	            
+	            	intvalue++;
+	            	alert("<1"+intvalue);
+	                let gradeprice = resultsArray[intvalue - 1];
+	                alert(gradeprice);
+	                gradeprice = gradeprice1 - gradeprice;
+	                alert(gradeprice);
+                   let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
+	                alert("below100quntity"+qty);
+	                valueinprice = (gradeprice * qty).toFixed(2);
+	                alert("below100valueprice"+valueinprice);
 
+	                console.log('qs is 0, valueinprice:', valueinprice);
+	            } else if (qs === 1) {
+	                let rem = parseFloat(Qualitypercentage) % 100;
+	                if (rem === 0) {
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = gradeprice1 - gradeprice;
+
+	                    let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
+	                    valueinprice = (gradeprice * qty).toFixed(2);
+	                    alert("exact100"+valueinprice);
+
+	                    console.log('qs is 1, rem is 0, valueinprice:', valueinprice);
+	                } else {
+	                    intvalue++;
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    let grade = gradeprice;
+	                    gradeprice = gradeprice1 - gradeprice;
+
+	                    let inputValue = parseFloat(rem) || 0;
+	                    let qty = (newactualqty * inputValue) / 100; // Removed extra parenthesis
+	                    let valueinprice1 = (gradeprice * qty).toFixed(2); // Use 0 or any other default value
+
+	                    intvalue--;
+	                    gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = grade - gradeprice;
+	                    let qty24 = 100.0 - qty;
+	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty24).toFixed(2);
+	                    alert("above100"+valueinprice1);
+
+	                    console.log('qs is 1, rem is not 0, valueinprice:', valueinprice);
+	                }
+	            }
+                /* else if (qs === 2) {
+	                let rem = parseFloat(input.value) % 100;
+	                if (rem === 0) {
+	                    intvalue++;
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = gradeprice1 - gradeprice;
+
+	                    let qty = actualQty;
+	                    valueinprice = (gradeprice * qty).toFixed(2);
+	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	                    console.log('qs is 2, rem is 0, valueinprice:', valueinprice);
+	                } else {
+	                    intvalue++;
+	                    intvalue++;
+	                    let gradeprice = resultsArray[intvalue - 1];
+	                    let grade = gradeprice;
+	                    gradeprice = gradeprice1 - gradeprice;
+	                    let inputValue = parseFloat(input.value) || 0; // Use 0 or any other default value
+	                    let qty2 = inputValue - 200.0;
+	                    let qty6 = ((actualQty * qty2) / 100);
+	                    let valueinprice1 = (gradeprice * qty6).toFixed(2);
+
+	                    intvalue--;
+	                    gradeprice = resultsArray[intvalue - 1];
+	                    gradeprice = grade - gradeprice;
+	                    let qty23 = 100.0 - qty2;
+	                    let qty7 = ((actualQty * qty23) / 100);
+	                    valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty7).toFixed(2);
+	                    valueinprice = valueinprice1;
+	                    claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	                    some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+
+	                    console.log('qs is 2, rem is not 0, valueinprice:', valueinprice);
+	                } */
 	            // Update claim amount value by subtracting the old value and adding the new value
-	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
-	            some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; // Update some array
+	            /* claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice); */
+	            /* some[index] = some[index] - (actualQty * previousValue) / gradeprice + qty; */ // Update some array
 
-	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
-	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
-	        }
-	    } else if (inputElement.id.startsWith('DustAMt_')) {
+	        /*     tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice);  */// Update NCV_Value input field
+	       
+	  /*   else if (inputElement.id.startsWith('DustAMt_')) {
 	        previousValue = parseFloat(tableRow.find('input[name="DustValue[]"]').val()) || 0;
 
 	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
@@ -1007,13 +1200,60 @@ $('#childTable1').show();
 	            tableRow.find('input[name="QualityValue_[]"]').val(valueinprice);
 	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2));
 	        }
-	    }
+	    } */
 
 	  }
 
 
         
+  
   function calculateQtyfromQty(input, elementId, intvalue, resultsArray, index) {
+	  /*   let gradeprice = resultsArray[intvalue - 1];
+	    let tableRow = $(input).closest('tr');
+	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());
+	    let inputElement = document.getElementById(elementId);
+	    let previousValue;
+	    let qty, valueinprice;
+
+	    if (inputElement.id.startsWith('ncvdust_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="NCV_Value[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= previousValue / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val('0'); // Clear NCV_Value input field
+	        } else {
+	            qty = parseFloat(input.value);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - previousValue / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="NCV_Value[]"]').val(valueinprice); // Update NCV_Value input field
+	        }
+	    } else if (inputElement.id.startsWith('DustQty_')) {
+	        previousValue = parseFloat(tableRow.find('input[name="DustValue[]"]').val()) || 0;
+
+	        if (input.value.trim() === '') { // Check if the input value is empty or whitespace
+	            claimAmount[index] -= previousValue; // Subtract the previous value
+	            some[index] -= previousValue / gradeprice; // Update some array
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val('0'); // Clear DustValue input field
+	        } else {
+	            qty = parseFloat(input.value);
+	            valueinprice = (gradeprice * qty).toFixed(2);
+
+	            // Update claim amount value by subtracting the old value and adding the new value
+	            claimAmount[index] = claimAmount[index] - previousValue + parseFloat(valueinprice);
+	            some[index] = some[index] - previousValue / gradeprice + qty; // Update some array
+
+	            tableRow.find('input[name="claimAmmount[]"]').val(claimAmount[index].toFixed(2)); // Update claim amount value
+	            tableRow.find('input[name="DustValue[]"]').val(valueinprice); // Update DustValue input field
+	        }
+	    } */
 	    let gradeprice = resultsArray[intvalue - 1];
 	    let tableRow = $(input).closest('tr');
 	    let actualQty = parseFloat(tableRow.find('input[name="actualQty[]"]').val());

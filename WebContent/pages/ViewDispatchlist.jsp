@@ -105,24 +105,17 @@
 										<th>Sl.No</th>
 										
 										<th>Challan_no</th>
-										<!-- <th>Consignment_note</th> -->
+										 
 										<th>Contract_No</th>
-										<th>Contract_date</th>
-										<th>Creation_date</th>
-										<th>DI_Date</th>
-										<th>DI_No</th>
-										<th>Date_of_shipment</th>
-										<th>Di_status</th>
-										<th>Driver_contact</th>
-										<th>Driver_name</th>
-										<th>License_no</th>
 										<th>Mill_name</th>
-										<th>Mode_of_shipment</th>
-										<th>Place_of_Shipment</th>
-										<th>Regional_Office</th>
-										<th>Vehicle_no</th>
+										<th>Contract_date</th>
+								     	<th>DI_No</th>
+										<th>DI_Date</th>
+										<th>Date_of_shipment</th>
+										<th>Bale mark</th>
+										<th>Consignment_note</th>
 									
-										<th></th>
+									   <th></th>
 										
 										
 									</tr>
@@ -148,29 +141,21 @@
 							            </td>
 										<%-- <td><%= row[0] %></td> --%>
 										<%-- <td><%= row[1] %></td> --%>
+										<td><%= row[1] %></td>
+										
 										<td><%= row[2] %></td>
 										<td><%= row[3] %></td>
-										<td><%= row[4] %></td>
-								
-										
-									  
-										
+								        <td><%= row[4] %></td>
 										<td><%= row[5] %></td>
 										<td><%= row[6] %></td>
-										<td><%= row[7] %></td>
+										
 										<td><%= row[8] %></td>
+										<td hidden><%= row[7] %></td>
 										<td><%= row[9] %></td>
-										<td><%= row[10] %></td>
-										<td><%= row[11] %></td>
-										<td><%= row[12] %></td>
-										<td><%= row[13] %></td>
-										<td><%= row[14] %></td>
-										<td><%= row[15] %></td>
-										<td><%= row[16] %></td>
 									
 										
 											<td>
-									    <a href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%= row[12]%>&DPC=<%= row[14]%>">
+									    <a href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%= row[2]%>&DPC=<%= row[7]%>">
 									        <button class="btn btn-primary custom-button" type="button">Generate BOS</button>
 									    </a>
 									</td> 
@@ -196,10 +181,9 @@
 											             <th>Challan NO</th>
 											             <th>Bale Mark</th>
 											             <th>Crop_year</th>
-											            <th>Jute_grade</th>
+											            <th>Variety/Grade</th>
 											            <th>Jute_value</th>
-											            <th>Jute_variety</th>
-											            <th>No of bales</th>
+											           <th>No of bales</th>
 											            <th>Nominal wt/bale</th>
 											            <th>Nominal_qty</th>
 											            <th>Rate</th>

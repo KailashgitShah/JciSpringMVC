@@ -12,7 +12,7 @@ public class ConvertWord_k {
             return "Invalid digit";
         }
 
-        String[] digitsInWords = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        String[] digitsInWords = {"zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
         return digitsInWords[digit];
     }
 
@@ -36,7 +36,7 @@ public class ConvertWord_k {
                 int tens = tensOnes / 10;
                 int ones = tensOnes % 10;
                 if (tens > 0) {
-                    String[] tensInWords = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+                    String[] tensInWords = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
                     groupWords.append(tensInWords[tens]);
                 }
                 if (ones > 0) {
@@ -51,8 +51,8 @@ public class ConvertWord_k {
 
     private String convertToWordsBelowTwenty(int number) {
         String[] wordsBelowTwenty = {
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+            "zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+            "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"
         };
         return wordsBelowTwenty[number];
     }
@@ -68,18 +68,25 @@ public class ConvertWord_k {
         // Define a HashMap mapping place values and their corresponding words (in English)
         Map<Integer, String> placeValuesMap = new HashMap<>();
         placeValuesMap.put(3, "thousand");
-        placeValuesMap.put(6, "million");
-        placeValuesMap.put(9, "billion");
-        placeValuesMap.put(12, "trillion");
+        placeValuesMap.put(5, "lakh");
+        placeValuesMap.put(7, "crore");
 
         StringBuilder words = new StringBuilder();
 
-        // Process the number in chunks of three digits
-        int chunkSize = 3;
+        // Process the number in chunks of two or three digits
+        int chunkSize = 2;
         int i = 0; // Counter for place values
+        boolean firstChunk = true;
         while (number > 0) {
-            int chunk = (int) (number % 1000); // Extract the last three digits
-            number /= 1000; // Remove the last three digits from the number
+            int chunk;
+            if (firstChunk) {
+                chunk = (int) (number % 1000); // Extract the last three digits for the first chunk
+                firstChunk = false;
+                chunkSize = 3;
+            } else {
+                chunk = (int) (number % 100); // Extract the last two digits for subsequent chunks
+            }
+            number /= chunkSize == 3 ? 1000 : 100; // Remove the last two or three digits from the number
 
             if (chunk > 0) {
                 String groupWords = convertGroup(chunk);
@@ -88,6 +95,7 @@ public class ConvertWord_k {
                 }
             }
             i += chunkSize; // Increment the counter for the next chunk
+            chunkSize = 2; // From now on, process chunks of two digits
         }
 
         return words.toString().trim();

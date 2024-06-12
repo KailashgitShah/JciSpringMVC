@@ -82,9 +82,9 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 		return this.financialConcurencedao.dataofdates(Con_no,Payment_id);
 	}
 	@Override
-	public String fcref_nocheck(String fcref_no) {
+	public String fcref_nocheck() {
 		
-		return this.financialConcurencedao.fcref_nocheck(fcref_no);
+		return this.financialConcurencedao.fcref_nocheck();
 	}
 	
 	

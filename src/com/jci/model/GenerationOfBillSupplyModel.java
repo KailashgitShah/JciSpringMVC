@@ -99,6 +99,28 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "TrnasitPolicyno")
 	private String TrnasitPolicyno;
+	
+	@Column(name = "Statecode_forBOs")
+	private String Statecode_forBOs;
+	
+	@Column(name = "DPCID")
+	private String DPCID;
+
+	public String getDPCID() {
+		return DPCID;
+	}
+
+	public void setDPCID(String dPCID) {
+		DPCID = dPCID;
+	}
+
+	public String getStatecode_forBOs() {
+		return Statecode_forBOs;
+	}
+
+	public void setStatecode_forBOs(String statecode_forBOs) {
+		Statecode_forBOs = statecode_forBOs;
+	}
 
 	public String getTrnasitPolicyno() {
 		return TrnasitPolicyno;

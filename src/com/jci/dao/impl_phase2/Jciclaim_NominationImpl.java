@@ -243,18 +243,11 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	public String CountRecord() {
 		// TODO Auto-generated method stub
 
-<<<<<<< HEAD
-		    String q = "SELECT COUNT(*) FROM jciclaim_nomination";
-		  int result = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
 
-		    return result+1;
-
-=======
 		    String q = "SELECT TOP 1 settlement_id_generated FROM jciclaim_nomination ORDER BY Settlement_id DESC";
 		  String result = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
 		  System.err.println(result);
 		    return result;
->>>>>>> a6c0b294a0c03b0d83fcb26e84d8eef862fb87bb
 		
 
 	}
@@ -324,30 +317,15 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 		///////////////////correct
 		String q = 
-<<<<<<< HEAD
-			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt , jcimr.claimAmmount " +
-=======
+
 			    "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt ,jcimr.claimAmmount " +
->>>>>>> a6c0b294a0c03b0d83fcb26e84d8eef862fb87bb
+
 			    "FROM jcimill_receipt jcimr " +
 			    "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
 			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
 			    "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
 			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
 			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
-<<<<<<< HEAD
-
-
-//		String q = "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt, jcimr.claimAmmount " +
-//		           "FROM jcimill_receipt jcimr " +
-//		           "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No " +
-//		           "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
-//		           "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
-//		           "WHERE jcimr.Ho_di = '" + hodi + "'";
-
-=======
-		
-
 
 		
 //		String q = "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt, jcimr.claimAmmount , jci.Bos_file_path " +
@@ -356,7 +334,6 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 //		           "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
 //		           "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
 //		           "WHERE jcimr.Ho_di = '" + hodi + "'";
->>>>>>> a6c0b294a0c03b0d83fcb26e84d8eef862fb87bb
 
 
 	    List<Object[]> contractListData = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();

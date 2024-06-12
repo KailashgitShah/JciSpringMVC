@@ -78,6 +78,7 @@
 			<%
 			List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
 			List<Object[]> getcontractList2 = (List<Object[]>) request.getAttribute("getcontractList2");
+			 String millname="";
 			%>
 
 
@@ -102,7 +103,7 @@
 													<option value="select">-Select-</option>
 													<%
 													for (Object[] row : getcontractList2) {
-														String millname = (String) row[0];  
+														 millname = (String) row[0];  
 													    String millcode = (String) row[1]; 
 													%>
 													<option value="<%=millcode%>"><%=millname%></option>
@@ -305,6 +306,13 @@
 													id="autorevolvingamount" min="0" type="number"
 													placeholder="Auto Revolving Amount">
 											</div>
+											
+											 <div class="col-sm-2 form-group"  style="display: none;">
+												    <label "display:none;" >millname234 </label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													class="form-control" name="millname234"
+													id="millname23" value="<%=millname %>" readonly="readonly">
+											</div>
 
 
 
@@ -317,76 +325,39 @@
 												<table class="table">
 													<thead>
 														<tr>
-															<th id="grade">Grade</th>
-															<th id="grade1">Jute combination</th>
-															<th id="grade2">Quantity</th>
+														
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
-															<td id="g111">Grade 1:</td>
-															<td><input type="text" id="g11" name="g11"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g12" name="g12"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
+															
+														
 														</tr>
 
 														<tr>
-															<td id="g211">Grade 2:</td>
-															<td><input type="text" id="g21" name="g21"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g22" name="g22"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
+														
+															
 														</tr>
 														<tr>
-															<td id="g311">Grade 3:</td>
-															<td><input type="text" id="g31" name="g31"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g32" name="g32"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
+														
+															
+														
 														</tr>
 														<tr>
-															<td id="g411">Grade 4:</td>
-															<td><input type="text" id="g41" name="g41"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g42" name="g42"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
+															
+															
 														</tr>
 														<tr>
-															<td id="g511">Grade 5:</td>
-															<td><input type="text" id="g51" name="g51"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g52" name="g52"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
+															
+															
 														</tr>
 														<tr>
-															<td id="g611">Grade 6:</td>
-															<td><input type="text" id="g61" name="g61"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g62" name="g62"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
+															
+														
 														</tr>
 														<tr>
-															<td id="g21"></td>
-															<td><input type="text" id="g71" name="g71"
-																readonly="readonly" value="Total"
-																style="width: 300px; height: 30px; text-align: right; font-weight: bold;"></td>
-															<!--  <td><strong style ="text-align:right">Total</strong></td> -->
-															<td><input type="text" id="g72" name="g72"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px; font-weight: bold;"></td>
+															
+														
 														</tr>
 													</tbody>
 
@@ -418,6 +389,8 @@
 											            <th>Contract value(105% of jute Value)</th>
 											            <th>Contract Date</th>
 											            <th>Payment_due Date</th>
+											            <th>Instrument value</th>
+											            <th>Instrument Date</th>
 											          
 											        </tr>
 											    </thead>
@@ -427,6 +400,7 @@
 											</table>
 											<input type="hidden" id="contractValueInput" name="contractValue">
                                             <input type="hidden" id="paymentDueDateInput" name="paymentDueDate">
+                                            <input type="hidden" id="totalcontractvalue1" name="totalcontractvalue">
     
                                 
 
@@ -534,18 +508,26 @@ $(document).ready(function() {
                 }
                 html += "</select>";
                 $("#dpc_div").html(html);
+              
                 $("#centerordpc").chosen();
                 $("#centerordpc").addClass("chosen-select");
-                $('#centerordpc').trigger('chosen:updated'); // Trigger chosen select update
+                $('#centerordpc').trigger('chosen:updated');
+                // Trigger chosen select update
                 $('#centerordpc').on('change', function(evt, params) {
-                    if (params.deselected) {
+                    if (params && params.deselected) {
+                     
                         var deselectedContract = params.deselected;
                         removeTableEntry(deselectedContract);
-                    } else {
-                        selectedDataArray = $(this).val();
-                        console.log("Selected data:", selectedDataArray);
-                        generateTables(selectedDataArray);
+                    } else if (params && params.selected) {
+                      
+                        var selectedContract = params.selected;
+                      /*   alert(selectedContract); */
+                      /*   console.log("Selected data:", selectedContract); */
+                        generateTables(selectedContract);
                     }
+                    
+                    // Clear the selection
+               /*      $(this).val('').trigger('chosen:updated'); */
                 });
             },
             error: function(xhr, status, error) {
@@ -556,28 +538,61 @@ $(document).ready(function() {
 
     function generateTables(selectedContracts) {
         var lastIndex = selectedContracts.length - 1;
-        var contractNo = selectedContracts[lastIndex];
+       /*  var contractNo = selectedContracts[lastIndex]; */
+        var contractNo = selectedContracts;
         $.ajax({
             type: 'GET',
             url: 'contractlistfetch.obj',
             data: { "contractno": contractNo },
-            success: function(data) {
-                console.log("Data received for contract", contractNo, ":", data);
-                updateTableWithData(data);
+            success: function(contractData) {
+                console.log("Contract data received for contract", contractNo, ":", contractData);
+                
+                // Nested AJAX request to fetch difference and sum data
+                $.ajax({
+                    type: 'GET',
+                    url: 'difrencecandsum.obj',
+                    data: { "contractno": contractNo },
+                    success: function(differenceData) {
+                     /*    alert(differenceData); */
+                        
+                        // Assuming differenceData is a JSON string
+                        var parsedData = JSON.parse(differenceData);
+                    /*     alert(parsedData); */
+                        var lastColumnData;
+                        // Assuming parsedData is an array of objects where each object represents a row of data
+                        // Iterate over parsedData to extract the last column data
+                        for (var i = 0; i < parsedData.length; i++) {
+                            var row = parsedData[i];
+                            
+                            // Assuming the row is an object and you want the last column value of each row
+                            var lastColumnData = row[Object.keys(row).pop()]; // Get the last property value
+                            console.log(lastColumnData);
+                         /*    alert(lastColumnData); */
+                        }
+
+                        // You can now use the parsedData or lastColumnData as needed
+                        updateTableWithData(contractData,lastColumnData); // Pass both datasets to the function
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching difference data for contract", contractNo, ":", error);
+                    }
+                });
             },
             error: function(xhr, status, error) {
-                console.error("Error for contract", contractNo, ":", error);
+                console.error("Error fetching contract data for contract", contractNo, ":", error);
             }
         });
+
+
     }
     var contractValuesMap = {};
-    function updateTableWithData(data) {
+    function updateTableWithData(data,lastColumnData) {
         var rowData = JSON.parse(data);
         if (Array.isArray(rowData) && rowData.length > 0) {
         	$('#contractTable').show();
             // Clear existing table rows
           
-
+             
             // Calculate total contract value and update table rows
             rowData.forEach(function(row) {
                 var newRow = $('<tr>');
@@ -586,15 +601,46 @@ $(document).ready(function() {
                 newRow.append('<td>' + row[2] + '</td>');
                 newRow.append('<td>' + row[3] + '</td>');
                 newRow.append('<td>' + row[4] + '</td>');
+                if(row[5]==null&& row[6]==null){
+                	newRow.append('<td>0</td>');
+                    newRow.append('<td></td>');	
+                }
+                else {
+                	
+                	  var instrumentValue = row[5] || 0;
+                	    var instrumentDate = row[6] || '';
+                	    newRow.append('<td>' + instrumentValue + '</td>');
+                	    newRow.append('<td>' + instrumentDate + '</td>');
+                }
+                newRow.append('<td style="display: none;">' + row[7] + '</td>');
+                
                 $('#contractTable tbody').append(newRow);
                 
                 $('#contractValueInput').append('<input type="hidden" name="contractValue[]" value="' + row[2] + '">');
                 $('#paymentDueDateInput').append('<input type="hidden" name="paymentDueDate[]" value="' + row[4] + '">');
-                contractValuesMap[row[0]] = parseFloat(row[2]);
-                totalContractValue += parseFloat(row[2]);
+              
                 
               
+               /*  contractValuesMap[row[0]] = parseFloat(lastColumnData);
+                totalContractValue += parseFloat(lastColumnData);
+                 */
+                contractValuesMap[row[0]] = parseFloat(lastColumnData !== null ? lastColumnData : row[2]);
+            
+              
+                
             });
+            if (Array.isArray(lastColumnData)) {
+                // If lastColumnData is an array, sum the values
+                rowData.forEach((row, index) => {
+                    var value = lastColumnData[index] !== null ? parseFloat(lastColumnData[index]) : parseFloat(row[2]);
+                    totalContractValue += value;
+                 
+                });
+            } else {
+                // If lastColumnData is a single value or null
+                totalContractValue += (lastColumnData !== null ? parseFloat(lastColumnData) : rowData.reduce((sum, row) => sum + parseFloat(row[2]), 0));
+          
+            }
            
             // Update the total contract value label
             $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
@@ -611,35 +657,61 @@ $(document).ready(function() {
     }
 
     // Function to remove table entry
-    function removeTableEntry(contractNo) {
-    	
-        $('#contractTable tbody tr').each(function() {
-            var rowContractNo = $(this).find('td:first').text();
-            if (rowContractNo === contractNo) {
-                var contractValue = parseFloat($(this).find('td:eq(2)').text()); 
-                totalContractValue -= contractValue; 
-                if (totalContractValue < 0) {
-                    totalContractValue = 0; // Set it to zero
-                }
-                $(this).remove();
-                $('#differenceLabel').text('Instrument Value max = ' + totalContractValue); //
-             
-                recalculateRatios();
-                return false; 
-            }
-        });
-        if ($('#contractTable tbody tr').length === 0) {
-            $('#contractTable').hide(); 
+  function removeTableEntry(contractNo) {
+    var rowsToRemove = [];
+
+    $('#contractTable tbody tr').each(function() {
+        var rowContractNo = $(this).find('td:first').text();
+        if (rowContractNo === contractNo) {
+            rowsToRemove.push($(this));
+            var contractValue = contractValuesMap[contractNo];
+            
+            // Subtract the contract value from totalContractValue
+            totalContractValue -= contractValue;
         }
+    });
+
+    // Remove the rows after processing all of them to avoid modifying the table while iterating
+    rowsToRemove.forEach(function(row) {
+        row.remove();
+    });
+
+    if (totalContractValue < 0) {
+        totalContractValue = 0; // Set it to zero if it's negative
     }
+
+    $('#differenceLabel').text('Instrument Value max = ' + totalContractValue.toFixed(2));
+
+    recalculateRatios();
+
+    if ($('#contractTable tbody tr').length === 0) {
+        $('#contractTable').hide(); 
+    }
+}
+
+
+
 
     // Function to recalculate ratios
     function recalculateRatios() {
-        ratios = []; // Clear existing ratios
+        ratios = [];
+        var processedContracts = [];// Clear existing ratios
         $('#contractTable tbody tr').each(function() {
+        	
+        	 var contractNo = $(this).find('td:first').text(); // Assuming the contract number is in the first column
+
+             // Check if the contract number has already been processed
+             if (processedContracts.includes(contractNo)) {
+                 return; // Skip this row
+             }
             var contractValue = parseFloat($(this).find('td:eq(2)').text());
+            var instrumentValue = parseFloat($(this).find('td:eq(7)').text());
+            instrumentValue = isNaN(instrumentValue) ? 0 : instrumentValue;
+            contractValue-=instrumentValue;
+          /*   alert(contractValue); */
             var ratio = contractValue / totalContractValue;
-            ratios.push(ratio); // Store ratio for later use if needed
+            ratios.push(ratio);
+            processedContracts.push(contractNo);// Store ratio for later use if needed
             console.log("Ratio for row " + ": " + ratio);
         });
         var ratiosJson = JSON.stringify(ratios);

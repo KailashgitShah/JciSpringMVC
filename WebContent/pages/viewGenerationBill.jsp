@@ -188,7 +188,7 @@ th {
 										
 									 <td>
 								            <a href="downloadPDF.obj?filename=<%= generationOfBillSupplyModel.getBos_file_path()%>"
-								               class="btn btn-primary btn-sm" target="_blank"> Generate BOS</a>
+								               class="btn btn-primary btn-sm" target="_blank">Download BOS</a>
 								        </td>
 
 
