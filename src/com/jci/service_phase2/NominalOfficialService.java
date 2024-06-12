@@ -43,7 +43,7 @@ public interface NominalOfficialService {
 
 	public List<UserRegistrationModel> getfa_official();
 
-	public int CountRecord();
+	public String CountRecord();
 
 	public List<Object> gradecomposition(String contractno);
 	public List<Object[]> dateofInspection(String dateOfInspection);

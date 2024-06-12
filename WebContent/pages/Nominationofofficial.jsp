@@ -70,6 +70,17 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
     border-color: #ccc; /* Set border color (e.g., light gray) */
 }   
    
+   #binDataBody {
+    font-size: 20px; /* Adjust the font size as per your preference */
+}
+    th {
+        font-size: 18px; /* Adjust the font size as per your preference */
+    }
+        #millsListDiv {
+         color: #007bff; /* Change "red" to any color you prefer */
+    }
+
+   
 </style>
 
 
@@ -132,6 +143,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 									
 								  <div class="col-sm-4 form-group">
 								   <div id="omMessage" class="text-danger"></div>
+								   <div id="millsListDiv"></div> 
 										<label>O&M Official</label>
 										<span class="text-danger">*</span>
 										<select name="omofficial" id="omofficial" class="form-control taxtbox" required>
@@ -142,60 +154,64 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 										</select>
 								  </div>
 								  
+								 
+
+								  
+								  
 								  <div class="col-sm-4 form-group">
                                        <label>Date of Inspection</label>
                                        <input class="form-control taxtbox" id="DateofInpection" name="DateofInpection" placeholder="dd-mm-yyyy" required>                                   
 								 </div>
 									
-					          <div class="row">
+									</div>
+					          <!-- <div class="row"> -->
 
-						      <div class="row mt-3">
-								<table class="table table-bordered">
-									  <thead>
-									       <tr>
-									       <!--  <th></th>
-									          <th>Challan</th>
-									           <th>Mr_No</th>
-									            <th>Mr_Date</th>
-									            <th>Bill_Of_Supply_Number</th>
-									             <th>Date_Of_Shipment</th>									                   
-									              <th>Shipment_Quantity</th>
-									               <th>Claim Valuation</th> -->
-									                <th>Challan</th>
-									          <th>Mr_No</th>
-									           <th>Mr_No</th>
-									            <th>Bill_Of_Supply_Numbe</th>
-									            <th>Date_Of_Shipment</th>
-									             <th>Shipment_Quantity</th>									                   
-									              <th>Claim Valuation</th>
-									               <th>Check Box</th>
-									               
-									              
-									            </tr>
-									      </thead>
-								 <tbody id="binDataBody">
-							     <!-- Data rows will be dynamically populated -->
-								</tbody>
-							 </table>
-						 </div>		
-						            			   
-					 <div class="row">
+						    	   
+					            <div class="row">
 								<div class="col-sm-4 form-group">
 								 <input type="hidden"
 								   class="form-control taxtbox" value = "${total}" name="Settlement_id_generated"type="text" required readonly="readonly">
 								</div> 
-					</div>
-                     <input type="hidden" id="numRows" name="rows">
-					  <br>
-					 <div class="row">
-						<div class="col-sm-12 form-group">
-								<br>
-								 <br>
-								 <br>
-								 <br>
-					      <input type="submit" value="Submit" class="btn btn-primary"id="submit">
+					         </div>
+					         
+					          <div class="row">
+						<div class="col-sm-4 form-group">
+						 <input type="hidden" id="numRows" name="rows">
+						 
 						</div>
-					</div>  
+					</div>   
+                      <div class="row ">
+						      <div class="col-sm-4 form-group">
+						
+							     <table class="table table-bordered">
+							    <thead>
+							        <tr>
+							            <th class="table-active" style="width: 100px;">Check_Box</th>
+							            <th class="table-active" style="width: 150px;">Challan</th>
+							            <th class="table-active" style="width: 150px;">MR_Number</th>
+							            <th class="table-active" style="width: 150px;">MR_Generated_Date</th>
+							            <th  class="table-active" style="width: 150px;">Bill_Of_Supply_Number</th>
+							            <th class="table-active" style="width: 150px;">Date_Of_Shipment</th>
+							            <th  class="table-active" style="width: 100px;">Shipment_Quantity</th>
+							            <th class="table-active" style="width: 100px;">Claim_Valuation</th>
+							        </tr>
+							    </thead>
+							    <tbody id="binDataBody">
+							        <!-- Table body content -->
+							    </tbody>
+							</table>
+		
+						 </div>		
+						 </div>    
+						        		
+					
+					
+					<div class="row">
+                   <div class="col-sm-4 form-group">
+                    <div style="flex-grow: 1;"></div> <!-- This creates space to push the button to the bottom -->
+                   <input type="submit" value="Submit" class="btn btn-primary" id="submit">
+                   </div>
+                   </div>
 
 			</form>
 							</div>
@@ -208,15 +224,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 			 
 		</div>
 	</div>
-<!-- <div class="row">
-						<div class="col-sm-12 form-group">
-								<br>
-								 <br>
-								 <br>
-								 <br>
-					      <input type="submit" value="Submit" class="btn btn-primary"id="submit">
-						</div>
-					</div>  -->
+
 	<div class="sidenav-backdrop backdrop"></div>
 
 
@@ -251,22 +259,48 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                     DateOfInspection: selectedOption
                 },
                 success: function(data) {
-                    var response = JSON.parse(data);                               
-                    var selectedOmofficial = document.getElementById("omofficial").value;
-                    var omMessageElement = document.getElementById("omMessage");
-                    for (var i = 0; i < response.length; i++) {
-                        var innerArray = response[i];
-                        var omoofficial = innerArray[0];
-                        var faofficial = innerArray[1];
-                           
-                        if (selectedOption == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            return;
-                        } 
-                     
-                    }
-                    // If no conflicting dates found, clear any existing messages
-                    omMessageElement.innerText = "";
+                	
+                
+                 
+						 var response = JSON.parse(data);   
+						 //alert(response)
+						  var selectedOmofficial = document.getElementById("omofficial").value;
+						  var omMessageElement = document.getElementById("omMessage");
+						 
+						
+						  var millNamesList = []; // Array to store mill names
+						
+						  for (var i = 0; i < response.length; i++) {
+						      var innerArray = response[i];
+						      var omoofficial =innerArray[0]
+						      var millName = innerArray[2];
+						      if(omoofficial == selectedOmofficial ){
+						      millNamesList.push(millName); // Collecting mill names
+						      }
+						  }
+						  var millNamesString = millNamesList.join(" , ");
+						  var millsListDiv = document.getElementById("millsListDiv");
+							// Set the inner HTML of the div to the mill names string
+						millsListDiv.innerHTML = millNamesString;
+
+	                       // Displaying the mill names in an alert dialog
+	                     //  alert(millNamesString +"ditso");
+						  for (var i = 0; i < response.length; i++) {
+						      var innerArray = response[i];
+						      var omoofficial = innerArray[0];
+						      var faofficial = innerArray[1];
+						      var millName = innerArray[2];
+						    //  alert(millName)
+						      if (selectedOption == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
+						          omMessageElement.innerText = selectedOmofficial + " is Already Occupied On This Date For Another Claim Settlement For MillName : ";
+						          return;
+						      } 
+						   
+						  } 
+						 
+						  omMessageElement.innerText = "";
+                	
+                    
                    
                 },
                 error: function(err) {
@@ -288,12 +322,29 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
+                    
+
+					  var millNamesList = []; // Array to store mill names
+					  for (var i = 0; i < response.length; i++) {
+					      var innerArray = response[i];
+					      var omoofficial =innerArray[0]
+					      var millName = innerArray[2];
+					      if(omoofficial == selectedOmofficial ){
+					      millNamesList.push(millName); // Collecting mill names
+					      }
+					  }
+					  var millNamesString = millNamesList.join(" , ");
+					  var millsListDiv = document.getElementById("millsListDiv");
+						// Set the inner HTML of the div to the mill names string
+					   millsListDiv.innerHTML = millNamesString;
+
                     for (var i = 0; i < response.length; i++) {
                         var innerArray = response[i];
                         var omoofficial = innerArray[0];
                         var faofficial = innerArray[1];
+                        var millName =innerArray[2];
                         if (selectedDate  == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
+                            omMessageElement.innerText = selectedOmofficial + "- is Already Occupied On This Date for Another Claim Settlement For MillName :";
                             return;
                         }
                         
@@ -338,23 +389,29 @@ $(document).ready(function() {
                 
                 $('#numRows').val(num_of_rows);
              
-                for (var i = 0; i < dataArray.length; i++) {
+             
+                 for (var i = 0; i < dataArray.length; i++) {
+                    var date = new Date(dataArray[i][2]); // Parsing the date string into a Date object
+                    var formattedDate = ("0" + date.getDate()).slice(-2) + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear(); // Formatting to dd-mm-yyyy
+                    var dateshipment = new Date(dataArray[i][4]);
+                    var formatShipmentDate =  ("0" + dateshipment.getDate()).slice(-2) + '-' + ("0" + (dateshipment.getMonth() + 1)).slice(-2) + '-' + dateshipment.getFullYear();
                     var newRow = "<tr>";
                     newRow +=
-                       /*  '<td><input type="checkbox" onclick="myFunction(this)" id="checkbox_' + i + '" class="row-checkbox" name="rowCheckbox[]" value="0"></td>' + */
+                        '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+i+'" class="row-checkbox" name="rowCheckbox'+i+'" value="0"></td>' +
                         '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
                         '<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +                  
-                        '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + formattedDate + '">' + formattedDate + '</div></td>' +                  
                         '<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +                  
-                        '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + formatShipmentDate + '">' + formatShipmentDate + '</div></td>' +                  
                         '<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
-                        '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>'+
 
-                        '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+i+'" class="row-checkbox" name="rowCheckbox'+i+'" value="0"></td>' ;
+                        '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
 
                     newRow += "</tr>";
                     $("#binDataBody").append(newRow);
-                }
+                } 
+
+
             },
             error: function(err) {
                 console.error('AJAX request failed: ' + err);

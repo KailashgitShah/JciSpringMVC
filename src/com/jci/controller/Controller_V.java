@@ -5011,7 +5011,6 @@ public class Controller_V {
 
 	@Value("${upload.millAcceptDownolad}")
 	String millAcceptDownolad;
-
 	@RequestMapping("downloadSupportingDocumententMillAccept")
 	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 
@@ -5187,8 +5186,22 @@ public class Controller_V {
 		//String SetllementIdGenerated;
 	    String Settlement_id_generated = request.getParameter("Settlement_id_generated");
 		String HoDI = request.getParameter("HO_DI_&_Date");
-		int total = nominalOfficialService.CountRecord();
-		String SetllementIdGenerated = HoDI +"/"+ total;
+		String total = nominalOfficialService.CountRecord();
+		int value1;
+		if(total != null) {
+		String str = total;
+		int secondSlashIndex = str.indexOf('/', str.indexOf('/') + 1); // Find the index of the second '/'
+		String extractedValue = str.substring(secondSlashIndex + 1); // Extract the substring after the second '/'
+		int value = Integer.parseInt(extractedValue); // Convert the extracted substring to an integer
+		value1 = value + 1;
+		System.out.println(value1);
+		}else {
+			value1 =1;
+			
+		}
+		
+		//System.err.println(total);
+		String SetllementIdGenerated = HoDI +"/"+ value1;
 		String username = (String) request.getSession().getAttribute("usrname");
 		String millname = request.getParameter("client_name");
 		String Mill = request.getParameter("Mill");
@@ -5203,6 +5216,7 @@ public class Controller_V {
 			String check = request.getParameter("rowCheckbox"+i);
 			if(check != null) {
 			Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
+			
 			
 			jciclaim_NominationModel.setMill(Mill);
 			jciclaim_NominationModel.setContractNo(ContractNo);
@@ -5281,6 +5295,8 @@ public class Controller_V {
 		return mv;	
 	}
 
+
+
 	@Value("${upload.claimSettlementReportDownload}")
 	String claimSettlementReportDownload;
 	@Value("${upload.claimsetlmentJRXMLpath}")
@@ -5302,20 +5318,28 @@ public class Controller_V {
 	        String omofficial = request.getParameter("omoofficial");
 	        String DateofInpection = request.getParameter("DateofInpection");
 	        List<ClaimSettlementReport> pdfnomination = nominalOfficialService.getNominationReportData(id);
-	        System.err.println(pdfnomination);
+	       // System.err.println(pdfnomination);
 	        String id1 = id.replace('/', '-');
 	        String directoryPath = claimSettlementReportDownload;
-	        System.err.println(directoryPath);
+	       // String directoryPath = "C:\\Users\\Mansi.Gupta\\Documents\\newreportsave\\";
+	       // System.err.println(directoryPath);
 	        String filename = id1 + "claimSettlementReport.pdf"; // Change this to your desired filename
 	        String filepath = directoryPath + filename;
-	        JasperReport jasperReport1 = JasperCompileManager.compileReport(claimsetlmentJRXMLpath);
-	        Map<String, Object> parameters = new HashMap<String, Object>();
-	        // Prepare data sources
-	        JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfnomination);
-	        // Fill JasperPrints
-	        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-	        // Create the file on the server
-	        JasperExportManager.exportReportToPdfFile(jasperPrint1, filepath);
+	       // System.out.println(filepath + "kkkkk");
+	
+	        try {
+	            JasperReport jasperReport1 = JasperCompileManager.compileReport(claimsetlmentJRXMLpath);
+	            Map<String, Object> parameters = new HashMap<String, Object>();
+	            // Prepare data sources
+	            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfnomination);
+	            // Fill JasperPrints
+	            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	            // Create the file on the server
+	            JasperExportManager.exportReportToPdfFile(jasperPrint1, filepath);
+	        } catch (JRException e) {
+	            e.printStackTrace();
+	        }
+
 
 	        // Email sending code
             //1- This email is for  FaOfficial
@@ -5334,8 +5358,8 @@ public class Controller_V {
 		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
 		           try {
 		                  toAddresses = new InternetAddress[] {
-		                               new InternetAddress("mansi.gupta@cyfuture.com")
-		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                             //  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		  new InternetAddress(userEmailFA)
 		                  };
 		
 		           } catch (AddressException e) {
@@ -5360,8 +5384,9 @@ public class Controller_V {
 		        String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
 		           try {        
 		                  toAddressesomo = new InternetAddress[] {
-		                		  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
 		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                		  new InternetAddress(userEmailOmo)
 		
 		                  };
 		
@@ -5388,8 +5413,8 @@ public class Controller_V {
 		                                               String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
 		                                                   try {        
 		                                       toAddressesmill = new InternetAddress[] {
-		                		  new InternetAddress("mansi.gupta@cyfuture.com")
-		                		 // new InternetAddress("mansigupta18001@gmail.com")
+		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		 new InternetAddress("mansigupta18001@gmail.com")
 		
 		                  };
 		
@@ -5423,7 +5448,59 @@ public class Controller_V {
 		String omofficial = request.getParameter("omofficial");
 		return mv;
 	}
-	
+	@Value("${upload.GenrationofbillDownload}")
+	String GenrationofbillDownload;
+	@RequestMapping("downloadBillOfSupplyDocument")
+	public void downloadbosdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
+		// String imageDirectory = "upload.Imagedownload";
+
+		String imagePath = GenrationofbillDownload + '/'+ filename;
+
+		File imageFile = new File(imagePath);
+
+		try {
+
+			if (imageFile.exists()) {
+
+				String contentType = determineContentType4(filename);
+				response.setContentType(contentType);
+
+				response.setContentLength((int) imageFile.length());
+				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
+//			                //response.setHeader("Content-Disposition", "");
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					responseOutputStream.write(buffer, 0, bytesRead);
+				}
+
+				fileInputStream.close();
+				responseOutputStream.close();
+			} else {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	private String determineContentType4(String filePath4) {
+		if (filePath4.endsWith(".pdf")) {
+			return "application/pdf";
+		} else if (filePath4.endsWith(".jpg") || filePath4.endsWith(".jpeg")) {
+			return "image/jpeg";
+		} else if (filePath4.endsWith(".png")) {
+			return "image/png";
+		} else {
+			return "application/octet-stream";
+		}
+	}
 
 ////////////////////////////////////////////// NOMINATION OF OFFICIAL FOR CLAIM SETTLEMENT END //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

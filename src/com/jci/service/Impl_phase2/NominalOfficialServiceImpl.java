@@ -99,7 +99,7 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	}
 
 	@Override
-	public int CountRecord(){
+	public String CountRecord(){
 		// TODO Auto-generated method stub
 		
 		return nominalOfficialDao.CountRecord();
