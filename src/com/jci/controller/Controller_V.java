@@ -3412,9 +3412,7 @@ public class Controller_V {
 		 String statecode =  this.generationofBillService.statecode(DPC1);
 
 		 String status = String.format("%06d", Integer.parseInt(this.generationofBillService.billofsupplyno()));
-		 System.err.println(status);
-		System.err.println(status);
-		System.err.println(status);
+		
 		
 		String status1 = String.format("%05d", Integer.parseInt(this.generationofBillService.statecount(statecode)));
 		System.err.println(status1);

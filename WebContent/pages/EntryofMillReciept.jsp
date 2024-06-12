@@ -47,16 +47,11 @@
 /* CSS classes for the green link */
  .table-cell {
    
-    width: 150px;
+    width: 250px;
     height: 20px;
     
 } 
- .table1-cell {
-   
-    width: 150px;
-    height: 20px;
-    
-}
+
 #childTable {
     width: 100%; /* Ensure the table takes the full width */
     table-layout: fixed; /* Fix the table layout */
