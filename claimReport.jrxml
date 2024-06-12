@@ -8,7 +8,7 @@
 	<field name="regionName" class="java.lang.String"/>
 	<field name="challan" class="java.lang.String"/>
 	<field name="mr_no" class="java.lang.String"/>
-	<field name="mrDate" class="java.util.Date"/>
+	<field name="mrDate" class="java.lang.String"/>
 	<field name="cropYear" class="java.lang.String"/>
 	<field name="bale_mark" class="java.lang.String"/>
 	<field name="juteVariety" class="java.lang.String"/>
@@ -21,6 +21,8 @@
 	<field name="dustAmount" class="java.lang.Double"/>
 	<field name="ncvPercentage" class="java.lang.Double"/>
 	<field name="settlement" class="java.lang.String"/>
+	<field name="dateOfDespatch" class="java.lang.String"/>
+	<field name="placeOfDespatch" class="java.lang.String"/>
 	<background>
 		<band height="238" splitType="Stretch"/>
 	</background>
@@ -137,7 +139,7 @@
 				<text><![CDATA[Region Name:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1830" y="0" width="100" height="20" uuid="3cfd82b1-bed6-4cf5-91ca-b1be96591c57"/>
+				<reportElement x="1830" y="0" width="160" height="20" uuid="3cfd82b1-bed6-4cf5-91ca-b1be96591c57"/>
 				<textFieldExpression><![CDATA[$F{contract_no}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -451,6 +453,14 @@
 			<line>
 				<reportElement x="760" y="-67" width="1" height="122" uuid="afe9884e-e57f-48da-8dc4-2a32b4b8d59d"/>
 			</line>
+			<textField>
+				<reportElement x="90" y="6" width="80" height="30" uuid="8024b7af-9c6b-4ff3-88c8-b3a5994806f4"/>
+				<textFieldExpression><![CDATA[$F{dateOfDespatch}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="6" width="63" height="30" uuid="53e3c59f-a5be-4f36-848b-89c0cdea8d4f"/>
+				<textFieldExpression><![CDATA[$F{placeOfDespatch}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -498,7 +508,7 @@
 				<text><![CDATA[Email:jci@jcimail.in Website:www.jutecorp.in]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="715" y="145" width="670" height="20" uuid="5b5fb9d4-68b4-4fb7-8cc2-801f9aa3c410"/>
+				<reportElement x="813" y="145" width="327" height="20" uuid="5b5fb9d4-68b4-4fb7-8cc2-801f9aa3c410"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>

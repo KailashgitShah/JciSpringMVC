@@ -122,7 +122,7 @@
 			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
 										   
 		                                    %>
-                                        <input id ="DateofInpection"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
+                                        <input type ="hidden" id ="DateofInpection"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
 										<input type = "hidden"  name="Settlement_id_generated"   value="<%=nominationProfile.getSettlement_id_generated()%>">      
 										<input type = "hidden"  name="millname"                  value="<%=nominationProfile.getMill()%>">      
 										<input type =  "hidden" name="omoofficial"               value="<%=nominationProfile.getOMOfficial()%>">      

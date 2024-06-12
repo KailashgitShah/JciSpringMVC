@@ -154,12 +154,13 @@ th {
 										<td>${item.getMr_number()}</td>
 										<td>${item.getMr_Date()}</td>
 										<td>${item.getMR_qty()}</td>
-										 <td>${item.getQualityPercentage()}</td> 										<td>${item.getBillOfSupply_number()}</td>
+										 <td>${item.getQualityPercentage()}</td>
+										 <td>${item.getBillOfSupply_number()}</td>
 										<td>${item.getDateofshipment()}</td>
 										<td>${item.getShipmentquantity()}</td>
 										<td>${item.getClaimValuation()}</td>
-										<%-- <td>${item.getBos_file_path()}</td> --%>
-										 <td>  <a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
+									   <%--   <td>${item.getBos_file_path()}</td>  --%>
+										 <td><a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
                                        
 										</tr>
 										<%i++; %>

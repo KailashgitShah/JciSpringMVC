@@ -15,7 +15,7 @@ public class ClaimSettlementReport {
 	private String regionName;
 	private String challan;
 	private String mr_no;
-	private Date  mrDate;
+	private String  mrDate;
 	private String cropYear;
 	private String bale_mark;
 	private String juteVariety;
@@ -28,6 +28,9 @@ public class ClaimSettlementReport {
 	private Double dustAmount;
 	private Double ncvPercentage;
 	private String settlement;
+	private String roDiNo;
+	private String dateOfDespatch;
+	private String placeOfDespatch;
 	public String getMillname() {
 		return millname;
 	}
@@ -71,12 +74,7 @@ public class ClaimSettlementReport {
 		this.mr_no = mr_no;
 	}
 	
-	public Date getMrDate() {
-		return mrDate;
-	}
-	public void setMrDate(Date mrDate) {
-		this.mrDate = mrDate;
-	}
+	
 	public String getCropYear() {
 		return cropYear;
 	}
@@ -157,13 +155,40 @@ public class ClaimSettlementReport {
 		this.roCode = roCode;
 	}
 	
+	
+	public String getPlaceOfDespatch() {
+		return placeOfDespatch;
+	}
+	public void setPlaceOfDespatch(String placeOfDespatch) {
+		this.placeOfDespatch = placeOfDespatch;
+	}
+	
+	public String getRoDiNo() {
+		return roDiNo;
+	}
+	public void setRoDiNo(String roDiNo) {
+		this.roDiNo = roDiNo;
+	}
 	public ClaimSettlementReport() {
 		super();
 	}
+	public String getMrDate() {
+		return mrDate;
+	}
+	public void setMrDate(String mrDate) {
+		this.mrDate = mrDate;
+	}
+	public String getDateOfDespatch() {
+		return dateOfDespatch;
+	}
+	public void setDateOfDespatch(String dateOfDespatch) {
+		this.dateOfDespatch = dateOfDespatch;
+	}
 	public ClaimSettlementReport(String millname, String contract_no, String di_no, String di_date, String roCode,
-			String regionName, String challan, String mr_no, Date mrDate, String cropYear, String bale_mark,
+			String regionName, String challan, String mr_no, String mrDate, String cropYear, String bale_mark,
 			String juteVariety, String grade, Double no_of_bales, Double actualqty, Double mrQty, Double qualityPercent,
-			Double moisturePercent, Double dustAmount, Double ncvPercentage, String settlement) {
+			Double moisturePercent, Double dustAmount, Double ncvPercentage, String settlement, String roDiNo,
+			String dateOfDespatch, String placeOfDespatch) {
 		super();
 		this.millname = millname;
 		this.contract_no = contract_no;
@@ -186,6 +211,9 @@ public class ClaimSettlementReport {
 		this.dustAmount = dustAmount;
 		this.ncvPercentage = ncvPercentage;
 		this.settlement = settlement;
+		this.roDiNo = roDiNo;
+		this.dateOfDespatch = dateOfDespatch;
+		this.placeOfDespatch = placeOfDespatch;
 	}
 	@Override
 	public String toString() {
@@ -195,9 +223,11 @@ public class ClaimSettlementReport {
 				+ ", juteVariety=" + juteVariety + ", grade=" + grade + ", no_of_bales=" + no_of_bales + ", actualqty="
 				+ actualqty + ", mrQty=" + mrQty + ", qualityPercent=" + qualityPercent + ", moisturePercent="
 				+ moisturePercent + ", dustAmount=" + dustAmount + ", ncvPercentage=" + ncvPercentage + ", settlement="
-				+ settlement + "]";
+				+ settlement + ", roDiNo=" + roDiNo + ", dateOfDespatch=" + dateOfDespatch + ", placeOfDespatch="
+				+ placeOfDespatch + "]";
 	}
 	
+
 	
 
 }

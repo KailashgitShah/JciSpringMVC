@@ -27,7 +27,7 @@ public interface NominalOfficialDao {
 	public List<String> contractno_ContractTable();
 	
 	// Counting total Number of Rows In Mill 
-	public int CountRecord();
+	public String CountRecord();
 	
 	// Auto Fetching Role From jciuserrole.
 	
