@@ -4729,7 +4729,7 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setFA_Official("");
 				confirmationClaimSettlementModel.setCreated_by(username);
 				confirmationClaimSettlementModel.setCreated_on(date1);
-
+				confirmationClaimSettlementModel.setActive("1");
 				File file = null;
 				String url = "";
 				String pathurl = "";
@@ -5075,8 +5075,7 @@ public class Controller_V {
 			
 			
 			// setting Static Value for Remaining 
-			jciclaim_NominationModel.setChallanNo("challans");
-			jciclaim_NominationModel.setClaimAmount(2);
+			
 
 			nominalOfficialService.create(jciclaim_NominationModel);
 			 String mr = mr_no[i];

@@ -630,7 +630,7 @@ $(document).ready(function(){
                                     //alert(fetchedData);
                                     const AmountSet = amtiFixed * (qsValue/100) * (price - fetchedData);
                                     
-                                    $("#cl"+index).val(parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice));
+                                    $("#cl"+index).val(Math.ceil(parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice)));
                                     totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
                                     alert("AmountSet+++"+parseFloat(AmountSet)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
     	                           // alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
@@ -648,7 +648,7 @@ $(document).ready(function(){
                         }
                        /*  $('#Settlement_Amount').text(totalSettlementAmount); */
                       alert(totalSettlementAmount)
-	                $("#SettlementAmount1").val(totalSettlementAmount.toFixed(2));
+	                $("#SettlementAmount1").val(Math.ceil(totalSettlementAmount));
 
                         $("#sub").prop("disabled", false);
                     });
