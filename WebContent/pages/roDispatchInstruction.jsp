@@ -198,9 +198,9 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 									<div class="col-sm-4 form-group">
 
 
-										<label>Remarks </label> <span class="text-danger">* </span>
+										<label>Remarks </label> <span class="text-danger"> </span>
 										<textarea class="form-control taxtbox" name="Remarks"
-											placeholder="Remarks" required maxlength="250" id="remarks"></textarea>
+											placeholder="Remarks"  maxlength="250" id="remarks"></textarea>
 
 
 									</div>
@@ -645,7 +645,7 @@ for (var i = 0; i < size.length; i++) {
 }
 
 //To check if Remarks is empty or not
-if($("#remarks").val().length ==0 || $("#dpc").val() =="-1"){
+if(/* $("#remarks").val().length ==0 || */ $("#dpc").val() =="-1"){
 	 var errorMessage = " Fill all the marked fields" ;
      var errorDiv = $("<div>").text(errorMessage).css({
          "color": "red",

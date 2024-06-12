@@ -98,7 +98,7 @@ tr:nth-child(even) {
 						<tr>
 							<th>S.No</th>
 							<th>Contract No.</th>
-							<th>Regional Office Code</th>
+							<th>Regional Office </th>
 							<th>Last date of Shipment</th>
 							<th>DI No</th>
 							<th>DI Date</th>
