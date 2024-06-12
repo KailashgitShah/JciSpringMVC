@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="java.util.Calendar"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.jci.service_phase2.CreditNoteGenerationService"%>
 <%@page import="org.springframework.beans.factory.annotation.Autowired"%>
@@ -78,12 +79,13 @@ input[type="radio"] {
 	Double avgJuteValue = (Double) request.getAttribute("avgJuteVal");
 	List<Object[]> dispetchDetails = (List<Object[]>) request.getAttribute("dispetchDetails");
 	List<Object> gradeRatio = (List<Object>) request.getAttribute("gradeRatio");
-
+	String gstCode = (String) request.getAttribute("gst");
+	int getGstCount = (int) request.getAttribute("getGstCount") + 1;
 	/*
 
-		for (Object p : gradeRatio) {
-			System.err.println("gradeRatio => " + (Double) p);
-		} */
+	  for (Object p : gradeRatio) {
+	         System.err.println("gradeRatio => " + (Double) p);
+	  } */
 
 	int sumOfBale = 0;
 	for (Object[] details : dispetchDetails) {
@@ -93,25 +95,42 @@ input[type="radio"] {
 	//double factor = Double.parseDouble(new DecimalFormat("#.##").format(actualWt / sumOfBale));
 	double factor = actualWt / sumOfBale;
 
-	/* 	System.err.println("nominalWt => " + nominalWt);
-		System.err.println("actualWt => " + actualWt);
-		System.err.println("sumOfBale => " + sumOfBale);
-		System.err.println("factor => " + factor); */
+	/*     System.err.println("nominalWt => " + nominalWt);
+	  System.err.println("actualWt => " + actualWt);
+	  System.err.println("sumOfBale => " + sumOfBale);
+	  System.err.println("factor => " + factor); */
 
 	Double shortQty = nominalWt - actualWt;
 	//long crnAmount = Math.round(avgJuteValue * shortQty);
 
-	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
-	//generation of credit Note No.
-	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
-	String indiaSerialNo = "001640";
-	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+	Calendar calendar = Calendar.getInstance();
+	int currentYear = calendar.get(Calendar.YEAR);
+	int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+
+	int financialYearStart, financialYearEnd;
+
+	if (currentMonth >= 4) { // April or later
+		financialYearStart = currentYear;
+		financialYearEnd = currentYear + 1;
+	} else { // January to March
+		financialYearStart = currentYear - 1;
+		financialYearEnd = currentYear;
+	}
+
+	String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+
+	String yearCode = endYearLastTwoDigits;
+	String indiaSerialNo = String.format("%06d", Count);
+	String gstSerialNo = String.format("%05d", getGstCount);
+
+	String creditNoteIdnNo = "C" + yearCode + indiaSerialNo + gstCode + gstSerialNo;
 
 	double sumNmlQty = 0;
 	double sumActQty = 0;
 	double sumShrtQty = 0;
 	double sumTtlCrnAmt = 0;
 	%>
+
 
 
 	<div class="page-wrapper">
@@ -215,7 +234,9 @@ input[type="radio"] {
 											class="form-control " name="roId" id="roId" type="hidden"
 											value="<%=roId%>" readonly><input
 											class="form-control " name="dpc" id="dpc" type="hidden"
-											value="<%=dpc%>" readonly>
+											value="<%=dpc%>" readonly><input
+											class="form-control " name="gstCode" id="gstCode" type="hidden"
+											value="<%=gstCode%>" readonly>
 
 									</div>
 									<br>
@@ -226,7 +247,7 @@ input[type="radio"] {
 												<tr>
 													<th>Crop Year</th>
 													<th>Bale Mark</th>
-													<th>Variety</th>
+													<th>Variety/Grade</th>
 													<th>No Of Bale</th>
 													<th>Nominal Wt</th>
 													<th>Rate</th>
@@ -336,10 +357,9 @@ input[type="radio"] {
 
 	<script>
 	$(document).ready(function(){
+	<%-- 	alert('<%=finalAmount%>'); --%>
 		document.getElementById('creditAmt').value='<%=finalAmount%>';
-	});
-	
-	
+		});
 	</script>
 
 </body>

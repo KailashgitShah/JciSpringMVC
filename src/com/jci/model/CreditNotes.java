@@ -76,6 +76,9 @@ public class CreditNotes {
 	    
 	    @Column(name = "document")
 	    private String document;
+	    
+	    @Column(name = "gstCode")
+	    private String gstCode;
 
 		public int getCrnId() {
 			return crnId;
@@ -213,7 +216,19 @@ public class CreditNotes {
 		}
 		
 		
+		
+		
 
+
+		public String getGstCode() {
+			return gstCode;
+		}
+
+		public void setGstCode(String gstCode) {
+			this.gstCode = gstCode;
+		}
+
+	
 
 		@Override
 		public String toString() {
@@ -221,7 +236,8 @@ public class CreditNotes {
 					+ ChallanNo + ", shipmentDetails=" + shipmentDetails + ", contractNo=" + contractNo + ", bosQty="
 					+ bosQty + ", actualQty=" + actualQty + ", shortQty=" + shortQty + ", crnAmount=" + crnAmount
 					+ ", RoId=" + RoId + ", crnStatus=" + crnStatus + ", Created_by=" + Created_by + ", juteGrade="
-					+ juteGrade + ", creationDate=" + creationDate + ", document=" + document + "]";
+					+ juteGrade + ", creationDate=" + creationDate + ", document=" + document + ", gstCode=" + gstCode
+					+ "]";
 		}
 
 		public CreditNotes() {

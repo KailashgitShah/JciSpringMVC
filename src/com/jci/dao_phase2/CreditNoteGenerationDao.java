@@ -10,7 +10,7 @@ public interface CreditNoteGenerationDao {
 	void create(CreditNotes creditNotes);
 	List<Object[]> getAllCreditNotes();
 	void chageStatusTo1(int id);
-	int getCountRO(String ro);
+	int getGstCount(String gstCode);
 	List<Object[]> getAllMillsOfContracts();
 	List<Object[]> findDetails(String table, String contractNoString);
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel);
@@ -25,4 +25,5 @@ public interface CreditNoteGenerationDao {
 	List<Object[]> getDetailsofSpp_Con_Rec(String bosNo);
 	List<Object[]> getStateAndPan(String millcode);
 	List<Object[]> getStateAndCodeOfSupplier(String dpc);
+	int getTotalCount();
 }

@@ -152,7 +152,7 @@ public class PdfGenerator {
 
 		distributionTable.addCell(new Cell().add("Total").setBold());
 		distributionTable.addCell(new Cell().add(totalCompositionInt + "").setBold());
-		distributionTable.addCell(new Cell().add(" Rs" + finalPrice));
+		distributionTable.addCell(new Cell().add(" Rs " + finalPrice));
 		
 		System.err.println("Total " + finalPrice);
 
