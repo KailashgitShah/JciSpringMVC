@@ -94,36 +94,41 @@
 										<th>Total</th>																					
 								</thead>
 								<tbody>
-									<%
-									int i= 1;
-									for(RoDispatchModel di : roDiList){
-									%>
-									<tr>
-										<td  style='text-align:center;'><%=i%></td>
-									
-										<td style='text-align:center;'><%=di.getContractNo()%></td>
-										<td  style='text-align:center;'><%=di.getLastDateOfShipment()%></td>
-				                    	<td  style='text-align:center;'><%=di.getRoDiNo()%></td>
-										<td  style='text-align:center;'><%=di.getRoDiDate()%></td>
-										<td  style='text-align:center;'><%=di.getJuteVariety()%></td>
-										<td  style='text-align:center;'><%=di.getGr1Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr2Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr3Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr4Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr5Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr6Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr7Qty()%></td>	
-										<td  style='text-align:center;'><%=di.getGr8Qty()%></td>	
-										<td style='text-align:center;'><%= di.getGr1Qty() + di.getGr2Qty() + di.getGr3Qty() + di.getGr4Qty() + di.getGr5Qty() + di.getGr6Qty() + di.getGr7Qty() + di.getGr8Qty() %></td>
-							 
-									<%-- 	<td><a href="editentryofgradecomposition.obj?grade_id=<%=egcl.getId()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-										<td><a onclick="return confirm('Are you sure you want to delete this item?');" href="entryofgradecompositiondelete.obj?grade_id=<%=egcl.getId()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td>
-										 --%>
-									</tr>
-									<% 
-							i++; }
-							
-							%>
+<%
+    int i = 1; // Declare i outside the loop
+
+    for (RoDispatchModel di : roDiList) {
+        String regId = (String) session.getAttribute("regionId");
+        String input = di.getRoDiNo();
+        String[] parts = input.split("/");
+
+        // Check if the regionId matches the first two characters of the second part
+        if (parts.length > 1 && parts[1].startsWith(regId)) {
+%>
+<tr>
+    <td style='text-align:center;'><%= i %></td>
+    <td style='text-align:center;'><%= di.getContractNo() %></td>
+    <td style='text-align:center;'><%= di.getLastDateOfShipment() %></td>
+    <td style='text-align:center;'><%= di.getRoDiNo() %></td>
+    <td style='text-align:center;'><%= di.getRoDiDate() %></td>
+    <td style='text-align:center;'><%= di.getJuteVariety() %></td>
+    <td style='text-align:center;'><%= di.getGr1Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr2Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr3Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr4Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr5Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr6Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr7Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr8Qty() %></td>
+    <td style='text-align:center;'><%= di.getGr1Qty() + di.getGr2Qty() + di.getGr3Qty() + di.getGr4Qty() + di.getGr5Qty() + di.getGr6Qty() + di.getGr7Qty() + di.getGr8Qty() %></td>
+</tr>
+<%
+        i++; // Increment i within the loop
+        }
+    }
+%>
+
+
 								</tbody>
 								
 							

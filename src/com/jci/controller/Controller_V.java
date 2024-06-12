@@ -1902,6 +1902,11 @@ public class Controller_V {
 		String millCode = (String) rowObject[10];
 		String dpc = (String) rowObject[11];
 		String gstCode= (String) rowObject[12];
+<<<<<<< HEAD
+=======
+		System.err.println("GST:"+ gstCode);
+		System.err.println("GST:"+ gstCode);
+>>>>>>> 8df6c648e80ae013eaea123835620fc6c97ee18f
 		System.err.println("roId from controller => " + roId);
 
 		int getGstCount = creditNoteGenerationService.getGstCount(gstCode);
@@ -1927,9 +1932,13 @@ public class Controller_V {
 		mv.addObject("dispetchDetails", dispetchDetails);
 		mv.addObject("gradeRatio", gradeRatio);
 		mv.addObject("dpc", dpc);
+<<<<<<< HEAD
         mv.addObject("gst",gstCode);
         //state 
         mv.addObject("getGstCount",getGstCount);
+=======
+		mv.addObject("gst",gstCode);
+>>>>>>> 8df6c648e80ae013eaea123835620fc6c97ee18f
 		return mv;
 	}
 

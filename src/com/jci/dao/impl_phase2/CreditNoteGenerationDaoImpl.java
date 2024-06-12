@@ -182,7 +182,11 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<Object> getChallanDetails(String challan) {
 		String sql = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No,"
 				+ " a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No"
+<<<<<<< HEAD
 				+ "  ,a.Ro_id,c.Mill_code , c.Place_of_Shipment ,a.Statecode_forBOs, c.Contract_date , c.DI_Date,c.Date_of_shipment  from  jcibos_generation a INNER JOIN jciweighment_entry b"
+=======
+				+ "  ,a.Ro_id,c.Mill_code , c.Place_of_Shipment ,a.Statecode_forBOs from  jcibos_generation a INNER JOIN jciweighment_entry b"
+>>>>>>> 8df6c648e80ae013eaea123835620fc6c97ee18f
 				+ "  on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Challan_No = '" + challan
 				+ "'" + " inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
 

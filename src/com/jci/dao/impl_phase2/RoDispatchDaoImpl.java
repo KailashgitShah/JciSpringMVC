@@ -18,6 +18,7 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.RoDispatchDao;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.RoDispatchModel;
+import org.hibernate.criterion.Restrictions;
 
 @Transactional
 @Repository
@@ -112,7 +113,9 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	public List<RoDispatchModel> getAllRoDi() {
 		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(RoDispatchModel.class)
 				.addOrder(Order.desc("creationDate"));
+		/* c.add(Restrictions.eq("yourPropertyName", yourFilterParameter)); */
 		List<RoDispatchModel> ll = c.list();
+		System.err.println(ll);
 		return ll;
 
 	}
