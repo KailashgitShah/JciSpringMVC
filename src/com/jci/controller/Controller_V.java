@@ -4880,134 +4880,7 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		return mv;	
 	}
 
-//	@Value("${upload.claimSettlementReportDownload}")
-//	String claimSettlementReportDownload;
-//	@Value("${upload.claimsetlmentJRXMLpath}")
-//	String claimsetlmentJRXMLpath;
-//	@RequestMapping("updatesavenominalform")
-//	public ModelAndView updatesavenominatiion(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-//	    String username = (String) request.getSession().getAttribute("usrname");
-//	    ModelAndView mv = new ModelAndView("editnominationofofficial");
-//	    if (username == null) {
-//	        return new ModelAndView("index");
-//	    }
-//	    try {
-//	        String FAomofficial = request.getParameter("FAomofficial");
-//	        String id = request.getParameter("Settlement_id_generated");
-//	        nominalOfficialService.updatefa(id, FAomofficial);
-//
-//	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-//	        String Mill = request.getParameter("millname");
-//	        String omofficial = request.getParameter("omoofficial");
-//	        String DateofInpection = request.getParameter("DateofInpection");
-//	        List<ClaimSettlementReport> pdfnomination = nominalOfficialService.getNominationReportData(id);
-//	        System.err.println(pdfnomination);
-//	        String id1 = id.replace('/', '-');
-//	        String directoryPath = claimSettlementReportDownload;
-//	        System.err.println(directoryPath);
-//	        String filename = id1 + "claimSettlementReport.pdf"; // Change this to your desired filename
-//	        String filepath = directoryPath + filename;
-//	        JasperReport jasperReport1 = JasperCompileManager.compileReport(claimsetlmentJRXMLpath);
-//	        Map<String, Object> parameters = new HashMap<String, Object>();
-//	        // Prepare data sources
-//	        JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfnomination);
-//	        // Fill JasperPrints
-//	        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-//	        // Create the file on the server
-//	        JasperExportManager.exportReportToPdfFile(jasperPrint1, filepath);
-//
-//	        // Email sending code
-//            //1- This email is for  FaOfficial
-//		          EmailSender emailfa=new EmailSender();
-//		           InternetAddress[] toAddresses= null;
-//		           String subjectfa = "Nomination for Claim Settlement";
-//		           String bodyfa = "Dear "+ FAomofficial + ",\n" +    
-//		                                     "I hope this email finds you well.\n" +
-//		                                     "We are pleased to inform you that you have been nominated for the claim settlement for "+ Mill +" on Date: "+ DateofInpection +" .\n" +
-//		                                     "\n" +
-//		                                     "Thanks & Regards,\n" +
-//		                                     "Jute Corporation of India";
-//		         
-//		           String filenamefa1 = filepath;
-//		           String usernamefa = filename;
-//		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
-//		           try {
-//		                  toAddresses = new InternetAddress[] {
-//		                               new InternetAddress("mansi.gupta@cyfuture.com")
-//		                		//  new InternetAddress("mansigupta18001@gmail.com")
-//		                  };
-//		
-//		           } catch (AddressException e) {
-//		                  // TODO Auto-generated catch block
-//		                  e.printStackTrace();
-//		           }
-//		        emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa1, usernamefa);
-//		        
-//		        // 2- email is for omoofficial
-//		           EmailSender emailomo = new EmailSender();
-//		           InternetAddress[] toAddressesomo = null;        
-//		           String subjectomo = "Nomination for Claim Settlement";  
-//		           String bodyomo ="Dear "+ omofficial  + ",\n" +      
-//		                             "I hope this email finds you well.\n" +
-//		                             "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill + " on Date: " + DateofInpection+ ".\n" +
-//		                             "\n"+ 
-//		                             "Thanks & Regards,\n" +
-//		                             "Jute Corporation of India";
-//		           String filenameomo =   filepath;
-//		        		 
-//		          String usernameomo = filename;        
-//		        String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
-//		           try {        
-//		                  toAddressesomo = new InternetAddress[] {
-//		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
-//		                		  new InternetAddress("mansigupta18001@gmail.com")
-//		
-//		                  };
-//		
-//		           } catch (AddressException e) {
-//		
-//		                  e.printStackTrace();
-//		           }
-//		           emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo , filenameomo , usernameomo);
-//		           
-//		 // 3- email is for mill
-//		           EmailSender emailmill = new EmailSender();
-//		           InternetAddress[] toAddressesmill = null;        
-//		           String subjectmill = "Nomination for Claim Settlement";  
-//		
-//		           String bodymill=    "Dear "+ Mill + ",\n" +             
-//		                              "I hope this email finds you well.\n" +
-//		                              "We are pleased to inform you that "+ Mill +" have been nominated for the claim settlement  on Date: " + DateofInpection+ ".\n" +
-//		                              "\n"+ 
-//		                              "Thanks & Regards,\n" +
-//		                                                 "Jute Corporation of India";
-//		           
-//		                                               String filenamemill = filepath;
-//		                                               String usernamemill = filename;   
-//		                                               
-//		                                               String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
-//		                                                   try {        
-//		                                       toAddressesmill = new InternetAddress[] {
-//		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
-//		                		 new InternetAddress("mansigupta18001@gmail.com")
-//		
-//		                  };
-//		
-//		           } catch (AddressException e) {
-//		
-//		                  e.printStackTrace();
-//		           }
-//		           emailmill.sendEmail(toAddressesmill, bodymill, subjectmill , filenamemill , usernamemill);
-//		
-//			        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-//		
-//			        return new ModelAndView((View)new RedirectView("viewlistnominal.obj"));
-//		
-//			    } catch (Exception e) {
-//			        System.out.println("Error in update user profile" + e.getStackTrace());
-//			        return mv;
-//			    }
-//	}
+
 
 	@Value("${upload.claimSettlementReportDownload}")
 	String claimSettlementReportDownload;
@@ -5030,22 +4903,15 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 	        String omofficial = request.getParameter("omoofficial");
 	        String DateofInpection = request.getParameter("DateofInpection");
 	        List<ClaimSettlementReport> pdfnomination = nominalOfficialService.getNominationReportData(id);
-	        System.err.println(pdfnomination);
+	       // System.err.println(pdfnomination);
 	        String id1 = id.replace('/', '-');
 	        String directoryPath = claimSettlementReportDownload;
 	       // String directoryPath = "C:\\Users\\Mansi.Gupta\\Documents\\newreportsave\\";
-	        System.err.println(directoryPath);
+	       // System.err.println(directoryPath);
 	        String filename = id1 + "claimSettlementReport.pdf"; // Change this to your desired filename
 	        String filepath = directoryPath + filename;
-	        System.out.println(filepath + "kkkkk");
-	       // JasperReport jasperReport1 = JasperCompileManager.compileReport(claimsetlmentJRXMLpath);
-//	        Map<String, Object> parameters = new HashMap<String, Object>();
-//	        // Prepare data sources
-//	        JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfnomination);
-//	        // Fill JasperPrints
-//	        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-//	        // Create the file on the server
-//	        JasperExportManager.exportReportToPdfFile(jasperPrint1, filepath);
+	       // System.out.println(filepath + "kkkkk");
+	
 	        try {
 	            JasperReport jasperReport1 = JasperCompileManager.compileReport(claimsetlmentJRXMLpath);
 	            Map<String, Object> parameters = new HashMap<String, Object>();
@@ -5077,8 +4943,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
 		           try {
 		                  toAddresses = new InternetAddress[] {
-		                               new InternetAddress("mansi.gupta@cyfuture.com")
-		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                             //  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		  new InternetAddress(userEmailFA)
 		                  };
 		
 		           } catch (AddressException e) {
@@ -5104,7 +4970,8 @@ public void downloadDocs(@RequestParam("filename") String filename, HttpServletR
 		           try {        
 		                  toAddressesomo = new InternetAddress[] {
 		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
-		                		  new InternetAddress("mansigupta18001@gmail.com")
+		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                		  new InternetAddress(userEmailOmo)
 		
 		                  };
 		
