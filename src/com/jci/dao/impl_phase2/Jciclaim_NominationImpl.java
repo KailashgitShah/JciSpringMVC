@@ -342,7 +342,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 	@Override
 	public List<Object[]> dateofInspection(String dateOfInspection) {
-		String q = "select OMOfficial , FAOfficial , Mill from jciclaim_nomination where DateofInspection ='" + dateOfInspection + "'";
+		String q = "select DISTINCT OMOfficial , FAOfficial , Mill from jciclaim_nomination where DateofInspection ='" + dateOfInspection + "'";
 		List<Object[]> gradecomposition = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 		return gradecomposition;
 	}

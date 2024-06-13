@@ -54,8 +54,7 @@ public class Jciclaim_NominationModel {
 	
 	@Column(name = "Settlement_id_generated")
 	private String Settlement_id_generated;
-	
-	
+
 	
 	@Column(name = "Mr_number")
 	private String Mr_number;
@@ -81,13 +80,9 @@ public class Jciclaim_NominationModel {
 	
 	@Column(name = "MR_qty")
 	private Double MR_qty;
-	
-
-	@Column(name = "QualityPercentage")
+	@Column(name= "QualityPercentage")
 	private Double QualityPercentage;
-	
-
-	
+		
 	public Long getSettlement_id() {
 		return Settlement_id;
 	}
@@ -275,7 +270,7 @@ public class Jciclaim_NominationModel {
 	public void setQualityPercentage(Double qualityPercentage) {
 		QualityPercentage = qualityPercentage;
 	}
-
 	
+
 
 }
