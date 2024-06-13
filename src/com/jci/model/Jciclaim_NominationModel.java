@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "jciclaim_nomination")
+@Table(name = "jciclaimNomination")
 public class Jciclaim_NominationModel {
 
 	@Id
@@ -54,8 +54,6 @@ public class Jciclaim_NominationModel {
 	
 	@Column(name = "Settlement_id_generated")
 	private String Settlement_id_generated;
-
-	
 	@Column(name = "Mr_number")
 	private String Mr_number;
 	
@@ -75,6 +73,7 @@ public class Jciclaim_NominationModel {
 	@Column(name = "claimValuation")
 	private String claimValuation;
 	
+ 
 	@Column(name = "Bos_file_path")
 	private String Bos_file_path;
 	
@@ -82,7 +81,7 @@ public class Jciclaim_NominationModel {
 	private Double MR_qty;
 	@Column(name= "QualityPercentage")
 	private Double QualityPercentage;
-		
+ 
 	public Long getSettlement_id() {
 		return Settlement_id;
 	}

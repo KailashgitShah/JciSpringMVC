@@ -68,7 +68,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 	@Override
 	public void delete(int id) {
-		String hql = "Delete from  dbo.jciclaim_nomination where Settlement_id = '" + id + "' ";
+		String hql = "Delete from  dbo.jciclaimNomination where Settlement_id = '" + id + "' ";
 		this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 
 	}
@@ -76,8 +76,8 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<Jciclaim_NominationModel> getAll() {
 		// TODO Auto-generated method stub
-	//String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial from jciclaim_nomination";
-		  String sqlQuery = "SELECT DISTINCT Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial FROM jciclaim_nomination ORDER BY Created_on DESC";
+	//String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial from jciclaimNomination";
+		  String sqlQuery = "SELECT DISTINCT Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial FROM jciclaimNomination ORDER BY Created_on DESC";
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 		List<Jciclaim_NominationModel> list = new ArrayList<>();
@@ -107,7 +107,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public boolean submitform(Jciclaim_NominationModel nominal) {
 		// TODO Auto-generated method stub
-		String sql = "select * from jciclaim_nomination";
+		String sql = "select * from jciclaimNomination";
 		List list = this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 
 		this.sessionFactory.getCurrentSession().saveOrUpdate(nominal);
@@ -158,7 +158,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	               "WHERE m.unit_name = '" + MillNamenomination + "' " +
 	               "AND c.Contract_no NOT IN ( " +
 	               "    SELECT DISTINCT ContractNo " +
-	               "    FROM jciclaim_nomination " +
+	               "    FROM jciclaimNomination " +
 	               ")";
 
 	    // Executing the SQL query and fetching the result
@@ -176,7 +176,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	               "FROM jcicontract " +
 	               "WHERE jcicontract.Contract_no NOT IN ( " +
 	               "    SELECT DISTINCT ContractNo " +
-	               "    FROM jciclaim_nomination " +
+	               "    FROM jciclaimNomination " +
 	               ")";
 		//String q = "SELECT DISTINCT  Contract_no FROM jcicontract ";
 		List contractNo = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
@@ -233,7 +233,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 //	public int CountRecord() {
 //		// TODO Auto-generated method stub
 //
-//		    String q = "SELECT COUNT(*) FROM jciclaim_nomination";
+//		    String q = "SELECT COUNT(*) FROM jciclaimNomination";
 //		  int result = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
 //		    return result+1;
 //		
@@ -244,10 +244,11 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		// TODO Auto-generated method stub
 
 
-		    String q = "SELECT TOP 1 settlement_id_generated FROM jciclaim_nomination ORDER BY Settlement_id DESC";
+		    String q = "SELECT TOP 1 settlement_id_generated FROM jciclaimNomination ORDER BY Settlement_id DESC";
 		  String result = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
 		  System.err.println(result);
 		    return result;
+
 		
 
 	}
@@ -325,7 +326,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 			    "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no " +
 			    "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no " +
 			    "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
-			    "AND NOT EXISTS (SELECT 1 FROM jciclaim_nomination WHERE jcimr.MR_no = jciclaim_nomination.Mr_number)";
+			    "AND NOT EXISTS (SELECT 1 FROM jciclaimNomination WHERE jcimr.MR_no = jciclaimNomination.Mr_number)";
 
 		
 //		String q = "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt, jcimr.claimAmmount , jci.Bos_file_path " +
@@ -342,7 +343,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 	@Override
 	public List<Object[]> dateofInspection(String dateOfInspection) {
-		String q = "select DISTINCT OMOfficial , FAOfficial , Mill from jciclaim_nomination where DateofInspection ='" + dateOfInspection + "'";
+		String q = "select OMOfficial , FAOfficial , Mill from jciclaimNomination where DateofInspection ='" + dateOfInspection + "'";
 		List<Object[]> gradecomposition = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 		return gradecomposition;
 	}
@@ -369,7 +370,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public Jciclaim_NominationModel find(String id) {
 		List<Jciclaim_NominationModel> result = new ArrayList<>();
-		String querystr = "select DateofInspection , FAOfficial , OMOfficial , Settlement_id_generated,Mill from jciclaim_nomination where Settlement_id_generated ='" + id + "'";
+		String querystr = "select DateofInspection , FAOfficial , OMOfficial , Settlement_id_generated,Mill from jciclaimNomination where Settlement_id_generated ='" + id + "'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -405,7 +406,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public void updatefa(String id, String FAomofficial) {
 		
-		String hql = "UPDATE jciclaim_nomination set  FAOfficial = '"+ FAomofficial +"' where Settlement_id_generated= '" +id+ "' ";
+		String hql = "UPDATE jciclaimNomination set  FAOfficial = '"+ FAomofficial +"' where Settlement_id_generated= '" +id+ "' ";
 	    this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	}
 
@@ -414,21 +415,21 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
 
 		String sqlQuery = "SELECT DISTINCT " +
-                "jciclaim_nomination.Challans, " +
-                "jciclaim_nomination.Mr_number, " +
-                "jciclaim_nomination.Mr_Date, " +
-                "jciclaim_nomination.billOfSupply_number, " +
-                "jciclaim_nomination.dateofshipment, " +
-                "jciclaim_nomination.shipmentquantity, " +
-                "jciclaim_nomination.claimValuation, " +
-                "jciclaim_nomination.Settlement_id_generated, " +
+                "jciclaimNomination.Challans, " +
+                "jciclaimNomination.Mr_number, " +
+                "jciclaimNomination.Mr_Date, " +
+                "jciclaimNomination.billOfSupply_number, " +
+                "jciclaimNomination.dateofshipment, " +
+                "jciclaimNomination.shipmentquantity, " +
+                "jciclaimNomination.claimValuation, " +
+                "jciclaimNomination.Settlement_id_generated, " +
                 "jcibos_generation.Bos_file_path, " +
                 "jcimill_receipt.MR_qty, " +
                 "jcimill_receipt.QualityPercentage " +
-            "FROM jciclaim_nomination " +
-            "LEFT JOIN jcibos_generation ON jciclaim_nomination.billOfSupply_number = jcibos_generation.bill_of_supply_no " +
-            "LEFT JOIN jcimill_receipt ON jciclaim_nomination.Mr_number = jcimill_receipt.MR_no " +
-            "WHERE jciclaim_nomination.Settlement_id_generated = '"+settlement_id+"'";
+            "FROM jciclaimNomination " +
+            "LEFT JOIN jcibos_generation ON jciclaimNomination.billOfSupply_number = jcibos_generation.bill_of_supply_no " +
+            "LEFT JOIN jcimill_receipt ON jciclaimNomination.Mr_number = jcimill_receipt.MR_no " +
+            "WHERE jciclaimNomination.Settlement_id_generated = '"+settlement_id+"'";
 
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -465,7 +466,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	public List<Jciclaim_NominationModel>findnominationdetails(String id) {
 		
 	
-		String sqlQuery = "select OMOfficial , DateofInspection , Mill from jciclaim_nomination where Settlement_id_generated='"+id+"'";
+		String sqlQuery = "select OMOfficial , DateofInspection , Mill from jciclaimNomination where Settlement_id_generated='"+id+"'";
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 		List<Jciclaim_NominationModel> list = new ArrayList<>();
@@ -517,7 +518,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	        "dispatchdetails.Place_of_Shipment, " +
 	        "jcipurchase.centername " + // Add the centername field here
 	    "FROM " +
-	        "jciclaim_nomination nom " +
+	        "jciclaimNomination nom " +
 	    "INNER JOIN " +
 	        "jcimill_receipt mill ON mill.MR_no = nom.Mr_number " +
 	    "INNER JOIN " +
