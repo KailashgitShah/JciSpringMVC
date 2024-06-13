@@ -112,7 +112,9 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 			
 			  	String sql=  " SELECT  distinct a.DI_no,b.Mill_code,a.Contract_No from jcidispatch_details as a Left join jcicontract as b on b.Contract_no = a.Contract_No \r\n"
 			  			+ " INNER JOIN jcicredit_note AS d ON d.Contract_no = a.Contract_No "
-			  			+ "where b.Mill_code= '" + millname + "' ";
+			  			+ "where b.Mill_code= '" + millname + "' "
+			  					+ "  AND a.Challan_no IN (SELECT ChallanNo FROM jcicredit_note)\r\n"
+			  					+ "  AND a.Challan_no NOT IN (SELECT Challan_no FROM jcimill_receipt);";
 			  	 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 			    return resultList1;
 
@@ -140,6 +142,10 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 	      String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code "
 	      		+ "		 			FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.ChallanNo = a.Challan_no"
 		 		+ " WHERE a.DI_No =  '" +st+"'"; 
+	      
+//	      String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code "
+//		      		+ "		 			FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No "
+//			 		+ " WHERE a.DI_No =  '" +st+"'"; 
 			 		
 			
 			 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();

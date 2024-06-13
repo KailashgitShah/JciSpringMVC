@@ -112,9 +112,8 @@
 								     	<th>DI_No</th>
 										<th>DI_Date</th>
 										<th>Date_of_shipment</th>
-										<th>Bale mark</th>
-										<th>Consignment_note</th>
-									
+										<th>Consignment_note text</th>
+										<th>Consignment_note </th>
 									   <th></th>
 										
 										

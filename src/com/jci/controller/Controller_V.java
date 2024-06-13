@@ -3013,7 +3013,7 @@ public class Controller_V {
 
 			String[] baleMark = request.getParameterValues("baleMark[]");
 			String[] jutegrade = request.getParameterValues("jutegrade[]");
-			String[] juteVariety = request.getParameterValues("juteVariety[]");
+//			String[] juteVariety = request.getParameterValues("juteVariety[]");
 			String[] cropYear = request.getParameterValues("cropYear[]");
 			String[] challanQty = request.getParameterValues("challanQty[]");
 			String[] actualqty = request.getParameterValues("actualQty[]");
@@ -3047,7 +3047,7 @@ public class Controller_V {
 
 				String Challan_Qty = challanQty[i];
 				String Bale_Mark = baleMark[i];
-				String juteewiseqty = juteVariety[i];
+//				String juteewiseqty = juteVariety[i];
 				String jutegrade1 = jutegrade[i];
 				String cropYear1 = cropYear[i];
 				String no_of_bales1 = no_of_bales[i];
@@ -3123,7 +3123,7 @@ public class Controller_V {
 				millRecieptModel.setHO_di(HO_DINO);
 				millRecieptModel.setChallan_no(challanno1);
 				millRecieptModel.setJute_Grade(jutegrade1);
-				millRecieptModel.setJute_Variety(juteewiseqty);
+//				millRecieptModel.setJute_Variety(juteewiseqty);
 				millRecieptModel.setDate_shipment(dateOfShipmentValue1);
 				millRecieptModel.setVehicle_no(vehicleNo1);
 				millRecieptModel.setChallan_qty(Challan_Qty1);
@@ -4959,8 +4959,7 @@ public class Controller_V {
 
                  jciclaim_NominationModel.setSupporting_doc("Supporting Documment");
                  jciclaim_NominationModel.setDispute_flag(0);
-                 jciclaim_NominationModel.setChallanNo("challans");
-                 jciclaim_NominationModel.setClaimAmount(2);
+                
 
                  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                  LocalDate currentDate = LocalDate.now();

@@ -349,6 +349,8 @@ $(document).ready(function() {
                     var option = document.createElement('option');
                      option.textContent = innerArray[0];
                     option.value = innerArray[0]; 
+                    alert(innerArray[0]);
+                    alert(innerArray[2]);
                     
                 /*     let lastSlashIndex = innerArray[0].lastIndexOf('/');
                     let remainingPart = innerArray[0].substring(0, lastSlashIndex);

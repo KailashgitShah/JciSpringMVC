@@ -58,11 +58,7 @@ public class Jciclaim_NominationModel {
 	@Column(name = "Settlement_id_generated")
 	private String Settlement_id_generated;
 	
-	@Column(name = "ChallanNo", nullable = false)
-	private String ChallanNo;
-
-	@Column(name = "ClaimAmount", nullable = false)
-	private double ClaimAmount;
+	
 	
 	@Column(name = "Mr_number")
 	private String Mr_number;
@@ -84,21 +80,7 @@ public class Jciclaim_NominationModel {
 	private String claimValuation;
 	
 
-	public String getChallanNo() {
-		return ChallanNo;
-	}
-
-	public void setChallanNo(String challanNo) {
-		ChallanNo = challanNo;
-	}
-
-	public double getClaimAmount() {
-		return ClaimAmount;
-	}
-
-	public void setClaimAmount(double claimAmount) {
-		ClaimAmount = claimAmount;
-	}
+	
 
 	public Long getSettlement_id() {
 		return Settlement_id;

@@ -105,6 +105,7 @@
 													for (Object[] row : getcontractList2) {
 														 millname = (String) row[0];  
 													    String millcode = (String) row[1]; 
+													    
 													%>
 													<option value="<%=millcode%>"><%=millname%></option>
 													<%
@@ -492,6 +493,8 @@ $(document).ready(function() {
     $('#millname12').on('change', function() {
         $('#contractTable tbody').empty();
         var field2Value = $(this).val();
+        alert(field2Value);
+        console.log(field2Value);
         $.ajax({
             type: 'GET',
             url: 'millnamebasedcontract.obj',
