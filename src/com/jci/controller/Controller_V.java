@@ -5278,7 +5278,6 @@ public class Controller_V {
 			LocalDate currentDate = LocalDate.now();
 			String formattedDate = currentDate.format(formatter);
 			jciclaim_NominationModel.setCreated_on(formattedDate);	
-
 			nominalOfficialService.create(jciclaim_NominationModel);
 			 String mr = mr_no[i];
 		     nominalOfficialService.millrecieptstatus(mr);	

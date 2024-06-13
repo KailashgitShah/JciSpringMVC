@@ -45,7 +45,6 @@
 
 .scrollmenu a {
   display: inline-block;
-  color: white;
   text-align: center;
   padding: 14px;
   text-decoration: none;
@@ -112,9 +111,8 @@
 								     	<th>DI_No</th>
 										<th>DI_Date</th>
 										<th>Date_of_shipment</th>
-										<th>Bale mark</th>
-										<th>Consignment_note</th>
-									
+										<th>Consignment_note text</th>
+										<th>Consignment_note </th>
 									   <th></th>
 										
 										
@@ -151,7 +149,9 @@
 										
 										<td><%= row[8] %></td>
 										<td hidden><%= row[7] %></td>
-										<td><%= row[9] %></td>
+										 <td style="text-align: center;color:blue"><a href="http://49.50.118.112:8080/DispatchDetail/<%= row[9] %>" 
+										  target="_blank">Consignment Note</a></td>
+    
 									
 										
 											<td>

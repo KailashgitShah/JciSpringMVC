@@ -429,10 +429,12 @@ $(document).ready(function(){
                     var tableHTML = "<table border='1'>";
                     tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Variety/Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
                         "<th style='font-weight: bold;'>Moisture Content Claim Percentage</th><th style='font-weight: bold;'>Moisture Content Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th><th style='font-weight: bold;'>Claim Amount</th></tr>";
-                    for (var i = 0; i < data.length; i++) {
+                    //alert(data);
+                        for (var i = 0; i < data.length; i++) {
                         var grade = data[i][3];
                            var readOnly = (grade === 'TDN5' || grade === 'WN5' || grade === 'M6' || grade === 'B6') ? 'readonly' : '';
                         var date1 = new Date(data[i][17]);
+                       // alert(date1);
                            var day1 = date1.getDate();
                            var month1 = date1.getMonth() + 1;
                            var year1 = date1.getFullYear();
@@ -440,7 +442,7 @@ $(document).ready(function(){
                            var formattedMonth1 = month1 < 10 ? '0' + month1 : month1;
                            var formattedYear1 = year1;
                            var formattedDate1 = formattedDay1 + '-' + formattedMonth1 + '-' + formattedYear1;
-                           //alert(formattedDate1);
+                         // alert(formattedDate1);
                         tableHTML += "<tr>";
                         tableHTML += "<td style='text-align:center;'><input readonly id='jv"+i+"' name='jv"+i+"' value='" + data[i][2] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='jg"+i+"' name='jg"+i+"' value='" + data[i][3] + "'></td>";
@@ -450,7 +452,7 @@ $(document).ready(function(){
     	                tableHTML += "<td style='text-align:center;'><input readonly id='di"+i+"' name='di"+i+"' value='" + data[i][14] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='ch"+i+"' name='ch"+i+"' value='" + data[i][12] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='mn"+i+"' name='mn"+i+"' value='" + data[i][16] + "'></td>";
-    	                tableHTML += "<td style='text-align:center;'><input readonly id='md"+i+"' name='md"+i+"' value='" + formattedDate1 + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='md"+i+"' name='md"+i+"' value='" + data[i][17] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='nob"+i+"' name='nob"+i+"' value='" + data[i][8] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='amt"+i+"' name='amt"+i+"' value='" + data[i][4] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='pr"+i+"' name='pr"+i+"' type='number' value='" + data[i][9] + "'></td>";
@@ -678,7 +680,7 @@ $(document).ready(function(){
 <script>
 function myFunc(){
 /* 	var maxQ = $('#Quality_Settlement1').attr('max');
-	alert(maxQ);
+	//alert(maxQ);
 	var maxMoisture = $('#Moisture_Settlement1').attr('max');
 	alert(maxMoisture);
 	var maxN = $('#NCV_Settlement1').attr('max');
