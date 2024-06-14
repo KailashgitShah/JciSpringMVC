@@ -134,7 +134,7 @@ th {
 									<th>MR_No</th>
 									<th>MR_Date</th>
 									<th>MR_Quantity</th>
-									<th>Quality_Percentage</th>
+									<!-- <th>Quality_Percentage</th> -->
 									<th>Bill_Of_Supply_Number</th>
 									<th>Date_Of_Shipment</th>	
 									<th>Shipment_Quantity</th>	
@@ -154,12 +154,12 @@ th {
 										<td>${item.getMr_number()}</td>
 										<td>${item.getMr_Date()}</td>
 										<td>${item.getMR_qty()}</td>
-										 <td>${item.getQualityPercentage()}</td>
+									 <%--  <td>${item.getQualityPercentage()}</td>  --%>
 										 <td>${item.getBillOfSupply_number()}</td>
 										<td>${item.getDateofshipment()}</td>
 										<td>${item.getShipmentquantity()}</td>
 										<td>${item.getClaimValuation()}</td>
-									   <%--   <td>${item.getBos_file_path()}</td>  --%>
+									     <%-- <td>${item.getBos_file_path()}</td>   --%>
 										 <td><a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
                                        
 										</tr>
