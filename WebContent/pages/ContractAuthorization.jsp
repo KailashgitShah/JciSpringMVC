@@ -86,7 +86,7 @@ String contractNos ="";
 										<th>Mill Code</th>
 										<th>Mill Name</th>
 										<th>Allocated Qty(Qtls.)</th>
-										<th>Jute Value</th>
+										<th>Jute Value(RS)</th>
 										<th>Contract No</th>
 										<th>PCSO Date</th>
 										<th>Delivery Period</th>

@@ -92,7 +92,7 @@ input[type="radio"] {
 			%>
 
 			<%
-			List<String> contractList = (List<String>) request.getAttribute("ContractList");
+			List<Object[]> contractList = (List<Object[]>) request.getAttribute("ContractList");
 			%>
 			<%
 			List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
@@ -123,9 +123,9 @@ input[type="radio"] {
 															class="form-control textbox" required>
 															<option value="" disabled selected>Select</option>
 															<%
-															for (String Contract : contractList) {
+															for (Object[] Contract : contractList) {
 															%>
-															<option value="<%=Contract%>" readonly><%=Contract%></option>
+															<option value="<%=Contract[0]%>" readonly><%=Contract[0]+"( FC Ref No.: "+Contract[1]+")"%></option>
 															<%
 															}
 															%>
@@ -156,7 +156,7 @@ input[type="radio"] {
 												<div class="row">
 
 													<div class="col-sm-4 form-group">
-														<label>Contract Quantity </label> <input
+														<label>Contract Quantity (Qtls) </label> <input
 															class="form-control textbox" name="contractquantity"
 															min="0" type="number" id="contractquantity"
 															placeholder="Contract Quantity" required readonly>
@@ -170,7 +170,7 @@ input[type="radio"] {
 													</div>
 
 													<div class="col-sm-4 form-group">
-														<label>Allowed Quantity </label> <input
+														<label>Allowed Quantity (Qtls) </label> <input
 															class="form-control textbox" name="qty" type="number"
 															id="qty" placeholder="Allowed Quantity" required readonly>
 													</div>
@@ -206,7 +206,7 @@ input[type="radio"] {
 													</div>
 													<span></span>
 													<div class="col-sm-4 form-group">
-														<label>Issued Quantity.</label> <input
+														<label>Issued Quantity. (Qtls)</label> <input
 															class="form-control taxtbox" name="IssQty" type="number"
 															placeholder="Issued Qty" id="IssQty" readonly required>
 													</div>
@@ -478,16 +478,12 @@ input[type="radio"] {
 								//alert(d[4]);//Label name
 								document.getElementById("fc").value = d[5];
 								document.getElementById("qty").value = d[6];
+								alert(data)
 								if (d[15] == "Letter_of_Credit") {
 
-									const today = new Date();
-
-									// Format the date in YYYY-MM-DD format
-									const formattedDate = today.toISOString()
-											.slice(0, 10);
-
-									// Set the value of the "instdate" element
-									document.getElementById("instdate").value = formattedDate;
+									document.getElementById("instdate")
+									.setAttribute("max", d[7]);
+							document.getElementById("instdate").value = d[7];
 									//alert(instdate);
 								} else {
 									document.getElementById("instdate")
@@ -535,27 +531,34 @@ input[type="radio"] {
 								contentToDisplay += "<p>Contract Date: <span style='color: blue;'>"
 										+ d[0]
 										+ "</span></p><p>Contract Qty: <span style='color: blue;'>"
-										+ d[2] + "</span></p>";
+										+ d[2] + " Qtls</span></p>";
 
 								contentToDisplay += "<h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>Contract Quantity</h1><br>";
 								contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 33.33%; text-align: center;'>Jute Variety Grade</th><th style='border: 1px solid black; text-align: center;'>Contract Qty (Qtls.)</th><th style='border: 1px solid black; width: 10%; text-align: center;'>Balance Qty (Qtls.)</th></tr>";
 
+								var total = 0;
+								var good = 0;
+
 								for (var i = 8; i <= 13; i++) {
-									if (d[14][i - 8] == null) {
-										d[14][i - 8] = 0;
-									}
-									var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8])
-											.toFixed(2);
-									console.log(parseFloat(d[i][1] * d[2] / 100)
-											- parseFloat(d[14][i - 8]));
-									contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>"
-											+ d[i][0]
-											+ "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>"
-											+ (d[i][1] * d[2] / 100)
-											+ "</span></td>"
-											+ "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>"
-											+ no + "</span></td></tr>";
+								    if (d[14][i - 8] == null) {
+								        d[14][i - 8] = 0;
+								    }
+								    var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8]).toFixed(2);
+								    total += parseFloat(d[i][1] * d[2] / 100);
+								    good += parseFloat(no);
+								    console.log(parseFloat(d[i][1] * d[2] / 100) - parseFloat(d[14][i - 8]));
+								    contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>" +
+								        d[i][0] +
+								        "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
+								        (d[i][1] * d[2] / 100) +
+								        "</span></td>" +
+								        "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
+								        no + "</span></td></tr>";
 								}
+
+								contentToDisplay += "<tr><td colspan='1' style='text-align: right;'><strong>Total:</strong></td><td style='border: 1px solid black;'><span style='color: blue;'>"
+								    + total.toFixed(2) + "</span></td><td><span style='color: blue;'>" + good.toFixed(2) + "</span></td></tr>";
+
 
 								contentToDisplay += "</table><br>";
 
@@ -629,7 +632,7 @@ input[type="radio"] {
 
 												var id = (this.value);
 
-												var html = "<label id='dpclabel' class='required'>DPC</label> <select data-placeholder='Choose DPC...'  class='chosen-select' name='dpc_name' multiple tabindex='4' id = 'centerordpc'>";
+												var html = "<label id='dpclabel' class='required'>DPC</label> <select data-placeholder='Choose DPC...'  class='form-control textbox' name='dpc_name'  tabindex='4' id = 'centerordpc'  size='1'>";
 												if (id != null) {
 													$
 															.ajax({
@@ -663,57 +666,7 @@ input[type="radio"] {
 																			.html(
 																					html);
 
-																	$(
-																			"#centerordpc")
-																			.chosen();
-																	$(
-																			"#centerordpc")
-																			.addClass(
-																					"chosen-select");
-																	var selected_val = $(
-																			'input[name="opt"]:checked')
-																			.val();
-																	/*  var selected_val =$('input[name="radioselect"]:checked').val();  */
-																	if (selected_val === 'head') {
-																		//alert('Region selected'); // Optional: Providing a message in the alert
-																		$(
-																				"#centerordpc option")
-																				.prop(
-																						'selected',
-																						true);
-																		$(
-																				'#centerordpc')
-																				.trigger(
-																						'chosen:updated');
-
-																		$(
-																				"#dpc_div")
-																				.html(
-																						"");
-																	}
-																	if (selected_val === 'bod') {
-																		//alert('DPC selected'); // Optional: Providing a message in the alert
-																		$(
-																				"#centerordpc option")
-																				.prop(
-																						'selected',
-																						true);
-																		$(
-																				'#centerordpc')
-																				.trigger(
-																						'chosen:updated');
-
-																	} else {
-																		$(
-																				"#centerordpc option:selected")
-																				.removeAttr(
-																						'selected');
-																		$(
-																				'#centerordpc')
-																				.trigger(
-																						'chosen:updated');
-																	}
-
+																	
 																}
 															});
 												}
@@ -791,9 +744,13 @@ input[type="radio"] {
 
 			console.log("issued: " + issued);
 			console.log("total: " + total);
-			console.log("allow: " + allow);
+			console.log("contract: " + allow);
 
 			if (issued + total <= allow && total>0) {
+				var selectedValue = $("input[name='opt']:checked").val();
+				if(selectedValue == "head") {
+					$("#centerordpc").val(""); 
+				}
 				// alert("Form submitted successfully!");
 				return true; // Proceed with form submission
 			} else {
@@ -824,6 +781,7 @@ input[type="radio"] {
 					/*  $("#head").show(); */
 					$("#dpclabel").hide();
 					$("#dpc_div").hide();
+					$("#centerordpc").val("");
 				} else {
 					/*  $("#head").hide(); */
 					$("#region").val("");

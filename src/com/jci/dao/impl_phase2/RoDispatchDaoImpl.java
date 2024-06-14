@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.digester.ObjectParamRule;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,6 +18,7 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.RoDispatchDao;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.RoDispatchModel;
+import org.hibernate.criterion.Restrictions;
 
 @Transactional
 @Repository
@@ -52,11 +54,35 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	public List<String> loadAllDiNo() {
 		String regionCode = (String) request.getSession().getAttribute("region");
 
-		String sqlString = "select Distinct DI_no from jciDI_ho where Regional_office='" + regionCode
-				+ "' and  DPC <> '';";
+		String sqlString =" SELECT a.DI_no, " 
+			      +" a.TotalSum, "
+			      +" a.Regional_office, " 
+			      +" b.roSum"
+		+"	FROM ("
+		+"	    SELECT DI_no," 
+			       +"    SUM(Gr1_qty + Gr2_qty + Gr3_qty + Gr4_qty + Gr5_qty + Gr6_qty + Gr7_qty + Gr8_qty) AS TotalSum, "
+			         +"  Regional_office "
+			    +" FROM jciDI_ho "
+			    +" GROUP BY DI_no, Regional_office "
+		+" 	) a "
+		+"	 LEFT JOIN ( "
+		+"	    SELECT HO_DI_NO, "
+		+"	           SUM(Gr1_qty + Gr2_qty + Gr3_qty + Gr4_qty + Gr5_qty + Gr6_qty + Gr7_qty + Gr8_qty) AS roSum "
+		+"	    FROM jciDI_ro "
+			+"    GROUP BY HO_DI_NO "
+		+"	) b "
+		+"	ON a.DI_no = b.HO_DI_NO "
+		+" WHERE(a.TotalSum > b.roSum or roSum is NULL) " 
+			 +" AND a.Regional_office = '"+regionCode+"';";
 
-		List<String> list = currentSession().createSQLQuery(sqlString).list();
-		return list;
+
+
+		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
+		List<String> list1=new ArrayList<>();
+		for(Object[] row: list) {
+			 list1.add((String)row[0]);
+		}
+		return list1;
 	}
 
 	// Returns object of all DI details
@@ -87,7 +113,9 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	public List<RoDispatchModel> getAllRoDi() {
 		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(RoDispatchModel.class)
 				.addOrder(Order.desc("creationDate"));
+		/* c.add(Restrictions.eq("yourPropertyName", yourFilterParameter)); */
 		List<RoDispatchModel> ll = c.list();
+		System.err.println(ll);
 		return ll;
 
 	}
@@ -97,7 +125,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		String sqlString = "SELECT CENTER_CODE, centername "+
 				" FROM jcipurchasecenter "+
 				"WHERE rocode = '" + regionIdString + "'"+ 
-				 " AND centertypecode = 'C';";
+				 " AND (centertypecode = 'C' OR centertypecode='D');";
 		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
 		List<String> newlList = new ArrayList<>();
 		for(Object[] ro: list) {

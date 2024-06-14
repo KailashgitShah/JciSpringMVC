@@ -32,6 +32,8 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
 	@Autowired
 	SessionFactory sessionFactory;
+	@Autowired
+	HttpSession session1;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -41,16 +43,20 @@ public class HODispatchDaoImpl implements DispatchHODao {
 	HttpServletRequest request;
 
 	@Override
-	public List<String> getContract() {
+	public List<Object[]> getContract() {
 		// For getting Contract No from jcifinancialconcurrence which has not met the
 		// required criteria
-		String sqlString = " SELECT Distinct fc.Contractno  " + "  FROM jcifinancial_concurrence fc  " + "  LEFT JOIN ("
-				+ "  SELECT ho.Contract_No, SUM(ho.Gr1_qty + ho.Gr2_qty + ho.Gr3_qty + ho.Gr4_qty + ho.Gr5_qty + ho.Gr6_qty + ho.Gr7_qty + ho.Gr8_qty) AS TotalQty, MAX(ho.Allowed_qty) AS MaxAllowedQty  "
-				+ "  FROM jciDI_ho ho" + "  GROUP BY ho.Contract_No  " + ") subquery  "
-				+ "  ON subquery.Contract_No = fc.Contractno  "
-				+ "  WHERE subquery.Contract_No IS NULL OR subquery.TotalQty < subquery.MaxAllowedQty;  ";
+		String sqlString = " SELECT DISTINCT fc.Contractno, fc.FC_Ref_No "+
+			"	FROM jcifinancial_concurrence fc"
+			+"	LEFT JOIN ("
+			+"	    SELECT ho.Contract_No, SUM(ho.Gr1_qty + ho.Gr2_qty + ho.Gr3_qty + ho.Gr4_qty + ho.Gr5_qty + ho.Gr6_qty + ho.Gr7_qty + ho.Gr8_qty) AS TotalQty, MAX(ho.Allowed_qty) AS MaxAllowedQty"
+			+"	    FROM jciDI_ho ho"
+			+"	    GROUP BY ho.Contract_No"
+			+"	) subquery ON subquery.Contract_No = fc.Contractno"
+			+"	WHERE subquery.Contract_No IS NULL OR subquery.TotalQty < subquery.MaxAllowedQty;"
+
 		;
-		List<String> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 
 		return list;
 	}
@@ -58,8 +64,12 @@ public class HODispatchDaoImpl implements DispatchHODao {
 	@Override
 	public List<String> getDetails(String contractNo) {
 		List<String> result = new ArrayList<>();
-		String sqlString = "select Top 1 * from jcicontract where Contract_no ='" + contractNo
-				+ "' Order by Created_date DESC ";
+		String sqlString = "SELECT TOP 1 * \r\n"
+				+ "FROM jcicontract \r\n"
+				+ "left join jcimilldetailchild ON jcimilldetailchild.client_unit_code = jcicontract.Mill_code \r\n"
+				+ "WHERE jcicontract.Contract_no = '"+contractNo+"'"
+				+ "ORDER BY jcicontract.Created_date DESC ;";
+				
 		String sqlString2 = "select Top 1 * from jcifinancial_concurrence where Contractno ='" + contractNo
 				+ "' Order by Created_date DESC ";
 		String sqString3 = "select TOP 1 Last_shipment_date from jcipayment_arrangement where Contract_No ='"
@@ -79,8 +89,8 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		for (Object[] row : rows) {
 			result.add(row[6].toString());
 			result.add(row[28].toString());
-			result.add(row[9].toString());// Contradate-Cropyear-contractqty
-			result.add(row[20].toString());// Mill name
+			result.add(row[21].toString());// Contradate-Cropyear-contractqty
+			result.add(row[33].toString());// Mill name
 			result.add(row[15].toString());// Label name
 
 		}
@@ -186,19 +196,22 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
 	// For Listing
 	@Override
-	public List<JciDIHoModel> getAll() {
-		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(JciDIHoModel.class);
-
-		c.addOrder(Order.desc("DI_HO_ID"));
-		List<JciDIHoModel> ll = c.list();
-		return ll;
+	public List<Object[]> getAll() {
+		String regionString=(String)session1.getAttribute("regionId");
+		System.err.println(regionString);
+		System.err.println(regionString);
+		System.err.println(regionString);
+		String sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode ;";
+		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		return list1;
 	}
 
 	// Delete query
 	@Override
-	public void delete(int parseInt) {
-		String sql1 = "DELETE FROM jciDI_ho WHERE DI_no = (SELECT DI_no FROM jciDI_ho WHERE DI_HO_ID ='" + parseInt
-				+ "')";
+	public void delete(String parseInt) {
+		System.err.println(parseInt);
+		String sql1 = "DELETE FROM jciDI_ho WHERE DI_no = '" + parseInt
+				+ "';";
 
 		currentSession().createSQLQuery(sql1).executeUpdate();
 

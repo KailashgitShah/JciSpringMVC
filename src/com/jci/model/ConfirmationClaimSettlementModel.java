@@ -77,6 +77,21 @@ public class ConfirmationClaimSettlementModel {
 	@Column(name = "Created_on")
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date Created_on;
+	
+	@Column(name = "Active")
+	private String Active;
+	
+	
+	public String getActive() {
+		return Active;
+	}
+
+	public void setActive(String active) {
+		Active = active;
+	}
+
+
+	
 
 	public int getId() {
 		return id;
@@ -238,23 +253,11 @@ public class ConfirmationClaimSettlementModel {
 		FA_doc = fA_doc;
 	}
 
-	@Override
-	public String toString() {
-		return "ConfirmationClaimSettlementModel [id=" + id + ", Settlement_id=" + Settlement_id + ", Mill=" + Mill
-				+ ", Contract_No=" + Contract_No + ", Challan_No=" + Challan_No + ", Claim_Amount=" + Claim_Amount
-				+ ", OM_Official=" + OM_Official + ", FA_Official=" + FA_Official + ", Date_of_Inspection="
-				+ Date_of_Inspection + ", Quality_settlement=" + Quality_settlement + ", Moisture_settlement="
-				+ Moisture_settlement + ", Dust_settlement=" + Dust_settlement + ", Ncv_settlement=" + Ncv_settlement
-				+ ", Settlement_amt=" + Settlement_amt + ", Inspection_by=" + Inspection_by + ", Supporting_doc="
-				+ Supporting_doc + ", FA_doc=" + FA_doc + ", Dispute_flag=" + Dispute_flag + ", Created_by="
-				+ Created_by + ", Created_on=" + Created_on + "]";
-	}
-
 	public ConfirmationClaimSettlementModel(int id, String settlement_id, String mill, String contract_No,
 			String challan_No, Double claim_Amount, String oM_Official, String fA_Official, Date date_of_Inspection,
 			Double quality_settlement, Double moisture_settlement, Double dust_settlement, Double ncv_settlement,
 			Double settlement_amt, String inspection_by, String supporting_doc, String fA_doc, int dispute_flag,
-			String created_by, Date created_on) {
+			String created_by, Date created_on, String active) {
 		super();
 		this.id = id;
 		Settlement_id = settlement_id;
@@ -276,12 +279,27 @@ public class ConfirmationClaimSettlementModel {
 		Dispute_flag = dispute_flag;
 		Created_by = created_by;
 		Created_on = created_on;
+		Active = active;
 	}
 
 	public ConfirmationClaimSettlementModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public String toString() {
+		return "ConfirmationClaimSettlementModel [id=" + id + ", Settlement_id=" + Settlement_id + ", Mill=" + Mill
+				+ ", Contract_No=" + Contract_No + ", Challan_No=" + Challan_No + ", Claim_Amount=" + Claim_Amount
+				+ ", OM_Official=" + OM_Official + ", FA_Official=" + FA_Official + ", Date_of_Inspection="
+				+ Date_of_Inspection + ", Quality_settlement=" + Quality_settlement + ", Moisture_settlement="
+				+ Moisture_settlement + ", Dust_settlement=" + Dust_settlement + ", Ncv_settlement=" + Ncv_settlement
+				+ ", Settlement_amt=" + Settlement_amt + ", Inspection_by=" + Inspection_by + ", Supporting_doc="
+				+ Supporting_doc + ", FA_doc=" + FA_doc + ", Dispute_flag=" + Dispute_flag + ", Created_by="
+				+ Created_by + ", Created_on=" + Created_on + ", Active=" + Active + "]";
+	}
+
+
 
 	
 

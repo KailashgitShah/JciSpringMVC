@@ -493,7 +493,7 @@ for (var i = 0; i < numberOfElements; i++) {
 
 $(document).ready(function() {
     var contractNo = "<%= contractNo %>";
-    alert(contractNo);// Make sure contractNo is properly formatted
+   // Make sure contractNo is properly formatted
     var Contract_No;
     var actualqty;
     var checkcondition = 0;
@@ -553,22 +553,22 @@ $(document).ready(function() {
                          var dataArray = JSON.parse(data);
                          if (dataArray.length > 0) {
                            
-                             alert(dataArray)
+                          
                              resultsArray = dataArray[0].slice(0); // Copy the elements from dataArray[0] to resultsArray
                             
-                			 alert(resultsArray);
+                			
                 			grade1=resultsArray[0]; 
-                			alert(grade1);
+                		
                 			grade2=resultsArray[1];
-                			alert(grade2);
+                			
                 			grade3=resultsArray[2]; 
-                			alert(grade3);
+                		
                 			grade4=resultsArray[3];
-                			alert(grade4);
+                			
                 			grade5=resultsArray[4];
-                			alert(grade5);
+                		
                 			grade6=resultsArray[5];
-                			alert(grade6);
+                		
                 			
                         	 loadMillChildBasedData(contractNo,grade1,grade2,grade3,grade4,grade5,grade6);
                         }
@@ -616,11 +616,14 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> ' + row[1] + '</div>' +
                     '</td>' +
 
+
                     '<td>' +
                     '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> ' + row[2] + '</div>' +
                     '</td>' +
 
                     '<td>' +
+
+
                     '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">' + intValue + '</div>' +
                     '</td>' +
 
@@ -915,80 +918,74 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     var DustAmt = document.getElementById(DustAmtId).value;
 
     // Alert the values
-    alert('Qualitypercentage: ' + Qualitypercentage + '\n' +
-        'Nomination: ' + Nomination + '\n' +
-        'NCVamt: ' + NCVamt + '\n' +
-        'DustAmt: ' + DustAmt + '\n' +
-        'NCVQty: ' + NCVQty + '\n' +
-        'DUSTQty: ' + DUSTQty + '\n' +
-        'Actual Value: ' + actualvalue + '\n' +
-        'Int Value: ' + intvalue + '\n' +
-        'Index: ' + index);
+   
     
     let gradeprice = resultsArray[intvalue - 1];
     let gradeprice1 = gradeprice;
-    alert("fghj" + gradeprice);
+  
 
     let qty1 = ((actualvalue * parseFloat(NCVamt)) / 100);
     let valueinprice = (gradeprice * qty1).toFixed(2);
     let ncvValue = parseFloat(valueinprice);
-    alert(ncvValue);
+   
 
     let qty2 = ((actualvalue * parseFloat(DustAmt)) / 100);
     let valueinprice1 = (gradeprice * qty2).toFixed(2);
     let dustValue = parseFloat(valueinprice1);
-    alert(dustValue);
+   
 
     let qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
     let valueinprice2 = (gradeprice * qty3).toFixed(2);
     let moisturevalue = parseFloat(valueinprice2);
-    alert(moisturevalue);
+    
     
     let qty4 = parseFloat(NCVQty);
     let valueinprice3 = (gradeprice * qty4).toFixed(2);
     let ncvqty = parseFloat(valueinprice3);
-    alert(ncvqty);
+   
     
     
     let qty5 =  parseFloat(DUSTQty);
     let valueinprice4 = (gradeprice * qty5).toFixed(2);
     let dustqty = parseFloat(valueinprice4);
+<<<<<<< HEAD
     alert(dustqty);
+=======
+ 
+>>>>>>> 60c3956d94cbaaf9e2e0b440c6ab868ba0d1b89e
     let totalvalue=0;
     totalvalue = ncvValue + dustValue + moisturevalue+dustqty+ncvqty;
     totalvalue = Math.round(totalvalue);
     let totalqty = (qty1 + qty2 + qty3+qty4+qty5).toFixed(2);
-    alert("totalvalue: " + totalvalue);
-    alert("totalqty: " + totalqty);
+  
 
     let newactualqty = (actualvalue - totalqty).toFixed(2);
-    alert("newqty: " + newactualqty);
+   
 
     let integerResult = (parseInt(Qualitypercentage) / 100);
-    alert(integerResult);
+  
 
     let qs = integerResult;
     let rem = parseFloat(Qualitypercentage) % 100;
-    alert(rem);
-    alert(intvalue);
+
 
     let gradeprice6 = resultsArray[intvalue - 1];
-    alert("LLLL: " + gradeprice6);
+   
 
     if (qs < 1) {
-        alert("<1------------" + intvalue);
+      
 
         intvalue++;
-        alert("<1: " + intvalue);
+     
         gradeprice = resultsArray[intvalue - 1];
-        alert(gradeprice);
+      
         gradeprice = gradeprice1 - gradeprice;
-        alert(gradeprice);
+     
 
         let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
-        alert("below100quntity: " + qty);
+       
         valueinprice = (gradeprice * qty).toFixed(2);
-        alert("below100valueprice: " + valueinprice);
+      
         totalvalue += parseFloat(valueinprice);
         totalvalue = Math.round(totalvalue);
         console.log('qs is 0, valueinprice:', valueinprice);
@@ -1002,7 +999,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
 
             let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
             valueinprice = (gradeprice * qty).toFixed(2);
-            alert("exact100: " + valueinprice);
+          
             totalvalue += parseFloat(valueinprice);
             totalvalue = Math.round(totalvalue);
             console.log('qs is 1, rem is 0, valueinprice:', valueinprice);
@@ -1010,30 +1007,30 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
         } else {
             intvalue++;
             intvalue++;
-            alert(intvalue);
+          
             gradeprice = resultsArray[intvalue - 1];
             let grade = gradeprice;
-            alert("Difference before: " + grade);
+      
             gradeprice = gradeprice1 - gradeprice;
-            alert("Difference: " + gradeprice);
+        
 
             let inputValue = parseFloat(rem) || 0;
             let qty = (newactualqty * inputValue) / 100;
-            alert(qty);
+         
 
             valueinprice1 = (gradeprice * qty).toFixed(2);
-            alert("aftersecondgrade: " + valueinprice1);
+          
 
             intvalue--;
             gradeprice = resultsArray[intvalue - 1];
-            alert("justbefore: " + gradeprice);
-            alert("justbefore: " + gradeprice6);
+           
+            
             gradeprice = gradeprice6 - gradeprice;
-            alert("justbefore: " + gradeprice);
+         
 
             let qty24 = 100.0 - qty;
             valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty24).toFixed(2);
-            alert("above100: " + valueinprice1);
+            
             totalvalue += parseFloat(valueinprice1);
             totalvalue = Math.round(totalvalue);
             console.log('qs is 1, rem is not 0, valueinprice:', valueinprice1);
@@ -1049,7 +1046,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
 
             let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
             valueinprice = (gradeprice * qty).toFixed(2);
-            alert("exact200: " + valueinprice);
+            
             totalvalue += parseFloat(valueinprice);
             totalvalue = Math.round(totalvalue);
 
@@ -1057,30 +1054,30 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
             intvalue++;
             intvalue++;
             intvalue++;
-            alert(intvalue);
+         
             gradeprice = resultsArray[intvalue - 1];
             let grade = gradeprice;
-            alert(grade);
+         
             gradeprice = gradeprice1 - gradeprice;
-            alert(gradeprice);
+        
 
             let inputValue = parseFloat(rem) || 0;
             let qty = (newactualqty * inputValue) / 100;
-            alert(qty);
+          
 
             valueinprice1 = (gradeprice * qty).toFixed(2);
-            alert(valueinprice1);
+      
 
             intvalue--;
             gradeprice = resultsArray[intvalue - 1];
             gradeprice = grade - gradeprice;
-            alert(gradeprice);
+       
 
             let qty23 = 100.0 - qty;
             let qty7 = ((newactualqty * qty23) / 100);
             valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty7).toFixed(2);
             valueinprice = valueinprice1;
-            alert(valueinprice);
+           
             totalvalue += parseFloat(valueinprice);
             totalvalue = Math.round(totalvalue);
         }

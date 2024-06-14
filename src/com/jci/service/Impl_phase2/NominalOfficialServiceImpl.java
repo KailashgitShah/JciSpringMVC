@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jci.dao_phase2.NominalOfficialDao;
+import com.jci.model.ClaimSettlementReport;
 import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.UserRegistrationModel;
 import com.jci.service_phase2.NominalOfficialService;
@@ -98,7 +99,7 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	}
 
 	@Override
-	public int CountRecord(){
+	public String CountRecord(){
 		// TODO Auto-generated method stub
 		
 		return nominalOfficialDao.CountRecord();
@@ -192,6 +193,12 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	public List<Jciclaim_NominationModel> findnominationdetails(String id) {
 		// TODO Auto-generated method stub
 		return nominalOfficialDao.findnominationdetails(id);
+	}
+
+	@Override
+	public List<ClaimSettlementReport> getNominationReportData(String settlement_id) {
+		// TODO Auto-generated method stub
+		return nominalOfficialDao.getNominationReportData(settlement_id);
 	}
 
 }

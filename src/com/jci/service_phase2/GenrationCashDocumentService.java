@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.jci.model.CashDocumentModel;
 
-
 @Service
 public interface GenrationCashDocumentService {
 	public void create(CashDocumentModel cashDocumentModel);

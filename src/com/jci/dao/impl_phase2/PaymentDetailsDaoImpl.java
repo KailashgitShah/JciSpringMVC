@@ -140,13 +140,14 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 	 
 	@Override
 	public List<Object> ContractNo() {
+
 	 
 		
 		String sql2 = "SELECT a.Contract_no, a.Contract_value - COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))), 0) "
 				+ " AS Difference from jcicontract  as a left join jcipayment_arrangement as b on a.Contract_no = b.Contract_No group by "
 				+ " a.Contract_no, a.Contract_value having a.Contract_value > COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))), 0)"
 				+ " OR SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10, 2))) IS NULL ";
- 
+
 		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql2).list();
 	    return resultList1;
 	}

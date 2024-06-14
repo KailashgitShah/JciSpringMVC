@@ -30,8 +30,8 @@ public class EmailSender {
 //          		String username = "guptamansi7867@gmail.com";
 //          		String password = "xhoaypvcvzsctmrm";
 //                      
-        	// String username = "shristicyfuture0902@gmail.com";
-          	String username = "shristicyfuture090@gmail.com";
+        	 String username = "shristicyfuture0902@gmail.com";
+          	 //  String username = "shristicyfuture090@gmail.com";
  		      String password = "tvualzhmftylavuh";
                       
                       Properties props = new Properties();

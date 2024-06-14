@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "jciclaim_nomination")
+@Table(name = "jciclaimNomination")
 public class Jciclaim_NominationModel {
 
 	@Id
@@ -40,9 +40,6 @@ public class Jciclaim_NominationModel {
 	@Column(name = "Inspection_by")
 	private String Inspection_by;
 
-	@Column(name = "Supporting_doc")
-	private String Supporting_doc;
-
 	@Column(name = "Inspection_date")
 	private String Inspection_date;
 
@@ -57,9 +54,6 @@ public class Jciclaim_NominationModel {
 	
 	@Column(name = "Settlement_id_generated")
 	private String Settlement_id_generated;
-	
-	
-	
 	@Column(name = "Mr_number")
 	private String Mr_number;
 	
@@ -79,9 +73,15 @@ public class Jciclaim_NominationModel {
 	@Column(name = "claimValuation")
 	private String claimValuation;
 	
-
+ 
+	@Column(name = "Bos_file_path")
+	private String Bos_file_path;
 	
-
+	@Column(name = "MR_qty")
+	private Double MR_qty;
+	@Column(name= "QualityPercentage")
+	private Double QualityPercentage;
+ 
 	public Long getSettlement_id() {
 		return Settlement_id;
 	}
@@ -154,13 +154,7 @@ public class Jciclaim_NominationModel {
 		Inspection_by = inspection_by;
 	}
 
-	public String getSupporting_doc() {
-		return Supporting_doc;
-	}
 
-	public void setSupporting_doc(String supporting_doc) {
-		Supporting_doc = supporting_doc;
-	}
 
 	public String getInspection_date() {
 		return Inspection_date;
@@ -250,6 +244,32 @@ public class Jciclaim_NominationModel {
 		this.claimValuation = claimValuation;
 	}
 
+	public String getBos_file_path() {
+		return Bos_file_path;
+	}
+
+	public void setBos_file_path(String bos_file_path) {
+		Bos_file_path = bos_file_path;
+	}
+
+
+
+	public Double getMR_qty() {
+		return MR_qty;
+	}
+
+	public void setMR_qty(Double mR_qty) {
+		MR_qty = mR_qty;
+	}
+
+	public Double getQualityPercentage() {
+		return QualityPercentage;
+	}
+
+	public void setQualityPercentage(Double qualityPercentage) {
+		QualityPercentage = qualityPercentage;
+	}
 	
+
 
 }

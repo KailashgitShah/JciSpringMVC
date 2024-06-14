@@ -3,6 +3,7 @@ package com.jci.service.Impl_phase2;
 import java.awt.Container;
 import java.util.List;
 
+import org.apache.commons.digester.ObjectParamRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class HODispachServiceImpl implements HOInstService{
                 DispatchHODao dispatchHODao;
                 
                 @Override
-                public List<String> getContract() {
+                public List<Object[]> getContract() {
                                 
                                 
                                 return dispatchHODao.getContract();
@@ -51,12 +52,12 @@ public class HODispachServiceImpl implements HOInstService{
                                 
                 }
                 @Override
-                public List<JciDIHoModel> getAll() {
+                public List<Object[]> getAll() {
                                 return dispatchHODao.getAll();
                 }
 
                 @Override
-                public void delete(int parseInt) {
+                public void delete(String parseInt) {
                                 dispatchHODao.delete(parseInt);
                                 
                 }

@@ -131,12 +131,15 @@ th {
 									<tr>
 									<th>Sl.NO</th>
 									<th>Challan</th>
-									<th>Mr_No</th>
-									<th>Mr_Date</th>
+									<th>MR_No</th>
+									<th>MR_Date</th>
+									<th>MR_Quantity</th>
+									<th>Quality_Percentage</th>
 									<th>Bill_Of_Supply_Number</th>
 									<th>Date_Of_Shipment</th>	
 									<th>Shipment_Quantity</th>	
-									<th>Claim Valuation</th>													
+									<th>Claim Valuation</th>	
+									<th>View Bos Document</th>												
 									</tr>
 								</thead>
 								<tbody>
@@ -150,11 +153,14 @@ th {
 										<td>${item.getChallans()}</td>
 										<td>${item.getMr_number()}</td>
 										<td>${item.getMr_Date()}</td>
-										<td>${item.getBillOfSupply_number()}</td>
+										<td>${item.getMR_qty()}</td>
+										 <td>${item.getQualityPercentage()}</td>
+										 <td>${item.getBillOfSupply_number()}</td>
 										<td>${item.getDateofshipment()}</td>
 										<td>${item.getShipmentquantity()}</td>
 										<td>${item.getClaimValuation()}</td>
-										
+									   <%--   <td>${item.getBos_file_path()}</td>  --%>
+										 <td><a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
                                        
 										</tr>
 										<%i++; %>

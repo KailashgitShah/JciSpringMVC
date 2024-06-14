@@ -6,7 +6,7 @@ import com.jci.model.HODispatchInstructionModel;
 import com.jci.model.JciDIHoModel;
 
 public interface DispatchHODao {
-List<String>getContract();
+List<Object[]>getContract();
 
 List<String> getDetails(String contractNo);
 
@@ -17,9 +17,9 @@ Object getCount(String reg);
 
 void save(JciDIHoModel hodispatch);
 
-List<JciDIHoModel> getAll();
+List<Object[]> getAll();
 
-void delete(int parseInt);
+void delete(String parseInt);
 
 String getContractNo(String id);
 
