@@ -175,11 +175,35 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 	@Override
 //	public String fcref_nocheck(String fcref_no) {
 		public String fcref_nocheck() {
-        String sql = "SELECT  count(*) FROM jcifinancial_concurrence ";
+//		String sql = "SELECT  count(*) FROM jcifinancial_concurrence WHERE FC_Ref_No = '" + fcref_no + "' ";
+//		int total = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+//
+//		if (total > 0)
+//			return "1";
+//		else
+//			return "0";
+		
+		String sql = "SELECT  count(*) FROM jcifinancial_concurrence ";
 		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
 		total++;
 		
 		return String.valueOf(total);
+
+	}
+
+	@Override
+	public List<Object> RemainingQty(String cont_no) {
+		String hql1 = " SELECT \r\n"
+				+ "    COALESCE(TRY_CAST(b.Contracted_Qty AS DECIMAL(10, 2)), 0) AS Contracted_Qty,  \r\n"
+				+ "    COALESCE(TRY_CAST(b.QtyAllowed AS DECIMAL(10, 2)), 0) AS QtyAllowed,\r\n"
+				+ "    a.Contract_No,\r\n"
+				+ "    (COALESCE(TRY_CAST(b.Contracted_Qty AS DECIMAL(10, 2)), 0) - COALESCE(TRY_CAST(b.QtyAllowed AS DECIMAL(10, 2)), 0)) AS remainingAmount\r\n"
+				+ "FROM  jcipayment_arrangement AS a \r\n"
+				+ "LEFT JOIN  jcifinancial_concurrence AS b  \r\n"
+				+ "ON  b.Contractno = a.Contract_No\r\n"
+				+ "WHERE a.Contract_No='" + cont_no + "'";
+
+		return (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(hql1).list();
 
 	}
 

@@ -2711,6 +2711,44 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
+	
+	
+	@RequestMapping("downloadDispatchDetails")
+	public void downloadConsignmentNote(@RequestParam("id") String filename, HttpServletResponse response) {
+		String imagePath = PaymentDocument + File.separator + filename;
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
 
 	// Utility method to determine content type based on filename
 	private String determineContentType(String filename) {
@@ -2737,6 +2775,9 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+	
+	
 
 	// ajax remark for approval and selection after fc rejection
 	@ResponseBody
@@ -3013,7 +3054,7 @@ public class Controller_V {
 
 			String[] baleMark = request.getParameterValues("baleMark[]");
 			String[] jutegrade = request.getParameterValues("jutegrade[]");
-//			String[] juteVariety = request.getParameterValues("juteVariety[]");
+			String[] juteVariety = request.getParameterValues("juteVariety[]");
 			String[] cropYear = request.getParameterValues("cropYear[]");
 			String[] challanQty = request.getParameterValues("challanQty[]");
 			String[] actualqty = request.getParameterValues("actualQty[]");
@@ -3047,7 +3088,7 @@ public class Controller_V {
 
 				String Challan_Qty = challanQty[i];
 				String Bale_Mark = baleMark[i];
-//				String juteewiseqty = juteVariety[i];
+				String juteewiseqty = juteVariety[i];
 				String jutegrade1 = jutegrade[i];
 				String cropYear1 = cropYear[i];
 				String no_of_bales1 = no_of_bales[i];
@@ -3123,7 +3164,7 @@ public class Controller_V {
 				millRecieptModel.setHO_di(HO_DINO);
 				millRecieptModel.setChallan_no(challanno1);
 				millRecieptModel.setJute_Grade(jutegrade1);
-//				millRecieptModel.setJute_Variety(juteewiseqty);
+				millRecieptModel.setJute_Variety(juteewiseqty);
 				millRecieptModel.setDate_shipment(dateOfShipmentValue1);
 				millRecieptModel.setVehicle_no(vehicleNo1);
 				millRecieptModel.setChallan_qty(Challan_Qty1);

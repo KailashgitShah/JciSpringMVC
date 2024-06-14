@@ -31,7 +31,7 @@ public class DispatchdetaildaoImpl implements Dispatchdetaildao {
 	    	    + "	    	 CONVERT(VARCHAR(10), a.Date_of_shipment, 105) AS Formatted_Date_of_shipment, \r\n"
 	    	    + "	    	 a.Place_of_Shipment, a.Consignment_note_text ,a.Consignment_note\r\n"
 	    	    + "	    	 FROM jcidispatch_details AS a\r\n"
-	    	    + "	         where a.Di_status='0' ";
+	    	    + "	         where a.Di_status='1' ";
 
 	    List<Object[]> fCList = (List<Object[]>) sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 	    return fCList;

@@ -217,7 +217,6 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	    return result != null ? result.toString() : null; // Convert Integer to String, handling null case
 	}
 
-
 	@Override
 	public String statecount(String st) {
 		String sql = "SELECT  count(*) FROM jcibos_generation  where Statecode_forBOs='" + st + "'";
