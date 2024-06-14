@@ -6173,7 +6173,19 @@ return mv;
 
            return mv;
     }
-
+    
+    @ResponseBody
+    @RequestMapping(value= {"settlementFA"}, method = RequestMethod.GET)
+    public String settlementFA(HttpSession session,HttpServletRequest request,@RequestParam("setId") String setId) {
+    	  String username = (String) request.getSession().getAttribute("usrname");
+         
+    	  List<Object[]> setIdData =confirmationofClaimSettlementService.getFAData(setId);
+    	  System.err.println(setIdData.toString());
+    	  Gson gson = new Gson();
+  		String resultString = new Gson().toJson(setIdData);
+  		System.err.println("-----------------------" + setIdData);
+  		return resultString;
+    }
 
 
 }

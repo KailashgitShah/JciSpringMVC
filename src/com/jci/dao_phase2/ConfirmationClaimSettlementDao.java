@@ -28,4 +28,6 @@ public interface ConfirmationClaimSettlementDao {
 	public void acceptClaim(String challan, String username, String filename);
 
 	public void rejectClaim(String challan, String username);
+
+	public List<Object[]> getFAData(String setId);
 }

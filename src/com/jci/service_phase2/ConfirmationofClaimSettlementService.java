@@ -32,5 +32,7 @@ public interface ConfirmationofClaimSettlementService {
 
 	public void rejectClaim(String challan, String username);
 
+	public List<Object[]> getFAData(String setId);
+
 	
 }

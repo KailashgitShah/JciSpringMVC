@@ -105,7 +105,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 			<c:if test="${not empty msg}">
 				<div class="">${msg}</div>
 			</c:if>
-			<div class="scrollmenu"> 
+<%-- 			<div class="scrollmenu"> 
 			<div class="table-responsive" style="margin-top: 20px;">
 <table id="farmerVerific" class="table table-striped table-bordered table-hover" cellspacing="0" style="width: 100%">
     <thead>
@@ -152,7 +152,7 @@ String formattedDate = outputFormat.format(date);
             <td style="width: 10%; text-align: center;"><%= formattedDate %></td>
             
            <td style="width: 10%; text-align: center;"><%= row[8] %></td>
-           <%--  <td style="width: 10%"><%= row[5] %></td>    --%>
+            <td style="width: 10%"><%= row[5] %></td>   
             <td style="width: 10%; text-align: center;"><%= row[6] %></td> 
             <td style="width: 10%; text-align: center;"><%= row[7] %></td> 
             
@@ -184,10 +184,30 @@ String formattedDate = outputFormat.format(date);
 
 </div>
 
-			</div>
+			</div> --%>
+			
+			<div class="row">
+
+													<div class="col-sm-4 form-group">
+    <label>Settlement Id</label> 
+    <span class="text-danger">*</span>&nbsp; 
+    <span id="contractno" name="contractno" class="text-danger"></span> 
+    <select name="setId" id="setId" class="form-control textbox" required>
+        <option value="" disabled selected>Select</option>
+        <% for (Object[] setId : getSettlementid) { %>
+            <option value="<%=setId[0]%>" readonly><%=setId[0]%></option>
+        <% } %>
+    </select>
+</div>
 			<!-- END PAGE CONTENT-->
 			<%@ include file="footer.jsp"%>
 		</div>
+	<div class="row">
+    <div class="col-sm-4 form-group">
+        <div id="form2"></div>
+    </div>
+</div>
+
 	</div>
 	<!-- BEGIN THEME CONFIG PANEL-->
 
@@ -274,7 +294,60 @@ function handleRejection(settleId, file) {
 }
 </script>
 	
-	
+	<script type="text/javascript">
+	$("#setId").on("change", function() {
+	    var setId = $(this).val(); // Corrected line
+	    alert(setId);
+	    $.ajax({
+	        url: 'settlementFA.obj',
+	        method: 'GET', // Assuming you want to use GET method
+	        data: {
+	            "setId": setId
+	        },
+	        success: function(response) {
+	            // Parse the JSON response
+	            var data = jQuery.parseJSON(response);
+	            
+	            // Clear the existing content of the form2 element
+	            $("#form2").empty();
+	            
+	            // Create the table structure
+	          var contentToDisplay = "<table style='border: 1px solid black; width: 1200px; text-align: center;'><tr><th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>Contract No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>DI No.</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Bale Mark</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"+
+ "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Invoice No.</th><th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Jute Variety</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Grade</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>No. of Bales</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Quantity(Qtls)</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Claim</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Settlement</th>"+
+	            "</tr>"+
+	            "<tr>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
+	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
+	            "</tr>";
+	            
+	            // Iterate over the data array and construct the table rows
+	            for (var i = 0; i < data.length; i++) {
+	               
+	            }
+	            contentToDisplay += "</table>";
+
+	            // Update the content of the form2 element with the constructed table
+	            $("#form2").html(contentToDisplay);
+	        },
+
+	        error: function(xhr, status, error) {
+	            // Handle error
+	        }
+	    });
+	});
+
+	</script>
 	
 	
 	

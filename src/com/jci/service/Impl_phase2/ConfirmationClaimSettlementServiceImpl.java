@@ -91,6 +91,13 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 		confirmationClaimSettlementDao.rejectClaim(challan,username);
 		return;
 	}
+
+	@Override
+	public List<Object[]> getFAData(String setId) {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.getFAData(setId);
+		
+	}
 	
 
 }

@@ -81,8 +81,8 @@ div.scrollmenu a:hover {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Entry of Confirmation of Claim
-					Settlement Report</h1>
+				<h1 class="page-title">Entry  of Claim
+					Settlement Report(O/M Official)</h1>
 			</div>
 
 			<%

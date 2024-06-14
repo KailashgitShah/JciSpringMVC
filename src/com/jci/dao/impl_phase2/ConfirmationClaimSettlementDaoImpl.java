@@ -165,6 +165,63 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		return;
 	}
 
+	@Override
+	public List<Object[]> getFAData(String setId) {
+		// TODO Auto-generated method stub
+		   String sqlQuery = "SELECT DISTINCT " +
+	               "nom.Mill, " +
+	               "nom.ContractNo, " +
+	               "nom.HoDi, " +
+	               "diHo.DI_Date, " +
+	               "diHo.Regional_office, " +
+	               "rodetails.roname, " +
+	               "nom.Challans, " +
+	               "nom.Mr_number, " +
+	               "nom.Mr_Date, " +
+	               "mill.Crop_year, " +
+	               "mill.Bale_mark, " +
+	               "mill.Jute_Variety, " +
+	               "mill.Jute_Grade, " +
+	               "mill.No_of_Bales, " +
+	               "mill.Actual_qty, " +
+	               "mill.MR_qty, " +
+	               "mill.QualityPercentage, " +
+	               "mill.MoistureContent, " +
+	               "mill.DustAmt, " +
+	               "mill.NCV_percentage, " +
+	               "nom.Settlement_id_generated, " +
+	               "nom.dateofshipment, " +
+	               "dispatchdetails.Place_of_Shipment, " +
+	               "jcipurchase.centername " 
+	               +" claim.Quality_settlement,\r\n"
+	               + "    claim.Moisture_settlement,\r\n"
+	               + "    claim.Ncv_settlement,\r\n"
+	               + "    claim.Dust_settlement"// Add the centername field here
+	           +"FROM " +
+	               "jciclaimNomination nom " +
+	           "INNER JOIN " +
+	               "jcimill_receipt mill ON mill.MR_no = nom.Mr_number " +
+	           "INNER JOIN " +
+	               "jciDI_ho diHo ON diHo.DI_no = nom.HoDi " +
+	           "INNER JOIN " +
+	               "jcirodetails rodetails ON rodetails.rocode = diHo.Regional_office " +
+	           "INNER JOIN " +
+	               "jcidispatch_details dispatchdetails ON dispatchdetails.Challan_no = nom.Challans " +
+	           "INNER JOIN " +
+	               "jcipurchasecenter jcipurchase ON jcipurchase.CENTER_CODE = dispatchdetails.Place_of_Shipment " +
+	           "Inner join"+
+	               "jci_claim_mill claim ON nom.Settlement_id_generated=claim.Settlement_id"+
+	           "INNER JOIN\r\n"
+	           + "    jciclaim_report_mill claim ON nom.Settlement_id_generated=claim.Settlement_id"+
+	           "WHERE " +
+	               "nom.Settlement_id_generated = '"+setId+"'"; // Using the settlement_id parameter here
+
+		   List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery)
+					.list();
+			System.err.println(resultList1);
+			return resultList1;
+	}
+
 
 
 
