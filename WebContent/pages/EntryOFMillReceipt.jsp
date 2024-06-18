@@ -282,7 +282,8 @@
 											        <tr>
 											           
 											             <th>Bale Mark</th>
-											              <th>Jute_variety/geade</th>
+											              <th>Jute_variety</th>
+											              <th>Jute_grade</th>
 											              <th>Crop_year</th>
 											              <th>Invoice qty</th>
 											              
@@ -615,12 +616,12 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> ' + row[1] + '</div>' +
                     '</td>' +
 
-/*                     '<td>' +
+                    '<td>' +
                     '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> ' + row[2] + '</div>' +
-                    '</td>' + */
+                    '</td>' +
 
                     '<td>' +
-                    '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">' + row[3] + '</div>' +
+                    '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">' + intValue + '</div>' +
                     '</td>' +
 
                     '<td>' +
@@ -656,9 +657,6 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table2-cell">' +
                     '<select id="Nomination_' + index + '" name="Nomination[]" required >'+
                     '<option value="0">0</option>' +
-                    '<option value="15">15</option>'+
-                    '<option value="16">16</option>'+
-                    '<option value="17">17</option>'+
                     '<option value="18">18</option>'+
                     '<option value="19">19</option>'+
                     '<option value="20">20</option>'+
@@ -943,6 +941,20 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let moisturevalue = parseFloat(valueinprice2);
     alert(moisturevalue);
     
+    if (currentMonth > 6 && currentMonth <= 10) {
+         Nomination = Nomination - 20;
+    } else {
+     Nomination = Nomination - 18;
+    }
+   if (Nomination < 0) {
+        Nomination = 0;
+    }
+        qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
+        valueinprice2 = (gradeprice * qty3).toFixed(2);
+        moisturevalue = parseFloat(valueinprice2);
+        alert(moisturevalue);
+    
+    
     let qty4 = parseFloat(NCVQty);
     let valueinprice3 = (gradeprice * qty4).toFixed(2);
     let ncvqty = parseFloat(valueinprice3);
@@ -953,8 +965,9 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let valueinprice4 = (gradeprice * qty5).toFixed(2);
     let dustqty = parseFloat(valueinprice4);
     alert(dustqty);
-
-    let totalvalue = ncvValue + dustValue + moisturevalue+dustqty+ncvqty;
+    let totalvalue=0;
+    totalvalue = ncvValue + dustValue + moisturevalue+dustqty+ncvqty;
+    totalvalue = Math.round(totalvalue);
     let totalqty = (qty1 + qty2 + qty3+qty4+qty5).toFixed(2);
     alert("totalvalue: " + totalvalue);
     alert("totalqty: " + totalqty);
@@ -988,6 +1001,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
         valueinprice = (gradeprice * qty).toFixed(2);
         alert("below100valueprice: " + valueinprice);
         totalvalue += parseFloat(valueinprice);
+        totalvalue = Math.round(totalvalue);
         console.log('qs is 0, valueinprice:', valueinprice);
 
     } else if (qs > 1 && qs < 2 || qs == 1) {
@@ -1001,6 +1015,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
             valueinprice = (gradeprice * qty).toFixed(2);
             alert("exact100: " + valueinprice);
             totalvalue += parseFloat(valueinprice);
+            totalvalue = Math.round(totalvalue);
             console.log('qs is 1, rem is 0, valueinprice:', valueinprice);
 
         } else {
@@ -1031,6 +1046,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
             valueinprice1 = (parseFloat(valueinprice1) + gradeprice * qty24).toFixed(2);
             alert("above100: " + valueinprice1);
             totalvalue += parseFloat(valueinprice1);
+            totalvalue = Math.round(totalvalue);
             console.log('qs is 1, rem is not 0, valueinprice:', valueinprice1);
         }
 
@@ -1046,6 +1062,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
             valueinprice = (gradeprice * qty).toFixed(2);
             alert("exact200: " + valueinprice);
             totalvalue += parseFloat(valueinprice);
+            totalvalue = Math.round(totalvalue);
 
         } else {
             intvalue++;
@@ -1076,6 +1093,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
             valueinprice = valueinprice1;
             alert(valueinprice);
             totalvalue += parseFloat(valueinprice);
+            totalvalue = Math.round(totalvalue);
         }
     }
 

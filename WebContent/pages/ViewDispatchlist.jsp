@@ -150,7 +150,12 @@
 										
 										<td><%= row[8] %></td>
 										<td hidden><%= row[7] %></td>
-										<td><%= row[9] %></td>
+										<td style="text-align: center">
+								    <a href="http://49.50.118.112:8080/DispatchDetail/<%= row[9] %>" target="_blank" style="color: blue;">Challan Document</a>
+								</td>
+
+   
+										<%-- <td><%= row[9] %></td> --%>
 									
 										
 											<td>
@@ -158,6 +163,8 @@
 									        <button class="btn btn-primary custom-button" type="button">Generate BOS</button>
 									    </a>
 									</td> 
+									
+									
 										
 							    </tr>
 									<%

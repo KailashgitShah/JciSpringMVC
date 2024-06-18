@@ -123,7 +123,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public List<Object[]> contrcatnotomill(String st) {
-		String sql="select  Mill_code,CropYear from  jcicontract where  Contract_no='" + st + "' ";
+		String sql="select  Mill_code,CropYear, CONVERT(varchar, Contract_date, 105) AS Contract_date from  jcicontract where  Contract_no='" + st + "' ";
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 	}
@@ -217,7 +217,6 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	    return result != null ? result.toString() : null; // Convert Integer to String, handling null case
 	}
 
-
 	@Override
 	public String statecount(String st) {
 		String sql = "SELECT  count(*) FROM jcibos_generation  where Statecode_forBOs='" + st + "'";
@@ -237,13 +236,13 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 				+ "    CONVERT(VARCHAR, a.Date_of_shipment, 103) AS Date_of_shipment,\r\n"
 				+ "    a.Contract_No,\r\n"
 				+ "    CASE \r\n"
-				+ "        WHEN b.Payment_type = 'letter of credit' THEN b.Instrument_No \r\n"
+				+ "        WHEN b.Payment_type = 'Letter_of_Credit' THEN b.Instrument_No \r\n"
 				+ "        ELSE 'N/A' \r\n"
 				+ "    END AS Instrument_No,\r\n"
 				+ "    CASE \r\n"
-				+ "        WHEN b.Payment_type = 'letter of credit' THEN CONVERT(VARCHAR, b.Instrument_Date, 103) \r\n"
+				+ "        WHEN b.Payment_type = 'Letter_of_Credit' THEN CONVERT(VARCHAR, b.Instrument_Date, 103) \r\n"
 				+ "        ELSE '' \r\n"
-				+ "    END AS Instrument_Date,\r\n"
+				+ "    END AS Instrument_Date,ifsc,\r\n"
 				+ "    b.Payment_type \r\n"
 				+ "FROM \r\n"
 				+ "    jcidispatch_details AS a \r\n"

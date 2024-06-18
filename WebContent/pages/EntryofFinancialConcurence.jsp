@@ -68,6 +68,7 @@
 		    String paymentDueDate = (String) request.getAttribute("paymentDueDate");
 		    Object instrumentvalue =request.getAttribute("instrumentvalue");
 		    Object instrumentDateObject = request.getAttribute("instrumentDate");
+		    Object remainquantity = request.getAttribute("remainquantity");
 		    
 		    Date instrumentDate1 = (Date) instrumentDateObject;
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy"); // Change the format as needed
@@ -86,6 +87,8 @@
            
 		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
 		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
+		  
+		    BigDecimal remainquantity1 = new BigDecimal(String.valueOf(remainquantity));
 		    
 		    
 		
@@ -114,7 +117,10 @@
 			  
 		    BigDecimal qtdivtotal1 = qtdiv.multiply(instrumentValueBigInt);
 		    
-		    BigDecimal qtdivtotal = qtdivtotal1.setScale(2, RoundingMode.HALF_UP);
+		    BigDecimal qtdivtotal2 = qtdivtotal1.add(remainquantity1);
+
+		    
+		    BigDecimal qtdivtotal = qtdivtotal2.setScale(2, RoundingMode.HALF_UP);
 		    
 		    
 	 	    
@@ -151,7 +157,7 @@
 				                                      <div class="col-sm-4 form-group">
 															<label>FC Issue Date</label> 
 															<span class="text-danger">* </span>&nbsp; <span id="FC_Issue_Date" name="FC_Issue_Date" class="text-danger"> </span>
-															<input class="form-control" name="FC_Issue_Date" id="FC_Issue_Date" type="date" value=<%= issuedate %> required>
+															<input class="form-control" name="FC_Issue_Date" id="FC_Issue_Date" type="date" value=<%= issuedate %> readonly="true" required>
 													   </div>
 			                                 </div>
 			                                    
@@ -176,12 +182,14 @@
 				                                            <label>Instrument Date </label> 
 				                                            <span class="text-danger">* </span>&nbsp; <span id="Instrument_Date" name="Instrument_Date " class="text-danger" > </span>
 															 <input class="form-control taxtbox" name="Instrument_Date" id ="Instrument_Date"  value=<%= formattedInstrumentDate %> placeholder="Instrument_Date"  readonly="true" >
-				                                     </div>  
-				                                       <div class="col-sm-4 form-group">
-					                                            <label>Remarks</label> 
-					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
-																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
-					                                     </div>
+				                                     </div>
+				                                     
+				                                      <div class="col-sm-4 form-group">
+					                                            <label>Contracted Qty(Qtls)</label> 
+					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
+																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0"  placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
+					                                     </div>  
+				                                      
 				                                     
 			
                                                 </div>
@@ -194,11 +202,7 @@
 															    <input class="form-control taxtbox" name="Days_Diffrence" id="DaysDiffrencetotal" value="<%= charge %>" placeholder="Days_Diffrence">
 															    <span id="error-message" class="text-danger"></span>
 															</div>
-				                                            <div class="col-sm-4 form-group">
-					                                            <label>Contracted Qty(Qtls)</label> 
-					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
-																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0"  placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
-					                                     </div>
+				                                           
 					                       						<div class="col-sm-4 form-group">
 																	    <label>Qty. Allowed (Qtls) ( max Allowed =  <%=qtdivtotal %> )</label>
 																	    <span class="text-danger">*</span>
@@ -206,6 +210,11 @@
 																	    <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" type ="number" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
 																	    <div id="errorMessage" style="color: red; display: none;">Amount exceeds the allowed limit!</div>
 																	</div>
+																<div class="col-sm-4 form-group">
+					                                            <label>Remarks</label> 
+					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
+																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
+					                                     </div>
 																
 
 											
