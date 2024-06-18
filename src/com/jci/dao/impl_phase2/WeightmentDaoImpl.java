@@ -106,6 +106,17 @@ public class WeightmentDaoImpl implements WeightmentDao{
                                       "WHERE jciweighment_entry.Bos_no = '" + bosNo + "');";
 
 		int value= (int) currentSession().createSQLQuery(queryString).executeUpdate();
+		
+		String q1 ="UPDATE jcidispatch_details\r\n"
+				+ "SET jcidispatch_details.Di_status = 2\r\n"
+				+ "WHERE EXISTS (\r\n"
+				+ "    SELECT 1\r\n"
+				+ "    FROM jcibos_generation\r\n"
+				+ "    WHERE jcidispatch_details.Challan_No = jcibos_generation.Challan_No\r\n"
+				+ "    AND jcibos_generation.Bill_of_supply_no = '"+bosNo+"'\r\n"
+				+ ");";
+		int v1= (int) currentSession().createSQLQuery(q1).executeUpdate();
+		
 		return ;
 		
 		

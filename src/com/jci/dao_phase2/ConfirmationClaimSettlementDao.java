@@ -30,4 +30,10 @@ public interface ConfirmationClaimSettlementDao {
 	public void rejectClaim(String challan, String username);
 
 	public List<Object[]> getFAData(String setId);
+
+	public List<Object[]> getMillAcc();
+
+	public List<Object[]> getMillData(String setId);
+
+	public void acceptMill(String settleId);
 }

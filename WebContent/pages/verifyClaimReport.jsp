@@ -105,86 +105,11 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 			<c:if test="${not empty msg}">
 				<div class="">${msg}</div>
 			</c:if>
-<%-- 			<div class="scrollmenu"> 
-			<div class="table-responsive" style="margin-top: 20px;">
-<table id="farmerVerific" class="table table-striped table-bordered table-hover" cellspacing="0" style="width: 100%">
-    <thead>
-        <tr>
-            <th style="width: 5%">S.No</th>
-            <th style="width: 10%">Settlement Id</th>
-            <th style="width: 10%">Challan No</th>
-            <th style="width: 10%">Contract No</th>
-            <th style="width: 10%">Date of Inspection</th>
-            
-           <!--  <th style="width: 10%">Mill Name</th> -->
-           <th style="width: 10%">Quality Settlement</th>
-            <th style="width: 10%">Moisture Content Settlement</th>
-            <th style="width: 5%">NCV Settlement</th>
-            
-             <th style="width: 10%">Dust Settlement</th>
-             <th style="width: 5%">HO DI </th>
-            <th style="width: 10%">Claim Amount</th>
-            <th style="width: 10%">Settlement Amount</th>
-            <th style="width: 10%">Entry by</th>
-            <th style="width: 10%">File Upload</th>
-            
-            <th style="width: 5%">Confirm/Reject</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% int i = 1;
-           for (Object[] row : getSettlementid) { %>
-        <tr>
-            <td style="width: 5%"><%= i %></td>
-            <td style="width: 10%" ; text-align: center; id='<%= "st" + i %>'><%= row[0] %></td>
-            <td style="width: 10%" ; text-align: center; id='<%= "ch" + i %>'><%= row[1] %></td> 
-            <td style="width: 10%"; text-align: center;  id='<%= "cont" + i %>'><%= row[2] %></td> 
-            <%
-// Assuming row[3] contains the date string "2024-05-17 00:00:00.0"
-String dateString = row[3].toString();
-SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-Date date = inputFormat.parse(dateString);
-String formattedDate = outputFormat.format(date);
-%>
-
-            <td style="width: 10%; text-align: center;"><%= formattedDate %></td>
-            
-           <td style="width: 10%; text-align: center;"><%= row[8] %></td>
-            <td style="width: 10%"><%= row[5] %></td>   
-            <td style="width: 10%; text-align: center;"><%= row[6] %></td> 
-            <td style="width: 10%; text-align: center;"><%= row[7] %></td> 
-            
-            <td style="width: 10%; text-align: center;"><%= row[10] %></td>  
-             <td style="width: 10%; text-align: center;"><%= row[13] %></td>    
-             <td style="width: 10%; text-align: center;"><%= row[12] %></td>  
-            <td style="width: 10%; text-align: center;"><%= row[9] %></td> 
-            <td style="width: 10%; text-align: center;"><%= row[4] %></td> 
-                    <% 
-                    
-                 // Assuming row[11] is of type Integer
-                 if (row[11] != null && ((Integer)row[11]) == 0) { %>
-                     <td style="width: 5%">
-                         <input type="file" id="fileUpload-<%= i %>" name="fileUpload-<%= i %>" accept=".pdf,.doc,.docx">
-                     </td>
-                     <td style="width: 5%">
-                         <button id="confirm-btn-<%= i %>" class="confirm-btn" data-row-id="<%= i %>">Confirm</button>
-                         <button id="reject-btn-<%= i %>" class="reject-btn" data-row-id="<%= i %>">Reject</button>
-                     </td>
-                 <% } else { %>
-                     <td colspan="2" style="; text-align: center; width: 20%">Verification Completed</td>
-                 <% } %>
-
-
-        </tr>
-        <% i++; } %>
-    </tbody>
-</table>
-
-</div>
-
-			</div> --%>
+			<div id='errorcontainer'
+								style='display: none; text-align: center;'></div>
+								<div id='errorcontainer1'
+								style='display: none; text-align: center;'></div>
 			
 			<div class="row">
 
@@ -216,7 +141,7 @@ String formattedDate = outputFormat.format(date);
 	<div class="sidenav-backdrop backdrop"></div>
 	<!-- END PAGA BACKDROPS-->
 	<!-- CORE PLUGINS-->
-	<script>
+<!-- 	<script>
   // Attach click event listeners to each confirm button
   $('.confirm-btn').click(function() {
     const rowId = $(this).data('row-id');
@@ -291,8 +216,8 @@ function handleRejection(settleId, file) {
             // Handle error
         }
     }); 
-}
-</script>
+}</script> -->
+
 	
 	<script type="text/javascript">
 	$("#setId").on("change", function() {
@@ -313,12 +238,12 @@ function handleRejection(settleId, file) {
 	            
 	            // Create the table structure
 	          var contentToDisplay = "<table style='border: 1px solid black; width: 1200px; text-align: center;'><tr><th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>Contract No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>DI No.</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Bale Mark</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"+
- "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Invoice No.</th><th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Jute Variety</th>"+
+ "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Jute Variety</th>"+
 	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Grade</th>"+
 	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>No. of Bales</th>"+
 	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Quantity(Qtls)</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Claim</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Settlement</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Claim Percentage(%)</th>"+
+	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Settlement Percentage(%)</th>"+
 	            "</tr>"+
 	            "<tr>"+
 	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
@@ -331,14 +256,62 @@ function handleRejection(settleId, file) {
 	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
 	            "</tr>";
 	            
-	            // Iterate over the data array and construct the table rows
-	            for (var i = 0; i < data.length; i++) {
-	               
-	            }
-	            contentToDisplay += "</table>";
+	           
+	          for (var i = 0; i < data.length; i++) {
+	              contentToDisplay += "<tr>";
+	                contentToDisplay += "<td style='border: 1px solid black; text-align: center;'>" + (i + 1) + "</td>"; // Displaying row number
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][1] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][2] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][6] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][10] + "</td>"; // Balemark
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][7] + "</td>"; // Mr no.
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][11] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][12] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][13] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][14] + "</td>"; // Actual Qty
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][16] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][17] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][19] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][18] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][24] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][25] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][26] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][27] + "</td>";
+	                contentToDisplay += "</tr>";
+}
+contentToDisplay += "</table>";
 
-	            // Update the content of the form2 element with the constructed table
-	            $("#form2").html(contentToDisplay);
+
+
+
+//Update the content of the form2 element with the constructed table
+$("#form2").html(contentToDisplay);
+
+// Add space between table and file upload
+$("#form2").append("<div style='height: 20px;'></div>");
+
+// Add file upload input
+var fileUploadHTML = "<input type='file' id='fileUpload' required name='fileUpload' accept='.pdf,.doc,.docx'>";
+$("#form2").append(fileUploadHTML);
+
+// Add space between file upload and checkbox
+$("#form2").append("<div style='height: 20px;'></div>");
+
+// Add checkbox and text
+var checkboxHTML = "<label><input type='checkbox' id='confirmCheckbox' name='confirmCheckbox' required><strong> I do hereby confirm the settlement record</strong></label>";
+$("#form2").append(checkboxHTML);
+
+// Add space between checkbox and buttons
+$("#form2").append("<div style='height: 20px;'></div>");
+
+
+var confirmButtonHTML = "<button type='button'  onclick='confirmAction()' style='margin-right: 10px;'>Confirm</button>";
+ var rejectButtonHTML = "<button type='button'  onclick='rejectAction()'>Reject</button>"; 
+$("#form2").append(confirmButtonHTML);
+ $("#form2").append(rejectButtonHTML); 
+
+
+
 	        },
 
 	        error: function(xhr, status, error) {
@@ -346,7 +319,134 @@ function handleRejection(settleId, file) {
 	        }
 	    });
 	});
+	// Function for Confirm action
+	function confirmAction() {
+	    alert("Confirmed"); 
+	    var setId = $("#setId").val();
+	    
+	    
+	    const fileInput = $('#fileUpload')[0].files[0];
+	    if (fileInput === undefined || fileInput === null) {
+	        var errorMessage = "Please upload the file for confirmation.";
+	        var errorDiv = $("<div>").text(errorMessage).css({
+	            "color": "red",
+	            "font-weight": "bold"
+	        });
+	        $("#errorcontainer").append(errorDiv).show(); // Show the error container
+	        window.scrollTo(0, 0); // Scroll to the top of the window
 
+	        setTimeout(function() {
+	            $("#errorcontainer").empty().hide(); // Clear and hide the error message after 5 seconds
+	        }, 5000);
+	    }
+	    if (!$("#confirmCheckbox").is(":checked")) {
+            var errorMessage = "Please confirm the settlement record.";
+            var errorDiv = $("<div>").text(errorMessage).css({
+                "color": "red",
+                "font-weight": "bold"
+            });
+            $("#errorcontainer1").empty().append(errorDiv).show(); // Show the error container
+            window.scrollTo(0, 0); // Scroll to the top of the window
+
+            setTimeout(function() {
+                $("#errorcontainer1").empty().hide(); // Clear and hide the error message after 5 seconds
+            }, 5000);
+	    }
+	    else{
+	    alert(setId+"-----"+fileInput);
+	    handleConfirmation(setId,fileInput);
+	    }
+	}
+
+	// Function for Reject action
+	function rejectAction() {
+	    alert("Rejected");
+	    var setId = $("#setId").val();
+	    
+	    alert(setId+"-----");
+	    const fileInput = $('#fileUpload')[0].files[0];
+	    if (fileInput === undefined || fileInput === null) {
+	        var errorMessage = "Please upload the file for confirmation.";
+	        var errorDiv = $("<div>").text(errorMessage).css({
+	            "color": "red",
+	            "font-weight": "bold"
+	        });
+	        $("#errorcontainer").append(errorDiv).show(); // Show the error container
+	        window.scrollTo(0, 0); // Scroll to the top of the window
+
+	        setTimeout(function() {
+	            $("#errorcontainer").empty().hide(); // Clear and hide the error message after 5 seconds
+	        }, 5000);
+	    }
+	    if (!$("#confirmCheckbox").is(":checked")) {
+            var errorMessage = "Please confirm the settlement record.";
+            var errorDiv = $("<div>").text(errorMessage).css({
+                "color": "red",
+                "font-weight": "bold"
+            });
+            $("#errorcontainer1").empty().append(errorDiv).show(); // Show the error container
+            window.scrollTo(0, 0); // Scroll to the top of the window
+
+            setTimeout(function() {
+                $("#errorcontainer1").empty().hide(); // Clear and hide the error message after 5 seconds
+            }, 5000);
+	    }
+	    else{
+	    alert(setId+"-----"+fileInput);
+	    handleRejection(setId,fileInput);
+	    }
+	   
+	}
+	 // Function to handle confirmation action
+	  function handleConfirmation(settleId, file) {
+	    // Your code to handle confirmation action goes here
+	    console.log('Confirmation action for settlement ID:', settleId);
+	    console.log('File:', file);
+	    alert();
+	    var formData = new FormData();
+	    formData.append('settleId', settleId);
+	    formData.append('file', file);
+		alert();
+	    $.ajax({
+	        url: 'acceptClaim.obj',
+	        method: 'POST', // Assuming you want to use POST method for file upload
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(response) {
+	            // Handle success response
+	        	  window.location.reload();
+	        },
+	        error: function(xhr, status, error) {
+	            // Handle error
+	        }
+	    }); 
+	 }
+	   function handleRejection(settleId, file) {
+	        // Your code to handle rejection action goes here
+	        console.log('Rejection action for settlement ID:', settleId);
+	     
+
+	        var formData = new FormData();
+	        formData.append('settleId', settleId);
+	       //  formData.append('file', file); 
+
+	        $.ajax({
+	            url: 'rejectClaim.obj',
+	            method: 'POST', // Assuming you want to use POST method for file upload
+	            data: formData,
+	            contentType: false,
+	            processData: false,
+	            success: function(response) {
+	                // Handle success response
+	            	  window.location.reload();
+	                
+	            },
+	            error: function(xhr, status, error) {
+	                // Handle error
+	            }
+	        }); 
+	    } 
 	</script>
 	
 	

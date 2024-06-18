@@ -122,7 +122,7 @@ div.scrollmenu a:hover {
 
 												</select>
 											</div>
-										
+					<!-- 					
 <div class="col-sm-4 form-group">
 												<label class="required">Supporting Document
 													(330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
@@ -131,7 +131,7 @@ div.scrollmenu a:hover {
 													type="file" oninput="validateREGFileType()"
 													placeholder="Supporting Document" id="SupportingDocument"
 													onkeypress="deleteErrorMsg()" required>
-											</div>
+											</div> -->
 											<div class="col-sm-4 form-group">
 												<label>Mill name</label> <span class="text-danger">*
 												</span>&nbsp; <span id="mill1" name="mil1 "
@@ -141,19 +141,6 @@ div.scrollmenu a:hover {
 													placeholder="Mill name" required>
 											</div>
 											
-											
-
-
-
-										</div>
-
-
-									
-
-										<div class="row">
-
-
-											
 											<div class="col-sm-4 form-group">
 												<label>Crop Year</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Crop_Year" name="Crop_Year "
@@ -162,6 +149,19 @@ div.scrollmenu a:hover {
 													id="CropYear1" value="" placeholder="Crop Year" readonly
 													required>
 											</div>
+
+
+
+										</div>
+
+
+									
+
+									
+
+
+											
+											
 											<!-- <div class="col-sm-4 form-group">
 												<label>Inspection by</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Inspection_by" name="Inspection_by "
@@ -182,7 +182,7 @@ div.scrollmenu a:hover {
 													id="mrNo" value="" placeholder="MR No."
 													readonly required>
 											</div>  -->
-										</div>
+										
 										<!-- <div class="row">
 										 <div class="col-sm-4 form-group">
 												<label>MR Date </label> <span class="text-danger">*

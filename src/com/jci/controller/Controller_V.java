@@ -4785,12 +4785,8 @@ public class Controller_V {
 
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
 	public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpServletRequest request,
-			RedirectAttributes redirectAttributes,
-			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("Confirmationsettlement");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
+			RedirectAttributes redirectAttributes) {
+	
 
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -4805,23 +4801,22 @@ public class Controller_V {
 
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
 
-			final File theDirect = new File(ConfirmationOfClaim);
-			if (!theDirect.exists()) {
-				theDirect.mkdirs();
-			}
+			
 
 			double defaultValue = 0.0;
 
 			String Inspection_by1 = request.getParameter("Inspectionby1");
 
-			final String filename = SupportingDocument.getOriginalFilename();
-			System.err.println(filename + "---------");
+			
+			
 			String rolename = (String) session.getAttribute("rolename");
 
 			String Settlement_Amount1 = request.getParameter("SettlementAmount");
-
+			
 			for (int i = 0; i < cnt; i++) {
 				ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
+				String juteVar= request.getParameter("jv" + i);
+				String juteGrade= request.getParameter("jg" + i);
 				String fullcontractno = request.getParameter("cont" + i);
 				System.err.println(fullcontractno);
 				String Challan_No1 = request.getParameter("ch" + i);
@@ -4910,6 +4905,8 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setChallan_No(Challan_No1);
 
 				confirmationClaimSettlementModel.setInspection_by(username);
+				confirmationClaimSettlementModel.setJute_Grade(juteGrade);
+				confirmationClaimSettlementModel.setJute_Variety(juteVar);
 
 //           confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
 
@@ -4922,26 +4919,8 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setCreated_by(username);
 				confirmationClaimSettlementModel.setCreated_on(date1);
 				confirmationClaimSettlementModel.setActive("1");
-				File file = null;
-				String url = "";
-				String pathurl = "";
-				if (!SupportingDocument.isEmpty()) {
-					try {
-						file = new File(ConfirmationOfClaim + SupportingDocument.getOriginalFilename());
-						final OutputStream os = new FileOutputStream(file);
-						os.write(SupportingDocument.getBytes());
-						os.close();
-					} catch (Exception e) {
-						System.err.println(e.getLocalizedMessage());
-						e.printStackTrace();
-						System.err.println("inside catch file----");
-					}
-					pathurl = file.getAbsolutePath();
-					final String path = url = SupportingDocument.getOriginalFilename();
-					confirmationClaimSettlementModel.setSupporting_doc(url);
-					System.err.println("outside catch file----");
-
-				}
+				confirmationClaimSettlementModel.setMill_Acc("0");
+				
 				this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
 			}
 
@@ -6178,7 +6157,7 @@ return mv;
     @RequestMapping(value= {"settlementFA"}, method = RequestMethod.GET)
     public String settlementFA(HttpSession session,HttpServletRequest request,@RequestParam("setId") String setId) {
     	  String username = (String) request.getSession().getAttribute("usrname");
-         
+         System.err.println("Reached++"+setId);
     	  List<Object[]> setIdData =confirmationofClaimSettlementService.getFAData(setId);
     	  System.err.println(setIdData.toString());
     	  Gson gson = new Gson();
@@ -6186,8 +6165,81 @@ return mv;
   		System.err.println("-----------------------" + setIdData);
   		return resultString;
     }
+    @RequestMapping(value = { "verifyMillClaim" }, method = RequestMethod.GET)
+    public ModelAndView verifyMillClaim(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+          
 
+           //String Ro_id = (String) session.getAttribute("region");
 
+           List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementDataMill();
+           System.err.println(getSettlementidlist);
+           redirectAttributes.addFlashAttribute("msg",
+                        "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+           ModelAndView mv = new ModelAndView("verifyMillClaim");
+           mv.addObject("getSettlementidlist", getSettlementidlist);
+
+           return mv;
+    }
+    @ResponseBody
+    @RequestMapping(value= {"settlementMill"}, method = RequestMethod.GET)
+    public String settlementMill(HttpSession session,HttpServletRequest request,@RequestParam("setId") String setId) {
+    	 System.err.println("ReachedMillClaim");
+         System.err.println("Reached++"+setId);
+    	  List<Object[]> setIdData =confirmationofClaimSettlementService.getMillData(setId);
+    	  System.err.println(setIdData.toString());
+    	  Gson gson = new Gson();
+  		String resultString = new Gson().toJson(setIdData);
+  		System.err.println("-----------------------" + setIdData);
+  		return resultString;
+    }
+
+    @RequestMapping("downloadSupportDocumentFA")
+	public void downloadDocsFA(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = ConfirmationOfClaimFA + filename;
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+    
+    @ResponseBody
+	@RequestMapping(value = { "acceptClaimMill" }, method = { RequestMethod.GET })
+	public String acceptClaimMill(@RequestParam("settleId") String settleId,
+			 HttpServletRequest request, HttpSession session) {
+		System.err.println(":Reached Accept Mill");
+		
+		
+		this.confirmationofClaimSettlementService.acceptClaimMill(settleId);
+		return null;
+	}
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

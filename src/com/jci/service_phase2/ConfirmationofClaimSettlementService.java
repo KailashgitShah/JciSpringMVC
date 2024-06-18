@@ -34,5 +34,11 @@ public interface ConfirmationofClaimSettlementService {
 
 	public List<Object[]> getFAData(String setId);
 
+	public List<Object[]> getSettlementDataMill();
+
+	public List<Object[]> getMillData(String setId);
+
+	public void acceptClaimMill(String settleId);
+
 	
 }

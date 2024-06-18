@@ -98,6 +98,25 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 		return confirmationClaimSettlementDao.getFAData(setId);
 		
 	}
+
+	@Override
+	public List<Object[]> getSettlementDataMill() {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.getMillAcc();
+	}
+
+	@Override
+	public List<Object[]> getMillData(String setId) {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.getMillData(setId);
+	}
+
+	@Override
+	public void acceptClaimMill(String settleId) {
+		// TODO Auto-generated method stub
+		confirmationClaimSettlementDao.acceptMill(settleId);
+		return;
+	}
 	
 
 }
