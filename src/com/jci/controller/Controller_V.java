@@ -6252,7 +6252,7 @@ return mv;
 		System.err.println(":Reached Accept Mill");
 		
 		
-		this.confirmationofClaimSettlementService.acceptClaimMill(contract);
+		List<Object[]> list = this.confirmationofClaimSettlementService.getSettlementId(contract);
 		return null;
 	}
 }

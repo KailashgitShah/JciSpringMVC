@@ -324,6 +324,13 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		return resultList1;
 	}
 
+	@Override
+	public List<Object[]> getSettlementId(String contract) {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
+
 
 
 
