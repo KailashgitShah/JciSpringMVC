@@ -36,4 +36,8 @@ public interface ConfirmationClaimSettlementDao {
 	public List<Object[]> getMillData(String setId);
 
 	public void acceptMill(String settleId);
+
+	public List<Object[]> getContract();
+
+	public List<Object[]> getSettlementId(String contract);
 }

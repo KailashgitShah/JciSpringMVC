@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.digester.ObjectParamRule;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -6170,13 +6171,13 @@ return mv;
           
 
            //String Ro_id = (String) session.getAttribute("region");
-
-           List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementDataMill();
-           System.err.println(getSettlementidlist);
+    		List<Object[]> getContractList = this.confirmationofClaimSettlementService.getContract();
+           List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementDataMill();//Settlement Id
+           System.err.println(getContractList);
            redirectAttributes.addFlashAttribute("msg",
                         "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
            ModelAndView mv = new ModelAndView("verifyMillClaim");
-           mv.addObject("getSettlementidlist", getSettlementidlist);
+           mv.addObject("getSettlementidlist", getContractList);
 
            return mv;
     }
@@ -6185,6 +6186,7 @@ return mv;
     public String settlementMill(HttpSession session,HttpServletRequest request,@RequestParam("setId") String setId) {
     	 System.err.println("ReachedMillClaim");
          System.err.println("Reached++"+setId);
+         
     	  List<Object[]> setIdData =confirmationofClaimSettlementService.getMillData(setId);
     	  System.err.println(setIdData.toString());
     	  Gson gson = new Gson();
@@ -6238,6 +6240,19 @@ return mv;
 		
 		
 		this.confirmationofClaimSettlementService.acceptClaimMill(settleId);
+		return null;
+	}
+    
+    
+    
+    @ResponseBody
+	@RequestMapping(value = { "GetSettlementId" }, method = { RequestMethod.GET })
+	public String SettlementByContract(@RequestParam("Contract") String contract,
+			 HttpServletRequest request, HttpSession session) {
+		System.err.println(":Reached Accept Mill");
+		
+		
+		this.confirmationofClaimSettlementService.acceptClaimMill(contract);
 		return null;
 	}
 }

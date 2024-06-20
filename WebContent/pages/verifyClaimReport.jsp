@@ -97,7 +97,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Verify Claim(F & A Official) List</h1>
+				<h1 class="page-title">Verify Settlement(F & A Official) List</h1>
 			</div>
 
 
@@ -124,15 +124,40 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
         <% } %>
     </select>
 </div>
+</div>
 			<!-- END PAGE CONTENT-->
 			<%@ include file="footer.jsp"%>
-		</div>
+			
+			<div class="row">
+    <div class="col-sm-6 form-group">
+        <div id="form3"></div>
+    </div>
+    
+     <div class="col-sm-6 form-group" style="text-align:right ">
+        <div id="form5"></div>
+    </div>
+</div>
 	<div class="row">
-    <div class="col-sm-4 form-group">
+    
+     
+     <div class="col-sm-6 form-group">
+        <div id="form4"></div>
+    </div>
+    <div class="col-sm-6 form-group" style="text-align:right">
+        <div id="form6"></div>
+    </div>
+</div>
+		
+	<div class="row">
+    <div class="col-sm-12 form-group">
         <div id="form2"></div>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <div id="form7"></div>
+    </div>
+</div>
 	</div>
 	<!-- BEGIN THEME CONFIG PANEL-->
 
@@ -232,41 +257,48 @@ function handleRejection(settleId, file) {
 	        success: function(response) {
 	            // Parse the JSON response
 	            var data = jQuery.parseJSON(response);
-	            
+	            console.log(data);
 	            // Clear the existing content of the form2 element
 	            $("#form2").empty();
 	            
 	            // Create the table structure
-	          var contentToDisplay = "<table style='border: 1px solid black; width: 1200px; text-align: center;'><tr><th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>Contract No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>DI No.</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Bale Mark</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"+
- "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Jute Variety</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Grade</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>No. of Bales</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Quantity(Qtls)</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Claim Percentage(%)</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Settlement Percentage(%)</th>"+
-	            "</tr>"+
-	            "<tr>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
-	            "</tr>";
+	          var contentToDisplay = "<table style='border: 1px solid black; width: 1250px; text-align: center;'>"+
+	        	    "<tr>"+
+	          "<th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th>"+
+	         " <th style='border: 1px solid black; width: 5%; text-align: center;' rowspan='2'>Bale Mark</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Crop Year</th>"+
+	         " <th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Variety/Grade</th>"+
+	         " <th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>No. of Bales</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Actual Quantity(Qtls)</th>"+
+	         " <th style='border: 1px solid black; width: 15%; text-align: center;' colspan='4'>Claim Percentage(%)</th>"+
+	         " <th style='border: 1px solid black; width: 15%; text-align: center;' colspan='4'>Settlement Percentage(%)</th>"+
+	          "<th style='border: 1px solid black; width: 5%; text-align: center;' rowspan='2'>Settlement Amount</th>"+
+	      "</tr>"+
+	     " <tr>"+
+	         " <th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
+	     " </tr>"
 	            
 	           
 	          for (var i = 0; i < data.length; i++) {
 	              contentToDisplay += "<tr>";
 	                contentToDisplay += "<td style='border: 1px solid black; text-align: center;'>" + (i + 1) + "</td>"; // Displaying row number
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][1] + "</td>";
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][2] + "</td>";
+	       /*          contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][1] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][2] + "</td>"; */
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][6] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][10] + "</td>"; // Balemark
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][7] + "</td>"; // Mr no.
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][11] + "</td>";
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][12] + "</td>";
+	                
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][9] + "</td>"; 
+	                 contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][12] + "</td>"; 
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][13] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][14] + "</td>"; // Actual Qty
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][16] + "</td>";
@@ -277,19 +309,35 @@ function handleRejection(settleId, file) {
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][25] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][26] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][27] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][28] + "</td>";//Claim Amount
 	                contentToDisplay += "</tr>";
 }
 contentToDisplay += "</table>";
+//Append Mill value as text
+var MillText = "<div id='Mill'> Mill Name:<strong>" + data[0][0] + "</strong></div>";
+$("#form3").append(MillText);
 
+// Append Cont value as text
+var ContText = "<div id='Cont'> Contract No.:<strong>" + data[0][1] + "</strong></div>";
+$("#form4").append(ContText);
 
+// Append DI value as text
+var DIText = "<div id='DI'> DI no.:<strong>" + data[0][2] + "</strong></div>";
+$("#form5").append(DIText);
 
+// Append Date value as text (assuming data[0][30] is the correct index)
+var DateText = "<div id='DateInput'> Date of Inspection:<strong>" + (data[0][30] || '') + "</strong></div>";
+$("#form6").append(DateText);
 
+/* var Total = "<div id='Total'> Total :<strong>" + (data[0][29] ) + "</strong></div>";
+$("#form7").append(Total); */
 //Update the content of the form2 element with the constructed table
 $("#form2").html(contentToDisplay);
 
 // Add space between table and file upload
 $("#form2").append("<div style='height: 20px;'></div>");
-
+var Total = "<div id='Total'> Total Settlement Amount :<strong>" + (data[0][29] ) + "</strong></div>";
+$("#form2").append(Total);
 // Add file upload input
 var fileUploadHTML = "<input type='file' id='fileUpload' required name='fileUpload' accept='.pdf,.doc,.docx'>";
 $("#form2").append(fileUploadHTML);
@@ -364,8 +412,8 @@ $("#form2").append(confirmButtonHTML);
 	    var setId = $("#setId").val();
 	    
 	    alert(setId+"-----");
-	    const fileInput = $('#fileUpload')[0].files[0];
-	    if (fileInput === undefined || fileInput === null) {
+	 /*    const fileInput = $('#fileUpload')[0].files[0]; */
+	   /*  if (fileInput === undefined || fileInput === null) {
 	        var errorMessage = "Please upload the file for confirmation.";
 	        var errorDiv = $("<div>").text(errorMessage).css({
 	            "color": "red",
@@ -377,7 +425,7 @@ $("#form2").append(confirmButtonHTML);
 	        setTimeout(function() {
 	            $("#errorcontainer").empty().hide(); // Clear and hide the error message after 5 seconds
 	        }, 5000);
-	    }
+	    } */
 	    if (!$("#confirmCheckbox").is(":checked")) {
             var errorMessage = "Please confirm the settlement record.";
             var errorDiv = $("<div>").text(errorMessage).css({
@@ -392,8 +440,8 @@ $("#form2").append(confirmButtonHTML);
             }, 5000);
 	    }
 	    else{
-	    alert(setId+"-----"+fileInput);
-	    handleRejection(setId,fileInput);
+	    alert(setId+"-----");
+	    handleRejection(setId);
 	    }
 	   
 	}
@@ -422,7 +470,7 @@ $("#form2").append(confirmButtonHTML);
 	        }
 	    }); 
 	 }
-	   function handleRejection(settleId, file) {
+	   function handleRejection(settleId) {
 	        // Your code to handle rejection action goes here
 	        console.log('Rejection action for settlement ID:', settleId);
 	     

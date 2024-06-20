@@ -150,6 +150,9 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
   <c:otherwise>
         <!-- Sidebar 2 -->
         <style>
+        .ibox {
+    padding: 0 0px;
+}
             body {
                 zoom: 85%;
             }
@@ -224,6 +227,17 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 								style='display: none; text-align: center;'></div>
 			
 			<div class="row">
+			<div class="col-sm-4 form-group">
+    <label>Contract No.</label> 
+    <span class="text-danger">*</span>&nbsp; 
+    <span id="contractno" name="contractno" class="text-danger"></span> 
+    <select name="Contract" id="Contract" class="form-control textbox" required>
+        <option value="" disabled selected>Select</option>
+     <% for (Object[] setId : getSettlementid) { %>
+            <option value="<%=setId[0]%>" readonly><%=setId[0]%></option>
+        <% } %>
+    </select>
+</div>
 
 													<div class="col-sm-4 form-group">
     <label>Settlement Id</label> 
@@ -231,17 +245,41 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
     <span id="contractno" name="contractno" class="text-danger"></span> 
     <select name="setId" id="setId" class="form-control textbox" required>
         <option value="" disabled selected>Select</option>
-        <% for (Object[] setId : getSettlementid) { %>
-            <option value="<%=setId[0]%>" readonly><%=setId[0]%></option>
-        <% } %>
+       
     </select>
 </div>
 					</div>
-					<div class="row">
-    <div class="col-sm-4 form-group">
+				<div class="row">
+    <div class="col-sm-6 form-group">
+        <div id="form3"></div>
+    </div>
+    
+     <div class="col-sm-6 form-group" style="text-align:right ">
+        <div id="form5"></div>
+    </div>
+</div>
+	<div class="row">
+    
+     
+     <div class="col-sm-6 form-group">
+        <div id="form4"></div>
+    </div>
+    <div class="col-sm-6 form-group" style="text-align:right">
+        <div id="form6"></div>
+    </div>
+</div>
+		
+	<div class="row">
+    <div class="col-sm-12 form-group">
         <div id="form2"></div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <div id="form7"></div>
+    </div>
+</div>
+	</div>
 				</div>
 
 			</div>
@@ -275,40 +313,45 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 	        success: function(response) {
 	            // Parse the JSON response
 	            var data = jQuery.parseJSON(response);
-	            alert(data);
+	           // alert(data);
 	            // Clear the existing content of the form2 element
 	            $("#form2").empty();
-	            
+	            console.log(data);
 	            // Create the table structure
-	          var contentToDisplay = "<table style='border: 1px solid black; width: 50px; text-align: center;'><tr><th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>Contract No.</th><th style='border: 1px solid black; text-align: center;' rowspan='2'>DI No.</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Bale Mark</th><th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"+
- "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Jute Variety</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Grade</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>No. of Bales</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;'rowspan='2'>Quantity(Qtls)</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Claim Percentage(%)</th>"+
-	            "<th style='border: 1px solid black; width: 10%; text-align: center;' colspan='4'>Settlement Percentage(%)</th>"+
-	            "</tr>"+
-	            "<tr>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
-	            "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
-	            "</tr>";
+	           var contentToDisplay = "<table style='border: 1px solid black; width: 1150px; text-align: center;'>"+
+	        	    "<tr>"+
+	          "<th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th>"+
+	         " <th style='border: 1px solid black; width: 5%; text-align: center;' rowspan='2'>Bale Mark</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Crop Year</th>"+
+	         " <th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Variety/Grade</th>"+
+	         " <th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>No. of Bales</th>"+
+	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Actual Quantity(Qtls)</th>"+
+	         " <th style='border: 1px solid black; width: 15%; text-align: center;' colspan='4'>Claim Percentage(%)</th>"+
+	         " <th style='border: 1px solid black; width: 15%; text-align: center;' colspan='4'>Settlement Percentage(%)</th>"+
+	          "<th style='border: 1px solid black; width: 5%; text-align: center;' rowspan='2'>Settlement Amount</th>"+
+	      "</tr>"+
+	     " <tr>"+
+	         " <th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"+
+	          "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"+
+	     " </tr>"
 	            
 	           
 	          for (var i = 0; i < data.length; i++) {
 	              contentToDisplay += "<tr>";
 	                contentToDisplay += "<td style='border: 1px solid black; text-align: center;'>" + (i + 1) + "</td>"; // Displaying row number
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][1] + "</td>";
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][2] + "</td>";
+	            
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][6] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][10] + "</td>"; // Balemark
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][7] + "</td>"; // Mr no.
-	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][11] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][9] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][12] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][13] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][14] + "</td>"; // Actual Qty
@@ -320,11 +363,25 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][25] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][26] + "</td>";
 	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][27] + "</td>";
+	                contentToDisplay += "<td style='border: 1px solid black;'>" + data[i][29] + "</td>";//Claim Amount
 	                contentToDisplay += "</tr>";
 }
 contentToDisplay += "</table>";
 
+var MillText = "<div id='Mill'> Mill Name:<strong>" + data[0][0] + "</strong></div>";
+$("#form3").append(MillText);
 
+// Append Cont value as text
+var ContText = "<div id='Cont'> Contract No.:<strong>" + data[0][1] + "</strong></div>";
+$("#form4").append(ContText);
+
+// Append DI value as text
+var DIText = "<div id='DI'> DI no.:<strong>" + data[0][2] + "</strong></div>";
+$("#form5").append(DIText);
+
+// Append Date value as text (assuming data[0][30] is the correct index)
+var DateText = "<div id='DateInput'> Date of Inspection:<strong>" + (data[0][31] || '') + "</strong></div>";
+$("#form6").append(DateText);
 
 
 //Update the content of the form2 element with the constructed table
@@ -332,7 +389,8 @@ $("#form2").html(contentToDisplay);
 
 // Add space between table and file upload
 $("#form2").append("<div style='height: 20px;'></div>");
-
+var Total = "<div id='Total'> Total Settlement Amount :<strong>" + (data[0][30] ) + "</strong></div>";
+$("#form2").append(Total);
 // Add file upload input
 
 var fileUploadHTML = "<a href='downloadSupportDocumentFA.obj?filename=" + data[0][28] + "' class='btn btn-primary btn-sm' target='_blank'>View Supporting docs</a>";
@@ -351,8 +409,9 @@ $("#form2").append("<div style='height: 20px;'></div>");
 
 
 var confirmButtonHTML = "<button type='button'  onclick='confirmAction()' style='margin-right: 10px;'>Confirm</button>";
-/* var rejectButtonHTML = "<button type='button'  onclick='rejectAction()'>Reject</button>"; */
+
 $("#form2").append(confirmButtonHTML);
+/* var rejectButtonHTML = "<button type='button'  onclick='rejectAction()'>Reject</button>"; */
 /* $("#form2").append(rejectButtonHTML); */
 
 
@@ -425,21 +484,19 @@ $("#form2").append(confirmButtonHTML);
 	        }
 	    }); 
 	 }
-	  /*   function handleRejection(settleId, file) {
+	  /*   function handleRejection(settleId) {
 	        // Your code to handle rejection action goes here
 	        console.log('Rejection action for settlement ID:', settleId);
 	     
 
-	        var formData = new FormData();
-	        formData.append('settleId', settleId);
+	     
 	       //  formData.append('file', file); 
 
 	        $.ajax({
 	            url: 'rejectClaim.obj',
 	            method: 'POST', // Assuming you want to use POST method for file upload
-	            data: formData,
-	            contentType: false,
-	            processData: false,
+	            data: {"setId",setId},
+	            
 	            success: function(response) {
 	                // Handle success response
 	            	  window.location.reload();
@@ -450,6 +507,29 @@ $("#form2").append(confirmButtonHTML);
 	            }
 	        }); 
 	    } */
+	</script>
+	
+	<script>
+	$("#Contract").on("change", function() {
+	    var setId = $(this).val();  // Get the selected value of the #Contract element
+	    alert(setId);  // Display an alert with the selected value
+	    $.ajax({
+	        url: 'GetSettlementId.obj',
+	        method: 'GET', // Assuming you want to use POST method for file upload
+	        data: {"Contract":setId},
+	       
+	        success: function(response) {
+	            // Handle success response
+	        	
+	        },
+	        error: function(xhr, status, error) {
+	            // Handle error
+	        }
+	    }); 
+	    
+	});
+
+
 	</script>
 	
 	

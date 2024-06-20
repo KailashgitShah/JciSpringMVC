@@ -117,6 +117,19 @@ public class ConfirmationClaimSettlementServiceImpl implements ConfirmationofCla
 		confirmationClaimSettlementDao.acceptMill(settleId);
 		return;
 	}
+
+	@Override
+	public List<Object[]> getContract() {
+		// TODO Auto-generated method stub
+		
+		return confirmationClaimSettlementDao.getContract();
+	}
+
+	@Override
+	public List<Object[]> getSettlementId(String contract) {
+		// TODO Auto-generated method stub
+		return confirmationClaimSettlementDao.getSettlementId(contract);
+	}
 	
 
 }

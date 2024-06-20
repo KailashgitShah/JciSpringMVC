@@ -40,5 +40,9 @@ public interface ConfirmationofClaimSettlementService {
 
 	public void acceptClaimMill(String settleId);
 
+	public List<Object[]> getContract();
+
+	public List<Object[]> getSettlementId(String contract);
+
 	
 }

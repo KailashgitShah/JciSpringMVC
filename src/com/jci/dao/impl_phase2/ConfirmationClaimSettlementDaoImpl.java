@@ -172,7 +172,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	@Override
 	public List<Object[]> getFAData(String setId) {
 		// TODO Auto-generated method stub
-		   String sqlQuery = " SELECT Distinct\r\n"
+		   String sqlQuery ="SELECT DISTINCT\r\n"
 		   		+ "    nom.Mill,\r\n"
 		   		+ "    nom.ContractNo,\r\n"
 		   		+ "    nom.HoDi,\r\n"
@@ -200,7 +200,10 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		   		+ "    claim_report.Quality_settlement,\r\n"
 		   		+ "    claim_report.Moisture_settlement,\r\n"
 		   		+ "    claim_report.Ncv_settlement,\r\n"
-		   		+ "    claim_report.Dust_settlement\r\n"
+		   		+ "    claim_report.Dust_settlement,\r\n"
+		   		+ "    claim_report.Claim_Amount,\r\n"
+		   		+ "    claim_report.Settlement_amt,\r\n"
+		   		+ "     CONVERT(varchar(10), claim_report.Date_of_Inspection, 103) AS Formatted_Date_of_Inspection\r\n"
 		   		+ "FROM\r\n"
 		   		+ "    jciclaimNomination nom\r\n"
 		   		+ "INNER JOIN\r\n"
@@ -217,8 +220,10 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		   		+ "    jciclaim_report_mill claim_report ON nom.Settlement_id_generated = claim_report.Settlement_id\r\n"
 		   		+ "WHERE\r\n"
 		   		+ "    nom.Settlement_id_generated = '"+setId+"'\r\n"
-		   		+ "    AND claim_report.Active = '1' AND claim_report.Jute_Grade=mill.Jute_Grade AND mill.Jute_Variety=claim_report.Jute_Variety;";
-
+		   		+ "    AND claim_report.Active = '1' \r\n"
+		   		+ "    AND claim_report.Jute_Grade = mill.Jute_Grade \r\n"
+		   		+ "    AND mill.Jute_Variety = claim_report.Jute_Variety;\r\n"
+		   		+ ";";
 		   List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery)
 					.list();
 			System.err.println(resultList1);
@@ -271,7 +276,10 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 			   		+ "    claim_report.Moisture_settlement,\r\n"
 			   		+ "    claim_report.Ncv_settlement,\r\n"
 			   		+ "    claim_report.Dust_settlement,\r\n"
-			   		+" claim_report.FA_doc\r\n "
+			   		+" claim_report.FA_doc,\r\n "
+			   		+ "    claim_report.Claim_Amount,\r\n"
+			   		+ "    claim_report.Settlement_amt,\r\n"
+			   		+ "     CONVERT(varchar(10), claim_report.Date_of_Inspection, 103) AS Formatted_Date_of_Inspection\r\n"
 			   		+ "FROM\r\n"
 			   		+ "    jciclaimNomination nom\r\n"
 			   		+ "INNER JOIN\r\n"
@@ -302,6 +310,18 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		String resultString ="Update jciclaim_report_mill SET Mill_Acc=2 where Settlement_id='"+settleId+"' AND Active='1';";
 		currentSession().createSQLQuery(resultString).executeUpdate();
 		return;
+	}
+
+	@Override
+	public List<Object[]> getContract() {
+		// TODO Auto-generated method stub
+		String millcode= (String) session.getAttribute("millcode");
+		String sqlString="     Select distinct jciclaimNomination.ContractNo,jciclaimNomination.Settlement_id_generated  from jciclaimNomination INNER join jciclaim_report_mill on jciclaim_report_mill.Settlement_id = jciclaimNomination.Settlement_id_generated\r\n"
+				+ "inner join jcimilldetailchild on  jcimilldetailchild.unit_name=jciclaimNomination.Mill\r\n"
+				+ "  where jcimilldetailchild.client_unit_code='"+millcode+"' AND jciclaim_report_mill.Mill_Acc='0';";
+		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
+					.list();
+		return resultList1;
 	}
 
 

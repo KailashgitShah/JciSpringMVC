@@ -137,7 +137,7 @@ th {
 										
 										<th style="text-align: center">Settlement Amount</th>
 										<th style="text-align: center">Inspection by</th>
-										<th style='text-align: center'>Supporting Document</th>
+										<!-- <th style='text-align: center'>Supporting Document</th> -->
 
 
 									</tr>
