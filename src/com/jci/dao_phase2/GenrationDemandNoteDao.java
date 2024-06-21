@@ -21,6 +21,7 @@ public interface GenrationDemandNoteDao {
 		public GenrationDEmandDto fetchContract_no(String st);
 		public List<Object> fetchcon_no();
 		public String demandnono(String  st);
+		public List<String> count();
 		
 		
 }

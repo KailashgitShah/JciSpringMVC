@@ -318,7 +318,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		String millcode= (String) session.getAttribute("millcode");
 		String sqlString="     Select distinct jciclaimNomination.ContractNo,jciclaimNomination.Settlement_id_generated  from jciclaimNomination INNER join jciclaim_report_mill on jciclaim_report_mill.Settlement_id = jciclaimNomination.Settlement_id_generated\r\n"
 				+ "inner join jcimilldetailchild on  jcimilldetailchild.unit_name=jciclaimNomination.Mill\r\n"
-				+ "  where jcimilldetailchild.client_unit_code='"+millcode+"' AND jciclaim_report_mill.Mill_Acc='0';";
+				+ "  where jcimilldetailchild.client_unit_code='"+millcode+"' AND jciclaim_report_mill.Mill_Acc='0' and jciclaim_report_mill.Dispute_flag='2';";
 		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
 					.list();
 		return resultList1;
@@ -327,8 +327,12 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	@Override
 	public List<Object[]> getSettlementId(String contract) {
 		// TODO Auto-generated method stub
-		
-		return null;
+		String sqlString =" Select Distinct jciclaim_report_mill.Settlement_id\r\n"
+				+ "  from jciclaim_report_mill inner join jciclaimNomination on \r\n"
+				+ " jciclaimNomination.Settlement_id_generated=jciclaim_report_mill.Settlement_id where jciclaimNomination.ContractNo='"+contract+"';";
+		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
+					.list();
+		return resultList1;
 	}
 
 

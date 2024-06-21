@@ -367,18 +367,18 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 	                contentToDisplay += "</tr>";
 }
 contentToDisplay += "</table>";
-
+$("#form3").empty();
 var MillText = "<div id='Mill'> Mill Name:<strong>" + data[0][0] + "</strong></div>";
 $("#form3").append(MillText);
-
+$("#form4").empty();
 // Append Cont value as text
 var ContText = "<div id='Cont'> Contract No.:<strong>" + data[0][1] + "</strong></div>";
 $("#form4").append(ContText);
-
+$("#form5").empty();
 // Append DI value as text
 var DIText = "<div id='DI'> DI no.:<strong>" + data[0][2] + "</strong></div>";
 $("#form5").append(DIText);
-
+$("#form6").empty();
 // Append Date value as text (assuming data[0][30] is the correct index)
 var DateText = "<div id='DateInput'> Date of Inspection:<strong>" + (data[0][31] || '') + "</strong></div>";
 $("#form6").append(DateText);
@@ -519,7 +519,27 @@ $("#form2").append(confirmButtonHTML);
 	        data: {"Contract":setId},
 	       
 	        success: function(response) {
-	            // Handle success response
+	        	var data = jQuery.parseJSON(response); // Parse JSON response to JavaScript object
+	        	alert(data); // Just for debugging to see what data you're working with
+	        	$("#form2").empty();
+	        	$('#setId').empty(); // Clear existing options from the select element
+
+	        	// Add a default "Select" option
+	        	$('#setId').append('<option value="" disabled selected>Select</option>');
+
+	        	// Loop through your data to add options to the select element
+	        	$.each(data, function(index, item) {
+	        	    // Assuming item is a string or number (adjust as per your data structure)
+	        	    alert(item); // Alert to see each item in your data (for debugging)
+	        	    
+	        	    // Create the option element
+	        	    var optionText = item; // Set option text (adjust as per your data structure)
+	        	    var optionValue = item; // Set option value (adjust as per your data structure)
+
+	        	    // Append the option to the select element
+	        	    $('#setId').append('<option value="' + optionValue + '">' + optionText + '</option>');
+	        	});
+	
 	        	
 	        },
 	        error: function(xhr, status, error) {

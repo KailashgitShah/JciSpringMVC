@@ -67,6 +67,11 @@ public class GenrationDemandNoteSeviceImpl  implements GenratedDemandNoteService
 		
 		return GenrationdemandNoteDao.demandnono(st);
 	}
+	@Override
+	public List<String> count() {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.count();
+	}
 	
    
     

@@ -3583,14 +3583,33 @@ public class Controller_V {
 
 	// private String generateDemandNoteNumber()
 	private String generateDemandNoteNumber(HttpSession session, int lastSerialNumber) {
-		Date currentDate = new Date();
-		SimpleDateFormat yearFormat = new SimpleDateFormat("yy");
-		String fiscalYear = yearFormat.format(currentDate);
+		
+        Calendar calendar = Calendar.getInstance();
+   int currentYear = calendar.get(Calendar.YEAR);
+   int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+
+   int financialYearStart, financialYearEnd;
+
+   if (currentMonth >= 4) { // April or later
+       financialYearStart = currentYear;
+       financialYearEnd = currentYear + 1;
+   } else { // January to March
+       financialYearStart = currentYear - 1;
+       financialYearEnd = currentYear;
+   } 
+   List<String> count= this.genratedDemandNoteService.count();
+   System.err.println(count);
+   System.err.println(count);
+   System.err.println(count);
+   Integer number = Integer.parseInt(count.get(0));
+       String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+           
+        String yearCode = endYearLastTwoDigits;
 
 //		    int lastSerialNumber = getLastSerialNumberFromDatabase();
-		int newSerialNumber = lastSerialNumber + 1;
+		int newSerialNumber = number + 1;
 
-		String stringdemand = "D" + fiscalYear + String.format("%06d", newSerialNumber);
+		String stringdemand = "D" + yearCode + String.format("%06d", newSerialNumber);
 		String status = this.genratedDemandNoteService.demandnono(stringdemand);
 		if ("1".equals(status)) {
 
@@ -6253,7 +6272,10 @@ return mv;
 		
 		
 		List<Object[]> list = this.confirmationofClaimSettlementService.getSettlementId(contract);
-		return null;
+		  Gson gson = new Gson();
+	  		String resultString = new Gson().toJson(list);
+	  		System.err.println("-----------------------" + list);
+	  		return resultString;
 	}
 }
 

@@ -314,16 +314,21 @@ function handleRejection(settleId, file) {
 }
 contentToDisplay += "</table>";
 //Append Mill value as text
+$("#form3").empty();
+
 var MillText = "<div id='Mill'> Mill Name:<strong>" + data[0][0] + "</strong></div>";
 $("#form3").append(MillText);
+$("#form4").empty();
 
 // Append Cont value as text
 var ContText = "<div id='Cont'> Contract No.:<strong>" + data[0][1] + "</strong></div>";
 $("#form4").append(ContText);
+$("#form5").empty();
 
 // Append DI value as text
 var DIText = "<div id='DI'> DI no.:<strong>" + data[0][2] + "</strong></div>";
 $("#form5").append(DIText);
+$("#form6").empty();
 
 // Append Date value as text (assuming data[0][30] is the correct index)
 var DateText = "<div id='DateInput'> Date of Inspection:<strong>" + (data[0][30] || '') + "</strong></div>";

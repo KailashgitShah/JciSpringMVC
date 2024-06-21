@@ -610,7 +610,7 @@ $(document).ready(function(){
                                 	    const AmountSet1 = amtiFixed * (100-rem)/100 * (price - fetchedData1);
                                 	    const AmountSet2 = amtiFixed * (rem)/100 * (price - fetchedData2);
                                 	    //alert(AmountSet1 +"------------"+AmountSet2);
-                                
+                                		  $("#cl"+index).val(Math.ceil(parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2)));
                                 	    totalSettlementAmount += parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2);
                                 	    alert("AmountSet1+++"+parseFloat(AmountSet1)+"AmountSet2---"+parseFloat(AmountSet2)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
                                 	    //alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")

@@ -134,6 +134,14 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 	
 	}
 
+	@Override
+	public List<String> count() {
+		// TODO Auto-generated method stub
+		String sql ="SELECT  count(*) FROM jcidemand_note ;";
+		 List<String>resultList1= (List<String>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		return resultList1;
+	}
+
 		
 	}
 	
