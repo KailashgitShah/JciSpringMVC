@@ -9,6 +9,15 @@ public class BillOfExchangeDTO {
 	private String bosDate;
 	private String bankname;
 	private String bankAddress;
+	private String currentdate;
+	
+	
+	public String getCurrentdate() {
+		return currentdate;
+	}
+	public void setCurrentdate(String currentdate) {
+		this.currentdate = currentdate;
+	}
 	public String getInvoicevalue() {
 		return invoicevalue;
 	}

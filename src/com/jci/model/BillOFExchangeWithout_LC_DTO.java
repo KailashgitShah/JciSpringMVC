@@ -10,6 +10,15 @@ public class BillOFExchangeWithout_LC_DTO {
 	private String  cropyear;
 	private String  contarctno;
 	private String  contarctdate;
+	private String  currentdate;
+	
+	
+	public String getCurrentdate() {
+		return currentdate;
+	}
+	public void setCurrentdate(String currentdate) {
+		this.currentdate = currentdate;
+	}
 	public String getUnitname() {
 		return unitname;
 	}

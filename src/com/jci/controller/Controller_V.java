@@ -50,6 +50,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,6 +67,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -378,6 +380,8 @@ public class Controller_V {
 
 	@Autowired
 	GenerationAgaistLCsService generationAgaistLCsService;
+	
+	
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -3056,7 +3060,29 @@ public class Controller_V {
 		String resultString = new Gson().toJson(millRecieptModelt1);
 		return resultString;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "listofpaymentdetails", method = RequestMethod.GET)
+	public String listofpaymentdetails(@RequestParam("contractno") String contractno) {
 
+		List<Object[]> millRecieptModelt1 = generationAgaistLCsService.listdetailsofpaymemt(contractno);
+		System.err.println("resultList++++++++++" + millRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millRecieptModelt1);
+		return resultString;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "listofbillofsupply", method = RequestMethod.GET)
+	public String listofbillofsupply(@RequestParam("contractno") String contractno) {
+
+		List<Object[]> millRecieptModelt1 = generationAgaistLCsService.listdetailsbillofsupplly(contractno);
+		System.err.println("resultList++++++++++" + millRecieptModelt1);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(millRecieptModelt1);
+		return resultString;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "challanbaseddata", method = RequestMethod.GET)
 	public String challanbaseddata(@RequestParam("contractno") String contractno) {
@@ -3072,6 +3098,16 @@ public class Controller_V {
 	@RequestMapping(value = "millreceiptbased", method = RequestMethod.GET)
 	public String millreceiptbased(@RequestParam("millname") String millname) {
 		List<Object> Mill_NameR = millRecieptService.fetchHODINO(millname);
+		System.err.println("resultList++++++++++" + Mill_NameR);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(Mill_NameR);
+		return resultString;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "millvisecontrcatforaginstLC", method = RequestMethod.GET)
+	public String millvisecontrcatforaginstLC(@RequestParam("millname") String millname) {
+		List<Object> Mill_NameR = generationAgaistLCsService.contractonmill(millname);
 		System.err.println("resultList++++++++++" + Mill_NameR);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(Mill_NameR);
@@ -3297,7 +3333,7 @@ public class Controller_V {
 				}
 
 				this.millRecieptService.create(millRecieptModel);
-				// this.millRecieptService.UpdateContractstatus(Contractno1);
+				this.millRecieptService.UpdateContractstatus(Contractno1);
 				redirectAttributes.addFlashAttribute("msg",
 						"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n"
 								+ "");
@@ -3664,6 +3700,7 @@ public class Controller_V {
 			generationOfBillSupplyModel.setTrnasitPolicyno(TrnasitPolicyNo);
 			generationOfBillSupplyModel.setStatecode_forBOs(statecode);
 			generationOfBillSupplyModel.setDPCID(DPC1code);
+			generationOfBillSupplyModel.setMillcode(millcode234);
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
@@ -3716,7 +3753,15 @@ public class Controller_V {
 //            parameters.put("millcode", Conract_no);
 //            parameters.put("dateofshipment", Bill_of_Supply);
 //            
-            topSheeetDTO.setContract_no(Conract_no);
+            String inputString = Conract_no;
+
+            // Split the string by '/'
+            String[] splitParts = inputString.split("/");
+
+            // Extract the last part
+            String resultcontract = splitParts[splitParts.length - 1];
+
+            topSheeetDTO.setContract_no(resultcontract);
             topSheeetDTO.setBillOfSupplyNo(Bill_of_Supply);
             System.err.println(Bill_of_Supply);
             topSheeetDTO.setInvoicevalue(Invoice_Value);
@@ -3861,7 +3906,7 @@ public class Controller_V {
             // Generate and save the PDF
             JasperExportManager.exportReportToPdfFile(jasperPrint1, savePath1);
             JasperExportManager.exportReportToPdfFile(jasperPrint2, savePath2);
-//            JasperExportManager.exportReportToPdfFile(jasperPrint3, savePath3);
+            JasperExportManager.exportReportToPdfFile(jasperPrint3, savePath3);
 
             // Send the PDF as a response
             generateAndSendPdf1(response, jasperPrint1, savePath1);
@@ -3912,7 +3957,11 @@ public class Controller_V {
 					cashDocumentModel.setCAD_Date(date);
 					cashDocumentModel.setBOS_No(Bill_of_Supply);
 					cashDocumentModel.setBOS_Date(BOS_Date);
-					this.genrationCashDocumentService.create(cashDocumentModel);
+					cashDocumentModel.setbOEDOCpathnonlc(fileName4);
+					cashDocumentModel.setMillcode(millcode234);
+					cashDocumentModel.setContarctNo(Conract_no);
+					cashDocumentModel.setInvoicevalue(Invoice_Value);
+			        this.genrationCashDocumentService.create(cashDocumentModel);
 
 				}
 			}
@@ -3929,7 +3978,7 @@ public class Controller_V {
 					ReciepentsStatecode,dateData,Dpcname,millcode234,RegionAndCenterName1);
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 
-			//this.generationofBillService.create(generationOfBillSupplyModel);
+			this.generationofBillService.create(generationOfBillSupplyModel);
 
 			this.generationofBillService.billUpdation(Challan_No1);
 
@@ -3958,14 +4007,17 @@ public class Controller_V {
 																							// "Letter_of_Credit" row
 
 						generationofDocumentLCsModel.setBoe_Date(date);
-						generationofDocumentLCsModel.setBOS_No(Bill_of_Supply);
+						generationofDocumentLCsModel.setbOS_No(Bill_of_Supply);
+						generationofDocumentLCsModel.setbOS_Date(BOS_Date);
 						generationofDocumentLCsModel.setIvoice_value(Invoice_Value);
 						generationofDocumentLCsModel.setInstrument_no(instNo);
-						generationofDocumentLCsModel.setMill_code(instNo);
-						generationofDocumentLCsModel.setHo_di_No(BOS_Date);
-						generationofDocumentLCsModel.setHo_di_date(Bill_of_Supply);
+						generationofDocumentLCsModel.setMill_code(millcode234);
 						generationofDocumentLCsModel.setQuantity(Bill_of_Supply);
 						generationofDocumentLCsModel.setBos_Amt(BOS_Date);
+						generationofDocumentLCsModel.setBillofexchangepath(fileName3);
+						
+						generationofDocumentLCsModel.setTopsheetpath(fileName1);
+						generationofDocumentLCsModel.setChallanono(Challan_No1);
 
 						this.generationAgaistLCsService.create(generationofDocumentLCsModel);
 
@@ -4122,6 +4174,333 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@RequestMapping("downloadPDFforbos")
+	public void downloadPDFofafterBOS(@RequestParam("filename") String filename, HttpServletResponse response) {
+		// String imageDirectory = "upload.Imagedownload";
+
+       
+		String imagePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		try {
+
+			if (imageFile.exists()) {
+
+				String contentType = determineContentType1(filename);
+				response.setContentType(contentType);
+
+				response.setContentLength((int) imageFile.length());
+				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
+//			                //response.setHeader("Content-Disposition", "");
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					responseOutputStream.write(buffer, 0, bytesRead);
+				}
+
+				fileInputStream.close();
+				responseOutputStream.close();
+			} else {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	
+	
+	@RequestMapping("downloadPDFforbankDraft.obj")
+	 public void downloadPDFofafterBOSbankdraft(
+	            @RequestParam("filename") String millcode,
+	            @RequestParam("challanNO") String challanNO,
+	            @RequestParam("InvoiceValue") String InvoiceValue,
+	            @RequestParam("BosNO") String BosNO,
+	            @RequestParam("BosDate") String BosDate,
+	            HttpServletResponse response) throws FileNotFoundException, JRException {
+
+	        // Compile the Jasper reports
+	        JasperReport jasperReport2 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml"));
+	       
+	        // Set up parameters and data source
+	        Map<String, Object> parameters = new HashMap<>();
+	        BankDraftDTO bankDraftDTO = new BankDraftDTO();
+	        List<BankDraftDTO> listOfBankdraft = new ArrayList<>();
+
+	        // Fetch and process date data
+	        List<Object[]> dateData = generationofBillService.ForDate(challanNO);
+	        for (Object[] row1 : dateData) {
+	            if (row1[5] != null) bankDraftDTO.setInstrumentNO(row1[5].toString());
+	            if (row1[6] != null) bankDraftDTO.setInstrumentDate(row1[6].toString());
+	            if (row1[7] != null) {
+	                String ifsc = row1[7].toString();
+	                fetchBankDetails(ifsc, bankDraftDTO);
+	            }
+	        }
+
+	        // Fetch and process address data
+	        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode);
+	        for (Object[] row : listofaddress) {
+	            bankDraftDTO.setUnitname((String) row[0]);
+	            bankDraftDTO.setUnitaddress(String.join("", (String) row[1], (String) row[2], (String) row[3], (String) row[4]));
+	        }
+
+	        // Process invoice value
+	        ConvertWord_k convertWord_k = new ConvertWord_k();
+	        double invoiceDouble = Double.parseDouble(InvoiceValue);
+	        int convertInt = (int) invoiceDouble;
+	        bankDraftDTO.setInvoicevalue(convertWord_k.convertToWords(convertInt));
+	        bankDraftDTO.setInvoicevalueInnumber(InvoiceValue);
+	        bankDraftDTO.setBillOfSupplyNo(BosNO);
+	        bankDraftDTO.setbOS_Date(BosDate);
+	        Date date = new Date();
+	        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	        String formattedDate = formatter.format(date);
+	        bankDraftDTO.setCurrentdate(formattedDate);
+	        listOfBankdraft.add(bankDraftDTO);
+	        JRBeanCollectionDataSource dataSource2 = new JRBeanCollectionDataSource(listOfBankdraft);
+
+	        // Fill the Jasper reports
+	        JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2, parameters, dataSource2);
+
+	        // Set file names and paths
+	        String fileName2 = "bankdraft" + BosNO + ".pdf";
+	        String savePath2 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName2;
+
+	        // Export the reports to PDF
+	        JasperExportManager.exportReportToPdfFile(jasperPrint2, savePath2);
+
+	        serveFileAsResponse(savePath2, fileName2, response);
+	        
+	        GenerationofDocumentLCsModel   generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
+	        generationofDocumentLCsModel.setBankdrftpath(fileName2);
+	    }
+
+	    private void fetchBankDetails(String ifsc, BankDraftDTO bankDraftDTO) {
+	        String url = "https://ifsc.razorpay.com/" + ifsc;
+	        RestTemplate restTemplate = new RestTemplate();
+	        try {
+	            String result = restTemplate.getForObject(url, String.class);
+	            JSONObject jsonObject = new JSONObject(result);
+	            bankDraftDTO.setBankName(jsonObject.optString("BANK"));
+	            bankDraftDTO.setBankAddress(jsonObject.optString("ADDRESS"));
+	        } catch (Exception e) {
+	            System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
+	        }
+	    }
+
+	    private void serveFileAsResponse(String filePath, String fileName, HttpServletResponse response) {
+	        try {
+	            File file = new File(filePath);
+	            if (!file.exists()) {
+	                throw new FileNotFoundException("File not found: " + filePath);
+	            }
+	            response.setContentType("application/pdf");
+	            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	            response.setContentLength((int) file.length());
+	            Files.copy(file.toPath(), response.getOutputStream());
+	            response.getOutputStream().flush();
+	        } catch (IOException ex) {
+	            System.err.println("Error serving file: " + ex.getMessage());
+	        }
+	    }
+	
+	    
+	    
+	
+		@RequestMapping("downloadPDFforBillofexchange.obj")
+		public void downloadPDFofafterBOSbillofsupply(
+		        @RequestParam("challanNO") String challanNO,
+		        @RequestParam("InvoiceValue") String InvoiceValue,
+		        @RequestParam("BosNO") String BosNO,
+		        @RequestParam("BosDate") String BosDate,
+		        HttpServletResponse response) throws FileNotFoundException, JRException, IOException {
+
+		    // Compile the Jasper reports
+		    JasperReport jasperReport3 = JasperCompileManager.compileReport(
+		            new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\billofexchange.jrxml"));
+
+		    // Set up parameters and data source
+		    Map<String, Object> parameters = new HashMap<>();
+
+		    BillOfExchangeDTO billOfExchangeDTO = new BillOfExchangeDTO();
+		    List<BillOfExchangeDTO> listOfBillofExchange = new ArrayList<>();
+		    // Fetch and process date data
+		    List<Object[]> dateData = generationofBillService.ForDate(challanNO);
+		    for (Object[] row1 : dateData) {
+		        if (row1[5] != null) billOfExchangeDTO.setInstrumentNo(row1[5].toString());
+		        if (row1[6] != null) billOfExchangeDTO.setInstrumentDate(row1[6].toString());
+		        if (row1[7] != null) {
+		            String ifsc = row1[7].toString();
+		            fetchBankDetails1(ifsc, billOfExchangeDTO);
+		        }
+		    }
+
+		    billOfExchangeDTO.setInvoicevalue(InvoiceValue);
+		    billOfExchangeDTO.setBillofsupplyNo(BosNO);
+		    billOfExchangeDTO.setBosDate(BosDate);
+		    Date date = new Date();
+	        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	        String formattedDate = formatter.format(date);
+	        billOfExchangeDTO.setCurrentdate(formattedDate);
+
+		    listOfBillofExchange.add(billOfExchangeDTO);
+
+		    JRBeanCollectionDataSource dataSource3 = new JRBeanCollectionDataSource(listOfBillofExchange);
+		    JasperPrint jasperPrint3 = JasperFillManager.fillReport(jasperReport3, parameters, dataSource3);
+
+		    // Path to save the PDF
+		    String fileName3 = "BankerCopy" + BosNO + ".pdf";
+		    String savePath3 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName3;
+
+		    // Ensure the directory exists
+		    File saveDir = new File("C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument");
+		    if (!saveDir.exists()) {
+		        saveDir.mkdirs();
+		    }
+
+		    // Export to PDF
+		    JasperExportManager.exportReportToPdfFile(jasperPrint3, savePath3);
+
+		    serveFileAsResponse1(savePath3, fileName3, response);
+
+		    GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
+		    generationofDocumentLCsModel.setBillofexchangepath(fileName3);
+		}
+
+		private void fetchBankDetails1(String ifsc, BillOfExchangeDTO billOfExchangeDTO) {
+		    String url = "https://ifsc.razorpay.com/" + ifsc;
+		    RestTemplate restTemplate = new RestTemplate();
+		    try {
+		        String result = restTemplate.getForObject(url, String.class);
+		        JSONObject jsonObject = new JSONObject(result);
+		        billOfExchangeDTO.setBankname(jsonObject.optString("BANK"));
+		        billOfExchangeDTO.setBankAddress(jsonObject.optString("ADDRESS"));
+		    } catch (Exception e) {
+		        System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
+		    }
+		}
+
+		private void serveFileAsResponse1(String filePath, String fileName, HttpServletResponse response) {
+		    try {
+		        File file = new File(filePath);
+		        if (!file.exists()) {
+		            throw new FileNotFoundException("File not found: " + filePath);
+		        }
+		        response.setContentType("application/pdf");
+		        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		        response.setContentLength((int) file.length());
+		        Files.copy(file.toPath(), response.getOutputStream());
+		        response.getOutputStream().flush();
+		    } catch (IOException ex) {
+		        System.err.println("Error serving file: " + ex.getMessage());
+		    }
+		}
+
+		
+		
+		
+		@RequestMapping("downloadPDFforboedocnonlc.obj")
+		 public void downloadPDFofafterBoedocnonlc(
+		            @RequestParam("contractno") String Conract_no,
+		            @RequestParam("InvoiceValue") String InvoiceValue,
+		            @RequestParam("BosNO") String BosNO,
+		            @RequestParam("BosDate") String BosDate,
+		            @RequestParam("millcode") String millcode,
+		            HttpServletResponse response) throws FileNotFoundException, JRException {
+
+		        // Compile the Jasper reports
+		       JasperReport jasperReport4 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOE(NON-LC).jrxml"));
+
+		        // Set up parameters and data source
+		        Map<String, Object> parameters = new HashMap<>();
+		       
+
+		        // Fetch and process date data
+		        List<Object[]> contrcatnotomill = generationofBillService.contrcatnotomill(Conract_no);
+		           BillOFExchangeWithout_LC_DTO billOFExchangeWithout_LC_DTO = new BillOFExchangeWithout_LC_DTO();
+		           List<BillOFExchangeWithout_LC_DTO> listOfBillofExchangwithoutLC = new ArrayList<>();
+
+		        // Fetch and process address data
+		        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode);
+		        for (Object[] row : listofaddress) {
+		        	billOFExchangeWithout_LC_DTO.setUnitname((String) row[0]);
+		        	billOFExchangeWithout_LC_DTO.setUnitaddress(String.join("", (String) row[1], (String) row[2], (String) row[3], (String) row[4]));
+		        }
+
+		        // Process invoice value
+		        
+		           for (Object[] row : contrcatnotomill) {
+					    String cropyear = (String) row[1];
+					    billOFExchangeWithout_LC_DTO.setCropyear(cropyear);
+						String contractdate = (String) row[2];
+						 billOFExchangeWithout_LC_DTO.setContarctdate(contractdate);
+						
+					 }
+		           
+		       
+		           billOFExchangeWithout_LC_DTO.setBillofsupply(BosNO);
+		           billOFExchangeWithout_LC_DTO.setBosdate(BosDate);
+		           billOFExchangeWithout_LC_DTO.setInvoicevalue(InvoiceValue);
+		           billOFExchangeWithout_LC_DTO.setContarctno(Conract_no);
+		           
+		           Date date = new Date();
+			        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			        String formattedDate = formatter.format(date);
+			        billOFExchangeWithout_LC_DTO.setCurrentdate(formattedDate);
+			        listOfBillofExchangwithoutLC.add(billOFExchangeWithout_LC_DTO);
+		           
+		           listOfBillofExchangwithoutLC.add(billOFExchangeWithout_LC_DTO);
+		           
+		           
+		           JRBeanCollectionDataSource dataSource4 = new JRBeanCollectionDataSource(listOfBillofExchangwithoutLC);
+		           
+		           
+		            
+		            JasperPrint jasperPrint4 = JasperFillManager.fillReport(jasperReport4, parameters, dataSource4);
+
+		            // Path to save the PDF
+		        
+		          
+		            String fileName4 = "BankerCopywithouLC" + BosNO + ".pdf";
+		            String savePath4 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName4;
+		       
+		       
+		        // Export the reports to PDF
+		        JasperExportManager.exportReportToPdfFile(jasperPrint4, savePath4);
+
+		        serveFileAsResponse3(savePath4, fileName4, response);
+		        
+		        GenerationofDocumentLCsModel   generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
+		        //generationofDocumentLCsModel.setBankdrftpath(fileName2);
+		    }
+
+		   
+
+		    private void serveFileAsResponse3(String filePath, String fileName, HttpServletResponse response) {
+		        try {
+		            File file = new File(filePath);
+		            if (!file.exists()) {
+		                throw new FileNotFoundException("File not found: " + filePath);
+		            }
+		            response.setContentType("application/pdf");
+		            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		            response.setContentLength((int) file.length());
+		            Files.copy(file.toPath(), response.getOutputStream());
+		            response.getOutputStream().flush();
+		        } catch (IOException ex) {
+		            System.err.println("Error serving file: " + ex.getMessage());
+		        }
+		    }
+		
 
 	private String determineContentType1(String filePath) {
 		if (filePath.endsWith(".pdf")) {
@@ -4135,6 +4514,178 @@ public class Controller_V {
 		}
 	}
 
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "downloadPDFforbankDraftnew", method = RequestMethod.GET)
+	public String saveCrnForClaim(@RequestParam("contractno") String contractno1, final HttpServletRequest request, HttpServletResponse response)
+	        throws IllegalStateException, IOException, ParseException {
+	    List<BankDraftDTO> listOfBankdraft = new ArrayList<>();
+	    List<Object[]> billdetails = generationAgaistLCsService.listdetailsbillofsupplly(contractno1);
+	    String bosno = "";
+
+	    for (Object[] datas : billdetails) {
+	        BankDraftDTO bankDraftDTO = new BankDraftDTO();
+	        bosno = (String) datas[0];
+	        String bosdate = (String) datas[1];
+	        String invoicevalue = (String) datas[2];
+	        String challanno = (String) datas[3]; // Corrected to proper index
+	        String millcode = (String) datas[4]; // Corrected to proper index
+	        System.err.println("Mill code: " + millcode);
+
+	        List<Object[]> dateData = generationofBillService.ForDate(challanno);
+	        for (Object[] row1 : dateData) {
+	            if (row1[5] != null) bankDraftDTO.setInstrumentNO(row1[5].toString());
+	            if (row1[6] != null) bankDraftDTO.setInstrumentDate(row1[6].toString());
+	            if (row1[7] != null) {
+	                String ifsc = row1[7].toString();
+	                fetchBankDetailslist(ifsc, bankDraftDTO);
+	            }
+	        }
+
+	        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode);
+	        for (Object[] row3 : listofaddress) {
+	            bankDraftDTO.setUnitname((String) row3[0]);
+	            bankDraftDTO.setUnitaddress(String.join("", (String) row3[1], (String) row3[2], (String) row3[3], (String) row3[4]));
+	        }
+
+	        ConvertWord_k convertWord_k = new ConvertWord_k();
+	        double invoiceDouble = Double.parseDouble(invoicevalue);
+	        int convertInt = (int) invoiceDouble;
+	        bankDraftDTO.setInvoicevalue(convertWord_k.convertToWords(convertInt));
+	        bankDraftDTO.setInvoicevalueInnumber(invoicevalue);
+	        bankDraftDTO.setBillOfSupplyNo(bosno);
+	        bankDraftDTO.setbOS_Date(bosdate);
+	        Date date = new Date();
+	        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	        String formattedDate = formatter.format(date);
+	        bankDraftDTO.setCurrentdate(formattedDate);
+	        listOfBankdraft.add(bankDraftDTO);
+	        
+	        
+	        try {
+	            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml");
+	            // .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
+
+	            Map<String, Object> parameters = new HashMap<String, Object>();
+	          System.err.println("after jrxml file");
+
+	            // Prepare data sources
+	            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(listOfBankdraft);
+
+	            // Fill JasperPrints
+	            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	            response.setContentType("application/pdf");
+	            response.setHeader("Content-Disposition", "inline");
+	            // response.setHeader("Content-Disposition", "attachment;
+	            // filename=TestCreditNote.pdf");
+	            // try (OutputStream out = response.getOutputStream()) {
+	            
+	            String filePathString= "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument";
+	            System.err.println("befor file creations");
+	            final File theDir = new File(filePathString);
+	            if (!theDir.exists()) {
+	                  theDir.mkdirs();
+	            }
+
+	            String fileName2 = filePathString + File.separator + "bankdraft" + bosno + ".pdf";
+	            
+	            System.err.println("fileName2 => "+ fileName2);
+
+	            try (OutputStream out = new FileOutputStream(fileName2)) {
+	                  JRPdfExporter exporter = new JRPdfExporter();
+	            exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	            
+	            exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	                  exporter.exportReport();
+	            
+	            } catch (Exception e) {
+	            	e.printStackTrace();
+	                  System.out.println(e.getLocalizedMessage());
+	            }
+
+	            //return new ModelAndView(new RedirectView("creditNoteList.obj"));
+
+	      } catch (JRException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	      }
+	    }
+	    
+	    
+
+	    
+//	    try (FileInputStream fis = new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml")) {
+//	        JasperReport jasperReport2 = JasperCompileManager.compileReport(fis);
+//	        Map<String, Object> parameters = new HashMap<>();
+//	        JRBeanCollectionDataSource dataSource2 = new JRBeanCollectionDataSource(listOfBankdraft);
+//
+//	        JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2, parameters, dataSource2);
+//
+//	        response.setContentType("application/pdf");
+//	        response.setHeader("Content-Disposition", "inline");
+//
+//	        String fileName2 = "bankdraft" + bosno + ".pdf";
+//	        String savePath2 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName2;
+//
+//	        
+//	        //JasperExportManager.exportReportToPdfFile(jasperPrint2, savePath2);
+//	       // serveFileAsResponselist(savePath2, fileName2, response);
+//
+////	        GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
+////	        generationofDocumentLCsModel.setBankdrftpath(fileName2);
+//
+//	    } catch (JRException e) {
+//	        e.printStackTrace();
+//	        return "Error generating report: " + e.getMessage();
+//	    }
+
+	    Gson gson = new Gson();
+	    return ""; // return the list of bank drafts as JSON
+	}
+
+	private void fetchBankDetailslist(String ifsc, BankDraftDTO bankDraftDTO) {
+	    String url = "https://ifsc.razorpay.com/" + ifsc;
+	    RestTemplate restTemplate = new RestTemplate();
+	    try {
+	        String result = restTemplate.getForObject(url, String.class);
+	        JSONObject jsonObject = new JSONObject(result);
+	        bankDraftDTO.setBankName(jsonObject.optString("BANK"));
+	        bankDraftDTO.setBankAddress(jsonObject.optString("ADDRESS"));
+	    } catch (RestClientException e) {
+	        System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
+	    } catch (JSONException e) {
+	        System.err.println("Error parsing JSON response for IFSC " + ifsc + ": " + e.getMessage());
+	    } catch (Exception e) {
+	        System.err.println("General error for IFSC " + ifsc + ": " + e.getMessage());
+	    }
+	}
+
+	private void serveFileAsResponselist(String filePath, String fileName, HttpServletResponse response) {
+	    try {
+	        File file = new File(filePath);
+	        if (!file.exists()) {
+	            throw new FileNotFoundException("File not found: " + filePath);
+	        }
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	        response.setContentLength((int) file.length());
+
+	        Files.copy(file.toPath(), response.getOutputStream());
+	        response.getOutputStream().flush();
+	    } catch (IOException ex) {
+	        System.err.println("Error serving file: " + ex.getMessage());
+	    }
+	}
+
+		
+		
+		
+		
+		
+	
+	
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata1", method = RequestMethod.GET)
 	public String hodinofetch1(@RequestParam("contractno") String contractno1) {

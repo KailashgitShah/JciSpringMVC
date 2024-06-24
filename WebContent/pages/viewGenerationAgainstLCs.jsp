@@ -111,7 +111,25 @@ th {
 
 			<%
 			List<GenerationofDocumentLCsModel> genrationAgainstLcs = (List<GenerationofDocumentLCsModel>)request.getAttribute("genrationAgainstLcs");
+			List<Object[]> fetchMill_Namelc = (List<Object[]>) request.getAttribute("fetchMill_Namelc");  
+			String millname="";
+			String millcode="";
+			String contractNo="";
+			String challanno="";
 			
+			String bosdate="";
+		
+			String[] rowData3 = new String[10];
+			String[] billofsupplyno = new String[10];
+			 String billofsupplynoString = String.join(",", billofsupplyno);
+		
+			float sumofInvoiceValue = 0;
+			
+			  System.out.println("challanno: " + challanno);
+			    System.out.println("sumofInvoiceValue: " + sumofInvoiceValue);
+			    System.out.println("billofsupplynoString: " + billofsupplynoString);
+			    System.out.println("bosdate: " + bosdate);
+		
 			
 		%>
 		
@@ -124,8 +142,99 @@ th {
 				<div class="ibox">
 					<span>${msg}</span>
 					<div class="ibox-body">
+					
+				
 						<div class="scrollmenu">
-							<table
+						
+							<div  class ="row">
+						<div class="col-sm-4 form-group">
+												<label>Mill name.</label> <span class="text-danger">*
+												</span>&nbsp; <span id="millname1" name="Millname"
+													class="text-danger"> </span> <select name="millname65"
+													id="millname12" class="form-control taxtbox" required>
+
+													<option value="select">-Select-</option>
+													<%
+													for (Object[] row : fetchMill_Namelc) {
+														 millname = (String) row[0];  
+													     millcode = (String) row[1]; 
+													    
+													%>
+													<option value="<%=millcode%>"><%=millname%></option>
+													<%
+													}
+													%> 
+												</select>
+
+
+											</div>
+											
+											<div class="col-sm-4 form-group" id="dpc_div"">
+												<label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
+												<span id="contractno" class="text-danger"></span> <select
+													name="fullcontractno" id="contractno12"
+													class="form-control taxtbox"
+													style="height: = 50; width: 350px;" required>
+													<option disabled selected value="">-Select</option>
+
+												</select>
+											</div>
+											</div>
+											
+											    <div class="row">
+								    <div class="col-sm-10">
+								        <div class="table-responsive">
+								            <table id="milldetailsTable" class="table table-bordered">
+								                <thead class="thead-light">
+								                    <tr>
+								                        <th>Bank name</th>
+								                        <th>Bank Branch</th>
+								                        <th>Bank ifsc</th>
+								                        <th>Instrument date</th>
+								                        <th>Instrument No</th>
+								                        <th>Instrument value</th>
+								                        <th>supporting document</th>
+								                        <th>Auto Revolving ammount</th>
+								                        <th>Expiry Date</th>
+								                         <th>last Shipment Date</th>
+								                        <th>payment type</th>
+								                        <th>payment due date</th>
+								                      
+								                    </tr>
+								                </thead>
+								                <tbody>
+								                    <!-- Dynamically generated rows will be appended here -->
+								                </tbody>
+								            </table>
+								        </div>
+								    </div>
+								</div>
+								
+								
+								  <div class="row">
+								    <div class="col-sm-10">
+								        <div class="table-responsive">
+								            <table id="billofsupllydetails" class="table table-bordered">
+								                <thead class="thead-light">
+								                    <tr>
+								                        <th>Bill of Supply no</th>
+								                        <th>Bos Date</th>
+								                        <th>Invoice value</th>
+								                     <!--    <th>Download TopSheet</th>
+								                        <th>Download bankdraft</th>
+								                        <th>Download Billofexchnage</th> -->
+								                  
+								                      
+								                    </tr>
+								                </thead>
+								                <tbody>
+								                    <!-- Dynamically generated rows will be appended here -->
+								                </tbody>
+								            </table>
+								        </div>
+								    </div>
+								</div>
+							<%--  <table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
 
@@ -145,8 +254,7 @@ th {
 										<!-- <th>Quantity</th> -->
 										 <th>Top Sheet</th>
 										 <th>Bank Draft</th>
-										 <th>Bill Of Supply docs</th>
-										 <th>Bill Of Exchange</th>
+										<th>Bill Of Exchange</th>
 								
 										
 
@@ -162,21 +270,52 @@ th {
 									%>
 									<tr>
 										<td><%=i%></td>
-									<%-- 	<td><%= generationofDocumentLCsModel.getBOS_Date() %></td> --%>
-										<td><%= generationofDocumentLCsModel.getBOS_No() %></td>
-									<%-- 	<td><%= generationofDocumentLCsModel.getBoe_Date()%></td> --%>
+										<td><%= generationofDocumentLCsModel.getbOS_Date() %></td>
+										<td><%= generationofDocumentLCsModel.getbOS_No() %></td>
+										<td><%= generationofDocumentLCsModel.getBoe_Date()%></td>
 									 	<td><%= generationofDocumentLCsModel.getBos_Amt() %></td>
-										<%-- <td><%= generationofDocumentLCsModel.getHo_di_date() %></td>
-										<td><%= generationofDocumentLCsModel.getHo_di_No()%></td>  --%>
+										<td><%= generationofDocumentLCsModel.getHo_di_date() %></td>
+										<td><%= generationofDocumentLCsModel.getHo_di_No()%></td> 
 										<td><%= generationofDocumentLCsModel.getInstrument_no() %></td>
 										<td><%= generationofDocumentLCsModel.getIvoice_value()%></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
 										
-									<%-- 	<td><%= generationofDocumentLCsModel.getMill_code() %></td> --%>
-									<%-- 	<td><%= generationofDocumentLCsModel.getQuantity() %></td> --%>
+										 <td>
+								            <a href="downloadPDFforbos.obj?filename=<%= generationofDocumentLCsModel.getTopsheetpath() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> Download topsheet </a>
+								        </td>
+								         <td>
+								            <a href="downloadPDFforbos.obj?filename=<%= generationofDocumentLCsModel.getBankdrftpath() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> Download bankdrft </a>
+								        </td> 
+								        
+								        <td>
+								        
+								            <a href="downloadPDFforbankDraft.obj?filename=<%= generationofDocumentLCsModel.getMill_code() %>
+								            &challanNO=<%= generationofDocumentLCsModel.getChallanono() %>
+								            &InvoiceValue=<%= generationofDocumentLCsModel.getIvoice_value() %>
+								            &BosNO=<%= generationofDocumentLCsModel.getbOS_No() %>
+								            &BosDate=<%= generationofDocumentLCsModel.getbOS_Date() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> download bankdrft </a>
+								        </td> 
+								        
+								         <td>
+								            <a href="downloadPDFforbos.obj?filename=<%= generationofDocumentLCsModel.getBillofexchangepath() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> Download billofexchange </a>
+								        </td>
+								        
+								        
+								         <td>
+								        
+								            <a href="downloadPDFforBillofexchange.obj?challanNO=<%= generationofDocumentLCsModel.getChallanono() %>
+								            &InvoiceValue=<%= generationofDocumentLCsModel.getIvoice_value() %>
+								            &BosNO=<%= generationofDocumentLCsModel.getbOS_No() %>
+								            &BosDate=<%= generationofDocumentLCsModel.getbOS_Date() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> download billofexchange </a>
+								        </td> 
+										
+										
+										<td><%= generationofDocumentLCsModel.getMill_code() %></td>
+										<td><%= generationofDocumentLCsModel.getQuantity() %></td>
 										
 									
 
@@ -193,8 +332,43 @@ th {
 									%>
 								</tbody>
 
-							</table>
-						
+							</table> --%>
+							
+							
+							
+						 <!-- 
+						 	     <div class="row">
+							    <div class="col-sm-2 form-group" id="BankName1">
+							        <a href="#" class="btn btn-primary btn-block" onclick="downloadTopsheet()">
+							            Download Topsheet
+							        </a>
+							    </div> -->
+							
+							<%--    <div class="col-sm-2 form-group" id="BankDraft">
+								    <a href="downloadPDFforbankDraft.obj?filename=<%= millcode %>
+								            &challanNO=<%= challanno %>
+								            &InvoiceValue=<%= sumofInvoiceValue %>
+								            &BosNO=<%= billofsupplynoString %>
+								            &BosDate=<%= bosdate %>"
+								        class="btn btn-primary btn-sm" target="_blank">
+								        Download BankDraft
+								    </a>
+								</div> --%>
+
+							
+							  <!--   <div class="col-sm-3 form-group" id="Branch2">
+							        <a href="#" class="btn btn-primary btn-block" onclick="downloadBillOfExchange()">
+							            Download Bill of Exchange
+							        </a>
+							    </div>
+							   
+							</div> -->
+
+
+						 
+						 
+						 
+						 
 						</div>
 					</div>
 				</div>
@@ -204,6 +378,209 @@ th {
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
+	
+	
+	<script type="text/javascript">
+$(document).ready(function() {
+	var record=[];
+	var billofsupplyno=[];
+	var index=0;
+	    var sumofInvoiceValue = 0; // Initialize sumofInvoiceValue
+	    var autorevolvingammount = 0;
+
+    // Millname change event handler
+    $('#millname12').on('change', function() {
+        const field2Value = $(this).val();
+
+        $.ajax({
+            type: 'GET',
+            url: 'millvisecontrcatforaginstLC.obj',
+            data: { "millname": field2Value },
+            success: function(data) {
+                const dataArray = JSON.parse(data);
+                const dropdownElement = document.getElementById('contractno12');
+
+                // Clear previous options
+                dropdownElement.innerHTML = '';
+
+                // Add the default option
+                const selectOption = document.createElement('option');
+                selectOption.value = ''; 
+                selectOption.textContent = '-Select-';
+                dropdownElement.appendChild(selectOption);
+
+                // Populate new options
+                dataArray.forEach(function(innerArray) {
+                    const option = document.createElement('option');
+                    option.textContent = innerArray[0];
+                    option.value = innerArray[0];
+                    option.setAttribute('data-value1', innerArray[0]); // Value for backend
+                    option.setAttribute('data-value2', innerArray[1]);
+                    dropdownElement.appendChild(option);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX request failed:', status, error);
+                // Handle the error as needed
+            }
+        });
+    });
+
+    // Contractno change event handler
+    $('#contractno12').on('change', function() {
+        const selectedOption = $(this).find(':selected');
+        const field2Value = selectedOption.attr('data-value2');
+        const field1Value = selectedOption.attr('data-value1');
+        contractNo = field1Value;
+        alert(field2Value);
+        alert(field1Value);
+
+        $('#milldetailsTable tbody').empty();
+        $('#milldetailsTable').css('display', 'none');
+
+        // First AJAX call
+        $.ajax({
+            type: 'GET',
+            url: 'listofpaymentdetails.obj',
+            data: { "contractno": field1Value },
+            success: function(data) {
+                alert(data);
+                const dataArray = JSON.parse(data);
+                $('#milldetailsTable tbody').empty();
+
+                if (dataArray.length > 0) {
+                    dataArray.forEach(function(rowData) {
+                    	autorevolvingammount=rowData[7];
+                    	alert(autorevolvingammount);
+                        const rowHtml = '<tr>' +
+                            '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="ifsc[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="supportingdoc[]" value="' + rowData[6] + '">' + rowData[6] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="autorevolving[]" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + rowData[8] + '">' + rowData[8] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + rowData[9] + '">' + rowData[9] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="paymentduedate[]" value="' + rowData[11] + '">' + rowData[11] + '</div></td>' +
+                            '</tr>';
+                         
+
+                        $('#milldetailsTable tbody').append(rowHtml);
+                    });
+                    $('#milldetailsTable').css('display', 'block');
+                } else {
+                    $('#milldetailsTable').css('display', 'none');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX request failed:', status, error);
+                // Handle the error as needed
+            }
+        });
+
+        // Second AJAX call
+        $.ajax({
+            type: 'GET',
+            url: 'listofbillofsupply.obj',
+            data: { "contractno": field1Value },
+            success: function(data) {
+                alert(data);
+                const dataArray = JSON.parse(data);
+                var idx = 0;
+                var sumofInvoiceValue = 0;
+                var billofsupplyno = [];
+                var challanno, bosdate;
+
+                if (dataArray.length > 0) {
+                    dataArray.forEach(function(rowData1) {
+                        // Assuming rowData1[0], rowData1[1], rowData1[2], etc. contain the necessary data
+                        challanno = rowData1[3];
+                        bosdate = rowData1[1];
+                        const rowHtml = '<tr>' +
+                            '<td><div class="table-cell"><input type="hidden" name="bosNo' + idx + '" value="' + rowData1[0] + '">' + rowData1[0] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="branch[]' + idx + '" value="' + rowData1[1] + '">' + rowData1[1] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="ifsc[]' + idx + '" value="' + rowData1[2] + '">' + rowData1[2] + '</div></td>' +
+                            '</tr>';
+                        sumofInvoiceValue += parseFloat(rowData1[2]);
+                        billofsupplyno[idx] = rowData1[0];
+                        idx++;
+                        $('#billofsupllydetails tbody').append(rowHtml);
+                    });
+
+                    $('#billofsupllydetails').css('display', 'block');
+
+                    // Convert billofsupplyno array to a string
+                    var billofsupplynoString = billofsupplyno.join(',');
+
+                    // Log values to check if they are updated
+                    console.log({
+                        sumofInvoiceValue: sumofInvoiceValue,
+                        challanno: challanno,
+                        bosdate: bosdate,
+                        billofsupplynoString: billofsupplynoString
+                    });
+
+                    alert(challanno);
+                    alert(sumofInvoiceValue);
+                    alert(billofsupplynoString);
+                    alert(bosdate);
+
+                    // Ensure millcode is assigned correctly
+                    var millcode = '<%= millcode %>'; // Replace with the correct method of passing millcode from server-side to client-side
+                    alert(millcode);
+
+                    // Constructing the download link dynamically
+                    const bankDraftHtml = `
+                        <div class="col-sm-2 form-group" id="BankDraft">
+                            <a href="downloadPDFforbankDraft.obj?filename=${millcode}
+                                    &challanNO=${challanno}
+                                    &InvoiceValue=${sumofInvoiceValue}
+                                    &BosNO=${billofsupplynoString}
+                                    &BosDate=${bosdate}"
+                                class="btn btn-primary btn-sm" target="_blank">
+                                Download BankDraft
+                            </a>
+                        </div>`;
+                    $('#billofsupllydetails').after(bankDraftHtml);
+
+                } else {
+                    $('#billofsupllydetails').css('display', 'none');
+                }
+            }
+        });
+
+
+    });
+});
+</script>
+
+<script>
+
+function downloadBankDraft(contractno){
+	alert("contarctNo  "+contractno)
+	
+	$.ajax({
+        type: 'GET',
+        url: 'downloadPDFforbankDraftnew.obj',
+        data: { "contractno": contractno },
+        success: function(data) {
+          alert("data saved..");
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX request failed:', status, error);
+           
+        }
+    });
+}
+
+</script>
+
+
+
+ 
 	<!-- BEGIN THEME CONFIG PANEL-->
 
 	<!-- END THEME CONFIG PANEL-->

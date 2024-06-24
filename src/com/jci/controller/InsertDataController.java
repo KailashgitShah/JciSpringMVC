@@ -6249,10 +6249,14 @@ public class InsertDataController
 				mv = new ModelAndView("index");
 			}
 												
+			List<Object[]> fetchMill_Namelc = this.generationAgaistLCsService.fetchMill_NameforLC();
 
+		
+			
 			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
 					this.generationAgaistLCsService.getAll();
 			mv.addObject("genrationAgainstLcs", allUserRegistration);
+			mv.addObject("fetchMill_Namelc", fetchMill_Namelc);
 			
 
 			return mv;

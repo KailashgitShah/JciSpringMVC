@@ -912,7 +912,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     var DustAmt = document.getElementById(DustAmtId).value;
 
     // Alert the values
-    alert('Qualitypercentage: ' + Qualitypercentage + '\n' +
+   /*  alert('Qualitypercentage: ' + Qualitypercentage + '\n' +
         'Nomination: ' + Nomination + '\n' +
         'NCVamt: ' + NCVamt + '\n' +
         'DustAmt: ' + DustAmt + '\n' +
@@ -920,26 +920,26 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
         'DUSTQty: ' + DUSTQty + '\n' +
         'Actual Value: ' + actualvalue + '\n' +
         'Int Value: ' + intvalue + '\n' +
-        'Index: ' + index);
+        'Index: ' + index); */
     
     let gradeprice = resultsArray[intvalue - 1];
     let gradeprice1 = gradeprice;
-    alert("fghj" + gradeprice);
+  /*   alert("fghj" + gradeprice); */
 
     let qty1 = ((actualvalue * parseFloat(NCVamt)) / 100);
     let valueinprice = (gradeprice * qty1).toFixed(2);
     let ncvValue = parseFloat(valueinprice);
-    alert(ncvValue);
+   /*  alert(ncvValue); */
 
     let qty2 = ((actualvalue * parseFloat(DustAmt)) / 100);
     let valueinprice1 = (gradeprice * qty2).toFixed(2);
     let dustValue = parseFloat(valueinprice1);
-    alert(dustValue);
+   /*  alert(dustValue); */
 
     let qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
     let valueinprice2 = (gradeprice * qty3).toFixed(2);
     let moisturevalue = parseFloat(valueinprice2);
-    alert(moisturevalue);
+    /* alert(moisturevalue); */
     
     if (currentMonth > 6 && currentMonth <= 10) {
          Nomination = Nomination - 20;
@@ -958,7 +958,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let qty4 = parseFloat(NCVQty);
     let valueinprice3 = (gradeprice * qty4).toFixed(2);
     let ncvqty = parseFloat(valueinprice3);
-    alert(ncvqty);
+ /*    alert(ncvqty); */
     
     
     let qty5 =  parseFloat(DUSTQty);
@@ -969,32 +969,32 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     totalvalue = ncvValue + dustValue + moisturevalue+dustqty+ncvqty;
     totalvalue = Math.round(totalvalue);
     let totalqty = (qty1 + qty2 + qty3+qty4+qty5).toFixed(2);
-    alert("totalvalue: " + totalvalue);
-    alert("totalqty: " + totalqty);
+   /*  alert("totalvalue: " + totalvalue);
+    alert("totalqty: " + totalqty); */
 
     let newactualqty = (actualvalue - totalqty).toFixed(2);
-    alert("newqty: " + newactualqty);
+   /*  alert("newqty: " + newactualqty); */
 
     let integerResult = (parseInt(Qualitypercentage) / 100);
-    alert(integerResult);
+  /*   alert(integerResult); */
 
     let qs = integerResult;
     let rem = parseFloat(Qualitypercentage) % 100;
-    alert(rem);
-    alert(intvalue);
+   /*  alert(rem);
+    alert(intvalue); */
 
     let gradeprice6 = resultsArray[intvalue - 1];
-    alert("LLLL: " + gradeprice6);
+ /*    alert("LLLL: " + gradeprice6); */
 
     if (qs < 1) {
-        alert("<1------------" + intvalue);
+     /*    alert("<1------------" + intvalue); */
 
         intvalue++;
-        alert("<1: " + intvalue);
+   /*      alert("<1: " + intvalue); */
         gradeprice = resultsArray[intvalue - 1];
-        alert(gradeprice);
+     /*    alert(gradeprice); */
         gradeprice = gradeprice1 - gradeprice;
-        alert(gradeprice);
+       /*  alert(gradeprice); */
 
         let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
         alert("below100quntity: " + qty);
@@ -1037,8 +1037,8 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
 
             intvalue--;
             gradeprice = resultsArray[intvalue - 1];
-            alert("justbefore: " + gradeprice);
-            alert("justbefore: " + gradeprice6);
+          /*   alert("justbefore: " + gradeprice); */
+           /*  alert("justbefore: " + gradeprice6); */
             gradeprice = gradeprice6 - gradeprice;
             alert("justbefore: " + gradeprice);
 

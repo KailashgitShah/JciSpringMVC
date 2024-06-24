@@ -37,6 +37,22 @@ public class BankDraftDTO {
 	private String invoicevalueInnumber;
 
 
+	@Column(name="currentdate")
+	private String currentdate;
+	
+	
+
+	
+	public String getCurrentdate() {
+		return currentdate;
+	}
+
+
+	public void setCurrentdate(String currentdate) {
+		this.currentdate = currentdate;
+	}
+
+
 	public String getbOS_Date() {
 		return bOS_Date;
 	}
