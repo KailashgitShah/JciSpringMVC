@@ -15,7 +15,6 @@ public interface CreditNoteGenerationService {
 
 	public void chageStatusTo1(int id);
 
-	public int getCountOfRo(String roId);
 
 	public List<Object[]> getAllMillsOfContracts();
 
@@ -44,4 +43,8 @@ public interface CreditNoteGenerationService {
 	public List<Object[]> getStateAndPan(String millcode);
 
 	public List<Object[]> getStateAndCodeOfSupplier(String dpc);
+
+	public int getGstCount(String gstCode);
+
+	public int getTotalCount();
 }

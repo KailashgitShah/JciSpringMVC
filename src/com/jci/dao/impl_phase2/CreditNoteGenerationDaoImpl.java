@@ -64,8 +64,8 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	}
 
 	@Override
-	public int getCountRO(String ro) {
-		String sql = "select Count(Crn_id) from jcicredit_note where Ro_Id = '" + ro + "'";
+	public int getGstCount(String gstGstCode) {
+		String sql = "select count( distinct Credit_note_no) from jcicredit_note where gstCode = '" + gstGstCode + "' and Crn_status = 0";
 		return (int) currentSession().createSQLQuery(sql).uniqueResult();
 
 	}
@@ -158,7 +158,11 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public List<Object[]> getDispatchDetails(String challanNo) {
-		String sql = "select Crop_year,Bale_mark,Jute_grade,No_of_bales,Nominal_qty,Rate,Nominal_wt from  jcidispatch_details_child where  Challan_no='"
+		String sql = "select a.Crop_year,a.Bale_mark,a.Jute_grade,a.No_of_bales,a.Nominal_qty,a.Rate,a.Nominal_wt,\r\n"
+				+ "   CONVERT(VARCHAR, b.Contract_date, 105) AS Contract_date,\r\n"
+				+ "    CONVERT(VARCHAR, b.DI_Date, 105) AS DI_Date,\r\n"
+				+ "    CONVERT(VARCHAR, b.Date_of_shipment, 105) AS Date_of_shipment\r\n"
+				+ " from  jcidispatch_details_child a INNER join jcidispatch_details b on a.Challan_no = b.Challan_no and a.Challan_no='"
 				+ challanNo + "' ";
 		List<Object[]> resultList1 = (List<Object[]>) currentSession().createSQLQuery(sql).list();
 		return resultList1;
@@ -178,7 +182,8 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<Object> getChallanDetails(String challan) {
 		String sql = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No,"
 				+ " a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No"
-				+ "  ,a.Ro_id,c.Mill_code , c.Place_of_Shipment from  jcibos_generation a INNER JOIN jciweighment_entry b"
+				+ "  ,a.Ro_id,c.Mill_code , c.Place_of_Shipment ,a.Statecode_forBOs, c.Contract_date , c.DI_Date,c.Date_of_shipment  from  jcibos_generation a INNER JOIN jciweighment_entry b"
+
 				+ "  on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Challan_No = '" + challan
 				+ "'" + " inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
 
@@ -190,20 +195,17 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<Object[]> getDetailsofSpp_Con_Rec(String bosNo) {
 		String sql = "select Supplier_name , Supplier_address , Supplier_gSTN , Recipient_name , "
 				+ "Recipient_address , Recipient_gSTN , Consignee_name , Consignee_address ,"
-				+ " Consignee_gSTN from jcibos_generation where Bill_of_supply_no = '"
-				+ bosNo + "'";		
+				+ " Consignee_gSTN from jcibos_generation where Bill_of_supply_no = '" + bosNo + "'";
 		return (List<Object[]>) currentSession().createSQLQuery(sql).list();
 	}
 
 	@Override
 	public List<Object[]> getStateAndPan(String millcode) {
 		String sql2 = "select a.client_pan , a.client_state , b.unit_state , c.state_name , c.gov_state_code , c.state_code from jcimilldetailmaster a \r\n"
-				+ "inner join \r\n"
-				+ "jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '" + millcode + "' "
-				+ " INNER JOIN\r\n"
+				+ "inner join \r\n" + "jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '"
+				+ millcode + "' " + " INNER JOIN\r\n"
 				+ "  tbl_states_new c on c.state_code = a.client_state or  c.gov_state_code = b.unit_state ";
-		
-		
+
 		return (List<Object[]>) currentSession().createSQLQuery(sql2).list();
 	}
 
@@ -213,10 +215,16 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 				+ "INNER join tbl_districts_new b on b.state_code = a.state_code\r\n"
 				+ "INNER JOIN jcipurchasecenter c on c.district = b.dist_code \r\n"
 				+ "INNER JOIN jcidispatch_details d ON c.CENTER_CODE = d.Place_of_Shipment\r\n"
-				+ "INNER JOIN jcigstin e on e.State_GST_Code = a.gov_state_code "
-				+ "WHERE c.CENTER_CODE = '" + dpc + "'";
-		
+				+ "INNER JOIN jcigstin e on e.State_GST_Code = a.gov_state_code " + "WHERE c.CENTER_CODE = '" + dpc
+				+ "'";
+
 		return (List<Object[]>) currentSession().createSQLQuery(sql).list();
+	}
+
+	@Override
+	public int getTotalCount() {
+		String sql = "select count( distinct Credit_note_no) from jcicredit_note where Crn_status = 0";
+		return (int) currentSession().createSQLQuery(sql).uniqueResult();
 	}
 
 }

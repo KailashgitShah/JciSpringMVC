@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="java.util.Calendar"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="com.jci.service_phase2.CreditNoteGenerationService"%>
 <%@page import="org.springframework.beans.factory.annotation.Autowired"%>
@@ -6,6 +7,7 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.jci.model.StateList"%>
 <%@page import="java.util.List"%>
+<%@ page import="java.util.Calendar" %>
 <html lang="en">
 <%@ page import="javax.servlet.http.HttpServletRequest"%>
 <head>
@@ -63,8 +65,6 @@ input[type="radio"] {
 
 	String roId = (String) request.getAttribute("roId");
 
-	System.err.println("from jsp page => " + roId);
-
 	String bosNo = (String) request.getAttribute("bosNo");
 	String bosDate = (String) request.getAttribute("bosDate");
 	String diNo = (String) request.getAttribute("diNo");
@@ -80,12 +80,14 @@ input[type="radio"] {
 	Double avgJuteValue = (Double) request.getAttribute("avgJuteVal");
 	List<Object[]> dispetchDetails = (List<Object[]>) request.getAttribute("dispetchDetails");
 	List<Object> gradeRatio = (List<Object>) request.getAttribute("gradeRatio");
+	String gstCode = (String) request.getAttribute("gst");
+	int getGstCount = (int) request.getAttribute("getGstCount") + 1;
 
 	/*
 
-		for (Object p : gradeRatio) {
-			System.err.println("gradeRatio => " + (Double) p);
-		} */
+	  for (Object p : gradeRatio) {
+	         System.err.println("gradeRatio => " + (Double) p);
+	  } */
 
 	int sumOfBale = 0;
 	for (Object[] details : dispetchDetails) {
@@ -95,25 +97,42 @@ input[type="radio"] {
 	//double factor = Double.parseDouble(new DecimalFormat("#.##").format(actualWt / sumOfBale));
 	double factor = actualWt / sumOfBale;
 
-	/* 	System.err.println("nominalWt => " + nominalWt);
-		System.err.println("actualWt => " + actualWt);
-		System.err.println("sumOfBale => " + sumOfBale);
-		System.err.println("factor => " + factor); */
+	/*     System.err.println("nominalWt => " + nominalWt);
+	  System.err.println("actualWt => " + actualWt);
+	  System.err.println("sumOfBale => " + sumOfBale);
+	  System.err.println("factor => " + factor); */
 
 	Double shortQty = nominalWt - actualWt;
-	long crnAmount = Math.round(avgJuteValue * shortQty);
+	//long crnAmount = Math.round(avgJuteValue * shortQty);
 
-	String currCropYear = (String) request.getSession().getAttribute("currCropYear");
-	//generation of credit Note No.
-	String lastDigitOfCropYear = currCropYear.substring(currCropYear.length() - 2);
-	String indiaSerialNo = "001640";
-	String creditNoteIdnNo = "C" + lastDigitOfCropYear + indiaSerialNo + roId + "00" + Count;
+	Calendar calendar = Calendar.getInstance();
+	int currentYear = calendar.get(Calendar.YEAR);
+	int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+
+	int financialYearStart, financialYearEnd;
+
+	if (currentMonth >= 4) { // April or later
+		financialYearStart = currentYear;
+		financialYearEnd = currentYear + 1;
+	} else { // January to March
+		financialYearStart = currentYear - 1;
+		financialYearEnd = currentYear;
+	}
+
+	String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+
+	String yearCode = endYearLastTwoDigits;
+	String indiaSerialNo = String.format("%06d", Count);
+	String gstSerialNo = String.format("%05d", getGstCount);
+
+	String creditNoteIdnNo = "C" + yearCode + indiaSerialNo + gstCode + gstSerialNo;
 
 	double sumNmlQty = 0;
 	double sumActQty = 0;
 	double sumShrtQty = 0;
 	double sumTtlCrnAmt = 0;
 	%>
+
 
 
 	<div class="page-wrapper">
@@ -200,7 +219,7 @@ input[type="radio"] {
 										<div class="col-sm-4 form-group" id="dpc">
 											<label>Credit Note Amount </label> <input
 												class="form-control" name="creditAmt" id="creditAmt"
-												type="text" value="<%=crnAmount%>" readonly>
+												type="text" readonly>
 										</div>
 
 
@@ -217,7 +236,9 @@ input[type="radio"] {
 											class="form-control " name="roId" id="roId" type="hidden"
 											value="<%=roId%>" readonly><input
 											class="form-control " name="dpc" id="dpc" type="hidden"
-											value="<%=dpc%>" readonly>
+											value="<%=dpc%>" readonly><input
+											class="form-control " name="gstCode" id="gstCode" type="hidden"
+											value="<%=gstCode%>" readonly>
 
 									</div>
 									<br>
@@ -228,7 +249,7 @@ input[type="radio"] {
 												<tr>
 													<th>Crop Year</th>
 													<th>Bale Mark</th>
-													<th>Variety</th>
+													<th>Variety/Grade</th>
 													<th>No Of Bale</th>
 													<th>Nominal Wt</th>
 													<th>Rate</th>
@@ -249,8 +270,8 @@ input[type="radio"] {
 													double rate = (double) p[5];
 													double nmnlQty = (double) p[4];
 
-													double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
-													double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+													double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
+													double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
 													double shortAmtPrice = Math.round(rate * shtQty);
 													/*  double shtQty = nmnlQty - actQty;
 													double shortAmtPrice = rate * shtQty; */
@@ -275,9 +296,10 @@ input[type="radio"] {
 												<%
 												}
 
-												sumShrtQty = Double.parseDouble(new DecimalFormat("#.####").format(sumShrtQty));
-												sumActQty = Double.parseDouble(new DecimalFormat("#.####").format(sumActQty));
-												sumNmlQty = Double.parseDouble(new DecimalFormat("#.####").format(sumNmlQty));
+												sumShrtQty = Double.parseDouble(new DecimalFormat("#.##").format(sumShrtQty));
+												sumActQty = Double.parseDouble(new DecimalFormat("#.##").format(sumActQty));
+												sumNmlQty = Double.parseDouble(new DecimalFormat("#.##").format(sumNmlQty));
+												int finalAmount = (int) Math.ceil(sumTtlCrnAmt);
 												%>
 												<tr>
 													<td><div class="table-cell"></div></td>
@@ -289,7 +311,7 @@ input[type="radio"] {
 													<td><div class="table-cell"><%=sumNmlQty%></div></td>
 													<td><div class="table-cell"><%=sumActQty%></div></td>
 													<td><div class="table-cell"><%=sumShrtQty%></div></td>
-													<td><div class="table-cell"><%=sumTtlCrnAmt%></div></td>
+													<td><div class="table-cell"><%=finalAmount%></div></td>
 												</tr>
 											</tbody>
 										</table>
@@ -334,6 +356,13 @@ input[type="radio"] {
 		type="text/javascript"></script>
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+
+	<script>
+	$(document).ready(function(){
+	<%-- 	alert('<%=finalAmount%>'); --%>
+		document.getElementById('creditAmt').value='<%=finalAmount%>';
+		});
+	</script>
 
 </body>
 </html>

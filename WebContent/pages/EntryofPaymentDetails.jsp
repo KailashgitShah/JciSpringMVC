@@ -501,7 +501,7 @@ $(document).ready(function() {
     $('#millname12').on('change', function() {
         $('#contractTable tbody').empty();
         var field2Value = $(this).val();
-        alert(field2Value);
+        
         console.log(field2Value);
         $.ajax({
             type: 'GET',

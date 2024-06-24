@@ -136,9 +136,9 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
            for (Object[] row : getSettlementid) { %>
         <tr>
             <td style="width: 5%"><%= i %></td>
-            <td style="width: 10%" id='<%= "st" + i %>'><%= row[0] %></td>
-            <td style="width: 10%" id='<%= "ch" + i %>'><%= row[1] %></td> 
-            <td style="width: 10%" id='<%= "cont" + i %>'><%= row[2] %></td> 
+            <td style="width: 10%" ; text-align: center; id='<%= "st" + i %>'><%= row[0] %></td>
+            <td style="width: 10%" ; text-align: center; id='<%= "ch" + i %>'><%= row[1] %></td> 
+            <td style="width: 10%"; text-align: center;  id='<%= "cont" + i %>'><%= row[2] %></td> 
             <%
 // Assuming row[3] contains the date string "2024-05-17 00:00:00.0"
 String dateString = row[3].toString();
@@ -149,18 +149,18 @@ Date date = inputFormat.parse(dateString);
 String formattedDate = outputFormat.format(date);
 %>
 
-            <td style="width: 10%"><%= formattedDate %></td>
+            <td style="width: 10%; text-align: center;"><%= formattedDate %></td>
             
-            <td style="width: 10%"><%= row[8] %></td> 
+           <td style="width: 10%; text-align: center;"><%= row[8] %></td>
            <%--  <td style="width: 10%"><%= row[5] %></td>    --%>
-            <td style="width: 10%"><%= row[6] %></td> 
-            <td style="width: 10%"><%= row[7] %></td> 
+            <td style="width: 10%; text-align: center;"><%= row[6] %></td> 
+            <td style="width: 10%; text-align: center;"><%= row[7] %></td> 
             
-            <td style="width: 10%"><%= row[10] %></td>  
-             <td style="width: 10%"><%= row[13] %></td>    
-             <td style="width: 10%"><%= row[12] %></td>  
-            <td style="width: 10%"><%= row[9] %></td> 
-            <td style="width: 10%"><%= row[4] %></td> 
+            <td style="width: 10%; text-align: center;"><%= row[10] %></td>  
+             <td style="width: 10%; text-align: center;"><%= row[13] %></td>    
+             <td style="width: 10%; text-align: center;"><%= row[12] %></td>  
+            <td style="width: 10%; text-align: center;"><%= row[9] %></td> 
+            <td style="width: 10%; text-align: center;"><%= row[4] %></td> 
                     <% 
                     
                  // Assuming row[11] is of type Integer
@@ -173,7 +173,7 @@ String formattedDate = outputFormat.format(date);
                          <button id="reject-btn-<%= i %>" class="reject-btn" data-row-id="<%= i %>">Reject</button>
                      </td>
                  <% } else { %>
-                     <td colspan="2" style="width: 10%">Verification Completed</td>
+                     <td colspan="2" style="; text-align: center; width: 20%">Verification Completed</td>
                  <% } %>
 
 

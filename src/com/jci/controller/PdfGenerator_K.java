@@ -66,9 +66,9 @@ public class PdfGenerator_K {
 
 	     String fileName = "generatedfile_" + bill_of_Supply + ".pdf";
 
-	     String filePath = "C:\\Users\\kailash.shah\\documentimage\\" + fileName;
-
-	     //String filePath = Genrationofbill +File.separator+ fileName;
+	     //String filePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\JCIStuff\\billofsupply\\" + fileName;
+	  
+	     String filePath = Genrationofbill +File.separator+ fileName;
 	     
 
 	        String contaractdate = "";

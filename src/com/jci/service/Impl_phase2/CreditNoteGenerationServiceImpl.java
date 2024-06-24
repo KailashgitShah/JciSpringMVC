@@ -41,11 +41,6 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	}
 
 	@Override
-	public int getCountOfRo(String ro) {
-		return creditNoteGenerationDao.getCountRO(ro);
-	}
-
-	@Override
 	public List<Object[]> getAllMillsOfContracts() {
 	return creditNoteGenerationDao.getAllMillsOfContracts();
 	}
@@ -114,6 +109,16 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	@Override
 	public List<Object[]> getStateAndCodeOfSupplier(String dpc) {
 		return creditNoteGenerationDao.getStateAndCodeOfSupplier(dpc);
+	}
+
+	@Override
+	public int getGstCount(String gstCode) {
+		return creditNoteGenerationDao.getGstCount(gstCode);
+	}
+
+	@Override
+	public int getTotalCount() {
+		return creditNoteGenerationDao.getTotalCount();
 	}
 
 }

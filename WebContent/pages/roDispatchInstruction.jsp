@@ -198,9 +198,9 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 									<div class="col-sm-4 form-group">
 
 
-										<label>Remarks </label> <span class="text-danger">* </span>
+										<label>Remarks </label> <span class="text-danger"> </span>
 										<textarea class="form-control taxtbox" name="Remarks"
-											placeholder="Remarks" required maxlength="250" id="remarks"></textarea>
+											placeholder="Remarks"  maxlength="250" id="remarks"></textarea>
 
 
 									</div>
@@ -328,20 +328,22 @@ $('#hoDiNo, #dpc').change(function() {
 	            var allOptions = [];
 
 	            dataArray.forEach(function(value) {
-	                allOptions.push(value);
-	            });
-
-
-	            <%
-	            for (String no : allCooperative) {
-	                String[] commaSD = no.split(",");
-	                for(String s : commaSD) { 
-	            %>
-	                allOptions.push("<%=s%>");
-	            <%
+	                if (value !== null && value !== undefined && value !=='') {
+	                    allOptions.push(value);
 	                }
-	            }
-	            %>
+	            });
+	            dataArray.forEach(function(value) {
+	                // Check if value is null, undefined, or an empty string
+	                if (value === null || value === undefined || value === '') {
+	                    // If the value meets the condition, execute the following code
+	                    <% for (String no : allCooperative) {
+	                        String[] commaSD = no.split(",");
+	                        for(String s : commaSD) { %> 
+	                            allOptions.push("<%= s %>");
+	                        <% }
+	                    } %>
+	                }
+	            });
 
 	            
 	           
@@ -387,7 +389,7 @@ $('#hoDiNo, #dpc').change(function() {
 	            var juteArray = [];
 	            $("#form2").html("");
 	            var elementToUpdate = $("#form2");
-	            var contentToDisplay = "<table id='table_r' style='border-collapse: collapse;'>";
+	            var contentToDisplay = "<table id='table_r' style='border-collapse: collapse;width: 100%;'>";
 	            var headerDisplayed = false;
 
 	            for (var k = 0; k < numberOfContractDetails; k++) {
@@ -643,7 +645,7 @@ for (var i = 0; i < size.length; i++) {
 }
 
 //To check if Remarks is empty or not
-if($("#remarks").val().length ==0 || $("#dpc").val() =="-1"){
+if(/* $("#remarks").val().length ==0 || */ $("#dpc").val() =="-1"){
 	 var errorMessage = " Fill all the marked fields" ;
      var errorDiv = $("<div>").text(errorMessage).css({
          "color": "red",

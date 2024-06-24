@@ -89,7 +89,7 @@ String contactIdnNo = "BT-" + count;
 										<div class="row">
 
 											<div class="col-sm-4 form-group">
-												<label class="required">Available Qty</label> <input
+												<label class="required">Available Qty (Qtls.)</label> <input
 													name="available_qty" id="available_qty" type="number"
 													class="form-control" min='0' />
 											</div>
@@ -198,7 +198,7 @@ String contactIdnNo = "BT-" + count;
 											</div>
 
 											<div class="col-sm-3 form-group">
-												<label class="required">Contract Qty.</label> <input
+												<label class="required">Contract Qty.(Qtls)</label> <input
 													class="form-control" name="contract_qty" id="contract_qty"
 													type="number" readonly>
 											</div>
@@ -424,6 +424,8 @@ var gradeArray = [];
 										htmlTable += '</td><td style="text-align:center">'
 										+ List[i][j] + '</td>';
 									   }
+									   
+									
 													
 									   htmlTable += '<td id="allocated'+i+'" style="text-align:center">'
 							            + List[i][sizeOfSingleResultArray-1].toFixed(2)
@@ -567,6 +569,10 @@ var gradeArray = [];
 //alert("script called");
 function updateOnChange(id){ 
 var prevQty = listOfTotalQty[id];
+var currDeleType = $("#deliveryType"+id).val();
+var prevDelType = currDeleType == "Ex-Godown" ? "Mill-Delivery" : "Ex-Godown";
+
+//console.log(currDeleType , prevDelType);
 
 //console.log(contractedValueMillWise , listOfTotalQty ,prevQty, "inside change funtion");
 
@@ -574,16 +580,21 @@ var prevQty = listOfTotalQty[id];
 		type:"GET",
 		url:"updateContractedValue.obj",
 		data:{
-			"deliveryType" : $("#deliveryType"+id).val(),
+			"deliveryType" : currDeleType,
 			"totalQtyOfMill":prevQty,
 			"grades" : jsonGrades
 		},
 		success : function(result){
 			//console.log(result);
+			   if(result == -1){
+				   alert("derivative price for the delivery type is not decided");
+				   $('#deliveryType' + id).val(prevDelType);
+				   return false;
+			   }else{
 				contractedValueMillWise[id] = result;
 				$('#contractedValue' + id).text(result);
 				
-				
+			   }
 		}
 	})   
 }
