@@ -3518,7 +3518,7 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatatocontractno", method = RequestMethod.GET)
 	public String fetchingdatatocontractnoq(@RequestParam("contractno") String contractno) {
-		GenrationDEmandDto getcontractddownlist = genratedDemandNoteService.fetchContract_no(contractno);
+		List<Object[]> getcontractddownlist = (List<Object[]>) genratedDemandNoteService.fetchContract_no(contractno);
 		System.err.println("resultList++++++++++" + getcontractddownlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(getcontractddownlist);
@@ -3559,14 +3559,14 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		List<Object> getdataList1 = this.genratedDemandNoteService.fetchcon_no();
+		List<Object> ContractList = this.genratedDemandNoteService.fetchcon_no();
 
-		int lastSerialNumber = 1640;
-		String demandNoteNumber = generateDemandNoteNumber(request.getSession(), lastSerialNumber);
+		
+		String demandNoteNumber = generateDemandNoteNumber(request.getSession());
 		mv.addObject("demandNoteNumber", demandNoteNumber);
-
+		mv.addObject("contract", ContractList);
 		// String demandNoteNumber = generateDemandNoteNumber();
-		mv.addObject("demandNoteNumber", demandNoteNumber);
+		
 		// GenrationDEmandDto cotract_No =
 		// this.genratedDemandNoteService.fetchContract_no();
 
@@ -3574,7 +3574,7 @@ public class Controller_V {
 //			Date date =cotract_No.getContract_date();
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 //			String formattedDate = dateFormat.format(date);
-		mv.addObject("getdataList1", getdataList1);
+	
 		// mv.addObject("demandNoteNumber", demandNoteNumber);
 //			mv.addObject("cotract_No", cotract_No);
 //			mv.addObject("formattedDate", formattedDate);
@@ -3582,7 +3582,7 @@ public class Controller_V {
 	}
 
 	// private String generateDemandNoteNumber()
-	private String generateDemandNoteNumber(HttpSession session, int lastSerialNumber) {
+	private String generateDemandNoteNumber(HttpSession session) {
 		
         Calendar calendar = Calendar.getInstance();
    int currentYear = calendar.get(Calendar.YEAR);
@@ -3597,28 +3597,18 @@ public class Controller_V {
        financialYearStart = currentYear - 1;
        financialYearEnd = currentYear;
    } 
-   List<String> count= this.genratedDemandNoteService.count();
-   System.err.println(count);
-   System.err.println(count);
-   System.err.println(count);
-   Integer number = Integer.parseInt(count.get(0));
+	
        String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
            
         String yearCode = endYearLastTwoDigits;
+        String countString = this.genratedDemandNoteService.count();
+        
+		
 
-//		    int lastSerialNumber = getLastSerialNumberFromDatabase();
-		int newSerialNumber = number + 1;
+        String stringdemand = "D" + yearCode + String.format("%06d", Integer.parseInt(countString)) +"19"+String.format("%05d", Integer.parseInt(countString));
 
-		String stringdemand = "D" + yearCode + String.format("%06d", newSerialNumber);
-		String status = this.genratedDemandNoteService.demandnono(stringdemand);
-		if ("1".equals(status)) {
-
-			return generateDemandNoteNumber(session, newSerialNumber);
-		} else {
-
-			return stringdemand;
-		}
-
+			/*	+ String.format("%06d", count);*/
+		return stringdemand;
 	}
 
 	// save entry of geration demand note form field
@@ -3637,7 +3627,7 @@ public class Controller_V {
 			String Payment_Ref = request.getParameter("Payment_Ref");
 			String contractedQtyStr = request.getParameter("Contracted_Qty");
 			double contractedQty = Double.parseDouble(contractedQtyStr);
-
+         
 			String Unit_charge_str = request.getParameter("Unit_charge");
 			double Unit_charge = Double.parseDouble(Unit_charge_str);
 			String Carrying_cost_str = request.getParameter("Carrying_cost");
@@ -3648,7 +3638,15 @@ public class Controller_V {
 			// String Dn_status = request.getParameter("Dn_status");
 			String Demand_note_no = request.getParameter("Demand_note_no");
 			String Demand_note_date = request.getParameter("Demand_note_date");
-
+			String paymentDate = request.getParameter("q");
+			
+			String waiver= request.getParameter("Waiver_flag");
+			
+			System.err.println(waiver);
+			System.err.println(waiver);
+			System.err.println(waiver);
+			System.err.println(waiver);
+			System.err.println(waiver);
 			GenrationDemandNoteModel genrationDemandNoteModel = new GenrationDemandNoteModel();
 
 			genrationDemandNoteModel.setContract_no(Contract_No);
@@ -3660,18 +3658,22 @@ public class Controller_V {
 			genrationDemandNoteModel.setContract_date(Contract_Date);
 			genrationDemandNoteModel.setPayment_due_date(Payment_Due_Date);
 			// genrationDemandNoteModel.setPayment_date(Cancellation_Date);
-			genrationDemandNoteModel.setPayment_date("somevalue");
+			genrationDemandNoteModel.setPayment_date(paymentDate);
 			genrationDemandNoteModel.setDelay_period(Delay_period);
 			genrationDemandNoteModel.setPayment_ref(Payment_Ref);
 			genrationDemandNoteModel.setContracted_qty(contractedQty);
 			genrationDemandNoteModel.setUnit_charge(Unit_charge);
 			genrationDemandNoteModel.setCarrying_cost(Carrying_cost);
-			genrationDemandNoteModel.setWaiver_flag(0);
+			if ("1".equals(waiver)) {
+			    genrationDemandNoteModel.setWaiver_flag(1); 
+			} else {
+			    genrationDemandNoteModel.setWaiver_flag(0);
+			}
 			genrationDemandNoteModel.setRemarks(Remarks);
 			genrationDemandNoteModel.setWaiver_approved_by("kailash");
 			genrationDemandNoteModel.setDn_status(0);
-			genrationDemandNoteModel.setCreated_by("kailash");
-
+			genrationDemandNoteModel.setCreated_by("username");
+			genrationDemandNoteModel.setStateCode("19");
 			Date date = new Date();
 			// Date instdate4 = formatter1.parse(Created_on);
 			genrationDemandNoteModel.setCreated_on(date);

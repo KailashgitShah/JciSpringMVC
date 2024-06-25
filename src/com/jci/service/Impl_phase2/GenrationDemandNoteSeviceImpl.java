@@ -54,7 +54,7 @@ public class GenrationDemandNoteSeviceImpl  implements GenratedDemandNoteService
 		return GenrationdemandNoteDao.find(id);
 	}
 	@Override
-	public GenrationDEmandDto fetchContract_no(String st) {
+	public List<Object[]> fetchContract_no(String st) {
 		// TODO Auto-generated method stub
 		return GenrationdemandNoteDao.fetchContract_no(st);
 	}
@@ -68,7 +68,7 @@ public class GenrationDemandNoteSeviceImpl  implements GenratedDemandNoteService
 		return GenrationdemandNoteDao.demandnono(st);
 	}
 	@Override
-	public List<String> count() {
+	public String count() {
 		// TODO Auto-generated method stub
 		return GenrationdemandNoteDao.count();
 	}

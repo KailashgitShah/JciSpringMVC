@@ -18,10 +18,10 @@ public interface GenrationDemandNoteDao {
 		public GenrationDemandNoteModel getById(int id);
 	 
 		public GenrationDemandNoteModel find(int id);
-		public GenrationDEmandDto fetchContract_no(String st);
+		public List<Object[]> fetchContract_no(String st);
 		public List<Object> fetchcon_no();
 		public String demandnono(String  st);
-		public List<String> count();
+		public String count();
 		
 		
 }
