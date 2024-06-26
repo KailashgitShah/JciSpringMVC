@@ -9,6 +9,8 @@ public interface  GenerationAgaistLCsDao {
 	 public List<GenerationofDocumentLCsModel>getAll();
 	 public List<Object[]> fetchMill_NameforLC();
 	 public List<Object[]> listdetailsofpaymemt(String st);
+	 public List<Object[]> forIFSC(String st);
+	 public List<Object[]> forQtyintopsheet(String st);
 	 public List<Object[]> listdetailsbillofsupplly(String st);
 	 public List<Object> contractonmill(String millname);
 }

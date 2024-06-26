@@ -149,22 +149,12 @@
 										
 										<td><%= row[8] %></td>
 										<td hidden><%= row[7] %></td>
-<<<<<<< HEAD
-										<td style="text-align: center">
-								    <a href="http://49.50.118.112:8080/DispatchDetail/<%= row[9] %>" target="_blank" style="color: blue;">Challan Document</a>
-								</td>
 
-   
-										<%-- <td><%= row[9] %></td> --%>
-=======
 
 										 <td style="text-align: center;color:blue"><a href="http://49.50.118.112:8080/DispatchDetail/<%= row[9] %>" 
 										  target="_blank" >Consignment Note</a></td>
     
 
->>>>>>> a978ade5c24cee589b55ff1dd3143cf067e14914
-									
-										
 											<td>
 									    <a href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%= row[2]%>&DPC=<%= row[7]%>">
 									        <button class="btn btn-primary custom-button" type="button">Generate BOS</button>

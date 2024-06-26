@@ -30,6 +30,81 @@ public class TopSheeetDTO {
 	
 	@Column(name="NominalQty")
 	private Double nominalQty;
+	
+	
+	@Column(name="instrumentno")
+	private String instrumentno;
+	
+	@Column(name="instrumentdate")
+	private String instrumentdate;
+	
+	@Column(name="millname")
+	private String millname;
+	
+	@Column(name="currentdate")
+	private String currentdate;
+	
+	@Column(name="totalqty")
+	private Double totalqty;
+	
+	
+	
+	@Column(name="totalamount")
+	private Double totalamount;
+	
+	
+	
+	
+	
+	
+
+	public String getInstrumentno() {
+		return instrumentno;
+	}
+
+	public void setInstrumentno(String instrumentno) {
+		this.instrumentno = instrumentno;
+	}
+
+	public String getInstrumentdate() {
+		return instrumentdate;
+	}
+
+	public void setInstrumentdate(String instrumentdate) {
+		this.instrumentdate = instrumentdate;
+	}
+
+	public String getMillname() {
+		return millname;
+	}
+
+	public void setMillname(String millname) {
+		this.millname = millname;
+	}
+
+	public String getCurrentdate() {
+		return currentdate;
+	}
+
+	public void setCurrentdate(String currentdate) {
+		this.currentdate = currentdate;
+	}
+
+	public Double getTotalqty() {
+		return totalqty;
+	}
+
+	public void setTotalqty(Double totalqty) {
+		this.totalqty = totalqty;
+	}
+
+	public Double getTotalamount() {
+		return totalamount;
+	}
+
+	public void setTotalamount(Double sumOfInvoiceValue) {
+		this.totalamount = sumOfInvoiceValue;
+	}
 
 	public String getContract_no() {
 		return contract_no;

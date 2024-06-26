@@ -100,4 +100,47 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 					 return resultList1;
 	}
 
+	@Override
+	public List<Object[]> forIFSC(String st) {
+		  String sql ="SELECT \r\n"
+		  		+ "    CONVERT(VARCHAR, a.Contract_date, 103) AS Contract_date,\r\n"
+		  		+ "    a.DI_No,\r\n"
+		  		+ "    CONVERT(VARCHAR, a.DI_Date, 103) AS DI_Date,\r\n"
+		  		+ "    CONVERT(VARCHAR, a.Date_of_shipment, 103) AS Date_of_shipment,\r\n"
+		  		+ "    a.Contract_No,\r\n"
+		  		+ "    CASE \r\n"
+		  		+ "        WHEN b.Payment_type = 'Letter_of_Credit' THEN b.Instrument_No \r\n"
+		  		+ "        ELSE 'N/A' \r\n"
+		  		+ "    END AS Instrument_No,\r\n"
+		  		+ "    CASE \r\n"
+		  		+ "        WHEN b.Payment_type = 'Letter_of_Credit' THEN CONVERT(VARCHAR, b.Instrument_Date, 103) \r\n"
+		  		+ "        ELSE '' \r\n"
+		  		+ "    END AS Instrument_Date,\r\n"
+		  		+ "    b.ifsc,\r\n"
+		  		+ "    b.Payment_type \r\n"
+		  		+ "FROM \r\n"
+		  		+ "    jcidispatch_details AS a \r\n"
+		  		+ "INNER JOIN \r\n"
+		  		+ "    jcipayment_arrangement AS b \r\n"
+		  		+ "ON \r\n"
+		  		+ "    b.Contract_No = a.Contract_No"
+			  		+ " WHERE  a.Contract_No = '" +st+"'"; 
+			    
+					 		
+					
+					 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+					 return resultList1;
+	}
+
+	@Override
+	public List<Object[]> forQtyintopsheet(String st) {
+		  String sql ="   select   a.Crop_year,a.Bale_mark,a.Jute_variety,a.Jute_grade,a.No_of_bales,a.Nominal_wt,a.Rate,a.Nominal_qty,a.Jute_value  from  jcidispatch_details_child  as a \r\n"
+		  		+ "   left JOIN jcidispatch_details on jcidispatch_details.Challan_no=a.Challan_no where jcidispatch_details.Contract_No= '" +st+"'"; 
+				    
+						 		
+						
+						 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+						 return resultList1;
+	}
+
 }

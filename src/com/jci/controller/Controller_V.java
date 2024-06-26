@@ -3677,6 +3677,349 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("EntryofMillreceipt.obj"));
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("Generatebankdraftsheet")
+	public ModelAndView Generatebankdraftsheet2(HttpServletRequest request, RedirectAttributes redirectAttributes,  HttpServletResponse response) {
+
+		final ModelAndView mv = new ModelAndView();
+		String username = (String) request.getSession().getAttribute("usrname");
+		   try {
+		        String secondCount = request.getParameter("rowindex2");
+		        int count = Integer.parseInt(secondCount);
+
+		        String[] bosNo = request.getParameterValues("bosNo[]");
+		        String[] millcode = request.getParameterValues("millcode[]");
+		        String[] challanno = request.getParameterValues("challanno[]");
+		        String[] bosdate = request.getParameterValues("bosdate[]");
+		        String[] invoicevalue = request.getParameterValues("invoicevalue[]");
+		        String[] contractNo = request.getParameterValues("contractNO[]");
+		        
+		        String bankDraft = request.getParameter("bankdraft");
+		        String topSheet = request.getParameter("Topsheet");
+		        String billofExchange = request.getParameter("BillofExchange");
+		    
+
+		        String bosConcatenate = "";
+		        Double sumOfInvoiceValue = 0.0;
+		        String Contractno="";
+		        String millcode1="";
+		        String invoiceValueString="";
+		        
+		        
+
+		        for (int i = 0; i < count; i++) {
+		            String bosNo1 = bosNo[i];
+		             millcode1 = millcode[i];
+		            String challanno1 = challanno[i];
+		            String bosdate1 = bosdate[i];
+		            String invoicevalue1 = invoicevalue[i];
+		             Contractno = contractNo[i];
+
+		             sumOfInvoiceValue += Double.parseDouble(invoicevalue1);
+		            if (!bosConcatenate.isEmpty()) {
+		                bosConcatenate += ", "; // Add a comma and space for readability
+		            }
+		            bosConcatenate += bosNo1;
+
+		            redirectAttributes.addFlashAttribute("msg",
+		                    "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n"
+		            );
+		        }
+
+		        
+		        if ("Download BankDraft".equals(bankDraft)) {
+		            
+		        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml"));
+
+		        // Set up parameters and data source
+		        Map<String, Object> parameters = new HashMap<>();
+		        BankDraftDTO bankDraftDTO = new BankDraftDTO();
+		        List<BankDraftDTO> listOfBankDraft = new ArrayList<>();
+
+		        // Fetch and process date data
+		        List<Object[]> dateData = generationAgaistLCsService.forIFSC(Contractno);
+		        for (Object[] row : dateData) {
+		            if (row[5] != null) bankDraftDTO.setInstrumentNO(row[5].toString());
+		            if (row[6] != null) bankDraftDTO.setInstrumentDate(row[6].toString());
+		            if (row[7] != null) {
+		                String ifsc = row[7].toString();
+		                fetchBankDetails(ifsc, bankDraftDTO);
+		            }
+		        }
+
+		        // Fetch and process address data
+		        List<Object[]> listOfAddress = generationofBillService.contarctnoformaster(millcode1);
+		        for (Object[] row : listOfAddress) {
+		            bankDraftDTO.setUnitname((String) row[0]);
+		            bankDraftDTO.setUnitaddress(String.join("", (String) row[1], (String) row[2], (String) row[3], (String) row[4]));
+		        }
+
+		        // Process invoice value
+		        ConvertWord_k convertWord_k = new ConvertWord_k();
+		        invoiceValueString = String.valueOf(sumOfInvoiceValue);
+		        double invoiceDouble = Double.parseDouble(invoiceValueString);
+		        int convertInt = (int) invoiceDouble;
+		        bankDraftDTO.setInvoicevalue(convertWord_k.convertToWords(convertInt));
+
+		        bankDraftDTO.setInvoicevalueInnumber(invoiceValueString);
+
+		        bankDraftDTO.setBillOfSupplyNo(bosConcatenate);
+		        bankDraftDTO.setbOS_Date(bosdate[0]); // Use the first bosdate from the array
+		        Date date = new Date();
+		        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		        String formattedDate = formatter.format(date);
+		        bankDraftDTO.setCurrentdate(formattedDate);
+		        listOfBankDraft.add(bankDraftDTO);
+		        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfBankDraft);
+
+		        // Fill the Jasper reports
+		        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+		        // Set file names and paths
+		        String fileName = "bankdraft" + bosConcatenate + ".pdf";
+		        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
+
+		        // Export the reports to PDF
+		        JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
+
+		        serveFileAsResponse(savePath, fileName, response);
+
+		        GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
+		        generationofDocumentLCsModel.setBankdrftpath(fileName);
+		        
+		        
+		        }
+		        
+		        else if ("Download BillofExchange".equals(billofExchange)) {
+		        	  Map<String, Object> parameters = new HashMap<>();
+		        
+		        JasperReport jasperReport3 = JasperCompileManager.compileReport(
+			            new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\billofexchange.jrxml"));
+
+			    // Set up parameters and data source
+			    //Map<String, Object> parameters = new HashMap<>();
+
+			    BillOfExchangeDTO billOfExchangeDTO = new BillOfExchangeDTO();
+			    List<BillOfExchangeDTO> listOfBillofExchange = new ArrayList<>();
+			    // Fetch and process date data
+			    List<Object[]> dateData1 = generationAgaistLCsService.forIFSC(Contractno);
+			    for (Object[] row1 : dateData1) {
+			        if (row1[5] != null) billOfExchangeDTO.setInstrumentNo(row1[5].toString());
+			        if (row1[6] != null) billOfExchangeDTO.setInstrumentDate(row1[6].toString());
+			        if (row1[7] != null) {
+			            String ifsc = row1[7].toString();
+			            fetchBankDetails1(ifsc, billOfExchangeDTO);
+			        }
+			    }
+
+			    invoiceValueString = String.valueOf(sumOfInvoiceValue);
+			    billOfExchangeDTO.setInvoicevalue(invoiceValueString);
+			    billOfExchangeDTO.setBillofsupplyNo(bosConcatenate);
+			    billOfExchangeDTO.setBosDate(bosdate[0]);
+			    Date date1 = new Date();
+		        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+		        String formattedDate1 = formatter1.format(date1);
+		        billOfExchangeDTO.setCurrentdate(formattedDate1);
+
+			    listOfBillofExchange.add(billOfExchangeDTO);
+
+			    JRBeanCollectionDataSource dataSource3 = new JRBeanCollectionDataSource(listOfBillofExchange);
+			    JasperPrint jasperPrint3 = JasperFillManager.fillReport(jasperReport3, parameters, dataSource3);
+
+			    // Path to save the PDF
+			    String fileName3 = "BankerCopy" + bosConcatenate + ".pdf";
+			    String savePath3 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName3;
+
+			    // Ensure the directory exists
+			    File saveDir = new File("C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument");
+			    if (!saveDir.exists()) {
+			        saveDir.mkdirs();
+			    }
+
+			    // Export to PDF
+			    JasperExportManager.exportReportToPdfFile(jasperPrint3, savePath3);
+
+			    serveFileAsResponse1(savePath3, fileName3, response);
+
+			    GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
+			    generationofDocumentLCsModel.setBillofexchangepath(fileName3);
+			
+		        
+		        }
+		        
+		        
+		        else if ("Download TopSheet".equals(topSheet)) {
+		        	  Map<String, Object> parameters = new HashMap<>();
+		        	  
+		  	        String millcode2="";
+          			String hodino= "";
+          			String hodidate="";
+          			String dtaeofshipment="";
+          			String millname="";
+          			String instrumentno="";
+          			String instrumentdate="";
+          		   double sumofQty=0.0f;
+          		   double totalQuantity=0.0f;
+          		   double Qtytotal=0.0f;
+          		
+          		   String bosNo1 ="";
+          		   
+          		 String invoicevalue1 = "";
+          		   
+
+		              String inputString = Contractno;
+
+		              // Split the string by '/'
+		              String[] splitParts = inputString.split("/");
+
+		              // Extract the last part
+		              String resultcontract = splitParts[splitParts.length - 1];
+		        	  JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\topsheet.jrxml"));
+		             
+		              List<TopSheeetDTO> listOfTopSheet = new ArrayList<>();
+		          	List<Object[]> list = generationAgaistLCsService.forQtyintopsheet(Contractno);
+		          	List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Contractno);
+		          	//  List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
+		              for (Object[] details : list) {
+		            	
+		              	double value4 = (details[4] instanceof Integer) ? ((Integer) details[4]).doubleValue() : Double.parseDouble(details[4].toString());
+
+		              	double value5 = (details[5] instanceof String) ? Double.parseDouble((String) details[5]) : ((Number) details[5]).doubleValue();
+
+		              	double result = value4 * value5;
+		              	sumofQty+=result;
+		              
+//		              	   
+		               
+		            }
+		              
+		              for (Object[] details : list1) {
+		              	       millcode2=(String)details[0];
+		              		 hodino= (String)details[3];
+		              		 hodidate= (String)details[2];
+		              		dtaeofshipment=(String)details[1];
+		               }
+		              
+		              TopSheeetDTO topSheeetDTO = new TopSheeetDTO();
+		              List<Object[]> dateData = generationAgaistLCsService.forIFSC(Contractno);
+				       
+
+				        // Fetch and process address data
+				        List<Object[]> listOfAddress = generationofBillService.contarctnoformaster(millcode1);
+				        for (Object[] row : listOfAddress) {
+				        	millname=(String) row[0];
+				        	
+				        	//topSheeetDTO.setMillname((String) row[0]);
+						       }
+				       
+				       
+				        for (Object[] row : dateData) {
+				        	instrumentno=(String) row[5];
+				        	instrumentdate=(String) row[6];
+				        	  }
+				        Date date1 = new Date();
+				        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+				        String formattedDate1 = formatter1.format(date1);
+				      
+				        topSheeetDTO.setCurrentdate(formattedDate1);
+		              
+		              for (int i = 0; i < count; i++) {
+		            	  bosNo1 = bosNo[i];
+		            	    invoicevalue1 = invoicevalue[i];
+
+		            	    // Create a new instance of topSheeetDTO for each iteration
+		            	     topSheeetDTO = new TopSheeetDTO();
+		            	    
+		            	    topSheeetDTO.setBillOfSupplyNo(bosNo1);
+		            	    topSheeetDTO.setNominalQty(sumofQty);
+		            	    topSheeetDTO.setDateofShipment(dtaeofshipment);
+		            	    topSheeetDTO.setMill_code(millcode2);
+		            	    topSheeetDTO.setHodiNO(hodino);
+		            	    topSheeetDTO.setHodiDate(hodidate);
+		            	    topSheeetDTO.setContract_no(resultcontract);
+		            	    topSheeetDTO.setInvoicevalue(invoicevalue1);
+		            	    totalQuantity += sumofQty;
+		            	    topSheeetDTO.setTotalqty(totalQuantity);
+		            	    topSheeetDTO.setTotalamount(sumOfInvoiceValue);
+		            	    topSheeetDTO.setMillname(millname);
+		            	    topSheeetDTO.setInstrumentno(instrumentno);
+		            	    topSheeetDTO.setInstrumentdate(instrumentdate);
+		            	    topSheeetDTO.setCurrentdate(formattedDate1);
+		            	    
+		            	    listOfTopSheet.add(topSheeetDTO);
+				       }
+		            
+
+		             
+		             // topSheeetDTO.setBillOfSupplyNo(bosConcatenate);
+		              
+		      
+		             
+		              
+		            
+		              //JRDataSource dataSource = new JREmptyDataSource(listOfTopSheet);
+		              JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(listOfTopSheet);
+		                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+		                String fileName1 = "Topsheet" + bosConcatenate + ".pdf";
+		               String savePath1 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName1;
+		               JasperExportManager.exportReportToPdfFile(jasperPrint1, savePath1);
+		             // generateAndSendPdf1(response, jasperPrint1, savePath1);
+		              
+		         // Ensure the directory exists
+			    File saveDir = new File("C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument");
+			    if (!saveDir.exists()) {
+			        saveDir.mkdirs();
+			    }
+
+	
+
+			    serveFileAsResponse1(savePath1, fileName1, response);
+
+		        }
+		        
+		        
+		        
+		        
+		        
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    if (username == null) {
+		        return new ModelAndView("index");
+		    }
+
+		    return new ModelAndView(new RedirectView("viewCash_against_LCs.obj"));
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping({ "viewMillReciept" })
 	public ModelAndView viewMillReciept(final HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
