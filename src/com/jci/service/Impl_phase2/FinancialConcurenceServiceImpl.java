@@ -91,6 +91,11 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 		
 		return this.financialConcurencedao.RemainingQty(cont_no);
 	}
+	@Override
+	public List<Object[]> DetailsForReport(String cont_no) {
+		return this.financialConcurencedao.DetailsForReport(cont_no);
+		
+	}
 	
 	
 	

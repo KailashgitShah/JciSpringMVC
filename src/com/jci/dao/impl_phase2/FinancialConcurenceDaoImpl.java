@@ -207,4 +207,16 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 
 	}
 
+	@Override
+	public List<Object[]> DetailsForReport(String cont_no) {
+		  String sql ="select a.Contractno,a.QtyAllowed ,b.Instrument_No,b.Instrument_Date,b.ifsc,b.Last_shipment_date,b.Expiry_date,\r\n"
+		  		+ " b.Auto_revolving_amount,b.millcode from  jcifinancial_concurrence as a LEFT join  jcipayment_arrangement as b on b.Contract_No=a.Contractno"
+			  		+ " WHERE Contractno= '" +cont_no+"'"; 
+			    
+					 		
+					
+					 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+					 return resultList1;
+	}
+
 }

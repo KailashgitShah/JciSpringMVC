@@ -6141,6 +6141,8 @@ public class InsertDataController
 				 System.err.println(cost);
 			    }
 			
+			
+			
 			int allIndiaSerialNo = 1;
 //			/* int stateSerialNo = 1; */
 			 String fcref_no1 = GenerateFCNO(request.getSession(),allIndiaSerialNo);

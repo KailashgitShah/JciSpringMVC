@@ -3321,6 +3321,22 @@ public class Controller_V {
 			System.out.print(financialConcurenceModel);
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			this.paymentDetailService.update2(fullcontractno);
+			
+			String ifsc="";
+			//String ifsc="";
+		   List<Object[]>documentsreport= this.financialConcurenceservice.DetailsForReport(fullcontractno);
+//		   List<Object[]> dateData = generationAgaistLCsService.forIFSC(Contractno);
+	        for (Object[] row : documentsreport) {
+//	            if (row[5] != null) bankDraftDTO.setInstrumentNO(row[5].toString());
+//	            if (row[6] != null) bankDraftDTO.setInstrumentDate(row[6].toString());
+	            if (row[7] != null) {
+	                 ifsc = row[4].toString();
+//	                fetchBankDetails(ifsc, bankDraftDTO);
+	            }
+	        }
+		   
+		   
+		   
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
@@ -3918,7 +3934,7 @@ public class Controller_V {
 
 		              // Extract the last part
 		              String resultcontract = splitParts[splitParts.length - 1];
-		  // JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\topsheet.jrxml"));
+		        // JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\topsheet.jrxml"));
 		              JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream(TopSheetPathJasper));
 				                
 		              List<TopSheeetDTO> listOfTopSheet = new ArrayList<>();
