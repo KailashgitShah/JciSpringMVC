@@ -6084,8 +6084,19 @@ public class InsertDataController
 				int  Payment_id = entryPaymentDetailsModel.getPayment_id();
 				
 				String  Contrated_quanity =  this.fiannacialConcurenceService.ContractedQty(Con_no);
-				System.out.println(Contrated_quanity);
-				System.out.println(Contrated_quanity);
+				List<Object>  remainingQty =  this.fiannacialConcurenceService.RemainingQty(Con_no);
+			
+				for (Object obj : remainingQty) {
+					 if (obj instanceof Object[]) {
+					        Object[] row = (Object[]) obj;
+					            Object remainquantity = row[3];
+					            mv.addObject("remainquantity", remainquantity);
+					      } else {
+					    }
+				}
+				
+				
+				
 				List<Object> datesconcur = (List<Object>) this.fiannacialConcurenceService.dataofdates(Con_no,Payment_id);
 				
 				for (Object obj : datesconcur) {
@@ -6129,6 +6140,8 @@ public class InsertDataController
 				 mv.addObject("cost",bigIntValue);
 				 System.err.println(cost);
 			    }
+			
+			
 			
 			int allIndiaSerialNo = 1;
 //			/* int stateSerialNo = 1; */
@@ -6241,10 +6254,14 @@ public class InsertDataController
 				mv = new ModelAndView("index");
 			}
 												
+			List<Object[]> fetchMill_Namelc = this.generationAgaistLCsService.fetchMill_NameforLC();
 
+		
+			
 			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
 					this.generationAgaistLCsService.getAll();
 			mv.addObject("genrationAgainstLcs", allUserRegistration);
+			mv.addObject("fetchMill_Namelc", fetchMill_Namelc);
 			
 
 			return mv;

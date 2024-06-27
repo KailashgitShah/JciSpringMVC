@@ -21,6 +21,8 @@ public interface FinancialConcurenceService {
 	 public int calculateCharges(int  id, String contno);
 	 public void remark(String cont_no,String  con_No,int paymentId);
 	 public String ContractedQty(String cont_no);
+	 public List<Object> RemainingQty(String cont_no);
+	 public List<Object[]> DetailsForReport(String cont_no);
 	 public String fcref_nocheck();
 	 public List<Object> dataofdates(String Con_no,int Payment_id);
 	 

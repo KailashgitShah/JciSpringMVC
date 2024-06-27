@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BOE(NON-LC)" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="98fddf8b-7989-4638-b4a2-4d17dfcd8194">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="contarctdate" class="java.lang.String"/>
+	<field name="contarctno" class="java.lang.String"/>
+	<field name="cropyear" class="java.lang.String"/>
+	<field name="invoicevalue" class="java.lang.String"/>
+	<field name="bosdate" class="java.lang.String"/>
+	<field name="billofsupply" class="java.lang.String"/>
+	<field name="unitaddress" class="java.lang.String"/>
+	<field name="unitname" class="java.lang.String"/>
+	<field name="currentdate" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="419" splitType="Stretch">
+			<staticText>
+				<reportElement x="182" y="3" width="224" height="17" forecolor="#000066" uuid="09dfcd27-34e4-4985-bea5-fe3de36959fe"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THE JUTE COPRATION OF INDIA LIMITED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="20" width="163" height="21" uuid="07dfcbd3-25e4-41ae-8674-b665a5ac8d2d"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[A Goverment of India Enterprise]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="41" width="184" height="46" uuid="08b42d89-bee6-4209-ba07-c30d1132c433"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[      Registered Office
+Patsan Bhavan, 3rd and 4th Floor, Block-CF New Town, Kolkata - 700156]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="1" width="40" height="18" uuid="439aeee5-a7e6-4698-90aa-b8d7a8cf577d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-Mail :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="16" width="50" height="19" uuid="46546e70-4a56-4b30-ab75-f03d5c5b6010"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Website :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="82" width="40" height="19" uuid="2864689c-f528-4a9e-8f6e-7b12919d1898"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="79" width="28" height="22" uuid="4285481c-5910-4b0b-986c-e2a93e416e6e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[To,
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="130" width="40" height="19" uuid="45df3934-5d98-4a6b-8159-ff294603651b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUB :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="129" width="203" height="18" uuid="94414e2c-a285-45aa-86c2-36eb47fd2715"/>
+				<text><![CDATA[Submission of our Bill of Supply bearing No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="274" y="129" width="114" height="18" uuid="1b42ffd4-a981-41a6-b795-551805a5c4c5"/>
+				<textFieldExpression><![CDATA[$F{billofsupply}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="392" y="129" width="20" height="16" uuid="88fdd999-7ff7-4c7c-98e4-5b86f2362e32"/>
+				<text><![CDATA[dt .]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="418" y="129" width="80" height="18" forecolor="rgba(11, 11, 18, 0.98039216)" uuid="fa04ddbd-9626-410f-9f09-84d695ba404c"/>
+				<textFieldExpression><![CDATA[$F{bosdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="500" y="128" width="64" height="19" uuid="e2d81459-947a-4d8b-8a2e-7a7bb33c935f"/>
+				<text><![CDATA[Amounting]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="146" width="20" height="16" uuid="5dc64369-635e-466e-9ade-e462e90f7683"/>
+				<text><![CDATA[to]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="147" width="100" height="18" uuid="d9eae3df-56bb-4641-8796-9db5365b3a61"/>
+				<textFieldExpression><![CDATA[$F{invoicevalue}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="195" y="148" width="219" height="19" uuid="6a3c84b3-f706-4b52-9d61-2db0b611ee6d"/>
+				<text><![CDATA[under CAD/Direct Cash/Pay Order.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="184" width="66" height="15" uuid="a2773c94-e418-4085-816e-5a8ba7b127ff"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dear Sir(s),]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="203" width="484" height="20" uuid="ec601473-9720-4f1c-9478-756975553b1b"/>
+				<text><![CDATA[Enclosed herewith please find above Bill of Supply in duplicate together with relevant Lorry]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="227" width="484" height="18" uuid="e2a6231f-bcc0-460f-892c-96daa1fc962d"/>
+				<text><![CDATA[Challan / Consignment Note / R.R. / M.R. / Boat Note towards the despatched of raw jute of the Crop Year]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="489" y="227" width="56" height="16" uuid="16e84fa7-3b70-4d15-868e-2ce031341eee"/>
+				<textFieldExpression><![CDATA[$F{cropyear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="245" width="95" height="14" uuid="2fb55b9c-7499-4e1a-87a7-b7c122d9b674"/>
+				<text><![CDATA[against Contract No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="97" y="245" width="156" height="15" uuid="69b0e15a-bf0c-4f75-9c3a-1c0158d06049"/>
+				<textFieldExpression><![CDATA[$F{contarctno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="262" y="248" width="20" height="16" uuid="94db3d49-c44a-4ff1-bff4-a06394998a48"/>
+				<text><![CDATA[dt .]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="246" width="80" height="18" uuid="3b97ecf0-d991-4929-97cf-b0b9b3536024"/>
+				<textFieldExpression><![CDATA[$F{contarctdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="63" y="272" width="484" height="20" uuid="b08d71b2-3681-4331-9a23-5d3193fdb403"/>
+				<text><![CDATA[In this connection, you are requested to note that the above Bill of Supply have been adjusted]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="294" width="212" height="20" uuid="117fe1d8-120c-4cb5-a8c4-64accb1f8db0"/>
+				<text><![CDATA[your CAD account / submitted on direct basis.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="317" width="100" height="20" uuid="665acd57-2967-425b-816e-e4204807ce56"/>
+				<text><![CDATA[Thanking you,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="320" width="84" height="20" uuid="7bb9ff19-6feb-4655-a677-b7f1e3ceffbe"/>
+				<text><![CDATA[Yours faithfully,
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="355" width="100" height="20" uuid="4171c058-e6b6-421f-8ba3-3dfd40e4149c"/>
+				<text><![CDATA[Enclosure : As above]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="385" width="251" height="20" uuid="889c51f0-0160-4a87-9eb8-cbece2b10201"/>
+				<text><![CDATA[(Assistant Finance Manager / Deputy Finance Manager)
+above Bill of Supply have been adjusted]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="22" y="79" width="80" height="14" forecolor="rgba(11, 11, 18, 0.98039216)" uuid="0111a2cc-6b7e-4874-a665-3886aa951e66"/>
+				<textFieldExpression><![CDATA[$F{unitname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="486" y="1" width="89" height="18" uuid="412cb342-6209-4942-8619-89458c4c1ce4"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[jci@jcimail.in]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="488" y="17" width="89" height="18" uuid="8635cdbd-6a53-4a8c-9077-56e07efc024f"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[www.jutecorp.in]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="22" y="100" width="240" height="18" uuid="a11d0cb6-c517-49d2-9997-5cddf5786ce2"/>
+				<textFieldExpression><![CDATA[$F{unitaddress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="82" width="66" height="18" uuid="1fdb6077-f52c-47fe-b3f0-5905fc1b3d29"/>
+				<textFieldExpression><![CDATA[$F{currentdate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

@@ -35,5 +35,56 @@ public class GenerationAgaistLCsServiceImpl implements GenerationAgaistLCsServic
 
 
 
+	@Override
+	public List<Object[]> fetchMill_NameforLC() {
+	
+		return generationAgaistLCsDao.fetchMill_NameforLC();
+	}
+
+
+
+	@Override
+	public List<Object> contractonmill(String millname) {
+		
+		return generationAgaistLCsDao.contractonmill(millname);
+	}
+
+
+
+	@Override
+	public List<Object[]> listdetailsofpaymemt( String st) {
+		
+		return generationAgaistLCsDao.listdetailsofpaymemt(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> listdetailsbillofsupplly(String st) {
+	
+		return generationAgaistLCsDao.listdetailsbillofsupplly(st);
+	}
+
+
+
+
+
+
+
+	@Override
+	public List<Object[]> forIFSC(String st) {
+		return generationAgaistLCsDao.forIFSC(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> forQtyintopsheet(String st) {
+	
+		return generationAgaistLCsDao.forQtyintopsheet(st);
+	}
+
+
+
 
 }

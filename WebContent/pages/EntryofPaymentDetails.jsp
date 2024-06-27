@@ -171,17 +171,25 @@
 
 										<div class="row">
 											
+<!-- 
+										<div class="col-sm-4 form-group">
+										    <label for="Instrumentno">Instrument No</label> <span class="text-danger">*</span>
+										    &nbsp; <span id="instrumentError" class="text-danger"></span>
+										    <input class="form-control" name="Instrument" id="Instrumentno"
+										           oninput="validateInstrumentNo(this);"
+										           maxlength="16" type="text" required>
+										</div> -->
+										
+                                         <div class="col-sm-4 form-group">
+										        <label>Instrumentno</label>
+										        <span class="text-danger">*</span>&nbsp;
+										        <span id="MR_N" name="MR_dante" class="text-danger"></span>
+										        <input class="form-control" name="Instrument" id="Instrumentno" type="text" maxlength="16"
+										            oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);" pattern="[A-Za-z0-9/-]*"
+										            title="Only alphanumeric characters, slashes, and hyphens are allowed" required>
+										    </div>
 
-											<div class="col-sm-4 form-group">
-												<label>Instrument No</label> <span class="text-danger">*
-												</span>&nbsp; <span id="instrument" name=Instrument
-													class="text-danger"> </span> <input class="form-control"
-													name="Instrument" id="Instrumentno"
-													oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
-													maxlength="16" type="text" pattern="[A-Za-z0-9/-]*"
-													title="Only alphanumeric characters, slashes, and hyphens are allowed"
-													required>
-											</div>
+
 
 
 
@@ -825,16 +833,24 @@ $(document).ready(function() {
 
 </script>
 
-<script>
-    function validateInstrumentNo(input) {
-        var pattern = /^[A-Za-z0-9/-]*$/;
-        if (!pattern.test(input.value)) {
-            input.setCustomValidity("Only alphanumeric characters, slashes, and hyphens are allowed.");
-        } else {
-            input.setCustomValidity("");
+ <script>
+        function validateInstrumentNo(input) {
+        	  var pattern = /^[A-Za-z0-9/-]*$/; // Pattern to allow alphanumeric characters, slashes, and hyphens
+        	    var inputValue = input.value; // Get the input value
+
+        	    if (!pattern.test(inputValue)) {
+        	        input.setCustomValidity("Only alphanumeric characters, slashes (/), and hyphens (-) are allowed.");
+        	        document.getElementById("MR_N").textContent = "Only alphanumeric characters, slashes, and hyphens are allowed"; 
+        	        input.value = inputValue.slice(0, -1);// Display error message near the input
+        	    } else {
+        	        input.setCustomValidity("");
+        	        document.getElementById("MR_N").textContent = ""; // Clear error message if input is valid
+        	    } // Update input value to uppercase
         }
-    }
-</script>
+    </script>
+
+
+
 
 <script>
     $(document).ready(function() {

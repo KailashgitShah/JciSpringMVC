@@ -105,6 +105,19 @@ public class GenerationOfBillSupplyModel {
 	
 	@Column(name = "DPCID")
 	private String DPCID;
+	
+	@Column(name = "millcode")
+	private String millcode;
+	
+	
+
+	public String getMillcode() {
+		return millcode;
+	}
+
+	public void setMillcode(String millcode) {
+		this.millcode = millcode;
+	}
 
 	public String getDPCID() {
 		return DPCID;

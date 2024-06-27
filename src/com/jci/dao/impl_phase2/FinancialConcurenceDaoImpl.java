@@ -175,12 +175,48 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 	@Override
 //	public String fcref_nocheck(String fcref_no) {
 		public String fcref_nocheck() {
-        String sql = "SELECT  count(*) FROM jcifinancial_concurrence ";
+//		String sql = "SELECT  count(*) FROM jcifinancial_concurrence WHERE FC_Ref_No = '" + fcref_no + "' ";
+//		int total = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+//
+//		if (total > 0)
+//			return "1";
+//		else
+//			return "0";
+		
+		String sql = "SELECT  count(*) FROM jcifinancial_concurrence ";
 		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
 		total++;
 		
 		return String.valueOf(total);
 
+	}
+
+	@Override
+	public List<Object> RemainingQty(String cont_no) {
+		String hql1 = " SELECT \r\n"
+				+ "    COALESCE(TRY_CAST(b.Contracted_Qty AS DECIMAL(10, 2)), 0) AS Contracted_Qty,  \r\n"
+				+ "    COALESCE(TRY_CAST(b.QtyAllowed AS DECIMAL(10, 2)), 0) AS QtyAllowed,\r\n"
+				+ "    a.Contract_No,\r\n"
+				+ "    (COALESCE(TRY_CAST(b.Contracted_Qty AS DECIMAL(10, 2)), 0) - COALESCE(TRY_CAST(b.QtyAllowed AS DECIMAL(10, 2)), 0)) AS remainingAmount\r\n"
+				+ "FROM  jcipayment_arrangement AS a \r\n"
+				+ "LEFT JOIN  jcifinancial_concurrence AS b  \r\n"
+				+ "ON  b.Contractno = a.Contract_No\r\n"
+				+ "WHERE a.Contract_No='" + cont_no + "'";
+
+		return (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(hql1).list();
+
+	}
+
+	@Override
+	public List<Object[]> DetailsForReport(String cont_no) {
+		  String sql ="select a.Contractno,a.QtyAllowed ,b.Instrument_No,b.Instrument_Date,b.ifsc,b.Last_shipment_date,b.Expiry_date,\r\n"
+		  		+ " b.Auto_revolving_amount,b.millcode from  jcifinancial_concurrence as a LEFT join  jcipayment_arrangement as b on b.Contract_No=a.Contractno"
+			  		+ " WHERE Contractno= '" +cont_no+"'"; 
+			    
+					 		
+					
+					 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+					 return resultList1;
 	}
 
 }

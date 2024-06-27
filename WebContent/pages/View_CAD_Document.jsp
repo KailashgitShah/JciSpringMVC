@@ -128,6 +128,7 @@
 										<th>BOS DATE</th>
 										<th>CAD Date</th>
 										<th>BOS NO</th>
+										<th>BOE doc</th>
 									</tr>
 								</thead>
                            <tbody>
@@ -147,6 +148,21 @@
 										<td><%= cashDocumentModel.getBOS_Date() %></td>
 										<td><%= sdf.format(cashDocumentModel.getCAD_Date()) %></td>
 										<td><%= cashDocumentModel.getBOS_No() %></td>
+										<%--  <td>
+								            <a href="downloadPDFforbos.obj?filename=<%= cashDocumentModel.getbOEDOCpathnonlc() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> View boedoc </a>
+								        </td> --%>
+								        
+								        <td>
+								        
+								            <a href="downloadPDFforboedocnonlc.obj?contractno=<%= cashDocumentModel.getContarctNo() %>
+								            &InvoiceValue=<%= cashDocumentModel.getInvoicevalue() %>
+								            &BosNO=<%= cashDocumentModel.getBOS_No() %>
+								            &BosDate=<%= cashDocumentModel.getBOS_Date() %>
+								            &millcode=<%= cashDocumentModel.getMillcode() %>"
+								               class="btn btn-primary btn-sm" target="_blank"> download billofexchange </a>
+								        </td> 
+										
 									</tr>
 									<%
 										}
