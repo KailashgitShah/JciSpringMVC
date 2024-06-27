@@ -47,6 +47,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.digester.ObjectParamRule;
+import org.apache.poi.poifs.storage.ListManagedBlock;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -92,6 +94,7 @@ import com.jci.model.CreditNoteDTO;
 import com.jci.model.CreditNoteSettled;
 import com.jci.model.CreditNoteSettledDTO;
 import com.jci.model.CreditNotes;
+import com.jci.model.DemandNoteDto;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.EntryofGradeCompositionModel;
@@ -3760,7 +3763,7 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "fetchingdatatocontractno", method = RequestMethod.GET)
 	public String fetchingdatatocontractnoq(@RequestParam("contractno") String contractno) {
-		GenrationDEmandDto getcontractddownlist = genratedDemandNoteService.fetchContract_no(contractno);
+		List<Object[]> getcontractddownlist = (List<Object[]>) genratedDemandNoteService.fetchContract_no(contractno);
 		System.err.println("resultList++++++++++" + getcontractddownlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(getcontractddownlist);
@@ -3800,14 +3803,14 @@ public class Controller_V {
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		List<Object> getdataList1 = this.genratedDemandNoteService.fetchcon_no();
+		List<Object> ContractList = this.genratedDemandNoteService.fetchcon_no();
 
-		int lastSerialNumber = 1640;
-		String demandNoteNumber = generateDemandNoteNumber(request.getSession(), lastSerialNumber);
+		
+		String demandNoteNumber = generateDemandNoteNumber(request.getSession());
 		mv.addObject("demandNoteNumber", demandNoteNumber);
-
+		mv.addObject("contract", ContractList);
 		// String demandNoteNumber = generateDemandNoteNumber();
-		mv.addObject("demandNoteNumber", demandNoteNumber);
+		
 		// GenrationDEmandDto cotract_No =
 		// this.genratedDemandNoteService.fetchContract_no();
 
@@ -3815,7 +3818,7 @@ public class Controller_V {
 //			Date date =cotract_No.getContract_date();
 //			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 //			String formattedDate = dateFormat.format(date);
-		mv.addObject("getdataList1", getdataList1);
+	
 		// mv.addObject("demandNoteNumber", demandNoteNumber);
 //			mv.addObject("cotract_No", cotract_No);
 //			mv.addObject("formattedDate", formattedDate);
@@ -3823,24 +3826,33 @@ public class Controller_V {
 	}
 
 	// private String generateDemandNoteNumber()
-	private String generateDemandNoteNumber(HttpSession session, int lastSerialNumber) {
-		Date currentDate = new Date();
-		SimpleDateFormat yearFormat = new SimpleDateFormat("yy");
-		String fiscalYear = yearFormat.format(currentDate);
+	private String generateDemandNoteNumber(HttpSession session) {
+		
+        Calendar calendar = Calendar.getInstance();
+   int currentYear = calendar.get(Calendar.YEAR);
+   int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
 
-//		    int lastSerialNumber = getLastSerialNumberFromDatabase();
-		int newSerialNumber = lastSerialNumber + 1;
+   int financialYearStart, financialYearEnd;
 
-		String stringdemand = "D" + fiscalYear + String.format("%06d", newSerialNumber);
-		String status = this.genratedDemandNoteService.demandnono(stringdemand);
-		if ("1".equals(status)) {
+   if (currentMonth >= 4) { // April or later
+       financialYearStart = currentYear;
+       financialYearEnd = currentYear + 1;
+   } else { // January to March
+       financialYearStart = currentYear - 1;
+       financialYearEnd = currentYear;
+   } 
+	
+       String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+           
+        String yearCode = endYearLastTwoDigits;
+        String countString = this.genratedDemandNoteService.count();
+        
+		
 
-			return generateDemandNoteNumber(session, newSerialNumber);
-		} else {
+        String stringdemand = "D" + yearCode + String.format("%06d", Integer.parseInt(countString)) +"19"+String.format("%05d", Integer.parseInt(countString));
 
-			return stringdemand;
-		}
-
+			/*	+ String.format("%06d", count);*/
+		return stringdemand;
 	}
 
 	// save entry of geration demand note form field
@@ -3859,7 +3871,7 @@ public class Controller_V {
 			String Payment_Ref = request.getParameter("Payment_Ref");
 			String contractedQtyStr = request.getParameter("Contracted_Qty");
 			double contractedQty = Double.parseDouble(contractedQtyStr);
-
+         
 			String Unit_charge_str = request.getParameter("Unit_charge");
 			double Unit_charge = Double.parseDouble(Unit_charge_str);
 			String Carrying_cost_str = request.getParameter("Carrying_cost");
@@ -3870,7 +3882,15 @@ public class Controller_V {
 			// String Dn_status = request.getParameter("Dn_status");
 			String Demand_note_no = request.getParameter("Demand_note_no");
 			String Demand_note_date = request.getParameter("Demand_note_date");
-
+			String paymentDate = request.getParameter("q");
+			
+			String waiver= request.getParameter("Waiver_flag");
+			
+			System.err.println(waiver);
+			System.err.println(waiver);
+			System.err.println(waiver);
+			System.err.println(waiver);
+			System.err.println(waiver);
 			GenrationDemandNoteModel genrationDemandNoteModel = new GenrationDemandNoteModel();
 
 			genrationDemandNoteModel.setContract_no(Contract_No);
@@ -3882,26 +3902,140 @@ public class Controller_V {
 			genrationDemandNoteModel.setContract_date(Contract_Date);
 			genrationDemandNoteModel.setPayment_due_date(Payment_Due_Date);
 			// genrationDemandNoteModel.setPayment_date(Cancellation_Date);
-			genrationDemandNoteModel.setPayment_date("somevalue");
+			genrationDemandNoteModel.setPayment_date(paymentDate);
 			genrationDemandNoteModel.setDelay_period(Delay_period);
 			genrationDemandNoteModel.setPayment_ref(Payment_Ref);
 			genrationDemandNoteModel.setContracted_qty(contractedQty);
 			genrationDemandNoteModel.setUnit_charge(Unit_charge);
 			genrationDemandNoteModel.setCarrying_cost(Carrying_cost);
-			genrationDemandNoteModel.setWaiver_flag(0);
+			if ("1".equals(waiver)) {
+			    genrationDemandNoteModel.setWaiver_flag(1); 
+			} else {
+			    genrationDemandNoteModel.setWaiver_flag(0);
+			}
 			genrationDemandNoteModel.setRemarks(Remarks);
 			genrationDemandNoteModel.setWaiver_approved_by("kailash");
 			genrationDemandNoteModel.setDn_status(0);
-			genrationDemandNoteModel.setCreated_by("kailash");
-
+			genrationDemandNoteModel.setCreated_by("username");
+			genrationDemandNoteModel.setStateCode("19");
 			Date date = new Date();
 			// Date instdate4 = formatter1.parse(Created_on);
 			genrationDemandNoteModel.setCreated_on(date);
 			// Date date= new Date();
 
 			this.genratedDemandNoteService.create(genrationDemandNoteModel);
+			this.genratedDemandNoteService.updateStatus(Contract_No);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+			
+			
+			/*
+			 * try { JasperReport jasperReport1 =
+			 * JasperCompileManager.compileReport(creditNoteSettledJRXML); //
+			 * .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
+			 * 
+			 * Map<String, Object> parameters = new HashMap<String, Object>();
+			 * parameters.put("Contract_No", Contract_No); parameters.put("Contract_Date",
+			 * Contract_Date); parameters.put("Payment_Due_Date", Payment_Due_Date);
+			 * 
+			 * parameters.put("Delay_period", Delay_period ); parameters.put("Payment_Ref",
+			 * Payment_Ref); parameters.put("contractedQtyStr", contractedQtyStr );
+			 * parameters.put("Unit_charge", Unit_charge );
+			 * parameters.put("Carrying_cost_str", Carrying_cost_str ); List<Object[]>
+			 * RecipientConsigneeData = genratedDemandNoteService.getData(Contract_No);
+			 * 
+			 * List<Object[]> detailsDebitList =
+			 * genratedDemandNoteService.DetailsDebit(Demand_note_no); for (Object[] details
+			 * : RecipientConsigneeData) { parameters.put("Millname", details[0]);
+			 * parameters.put("Consignee_Add0", details[1]);
+			 * parameters.put("Consignee_Add1", details[2]);
+			 * parameters.put("Consignee_Add2", details[3]);
+			 * parameters.put("Consignee_Add3", details[4]);
+			 * parameters.put("Consignee_StateCode", details[5]);
+			 * parameters.put("Consignee_State", details[6]);
+			 * parameters.put("Consignee_gst", details[7]);
+			 * 
+			 * }
+			 * 
+			 * for (Object[] row : RecipientConsigneeData) { parameters.put("Rpt_Gst",
+			 * row[7]); parameters.put("Rpt_Pan", row[8]); parameters.put("Rpt_State",
+			 * row[9]); parameters.put("Rpt_StateCode", row[10]); parameters.put("Rpt_Add0",
+			 * row[11]); parameters.put("Rpt_Add1", row[12]); parameters.put("Rpt_Add2",
+			 * row[13]); parameters.put("Rpt_Add2", row[14]); parameters.put("Rpt_Name",
+			 * row[15]); }
+			 * 
+			 * for (Object[] row :detailsDebitList ) { parameters.put("Contract_no",
+			 * row[0]); parameters.put("Contract_date", row[1]);
+			 * parameters.put("Payment_Ref", row[2]); parameters.put("Payment_Date",
+			 * row[3]); parameters.put("Demand_Date", row[4]); parameters.put("Demand_no",
+			 * row[5]);
+			 * 
+			 * } int counter = 1; List<Object[]> DemandNoteData =
+			 * this.genratedDemandNoteService.DemandNoteData(Demand_note_no);//DTO Double
+			 * total =0.0; for(Object[] row:DemandNoteData) { DemandNoteDto demandNoteDto =
+			 * new DemandNoteDto(); String contract_noString =(String) row[0]; String
+			 * ContractDate = (String) row[1]; String ContractQty = (String) row[2]; String
+			 * paymentDueDate = (String) row[3]; String paymentRef = (String) row[4]; String
+			 * delay = (String) row[5]; String payDate = (String) row[6]; String DemandDate
+			 * = (String) row[7]; Double CarryingCost = (Double) row[8];
+			 * 
+			 * demandNoteDto.setContractNo(contract_noString);
+			 * demandNoteDto.setContractDate(ContractDate);
+			 * demandNoteDto.setContractQty(ContractQty);
+			 * demandNoteDto.setScheduledPaymentDate(paymentDueDate);
+			 * demandNoteDto.setActualPaymentDate(paymentDate);
+			 * demandNoteDto.setDelayDays(delay);
+			 * demandNoteDto.setPaymentRefString(paymentRef);
+			 * demandNoteDto.setPayDate(paymentDate);
+			 * demandNoteDto.setCarryingCostString(Carrying_cost); total+=CarryingCost; }
+			 * 
+			 * String amountInWord = convertNumberToCurrencyWords(total);
+			 */
+             
+
+//                // Prepare data sources
+//                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(creditNoteSettleDtoList);
+//
+//                // Fill JasperPrints
+//                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+//                response.setContentType("application/pdf");
+//                response.setHeader("Content-Disposition", "inline");
+//                // response.setHeader("Content-Disposition", "attachment;
+//                // filename=TestCreditNote.pdf");
+//                // try (OutputStream out = response.getOutputStream()) {
+//                
+//                String documentName = "creditNoteSettllemt" + challan + ".pdf";
+//
+//                final File theDir = new File(creditNoteSettlementPath);
+//                if (!theDir.exists()) {
+//                      theDir.mkdirs();
+//                }
+//
+//                String saveFile = creditNoteSettlementPath + File.separator + documentName;
+//
+//                try (OutputStream out = new FileOutputStream(saveFile)) {
+//                      JRPdfExporter exporter = new JRPdfExporter();
+//                exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+//                
+//                exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+//                      exporter.exportReport();
+//                
+//                } catch (Exception e) {
+//                      System.out.println(e.getLocalizedMessage());
+//                }
+//
+//                //return new ModelAndView(new RedirectView("creditNoteList.obj"));
+//
+//          } catch (JRException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//          }
+//
+//			
+//			
+//			
+//			
+			
 
 		} catch (Exception e) {
 
@@ -5021,12 +5155,8 @@ public class Controller_V {
 
 	@RequestMapping("saveConfirmationOfClaimSettelment.obj")
 	public ModelAndView saveConfirmationOfClaimSettelment(HttpSession session, HttpServletRequest request,
-			RedirectAttributes redirectAttributes,
-			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
-		final File theDir = new File("Confirmationsettlement");
-		if (!theDir.exists()) {
-			theDir.mkdirs();
-		}
+			RedirectAttributes redirectAttributes) {
+	
 
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -5041,23 +5171,22 @@ public class Controller_V {
 
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
 
-			final File theDirect = new File(ConfirmationOfClaim);
-			if (!theDirect.exists()) {
-				theDirect.mkdirs();
-			}
+			
 
 			double defaultValue = 0.0;
 
 			String Inspection_by1 = request.getParameter("Inspectionby1");
 
-			final String filename = SupportingDocument.getOriginalFilename();
-			System.err.println(filename + "---------");
+			
+			
 			String rolename = (String) session.getAttribute("rolename");
 
 			String Settlement_Amount1 = request.getParameter("SettlementAmount");
-
+			
 			for (int i = 0; i < cnt; i++) {
 				ConfirmationClaimSettlementModel confirmationClaimSettlementModel = new ConfirmationClaimSettlementModel();
+				String juteVar= request.getParameter("jv" + i);
+				String juteGrade= request.getParameter("jg" + i);
 				String fullcontractno = request.getParameter("cont" + i);
 				System.err.println(fullcontractno);
 				String Challan_No1 = request.getParameter("ch" + i);
@@ -5146,6 +5275,8 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setChallan_No(Challan_No1);
 
 				confirmationClaimSettlementModel.setInspection_by(username);
+				confirmationClaimSettlementModel.setJute_Grade(juteGrade);
+				confirmationClaimSettlementModel.setJute_Variety(juteVar);
 
 //           confirmationClaimSettlementModel.setSupporting_doc(Supporting_document1);
 
@@ -5158,26 +5289,8 @@ public class Controller_V {
 				confirmationClaimSettlementModel.setCreated_by(username);
 				confirmationClaimSettlementModel.setCreated_on(date1);
 				confirmationClaimSettlementModel.setActive("1");
-				File file = null;
-				String url = "";
-				String pathurl = "";
-				if (!SupportingDocument.isEmpty()) {
-					try {
-						file = new File(ConfirmationOfClaim + SupportingDocument.getOriginalFilename());
-						final OutputStream os = new FileOutputStream(file);
-						os.write(SupportingDocument.getBytes());
-						os.close();
-					} catch (Exception e) {
-						System.err.println(e.getLocalizedMessage());
-						e.printStackTrace();
-						System.err.println("inside catch file----");
-					}
-					pathurl = file.getAbsolutePath();
-					final String path = url = SupportingDocument.getOriginalFilename();
-					confirmationClaimSettlementModel.setSupporting_doc(url);
-					System.err.println("outside catch file----");
-
-				}
+				confirmationClaimSettlementModel.setMill_Acc("0");
+				
 				this.confirmationofClaimSettlementService.create(confirmationClaimSettlementModel);
 			}
 
@@ -6394,18 +6507,120 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		String Ro_id = (String) session.getAttribute("region");
+           List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementData(username);
+           System.err.println(getSettlementidlist);
+           redirectAttributes.addFlashAttribute("msg",
+                        "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+           ModelAndView mv = new ModelAndView("verifyClaimReport");
+           mv.addObject("getSettlementidlist", getSettlementidlist);
 
-		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementData(username);
-		System.err.println(getSettlementidlist);
-		redirectAttributes.addFlashAttribute("msg",
-				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-		ModelAndView mv = new ModelAndView("verifyClaimReport");
-		mv.addObject("getSettlementidlist", getSettlementidlist);
+           return mv;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value= {"settlementFA"}, method = RequestMethod.GET)
+    public String settlementFA(HttpSession session,HttpServletRequest request,@RequestParam("setId") String setId) {
+    	  String username = (String) request.getSession().getAttribute("usrname");
+         System.err.println("Reached++"+setId);
+    	  List<Object[]> setIdData =confirmationofClaimSettlementService.getFAData(setId);
+    	  System.err.println(setIdData.toString());
+    	  Gson gson = new Gson();
+  		String resultString = new Gson().toJson(setIdData);
+  		System.err.println("-----------------------" + setIdData);
+  		return resultString;
+    }
+    @RequestMapping(value = { "verifyMillClaim" }, method = RequestMethod.GET)
+    public ModelAndView verifyMillClaim(HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+          
 
-		return mv;
+           //String Ro_id = (String) session.getAttribute("region");
+    		List<Object[]> getContractList = this.confirmationofClaimSettlementService.getContract();
+           List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.getSettlementDataMill();//Settlement Id
+           System.err.println(getContractList);
+           redirectAttributes.addFlashAttribute("msg",
+                        "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+           ModelAndView mv = new ModelAndView("verifyMillClaim");
+           mv.addObject("getSettlementidlist", getContractList);
+
+           return mv;
+    }
+    @ResponseBody
+    @RequestMapping(value= {"settlementMill"}, method = RequestMethod.GET)
+    public String settlementMill(HttpSession session,HttpServletRequest request,@RequestParam("setId") String setId) {
+    	 System.err.println("ReachedMillClaim");
+         System.err.println("Reached++"+setId);
+         
+    	  List<Object[]> setIdData =confirmationofClaimSettlementService.getMillData(setId);
+    	  System.err.println(setIdData.toString());
+    	  Gson gson = new Gson();
+  		String resultString = new Gson().toJson(setIdData);
+  		System.err.println("-----------------------" + setIdData);
+  		return resultString;
+    }
+
+    @RequestMapping("downloadSupportDocumentFA")
+	public void downloadDocsFA(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = ConfirmationOfClaimFA + filename;
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
 	}
-
+    
+    @ResponseBody
+	@RequestMapping(value = { "acceptClaimMill" }, method = { RequestMethod.GET })
+	public String acceptClaimMill(@RequestParam("settleId") String settleId,
+			 HttpServletRequest request, HttpSession session) {
+		System.err.println(":Reached Accept Mill");
+		
+		
+		this.confirmationofClaimSettlementService.acceptClaimMill(settleId);
+		return null;
+	}
+    
+    
+    
+    @ResponseBody
+	@RequestMapping(value = { "GetSettlementId" }, method = { RequestMethod.GET })
+	public String SettlementByContract(@RequestParam("Contract") String contract,
+			 HttpServletRequest request, HttpSession session) {
+		System.err.println(":Reached Accept Mill");
+		
+		
+		List<Object[]> list = this.confirmationofClaimSettlementService.getSettlementId(contract);
+		  Gson gson = new Gson();
+	  		String resultString = new Gson().toJson(list);
+	  		System.err.println("-----------------------" + list);
+	  		return resultString;
+	}
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

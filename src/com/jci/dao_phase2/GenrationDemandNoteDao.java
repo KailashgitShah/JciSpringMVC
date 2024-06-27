@@ -18,9 +18,14 @@ public interface GenrationDemandNoteDao {
 		public GenrationDemandNoteModel getById(int id);
 	 
 		public GenrationDemandNoteModel find(int id);
-		public GenrationDEmandDto fetchContract_no(String st);
+		public List<Object[]> fetchContract_no(String st);
 		public List<Object> fetchcon_no();
 		public String demandnono(String  st);
+		public String count();
+		public List<Object[]> getData(String contract_No);
+		public List<Object[]> getDemandNote(String demand_note_no);
+		public List<Object[]> Debitdetails(String demand_note_no);
+		public void UpdateStatus(String contract_No);
 		
 		
 }

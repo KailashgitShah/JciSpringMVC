@@ -150,8 +150,20 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		result.add(String.valueOf(list6.size()));
 		result.addAll(list6);
 
-		String sqlString8 = "SELECT TOP 5 jcidispatch_details.DI_No, jcirodetails.roname FROM jcidispatch_details INNER JOIN jcirodetails ON jcidispatch_details.Regional_Office = jcirodetails.rocode WHERE Mill_name = '"
-				+ result.get(3) + "' ORDER BY Dientry_id DESC          ;";
+		String sqlString8 = "SELECT TOP 5 \r\n"
+				+ "    jcidispatch_details.DI_No,\r\n"
+				+ "    jcirodetails.roname\r\n"
+				+ "FROM \r\n"
+				+ "    jcidispatch_details\r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcirodetails ON jcidispatch_details.Regional_Office = jcirodetails.rocode\r\n"
+				+ "inner join \r\n"
+				+ "jcimilldetailchild on jcimilldetailchild.client_unit_code = jcidispatch_details.Mill_code\r\n"
+				+ "\r\n"
+				+ "WHERE \r\n"
+				+ "    jcimilldetailchild.unit_name = '"+result.get(3)+"'\r\n"
+				+ "ORDER BY \r\n"
+				+ "    jcidispatch_details.Dientry_id DESC;";
 
 		List<String> list8 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString8).list();
 

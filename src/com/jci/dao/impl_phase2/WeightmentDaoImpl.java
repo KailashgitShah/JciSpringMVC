@@ -91,21 +91,32 @@ public class WeightmentDaoImpl implements WeightmentDao{
 	}
 	@Override
 	public void editDetails(Double gross, Double actual, Double net, Date currDate, String bosNo) {
-		String queryString = "UPDATE jciweighment_entry SET " +
-                "Verification_date = CURRENT_TIMESTAMP, " +
-                "Verification_Status = '" + 1 + "', " +
-                "truck_gross_wt = '" + gross + "', " +
-                "truck_net_wt = '" + net + "', " +
-                "truck_tare_wt = '" + actual + "' " +
-                "WHERE Bos_no = '" + bosNo + "'; " +
-                "UPDATE [XMWJCI].[dbo].[jcicontract] " +
-                "SET Contract_status = 'Verification of Weighment Slip done' " +
-                "WHERE Contract_no IN (SELECT jcibos_generation.Contract_no " +
-                                      "FROM jcibos_generation " +
-                                      "INNER JOIN jciweighment_entry ON jciweighment_entry.Bos_no = jcibos_generation.Bill_of_supply_no " +
-                                      "WHERE jciweighment_entry.Bos_no = '" + bosNo + "');";
+		String query = " UPDATE jciweighment_entry SET " +
+                " Verification_date = CURRENT_TIMESTAMP, " +
+                " Verification_Status = '" + 1 + "', " +
+                " truck_gross_wt = '" + gross + "', " +
+                " truck_net_wt = '" + net + "', " +
+                " truck_tare_wt = '" + actual + "' " +
+                " WHERE Bos_no = '" + bosNo + "'; " +
+                " UPDATE [XMWJCI].[dbo].[jcicontract] " +
+                " SET Contract_status = 'Verification of Weighment Slip done' " +
+                " WHERE Contract_no IN (SELECT jcibos_generation.Contract_no " +
+                                      " FROM jcibos_generation " +
+                                      " INNER JOIN jciweighment_entry ON jciweighment_entry.Bos_no = jcibos_generation.Bill_of_supply_no " +
+                                      " WHERE jciweighment_entry.Bos_no = '" + bosNo + "');";
 
-		int value= (int) currentSession().createSQLQuery(queryString).executeUpdate();
+		int value= (int) currentSession().createSQLQuery(query).executeUpdate();
+		
+		String q1 ="UPDATE jcidispatch_details\r\n"
+				+ "SET jcidispatch_details.Di_status = 2\r\n"
+				+ "WHERE EXISTS (\r\n"
+				+ "    SELECT 1\r\n"
+				+ "    FROM jcibos_generation\r\n"
+				+ "    WHERE jcidispatch_details.Challan_No = jcibos_generation.Challan_No\r\n"
+				+ "    AND jcibos_generation.Bill_of_supply_no = '"+bosNo+"'\r\n"
+				+ ");";
+		int v1= (int) currentSession().createSQLQuery(q1).executeUpdate();
+		
 		return ;
 		
 		

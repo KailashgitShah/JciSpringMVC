@@ -3,6 +3,8 @@ package com.jci.dao.impl_phase2;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,6 +22,8 @@ import com.jci.model.ConfirmationClaimSettlementModel;
 public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSettlementDao {
 	@Autowired
 	SessionFactory sessionFactory;
+	@Autowired
+	HttpSession session;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -141,7 +145,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	public List<Object[]> getSettlementData(String username) {
 		// TODO Auto-generated method stub
 		
-		 String resultString= "Select DISTINCT jciclaim_report_mill.Settlement_id,jciclaim_report_mill.Challan_No,jciclaim_report_mill.Contract_No,jciclaim_report_mill.Date_of_Inspection,jciclaim_report_mill.Inspection_by,jciclaim_report_mill.Mill,jciclaim_report_mill.Moisture_settlement,jciclaim_report_mill.Ncv_settlement,jciclaim_report_mill.Quality_settlement,jciclaim_report_mill.Settlement_amt,jciclaim_report_mill.Dust_settlement,jciclaim_report_mill.Dispute_flag,jciclaim_report_mill.Claim_Amount,jciclaimNomination.HoDi from jciclaim_report_mill INNER JOIN jciclaimNomination on jciclaimNomination.Settlement_id_generated = jciclaim_report_mill.Settlement_id where jciclaimNomination.FAOfficial='"+username+"' and jciclaim_report_mill.Active='1';";
+		 String resultString= "Select DISTINCT jciclaim_report_mill.Settlement_id,jciclaim_report_mill.Dispute_flag From jciclaim_report_mill JOIN jciclaimNomination on jciclaimNomination.Settlement_id_generated = jciclaim_report_mill.Settlement_id where jciclaimNomination.FAOfficial='"+username+"' and jciclaim_report_mill.Active='1' AND jciclaim_report_mill.Dispute_flag = 0;";
 		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(resultString)
 					.list();
 			System.err.println(resultList1);
@@ -163,6 +167,172 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 		String resultString ="Update jciclaim_report_mill SET Dispute_flag=1 ,Active='0' ,FA_Official='"+username+"' where Settlement_id='"+challan+"' AND Active='1';";
 		currentSession().createSQLQuery(resultString).executeUpdate();
 		return;
+	}
+
+	@Override
+	public List<Object[]> getFAData(String setId) {
+		// TODO Auto-generated method stub
+		   String sqlQuery ="SELECT DISTINCT\r\n"
+		   		+ "    nom.Mill,\r\n"
+		   		+ "    nom.ContractNo,\r\n"
+		   		+ "    nom.HoDi,\r\n"
+		   		+ "    diHo.DI_Date,\r\n"
+		   		+ "    diHo.Regional_office,\r\n"
+		   		+ "    rodetails.roname,\r\n"
+		   		+ "    nom.Challans,\r\n"
+		   		+ "    nom.Mr_number,\r\n"
+		   		+ "    nom.Mr_Date,\r\n"
+		   		+ "    mill.Crop_year,\r\n"
+		   		+ "    mill.Bale_mark,\r\n"
+		   		+ "    mill.Jute_Variety,\r\n"
+		   		+ "    mill.Jute_Grade,\r\n"
+		   		+ "    mill.No_of_Bales,\r\n"
+		   		+ "    mill.Actual_qty,\r\n"
+		   		+ "    mill.MR_qty,\r\n"
+		   		+ "    mill.QualityPercentage,\r\n"
+		   		+ "    mill.MoistureContent,\r\n"
+		   		+ "    mill.DustAmt,\r\n"
+		   		+ "    mill.NCV_percentage,\r\n"
+		   		+ "    nom.Settlement_id_generated,\r\n"
+		   		+ "    nom.dateofshipment,\r\n"
+		   		+ "    dispatchdetails.Place_of_Shipment,\r\n"
+		   		+ "    jcipurchase.centername,\r\n"
+		   		+ "    claim_report.Quality_settlement,\r\n"
+		   		+ "    claim_report.Moisture_settlement,\r\n"
+		   		+ "    claim_report.Ncv_settlement,\r\n"
+		   		+ "    claim_report.Dust_settlement,\r\n"
+		   		+ "    claim_report.Claim_Amount,\r\n"
+		   		+ "    claim_report.Settlement_amt,\r\n"
+		   		+ "     CONVERT(varchar(10), claim_report.Date_of_Inspection, 103) AS Formatted_Date_of_Inspection\r\n"
+		   		+ "FROM\r\n"
+		   		+ "    jciclaimNomination nom\r\n"
+		   		+ "INNER JOIN\r\n"
+		   		+ "    jcimill_receipt mill ON mill.MR_no = nom.Mr_number\r\n"
+		   		+ "INNER JOIN\r\n"
+		   		+ "    jciDI_ho diHo ON diHo.DI_no = nom.HoDi\r\n"
+		   		+ "INNER JOIN\r\n"
+		   		+ "    jcirodetails rodetails ON rodetails.rocode = diHo.Regional_office\r\n"
+		   		+ "INNER JOIN\r\n"
+		   		+ "    jcidispatch_details dispatchdetails ON dispatchdetails.Challan_no = nom.Challans\r\n"
+		   		+ "INNER JOIN\r\n"
+		   		+ "    jcipurchasecenter jcipurchase ON jcipurchase.CENTER_CODE = dispatchdetails.Place_of_Shipment\r\n"
+		   		+ "INNER JOIN\r\n"
+		   		+ "    jciclaim_report_mill claim_report ON nom.Settlement_id_generated = claim_report.Settlement_id\r\n"
+		   		+ "WHERE\r\n"
+		   		+ "    nom.Settlement_id_generated = '"+setId+"'\r\n"
+		   		+ "    AND claim_report.Active = '1' \r\n"
+		   		+ "    AND claim_report.Jute_Grade = mill.Jute_Grade \r\n"
+		   		+ "    AND mill.Jute_Variety = claim_report.Jute_Variety;\r\n"
+		   		+ ";";
+		   List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery)
+					.list();
+			System.err.println(resultList1);
+			return resultList1;
+	}
+
+	@Override
+	public List<Object[]> getMillAcc() {
+		// TODO Auto-generated method stub
+	 String millcode= (String) session.getAttribute("millcode");
+		   String sqlQuery ="Select Distinct jciclaim_report_mill.Settlement_id,jciclaim_report_mill.Dispute_flag from jciclaim_report_mill  Inner join jciclaimNomination \r\n"
+		   		+ "on jciclaimNomination.Settlement_id_generated=jciclaim_report_mill.Settlement_id Inner join jcimilldetailchild \r\n"
+		   		+ "on jcimilldetailchild.unit_name=jciclaimNomination.Mill Where  jciclaim_report_mill.Dispute_flag=2 and\r\n"
+		   		+ " jcimilldetailchild.client_unit_code='"+millcode+"' AND jciclaim_report_mill.Mill_Acc='0' ;";
+		   List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery)
+					.list();
+			System.err.println(resultList1);
+			return resultList1;
+	}
+
+	@Override
+	public List<Object[]> getMillData(String setId) {
+		// TODO Auto-generated method stub
+		  String sqlQuery = " SELECT Distinct\r\n"
+			   		+ "    nom.Mill,\r\n"
+			   		+ "    nom.ContractNo,\r\n"
+			   		+ "    nom.HoDi,\r\n"
+			   		+ "    diHo.DI_Date,\r\n"
+			   		+ "    diHo.Regional_office,\r\n"
+			   		+ "    rodetails.roname,\r\n"
+			   		+ "    nom.Challans,\r\n"
+			   		+ "    nom.Mr_number,\r\n"
+			   		+ "    nom.Mr_Date,\r\n"
+			   		+ "    mill.Crop_year,\r\n"
+			   		+ "    mill.Bale_mark,\r\n"
+			   		+ "    mill.Jute_Variety,\r\n"
+			   		+ "    mill.Jute_Grade,\r\n"
+			   		+ "    mill.No_of_Bales,\r\n"
+			   		+ "    mill.Actual_qty,\r\n"
+			   		+ "    mill.MR_qty,\r\n"
+			   		+ "    mill.QualityPercentage,\r\n"
+			   		+ "    mill.MoistureContent,\r\n"
+			   		+ "    mill.DustAmt,\r\n"
+			   		+ "    mill.NCV_percentage,\r\n"
+			   		+ "    nom.Settlement_id_generated,\r\n"
+			   		+ "    nom.dateofshipment,\r\n"
+			   		+ "    dispatchdetails.Place_of_Shipment,\r\n"
+			   		+ "    jcipurchase.centername,\r\n"
+			   		+ "    claim_report.Quality_settlement,\r\n"
+			   		+ "    claim_report.Moisture_settlement,\r\n"
+			   		+ "    claim_report.Ncv_settlement,\r\n"
+			   		+ "    claim_report.Dust_settlement,\r\n"
+			   		+" claim_report.FA_doc,\r\n "
+			   		+ "    claim_report.Claim_Amount,\r\n"
+			   		+ "    claim_report.Settlement_amt,\r\n"
+			   		+ "     CONVERT(varchar(10), claim_report.Date_of_Inspection, 103) AS Formatted_Date_of_Inspection\r\n"
+			   		+ "FROM\r\n"
+			   		+ "    jciclaimNomination nom\r\n"
+			   		+ "INNER JOIN\r\n"
+			   		+ "    jcimill_receipt mill ON mill.MR_no = nom.Mr_number\r\n"
+			   		+ "INNER JOIN\r\n"
+			   		+ "    jciDI_ho diHo ON diHo.DI_no = nom.HoDi\r\n"
+			   		+ "INNER JOIN\r\n"
+			   		+ "    jcirodetails rodetails ON rodetails.rocode = diHo.Regional_office\r\n"
+			   		+ "INNER JOIN\r\n"
+			   		+ "    jcidispatch_details dispatchdetails ON dispatchdetails.Challan_no = nom.Challans\r\n"
+			   		+ "INNER JOIN\r\n"
+			   		+ "    jcipurchasecenter jcipurchase ON jcipurchase.CENTER_CODE = dispatchdetails.Place_of_Shipment\r\n"
+			   		+ "INNER JOIN\r\n"
+			   		+ "    jciclaim_report_mill claim_report ON nom.Settlement_id_generated = claim_report.Settlement_id\r\n"
+			   		+ "WHERE\r\n"
+			   		+ "    nom.Settlement_id_generated = '"+setId+"'\r\n"
+			   		+ "    AND claim_report.Active = '1' AND claim_report.Jute_Grade=mill.Jute_Grade AND mill.Jute_Variety=claim_report.Jute_Variety AND claim_report.Dispute_flag='2';";
+
+			   List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery)
+						.list();
+				System.err.println(resultList1);
+				return resultList1;
+	}
+
+	@Override
+	public void acceptMill(String settleId) {
+		// TODO Auto-generated method stub
+		String resultString ="Update jciclaim_report_mill SET Mill_Acc=2 where Settlement_id='"+settleId+"' AND Active='1';";
+		currentSession().createSQLQuery(resultString).executeUpdate();
+		return;
+	}
+
+	@Override
+	public List<Object[]> getContract() {
+		// TODO Auto-generated method stub
+		String millcode= (String) session.getAttribute("millcode");
+		String sqlString="     Select distinct jciclaimNomination.ContractNo,jciclaimNomination.Settlement_id_generated  from jciclaimNomination INNER join jciclaim_report_mill on jciclaim_report_mill.Settlement_id = jciclaimNomination.Settlement_id_generated\r\n"
+				+ "inner join jcimilldetailchild on  jcimilldetailchild.unit_name=jciclaimNomination.Mill\r\n"
+				+ "  where jcimilldetailchild.client_unit_code='"+millcode+"' AND jciclaim_report_mill.Mill_Acc='0' and jciclaim_report_mill.Dispute_flag='2';";
+		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
+					.list();
+		return resultList1;
+	}
+
+	@Override
+	public List<Object[]> getSettlementId(String contract) {
+		// TODO Auto-generated method stub
+		String sqlString =" Select Distinct jciclaim_report_mill.Settlement_id\r\n"
+				+ "  from jciclaim_report_mill inner join jciclaimNomination on \r\n"
+				+ " jciclaimNomination.Settlement_id_generated=jciclaim_report_mill.Settlement_id where jciclaimNomination.ContractNo='"+contract+"';";
+		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString)
+					.list();
+		return resultList1;
 	}
 
 

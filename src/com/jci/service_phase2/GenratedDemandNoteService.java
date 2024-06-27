@@ -17,9 +17,14 @@ public interface GenratedDemandNoteService {
 		GenrationDemandNoteModel getPaymentInstrumentById(int id);
 		 public  void updatePaymentInstrument(GenrationDemandNoteModel genrationDemandNoteModel);
 		public GenrationDemandNoteModel find(int id);
-		public GenrationDEmandDto fetchContract_no(String st);
+		public List<Object[]> fetchContract_no(String st);
 		public List<Object> fetchcon_no();
 		public String demandnono(String  st);
+		public String count();
+		public List<Object[]> getData(String contract_No);
+		public List<Object[]> DemandNoteData(String demand_note_no);
+		public List<Object[]> DetailsDebit(String demand_note_no);
+		public void updateStatus(String contract_No);
 		
 
 }
