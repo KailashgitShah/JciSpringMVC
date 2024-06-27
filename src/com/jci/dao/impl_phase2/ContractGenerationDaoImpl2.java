@@ -47,21 +47,21 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //		List<Object[]> combinedResult = new ArrayList<>(listOfGradesMillDelivery);
 //		combinedResult.addAll(listOfGradesExGodown);
 
-		for (Object[] gradeP : listOfGradesMillDelivery) {
-			System.err.println("**********");
-			System.err.println("******Grade prices****");
-
-			System.err.println(((BigDecimal) gradeP[0]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[1]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[2]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[3]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[4]).doubleValue());
-			System.err.println(((BigDecimal) gradeP[5]).doubleValue());
-
-			System.err.println("**********");
-			System.err.println("**********");
-
-		}
+//		for (Object[] gradeP : listOfGradesMillDelivery) {
+//			System.err.println("**********");
+//			System.err.println("******Grade prices****");
+//
+//			System.err.println(((BigDecimal) gradeP[0]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[1]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[2]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[3]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[4]).doubleValue());
+//			System.err.println(((BigDecimal) gradeP[5]).doubleValue());
+//
+//			System.err.println("**********");
+//			System.err.println("**********");
+//
+//		}
 
 		return listOfGradesMillDelivery;
 
@@ -98,13 +98,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		List<Object[]> rows = new ArrayList<>();
 
-//		StringBuilder querystr = new StringBuilder("SELECT  mill_name, mill_code,");
-//		pcsoDates.forEach(date -> {
-//			querystr.append("SUM(CASE WHEN pcso_date =" + date + "THEN Allocated_qty ELSE 0 END) AS " + date + ",");
-//		});
-//
-//		querystr.deleteCharAt(querystr.length() -1);
-
 		StringJoiner selectColumns = new StringJoiner(", ");
 		pcsoDates.forEach(date -> selectColumns
 				.add("SUM(CASE WHEN pcso_date = " + date + " THEN Allocated_qty ELSE 0 END) AS " + date));
@@ -117,7 +110,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			dateJoiner.add(date);
 		});
 		// querystr.deleteCharAt(uerystr.length() - 1);
-		querystr += dateJoiner + ") GROUP BY mill_name, mill_code ORDER by mill_name";
+		querystr += dateJoiner + ")  and Pcso_contract_flag = 0 GROUP BY mill_name, mill_code ORDER by mill_name";
 
 		SQLQuery query = currentSession().createSQLQuery(querystr.toString());
 		rows = query.list();
@@ -145,12 +138,12 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 			// System.out.println((Double)gradeP[0]);
 
-			System.out.println(((BigDecimal) gradeP[0]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[1]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[2]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[3]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[4]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[5]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[0]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[1]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[2]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[3]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[4]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[5]).doubleValue());
 
 		}
 
@@ -161,7 +154,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		for (Object[] row : rows) {
 			int size = row.length;
 			Double totalAllocatedToMill = (Double) row[size - 1];
-			System.err.println(pg.size());
+			// System.err.println(pg.size());
 			int sizeOfComponents = pg.size();
 			int contractedValueForPerticularMill = 0;
 			for (int j = 0; j < sizeOfComponents; j++) {
@@ -171,13 +164,13 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 						* (totalAllocatedToMill * pg.get(j));
 				System.err.println((Double.parseDouble(gradeComp.get(j)) / 100) * (totalAllocatedToMill * pg.get(j)));
 			}
-			System.out.println("-------------------------------------------");
-			System.out.println(contractedValueForPerticularMill);
-			System.out.println("-------------------------------------------");
+//			System.out.println("-------------------------------------------");
+//			System.out.println(contractedValueForPerticularMill);
+//			System.out.println("-------------------------------------------");
 			// contractedValueForPerticularMill =
 			// Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
 			contractedValueList.add(contractedValueForPerticularMill);
-			System.out.println("temp : " + contractedValueForPerticularMill);
+			// System.out.println("temp : " + contractedValueForPerticularMill);
 			totalContractedValue += contractedValueForPerticularMill;
 		}
 		// totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
@@ -258,14 +251,14 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			pg.add(((BigDecimal) gradeP[4]).doubleValue());
 			pg.add(((BigDecimal) gradeP[5]).doubleValue());
 
-			System.out.println(deliveryType + "grade price");
+			// System.out.println(deliveryType + "grade price");
 
-			System.out.println(((BigDecimal) gradeP[0]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[1]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[2]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[3]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[4]).doubleValue());
-			System.out.println(((BigDecimal) gradeP[5]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[0]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[1]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[2]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[3]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[4]).doubleValue());
+//			System.out.println(((BigDecimal) gradeP[5]).doubleValue());
 
 		}
 
@@ -380,12 +373,35 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 
-
 	public void setContractAuthrizeStatus(String contractNo) {
 		String sqlString = "update jcicontract set Authorize_Status = 1 , Contract_acceptance_flag = 1 , Contract_status = 'Mill Accepted', Contract_date = FORMAT(GETDATE(), 'dd-MM-yyyy') where Contract_no in ("
 				+ contractNo + ")";
 
 		currentSession().createSQLQuery(sqlString).executeUpdate();
+	}
+
+	@Override
+	public void setPcsoFlag1(String commaSeparatedPcsoDates) {
+
+		String sqlString = "update jcientryof_pcso set Pcso_contract_flag = 1 where pcso_date in ("
+				+ commaSeparatedPcsoDates + ")";
+
+		currentSession().createSQLQuery(sqlString).executeUpdate();
+	}
+
+	@Override
+	public List<String> findRefNos(String formatedPcsoDateWithQuotes) {
+		String sqlString = "select distinct Jc_reference_no from jcientryof_pcso where pcso_date in ("
+				+ formatedPcsoDateWithQuotes + ")";
+
+		return currentSession().createSQLQuery(sqlString).list();
+	}
+
+	@Override
+	public String getMillname(String millCode) {
+		String sql = "select unit_name from jcimilldetailchild where client_unit_code = '" + millCode + "'";
+
+		return (String) currentSession().createSQLQuery(sql).uniqueResult();
 	}
 
 }

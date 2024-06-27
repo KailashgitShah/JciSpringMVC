@@ -52,6 +52,7 @@ input[type="radio"] {
 }
 </style>
 
+
 <style>
 .scrollmenu {
 	overflow: auto;
@@ -74,6 +75,9 @@ List<String> allSettlementId = (List<String>) request.getAttribute("allSettlemen
 %>
 
 <body class="fixed-navbar">
+	<div class="contractLoader">
+		<img src="assets/img/1488.gif">
+	</div>
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -99,7 +103,7 @@ List<String> allSettlementId = (List<String>) request.getAttribute("allSettlemen
 								<div class="row">
 									<div class="col-sm-4 form-group">
 										<label>Settlement Id</label> <select name="settlemtId"
-											id="settlemtId" class="form-control" required>
+											id="setId" class="form-control" required>
 											<option disabled selected value="">-Select-</option>
 											<%
 											for (String settlementId : allSettlementId) {
@@ -112,146 +116,228 @@ List<String> allSettlementId = (List<String>) request.getAttribute("allSettlemen
 									</div>
 								</div>
 
-								<div class="scrollmenu">
-									<table class="table table-striped table-bordered table-hover"
-										id="example-table" cellspacing="0" width="100%">
-										<thead>
-											<tr>
-
-
-												<th>Sl.No</th>
-												<th>MR No</th>
-												<th>MR Date</th>
-												<th>Challan No</th>
-												<th>BOS No</th>
-												<th>Jute Variety</th>
-												<th>Qty</th>
-												<th>Quality Settlement</th>
-												<th>Moisture settlement</th>
-												<th>Ncv settlement</th>
-												<th>Dust settlement</th>
-												<th>Claim Amount</th>
-												<th>Settlement amt</th>
-										</thead>
-										<tbody class="tbody">
-										</tbody>
-									</table>
+							</div>
+							<div class="row">
+								<div class="col-sm-6 form-group">
+									<div id="form3"></div>
 								</div>
 
-								<div class="row">
-									<button class="btn btn-success" onclick="generateCrn()">Submit</button>
+								<div class="col-sm-6 form-group" style="text-align: right">
+									<div id="form5"></div>
+								</div>
+							</div>
+							<div class="row">
+
+
+								<div class="col-sm-6 form-group">
+									<div id="form4"></div>
+								</div>
+								<div class="col-sm-6 form-group" style="text-align: right">
+									<div id="form6"></div>
+								</div>
+							</div>
+
+							<div class="row">
+
+								<div class="col-sm-12 form-group" >
+									<div id="form2" class="scrollmenu"></div>
 								</div>
 
+							</div>
+							<div class="row">
+								<div class="col-sm-4 form-group">
+									<div id="form7"></div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-
 			<!-- END PAGE CONTENT-->
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
+	<!-- BEGIN THEME CONFIG PANEL-->
 
+	<!-- END THEME CONFIG PANEL-->
+	<!-- BEGIN PAGA BACKDROPS-->
+
+	<!-- PAGE LEVEL SCRIPTS-->
 	<div class="sidenav-backdrop backdrop"></div>
-	<script defer src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script>
-		$(".chosen-select").chosen({
-			no_results_text : "Oops, nothing found!"
-		})
-	</script>
+
+	<!-- END PAGA BACKDROPS-->
+	<!-- CORE PLUGINS-->
 
 
-	<script>
-		$("#settlemtId")
+
+	<script type="text/javascript">
+	$(".contractLoader").hide();
+		$("#setId")
 				.on(
 						"change",
 						function() {
-							var settlementId = $("#settlemtId").val();
-
+							var setId = $(this).val(); // Corrected line
+							
 							$
 									.ajax({
-										type : "GET",
-										url : "viewAllChallanOfSettlemetId.obj",
+										url : 'viewAllChallanOfSettlemetId.obj',
+										method : 'GET', // Assuming you want to use GET method
 										data : {
-											"settlementId" : settlementId
+											"setId" : setId
 										},
-										success : function(result) {
-											$(".tbody").html('<div></div>');
-											var filterOption = jQuery
-													.parseJSON(result);
+										success : function(response) {
+											// Parse the JSON response
+											
+											var data = jQuery
+													.parseJSON(response);
+											// alert(data);
+											// Clear the existing content of the form2 element
+											$("#form2").empty();
+											console.log(data);
+											// Create the table structure
+											var contentToDisplay = "<table style='border: 1px solid black; width: 1150px; text-align: center;'>"
+													+ "<tr>"
+													+ "<th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th>"
+													+ "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th>"
+													+ " <th style='border: 1px solid black; width: 5%; text-align: center;' rowspan='2'>Bale Mark</th>"
+													+ "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Mr No.</th>"
+													+ "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Crop Year</th>"
+													+ " <th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Variety/Grade</th>"
+													+ " <th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>No. of Bales</th>"
+													+ "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Actual Quantity(Qtls)</th>"
+													+ " <th style='border: 1px solid black; width: 15%; text-align: center;' colspan='4'>Claim Percentage(%)</th>"
+													+ " <th style='border: 1px solid black; width: 15%; text-align: center;' colspan='4'>Settlement Percentage(%)</th>"
+													+ "<th style='border: 1px solid black; width: 5%; text-align: center;' rowspan='2'>Settlement Amount</th>"
+													+ "</tr>"
+													+ " <tr>"
+													+ " <th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Quality</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Moisture</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>NCV</th>"
+													+ "<th style='border: 1px solid black; width: 2.5%; text-align: center;'>Dust</th>"
+													+ " </tr>"
 
-											var htmlTable = '';
+											for (var i = 0; i < data.length; i++) {
+												contentToDisplay += "<tr>";
+												contentToDisplay += "<td style='border: 1px solid black; text-align: center;'>"
+														+ (i + 1) + "</td>"; // Displaying row number
 
-											for (var i = 0; i < filterOption.length; i++) {
-												var counter = i + 1;
-
-												htmlTable += '<tr border="2px"><td style="text-align:center">'
-														+ counter + '</td>';
-
-												htmlTable += '<td style="text-align:center" name="mrNo">'
-														+ filterOption[i][0]
-														+ '</td>';
-
-												htmlTable += '<td style="text-align:center" name="mrNo">'
-														+ filterOption[i][1]
-														+ '</td>';
-
-												htmlTable += '<td style="text-align:center" name="challanNo">'
-														+ filterOption[i][2]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="bosNo">'
-														+ filterOption[i][3]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="juteVariety">'
-														+ filterOption[i][4]
-														+ " "
-														+ +filterOption[i][5]
-														+ '</td>';
-
-												htmlTable += '<td style="text-align:center" name="mrQty">'
-														+ filterOption[i][6]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="Quality_settlement">'
-														+ filterOption[i][7]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="Moisture_settlement">'
-														+ filterOption[i][8]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="Ncv_settlement">'
-														+ filterOption[i][9]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="Dust_settlement">'
-														+ filterOption[i][10]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="Claim_Amount">'
-														+ filterOption[i][11]
-														+ '</td>';
-												htmlTable += '<td style="text-align:center" name="Settlement_amt">'
-														+ filterOption[i][12]
-														+ '</td>';
-
-												htmlTable += '</tr>';
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][6] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][10] + "</td>"; // Balemark
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][7] + "</td>"; // Mr no.
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][9] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][12] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][13] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][14] + "</td>"; // Actual Qty
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][16] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][17] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][19] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][18] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][24] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][25] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][26] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][27] + "</td>";
+												contentToDisplay += "<td style='border: 1px solid black;'>"
+														+ data[i][29] + "</td>";//Claim Amount
+												contentToDisplay += "</tr>";
 											}
+											contentToDisplay += "</table>";
+											$("#form3").empty();
+											var MillText = "<div id='Mill'> Mill Name:<strong>"
+													+ data[0][0]
+													+ "</strong></div>";
+											$("#form3").append(MillText);
+											$("#form4").empty();
+											// Append Cont value as text
+											var ContText = "<div id='Cont'> Contract No.:<strong>"
+													+ data[0][1]
+													+ "</strong></div>";
+											$("#form4").append(ContText);
+											$("#form5").empty();
+											// Append DI value as text
+											var DIText = "<div id='DI'> DI no.:<strong>"
+													+ data[0][2]
+													+ "</strong></div>";
+											$("#form5").append(DIText);
+											$("#form6").empty();
+											// Append Date value as text (assuming data[0][30] is the correct index)
+											var DateText = "<div id='DateInput'> Date of Inspection:<strong>"
+													+ (data[0][31] || '')
+													+ "</strong></div>";
+											$("#form6").append(DateText);
 
-											$(".tbody").html(htmlTable);
+											//Update the content of the form2 element with the constructed table
+											$("#form2").html(contentToDisplay);
 
+											// Add space between table and file upload
+											$("#form2")
+													.append(
+															"<div style='height: 20px;'></div>");
+											var Total = "<div id='Total'> Total Settlement Amount :<strong>"
+													+ (data[0][30])
+													+ "</strong></div>";
+											$("#form2").append(Total);
+											// Add file upload input
+
+
+											// Add space between file upload and checkbox
+											$("#form2")
+													.append(
+															"<div style='height: 20px;'></div>");
+
+											// Add checkbox and text
+											 
+
+											// Add space between checkbox and buttons
+											$("#form2")
+													.append(
+															"<div style='height: 20px;'></div>");
+
+											var confirmButtonHTML = "<button type='button' class='btn btn-success'  onclick='generateCrn()' style='margin-right: 10px;'>Generate Credit Note</button>";
+
+											$("#form2").append(
+													confirmButtonHTML);
+											/* var rejectButtonHTML = "<button type='button'  onclick='rejectAction()'>Reject</button>"; */
+											/* $("#form2").append(rejectButtonHTML); */
+
+										},
+
+										error : function(xhr, status, error) {
+											// Handle error
 										}
-									})
-						})
+									});
+						});
 
 		function generateCrn() {
-			var settlementId = $("#settlemtId").val();
-
+			 $(".contractLoader").show();
+			var setId = $("#setId").val();
 			$.ajax({
 				type : "POST",
 				url : "saveCrnForClaim.obj",
 				data : {
-					"settlementId" : settlementId
+					"settlementId" : setId
 				},
 				success : function(result) {
-					alert("data saved success");
+					 $(".contractLoader").hide();
+					window.location.reload();
 				}
 			})
 		}
@@ -296,6 +382,5 @@ List<String> allSettlementId = (List<String>) request.getAttribute("allSettlemen
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
 		type="text/javascript"></script>
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
-
 </body>
 </html>

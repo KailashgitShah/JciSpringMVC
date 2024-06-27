@@ -88,7 +88,7 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 	@Override
 	public List<String> getAllDates() {
 		List<String> ll = new ArrayList<>();
-		String querystr = "select distinct(pcso_date),CONVERT(date , pcso_date , 105)  FROM jcientryof_pcso ORDER by CONVERT(date , pcso_date , 105)  desc";
+		String querystr = "select distinct(pcso_date),CONVERT(date , pcso_date , 105)  FROM jcientryof_pcso where Pcso_contract_flag = 0 ORDER by CONVERT(date , pcso_date , 105)  desc";
 		List<Object[]> pcsoDateList = currentSession().createSQLQuery(querystr).list();
 		List<String>dates=new ArrayList<>();
 		
@@ -198,9 +198,6 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 			model.setMill_name((String)eleObjects[8]);
 			model.setAllocatedQty((double)eleObjects[1]);
 			model.setPcsorefid((int)eleObjects[0]);
-			System.err.println(model.toString());
-			System.err.println(model.toString());
-			System.err.println(model.toString());
 			listOfPcso.add(model);
 		}
 		

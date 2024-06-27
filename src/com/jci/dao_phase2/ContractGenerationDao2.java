@@ -21,6 +21,9 @@ public interface ContractGenerationDao2 {
 	public void setContractAuthrizeStatus(String contactNo);
 	List<Object[]> getListOfGradesPriceForExGodown(String cropYear);
 	List<Object[]> getListOfGradesPriceForMillDelivery(String cropYear);
+	void setPcsoFlag1(String commaSeparatedPcsoDates);
+	List<String> findRefNos(String formatedPcsoDateWithQuotes);
+	String getMillname(String millCode);
 	
 
 

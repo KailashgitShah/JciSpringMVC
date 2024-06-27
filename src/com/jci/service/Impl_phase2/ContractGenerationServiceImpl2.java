@@ -78,6 +78,24 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 		
 	}
 
+	@Override
+	public void setPcsoFlag1(String commaSeparatedPcsoDates) {
+		contractGenerationDao2.setPcsoFlag1(commaSeparatedPcsoDates);
+		
+	}
+
+	@Override
+	public List<String> findRefNos(String formatedPcsoDateWithQuotes) {
+		return (List<String>) contractGenerationDao2.findRefNos(formatedPcsoDateWithQuotes);
+	}
+
+	@Override
+	public String millFullName(String millCode) {
+		// TODO Auto-generated method stub
+		
+		return contractGenerationDao2.getMillname(millCode);
+	}
+
 
  
 

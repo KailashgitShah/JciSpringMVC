@@ -45,7 +45,7 @@ public class PdfGenerator {
 	public void generatePdfOfContractLetter(String jciRefNojciRefNo, String millNameString, String millCode, Double qty,
 			String cropyear, List<Object[]> priceList, List<String> compList, List<String> varietyArray,
 			String fileName, String deliveryType, String contractDate, String filePath, String letterHeadPath,
-			List<Object> fullAddress, String pcsoDates) throws DocumentException, IOException {
+			List<Object> fullAddress, String pcsoDates,String refNos) throws DocumentException, IOException {
 
 		PdfWriter pdfWriter = new PdfWriter(filePath);
 		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
@@ -105,7 +105,8 @@ public class PdfGenerator {
 				.add(new Text("Sale of raw jute under B.Twill Linkage sale").setUnderline())
 				.setTextAlignment(TextAlignment.CENTER).setMarginTop(15);
 
-		Paragraph RefParagraph = new Paragraph(new Text("Ref No : ").setBold()).add(new Text("Jute(Mktg)/42/2004 dt. "))
+		Paragraph RefParagraph = new Paragraph(new Text("Ref No : ").setBold()).add(refNos)
+				.add(new Text(" dt. "))
 				.add(pcsoDates)
 				.add(" of Dy. Director (Mktg), Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. ")
 				.add(pcsoDates).setUnderline().setTextAlignment(TextAlignment.CENTER);

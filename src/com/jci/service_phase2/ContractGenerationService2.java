@@ -20,5 +20,8 @@ public interface ContractGenerationService2 {
 	public List<Object> getFullAddressByMillName(String millNameString);
 	public List<Contractgeneration> getAllUnAuthorizedContract();
 	public void setContractAuthrizeStatus(String contractNOString);
+	public void setPcsoFlag1(String commaSeparatedPcsoDates);
+	public List<String> findRefNos(String formatedPcsoDateWithQuotes);
+	public String millFullName(String millCode);
 
 }
