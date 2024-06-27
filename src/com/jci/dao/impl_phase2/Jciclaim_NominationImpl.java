@@ -76,7 +76,6 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<Jciclaim_NominationModel> getAll() {
 		// TODO Auto-generated method stub
-	//String sqlQuery = "select distinct Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial from jciclaimNomination";
 		  String sqlQuery = "SELECT DISTINCT Settlement_id_generated, Created_on, DateofInspection, Mill, ContractNo, HoDi, OMOfficial, FAOfficial FROM jciclaimNomination ORDER BY Created_on DESC";
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -129,22 +128,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 
 
-//	@Override
-//	public List<Object> FetchMillReceiptData(String millid) {
-//		// TODO Auto-generated method stub
-//
-//		String MillNamenomination = millid;
-//
-//
-//		 String q = "SELECT DISTINCT c.Contract_no " +
-//	               "FROM jcicontract c " +
-//	               "JOIN jcimilldetailchild m ON c.Mill_code = m.client_unit_code " +
-//	               "WHERE m.unit_name = '" + MillNamenomination + "'";      
-//		List<Object> ContractListData = (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
-//		//System.out.println(ContractListData);
-//
-//		return ContractListData;
-//	}
+
 	@Override
 
 	public List<Object> FetchMillReceiptData(String millid) {
@@ -229,16 +213,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		return rows;
 	}
 
-//	@Override
-//	public int CountRecord() {
-//		// TODO Auto-generated method stub
-//
-//		    String q = "SELECT COUNT(*) FROM jciclaimNomination";
-//		  int result = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
-//		    return result+1;
-//		
-//
-//	}
+
 	@Override
 	public String CountRecord() {
 		// TODO Auto-generated method stub
@@ -303,7 +278,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<String> gethodi() {
 		
-		//String q = "select DI_no from jciDI_ho ";
+		
 		
 		String q = "select DISTINCT HO_di from jcimill_receipt ";
 		List millid = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
@@ -413,6 +388,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 	@Override
 	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
+//
 
 		String sqlQuery = "SELECT DISTINCT " +
                 "jciclaimNomination.Challans, " +
@@ -424,8 +400,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
                 "jciclaimNomination.claimValuation, " +
                 "jciclaimNomination.Settlement_id_generated, " +
                 "jcibos_generation.Bos_file_path, " +
-                "jcimill_receipt.MR_qty, " +
-                "jcimill_receipt.QualityPercentage " +
+                "jcimill_receipt.MR_qty " +
             "FROM jciclaimNomination " +
             "LEFT JOIN jcibos_generation ON jciclaimNomination.billOfSupply_number = jcibos_generation.bill_of_supply_no " +
             "LEFT JOIN jcimill_receipt ON jciclaimNomination.Mr_number = jcimill_receipt.MR_no " +
@@ -448,12 +423,10 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 			nomination.setSettlement_id_generated((String) eleObject[7]);
 			nomination.setBos_file_path((String) eleObject[8]);
 			nomination.setMR_qty((Double) eleObject[9]);
-			nomination.setQualityPercentage((Double) eleObject[10]);
 			
 			
-//			nomination.setOMOfficial((String) eleObject[6]);
-			//nomination.setSettlement_id((Long) eleObject[7]);
-			//nomination.setSettlement_id( eleObject[7]);
+			
+
 			list.add(nomination);
 
 		}

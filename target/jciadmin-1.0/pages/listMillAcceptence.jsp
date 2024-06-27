@@ -228,6 +228,7 @@ input[type="file"] {
 
                 <ul class="side-menu metismenu">
                     <li><a href="viewmillAcc.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Mill Acceptance list</span></a></li>
+                    
                 </ul>
             </div>
         </nav>
@@ -239,10 +240,7 @@ input[type="file"] {
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
 				<h1 class="page-title">Mill Acceptance List</h1>
-
 			</div>
-
-
 			<div class="page-content fade-in-up">
 				<div class="ibox">
 					<span>${msg}</span>
@@ -251,18 +249,14 @@ input[type="file"] {
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
-
-
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-
                                         <th>Mill name</th>
-										 <th>Contract Identification No.</th>
-										
+										<th>Contract Identification No.</th>
 										<th>Crop Year</th>
-										<th>Contract Quantity</th>				  
-									   <th>Contract Date</th>
+										<th>Contract Quantity(Qtls)</th>				  
+									    <th>Contract Date</th>
 										<th>Payment Due Date</th>
 										<th>Fibre Value</th>
 										<th>Contract Value (In Case of Non Lc)</th>
@@ -274,34 +268,25 @@ input[type="file"] {
 								    <tbody>
                                    <%int i=1; %>
 									<c:forEach items="${AllList}" var="item">
-
-
 										<tr>
 										<td><%=i%></td>
 										    <td>${item.getMill_name()}</td>
 										    <td>${item. getContract_identification_no()}</td>
-
-											<%-- <td>${item.getContract_no()}</td> --%>
-												 <td>${item.getCropYear()}</td> 
-												 	<td>${item.getContract_qty()}</td>
+											<td>${item.getCropYear()}</td> 
+										     <td>${item.getMill_qty()}</td>
 											<td>${item.getContract_date()}</td>
-										
-										
 											 <td>${item. getPayment_duedate()}</td>
-										<%--  <td>${item.getIntial_Payment_date()}</td>  --%>
-										<%--  <td>${item.getContract_no()}</td> --%>
-											
 											<td>${item.getJute_value()}</td> 
-											
 											 <td>${item.getContract_value()}</td> 
 											<td>${item.getContractValueLc()}</td>
+											
 										
- 											<td>  <a href="downloadSupportingDocumententMillAccept.obj?filename=${item. getContract_acceptance_doc()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
+ 										 <td>  <a href="downloadSupportingDocumententMillAccept.obj?filename=${item. getContract_acceptance_doc()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
  
+                                         <td><button class="btn btn-success" disabled>Recieved</button></td>
 
-
-
-											<form action="saveMillAcceptenceFile.obj" method="POST"
+                                              <!-- this will work in free sales and commercial  -->
+											<%-- <form action="saveMillAcceptenceFile.obj" method="POST"
 												enctype="multipart/form-data">
 											
 												<input type="hidden" value="${item.contract_id}"
@@ -317,8 +302,8 @@ input[type="file"] {
 														</c:otherwise>
 													</c:choose> 
 												
-													</td>
-											</form>
+													</td> 
+											</form> --%>
 										</tr>
 										<%i++; %>
 									</c:forEach>

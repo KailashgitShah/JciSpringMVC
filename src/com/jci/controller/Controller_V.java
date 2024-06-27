@@ -5608,91 +5608,98 @@ public class Controller_V {
 				e.printStackTrace();
 			}
 
-			// Email sending code
-			// 1- This email is for FaOfficial
-			EmailSender emailfa = new EmailSender();
-			InternetAddress[] toAddresses = null;
-			String subjectfa = "Nomination for Claim Settlement";
-			String bodyfa = "Dear " + FAomofficial + ",\n" + "I hope this email finds you well.\n"
-					+ "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill
-					+ " on Date: " + DateofInpection + " .\n" + "\n" + "Thanks & Regards,\n"
-					+ "Jute Corporation of India";
 
-			String filenamefa1 = filepath;
-			String usernamefa = filename;
-			String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
-			try {
-				toAddresses = new InternetAddress[] {
-						// new InternetAddress("mansi.gupta@cyfuture.com")
-						new InternetAddress(userEmailFA) };
-
-			} catch (AddressException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa1, usernamefa);
-
-			// 2- email is for omoofficial
-			EmailSender emailomo = new EmailSender();
-			InternetAddress[] toAddressesomo = null;
-			String subjectomo = "Nomination for Claim Settlement";
-			String bodyomo = "Dear " + omofficial + ",\n" + "I hope this email finds you well.\n"
-					+ "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill
-					+ " on Date: " + DateofInpection + ".\n" + "\n" + "Thanks & Regards,\n"
-					+ "Jute Corporation of India";
-			String filenameomo = filepath;
-
-			String usernameomo = filename;
-			String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
-			try {
-				toAddressesomo = new InternetAddress[] {
-						// new InternetAddress("mansi.gupta@cyfuture.com")
-						// new InternetAddress("mansigupta18001@gmail.com")
-						new InternetAddress(userEmailOmo)
-
-				};
-
-			} catch (AddressException e) {
-				e.printStackTrace();
-			}
-			emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo, filenameomo, usernameomo);
-
-			// 3- email is for mill
-			EmailSender emailmill = new EmailSender();
-			InternetAddress[] toAddressesmill = null;
-			String subjectmill = "Nomination for Claim Settlement";
-
-			String bodymill = "Dear " + Mill + ",\n" + "I hope this email finds you well.\n"
-					+ "We are pleased to inform you that " + Mill
-					+ " have been nominated for the claim settlement  on Date: " + DateofInpection + ".\n" + "\n"
-					+ "Thanks & Regards,\n" + "Jute Corporation of India";
-
-			String filenamemill = filepath;
-			String usernamemill = filename;
-
-			String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
-			try {
-				toAddressesmill = new InternetAddress[] {
-						// new InternetAddress("mansi.gupta@cyfuture.com")
-						new InternetAddress("mansigupta18001@gmail.com")
-
-				};
-
-			} catch (AddressException e) {
-
-				e.printStackTrace();
-			}
-			emailmill.sendEmail(toAddressesmill, bodymill, subjectmill, filenamemill, usernamemill);
-
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-
-			return new ModelAndView((View) new RedirectView("viewlistnominal.obj"));
-
-		} catch (Exception e) {
-			System.out.println("Error in update user profile" + e.getStackTrace());
-			return mv;
-		}
+	        // Email sending code
+            //1- This email is for  FaOfficial
+		          EmailSender emailfa=new EmailSender();
+		           InternetAddress[] toAddresses= null;
+		           String subjectfa = "Nomination for Claim Settlement";
+		           String bodyfa = "Dear "+ FAomofficial + ",\n" +    
+		                                     "I hope this email finds you well.\n" +
+		                                     "We are pleased to inform you that you have been nominated for the claim settlement for "+ Mill +" on Date: "+ DateofInpection +" .\n" +
+		                                     "\n" +
+		                                     "Thanks & Regards,\n" +
+		                                     "Jute Corporation of India";
+		         
+		           String filenamefa1 = filepath;
+		           String usernamefa = filename;
+		         String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
+		           try {
+		                  toAddresses = new InternetAddress[] {
+		                            //  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		  new InternetAddress(userEmailFA)
+		                  };
+		
+		           } catch (AddressException e) {
+		                  // TODO Auto-generated catch block
+		                  e.printStackTrace();
+		           }
+		        emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa1, usernamefa);
+		        
+		        // 2- email is for omoofficial
+		           EmailSender emailomo = new EmailSender();
+		           InternetAddress[] toAddressesomo = null;        
+		           String subjectomo = "Nomination for Claim Settlement";  
+		           String bodyomo ="Dear "+ omofficial  + ",\n" +      
+		                             "I hope this email finds you well.\n" +
+		                             "We are pleased to inform you that you have been nominated for the claim settlement for " + Mill + " on Date: " + DateofInpection+ ".\n" +
+		                             "\n"+ 
+		                             "Thanks & Regards,\n" +
+		                             "Jute Corporation of India";
+		           String filenameomo =   filepath;
+		        		 
+		          String usernameomo = filename;        
+		        String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
+		           try {        
+		                  toAddressesomo = new InternetAddress[] {
+		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		//  new InternetAddress("mansigupta18001@gmail.com")
+		                		  new InternetAddress(userEmailOmo)
+		
+		                  };
+		
+		           } catch (AddressException e) {
+                     e.printStackTrace();
+		           }
+		           emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo , filenameomo , usernameomo);
+		           
+		 // 3- email is for mill
+		           EmailSender emailmill = new EmailSender();
+		           InternetAddress[] toAddressesmill = null;        
+		           String subjectmill = "Nomination for Claim Settlement";  
+		
+		           String bodymill=    "Dear "+ Mill + ",\n" +             
+		                              "I hope this email finds you well.\n" +
+		                              "We are pleased to inform you that "+ Mill +" have been nominated for the claim settlement  on Date: " + DateofInpection+ ".\n" +
+		                              "\n"+ 
+		                              "Thanks & Regards,\n" +
+		                                                 "Jute Corporation of India";
+		           
+		                                               String filenamemill = filepath;
+		                                               String usernamemill = filename;   
+		                                               
+		                                               String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
+		                                                   try {        
+		                                       toAddressesmill = new InternetAddress[] {
+		                		//  new InternetAddress("mansi.gupta@cyfuture.com")
+		                		 new InternetAddress("mansigupta18001@gmail.com")
+		
+		                  };
+		
+		           } catch (AddressException e) {
+		
+		                  e.printStackTrace();
+		           }
+		           emailmill.sendEmail(toAddressesmill, bodymill, subjectmill , filenamemill , usernamemill);
+		
+			        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+		
+			        return new ModelAndView((View)new RedirectView("viewlistnominal.obj"));
+		
+			    } catch (Exception e) {
+			        System.out.println("Error in update user profile" + e.getStackTrace());
+			        return mv;
+			    }
 	}
 
 	@RequestMapping("viewlistnominal")

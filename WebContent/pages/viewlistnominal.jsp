@@ -159,25 +159,9 @@ th {
 							</c:choose>
 
 
-<%-- <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-											
-
-
-
-
-
-
-
-
-
-
-
 										</tr>
 										<%i++; %>
 									</c:forEach>
-
-
-
 
 
 

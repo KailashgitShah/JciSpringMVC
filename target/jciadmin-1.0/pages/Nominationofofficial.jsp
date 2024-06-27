@@ -70,6 +70,17 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
     border-color: #ccc; /* Set border color (e.g., light gray) */
 }   
    
+   #binDataBody {
+    font-size: 20px; /* Adjust the font size as per your preference */
+}
+    th {
+        font-size: 18px; /* Adjust the font size as per your preference */
+    }
+        #millsListDiv {
+         color: #007bff; /* Change "red" to any color you prefer */
+    }
+
+   
 </style>
 
 
@@ -91,179 +102,170 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                             Settlement</h1>
                  </div>
                  
-
-           
-                 <div class="page-content fade-in-up">
-                      <div class="row">
-                            <div class="col-md-11">
-                                 <div class="ibox">
-                                       <span>${msg}</span>
-                                       <div class="ibox-body">
-                                            <form action="savenominal.obj" method="POST">
-                                                  <div class="row">
-
-                                                        <div class="col-sm-4 form-group">
-                                                             <label> Mill</label> <span class="text-danger">* </span> <select
-                                                                   name="Mill" id="Mill" class="form-control taxtbox" required>
-                                                                  <option value="">Select</option> 
-                                                                   
-                                                             <c:forEach items="${millid}" var="item">
-                                                                   <option value="${item}">${item}</option> 
-                                                                   </c:forEach> 
-
-
-                                                             </select>
-                                                        </div>
+		
+			<div class="page-content fade-in-up">
+				<div class="row">
+					<div class="col-md-11">
+						<div class="ibox">
+							<span>${msg}</span>
+							<div class="ibox-body">
+								<form action="savenominal.obj" method="POST">
+									<div class="row">
+										<div class="col-sm-4 form-group">
+											<label> Mill</label> <span class="text-danger">* </span> <select
+												name="Mill" id="Mill" class="form-control taxtbox" required>
+											 	<option value="">Select</option> 
+											    <c:forEach items="${millid}" var="item">
+												  <option value="${item}">${item}</option> 
+												</c:forEach> 
+											</select>
+										</div>
                                     
-                                                  <div class="col-sm-4 form-group" id="contractNoContainer" style="display:none;">
-                                                  <label>Contract No</label>
-                                                  <select name="ContractNo" id="ContractNo" class="form-control taxtbox" required>
-                                               <option disabled selected value="-Select-">-Select-</option>
-                                                  </select>
-                                                  </div>                                 
-                                                          <div class="col-sm-4 form-group">
-                                                   <label>HO DI </label>
-                                                    <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
-                                                    <select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
-                                                                           <option value="">-Select-</option>
-                                                                           <c:forEach items="${DI_no}" var="item">
-                                                                         <option value="${item}">${item}</option> 
-                                                                        </c:forEach> 
-                                                                        </select>
-                                                                     </div>
-                                                                      </div>
-                                                                      
-                                                                <div class="row">                                                            
-                                                  
-                                                         <div class="col-sm-4 form-group">
-                                                        <div id="omMessage" class="text-danger"></div>
-                                                        <label>O&M Official</label>
-                                                        <span class="text-danger">*</span>
-                                                        <select name="omofficial" id="omofficial" class="form-control taxtbox" required>
-                                                            <option value="">Select</option>
-                                                            <c:forEach items="${OM_official}" var="item">
-                                                                <option value="${item}">${item}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                        </div>
-                                                  
-                                                        
-                                                        
-                                                        <div class="col-sm-4 form-group">
-                                         <label>Date of Inspection</label>
-                                        <input class="form-control taxtbox" id="DateofInpection" 
-                                        name="DateofInpection" placeholder="dd-mm-yyyy" required>                                   
-                                                   </div>
-                                                                
-                                                              
-     
-                                                                   <div class="row">
+										<div class="col-sm-4 form-group" id="contractNoContainer" style="display:none;">
+											<label>Contract No</label>
+												<select name="ContractNo" id="ContractNo" class="form-control taxtbox" required>
+										             <option disabled selected value="-Select-">-Select-</option>
+												</select>
+										</div>						
+										 <div class="col-sm-4 form-group">
+	                                           <label>HO DI </label>
+	                                            <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
+	                                        	 <select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
+													   <option value="">-Select-</option>
+													   <c:forEach items="${DI_no}" var="item">
+												          <option value="${item}">${item}</option> 
+												       </c:forEach> 
+												 </select>
+										 </div>
+									</div>
+										              
+								 <div class="row">										        
+									
+								  <div class="col-sm-4 form-group">
+								   <div id="omMessage" class="text-danger"></div>
+								   <div id="millsListDiv"></div> 
+										<label>O&M Official</label>
+										<span class="text-danger">*</span>
+										<select name="omofficial" id="omofficial" class="form-control taxtbox" required>
+										    <option value="">Select</option>
+										<c:forEach items="${OM_official}" var="item">
+										    <option value="${item}">${item}</option>
+										</c:forEach>
+										</select>
+								  </div>
+								  
+								 
 
-                                                        
-                                             
-                                              <div class="row mt-3">
-                                                          <table class="table table-bordered">
-                                                              <thead>
-                                                                  <tr>
-                                                                       <th></th> 
-                                                                      <th>Challan</th>
-                                                                      <th>Mr_No</th>
-                                                                       <th>Mr_Date</th>
-                                                                        <th>Bill_Of_Supply_Number</th>
-                                                                      <th>Date_Of_Shipment</th>                                                                 
-                                                                      <th>Shipment_Quantity</th>
-                                                                      <th>Claim Valuation</th>
-                                                                      
-                                                                   
-                                                                  </tr>
-                                                              </thead>
-                                                              <tbody id="binDataBody">
-                                                              
-                                                                  <!-- Data rows will be dynamically populated -->
-                                                              </tbody>
-                                                          </table>
-                                                      </div>           
-                                                               
-                                                      <div class="row">
-                                        
-                                           <%--  <div class="col-sm-4 form-group">
-                                                             <input type="hidden"
-                                                                   class="form-control taxtbox"  name="Settlement_id_generated"
-                                                                   id="SettlementId" type="text" required readonly="readonly">
-                                                        </div>  --%>
-                                                        
-                                                        <div class="col-sm-4 form-group">
-                                                             <input type="hidden"
-                                                                   class="form-control taxtbox" value = "${total}" name="Settlement_id_generated"
-                                                                   type="text" required readonly="readonly">
-                                                        </div> 
-                                                  </div>
-                                   
-                                    <input type="hidden" id="numRows" name="rows">
-                                    
-                                                  <br>
-                                                  
-                                                  <div class="row">
-                                               <div class="col-sm-12 form-group">
-                                                        <br>
-                                                      <br>
-                                                      <br>
-                                                      <br>
-                                                  
-                                                        <input type="submit" value="Submit" class="btn btn-primary"
-                                                                   id="submit">
-                                                        </div>
-                                                  </div> 
+								  
+								  
+								    <div class="col-sm-4 form-group">
+                                       <label>Date of Inspection</label>
+                                       <input class="form-control taxtbox" id="DateofInpection" id1="newdate" name="DateofInpection" placeholder="dd-mm-yyyy" required >                                   
+								 </div>  
+								 										
+									</div>
+					          <!-- <div class="row"> -->
 
+						    	   
+					            <div class="row">
+								<div class="col-sm-4 form-group">
+								 <input type="hidden"
+								   class="form-control taxtbox" value = "${total}" name="Settlement_id_generated"type="text" required readonly="readonly">
+								</div> 
+					         </div>
+					         
+					          <div class="row">
+						<div class="col-sm-4 form-group">
+						 <input type="hidden" id="numRows" name="rows">
+						 
+						</div>
+					</div>   
+                      <div class="row ">
+						      <div class="col-sm-4 form-group">
+						
+							     <table class="table table-bordered">
+							    <thead>
+							        <tr>
+							            <th class="table-active" style="width: 100px;">Check_Box</th>
+							            <th class="table-active" style="width: 150px;">Challan</th>
+							            <th class="table-active" style="width: 150px;">MR_Number</th>
+							            <th class="table-active" style="width: 150px;">MR_Generated_Date</th>
+							            <th  class="table-active" style="width: 150px;">Bill_Of_Supply_Number</th>
+							            <th class="table-active" style="width: 150px;">Date_Of_Shipment</th>
+							            <th  class="table-active" style="width: 100px;">Shipment_Quantity</th>
+							            <th class="table-active" style="width: 100px;">Claim_Valuation</th>
+							        </tr>
+							    </thead>
+							    <tbody id="binDataBody">
+							        <!-- Table body content -->
+							    </tbody>
+							</table>
+		
+						 </div>		
+						 </div>    
+						        		
+					
+					
+					<div class="row">
+                   <div class="col-sm-4 form-group">
+                    <div style="flex-grow: 1;"></div> <!-- This creates space to push the button to the bottom -->
+                   <input type="submit" value="Submit" class="btn btn-primary" id="submit">
+                   </div>
+                   </div>
 
-                                            </form>
-                                       </div>
-                                 </div>
-                            </div>
-                      </div>
-                 </div>
-                 <!-- END PAGE CONTENT-->
-                 <%@ include file="footer.jsp"%>
-           </div>
-      </div>
+			</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END PAGE CONTENT-->
+			<%@ include file="footer.jsp"%>
+			 
+		</div>
+	</div>
 
-      <div class="sidenav-backdrop backdrop"></div>
+	<div class="sidenav-backdrop backdrop"></div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<!--  <script>
+<!-- <script>
       $( "#DateofInpection" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 
       
-</script> -->
+</script>  -->
 
 
 
 
-      <script type="text/javascript">
-           $(document).ready(function() {
-                 $("#submit").click(function() {
-                      //  Write code if Required
 
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#submit").click(function() {
                  });
            });
       </script>
 
 
 
-
-
-
-
-
 <script type="text/javascript">
+
     // Initialize the Datepicker
     $("#DateofInpection").datepicker({
         dateFormat: 'dd-mm-yy',
         onSelect: function(selectedDate) {
-            var selectedOption = selectedDate;
-            // alert(selectedOption); // Uncomment this line for debugging
+        	var currentDate = new Date();
+        	var formattedDate = ("0" + currentDate.getDate()).slice(-2) + "-" + ("0" + (currentDate.getMonth() + 1)).slice(-2) + "-" + currentDate.getFullYear();
+        	var selectedOption = selectedDate;
+        	var selectedDateObject = new Date(selectedDate.split("-").reverse().join("-")); // Convert selected date to Date object
+          // alert(selectedDateObject +"RRRRR" +   currentDate)
+        	if (selectedOption< formattedDate) { // Check if selected date is before or equal to current date
+        	    alert("Please Select a Date From Today Onwards. " );
+        	    $(this).val(''); // Clear the input field
+        	}
+
+
             $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
@@ -271,22 +273,48 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                     DateOfInspection: selectedOption
                 },
                 success: function(data) {
-                    var response = JSON.parse(data);                               
-                    var selectedOmofficial = document.getElementById("omofficial").value;
-                    var omMessageElement = document.getElementById("omMessage");
-                    for (var i = 0; i < response.length; i++) {
-                        var innerArray = response[i];
-                        var omoofficial = innerArray[0];
-                        var faofficial = innerArray[1];
-                           
-                        if (selectedOption == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
-                            return;
-                        } 
-                     
-                    }
-                    // If no conflicting dates found, clear any existing messages
-                    omMessageElement.innerText = "";
+                	
+                
+                 
+						 var response = JSON.parse(data);   
+						 //alert(response)
+						  var selectedOmofficial = document.getElementById("omofficial").value;
+						  var omMessageElement = document.getElementById("omMessage");
+						 
+						
+						  var millNamesList = []; // Array to store mill names
+						
+						  for (var i = 0; i < response.length; i++) {
+						      var innerArray = response[i];
+						      var omoofficial =innerArray[0]
+						      var millName = innerArray[2];
+						      if(omoofficial == selectedOmofficial ){
+						      millNamesList.push(millName); // Collecting mill names
+						      }
+						  }
+						  var millNamesString = millNamesList.join(" , ");
+						  var millsListDiv = document.getElementById("millsListDiv");
+							// Set the inner HTML of the div to the mill names string
+						millsListDiv.innerHTML = millNamesString;
+
+	                       // Displaying the mill names in an alert dialog
+	                     //  alert(millNamesString +"ditso");
+						  for (var i = 0; i < response.length; i++) {
+						      var innerArray = response[i];
+						      var omoofficial = innerArray[0];
+						      var faofficial = innerArray[1];
+						      var millName = innerArray[2];
+						    //  alert(millName)
+						      if (selectedOption == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
+						          omMessageElement.innerText = selectedOmofficial + " is Already Occupied On This Date For Another Claim Settlement For MillName : ";
+						          return;
+						      } 
+						   
+						  } 
+						 
+						  omMessageElement.innerText = "";
+                	
+                    
                    
                 },
                 error: function(err) {
@@ -300,9 +328,6 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
         var selectedOmofficial = document.getElementById("omofficial").value;       
         var selectedDate = document.getElementById("DateofInpection").value;
         var omMessageElement = document.getElementById("omMessage");
-        
-
-        
             $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
@@ -311,12 +336,29 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
+                    
+
+					  var millNamesList = []; // Array to store mill names
+					  for (var i = 0; i < response.length; i++) {
+					      var innerArray = response[i];
+					      var omoofficial =innerArray[0]
+					      var millName = innerArray[2];
+					      if(omoofficial == selectedOmofficial ){
+					      millNamesList.push(millName); // Collecting mill names
+					      }
+					  }
+					  var millNamesString = millNamesList.join(" , ");
+					  var millsListDiv = document.getElementById("millsListDiv");
+						// Set the inner HTML of the div to the mill names string
+					   millsListDiv.innerHTML = millNamesString;
+
                     for (var i = 0; i < response.length; i++) {
                         var innerArray = response[i];
                         var omoofficial = innerArray[0];
                         var faofficial = innerArray[1];
+                        var millName =innerArray[2];
                         if (selectedDate  == document.getElementById("DateofInpection").value && omoofficial == selectedOmofficial ) {
-                            omMessageElement.innerText = selectedOmofficial + " is Already Occupied on this date for another claim settlement. Please Select Another Date";
+                            omMessageElement.innerText = selectedOmofficial + "- is Already Occupied On This Date for Another Claim Settlement For MillName :";
                             return;
                         }
                         
@@ -332,140 +374,10 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
     });
 </script>
 
+
  
-<!--  <script>
-           $(document).ready(function() {
-               // Hide the milldetailsTable initially
-               $('#milldetailsTable').hide();
-
-               // Add an event listener for the change event on the dropdown
-               $('#HODate').on('change', function() {
-                   
-                    var selectedOption = $(this).val();
-                     //alert(selectedOption)
-
-                   // Make an AJAX request to fetch data based on the selected HO DI
-                   $.ajax({
-                       type: 'GET',
-                       url: 'findByHoDi.obj',
-                       data: {
-                           hodino: selectedOption
-                       },
-                       dataType: 'json', // Set the dataType to 'json'
-                       success: function(data) {
-                           // Parse the JSON response
-                          // alert("kkkkkkkkkkkkk")
-                         // alert(data)
-                           var dataArray = data;
-                          // alert(dataArray)
-                           $("#binDataBody").empty();
-                          
-                           var num_of_rows = dataArray.length;
-                           
-                           // alert(num_of_rows)
-                           $('#numRows').val(num_of_rows);
-                        
-                            for (var i = 0; i < dataArray.length; i++) {
-                              var newRow = "<tr>";
-                                    newRow +=
-                                      /*  '<td><input type="checkbox" onchange="myFunction()" id ="checkbox" class="row-checkbox" name="rowCheckbox" value ="0"></td>' + */
-                                    '<td><input type="checkbox"  class="row-checkbox" name="rowCheckbox" value =""></td>' +
-                                  '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
-                                 '<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +                       
-                                  '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +                       
-                                  '<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +                      
-                                  '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +                      
-                                  '<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
-                                 '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
-                               newRow += "</tr>";
-                               $("#binDataBody").append(newRow);
-                           }
-                       },
-                       error: function(err) {
-                           // Handle errors here
-                          // alert("error")
-                           console.error('AJAX request failed: ' + err);
-                       }
-                   });
-               });
-           });
-
-</script>  -->
-<!-- <script>
-           $(document).ready(function() {
-               // Hide the milldetailsTable initially
-               $('#milldetailsTable').hide();
-
-               // Add an event listener for the change event on the dropdown
-               $('#HODate').on('change', function() {
-                   
-                    var selectedOption = $(this).val();
-                     //alert(selectedOption)
-
-                   // Make an AJAX request to fetch data based on the selected HO DI
-                   $.ajax({
-                       type: 'GET',
-                       url: 'findByHoDi.obj',
-                       data: {
-                           hodino: selectedOption
-                       },
-                       dataType: 'json', // Set the dataType to 'json'
-                       success: function(data) {
-                           // Parse the JSON response
-                          // alert("kkkkkkkkkkkkk")
-                         // alert(data)
-                           var dataArray = data;
-                          // alert(dataArray)
-                           $("#binDataBody").empty();
-                          
-                           var num_of_rows = dataArray.length;
-                           
-                           // alert(num_of_rows)
-                           $('#numRows').val(num_of_rows);
-                        
-                            for (var i = 0; i < dataArray.length; i++) {
-                              var newRow = "<tr>";
-                                    newRow +=
-                                        '<td><input type="checkbox" onclick="myFunction(this)" id="checkbox' + i + '" class="row-checkbox" name="rowCheckbox[]" value="0"></td>'+
-                                    /* '<td><input type="checkbox" onclick="myFunction()" id ="checkbox1" class="row-checkbox" name="rowCheckbox" value ="0"></td>' + */
-                                    /* '<td><input type="checkbox"  class="row-checkbox" name="rowCheckbox" value =""></td>' + */
-                                  '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
-                                 '<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +                       
-                                  '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +                       
-                                  '<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +                      
-                                  '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +                      
-                                  '<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
-                                 '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
-                               newRow += "</tr>";
-                               $("#binDataBody").append(newRow);
-                           }
-                       },
-                       error: function(err) {
-                           // Handle errors here
-                          // alert("error")
-                           console.error('AJAX request failed: ' + err);
-                       }
-                   });
-               });
-           });
-
-</script> 
-<script type="text/javascript">
-    function myFunction(checkbox) {
-        if (!checkbox.checked) {
-           
-            checkbox.value = 0;
-            alert(checkbox.value)
-            
-        } else {
-           
-            checkbox.value = 1;
-            alert(checkbox.value)
-          
-        }
-    }
-</script> -->
-<script>
+   
+   <script>
 $(document).ready(function() {
     // Hide the milldetailsTable initially
     $('#milldetailsTable').hide();
@@ -492,21 +404,29 @@ $(document).ready(function() {
                 
                 $('#numRows').val(num_of_rows);
              
-                for (var i = 0; i < dataArray.length; i++) {
+             
+                 for (var i = 0; i < dataArray.length; i++) {
+                    var date = new Date(dataArray[i][2]); // Parsing the date string into a Date object
+                    var formattedDate = ("0" + date.getDate()).slice(-2) + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear(); // Formatting to dd-mm-yyyy
+                    var dateshipment = new Date(dataArray[i][4]);
+                    var formatShipmentDate =  ("0" + dateshipment.getDate()).slice(-2) + '-' + ("0" + (dateshipment.getMonth() + 1)).slice(-2) + '-' + dateshipment.getFullYear();
                     var newRow = "<tr>";
                     newRow +=
-                       /*  '<td><input type="checkbox" onclick="myFunction(this)" id="checkbox_' + i + '" class="row-checkbox" name="rowCheckbox[]" value="0"></td>' + */
+                        '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+i+'" class="row-checkbox" name="rowCheckbox'+i+'" value="0"></td>' +
                         '<td><div class="table-cell"><input type="hidden"  name="challans[]" value="' + dataArray[i][0] + '">' + dataArray[i][0] + '</div></td>' +
                         '<td><div class="table-cell"><input type="hidden"  name="mr_no[]" value="' + dataArray[i][1] + '">' + dataArray[i][1] + '</div></td>' +                  
-                        '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + dataArray[i][2] + '">' + dataArray[i][2] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="mr_date[]" value="' + formattedDate + '">' + formattedDate + '</div></td>' +                  
                         '<td><div class="table-cell"><input type="hidden"  name="billofsupply[]" value="' + dataArray[i][3] + '">' + dataArray[i][3] + '</div></td>' +                  
-                        '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + dataArray[i][4] + '">' + dataArray[i][4] + '</div></td>' +                  
+                        '<td><div class="table-cell"><input type="hidden"  name="dateofshipment[]" value="' + formatShipmentDate + '">' + formatShipmentDate + '</div></td>' +                  
                         '<td><div class="table-cell"><input type="hidden"  name="shipmentquantity[]" value="' + dataArray[i][5] + '">' + dataArray[i][5] + '</div></td>'+
-                        '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>'+
-     /*                    '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+i+'" class="row-checkbox" name="rowCheckbox'+i+'" value="0"></td>' ; */
+
+                        '<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">' + dataArray[i][6] + '</div></td>';
+
                     newRow += "</tr>";
                     $("#binDataBody").append(newRow);
-                }
+                } 
+
+
             },
             error: function(err) {
                 console.error('AJAX request failed: ' + err);
@@ -515,38 +435,22 @@ $(document).ready(function() {
     });
 });
 
-function myFunction(checking,i) {
-       /*  alert(checking.value);
-       var k = document.getElementById("checking"); */
-       /* alert( k +"id")  */
+
+ function myFunction(checking,i) {
+	
     if (!checking.checked) {
         $(checking).val(0);
-        alert($(checking).val());
+      
     } else {
         $(checking).val(1);
-        alert($(checking).val());
+     
     }
 }  
 
 
 </script> 
 
-<!-- 
-                <script type="text/javascript">
-                function myFunction()() 
-                {
-                    if (!document.getElementById("checkbox1").checked) {
-                      alert("rrrrr")
-                             var k =   $('#checkbox1').val(0);
-                                alert(k)
-                    }else{
-                              var k =  $('#checkbox1').val(1);
-                              alert(K)
-                    }
-                }
-                
-             
-   </script> -->
+
    
     
        <script type="text/javascript">
@@ -577,13 +481,6 @@ function myFunction(checking,i) {
         });
     });
 </script>
-     
-
-      <!-- AJAX Call for Fetching Mill Receipt Data -->
-
-      
-
-      <!--  For Fetching the Grade_Composition based on Contract Number -->
 
       <!--   For Hinding and Showing the  Grade Wise Alloction-->
 

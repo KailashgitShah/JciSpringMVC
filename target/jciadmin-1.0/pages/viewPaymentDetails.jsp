@@ -162,7 +162,8 @@ th {
 										<td><%= entryPaymentDetailsModel.getBankName() %></td>
 										<td><%= entryPaymentDetailsModel.getBranch() %></td>
 										<td><%= entryPaymentDetailsModel.getPayment() %></td>
-										<td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
+										<td><%= entryPaymentDetailsModel.getInstrumentValue() %>
+										
 										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
 										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
 									   <td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>

@@ -112,19 +112,19 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 									<tr>
 										<th>Sl.No</th>
 										<th>Generate Credit Note</th>
-										<th>BOS No</th>
+										<th>BOS Reference</th>
 										<th>BOS Date</th>
 										<th>DI No</th>
 										<th>Contract No</th>
 										<th>Challan No</th>
 										<th>Mill Name</th>
-										<th>Invoice Amount</th>
-										<th>Nominal Weight</th>
-										<th>Actual Weight</th>
-										<th>Short Weight</th>
+										<th>Invoice Amount(Rs)</th>
+										<th>Nominal Weight(Qtls)</th>
+										<th>Actual Weight(Qtls)</th>
+										<th>Short Weight(Qtls)</th>
 										<th>Bos Doc</th>
 										<th>Weigment Doc</th>
-										<th>Challan Doc</th>
+										<th>Consignee Note</th>
 								</thead>
 								<tbody class="tbody">
 
@@ -241,9 +241,18 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 													.parseJSON(result);
 											var decisionOptions = "<option disabled selected>-Select-</option>";
 											for (var i = 0; i < filterOption.length; i++) {
-												decisionOptions += ('<option value="'+ filterOption[i]
-								+ '">'
-														+ filterOption[i] + '</option>');
+												
+												if(filterOption[i].includes("--")){
+													let parts = filterOption[i].split("--");
+													decisionOptions += ('<option value="'+ parts[0]
+													+ '">'
+																			+ parts[1] + '</option>');
+												}else{
+													decisionOptions += ('<option value="'+ filterOption[i]
+													+ '">'
+																			+ filterOption[i] + '</option>');
+												}
+											
 											}
 											$("#filter").html(decisionOptions);
 											$('#shipmentTable tbody').html(
@@ -346,7 +355,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 												htmlTable += '<td style="text-align:center" name="shortWt">'
 														+ shortQty + '</td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=downloadCreditNoteDocs.obj?imagePath='
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/JCIStuff/billofsupply/'
 														+ filterOption[i][11] + " " + "bos"
 														+ '>View</a></td>';
 
