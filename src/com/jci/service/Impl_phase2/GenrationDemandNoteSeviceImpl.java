@@ -72,6 +72,27 @@ public class GenrationDemandNoteSeviceImpl  implements GenratedDemandNoteService
 		// TODO Auto-generated method stub
 		return GenrationdemandNoteDao.count();
 	}
+	@Override
+	public List<Object[]> getData(String contract_No) {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.getData(contract_No);
+	}
+	@Override
+	public List<Object[]> DemandNoteData(String demand_note_no) {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.getDemandNote(demand_note_no);
+	}
+	@Override
+	public List<Object[]> DetailsDebit(String demand_note_no) {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.Debitdetails(demand_note_no);
+	}
+	@Override
+	public void updateStatus(String contract_No) {
+		// TODO Auto-generated method stub
+	 GenrationdemandNoteDao.UpdateStatus(contract_No);
+	 return;
+	}
 	
    
     

@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.digester.ObjectParamRule;
+import org.apache.poi.poifs.storage.ListManagedBlock;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -92,6 +93,7 @@ import com.jci.model.ConfirmationClaimSettlementModel;
 import com.jci.model.Contractgeneration;
 import com.jci.model.CreditNoteDTO;
 import com.jci.model.CreditNotes;
+import com.jci.model.DemandNoteDto;
 import com.jci.model.EntryDerivativePrice;
 import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.EntryofGradeCompositionModel;
@@ -3680,8 +3682,118 @@ public class Controller_V {
 			// Date date= new Date();
 
 			this.genratedDemandNoteService.create(genrationDemandNoteModel);
+			this.genratedDemandNoteService.updateStatus(Contract_No);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+			
+			
+			/*
+			 * try { JasperReport jasperReport1 =
+			 * JasperCompileManager.compileReport(creditNoteSettledJRXML); //
+			 * .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
+			 * 
+			 * Map<String, Object> parameters = new HashMap<String, Object>();
+			 * parameters.put("Contract_No", Contract_No); parameters.put("Contract_Date",
+			 * Contract_Date); parameters.put("Payment_Due_Date", Payment_Due_Date);
+			 * 
+			 * parameters.put("Delay_period", Delay_period ); parameters.put("Payment_Ref",
+			 * Payment_Ref); parameters.put("contractedQtyStr", contractedQtyStr );
+			 * parameters.put("Unit_charge", Unit_charge );
+			 * parameters.put("Carrying_cost_str", Carrying_cost_str ); List<Object[]>
+			 * RecipientConsigneeData = genratedDemandNoteService.getData(Contract_No);
+			 * 
+			 * List<Object[]> detailsDebitList =
+			 * genratedDemandNoteService.DetailsDebit(Demand_note_no); for (Object[] details
+			 * : RecipientConsigneeData) { parameters.put("Millname", details[0]);
+			 * parameters.put("Consignee_Add0", details[1]);
+			 * parameters.put("Consignee_Add1", details[2]);
+			 * parameters.put("Consignee_Add2", details[3]);
+			 * parameters.put("Consignee_Add3", details[4]);
+			 * parameters.put("Consignee_StateCode", details[5]);
+			 * parameters.put("Consignee_State", details[6]);
+			 * parameters.put("Consignee_gst", details[7]);
+			 * 
+			 * }
+			 * 
+			 * for (Object[] row : RecipientConsigneeData) { parameters.put("Rpt_Gst",
+			 * row[7]); parameters.put("Rpt_Pan", row[8]); parameters.put("Rpt_State",
+			 * row[9]); parameters.put("Rpt_StateCode", row[10]); parameters.put("Rpt_Add0",
+			 * row[11]); parameters.put("Rpt_Add1", row[12]); parameters.put("Rpt_Add2",
+			 * row[13]); parameters.put("Rpt_Add2", row[14]); parameters.put("Rpt_Name",
+			 * row[15]); }
+			 * 
+			 * for (Object[] row :detailsDebitList ) { parameters.put("Contract_no",
+			 * row[0]); parameters.put("Contract_date", row[1]);
+			 * parameters.put("Payment_Ref", row[2]); parameters.put("Payment_Date",
+			 * row[3]); parameters.put("Demand_Date", row[4]); parameters.put("Demand_no",
+			 * row[5]);
+			 * 
+			 * } int counter = 1; List<Object[]> DemandNoteData =
+			 * this.genratedDemandNoteService.DemandNoteData(Demand_note_no);//DTO Double
+			 * total =0.0; for(Object[] row:DemandNoteData) { DemandNoteDto demandNoteDto =
+			 * new DemandNoteDto(); String contract_noString =(String) row[0]; String
+			 * ContractDate = (String) row[1]; String ContractQty = (String) row[2]; String
+			 * paymentDueDate = (String) row[3]; String paymentRef = (String) row[4]; String
+			 * delay = (String) row[5]; String payDate = (String) row[6]; String DemandDate
+			 * = (String) row[7]; Double CarryingCost = (Double) row[8];
+			 * 
+			 * demandNoteDto.setContractNo(contract_noString);
+			 * demandNoteDto.setContractDate(ContractDate);
+			 * demandNoteDto.setContractQty(ContractQty);
+			 * demandNoteDto.setScheduledPaymentDate(paymentDueDate);
+			 * demandNoteDto.setActualPaymentDate(paymentDate);
+			 * demandNoteDto.setDelayDays(delay);
+			 * demandNoteDto.setPaymentRefString(paymentRef);
+			 * demandNoteDto.setPayDate(paymentDate);
+			 * demandNoteDto.setCarryingCostString(Carrying_cost); total+=CarryingCost; }
+			 * 
+			 * String amountInWord = convertNumberToCurrencyWords(total);
+			 */
+             
+
+//                // Prepare data sources
+//                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(creditNoteSettleDtoList);
+//
+//                // Fill JasperPrints
+//                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+//                response.setContentType("application/pdf");
+//                response.setHeader("Content-Disposition", "inline");
+//                // response.setHeader("Content-Disposition", "attachment;
+//                // filename=TestCreditNote.pdf");
+//                // try (OutputStream out = response.getOutputStream()) {
+//                
+//                String documentName = "creditNoteSettllemt" + challan + ".pdf";
+//
+//                final File theDir = new File(creditNoteSettlementPath);
+//                if (!theDir.exists()) {
+//                      theDir.mkdirs();
+//                }
+//
+//                String saveFile = creditNoteSettlementPath + File.separator + documentName;
+//
+//                try (OutputStream out = new FileOutputStream(saveFile)) {
+//                      JRPdfExporter exporter = new JRPdfExporter();
+//                exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+//                
+//                exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+//                      exporter.exportReport();
+//                
+//                } catch (Exception e) {
+//                      System.out.println(e.getLocalizedMessage());
+//                }
+//
+//                //return new ModelAndView(new RedirectView("creditNoteList.obj"));
+//
+//          } catch (JRException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//          }
+//
+//			
+//			
+//			
+//			
+			
 
 		} catch (Exception e) {
 
