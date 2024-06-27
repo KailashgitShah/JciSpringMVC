@@ -42,6 +42,12 @@ public class GenrationCashDocumentServiceImpl implements GenrationCashDocumentSe
 		return genrationCashDocumentDao.Non_lc(St);
 	}
 
+	@Override
+	public List<Object[]> fetchMill_Name() {
+		// TODO Auto-generated method stub
+		return genrationCashDocumentDao.fetchMill_Name();
+	}
+
 	
 
 }
