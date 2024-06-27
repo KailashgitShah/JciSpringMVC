@@ -48,8 +48,8 @@
 /* CSS classes for the green link */
  .table-cell {
    
-    width: 250px;
-    height: 20px;
+     width: 200px;
+    height: 10px;
     
 } 
 
@@ -369,8 +369,7 @@ $(document).ready(function() {
         const field2Value = selectedOption.attr('data-value2');
         const field1Value = selectedOption.attr('data-value1');
         contractNo = field1Value;
-        alert(field2Value);
-        alert(field1Value);
+      
 
         $('#milldetailsTable tbody').empty();
         $('#milldetailsTable').css('display', 'none');
@@ -381,14 +380,14 @@ $(document).ready(function() {
             url: 'listofpaymentdetails.obj',
             data: { "contractno": field1Value },
             success: function(data) {
-                alert(data);
+
                 const dataArray = JSON.parse(data);
                 $('#milldetailsTable tbody').empty();
 
                 if (dataArray.length > 0) {
                     dataArray.forEach(function(rowData) {
                     	autorevolvingammount=rowData[7];
-                    	alert(autorevolvingammount);
+                    	
                         const rowHtml = '<tr>' +
                             '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
@@ -396,8 +395,19 @@ $(document).ready(function() {
                             '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="supportingdoc[]" value="' + rowData[6] + '">' + rowData[6] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="autorevolving[]" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
+                         /*    '<td><div class="table-cell"><input type="hidden" name="supportingdoc[]" value="' + rowData[6] + '">' + rowData[6] + '</div></td>' +
+                           */  
+                           
+                         '<td>' +
+                           '<a href="downloadSupportingDocument.obj?filename=' + rowData[6] + '">' +
+                               '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                           '</a>' +
+                          '</td>'+
+                        
+                           '<td><div class="table-cell"><input type="hidden" name="autorevolving" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
+                             
+                         
+                          
                             '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + rowData[8] + '">' + rowData[8] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + rowData[9] + '">' + rowData[9] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
@@ -424,13 +434,13 @@ $(document).ready(function() {
             url: 'listofbillofsupply.obj',
             data: { "contractno": field1Value },
             success: function(data) {
-                alert(data);
+             
                 const dataArray = JSON.parse(data);
                 var idx = 0;
                 var sumofInvoiceValue = 0;
                 var billofsupplyno = [];
                 var challanno, bosdate;
-
+                $('#billofsupllydetails tbody').empty();
                 if (dataArray.length > 0) {
                     dataArray.forEach(function(rowData1) {
                         // Assuming rowData1[0], rowData1[1], rowData1[2], etc. contain the necessary data
@@ -468,22 +478,10 @@ $(document).ready(function() {
 
                     // Ensure millcode is assigned correctly
                     var millcode = '<%= millcode %>'; // Replace with the correct method of passing millcode from server-side to client-side
-                    alert(millcode);
-                    alert(challanno);
-                    alert(sumofInvoiceValue);
-                    alert(billofsupplynoString);
-                    alert(bosdate); 
+                   
                     
 
-                    // Constructing the download link dynamically
-                 /*    
-                    const bankDraftHtml = `
-                        <div class="col-sm-2 form-group" id="BankDraft">
-                        <a href="downloadPDFforbankDraft.obj?filename="+millcode+""
-                            class="btn btn-primary btn-sm" target="_blank">
-                            Download BankDraft
-                        </a>
-                    </div>`;  */
+              
                     $('#billofsupllydetails').after(bankDraftHtml);
 
                 } else {

@@ -616,13 +616,8 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> ' + row[1] + '</div>' +
                     '</td>' +
 
-<<<<<<< HEAD
-                    '<td>' +
-                    '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> ' + row[2] + '</div>' +
-                    '</td>' +
 
-                    '<td>' +
-=======
+ 
 
                     '<td>' +
                     '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> ' + row[2] + '</div>' +
@@ -631,7 +626,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
 
 
->>>>>>> a978ade5c24cee589b55ff1dd3143cf067e14914
+
                     '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">' + intValue + '</div>' +
                     '</td>' +
 
