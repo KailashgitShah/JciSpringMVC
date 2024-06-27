@@ -3691,6 +3691,15 @@ public class Controller_V {
 	@Value("${upload.BOSReports}")
 	String BOSReports;
 	
+	@Value("${upload.TopSheetPathJasper}")
+	String TopSheetPathJasper;
+	
+	@Value("${upload.BankDraftpathJsaper}")
+	String BankDraftpathJsaper;
+	
+	@Value("${upload.BillofExchagePathJasper}")
+	String BillofExchagePathJasper;
+	
 	@RequestMapping("Generatebankdraftsheet")
 	public ModelAndView Generatebankdraftsheet2(HttpServletRequest request, RedirectAttributes redirectAttributes,  HttpServletResponse response) {
 
@@ -3754,7 +3763,8 @@ public class Controller_V {
 		        
 		        if ("Download BankDraft".equals(bankDraft)) {
 		            
-		        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml"));
+		       // JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml"));
+		       JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(BankDraftpathJsaper));
 
 		        // Set up parameters and data source
 		        Map<String, Object> parameters = new HashMap<>();
@@ -3818,10 +3828,17 @@ public class Controller_V {
 		        
 		        else if ("Download BillofExchange".equals(billofExchange)) {
 		        	  Map<String, Object> parameters = new HashMap<>();
-		        
-		        JasperReport jasperReport3 = JasperCompileManager.compileReport(
-			            new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\billofexchange.jrxml"));
+//		        
+//		        JasperReport jasperReport3 = JasperCompileManager.compileReport(
+//			            new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\billofexchange.jrxml"));
 
+		        	  
+		        	  JasperReport jasperReport3 = JasperCompileManager.compileReport(
+					            new FileInputStream(BillofExchagePathJasper));  
+		        	  
+		        	  
+		
+		        	  
 			    // Set up parameters and data source
 			    //Map<String, Object> parameters = new HashMap<>();
 
@@ -3858,7 +3875,7 @@ public class Controller_V {
 			     String savePath3 =BOSReports + File.separator + fileName3;
 
 			    // Ensure the directory exists
-			    File saveDir = new File("C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument");
+			    File saveDir = new File(BOSReports);
 			    if (!saveDir.exists()) {
 			        saveDir.mkdirs();
 			    }
@@ -3901,8 +3918,9 @@ public class Controller_V {
 
 		              // Extract the last part
 		              String resultcontract = splitParts[splitParts.length - 1];
-		        	  JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\topsheet.jrxml"));
-		             
+		  // JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\topsheet.jrxml"));
+		              JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream(TopSheetPathJasper));
+				                
 		              List<TopSheeetDTO> listOfTopSheet = new ArrayList<>();
 		          	List<Object[]> list = generationAgaistLCsService.forQtyintopsheet(Contractno);
 		          	List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Contractno);
@@ -3995,7 +4013,7 @@ public class Controller_V {
 		             // generateAndSendPdf1(response, jasperPrint1, savePath1);
 		              
 		         // Ensure the directory exists
-			    File saveDir = new File("C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument");
+			    File saveDir = new File(BOSReports);
 			    if (!saveDir.exists()) {
 			        saveDir.mkdirs();
 			    }
