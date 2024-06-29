@@ -4512,6 +4512,7 @@ public class Controller_V {
 			  List<HoDispatchDto> hoDispatchDtoList = new ArrayList<>();
 	            
 			 String diNoString="";
+			 String documentName="";
  Double qty=0.0;      
 			for (String st : variety) {
 
@@ -4647,6 +4648,13 @@ public class Controller_V {
 				diHo.setCreated_by(user);
 				diHo.setCrop_year(crpyrString);
 				diHo.setCreation_date(formattedDate);
+			
+				
+				 String replacedString = diNoString.replace("/", "-");
+
+	                System.out.println(replacedString);
+	                 documentName = "HoDIDoc" + replacedString + ".pdf";
+	                diHo.setHoDIDoc(documentName) ; 
 				this.hoInstService.create(diHo);
 				
 				
@@ -4689,13 +4697,13 @@ public class Controller_V {
 	                for (Object[] details : list) {
 	                      parameters.put("DI_no", details[0]);
 	                      parameters.put("DI_Date", details[1]);
-	                      parameters.put("Add", (String)details[2]+(String)details[3]+ (String)details[4]+(String)details[5]+(String)details[6]);
+	                      parameters.put("Add", (String)details[2]+","+(String)details[3]+","+ (String)details[4]+","+(String)details[5]+","+(String)details[6]);
 	                   
 	                      parameters.put("Contract_no", details[7]);
 	                      parameters.put("Contract_Date", details[8]);
 	                      parameters.put("CropYear", details[9]);
 	                      parameters.put("LastDate", details[10]);
-	                      parameters.put("RoName", details[11]);
+	                      parameters.put("RoName", details[11] +" Regional Office");
 	                      parameters.put("totalQty", qty);
 	                }
 	             
@@ -4723,7 +4731,7 @@ public class Controller_V {
 	                String replacedString = diNoString.replace("/", "-");
 
 	                System.out.println(replacedString);
-	                String documentName = "HoDIDoc" + replacedString + ".pdf";
+	                 documentName = "HoDIDoc" + replacedString + ".pdf";
 
 	                final File theDir = new File(HoDiDoc);
 	                if (!theDir.exists()) {
@@ -4773,6 +4781,44 @@ public class Controller_V {
 
 		return "ViewJCIHO";
 	}
+	
+	@RequestMapping("downloadSupportDocHO")
+	public void downloadHODoc(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = HoDiDoc +"\\"+ filename;
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+
 
 	// Delete DI for particular DI no.
 
