@@ -3,86 +3,88 @@ package com.jci.model;
 public class HoDispatchDto {
 private String juteVarietyString;
 private String cropYearString;
-private String Grade1;
-private String Grade2;
-private String Grade3;
-private String Grade4;
-private String Grade5;
-private String Grade6;
-private String Grade7;
-private String Grade8;
-private String Total;
-private String TotalQty;
+private Double grade1;
+private Double grade2;
+private Double grade3;
+private Double grade4;
+private Double grade5;
+private Double grade6;
+private Double grade7;
+private Double grade8;
 public String getJuteVarietyString() {
 	return juteVarietyString;
 }
 public void setJuteVarietyString(String juteVarietyString) {
 	this.juteVarietyString = juteVarietyString;
 }
+private Double total;
+private Double totalQty;
+
 public String getCropYearString() {
 	return cropYearString;
 }
 public void setCropYearString(String cropYearString) {
 	this.cropYearString = cropYearString;
 }
-public String getGrade1() {
-	return Grade1;
+public Double getgrade1() {
+	return grade1;
 }
-public void setGrade1(String grade1) {
-	Grade1 = grade1;
+public void setgrade1(Double grade1) {
+	this.grade1 = grade1;
 }
-public String getGrade2() {
-	return Grade2;
+public Double getgrade2() {
+	return grade2;
 }
-public void setGrade2(String grade2) {
-	Grade2 = grade2;
+public void setgrade2(Double grade2) {
+	this.grade2 = grade2;
 }
-public String getGrade3() {
-	return Grade3;
+public Double getgrade3() {
+	return grade3;
 }
-public void setGrade3(String grade3) {
-	Grade3 = grade3;
+public void setgrade3(Double grade3) {
+	this.grade3 = grade3;
 }
-public String getGrade4() {
-	return Grade4;
+public Double getgrade4() {
+	return grade4;
 }
-public void setGrade4(String grade4) {
-	Grade4 = grade4;
+public void setgrade4(Double grade4) {
+	this.grade4 = grade4;
 }
-public String getGrade5() {
-	return Grade5;
+public Double getgrade5() {
+	return grade5;
 }
-public void setGrade5(String grade5) {
-	Grade5 = grade5;
+public void setgrade5(Double grade5) {
+	this.grade5 = grade5;
 }
-public String getGrade6() {
-	return Grade6;
+public Double getgrade6() {
+	return grade6;
 }
-public void setGrade6(String grade6) {
-	Grade6 = grade6;
+public void setgrade6(Double grade6) {
+	this.grade6 = grade6;
 }
-public String getGrade7() {
-	return Grade7;
+public Double getgrade7() {
+	return grade7;
 }
-public void setGrade7(String grade7) {
-	Grade7 = grade7;
+public void setgrade7(Double grade7) {
+	this.grade7 = grade7;
 }
-public String getGrade8() {
-	return Grade8;
+public Double getgrade8() {
+	return grade8;
 }
-public void setGrade8(String grade8) {
-	Grade8 = grade8;
+public void setgrade8(Double grade8) {
+	this.grade8 = grade8;
 }
-public String getTotal() {
-	return Total;
+public Double gettotal() {
+	return total;
 }
-public void setTotal(String total) {
-	Total = total;
+public void settotal(Double total) {
+	this.total = total;
 }
-public String getTotalQty() {
-	return TotalQty;
+public Double gettotalQty() {
+	return totalQty;
 }
-public void setTotalQty(String totalQty) {
-	TotalQty = totalQty;
+public void settotalQty(Double totalQty) {
+	this.totalQty = totalQty;
 }
+
 }

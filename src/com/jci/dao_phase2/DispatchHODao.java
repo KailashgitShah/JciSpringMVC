@@ -27,4 +27,6 @@ String check(String string);
 
 List<String> juteVariety();
 
+List<Object[]> getJasperData(String diNoString);
+
 }
