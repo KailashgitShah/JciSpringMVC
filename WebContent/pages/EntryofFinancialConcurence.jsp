@@ -88,6 +88,19 @@
 		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
 		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
 		  
+		    
+		    String contractValueStr = String.valueOf(ContractValue).trim();
+		    String instrumentValueStr = String.valueOf(instrumentvalue).trim();
+
+		    if (!contractValueStr.matches("-?\\d+(\\.\\d+)?") || !instrumentValueStr.matches("-?\\d+(\\.\\d+)?")) {
+		        throw new NumberFormatException("Invalid numeric format");
+		    }
+		    
+		    
+		    
+		    
+		    
+		    
 		    BigDecimal remainquantity1 = new BigDecimal(String.valueOf(remainquantity));
 		    
 		    
@@ -96,10 +109,9 @@
 		    
 		   
 		  
-		     BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
-		    
-		     BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue)); 
-		    
+		    BigDecimal contractValueBigInt = new BigDecimal(contractValueStr);
+		    BigDecimal instrumentValueBigInt = new BigDecimal(instrumentValueStr);
+
 		     BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt, 2, RoundingMode.HALF_UP);
 
 		   /*   BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt);

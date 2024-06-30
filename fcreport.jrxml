@@ -13,6 +13,7 @@
 	<field name="bankname" class="java.lang.String"/>
 	<field name="millname" class="java.lang.String"/>
 	<field name="qty" class="java.lang.Double"/>
+	<field name="total" class="java.lang.Double"/>
 	<field name="address" class="java.lang.String"/>
 	<field name="composition" class="java.lang.String"/>
 	<field name="instrument_Value" class="java.lang.String"/>
@@ -52,7 +53,7 @@
 				<text><![CDATA[Financial Concurrence against Contract No. : ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-20" y="113" width="595" height="1" uuid="87e76651-260b-4aed-91b4-aa8ff89b1715"/>
+				<reportElement x="-20" y="115" width="595" height="1" uuid="87e76651-260b-4aed-91b4-aa8ff89b1715"/>
 			</line>
 			<staticText>
 				<reportElement x="-1" y="119" width="354" height="40" uuid="7ebc41b8-1ead-4215-8190-67790caf4aa1"/>
@@ -261,14 +262,6 @@ favour of & mill siding
 				<textFieldExpression><![CDATA[$F{last_shipment_date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="285" y="455" width="100" height="30" uuid="470fb1e8-0d62-46ee-814c-06626767662e"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="282" y="500" width="100" height="30" uuid="e1aa0603-4594-4c76-a267-85ec1498c305"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="291" y="547" width="100" height="30" uuid="37137c18-50db-4ee6-8b66-9e8004c1b9be"/>
 				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
@@ -284,6 +277,18 @@ favour of & mill siding
 				<reportElement x="396" y="369" width="146" height="30" uuid="45836b5a-8cbf-4167-8201-6ad91e52ada5"/>
 				<textFieldExpression><![CDATA[$F{bankAddress}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="288" y="498" width="100" height="30" uuid="2bbbdded-6fe8-4941-8790-49ff75fda6e3"/>
+				<text><![CDATA[At sight ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="452" width="100" height="30" uuid="84ad3a52-faf8-4b91-b78a-fa76f9277ff6"/>
+				<text><![CDATA[N/A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="188" width="31" height="30" uuid="62f1dbea-2d24-45d6-9e7a-c681ac8a5e30"/>
+				<text><![CDATA[dt]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
@@ -301,7 +306,7 @@ favour of & mill siding
 				<reportElement x="353" y="0" width="1" height="53" uuid="0560b229-2805-4fdf-908f-ae3f0d1af7ce"/>
 			</line>
 			<textField>
-				<reportElement x="82" y="6" width="258" height="30" uuid="d8c5bfc3-d1e8-47de-bc26-dd034206b840"/>
+				<reportElement x="110" y="6" width="222" height="30" uuid="d8c5bfc3-d1e8-47de-bc26-dd034206b840"/>
 				<textFieldExpression><![CDATA[$F{composition}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -320,8 +325,8 @@ favour of & mill siding
 				<text><![CDATA[Accordingly DI may be issued to the extend of  ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="329" y="153" width="50" height="20" uuid="680a938e-920a-4171-8f3c-b83f0b6f374b"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="329" y="153" width="116" height="20" uuid="680a938e-920a-4171-8f3c-b83f0b6f374b"/>
+				<textFieldExpression><![CDATA[$F{instrument_Value}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="11" y="180" width="179" height="30" uuid="8e9811be-455b-4b3e-b1d3-fdee4e73d95a"/>
@@ -331,7 +336,7 @@ favour of & mill siding
 				<text><![CDATA[as per terms of the contract  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="391" y="154" width="54" height="24" uuid="db023324-136b-4a35-a050-3a93253c3adb"/>
+				<reportElement x="447" y="154" width="54" height="24" uuid="db023324-136b-4a35-a050-3a93253c3adb"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -394,8 +399,12 @@ favour of & mill siding
 				<reportElement x="4" y="201" width="165" height="1" uuid="5c76c7ad-7f0e-4e44-a06d-cb8b91b59d29"/>
 			</line>
 			<textField>
-				<reportElement x="131" y="248" width="100" height="30" uuid="8f27e38c-1364-4141-983b-fb61e05dedc4"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="131" y="253" width="100" height="30" uuid="8f27e38c-1364-4141-983b-fb61e05dedc4"/>
+				<textFieldExpression><![CDATA[$F{deliveryType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="9" width="100" height="30" uuid="5081ede2-404d-446e-9a4c-1d505397d0b7"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

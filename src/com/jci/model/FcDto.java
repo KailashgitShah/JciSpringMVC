@@ -20,6 +20,13 @@ public class FcDto {
 	private String jutevariety;
 	private String quanity;
 	private String deliveryType;
+	private double total;
+	public double getTotal() {
+		return total;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
 	public String getContrcatno() {
 		return contrcatno;
 	}

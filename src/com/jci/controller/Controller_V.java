@@ -3343,6 +3343,10 @@ public class Controller_V {
 	            fcDto.setInstrument_No(Instrument_No);
 	            String Instrument_Date = ((String) row[3]);
 	            fcDto.setInstrument_Date(Instrument_Date);
+	            
+	            String Instrument_value = ((String) row[4]);
+	            fcDto.setInstrument_Value(Instrument_value);
+	            
 	            String Last_shipment_date = ((String) row[5]);
 	            fcDto.setLast_shipment_date(Last_shipment_date);
 	            String Expiry_date = ((String) row[6]);
@@ -3367,15 +3371,24 @@ public class Controller_V {
 	            fcDto.setDeliveryType(deliveryString);
 	            listOfFcdto.add(fcDto);
 	        }
-
+            double sum=0.0;
 	        List<Object[]> documentforcomposition = this.financialConcurenceservice.gradecompositionfordetails(labelname);
 	        for (Object[] row : documentforcomposition) {
 	            String composition = ((String) row[0]);
 	            fcDto.setComposition(composition);
-	            fcDto.setQuanity(composition);
+	            
+	            double sumqty = Double.parseDouble(QtyAllowed);
+	            double percentage = Double.parseDouble(row[1].toString());
+	            double compoqty = (sumqty * percentage) / 100;
+	            String compoqtyString = Double.toString(compoqty);
+	            
+	            sum+=compoqty;
+	            fcDto.setQuanity(compoqtyString);
+	           
 	            listOfFcdto.add(fcDto);
 	        }
-
+	        fcDto.setTotal(sum);
+            listOfFcdto.add(fcDto);
 	        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode1);
 	        for (Object[] row : listofaddress) {
 	            String millname = ((String) row[0]);
@@ -3387,15 +3400,15 @@ public class Controller_V {
 
 	        
 	       
-//	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
-//	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
-//	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-//
-//	        String fileName = "listOfFcdto" + millcode1 + ".pdf";
-//	        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
-//
+	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
+	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+	        String fileName = "listOfFcdto" + millcode1 + ".pdf";
+	        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
+
 //	        JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
-//	        serveFileAsResponse(savePath, fileName, response);
+	        serveFileAsResponse(savePath, fileName, response);
 
 	        // Ensure the redirection happens after the file has been served
 	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>");
