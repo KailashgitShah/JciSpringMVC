@@ -3387,15 +3387,15 @@ public class Controller_V {
 
 	        
 	       
-	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
-	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
-	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-
-	        String fileName = "listOfFcdto" + millcode1 + ".pdf";
-	        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
-
-	        JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
-	        serveFileAsResponse(savePath, fileName, response);
+//	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
+//	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
+//	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+//
+//	        String fileName = "listOfFcdto" + millcode1 + ".pdf";
+//	        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
+//
+//	        JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
+//	        serveFileAsResponse(savePath, fileName, response);
 
 	        // Ensure the redirection happens after the file has been served
 	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>");
