@@ -96,6 +96,16 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 		return this.financialConcurencedao.DetailsForReport(cont_no);
 		
 	}
+	@Override
+	public List<Object[]> LabelnameAndDelivery(String cont_no) {
+	
+		return this.financialConcurencedao.LabelnameAndDelivery(cont_no);
+	}
+	@Override
+	public List<Object[]> gradecompositionfordetails(String cont_no) {
+	
+		return this.financialConcurencedao.gradecompositionfordetails(cont_no);
+	}
 	
 	
 	

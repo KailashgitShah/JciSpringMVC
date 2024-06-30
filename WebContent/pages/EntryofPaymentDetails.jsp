@@ -191,7 +191,7 @@
 
 
 
-
+	<!-- oninput="validateAmount();"  -->         
 
 											<div class="col-sm-4 form-group">
 												<label id="differenceLabel">Instrument Value </label> <span
@@ -202,7 +202,7 @@
 												<input class="form-control taxtbox" name="InstrumentValue"
 													id="InstrumentValue12" min="0" step="1" pattern="\d+"
 													type="number" placeholder="Instrument Value" required
-													oninput="validateAmount();">
+												>
 												<div id="errorMessage" style="color: red; display: none;">Amount
 													exceeds the allowed limit!</div>
 											</div>
@@ -654,16 +654,21 @@ $(document).ready(function() {
             }
            
             // Update the total contract value label
-            $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
            
+            
+         /*    $('#differenceLabel').text('Instrument Value max = ' + totalContractValue);
+            */
+            
+            
             // Recalculate ratios
             recalculateRatios();
         } else {
             // If no data is available, display a message
             $('#contractTable').hide();
             $('#contractTable tbody').append('<tr><td colspan="5">No data available</td></tr>');
-            $('#differenceLabel').text('Instrument Value max = 0');
-           
+         
+            /*   $('#differenceLabel').text('Instrument Value max = 0');
+            */
         }
     }
 

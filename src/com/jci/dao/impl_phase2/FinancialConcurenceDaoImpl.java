@@ -121,11 +121,19 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 					Date createddate = dateFormat.parse(createdDateString);
 					// Date createddate = (Date) row[1];
 
-					long diffInMilliseconds = Math.abs(condate.getTime() - createddate.getTime());
+					//long diffInMilliseconds = Math.abs(condate.getTime() - createddate.getTime());
+					
+					long diffInMilliseconds = condate.getTime() - createddate.getTime();
+
+					System.err.println("diffInMilliseconds: " + diffInMilliseconds);
+					if(diffInMilliseconds<0) {
+						diffInMilliseconds=0;
+					}
+					
 					int daysBetween = (int) TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
 
 					charges = daysBetween;
-					System.out.println("daysBetween: " + daysBetween);
+					System.err.println("daysBetween: " + daysBetween);
 					System.out.println("charges: " + charges);
 
 				}
@@ -209,14 +217,44 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 
 	@Override
 	public List<Object[]> DetailsForReport(String cont_no) {
-		  String sql ="select a.Contractno,a.QtyAllowed ,b.Instrument_No,b.Instrument_Date,b.ifsc,b.Last_shipment_date,b.Expiry_date,\r\n"
-		  		+ " b.Auto_revolving_amount,b.millcode from  jcifinancial_concurrence as a LEFT join  jcipayment_arrangement as b on b.Contract_No=a.Contractno"
-			  		+ " WHERE Contractno= '" +cont_no+"'"; 
+		  String sql ="               SELECT \r\n"
+		  		+ "    a.Contractno,\r\n"
+		  		+ "    a.QtyAllowed,\r\n"
+		  		+ "    b.Instrument_No,\r\n"
+		  		+ "    CONVERT(VARCHAR, b.Instrument_Date, 105) AS Instrument_Date,\r\n"
+		  		+ "    b.ifsc,\r\n"
+		  		+ "    CONVERT(VARCHAR, b.Last_shipment_date, 105) AS Last_shipment_date,\r\n"
+		  		+ "    CONVERT(VARCHAR, b.Expiry_date, 105) AS Expiry_date,\r\n"
+		  		+ "    b.Auto_revolving_amount,\r\n"
+		  		+ "    b.millcode\r\n"
+		  		+ "FROM \r\n"
+		  		+ "    jcifinancial_concurrence AS a \r\n"
+		  		+ "LEFT JOIN \r\n"
+		  		+ "    jcipayment_arrangement AS b \r\n"
+		  		+ "ON \r\n"
+		  		+ "    b.Contract_No = a.Contractno\r\n"
+		  		+ "WHERE \r\n"
+		  		+ "    b.Contract_No ='" +cont_no+"' "; 
 			    
 					 		
 					
 					 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 					 return resultList1;
+	}
+
+	@Override
+	public List<Object[]> LabelnameAndDelivery(String cont_no) {
+		String sql ="select a.Grade_composition,a.Delivery_type,a.Contract_no from jcicontract as a	 WHERE a.Contract_no= '" +cont_no+"'"; 
+			     List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+					 return resultList1;
+	}
+
+	@Override
+	public List<Object[]> gradecompositionfordetails(String cont_no) {
+	
+		String sql ="select Jute_combination,Proposed_composition from jcigrade_composition where Label_name= '" +cont_no+"'"; 
+	     List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+			 return resultList1;
 	}
 
 }

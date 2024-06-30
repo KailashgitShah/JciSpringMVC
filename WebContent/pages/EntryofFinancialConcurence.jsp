@@ -100,7 +100,15 @@
 		    
 		     BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue)); 
 		    
+		     BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt, 2, RoundingMode.HALF_UP);
 
+		   /*   BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt);
+		     */
+		     if (ratio.compareTo(BigDecimal.ONE) > 0) {
+		            instrumentValueBigInt = instrumentValueBigInt;
+		        } else {
+		            instrumentValueBigInt = contractValueBigInt;
+		        }
 
 		    BigDecimal qtdsub = contractValueBigInt.subtract(instrumentValueBigInt);
 		 

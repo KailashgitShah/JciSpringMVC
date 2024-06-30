@@ -132,7 +132,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 	public void UpdateContractstatus(String s) {
 		
 		   
-		 String hql = "UPDATE jcicontract set Contract_status = ‘Mill Raised Claim’  where Contract_no = '" + s + "' ";
+		 String hql = "UPDATE jcicontract set Contract_status = 'Mill Raised Claim'   where Contract_no = '" + s + "' ";
 		 this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 		
 	}

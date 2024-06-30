@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FC" pageWidth="595" pageHeight="1502" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b85a960-73ca-4168-9e8f-d85d6d930387">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="deliveryType" class="java.lang.String"/>
+	<field name="quanity" class="java.lang.String"/>
+	<field name="jutevariety" class="java.lang.String"/>
+	<field name="allowedqty" class="java.lang.String"/>
+	<field name="bankAddress" class="java.lang.String"/>
+	<field name="bankname" class="java.lang.String"/>
+	<field name="millname" class="java.lang.String"/>
+	<field name="qty" class="java.lang.Double"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="composition" class="java.lang.String"/>
+	<field name="instrument_Value" class="java.lang.String"/>
+	<field name="instrument_No" class="java.lang.String"/>
+	<field name="instrument_Date" class="java.lang.String"/>
+	<field name="last_shipment_date" class="java.lang.String"/>
+	<field name="expiry_date" class="java.lang.String"/>
+	<field name="auto_revolving_amount" class="java.lang.String"/>
+	<field name="contrcatno" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="885" splitType="Stretch">
+			<staticText>
+				<reportElement x="70" y="10" width="430" height="40" uuid="da5bd699-8edd-4870-a9ab-3314e36b1bd6"/>
+				<textElement>
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THE JUTE CORPORATION OF INDIA LIMITED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="40" width="170" height="30" uuid="7438c482-278e-4d85-984e-818dc3fc0b1e"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A Goverment of India Enterprise]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="68" width="595" height="1" uuid="a48d2440-5610-4148-9606-b298b4b8c457"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="75" width="303" height="30" uuid="d905b01e-cd6c-42aa-b36b-44dbfe9002d2"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Financial Concurrence against Contract No. : ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="113" width="595" height="1" uuid="87e76651-260b-4aed-91b4-aa8ff89b1715"/>
+			</line>
+			<staticText>
+				<reportElement x="-1" y="119" width="354" height="40" uuid="7ebc41b8-1ead-4215-8190-67790caf4aa1"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[ The following Cheque has been recieved and credited.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="148" width="160" height="22" uuid="4643d473-10f1-46b4-b1ce-ed8f99690230"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Particulars of Cheque]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="180" width="554" height="1" uuid="f753ace5-62d3-4208-b092-e52e1f2c6dee"/>
+			</line>
+			<line>
+				<reportElement x="2" y="225" width="554" height="1" uuid="d648c105-212b-4039-b80f-e44f06d630d4"/>
+			</line>
+			<line>
+				<reportElement x="2" y="269" width="554" height="1" uuid="ff5542dc-4338-4424-bb34-6183c2724a6f"/>
+			</line>
+			<line>
+				<reportElement x="1" y="316" width="554" height="1" uuid="00239868-b42c-49dc-9f7b-7ffe836a80c8"/>
+			</line>
+			<line>
+				<reportElement x="1" y="358" width="554" height="1" uuid="b1229142-3582-481e-acce-c3b8ff82975f"/>
+			</line>
+			<line>
+				<reportElement x="1" y="406" width="554" height="1" uuid="dd263cc3-ae8d-42c8-a421-497826bbe9e1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="448" width="554" height="1" uuid="03fdcdfa-5ef2-42a3-b2dc-c2ec86a11ce6"/>
+			</line>
+			<line>
+				<reportElement x="1" y="491" width="554" height="1" uuid="fe2ded5b-b148-4337-966c-5669d3ff64b7"/>
+			</line>
+			<line>
+				<reportElement x="1" y="536" width="554" height="1" uuid="223b873d-7775-4082-b13f-cc330f44b8eb"/>
+			</line>
+			<line>
+				<reportElement x="1" y="613" width="554" height="1" uuid="ae2bacc5-5912-49a3-bfa7-deca9b3a4829"/>
+			</line>
+			<line>
+				<reportElement x="1" y="669" width="554" height="1" uuid="d1a80e5d-0003-4c39-8bca-fd36578e6e28"/>
+			</line>
+			<line>
+				<reportElement x="1" y="719" width="554" height="1" uuid="4623e65c-02cb-4ef0-98fb-c8e9df3c23cc"/>
+			</line>
+			<staticText>
+				<reportElement x="108" y="190" width="150" height="30" uuid="c4cdacef-0a8a-4c86-bedd-841232bd3c50"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cheque No. & Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="231" width="96" height="30" uuid="32470de8-df86-4c93-9d12-097be8851c3a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="282" width="97" height="30" uuid="45b2f82e-0937-4801-9931-4f2314d132e0"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mill Name
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="323" width="62" height="30" uuid="856fdf84-aa8c-4a35-8b6d-aa78cf6109d5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A/c ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="94" y="367" width="164" height="30" uuid="bd11d578-57a3-44a8-992d-c3d170cb4091"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank Name & Branch ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="413" width="164" height="30" uuid="779bd3c2-69f9-4971-a718-05bc9e303430"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Last date of Shipment ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="158" y="455" width="110" height="30" uuid="244b0524-c7d8-4ce0-a359-7d6e2e1a6af2"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Validity Date  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="500" width="164" height="30" uuid="5280261f-007b-4dbb-9319-422bdadfc418"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Credit Period ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="542" width="242" height="38" uuid="6f667b24-eac6-4f16-b0e3-f26864e7500c"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.N./Lorry Challan to be drawn in
+favour of & mill siding
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="621" width="133" height="38" uuid="c7325581-d43d-436a-8c31-8f0c1e6db599"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Auto-Revolving]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="674" width="160" height="38" uuid="61ed2e99-df48-444e-a2e3-e24ad41d37f4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Allowed Quantity (Qtls.) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="780" width="210" height="30" uuid="3382a008-2b67-4f9f-8de4-1d7155d6a60e"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Particulars of Contract
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="555" y="180" width="1" height="540" uuid="5d0436eb-4e73-4993-a310-d7fb2aba1998"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="179" width="1" height="540" uuid="efb003d6-2ac9-421b-a753-ab2627f87095"/>
+			</line>
+			<line>
+				<reportElement x="80" y="821" width="400" height="1" uuid="fd311e92-e17e-465d-b6fb-c196a83adc0d"/>
+			</line>
+			<line>
+				<reportElement x="79" y="884" width="400" height="1" uuid="39e5d3e1-9113-4de5-8d46-2a647f4e8b08"/>
+			</line>
+			<line>
+				<reportElement x="80" y="821" width="1" height="62" uuid="57e3b2a1-f9da-4bc1-b63b-ae91f4d4f1ad"/>
+			</line>
+			<line>
+				<reportElement x="480" y="822" width="1" height="62" uuid="26bb3393-2c3c-4cdb-8083-8440d5ceceb6"/>
+			</line>
+			<line>
+				<reportElement x="353" y="822" width="1" height="63" uuid="418a0491-8b2a-4a93-b6c3-ea0b76265b44"/>
+			</line>
+			<staticText>
+				<reportElement x="147" y="843" width="150" height="30" uuid="0214b9c3-f9af-4309-ba23-f4943f4aadae"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUTE VARIETY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="840" width="116" height="30" uuid="7a27b5bc-1ae7-46b4-9b85-fefbf08b3ea8"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity (Qtls.)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="315" y="77" width="130" height="30" uuid="1870f143-680b-48ee-ad6f-fb1da20687a9"/>
+				<textFieldExpression><![CDATA[$F{contrcatno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="188" width="100" height="30" uuid="ff7f0aff-6271-41dc-8ea5-5655059c879f"/>
+				<textFieldExpression><![CDATA[$F{instrument_No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="188" width="100" height="30" uuid="645e2a1b-d23c-410a-af1a-f8c5c4503a1c"/>
+				<textFieldExpression><![CDATA[$F{instrument_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="232" width="100" height="30" uuid="ee0b8da9-56a1-4be4-aa7f-7a917be3f886"/>
+				<textFieldExpression><![CDATA[$F{instrument_Value}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="292" y="277" width="263" height="30" uuid="cee5cd3f-d927-4eb9-93a1-72cc9b99f4ea"/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="323" width="100" height="30" uuid="8fc9f2a8-d6e7-4503-ae19-5caeeccb8cc2"/>
+				<textFieldExpression><![CDATA[$F{millname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="369" width="110" height="30" uuid="2a4f9c38-f68b-4e25-b560-6c6b43b94c8c"/>
+				<textFieldExpression><![CDATA[$F{bankname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="412" width="100" height="30" uuid="50aa3fb6-3a4f-49c6-b810-93da8e1537c0"/>
+				<textFieldExpression><![CDATA[$F{last_shipment_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="285" y="455" width="100" height="30" uuid="470fb1e8-0d62-46ee-814c-06626767662e"/>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="282" y="500" width="100" height="30" uuid="e1aa0603-4594-4c76-a267-85ec1498c305"/>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="291" y="547" width="100" height="30" uuid="37137c18-50db-4ee6-8b66-9e8004c1b9be"/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="625" width="100" height="30" uuid="9042b01a-d385-44f3-a3d4-7759ac5c4f3f"/>
+				<textFieldExpression><![CDATA[$F{auto_revolving_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="295" y="680" width="100" height="30" uuid="0a75fed2-6731-41e9-ab0e-b32efe36e35d"/>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="369" width="146" height="30" uuid="45836b5a-8cbf-4167-8201-6ad91e52ada5"/>
+				<textFieldExpression><![CDATA[$F{bankAddress}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="57">
+			<line>
+				<reportElement x="82" y="53" width="399" height="1" uuid="e22922c7-d521-4ad5-964f-f9e7c662f028"/>
+			</line>
+			<line>
+				<reportElement x="480" y="0" width="1" height="53" uuid="705414e7-9db4-4346-9cfe-1ef48828bf35"/>
+			</line>
+			<line>
+				<reportElement x="81" y="0" width="1" height="53" uuid="b75e538b-5efe-4cf2-96c3-a8992ae10332"/>
+			</line>
+			<line>
+				<reportElement x="353" y="0" width="1" height="53" uuid="0560b229-2805-4fdf-908f-ae3f0d1af7ce"/>
+			</line>
+			<textField>
+				<reportElement x="82" y="6" width="258" height="30" uuid="d8c5bfc3-d1e8-47de-bc26-dd034206b840"/>
+				<textFieldExpression><![CDATA[$F{composition}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="6" width="100" height="30" uuid="34884c76-2e3c-474f-821b-a97c4b1ea759"/>
+				<textFieldExpression><![CDATA[$F{quanity}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="370" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="154" width="314" height="30" uuid="33b30906-c0fc-446a-8b86-24422fca99fa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Accordingly DI may be issued to the extend of  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="329" y="153" width="50" height="20" uuid="680a938e-920a-4171-8f3c-b83f0b6f374b"/>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="180" width="179" height="30" uuid="8e9811be-455b-4b3e-b1d3-fdee4e73d95a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[as per terms of the contract  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="154" width="54" height="24" uuid="db023324-136b-4a35-a050-3a93253c3adb"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lakhs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="250" width="110" height="30" uuid="d9336516-830b-4593-9a82-8fd568632707"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. Delivery type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="330" width="129" height="30" uuid="6390df5a-d431-463d-9d59-4437fb68a0e5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AFM / DFM (Sales)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="330" width="131" height="30" uuid="b61b3dee-4cce-4626-b31f-a4814f0050cb"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AMM / DMM / MM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="330" width="125" height="30" uuid="c2b45920-9841-49c5-a1af-053f56865273"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[( ACCOUNTANT )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="10" width="150" height="30" uuid="6841dc6a-886c-4ea0-9885-3c3517271de4"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="80" y="-3" width="401" height="1" uuid="6dc48166-4067-4b42-8dd2-708d2d301662"/>
+			</line>
+			<line>
+				<reportElement x="80" y="54" width="399" height="1" uuid="54ca1aab-268c-4ef9-8e36-6b317809bcc1"/>
+			</line>
+			<line>
+				<reportElement x="480" y="-1" width="1" height="55" uuid="38d6dd90-72e2-4b3d-b594-8c566474328e"/>
+			</line>
+			<line>
+				<reportElement x="353" y="-2" width="1" height="55" uuid="ecae25b4-7623-44f4-837d-b06ac984b4f5"/>
+			</line>
+			<line>
+				<reportElement x="80" y="-2" width="1" height="55" uuid="bba0737b-f87a-4d38-ad2b-ce5a19ab301a"/>
+			</line>
+			<line>
+				<reportElement x="3" y="173" width="552" height="1" uuid="41837552-8964-4421-ab95-65d95cd3bf27"/>
+			</line>
+			<line>
+				<reportElement x="4" y="201" width="165" height="1" uuid="5c76c7ad-7f0e-4e44-a06d-cb8b91b59d29"/>
+			</line>
+			<textField>
+				<reportElement x="131" y="248" width="100" height="30" uuid="8f27e38c-1364-4141-983b-fb61e05dedc4"/>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
