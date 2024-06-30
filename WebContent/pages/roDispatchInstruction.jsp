@@ -438,7 +438,7 @@ $('#hoDiNo, #dpc').change(function() {
 	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='total_bal" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
 
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><strong>DI Issue</strong></td>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black; color: blue;'><strong>DI Issue</strong></td>";
 
 	                for (var i = 1; i <= 8; i++) {
 	                    if (data.contractDetails[k][20] == "Mesta" || data.contractDetails[k][20] == "Bimli") {
