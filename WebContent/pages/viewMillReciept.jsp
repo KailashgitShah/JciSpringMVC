@@ -149,7 +149,7 @@ th {
 										<th>HO Date</th>
 										<th>Mill id</th>
 										<th>Mill Reciept Qty.</th>
-										<th>Short Qty</th>
+									<!-- 	<th>Short Qty</th> -->
 										<th>Jute Variety</th>
 										<th>Jute Grade</th>
 										
@@ -183,7 +183,7 @@ th {
 										<td><%= sdf.format(millRecieptModel.getHo_date()) %></td>
 										<td><%= millRecieptModel.getMill_id() %></td>
 										<td><%= millRecieptModel.getMR_qty() %></td>
-										<td><%= millRecieptModel.getShort_qty() %></td>
+										<%-- <td><%= millRecieptModel.getShort_qty() %></td> --%>
 										<td><%= millRecieptModel.getJute_Variety() %></td>
 										<td><%= millRecieptModel.getJute_Grade() %></td>
 

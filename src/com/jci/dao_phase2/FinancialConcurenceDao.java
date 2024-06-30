@@ -26,6 +26,8 @@ public interface FinancialConcurenceDao {
 	 public String ContractedQty(String cont_no);
 	 public List<Object> RemainingQty(String cont_no);
 	 public List<Object[]> DetailsForReport(String cont_no);
+	 public List<Object[]> LabelnameAndDelivery(String cont_no);
+	 public List<Object[]> gradecompositionfordetails(String cont_no);
 	 public String fcref_nocheck();
 	 public int paymentid(String cont_no);
 	public List<Object> dataofdates(String con_no,int Payment_id);

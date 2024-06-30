@@ -23,6 +23,8 @@ public interface FinancialConcurenceService {
 	 public String ContractedQty(String cont_no);
 	 public List<Object> RemainingQty(String cont_no);
 	 public List<Object[]> DetailsForReport(String cont_no);
+	 public List<Object[]> LabelnameAndDelivery(String cont_no);
+	 public List<Object[]> gradecompositionfordetails(String cont_no);
 	 public String fcref_nocheck();
 	 public List<Object> dataofdates(String Con_no,int Payment_id);
 	 

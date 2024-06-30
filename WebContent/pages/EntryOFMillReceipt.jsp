@@ -262,7 +262,7 @@
 										<div class="col-sm-4 form-group">
 												<label>Mill Receipt Qty</label> 
 												<span class="text-danger">* </span>&nbsp; <span id="Mill_receiptQty" name="Mill_receiptQty" class="text-danger"> </span>
-												<input class="form-control" name="Mill_receiptQty1" id="Mill_receiptQty" type="double" required>
+												<input class="form-control" name="Mill_receiptQty1" id="Mill_receiptQty" type="number" required>
 										</div>
                                  </div>
                                  
@@ -601,7 +601,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
         success: function(data) {
           
             var dataArray = JSON.parse(data);
-
+            var currentMonth = new Date().getMonth() + 1;
             dataArray.forEach(function(row, index) {
                 var str = row[3];
                 var actualvalue1 = row[7];
@@ -610,6 +610,14 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                 var numericPartStr = match ? match[0] : "";
                 var intValue = parseInt(numericPartStr, 10);
                 
+                
+                
+                var initialNomination;
+                if (currentMonth > 6 && currentMonth <= 10) {
+                    initialNomination = Math.max(0, intValue - 20);
+                } else {
+                    initialNomination = Math.max(0, intValue - 18);
+                }
 
                 var rowHtml = '<tr>' +
                     '<td>' +
@@ -661,7 +669,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     
                     '<td>' +
                     '<div class="table2-cell">' +
-                    '<select id="Nomination_' + index + '" name="Nomination[]" required >'+
+                    '<select id="Nomination_' + index + '" name="Nomination[]" required  onchange="handleNominationChange(this, ' + intValue + ', ' + actualvalue1 + ')">'+
                     '<option value="0">0</option>' +
                     '<option value="18">18</option>'+
                     '<option value="19">19</option>'+
@@ -790,6 +798,35 @@ function loadMillChildBasedData(contractNo,resultsArray) {
 }
 
 
+function handleNominationChange(selectElement, intValue, actualvalue1) {
+
+    var currentMonth = new Date().getMonth() + 1;
+    var selectedNomination = parseInt(selectElement.value);
+
+    // Adjust Nomination based on current month
+    if (currentMonth > 6 && currentMonth <= 10) {
+        selectedNomination -= 20;
+        
+    } else {
+        selectedNomination -= 18;
+    }
+    selectedNomination = Math.max(0, selectedNomination);
+
+/*     selectedNomination = Math.max(0, selectedNomination);
+
+    selectElement.value = selectedNomination.toString(); */
+    
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    selectedOption.value = selectedNomination.toString();
+  /*    selectedOption.text = selectedNomination.toString();
+  */
+    // Optionally, you can also update the display of the selected option in the dropdown
+     selectElement.selectedIndex = selectElement.selectedIndex;
+     
+    
+    
+}
+
 
 $(document).ready(function() {
     // Initial disabling of input fields
@@ -910,18 +947,20 @@ $('#childTable1').show();
  
 function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, DustAmtId, NCVQty, DUSTQty, actualvalue, intvalue, index) {
     // Retrieve the actual input values using the IDs
+  
     var Qualitypercentage = document.getElementById(QualitypercentageId).value;
     var Nomination = document.getElementById(NominationId).value;
     var NCVamt = document.getElementById(NCVamtId).value;
     var NCVQty = document.getElementById(NCVQty).value;
     var DUSTQty = document.getElementById(DUSTQty).value;
     var DustAmt = document.getElementById(DustAmtId).value;
-
+ 
 
    
     
     let gradeprice = resultsArray[intvalue - 1];
     let gradeprice1 = gradeprice;
+  
   
 
 
@@ -934,42 +973,29 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let qty2 = ((actualvalue * parseFloat(DustAmt)) / 100);
     let valueinprice1 = (gradeprice * qty2).toFixed(2);
     let dustValue = parseFloat(valueinprice1);
-
-   
-
-
-    let qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
-    let valueinprice2 = (gradeprice * qty3).toFixed(2);
-    let moisturevalue = parseFloat(valueinprice2);
-
     
-    var currentMonth = new Date().getMonth() + 1;
-    if (currentMonth > 6 && currentMonth <= 10) {
-         Nomination = Nomination - 20;
-    } else {
-     Nomination = Nomination - 18;
-    }
-   if (Nomination < 0) {
-        Nomination = 0;
-    }
         qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
         valueinprice2 = (gradeprice * qty3).toFixed(2);
         moisturevalue = parseFloat(valueinprice2);
-        alert(moisturevalue);
-
+       
+      
+        
     let qty4 = parseFloat(NCVQty);
     let valueinprice3 = (gradeprice * qty4).toFixed(2);
     let ncvqty = parseFloat(valueinprice3);
-
+ 
     
     let qty5 =  parseFloat(DUSTQty);
     let valueinprice4 = (gradeprice * qty5).toFixed(2);
     let dustqty = parseFloat(valueinprice4);
 
+    
+    
     let totalvalue=0;
     totalvalue = ncvValue + dustValue + moisturevalue+dustqty+ncvqty;
     totalvalue = Math.round(totalvalue);
     let totalqty = (qty1 + qty2 + qty3+qty4+qty5).toFixed(2);
+
 
   
 
@@ -981,10 +1007,11 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
 
     let qs = integerResult;
     let rem = parseFloat(Qualitypercentage) % 100;
+ 
 
 
     let gradeprice6 = resultsArray[intvalue - 1];
-   
+    
 
     if (qs < 1) {
       

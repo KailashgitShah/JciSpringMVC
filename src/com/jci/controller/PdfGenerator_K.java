@@ -59,8 +59,10 @@ public class PdfGenerator_K {
 	public String generateBillPdf( String  Invoice_Value, String challan_No1, String supplier_Name,
 			String supplier_GSTN, String supplier_Address, String recipient_Name, String recipient_GSTN,
 			String recipient_Address, String consignee_Name, String consignee_GSTN, String consignee_Address,
-			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,String Genrationofbill,String Statename23,String StaeCode23,String PAN23,String mastterSatename,String mastterSatename2,
-			String ReciepentsStatecode,List<Object[]> dateData,List<Object[]> Dpcname,String millcode234,List<Object[]> RegionAndCenterName1) throws FileNotFoundException {
+			String bill_of_Supply, String conract_no,String Clientstate, String Clientcode,String BOS_Date, String ClientPan,String TrnasitPolicyNo,
+			List<Object[]> list, String Vehicle_no,String Driver_Lic_no,String Driver_name,String TCS_Amt,
+			String Genrationofbill,String Statename23,String StaeCode23,String PAN23,String mastterSatename,String mastterSatename2,
+			String ReciepentsStatecode,List<Object[]> dateData,List<Object[]> Dpcname,String millcode234,List<Object[]> RegionAndCenterName1,String consignment) throws FileNotFoundException {
 		 
 		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date(0));
 
@@ -115,10 +117,10 @@ public class PdfGenerator_K {
 	 pdfDocument.setDefaultPageSize(PageSize.A4);
 	  PdfFont boldFont = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
       Document document = new Document(pdfDocument);
-	  document.setMargins(5, 5, 5, 5);
+	  document.setMargins(2, 2, 2, 2);
 		addHeader(document, filePath, filePath, filePath);
 		float columnWidth = PageSize.A4.getWidth() * 0.5f;
-		float borderWidth = 1.0f; 
+		float borderWidth = 0.5f; 
 		Table contentTable1 = new Table(new float[]{columnWidth, columnWidth});
 		Cell cell1199 = createCell("THE JUTE CORPORATION OF INDIA", Border.NO_BORDER, TextAlignment.LEFT).setFont(boldFont);
 		contentTable1.addCell(cell1199);
@@ -314,7 +316,7 @@ public class PdfGenerator_K {
                                      .setBorder(Border.NO_BORDER)
                                      .setTextAlignment(TextAlignment.LEFT);
           innerTable4.addCell(labelCell4);
-          Cell valueCell4 = new Cell().add(new Paragraph(new Text(centerName+"("+centercode+")"+Roname+"("+Rocode+")").setFont(normalFont)))
+          Cell valueCell4 = new Cell().add(new Paragraph(new Text(centerName+"("+centercode+")/"+Roname+"("+Rocode+")").setFont(normalFont)))
                                      .setBorder(Border.NO_BORDER)
                                      .setTextAlignment(TextAlignment.LEFT);
           innerTable4.addCell(valueCell4);
@@ -337,7 +339,7 @@ public class PdfGenerator_K {
         cell52.setBorderRight(new SolidBorder(borderWidth));
         //cell52.setBorderTop(new SolidBorder(borderWidth));
         Table innerTable5 = new Table(new float[]{2,3});
-        Cell labelCell5 = new Cell().add(new Paragraph(new Text("CHALLAN /CN NO :").setFont(boldFont)))
+        Cell labelCell5 = new Cell().add(new Paragraph(new Text("CHALLAN  :").setFont(boldFont)))
                                    .setBorder(Border.NO_BORDER)
                                    .setTextAlignment(TextAlignment.LEFT);
         innerTable5.addCell(labelCell5);
@@ -347,6 +349,38 @@ public class PdfGenerator_K {
         innerTable5.addCell(valueCell5);
         cell52.add(innerTable5);
          contentTable.addCell(cell52);
+         
+         
+         Cell cell6650 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+         cell6650.setBorderRight(new SolidBorder(borderWidth));
+        // cell6649.setBorderTop(new SolidBorder(borderWidth));
+         Table innerTable1350 = new Table(new float[]{2,3});
+         Cell labelCell1350 = new Cell().add(new Paragraph(new Text("").setFont(boldFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable1350.addCell(labelCell1350);
+         Cell valueCell1350 = new Cell().add(new Paragraph(new Text("").setFont(normalFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable1350.addCell(valueCell1350);
+         cell6650.add(innerTable1350);
+          contentTable.addCell(cell6650);
+         
+         
+         Cell cell90 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
+         cell90.setBorderRight(new SolidBorder(borderWidth));
+         //cell52.setBorderTop(new SolidBorder(borderWidth));
+         Table innerTable9 = new Table(new float[]{2,3});
+         Cell labelCell9 = new Cell().add(new Paragraph(new Text("CN NO :").setFont(boldFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable9.addCell(labelCell9);
+         Cell valueCell9 = new Cell().add(new Paragraph(new Text(consignment+" dt."+Challandate).setFont(normalFont)))
+                                    .setBorder(Border.NO_BORDER)
+                                    .setTextAlignment(TextAlignment.LEFT);
+         innerTable9.addCell(valueCell9);
+         cell90.add(innerTable9);
+          contentTable.addCell(cell90);
         
 //        Cell cell51 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
 //        cell51.setBorderRight(new SolidBorder(borderWidth));
@@ -441,16 +475,16 @@ public class PdfGenerator_K {
             Cell cell662 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
             cell662.setBorderRight(new SolidBorder(borderWidth));
             //cell662.setBorderTop(new SolidBorder(borderWidth));
-            Table innerTable9 = new Table(new float[]{2,3});
-            Cell labelCell9 = new Cell().add(new Paragraph(new Text("BILL OF SUPPLY NO: ").setFont(boldFont)))
+            Table innerTable99 = new Table(new float[]{2,3});
+            Cell labelCell99 = new Cell().add(new Paragraph(new Text("BILL OF SUPPLY NO: ").setFont(boldFont)))
                                        .setBorder(Border.NO_BORDER)
                                        .setTextAlignment(TextAlignment.LEFT);
-            innerTable9.addCell(labelCell9);
-            Cell valueCell9 = new Cell().add(new Paragraph(new Text(bill_of_Supply).setFont(normalFont)))
+            innerTable99.addCell(labelCell99);
+            Cell valueCell99 = new Cell().add(new Paragraph(new Text(bill_of_Supply).setFont(normalFont)))
                                        .setBorder(Border.NO_BORDER)
                                        .setTextAlignment(TextAlignment.LEFT);
-            innerTable9.addCell(valueCell9);
-            cell662.add(innerTable9);
+            innerTable99.addCell(valueCell99);
+            cell662.add(innerTable99);
              contentTable.addCell(cell662);
 		
 //        Cell cell661 = createCell("", Border.NO_BORDER, TextAlignment.LEFT);
@@ -1023,9 +1057,9 @@ public class PdfGenerator_K {
             	 
             	 cellData = stringValue ; 
             	 float rate3=Float.parseFloat(stringValue);
-            	 float TCS_Amt1=Float.parseFloat(TCS_Amt);
+            	
             	 totalqty2+=rate3;
-            	 totalqty2+=TCS_Amt1;
+//            	
             	 totalqty2 = Math.round(totalqty2);
             	 
              } 
@@ -1104,7 +1138,8 @@ public class PdfGenerator_K {
 	cell11375.setHeight(minimumHeight);
 	
 	contentTable36.addCell(cell11375);
-	
+	 float TCS_Amt1=Float.parseFloat(TCS_Amt);
+	 totalqty2+=TCS_Amt1;
 	String stringValue2 = Float.toString(totalqty2);
 	Cell cell11376 = createCell(stringValue2, Border.NO_BORDER, TextAlignment.LEFT);
 	cell11376.setBorderRight(new SolidBorder(borderWidth));

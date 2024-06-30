@@ -243,7 +243,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 				+ "        WHEN b.Payment_type = 'Letter_of_Credit' THEN CONVERT(VARCHAR, b.Instrument_Date, 103) \r\n"
 				+ "        ELSE '' \r\n"
 				+ "    END AS Instrument_Date,ifsc,\r\n"
-				+ "    b.Payment_type \r\n"
+				+ "    b.Payment_type,a.Consignment_note_text \r\n"
 				+ "FROM \r\n"
 				+ "    jcidispatch_details AS a \r\n"
 				+ "INNER JOIN \r\n"

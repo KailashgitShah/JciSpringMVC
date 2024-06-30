@@ -109,6 +109,7 @@ import com.jci.model.EntryofGradeCompositionModel;
 import com.jci.model.EntryofpcsoModel;
 import com.jci.model.FactorssInvolvedCommercial;
 import com.jci.model.FarmerRegModel;
+import com.jci.model.FcDto;
 import com.jci.model.FinancialConcurenceModel;
 import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenerationofDocumentLCsModel;
@@ -3427,70 +3428,166 @@ public class Controller_V {
 	}
 
 	// save the data of FC after issuing the fc and modfied data.
+	@Value("${upload.fcreport}")
+	String fcreport;
 
 	@RequestMapping("saveFinancialConcurence")
-	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		try {
+	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+	    String username = (String) request.getSession().getAttribute("usrname");
+	    if (username == null) {
+	        return new ModelAndView("index");
+	    }
 
-			String fullcontractno = request.getParameter("fullcontractno");
-			String FC_Issue_Date = request.getParameter("FC_Issue_Date");
-			String FC_Ref_No = request.getParameter("FC_Ref_No.");
-			String Contracted_Qty = request.getParameter("Contracted_Qty.");
-			String QtyAllowed = request.getParameter("Shipment_Value1");
-			String carryingCostParam = request.getParameter("SGST_Amt1");
-			String Payment_id = request.getParameter("Payment_id");
-			int id = Integer.parseInt(Payment_id);
-			String remarks = request.getParameter("Remarks1");
-			this.paymentDetailService.remark(remarks, fullcontractno, id);
-			BigInteger Carrying_Cost_Charged = BigInteger.ZERO; // Default value if the parameter is not present or
-																// cannot be parsed
+	    try {
+	        String fullcontractno = request.getParameter("fullcontractno");
+	        String FC_Issue_Date = request.getParameter("FC_Issue_Date");
+	        String FC_Ref_No = request.getParameter("FC_Ref_No.");
+	        String Contracted_Qty = request.getParameter("Contracted_Qty.");
+	        String QtyAllowed = request.getParameter("Shipment_Value1");
+	        String carryingCostParam = request.getParameter("SGST_Amt1");
+	        String Payment_id = request.getParameter("Payment_id");
+	        int id = Integer.parseInt(Payment_id);
+	        String remarks = request.getParameter("Remarks1");
 
-			if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
-				try {
-					double carryingCostDouble = Double.parseDouble(carryingCostParam);
+	        this.paymentDetailService.remark(remarks, fullcontractno, id);
+	        
+	        BigInteger Carrying_Cost_Charged = BigInteger.ZERO;
+	        if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
+	            try {
+	                double carryingCostDouble = Double.parseDouble(carryingCostParam);
+	                Carrying_Cost_Charged = BigInteger.valueOf((long) carryingCostDouble);
+	            } catch (NumberFormatException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
+	        financialConcurenceModel.setFullcontractno(fullcontractno);
+	        
+	        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+	        Date contdate = formatter1.parse(FC_Issue_Date);
+	        financialConcurenceModel.setFC_Issue_Date(contdate);
+	        financialConcurenceModel.setFC_Ref_No(FC_Ref_No);
+	        financialConcurenceModel.setContracted_Qty(Contracted_Qty);
+	        financialConcurenceModel.setQtyAllowed(QtyAllowed);
+	        financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
 
-					Carrying_Cost_Charged = BigInteger.valueOf((long) carryingCostDouble);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
+	        Date date = new Date();
+	        financialConcurenceModel.setCreated_date(date);
+	        financialConcurenceModel.setRemarks(remarks);
+	        
+	        this.financialConcurenceservice.create(financialConcurenceModel);
+	        this.paymentDetailService.update2(fullcontractno);
+	        
+	        String ifsc = "";
+	        String millcode1 = "";
+	        String labelname = "";
 
-				}
-			}
+	        Map<String, Object> parameters = new HashMap<>();
+	        FcDto fcDto = new FcDto();
+	        List<FcDto> listOfFcdto = new ArrayList<>();
+	        
+	    
 
-			// double Carrying_Cost_Charged = request.getParameter("Carrying_cost");
+	        List<Object[]> documentsreport = this.financialConcurenceservice.DetailsForReport(fullcontractno);
+	        for (Object[] row : documentsreport) {
+	            String Contractno = ((String) row[0]);
+	            fcDto.setContrcatno(Contractno);
+	            String QtyAllowed1 = ((String) row[1]);
+	            double QtyAllowed4 = Double.parseDouble(QtyAllowed1);
+	            fcDto.setQty(QtyAllowed4);
+	            String Instrument_No = ((String) row[2]);
+	            fcDto.setInstrument_No(Instrument_No);
+	            String Instrument_Date = ((String) row[3]);
+	            fcDto.setInstrument_Date(Instrument_Date);
+	            String Last_shipment_date = ((String) row[5]);
+	            fcDto.setLast_shipment_date(Last_shipment_date);
+	            String Expiry_date = ((String) row[6]);
+	            fcDto.setExpiry_date(Expiry_date);
+	            String Auto_revolving_amount = ((String) row[7]);
+	            fcDto.setAuto_revolving_amount(Auto_revolving_amount);
+	            millcode1 = ((String) row[8]);
 
-			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
+	            if (row[7] != null) {
+	                ifsc = row[4].toString();
+	                fetchBankDetails(ifsc, fcDto);
+	            }
+	            
+	            listOfFcdto.add(fcDto);
+	        }
+	     
 
-			financialConcurenceModel.setFullcontractno(fullcontractno);
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date contdate = formatter1.parse(FC_Issue_Date);
+	        List<Object[]> documentlabel = this.financialConcurenceservice.LabelnameAndDelivery(fullcontractno);
+	        for (Object[] row : documentlabel) {
+	            labelname = ((String) row[0]);
+	            String deliveryString = ((String) row[1]);
+	            fcDto.setDeliveryType(deliveryString);
+	            listOfFcdto.add(fcDto);
+	        }
 
-			financialConcurenceModel.setFC_Issue_Date(contdate);
-			financialConcurenceModel.setFC_Ref_No(FC_Ref_No);
-			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
-			financialConcurenceModel.setQtyAllowed(QtyAllowed);
-			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
+	        List<Object[]> documentforcomposition = this.financialConcurenceservice.gradecompositionfordetails(labelname);
+	        for (Object[] row : documentforcomposition) {
+	            String composition = ((String) row[0]);
+	            fcDto.setComposition(composition);
+	            fcDto.setQuanity(composition);
+	            listOfFcdto.add(fcDto);
+	        }
 
-			Date date = new Date();
-			// Date currdate = date.toString();
-			financialConcurenceModel.setCreated_date(date);
-			financialConcurenceModel.setRemarks(remarks);
-			System.out.print(financialConcurenceModel);
-			this.financialConcurenceservice.create(financialConcurenceModel);
-			this.paymentDetailService.update2(fullcontractno);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+	        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode1);
+	        for (Object[] row : listofaddress) {
+	            String millname = ((String) row[0]);
+	            fcDto.setMillname(millname);
+	            String address = String.join("", (String) row[1], (String) row[2], (String) row[3], (String) row[4]);
+	            fcDto.setAddress(address);
+	            listOfFcdto.add(fcDto);
+	        }
 
-		} catch (Exception e) {
+	        
+	       
+//	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
+//	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
+//	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+//
+//	        String fileName = "listOfFcdto" + millcode1 + ".pdf";
+//	        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
+//
+//	        JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
+//	        serveFileAsResponse(savePath, fileName, response);
 
-			e.printStackTrace();
-		}
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-		return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
+	        // Ensure the redirection happens after the file has been served
+	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>");
+	        return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
+
+	    }
+	        
+	        catch (Exception e) {
+	        e.printStackTrace();
+	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\"><b>Error !</b> " + e.getMessage() + "</div>");
+	        return new ModelAndView("errorPage");
+	    }
 	}
 
+	private void fetchBankDetails(String ifsc, FcDto fcDto) {
+	    String url = "https://ifsc.razorpay.com/" + ifsc;
+	    RestTemplate restTemplate = new RestTemplate();
+	    try {
+	        String result = restTemplate.getForObject(url, String.class);
+	        JSONObject jsonObject = new JSONObject(result);
+	        String banknameString = jsonObject.optString("BANK");
+	        fcDto.setBankname(banknameString);
+	        String bankaddressString = jsonObject.optString("ADDRESS");
+	        fcDto.setBankAddress(bankaddressString);
+	       
+	    } catch (Exception e) {
+	        System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
+	    }
+	}
+
+	
+	
+	
+	
+	
+	
 	// entry controller of mill receipt
 	@RequestMapping("EntryofMillreceipt")
 	public ModelAndView EntryofMillreceipt(HttpServletRequest request)
@@ -3744,9 +3841,14 @@ public class Controller_V {
 					String NCVamt1 = NCVamt[i];
 					System.err.println(NCVamt1);
 					double NCV_Qty1 = Double.parseDouble(NCVamt1);
-					double Ncv_qtyconverted = NCV_Qty1 / Actual_Qty1;
 
-					millRecieptModel.setNCV_qty(Ncv_qtyconverted);
+					double Ncv_qtyconverted =NCV_Qty1/Actual_Qty1;
+					 String formatted = String.format("%.2f", Ncv_qtyconverted);
+
+				        // Converting formatted string back to double (optional)
+				        double roundedValue = Double.parseDouble(formatted);
+					millRecieptModel.setNCV_qty(roundedValue);
+
 					millRecieptModel.setNCV_percentage(flag);
 				} else {
 					// Handle other cases
@@ -3769,8 +3871,16 @@ public class Controller_V {
 					String dustQty1 = dustQty[i];
 					System.err.println(dustQty1);
 					double dustQty2 = Double.parseDouble(dustQty1);
-					double dust_qtyconverted = dustQty2 / Actual_Qty1;
-					millRecieptModel.setDustQty(dust_qtyconverted);
+
+					double dust_qtyconverted =dustQty2/Actual_Qty1;
+					
+					 String formatted = String.format("%.2f", dust_qtyconverted);
+
+				        // Converting formatted string back to double (optional)
+				        double roundedValue = Double.parseDouble(formatted);
+
+					millRecieptModel.setDustQty(roundedValue);
+
 					millRecieptModel.setDustAmt(flag);
 				} else {
 					// Handle other cases
@@ -4726,46 +4836,18 @@ public class Controller_V {
 //        	BankDraftDTO bankDraftDTO = new BankDraftDTO();
 //            List<BankDraftDTO> listOfBankdraft = new ArrayList<>();
 
-			List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
-//		    String InstrumentNo = "";
-//	        String Instrumentdate = "";
-//	        String ifsc = "";
-//	        String address = "";
-//	        String bankName = "";
-//	        for (Object[] row1 : dateData) {
-//	            if (row1[5] != null) InstrumentNo = row1[5].toString();
-//	            InstrumentNo=(String)row1[5];
-//	            bankDraftDTO.setInstrumentNO(InstrumentNo);
-//	            if (row1[6] != null) Instrumentdate = row1[6].toString();
-//	            String insdate=(String)row1[6];
-//	            System.err.println("Instrumentdate: " + insdate);
-//
-//	            bankDraftDTO.setInstrumentDate(insdate);
-//	            if (row1[6] != null) ifsc = row1[7].toString();
-//	            
-//	            if (ifsc != null && !ifsc.isEmpty()) {
-//	                String url = "https://ifsc.razorpay.com/" + ifsc;
-//	                RestTemplate restTemplate = new RestTemplate();
-//	                try {
-//	                    String result = restTemplate.getForObject(url, String.class);
-//	                    JSONObject jsonObject = new JSONObject(result);
-//
-//	                     address = jsonObject.optString("ADDRESS");
-//	                     bankDraftDTO.setBankName(address);
-//	                     bankName = jsonObject.optString("BANK");
-//	                     bankDraftDTO.setBankAddress(bankName);
-//
-//	                    System.err.println("Address: " + address);
-//	                    System.err.println("Bank Name: " + bankName);
-//	                } catch (Exception e) {
-//	                    System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
-//	                }
-//	            }
-//	        }
-			String unitname = "";
-			String unitaddres = "";
+        	 String  consignment="";
+            List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
+		     for (Object[] row : dateData) {
+		   consignment = (String) row[9];
+			
+		
+         }
+	        String  unitname="";
+	        String  unitaddres="";
+	        
+	        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode234);
 
-			List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode234);
 //	        for (Object[] row : listofaddress) {
 //			      unitname = (String) row[0];
 //				  bankDraftDTO.setUnitname(unitname);
@@ -4915,9 +4997,9 @@ public class Controller_V {
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
 					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
 					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,
-					Statename23, StaeCode23, PAN23, mastterSatename, mastterSatename2, ReciepentsStatecode, dateData,
-					Dpcname, millcode234, RegionAndCenterName1);
+
+					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,Statename23,StaeCode23,PAN23,mastterSatename,mastterSatename2,
+					ReciepentsStatecode,dateData,Dpcname,millcode234,RegionAndCenterName1,consignment);
 			generationOfBillSupplyModel.setBos_file_path(filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
@@ -7030,6 +7112,7 @@ public class Controller_V {
 			// System.err.println(directoryPath);
 			String filename = id1 + "claimSettlementReport.pdf"; // Change this to your desired filename
 			String filepath = directoryPath + filename;
+			
 			// System.out.println(filepath + "kkkkk");
 
 			try {
@@ -7155,12 +7238,6 @@ public class Controller_V {
 		// String imageDirectory = "upload.Imagedownload";
 
 		String imagePath = GenrationofbillDownload + File.separator + filename;
-
-		System.err.println(imagePath);
-		System.err.println(imagePath);
-		System.err.println(imagePath);
-		System.err.println(imagePath);
-
 		File imageFile = new File(imagePath);
 
 		try {
