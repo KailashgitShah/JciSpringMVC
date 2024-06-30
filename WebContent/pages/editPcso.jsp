@@ -111,12 +111,12 @@
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
-											<label class="required">PCO Qty.</label> <input
+											<label class="required">PCO Qty.(Qtls)</label> <input
 												class="form-control" name="pscoQty" type="number"
 												id="pscoQty" readonly value="<%=pcsoEl.getPcsoQty()%>">
 										</div>
 										<div class="col-sm-4 form-group">
-											<label class="required">Total Allocation</label> <input
+											<label class="required">Total Allocation(Qtls)</label> <input
 												class="form-control" name="totalallocation" type="number"
 												id="totalallocation"  value="<%=pcsoEl.getAllocatedQty()%>">
 										</div>\

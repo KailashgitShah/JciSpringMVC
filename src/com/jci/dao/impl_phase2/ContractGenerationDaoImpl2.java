@@ -37,7 +37,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public List<Object[]> getListOfGradesPriceForMillDelivery(String cropYear) {
-
 		String sqlQueryToGetHighestPriceOfMilldelivery = "select top 1 grade1, grade2, grade3, grade4, grade5, grade6 from jcientry_derivative_price where grade1 + grade2 + grade3 + grade4 + grade5 + grade6 = (select Max(grade1+grade2+grade3+grade4+grade5+grade6) as SumGrades from jcientry_derivative_price where state_name='Assam' and crop_year='"
 				+ cropYear + "'and delivery_type='Mill-Delivery')";
 
@@ -123,8 +122,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //		}
 
 		List<Object[]> listOfGradesPrice = getListOfGradesPriceForMillDelivery(currCropYear);
-
-		// System.out.println(listOfGradesPrice.size());
+         String isPrice = "1"; 
+	    if(listOfGradesPrice.size() == 0) {
+	    	isPrice = "0";
+	    }
 
 		for (Object[] gradeP : listOfGradesPrice) {
 			// pg.add(gradeP.);
@@ -178,6 +179,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
+		mView.addObject("isPrice", isPrice);
 		mView.addObject("totelContractedValue", totalContractedValue);
 		mView.addObject("contractedValueMillWise", contractedValueList);
 		return mView;

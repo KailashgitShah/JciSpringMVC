@@ -161,7 +161,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 		String sql = "select a.Crop_year,a.Bale_mark,a.Jute_grade,a.No_of_bales,a.Nominal_qty,a.Rate,a.Nominal_wt,\r\n"
 				+ "   CONVERT(VARCHAR, b.Contract_date, 105) AS Contract_date,\r\n"
 				+ "    CONVERT(VARCHAR, b.DI_Date, 105) AS DI_Date,\r\n"
-				+ "    CONVERT(VARCHAR, b.Date_of_shipment, 105) AS Date_of_shipment\r\n"
+				+ "    CONVERT(VARCHAR, b.Date_of_shipment, 105) AS Date_of_shipment ,  b.Consignment_note_text "
 				+ " from  jcidispatch_details_child a INNER join jcidispatch_details b on a.Challan_no = b.Challan_no and a.Challan_no='"
 				+ challanNo + "' ";
 		List<Object[]> resultList1 = (List<Object[]>) currentSession().createSQLQuery(sql).list();

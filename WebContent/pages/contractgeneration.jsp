@@ -336,7 +336,6 @@ var gradeArray = [];
 			.on(
 					"change",
 					function() {
-						
 						contractedValueMillWise = [];
 						listOfTotalQty = [];
 						parsedArray = [];
@@ -389,10 +388,20 @@ var gradeArray = [];
 										"grades" : jsonGrades
 										//"deliveryType":deliveryType
 									},
-									success : function(result) {
+									success : function(result) {										
 										var data1 = jQuery.parseJSON(result).model;
+										var isPrice = data1.isPrice;
+										
+										
+										if(isPrice == 0){
+											alert("Derivate Price is not decided yet !!!");
+											return;
+										}
+										
 										parsedArray = JSON.parse(jsonPcsoDates);
+										
 										var List = data1.List;
+										
 										var TotelContractedValue = data1.totelContractedValue;
 									     contractedValueMillWise = data1.contractedValueMillWise;
 									     

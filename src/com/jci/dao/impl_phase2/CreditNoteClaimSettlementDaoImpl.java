@@ -25,7 +25,7 @@ public class CreditNoteClaimSettlementDaoImpl implements CreditNoteClaimSettleme
 	@Override
 	public List<String> getAllSettlementId() {
 
-		String sql = "select distinct Settlement_id from jciclaim_report_mill where Mill_Acc = 2";
+		String sql = "select distinct Settlement_id from jciclaim_report_mill where Mill_Acc = 2 and Settlement_id not in (select distinct SettlementId from jcicredit_note_settled)";
 		return (List<String>) currentSession().createSQLQuery(sql).list();
 	}
 

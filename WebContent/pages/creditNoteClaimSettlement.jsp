@@ -337,7 +337,7 @@ List<String> allSettlementId = (List<String>) request.getAttribute("allSettlemen
 				},
 				success : function(result) {
 					 $(".contractLoader").hide();
-					window.location.reload();
+					 window.location.href = "creditNoteSettlementList.obj";
 				}
 			})
 		}

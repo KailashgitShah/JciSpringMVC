@@ -942,6 +942,8 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let valueinprice2 = (gradeprice * qty3).toFixed(2);
     let moisturevalue = parseFloat(valueinprice2);
 
+    
+    var currentMonth = new Date().getMonth() + 1;
     if (currentMonth > 6 && currentMonth <= 10) {
          Nomination = Nomination - 20;
     } else {

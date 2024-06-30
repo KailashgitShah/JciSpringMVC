@@ -303,7 +303,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 	<script type="text/javascript">
 	$("#setId").on("change", function() {
 	    var setId = $(this).val(); // Corrected line
-	    alert(setId);
+	   // alert(setId);
 	    $.ajax({
 	        url: 'settlementMill.obj',
 	        method: 'GET', // Assuming you want to use GET method
@@ -318,7 +318,7 @@ List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettl
 	            $("#form2").empty();
 	            console.log(data);
 	            // Create the table structure
-	           var contentToDisplay = "<table style='border: 1px solid black; width: 1150px; text-align: center;'>"+
+	           var contentToDisplay = "<table style='border: 1px solid black; width: 1100px; text-align: center;'>"+
 	        	    "<tr>"+
 	          "<th style='border: 1px solid black; text-align: center;' rowspan='2'>S. No.</th>"+
 	          "<th style='border: 1px solid black; width: 10%; text-align: center;' rowspan='2'>Challan</th>"+
@@ -425,7 +425,7 @@ $("#form2").append(confirmButtonHTML);
 	});
 	// Function for Confirm action
 	function confirmAction() {
-	    alert("Confirmed"); 
+	   // alert("Confirmed"); 
 	    var setId = $("#setId").val();
 	    
 	    
@@ -455,10 +455,10 @@ $("#form2").append(confirmButtonHTML);
 
 	// Function for Reject action
 	function rejectAction() {
-	    alert("Rejected");
+	   // alert("Rejected");
 	    var setId = $("#setId").val();
 	    
-	    alert(setId+"-----");
+	   // alert(setId+"-----");
 	    handleRejection(setId);
 	}
 	 // Function to handle confirmation action
@@ -469,7 +469,7 @@ $("#form2").append(confirmButtonHTML);
 	   
 	   
 	    
-		alert();
+	//	alert();
 	    $.ajax({
 	        url: 'acceptClaimMill.obj',
 	        method: 'GET', // Assuming you want to use POST method for file upload
@@ -512,7 +512,7 @@ $("#form2").append(confirmButtonHTML);
 	<script>
 	$("#Contract").on("change", function() {
 	    var setId = $(this).val();  // Get the selected value of the #Contract element
-	    alert(setId);  // Display an alert with the selected value
+	   // alert(setId);  // Display an alert with the selected value
 	    $.ajax({
 	        url: 'GetSettlementId.obj',
 	        method: 'GET', // Assuming you want to use POST method for file upload
@@ -520,7 +520,7 @@ $("#form2").append(confirmButtonHTML);
 	       
 	        success: function(response) {
 	        	var data = jQuery.parseJSON(response); // Parse JSON response to JavaScript object
-	        	alert(data); // Just for debugging to see what data you're working with
+	        	//alert(data); // Just for debugging to see what data you're working with
 	        	$("#form2").empty();
 	        	$('#setId').empty(); // Clear existing options from the select element
 
@@ -530,7 +530,7 @@ $("#form2").append(confirmButtonHTML);
 	        	// Loop through your data to add options to the select element
 	        	$.each(data, function(index, item) {
 	        	    // Assuming item is a string or number (adjust as per your data structure)
-	        	    alert(item); // Alert to see each item in your data (for debugging)
+	        	    //alert(item); // Alert to see each item in your data (for debugging)
 	        	    
 	        	    // Create the option element
 	        	    var optionText = item; // Set option text (adjust as per your data structure)
