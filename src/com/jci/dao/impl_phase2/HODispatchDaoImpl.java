@@ -259,4 +259,37 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		return list;
 	}
 
+	@Override
+	public List<Object[]> getJasperData(String diNoString) {
+		// TODO Auto-generated method stub
+		String sqlString ="SELECT \r\n"
+				+ "    a.DI_no,\r\n"
+				+ "    a.DI_Date,\r\n"
+				+ "    c.unit_name,\r\n"
+				+ "    c.unit_address1,\r\n"
+				+ "    c.unit_address2,\r\n"
+				+ "    c.unit_location,\r\n"
+				+ "    c.unit_pin,\r\n"
+				+ "    a.Contract_No,\r\n"
+				+ "    b.Contract_date,\r\n"
+				+ "    b.CropYear,\r\n"
+				+ "    a.Last_date_of_Shipment,\r\n"
+				+ " \r\n"
+				+ "    d.roname\r\n"
+				+ "   \r\n"
+				+ "FROM \r\n"
+				+ "    jciDI_ho a\r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcicontract b ON a.Contract_No = b.Contract_no\r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcimilldetailchild c ON b.Mill_code = c.client_unit_code\r\n"
+				+ "Inner join \r\n"
+				+ "   jcirodetails d on a.Regional_office = d.rocode\r\n"
+				+ "WHERE  \r\n"
+				+ "    a.DI_no = '"+diNoString+"';";
+		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		return list1;
+		
+	}
+
 }

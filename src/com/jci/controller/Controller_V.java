@@ -114,6 +114,7 @@ import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.GenerationofDocumentLCsModel;
 import com.jci.model.GenrationDEmandDto;
 import com.jci.model.GenrationDemandNoteModel;
+import com.jci.model.HoDispatchDto;
 import com.jci.model.JciDIHoModel;
 import com.jci.model.JciEntryTdsModel;
 import com.jci.model.Jciclaim_NominationModel;
@@ -5909,13 +5910,25 @@ public class Controller_V {
 
 	}
 
+	
+	@Value("${upload.HoDiDoc}")
+	String HoDiDoc;
+	
+	@Value("${upload.hodispatch}")
+	String HoDI;
+	
 	@RequestMapping(value = "savehodispatchInst", method = RequestMethod.POST)
-	public ModelAndView hoDispatchInstruction(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public ModelAndView hoDispatchInstruction(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpServletResponse response) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
 
 			String[] variety = request.getParameterValues("jutevariety");
-
+			
+			  List<HoDispatchDto> hoDispatchDtoList = new ArrayList<>();
+	            
+			 String diNoString="";
+			 String documentName="";
+ Double qty=0.0;      
 			for (String st : variety) {
 
 				Integer usId = (Integer) request.getSession().getAttribute("userId");//
@@ -5939,7 +5952,7 @@ public class Controller_V {
 
 				String fcString = request.getParameter("FC_Ref_No");//
 
-				String diNoString = request.getParameter("uniqueno");//
+			    diNoString = request.getParameter("uniqueno");//
 
 				String contDateString = request.getParameter("contractdate");//
 
@@ -5961,48 +5974,48 @@ public class Controller_V {
 				JciDIHoModel diHo = new JciDIHoModel();
 				String gprice0 = request.getParameter(st + "-grade" + "1");
 				if (gprice0 == null) {
-					gprice0 = "0";
+					gprice0 = "0.0";
 				}
 				Double g0 = Double.parseDouble(gprice0);
 				String gprice1 = request.getParameter(st + "-grade" + "2");
 				if (gprice1 == null) {
-					gprice1 = "0";
+					gprice1 = "0.0";
 				}
 				Double g1 = Double.parseDouble(gprice1);
 
 				String gprice2 = request.getParameter(st + "-grade" + "3");
 				if (gprice2 == null) {
-					gprice2 = "0";
+					gprice2 = "0.0";
 				}
 				Double g2 = Double.parseDouble(gprice2);
 
 				String gprice3 = request.getParameter(st + "-grade" + "4");
 				if (gprice3 == null) {
-					gprice3 = "0";
+					gprice3 = "0.0";
 				}
 				Double g3 = Double.parseDouble(gprice3);
 
 				String gprice4 = request.getParameter(st + "-grade" + "5");
 				if (gprice4 == null) {
-					gprice4 = "0";
+					gprice4 = "0.0";
 				}
 				Double g4 = Double.parseDouble(gprice4);
 
 				String gprice5 = request.getParameter(st + "-grade" + "6");
 				if (gprice5 == null) {
-					gprice5 = "0";
+					gprice5 = "0.0";
 				}
 				Double g5 = Double.parseDouble(gprice5);
 
 				String gprice6 = request.getParameter(st + "-grade" + "7");
 				if (gprice6 == null) {
-					gprice6 = "0";
+					gprice6 = "0.0";
 				}
 				Double g6 = Double.parseDouble(gprice6);
 
 				String gprice7 = request.getParameter(st + "-grade" + "8");
 				if (gprice7 == null) {
-					gprice7 = "0";
+					gprice7 = "0.0";
 				}
 				Double g7 = Double.parseDouble(gprice7);
 
@@ -6050,13 +6063,112 @@ public class Controller_V {
 				diHo.setCreated_by(user);
 				diHo.setCrop_year(crpyrString);
 				diHo.setCreation_date(formattedDate);
+			
+				
+				 String replacedString = diNoString.replace("/", "-");
+
+	                System.out.println(replacedString);
+	                 documentName = "HoDIDoc" + replacedString + ".pdf";
+	                diHo.setHoDIDoc(documentName) ; 
 				this.hoInstService.create(diHo);
+				
+				
+				HoDispatchDto hoDispatchDto= new HoDispatchDto();
+				hoDispatchDto.setCropYearString(crpyrString);
+				hoDispatchDto.setJuteVarietyString(st);
+				hoDispatchDto.settotal(g0+g1+g2+g3+g4+g5+g6+g7);
+				System.err.println(hoDispatchDto.gettotal());
+				hoDispatchDto.setgrade1(g0);
+				hoDispatchDto.setgrade2(g1);
+				hoDispatchDto.setgrade3(g2);
+				hoDispatchDto.setgrade4(g3);
+				hoDispatchDto.setgrade5(g4);
+				hoDispatchDto.setgrade6(g5);
+				hoDispatchDto.setgrade7(g6);
+				hoDispatchDto.setgrade8(g7);
+				qty+=g0+g1+g2+g3+g4+g5+g6+g7;
+			
+				hoDispatchDtoList.add(hoDispatchDto);
+		
+         
 
+			
+			
+			
+			
+			
+
+		
 			}
+			   try {
+	            	List<Object[]> list = hoInstService.getJasperData(diNoString);
+	            	
+	                JasperReport jasperReport1 = JasperCompileManager.compileReport(HoDI);
+	                // .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
 
+	                Map<String, Object> parameters = new HashMap<String, Object>();
+	              
+
+	                for (Object[] details : list) {
+	                      parameters.put("DI_no", details[0]);
+	                      parameters.put("DI_Date", details[1]);
+	                      parameters.put("Add", (String)details[2]+","+(String)details[3]+","+ (String)details[4]+","+(String)details[5]+","+(String)details[6]);
+	                      parameters.put("Contract_no", details[7]);
+	                      parameters.put("Contract_Date", details[8]);
+	                      parameters.put("CropYear", details[9]);
+	                      parameters.put("LastDate", details[10]);
+	                      parameters.put("RoName", details[11] +" Regional Office");
+	                      parameters.put("totalQty", qty);
+	                }
+	             
+	   
+	                // Prepare data sources
+	                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(hoDispatchDtoList);
+
+	                // Fill JasperPrints
+	                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);//
+	                response.setContentType("application/pdf");
+	                response.setHeader("Content-Disposition", "inline");
+	                // response.setHeader("Content-Disposition", "attachment;
+	                // filename=TestCreditNote.pdf");
+	                // try (OutputStream out = response.getOutputStream()) {
+	                
+	                String replacedString = diNoString.replace("/", "-");
+
+	                System.out.println(replacedString);
+	                 documentName = "HoDIDoc" + replacedString + ".pdf";
+
+	                final File theDir = new File(HoDiDoc);
+	                if (!theDir.exists()) {
+	                      theDir.mkdirs();
+	                }
+
+	                String saveFile = HoDiDoc + File.separator + documentName;
+	                
+	                System.err.println("save File " + saveFile);
+	                System.err.println("save File " + saveFile);
+	                System.err.println("save File " + saveFile);
+
+	                try (OutputStream out = new FileOutputStream(saveFile)) {
+	                      JRPdfExporter exporter = new JRPdfExporter();
+	                exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	                
+	                exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	                      exporter.exportReport();
+	                
+	                } catch (Exception e) {
+	                      System.out.println(e.getLocalizedMessage());
+	                }
+
+	                //return new ModelAndView(new RedirectView("creditNoteList.obj"));
+
+	          } 
+	            catch (JRException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	          }
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
-
 		} catch (Exception e) {
 			System.out.println("++++++++++++++" + e);
 			e.printStackTrace();
@@ -6078,6 +6190,44 @@ public class Controller_V {
 
 		return "ViewJCIHO";
 	}
+	
+	@RequestMapping("downloadSupportDocHO")
+	public void downloadHODoc(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = HoDiDoc +"\\"+ filename;
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
+
 
 	// Delete DI for particular DI no.
 

@@ -26,6 +26,8 @@ public String   getContractNo(String id);
 String check(String string);
 
 List<String> getJuteVariety();
+
+List<Object[]> getJasperData(String diNoString);
                 
                
                 

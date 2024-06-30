@@ -79,4 +79,10 @@ public class HODispachServiceImpl implements HOInstService{
 					// TODO Auto-generated method stub
 					return dispatchHODao.juteVariety();
 				}
+
+				@Override
+				public List<Object[]> getJasperData(String diNoString) {
+					// TODO Auto-generated method stub
+					return dispatchHODao.getJasperData(diNoString);
+				}
 }
