@@ -214,6 +214,11 @@
     <div id="form3"></div>
     <span id="misQty"></span>
 </div>
+<div class="col-sm-4 form-group">
+    <label id="lblName"></label>
+    <div id="form4"></div>
+    <span id="misQty"></span>
+</div>
 										</div> 
   
 
@@ -417,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			                    // Update #Carrying_cost input with calculated value, rounded to 2 decimal places
 			                    $('#Carrying_cost').val(Math.ceil(carryingCost.toFixed(2)));
 			                });
-			                
+			                $("#form3").empty();
 			                var downloadLink = $('<a></a>').attr({
 			                    href: 'downloadSupportingDocument.obj?filename=' + encodeURIComponent(data[0][6]),
 			                    class: 'btn btn-primary btn-sm mt-2',
@@ -426,7 +431,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			                // Append the download link to the form inside .col-sm-4.form-group
 			                $("#form3").append(downloadLink);
+			                $("#form4").empty();
+			                var downloadLink = $('<a></a>').attr({
+			                    href: 'downloadFcdocument.obj?filename=' + encodeURIComponent(data[0][7]),
+			                    class: 'btn btn-primary btn-sm mt-2',
+			                    target: '_blank'
+			                }).text('View FC doc');
 
+			                // Append the download link to the form inside .col-sm-4.form-group
+			                $("#form4").append(downloadLink);
 			              
 			            },
 			            error: function (error) {
