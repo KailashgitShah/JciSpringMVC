@@ -48,6 +48,12 @@ public class GenrationCashDocumentServiceImpl implements GenrationCashDocumentSe
 		return genrationCashDocumentDao.fetchMill_Name();
 	}
 
+	@Override
+	public List<Object> contractonmill1(String millname) {
+		
+		return genrationCashDocumentDao.contractonmill1(millname);
+	}
+
 	
 
 }

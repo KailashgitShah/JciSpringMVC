@@ -49,6 +49,14 @@
   text-decoration: none;
 }
 </style>
+<style>
+.custom-label {
+    font-size: 20px; /* Adjust the font size as needed */
+    text-decoration: underline; /* Underline the text */
+    font-weight: bold; /* Make the text bold */
+}
+
+</style>
 
 </head>
 
@@ -82,14 +90,16 @@
                         <div class="ibox-title"></div>
                     </div>
                     <div class="ibox-body">
-                      <div class="scrollmenu">
+                      <!-- <div class="scrollmenu"> -->
+                        
+                         <form action="savecashAgainstDispatchDocument.obj" method="POST">
                       
-                      <div  class ="row">
-						                 <div class="col-sm-4 form-group">
+                                       <div  class ="row">
+						                 <div class="col-sm-3 form-group">
 												<label>Mill name.</label> <span class="text-danger">*
 												</span>&nbsp; <span id="millname1" name="Millname"
 													class="text-danger"> </span> <select name="millname65"
-													id="millname12" class="form-control taxtbox" required>
+													id="millname12"  class="form-control taxtbox" required>
 
 													<option value="select">-Select-</option>
 													 <%
@@ -107,10 +117,10 @@
 
 											</div>
 											
-											<div class="col-sm-4 form-group" id="dpc_div">
+											<div class="col-sm-3 form-group" id="dpc_div">
 												<label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
 												<span id="contractno" class="text-danger"></span> <select
-													name="fullcontractno" id="contractno12"
+													name="fullcontractno" id="contractno12" 
 													class="form-control taxtbox"
 													style="height: = 50; width: 350px;" required>
 													<option disabled selected value="">-Select</option>
@@ -118,64 +128,153 @@
 												</select>
 											</div>
 											</div>
-                      
-                        <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
-                               <thead>
-									<tr>
-										<th>Sl.No</th>
-									
-										<th>CAD No.</th>
-										<th>BOS DATE</th>
-										<th>CAD Date</th>
-										<th>BOS NO</th>
-										<th>BOE doc</th>
-									</tr>
-								</thead>
-                           <tbody>
-									<%
-									int i = 1;
-									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-									for (CashDocumentModel  cashDocumentModel : allUserRegistration) {
-
-										if (i <= 200) {
+										
+								
 											
-									%>
-									<tr>
-										<td><%=i%></td>
+										 <div class="row">
+										  <div class="col-sm-20 form-group"></div>
+										 </div>	
 										 
-									
-										<td><%= cashDocumentModel.getCAD_Doc_No() %></td>
-										<td><%= cashDocumentModel.getBOS_Date() %></td>
-										<td><%= sdf.format(cashDocumentModel.getCAD_Date()) %></td>
-										<td><%= cashDocumentModel.getBOS_No() %></td>
-										<%--  <td>
-								            <a href="downloadPDFforbos.obj?filename=<%= cashDocumentModel.getbOEDOCpathnonlc() %>"
-								               class="btn btn-primary btn-sm" target="_blank"> View boedoc </a>
-								        </td> --%>
-								        
-								        <td>
-								        
-								            <a href="downloadPDFforboedocnonlc.obj?contractno=<%= cashDocumentModel.getContarctNo() %>
-								            &InvoiceValue=<%= cashDocumentModel.getInvoicevalue() %>
-								            &BosNO=<%= cashDocumentModel.getBOS_No() %>
-								            &BosDate=<%= cashDocumentModel.getBOS_Date() %>
-								            &millcode=<%= cashDocumentModel.getMillcode() %>"
-								               class="btn btn-primary btn-sm" target="_blank"> download billofexchange </a>
-								        </td> 
-										
-									</tr>
-									<%
-										}
-									   i++;
-										} 
-										%>
-									
-										
-									
-									
-								</tbody>
-						  </table>
+						           <div class="row">
+						            <div class="col-sm-3 form-group">
+						                <input type="submit"  name="Topsheet" value="Download TopSheet" class="btn btn-info btn-block" id="submit2">
+						            </div>
+						            <div class="col-sm-3 form-group">
+						                <input type="submit" name="BillofExchange" value="Download BillofExchange" class="btn btn-info btn-block" id="submit3">
+						            </div>
+						        </div>
+						   
+											<div class="row">
+										  <div class="col-sm-100 form-group"></div>
+										 </div>
+										 <div class="row">
+										  <div class="col-sm-100 form-group"></div>
+										 </div>
+							                <div class="row">
+											<div class="col-sm-10 text-center"> <!-- Added 'text-center' class for center alignment -->
+										     <input  value="PAYMENT DETAILS" class="btn btn-secondary btn-block" >
+											</div>
+											</div>
+										     <div class="row"> </div>
+											
+								           
+										<div class="row">
+										  <div class="col-sm-20 form-group"></div>
+										 </div>	
+								 <div class="row">
+								    <div class="col-sm-10">
+								       <div class="table-responsive"> 
+								            <table id="milldetailsTable" class="table table-bordered">
+								                <thead class="thead-light">
+								                    <tr>
+								                     <th>payment type</th>
+								                      <th>Instrument No</th>
+								                      <th>Instrument date</th>
+								                       <th>Instrument value</th>
+								                        <th>Bank name</th>
+								                        <th>Bank Branch</th>
+								                        <th>Bank ifsc</th>
+								                        <th>Payment Document</th>
+								                        <th>Contract Document</th>
+								                       
+								                    </tr>
+								                </thead>
+								                <tbody>
+								                    <!-- Dynamically generated rows will be appended here -->
+								                  
+								                </tbody>
+								            </table>
+								        </div>
+								    </div>
+								 
+								 
+								 
+											
+								<div class="row">
+										  <div class="col-sm-500 form-group"></div>
+										 </div>
+										 <div class="row">
+										  <div class="col-sm-500 form-group"></div>
+										 </div>
+										  <div class="row">
+										  <div class="col-sm-500 form-group"></div>
+										 </div>
+										 
+										 
+                                    <div class="col-sm-10 text-center">
+                                       <input  value="DETAILS OF GENERATED TOPSHEET" class="btn btn-secondary btn-block" >
+											    </div>
+											</div>
+											
+											<div class="row">
+										  <div class="col-sm-20 form-group"></div>
+										 </div>
+								           
+								    <div class="row">
+								    <div class="col-sm-10">
+								        <div class="table-responsive">
+								            <table id="topSheetDetails" class="table table-bordered">
+								                <thead class="thead-light">
+								                    <tr>
+								                        <th>S.NO</th>
+								                        <th>TopSheet Date</th>
+								                        <th>Bill Of Supply</th>
+								                        <th>Amount</th>
+								                        
+								                    </tr>
+								                </thead>
+								                <tbody>
+								                    <!-- Dynamically generated rows will be appended here -->
+								                </tbody>
+								            </table>
+								        </div>
+								    </div>
+								</div>
+								<div class="row">
+										  <div class="col-sm-500 form-group"></div>
+										 </div>
+										 <div class="row">
+										  <div class="col-sm-500 form-group"></div>
+										 </div>
+										  <div class="row">
+										  <div class="col-sm-500 form-group"></div>
+										 </div>
+										 
+										<div class ="row"> 
+                                    <div class="col-sm-10 text-center">
+                                       <input  value="DETAILS OF PENDING BILL OF SUPPLY / DEMAND NOTE" class="btn btn-secondary btn-block" >
+											    </div>
+											</div>
+											
+											<div class="row">
+										  <div class="col-sm-20 form-group"></div>
+										 </div>
+								           
+								    <div class="row">
+								    <div class="col-sm-10">
+								        <div class="table-responsive">
+								            <table id="billofsupllydetails" class="table table-bordered">
+								                <thead class="thead-light">
+								                    <tr>
+								                    <th>Check Box</th>
+								                        <th>Bill of Supply no</th>
+								                        <th>Bos Date</th>
+								                        <th>Invoice value</th>
+								                    </tr>
+								                </thead>
+								                <tbody>
+								                    <!-- Dynamically generated rows will be appended here -->
+								                </tbody>
+								            </table>
+								        </div>
+								    </div>
+								</div>
+								</div>
+						
+					</form>
+                
                      </div>
+                     
                    </div>
                  </div>
             </div>
@@ -195,6 +294,217 @@
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
+   <script type="text/javascript">
+$(document).ready(function() {
+	var record=[];
+	var billofsupplyno=[];
+	var index=0;
+	    var sumofInvoiceValue = 0; // Initialize sumofInvoiceValue
+	    var autorevolvingammount = 0;
+
+    // Millname change event handler
+    $('#millname12').on('change', function() {
+        const field2Value = $(this).val();
+
+        $.ajax({
+            type: 'GET',
+            url: 'contrcatforCahAginstDispatchDocument.obj',
+            data: { "millname": field2Value },
+            success: function(data) {
+            	
+                const dataArray = JSON.parse(data);
+                const dropdownElement = document.getElementById('contractno12');
+
+                // Clear previous options
+                dropdownElement.innerHTML = '';
+
+                // Add the default option
+                const selectOption = document.createElement('option');
+                selectOption.value = ''; 
+                selectOption.textContent = '-Select-';
+                dropdownElement.appendChild(selectOption);
+
+                // Populate new options
+                dataArray.forEach(function(innerArray) {
+                    const option = document.createElement('option');
+                    option.textContent = innerArray[0];
+                    option.value = innerArray[0];
+                    option.setAttribute('data-value1', innerArray[0]); // Value for backend
+                    option.setAttribute('data-value2', innerArray[1]);
+                    dropdownElement.appendChild(option);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX request failed:', status, error);
+                // Handle the error as needed
+            }
+        });
+        
+      
+    });
+
+    // Contractno change event handler
+    $('#contractno12').on('change', function() {
+        const selectedOption = $(this).find(':selected');
+        const field2Value = selectedOption.attr('data-value2');
+        const field1Value = selectedOption.attr('data-value1');
+        contractNo = field1Value;
+        /* alert(field2Value);
+        alert(field1Value); */
+
+        $('#milldetailsTable tbody').empty();
+        $('#milldetailsTable').css('display', 'none');
+
+        // First AJAX call
+        $.ajax({
+            type: 'GET',
+            url: 'listofpaymentdetails1.obj',
+            data: { "contractno": field1Value },
+            success: function(data) {
+              // alert(data);
+                const dataArray = JSON.parse(data);
+                $('#milldetailsTable tbody').empty();
+
+                if (dataArray.length > 0) {
+                    dataArray.forEach(function(rowData) {
+                    	/* autorevolvingammount=rowData[7];
+                    	alert(rowData[12])
+                    	alert(rowData[6]) */
+                    	//alert(autorevolvingammount);
+                        const rowHtml = '<tr>' +
+                        '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                       '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
+                       '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
+                       '<td><div class="table-cell"><input type="hidden" name="ifsc[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
+                       '<td>' +
+                       '<a href="downloadSupportingDocumentenPaymentArrangement.obj?filename=' + rowData[6] + '">' +
+                           '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                       '</a>' +
+                      '</td>'+
+                      '<td>' +
+                      '<a href="downloadSupportingDocumententContract.obj?filename=' + rowData[12] + '">' +
+                          '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                      '</a>' +
+                     '</td>'+
+                    
+                           
+                           /*  '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="supportingdoc[]" value="' + rowData[6] + '">' + rowData[6] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="autorevolving[]" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + rowData[8] + '">' + rowData[8] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + rowData[9] + '">' + rowData[9] + '</div></td>' +
+                            
+                            '<td><div class="table-cell"><input type="hidden" name="paymentduedate[]" value="' + rowData[11] + '">' + rowData[11] + '</div></td>' + */
+                            '</tr>';
+                         
+
+                        $('#milldetailsTable tbody').append(rowHtml);
+                    });
+                    $('#milldetailsTable').css('display', 'block');
+                } else {
+                    $('#milldetailsTable').css('display', 'none');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX request failed:', status, error);
+                // Handle the error as needed
+            }
+        });
+
+        // Second AJAX call
+    
+        $.ajax({
+            type: 'GET',
+            url: 'listofbillofsupply1.obj',
+            data: { "contractno": field1Value },
+            success: function(data) {
+                alert(data +"bos");
+                const dataArray = JSON.parse(data);
+                var idx = 0;
+              var sumofInvoiceValue = 0;
+               var billofsupplyno = [];
+                var challanno, bosdate;
+
+                if (dataArray.length > 0) {
+                	
+                    dataArray.forEach(function(rowData1) {
+                        // Assuming rowData1[0], rowData1[1], rowData1[2], etc. contain the necessary data
+                        alert(idx)
+                        challanno = rowData1[3];
+                        bosdate = rowData1[1];
+                        const rowHtml = '<tr>' +
+                        '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+idx+'" class="row-checkbox" name="rowCheckbox'+idx+'" value="0"></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="bosNo' + idx + '" value="' + rowData1[0] + '">' + rowData1[0] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="bosDate[]' + idx + '" value="' + rowData1[1] + '">' + rowData1[1] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="invoiceValue[]' + idx + '" value="' + rowData1[2] + '">' + rowData1[2] + '</div></td>' +
+                            '</tr>';
+                        sumofInvoiceValue += parseFloat(rowData1[2]);
+                        billofsupplyno[idx] = rowData1[0];
+                        idx++;
+                        $('#billofsupllydetails tbody').append(rowHtml);
+                    });
+
+                   
+                } else {
+                    
+                }
+            }
+        });
+        
+        
+    
+
+    });
+});
+
+</script> 
+<script>
+ function myFunction(checking,idx) {
+	
+    if (!checking.checked) {
+        $(checking).val(0);
+        alert("no" +  $(checking).val(0);)
+      
+    } else {
+        $(checking).val(1);
+        alert("yes" +  $(checking).val(1);)
+    } 
+} 
+</script>
+<!-- <script>
+$(document).ready(function() {
+    // Attach change event handlers for millname13 and contractno13
+    $('#millname12, #contractno12').on('change', function() {
+    	alert
+        var millname = $('#millname12 option:selected').text();
+        var contractno = $('#contractno12 option:selected').text();
+        alert(millname +"tttt" + contractno)
+        $.ajax({
+            type: 'GET',
+            url: 'report.obj',
+            data: { "contractno": contractno,
+            	"millname":millname
+            	
+            },
+            success: function(data) {
+                alert("kkk");
+              
+
+               
+
+                 
+            }
+        });
+        alert("Selected Mill Name: " + millname + "\nSelected Contract No.: " + contractno);
+    });
+});
+</script> -->
+    
     <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>

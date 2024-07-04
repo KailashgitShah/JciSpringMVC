@@ -134,14 +134,16 @@
 
 										<div class="col-sm-4 form-group">
 												<a href="viewlistnominal.obj"><button class="btn btn-warning" type="button">Back</button></a>
-										        <input type="submit" value="Submit" class="btn btn-primary"id="submit">
+										         <input type="submit" value="Submit" class="btn btn-primary"id="submit"> 
 										</div>
 										
 									</div>
-
-
+								
+			                                    
 								</form>
 							</div>
+							
+							
 						</div>
 					</div>
 				</div>
@@ -266,6 +268,7 @@
 			}); */
 		});
 	</script>
+
 
 
 	<!-- END PAGA BACKDROPS-->

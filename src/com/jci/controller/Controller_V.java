@@ -128,10 +128,12 @@ import com.jci.model.RoDetailsModel;
 import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
 import com.jci.model.TopSheeetDTO;
+import com.jci.model.TopSheetDto;
 import com.jci.model.UserRegistrationModel;
 
 import com.jci.model.UserRoleModel;
 import com.jci.model.ZoneModel;
+import com.jci.model.boenonlcDTO;
 import com.jci.model.jciWeighmentEntry;
 
 import com.jci.model.settlemetCnDnModel;
@@ -169,6 +171,7 @@ import com.jci.service.Impl_phase2.EmailSender;
 import com.jci.service_phase2.PcsoentryService;
 import com.jci.service_phase2.RoDispatchService;
 import com.jci.service_phase2.WeighmentEntryService;
+import com.jci.service_phase2.generationOfCashAgainstDispatchDocument;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
@@ -311,6 +314,8 @@ public class Controller_V {
 
 	@Autowired
 	PCSOReqLetterService genReqLetterService;
+	@Autowired
+	generationOfCashAgainstDispatchDocument generationOfCashAgainstDispatchDocumentService;
 
 	// number to string
 
@@ -7731,6 +7736,405 @@ public class Controller_V {
 	}
 ////////////////////////////////////////////////////privacy policy page end /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////cash against dispatch document /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+	
+	
+	
+	            @RequestMapping({ "viewCash_against_Dispatch_document" })
+				public ModelAndView DispatchDocuent(final HttpServletRequest request) {
+				String username = (String) request.getSession().getAttribute("usrname");
+				ModelAndView mv = new ModelAndView("View_CAD_Document");
+				if (username == null) {
+				mv = new ModelAndView("index");
+				}
+				
+				
+				final List<CashDocumentModel> allUserRegistration = (List<CashDocumentModel>)
+				this.genrationCashDocumentService.getAll();
+				List<Object[]> fetchMill_Name = this.genrationCashDocumentService.fetchMill_Name();
+				mv.addObject("fetchMill_Name", fetchMill_Name);
+				mv.addObject("genrationcashDocument", allUserRegistration);
+				
+				
+				return mv;
+				}
+				
+	            @ResponseBody
+	        	@RequestMapping(value = "contrcatforCahAginstDispatchDocument", method = RequestMethod.GET)
+	        	public String millvisecontrcatforaginst(@RequestParam("millname") String millname) {
+	        		List<Object> Mill_NameR = genrationCashDocumentService.contractonmill1(millname);
+	        		System.err.println("resultList++++++++++" + Mill_NameR);
+	        		Gson gson = new Gson();
+	        		String resultString = new Gson().toJson(Mill_NameR);
+	        		return resultString;
+	        	}
+
+				
+				
+				@RequestMapping("savecashAgainstDispatchDocument")
+				public ModelAndView savecashAgainstDispatchDocument(final HttpServletRequest request ,  HttpServletResponse response) throws JRException {
+				String username = (String) request.getSession().getAttribute("usrname");
+				ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
+				if (username == null) {
+				mv = new ModelAndView("index");
+				}
+				String millname = request.getParameter("millname65");
+				String contractNo = request.getParameter("fullcontractno");
+				String topSheet = request.getParameter("Topsheet");
+				String billofExchange = request.getParameter("BillofExchange");
+				
+				if ("Download BillofExchange".equals(billofExchange)) {
+				List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(contractNo);
+				
+				String sumofBos = "";
+				double totalinvoiceamount = 0.0;
+				
+				for (boenonlcDTO pdfBOENONLC1 : pdfBOENONLC) {
+				sumofBos += pdfBOENONLC1.getBos_no();
+				
+				if (pdfBOENONLC.indexOf(pdfBOENONLC1) < pdfBOENONLC.size() - 1) {
+				sumofBos += ",";
+				}
+				
+				totalinvoiceamount += Double.valueOf(pdfBOENONLC1.getInvoiceValue());
+				
+				pdfBOENONLC1.setAllBos(sumofBos);
+				pdfBOENONLC1.setSumInvoice(totalinvoiceamount);
+				}
+				
+				// Now get the values from the last element in the list
+				boenonlcDTO lastBOENONLC = pdfBOENONLC.get(pdfBOENONLC.size() - 1);
+				String lastAllBos = lastBOENONLC.getAllBos();
+				double lastSumInvoice = lastBOENONLC.getSumInvoice();
+				boenonlcDTO firstBOENONLC = pdfBOENONLC.get(0);
+				firstBOENONLC.setAllBos(lastAllBos);
+				firstBOENONLC.setSumInvoice(lastSumInvoice);
+				// Display the last allBos and sumInvoice
+				System.err.println("pdfBOENONLC " + pdfBOENONLC);
+				//System.out.println("Last SumInvoice: " + lastSumInvoice);
+				
+				JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\cashAgainst Dispatch\\JCI-CMS\\BOE(NON-LC)NEW.jrxml");
+				Map<String, Object> parametersboe = new HashMap<String, Object>();
+				// Prepare data sources
+				JRBeanCollectionDataSource dataSourceboe = new JRBeanCollectionDataSource( pdfBOENONLC);
+				
+				// Fill JasperPrints
+				JasperPrint jasperPrintboe = JasperFillManager.fillReport(jasperReportboe, parametersboe, dataSourceboe);
+				
+				
+				// Set response content type
+				
+				response.setContentType("application/pdf");
+				
+				// Set filename
+				
+				String fileNameboe =  "boecashAgainstDispatchDocument.pdf";
+				
+				// Set content disposition to attachment to trigger download
+				response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
+				
+				
+				try (OutputStream outboe = response.getOutputStream()) {
+				// Export report to PDF
+				JRPdfExporter exporterboe = new JRPdfExporter();
+				exporterboe.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrintboe);
+				exporterboe.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, outboe);
+				exporterboe.exportReport();
+				} catch (Exception e) {
+				e.printStackTrace(); // Handle exception
+				}
+				
+				// Save PDF to a specific path on the server
+				try {
+				String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
+				FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
+				JasperExportManager.exportReportToPdfStream(jasperPrintboe, outputStreamboe);
+				outputStreamboe.close();
+				System.out.println("PDF saved at: " + filePath1);
+				} catch (Exception e) {
+				e.printStackTrace(); // Handle exception
+				}
+				
+				}
+				else if ("Download TopSheet".equals(topSheet))  {
+				List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService.getTopSheetDatacashAgainstDispatchDocument(millname , contractNo);
+				System.err.println("r"+pdfTopSheet);
+				double totalQuantity = 0.0;
+				double totalAmount = 0.0;
+				
+				
+				for(TopSheetDto TopSheet1 : pdfTopSheet)
+				{
+				totalQuantity  += Double.valueOf(TopSheet1.getQuantity());
+				totalAmount += Double.valueOf(TopSheet1.getInvoiceValue());
+				TopSheet1.setTotalQuantity(totalQuantity);
+				TopSheet1.setTotalAmount(totalAmount);
+				} 
+				
+				
+				
+				JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\cashAgainst Dispatch\\JCI-CMS\\TopSheetReport.jrxml");
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				// Prepare data sources
+				JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
+				
+				// Fill JasperPrints
+				JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+				
+				
+				// Set response content type
+				
+				response.setContentType("application/pdf");
+				
+				// Set filename
+				
+				String fileName =  "topsheetcashAgainstDispatchDocument.pdf";
+				
+				// Set content disposition to attachment to trigger download
+				response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+				
+				
+				try (OutputStream out = response.getOutputStream()) {
+				// Export report to PDF
+				JRPdfExporter exporter = new JRPdfExporter();
+				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+				exporter.exportReport();
+				} catch (Exception e) {
+				e.printStackTrace(); // Handle exception
+				}
+				
+				// Save PDF to a specific path on the server
+				try {
+				String filePath = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileName; // Modify the path accordingly
+				FileOutputStream outputStream = new FileOutputStream(filePath);
+				JasperExportManager.exportReportToPdfStream(jasperPrint1, outputStream);
+				outputStream.close();
+				System.out.println("PDF saved at: " + filePath);
+				} catch (Exception e) {
+				e.printStackTrace(); // Handle exception
+				}
+				
+				}	
+				
+				
+				
+				
+				return mv;
+				}
+				
+				
+				
+				
+				@ResponseBody
+				@RequestMapping(value = "listofbillofsupply1", method = RequestMethod.GET)
+				public String listofbillofsupply1(@RequestParam("contractno") String contractno) {
+				
+				List<Object[]> millRecieptModelt1 = generationOfCashAgainstDispatchDocumentService.listdetailsbillofsupplly1(contractno);
+				System.err.println("resultList++++++++++" + millRecieptModelt1);
+				Gson gson = new Gson();
+				String resultString = new Gson().toJson(millRecieptModelt1);
+				return resultString;
+				}	
+				
+				@ResponseBody
+				@RequestMapping(value = "listofpaymentdetails1", method = RequestMethod.GET)
+				public String listofpaymentdetails1(@RequestParam("contractno") String contractno) {
+				
+				List<Object[]> millRecieptModelt1 = generationOfCashAgainstDispatchDocumentService.listdetailsofpaymemt1(contractno);
+				System.err.println("resultList++++++++++" + millRecieptModelt1);
+				Gson gson = new Gson();
+				String resultString = new Gson().toJson(millRecieptModelt1);
+				return resultString;
+				}
+				
+		
+
+
+				@RequestMapping("downloadSupportingDocumentenPaymentArrangement")
+				public void downloadDocumentpayment(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+					//String imageDirectory = millAcceptDownolad; // directory path
+					//String idn = filename.split("C")[0];
+					String imagePath ="C:\\Users\\Mansi.Gupta\\Documents\\paymentDocument"+ File.separator + filename;
+//							imageDirectory + File.separator + idn + File.separator + filename;
+
+					File imageFile = new File(imagePath);
+
+					// Check if the file exists
+
+					if (imageFile.exists()) {
+
+						try {
+
+							// Set the content type based on the file type
+
+							String contentType = determineContentType(filename);
+
+							response.setContentType(contentType);
+
+							// Set the content length and attachment disposition
+
+							response.setContentLength((int) imageFile.length());
+
+							// response.setHeader("Content-Disposition", "attachment; filename=" +
+							// filename);
+
+							response.setHeader("Content-Disposition", "");
+
+							// Stream the file content to the response
+
+							FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+							OutputStream responseOutputStream = response.getOutputStream();
+
+							byte[] buffer = new byte[1024];
+
+							int bytesRead;
+
+							while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+								responseOutputStream.write(buffer, 0, bytesRead);
+
+							}
+
+							fileInputStream.close();
+
+							responseOutputStream.close();
+
+						} catch (IOException e) {
+
+							// Handle IO exception
+
+							e.printStackTrace();
+
+							response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+						}
+
+					} else {
+
+						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+					}
+				
+
+				}
+
+				// Utility method to determine content type based on filename
+
+				private String determineContentType8(String filename) {
+
+					if (filename.endsWith(".pdf")) {
+
+						return "application/pdf";
+
+					} else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+
+						return "image/jpeg";
+
+					} else if (filename.endsWith(".png")) {
+
+						return "image/png";
+
+					} else {
+
+						return "application/octet-stream"; // Default to binary data if content type is unknown
+
+					}
+
+				}
+				
+				@RequestMapping("downloadSupportingDocumententContract")
+				public void downloadDocumentcashAagainstDispatchDocumentContract(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+//					String imageDirectory = millAcceptDownolad; // directory path
+//					String idn = filename.split("C")[0];
+					String imagePath = "C:\\Users\\Mansi.Gupta\\Documents\\CashContract"  + File.separator + filename;
+//							imageDirectory + File.separator + idn + File.separator + filename;
+
+					File imageFile = new File(imagePath);
+
+					// Check if the file exists
+
+					if (imageFile.exists()) {
+
+						try {
+
+							// Set the content type based on the file type
+
+							String contentType = determineContentType(filename);
+
+							response.setContentType(contentType);
+
+							// Set the content length and attachment disposition
+
+							response.setContentLength((int) imageFile.length());
+
+							// response.setHeader("Content-Disposition", "attachment; filename=" +
+							// filename);
+
+							response.setHeader("Content-Disposition", "");
+
+							// Stream the file content to the response
+
+							FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+							OutputStream responseOutputStream = response.getOutputStream();
+
+							byte[] buffer = new byte[1024];
+
+							int bytesRead;
+
+							while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+								responseOutputStream.write(buffer, 0, bytesRead);
+
+							}
+
+							fileInputStream.close();
+
+							responseOutputStream.close();
+
+						} catch (IOException e) {
+
+							// Handle IO exception
+
+							e.printStackTrace();
+
+							response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+						}
+
+					} else {
+
+						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+					}
+
+				}
+
+
+//////////////////////////////////////////////////////////// cash against dispatch document end//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	
 	@ResponseBody
 	@RequestMapping(value = { "fetchChallan" }, method = { RequestMethod.GET })
@@ -8014,6 +8418,8 @@ public class Controller_V {
 		System.err.println("-----------------------" + list);
 		return resultString;
 	}
+	
+	
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

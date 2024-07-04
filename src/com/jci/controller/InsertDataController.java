@@ -6226,27 +6226,7 @@ public class InsertDataController
 			return mv;
 		}
 		
-		@RequestMapping({ "viewCash_against_Dispatch_document" })
-		public ModelAndView DispatchDocuent(final HttpServletRequest request) {
-			String username = (String) request.getSession().getAttribute("usrname");
-			ModelAndView mv = new ModelAndView("View_CAD_Document");
-			if (username == null) {
-				mv = new ModelAndView("index");
-			}
-				
-			List<Object[]> fetchMill_Name = this.genrationCashDocumentService.fetchMill_Name();
-			System.err.println();
-
-			final List<CashDocumentModel> allUserRegistration = (List<CashDocumentModel>)
-					this.genrationCashDocumentService.getAll();
-			mv.addObject("genrationcashDocument", allUserRegistration);
-			mv.addObject("fetchMill_Name", fetchMill_Name);
-			
-
-			return mv;
-		}
-		
-		@RequestMapping({ "viewCash_against_LCs" })
+     	@RequestMapping({ "viewCash_against_LCs" })
 		public ModelAndView LCsdocs(final HttpServletRequest request) {
 			String username = (String) request.getSession().getAttribute("usrname");
 			ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");

@@ -63,4 +63,21 @@ public class GenrationCashDocumentDaoImpl implements GenrationCashDocumentDao {
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		 return resultList1;
 	}
+	@Override
+	public List<Object> contractonmill1(String millname) {
+	    String sql = "SELECT DISTINCT b.Contract_no, s.client_unit_code " +
+	                 "FROM ( " +
+	                 "    SELECT d.client_name, c.client_unit_code " +
+	                 "    FROM jcimilldetailchild AS c " +
+	                 "    INNER JOIN jcimilldetailmaster AS d ON c.client_code = d.client_code " +
+	                 ") AS s " +
+	                 "INNER JOIN jcibos_generation AS b ON b.millcode = s.client_unit_code " +
+	                 "INNER JOIN jcipayment_arrangement AS d ON d.millcode = b.millcode " +
+	                 "WHERE b.millcode = '"+millname+"' and d.Payment_type <> 'Letter_of_Credit' ";
+
+	    List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+	    return resultList1;
+	   
+	}
+
 }

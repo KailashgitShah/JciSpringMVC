@@ -11,5 +11,6 @@ public interface GenrationCashDocumentDao {
 	public String fetchBos_No();
 	public List<Object> Non_lc(String St);
 	public List<Object[]> fetchMill_Name();
+	 public List<Object> contractonmill1(String millname);
 	
 }
