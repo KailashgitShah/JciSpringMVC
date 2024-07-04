@@ -57,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.type.filter.AbstractClassTestingTypeFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -4388,19 +4389,31 @@ public class Controller_V {
 		/* + String.format("%06d", count); */
 		return stringdemand;
 	}
+	
+	@Value("${upload.DemandDoc}")
+	String DemandNoteDoc;
+	
+	@Value("${upload.DemandNoteSave}")
+	String DemandNoteSave;
 
 	// save entry of geration demand note form field
 	@RequestMapping("saveentryofGenrationDeamandNote")
-	public ModelAndView saveentryofGDN(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public ModelAndView saveentryofGDN(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpServletResponse response) {
 
 		final ModelAndView mv = new ModelAndView();
 		String username = (String) request.getSession().getAttribute("usrname");
+		String name =(String) request.getSession().getAttribute("loginName");
+		 List<DemandNoteDto> DemandNoteDtoList = new ArrayList<>();
+		 String documentName="";
 		try {
 
 			String Contract_No = request.getParameter("Contract_No");
+			System.err.println("123421");
 			String Contract_Date = request.getParameter("Contract_Date");
 			String Payment_Due_Date = request.getParameter("Payment_Due_Date");
 			String Cancellation_Date = request.getParameter("Cancellation_Date.");
+			System.err.println("123421");
+			System.err.println("123421");
 			String Delay_period = request.getParameter("Delay_period");
 			String Payment_Ref = request.getParameter("Payment_Ref");
 			String contractedQtyStr = request.getParameter("Contracted_Qty");
@@ -4410,6 +4423,8 @@ public class Controller_V {
 			double Unit_charge = Double.parseDouble(Unit_charge_str);
 			String Carrying_cost_str = request.getParameter("Carrying_cost");
 			double Carrying_cost = Double.parseDouble(Carrying_cost_str);
+			System.err.println("123421");
+			System.err.println("123421");
 			// String Waiver_flag = request.getParameter("Waiver_flag");
 			String Remarks = request.getParameter("Remarks");
 			// String Waiver_Approved_By = request.getParameter("Waiver_Approved_By");
@@ -4433,140 +4448,158 @@ public class Controller_V {
 			genrationDemandNoteModel.setDemand_note_no(Demand_note_no);
 			Date instdate4 = formatter1.parse(Demand_note_date);
 			genrationDemandNoteModel.setDemand_note_date(instdate4);
+			System.err.println("---------");
 			genrationDemandNoteModel.setContract_date(Contract_Date);
 			genrationDemandNoteModel.setPayment_due_date(Payment_Due_Date);
 			// genrationDemandNoteModel.setPayment_date(Cancellation_Date);
 			genrationDemandNoteModel.setPayment_date(paymentDate);
 			genrationDemandNoteModel.setDelay_period(Delay_period);
 			genrationDemandNoteModel.setPayment_ref(Payment_Ref);
+			System.err.println("++++");
+			
 			genrationDemandNoteModel.setContracted_qty(contractedQty);
 			genrationDemandNoteModel.setUnit_charge(Unit_charge);
 			genrationDemandNoteModel.setCarrying_cost(Carrying_cost);
+			System.err.println("---------");
 			if ("1".equals(waiver)) {
-				genrationDemandNoteModel.setWaiver_flag(1);
+			    genrationDemandNoteModel.setWaiver_flag(1); 
+			    genrationDemandNoteModel.setWaiver_approved_by(name);
 			} else {
-				genrationDemandNoteModel.setWaiver_flag(0);
+			    genrationDemandNoteModel.setWaiver_flag(0);
+			    genrationDemandNoteModel.setWaiver_approved_by("");
+
 			}
 			genrationDemandNoteModel.setRemarks(Remarks);
-			genrationDemandNoteModel.setWaiver_approved_by("kailash");
+			
 			genrationDemandNoteModel.setDn_status(0);
 			genrationDemandNoteModel.setCreated_by("username");
 			genrationDemandNoteModel.setStateCode("19");
+			System.err.println("++++");
 			Date date = new Date();
 			// Date instdate4 = formatter1.parse(Created_on);
 			genrationDemandNoteModel.setCreated_on(date);
+			documentName = "DemandNote" + Demand_note_no + ".pdf";
+			genrationDemandNoteModel.setDocumentName(documentName);
 			// Date date= new Date();
 
 			this.genratedDemandNoteService.create(genrationDemandNoteModel);
 			this.genratedDemandNoteService.updateStatus(Contract_No);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+			    Map<String, Object> parameters = new HashMap<String, Object>();
+//			    parameters.put("Contract_No", Contract_No);
+//			    parameters.put("Contract_Date", Contract_Date);
+//			    parameters.put("Payment_Due_Date", Payment_Due_Date);
+//			    parameters.put("Delay_period", Delay_period);
+//			    parameters.put("Payment_Ref", Payment_Ref);
+//			    parameters.put("contractedQtyStr", contractedQtyStr);
+//			    parameters.put("Unit_charge", Unit_charge);
+//			    parameters.put("Carrying_cost_str", Carrying_cost_str);
 
-			/*
-			 * try { JasperReport jasperReport1 =
-			 * JasperCompileManager.compileReport(creditNoteSettledJRXML); //
-			 * .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
-			 * 
-			 * Map<String, Object> parameters = new HashMap<String, Object>();
-			 * parameters.put("Contract_No", Contract_No); parameters.put("Contract_Date",
-			 * Contract_Date); parameters.put("Payment_Due_Date", Payment_Due_Date);
-			 * 
-			 * parameters.put("Delay_period", Delay_period ); parameters.put("Payment_Ref",
-			 * Payment_Ref); parameters.put("contractedQtyStr", contractedQtyStr );
-			 * parameters.put("Unit_charge", Unit_charge );
-			 * parameters.put("Carrying_cost_str", Carrying_cost_str ); List<Object[]>
-			 * RecipientConsigneeData = genratedDemandNoteService.getData(Contract_No);
-			 * 
-			 * List<Object[]> detailsDebitList =
-			 * genratedDemandNoteService.DetailsDebit(Demand_note_no); for (Object[] details
-			 * : RecipientConsigneeData) { parameters.put("Millname", details[0]);
-			 * parameters.put("Consignee_Add0", details[1]);
-			 * parameters.put("Consignee_Add1", details[2]);
-			 * parameters.put("Consignee_Add2", details[3]);
-			 * parameters.put("Consignee_Add3", details[4]);
-			 * parameters.put("Consignee_StateCode", details[5]);
-			 * parameters.put("Consignee_State", details[6]);
-			 * parameters.put("Consignee_gst", details[7]);
-			 * 
-			 * }
-			 * 
-			 * for (Object[] row : RecipientConsigneeData) { parameters.put("Rpt_Gst",
-			 * row[7]); parameters.put("Rpt_Pan", row[8]); parameters.put("Rpt_State",
-			 * row[9]); parameters.put("Rpt_StateCode", row[10]); parameters.put("Rpt_Add0",
-			 * row[11]); parameters.put("Rpt_Add1", row[12]); parameters.put("Rpt_Add2",
-			 * row[13]); parameters.put("Rpt_Add2", row[14]); parameters.put("Rpt_Name",
-			 * row[15]); }
-			 * 
-			 * for (Object[] row :detailsDebitList ) { parameters.put("Contract_no",
-			 * row[0]); parameters.put("Contract_date", row[1]);
-			 * parameters.put("Payment_Ref", row[2]); parameters.put("Payment_Date",
-			 * row[3]); parameters.put("Demand_Date", row[4]); parameters.put("Demand_no",
-			 * row[5]);
-			 * 
-			 * } int counter = 1; List<Object[]> DemandNoteData =
-			 * this.genratedDemandNoteService.DemandNoteData(Demand_note_no);//DTO Double
-			 * total =0.0; for(Object[] row:DemandNoteData) { DemandNoteDto demandNoteDto =
-			 * new DemandNoteDto(); String contract_noString =(String) row[0]; String
-			 * ContractDate = (String) row[1]; String ContractQty = (String) row[2]; String
-			 * paymentDueDate = (String) row[3]; String paymentRef = (String) row[4]; String
-			 * delay = (String) row[5]; String payDate = (String) row[6]; String DemandDate
-			 * = (String) row[7]; Double CarryingCost = (Double) row[8];
-			 * 
-			 * demandNoteDto.setContractNo(contract_noString);
-			 * demandNoteDto.setContractDate(ContractDate);
-			 * demandNoteDto.setContractQty(ContractQty);
-			 * demandNoteDto.setScheduledPaymentDate(paymentDueDate);
-			 * demandNoteDto.setActualPaymentDate(paymentDate);
-			 * demandNoteDto.setDelayDays(delay);
-			 * demandNoteDto.setPaymentRefString(paymentRef);
-			 * demandNoteDto.setPayDate(paymentDate);
-			 * demandNoteDto.setCarryingCostString(Carrying_cost); total+=CarryingCost; }
-			 * 
-			 * String amountInWord = convertNumberToCurrencyWords(total);
-			 */
+			    List<Object[]> RecipientConsigneeData = genratedDemandNoteService.getData(Contract_No);
+			    List<Object[]> detailsDebitList = genratedDemandNoteService.DetailsDebit(Demand_note_no);
+			   
+			    for (Object[] details : RecipientConsigneeData) {
+			        parameters.put("Consignee_name", details[0]);
+			        parameters.put("Consignee_address", details[1]+","+ details[2]+","+details[3]+","+details[4]);
+			        parameters.put("ConsigneeStateCode", details[5]);
+			        parameters.put("ConsigneeState", details[6]);
+			        parameters.put("Consignee_gSTN", details[7]);
+			    }
+
+			    for (Object[] row : RecipientConsigneeData) {
+			        parameters.put("Recipient_gSTN", row[7]);
+			        parameters.put("Rpt_PAN", row[8]);
+			        parameters.put("recipientState", row[17]);
+			        parameters.put("recipientstatecode", row[18]);
+			        System.err.println(row[18]);
+			        System.err.println(row[18]);
+			        System.err.println(row[18]);
+			        System.err.println(row[18]);
+			        parameters.put("Recipient_address", row[11]+","+row[12]+","+row[13]+","+row[14]);
+			        parameters.put("Recipient_name", row[14]);
+			    }
+
+			    for (Object[] row : detailsDebitList) {
+			        parameters.put("contractNo", row[0]);
+			        parameters.put("diNo", row[1]);
+			        parameters.put("ChallanNo", row[2]);
+			        parameters.put("bosNo", row[3]);
+			        parameters.put("crnNo", row[4]);
+			        parameters.put("crnDate", row[5]);
+			        
+			        parameters.put("unit", "Carrying Cost Calculation (Carrying Cost @ Rs "+row[6]+"/- per Qtls. per month)");
+			        System.err.println(row[5]);
+			        System.err.println(row[5]);
+			        System.err.println(row[5]);
+			    }
+
+			    int counter = 1;
+			    List<Object[]> DemandNoteData = this.genratedDemandNoteService.DemandNoteData(Demand_note_no);
+			    Double total = 0.0;
+			    System.err.println(DemandNoteData.toString());
+			    for (Object[] row : DemandNoteData) {
+			        DemandNoteDto demandNoteDto = new DemandNoteDto();
+			        String contract_noString = (String) row[0];
+			        String ContractDate = (String) row[1];
+			        Double ContractQty = (Double) row[2];
+			        String paymentDueDate = (String) row[3];
+			        String paymentRef = (String) row[4];
+			        String delay = (String) row[5];
+			        String payDate = (String) row[6];
+			        String DemandDate = (String) row[7];
+			        Double CarryingCost = (Double) row[8];
+
+			        demandNoteDto.setContractNo(contract_noString);
+			        demandNoteDto.setContractDate(ContractDate);
+			        demandNoteDto.setContractqty(ContractQty);
+			        demandNoteDto.setScheduledpaymentdate(paymentDueDate);
+			        demandNoteDto.setActualpaymentdate(paymentDate);
+			        demandNoteDto.setDelaydays(delay);
+			        demandNoteDto.setPaymentrefstring(paymentRef);
+			        demandNoteDto.setPaydate(paymentDate);
+			        demandNoteDto.setCarryingcoststring(Carrying_cost);
+			        total += CarryingCost;
+			        System.err.println(demandNoteDto.toString());
+			        DemandNoteDtoList.add(demandNoteDto);
+			    }
+			    parameters.put("sumCrnAmt", total);
+			    String amountInWord = convertNumberToCurrencyWords(total);
+			    parameters.put("amountInWord", amountInWord+" Only.");
 
 //                // Prepare data sources
-//                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(creditNoteSettleDtoList);
+			  JasperReport jasperReport1 = JasperCompileManager.compileReport(DemandNoteDoc);
+               JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(DemandNoteDtoList);
 //
 //                // Fill JasperPrints
-//                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-//                response.setContentType("application/pdf");
-//                response.setHeader("Content-Disposition", "inline");
-//                // response.setHeader("Content-Disposition", "attachment;
-//                // filename=TestCreditNote.pdf");
-//                // try (OutputStream out = response.getOutputStream()) {
-//                
-//                String documentName = "creditNoteSettllemt" + challan + ".pdf";
-//
-//                final File theDir = new File(creditNoteSettlementPath);
-//                if (!theDir.exists()) {
-//                      theDir.mkdirs();
-//                }
-//
-//                String saveFile = creditNoteSettlementPath + File.separator + documentName;
-//
-//                try (OutputStream out = new FileOutputStream(saveFile)) {
-//                      JRPdfExporter exporter = new JRPdfExporter();
-//                exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
-//                
-//                exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
-//                      exporter.exportReport();
-//                
-//                } catch (Exception e) {
-//                      System.out.println(e.getLocalizedMessage());
-//                }
-//
-//                //return new ModelAndView(new RedirectView("creditNoteList.obj"));
-//
-//          } catch (JRException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//          }
-//
-//			
-//			
-//			
-//			
+               JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+               response.setContentType("application/pdf");
+               response.setHeader("Content-Disposition", "inline");
+               // response.setHeader("Content-Disposition", "attachment;
+               // filename=TestCreditNote.pdf");
+               // try (OutputStream out = response.getOutputStream()) {
+               
+               
+                
+
+               final File theDir = new File(DemandNoteSave);
+               if (!theDir.exists()) {
+                     theDir.mkdirs();
+               }
+
+               String saveFile = DemandNoteSave + File.separator + documentName;
+
+               try (OutputStream out = new FileOutputStream(saveFile)) {
+                     JRPdfExporter exporter = new JRPdfExporter();
+               exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+               
+               exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+                     exporter.exportReport();
+               
+               } catch (Exception e) {
+                     System.out.println(e.getLocalizedMessage());
+               }
+
+			redirectAttributes.addFlashAttribute("msg",
+				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
 		} catch (Exception e) {
 
@@ -6303,7 +6336,42 @@ public class Controller_V {
 		}
 	}
 
+	@RequestMapping("downloadSupportDocDemandNote")
+	public void downloadDemandNote(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = DemandNoteSave +"\\"+ filename;
+		File imageFile = new File(imagePath);
 
+		// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
 	// Delete DI for particular DI no.
 
 	@RequestMapping({ "deleteHO" })
@@ -7073,6 +7141,45 @@ public class Controller_V {
 		model.addAttribute("jciclaim_NominationModel", AllList);
 		return mv;
 	}
+	@Value("${upload.fcDownoad1}")
+	String fcDownoad;
+
+
+	@RequestMapping("downloadFcdocument")
+    public void downloaFcdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
+          String imagePath = fcDownoad + File.separator + filename;
+           File imageFile = new File(imagePath);
+     System.err.println(filename);  // Check if the file exists
+          if (imageFile.exists()) {
+
+                 try {
+                        // Set the content type based on the file type
+                        String contentType = determineContentType(filename);
+                        response.setContentType(contentType);
+
+                        // Set the content length and attachment disposition
+                        response.setContentLength((int) imageFile.length());
+                        // response.setHeader("Content-Disposition", "attachment; filename=" +
+                        // filename);
+                        response.setHeader("Content-Disposition", "");
+                        // Stream the file content to the response
+                        try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+                                     OutputStream responseOutputStream = response.getOutputStream()) {
+                              byte[] buffer = new byte[1024];
+                              int bytesRead;
+                              while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                                     responseOutputStream.write(buffer, 0, bytesRead);
+                              }
+                        }
+                 } catch (IOException e) {
+                        // Handle IO exception
+                        e.printStackTrace();
+                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                 }
+          } else {
+                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+          }
+    }
 
 	@Value("${upload.claimSettlementReportDownload}")
 	String claimSettlementReportDownload;

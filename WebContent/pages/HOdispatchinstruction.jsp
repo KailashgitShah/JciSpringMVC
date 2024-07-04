@@ -348,7 +348,7 @@ input[type="radio"] {
 								&& j > 6) {
 							tableHTML += "<td><input class='cell-input' type='number' step='0.01' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
 						} 
-						else if((variety == "Tossa (New)"|| variety =="White (New)") && j>5)
+						else if((variety == "Tossa"|| variety =="White") && j>5)
 							tableHTML += "<td><input class='cell-input' type='number' step='0.01' min='0.00' name='" + selectedValue[i] + j + "' value='0'  readonly style='background-color: #ccc;'" +  "/></td>";
 						else
 							tableHTML += "<td><input class='cell-input' type='number' step='0.01' min='0' name='" + selectedValue[i] + "-grade" + j + "' value='0' /></td>";
@@ -676,38 +676,54 @@ input[type="radio"] {
 						});
 	</script>
 
-	<script>
-		//DI No. generation
-		$("#region").on("change", function() {
-			//alert("DI no.");
-			var cp = $("#cropyear").val();
-			var reg = (this.value);
-			/*  alert(cp +"----------------"+reg); */
-			$.ajax({
-				type : "GET",
-				url : "countHo.obj",
-				data : {
-					"reg" : reg
-				},
-				success : function(result) {
-					/* alert(result+"Result") */
-					var data = jQuery.parseJSON(result);
-					//alert(data);
-					//alert(typeof data);
-					data = data + 1;
-					var DI;
-					if (data < 10)
-						DI = cp + "/" + reg + "00" + data;
-					else if (data < 99)
-						DI = cp + "/" + reg + "0" + data;
-					else
-						DI = cp + "/" + reg + data;
+<script>
+    // Ensure DOM is ready before executing JavaScript
+    $(document).ready(function() {
+        // DI No. generation
+        $("#region").on("change", function() {
+            /* var cp = $("#cropyear").val(); */
+            alert();
+            var crp = '<%= (String)session.getAttribute("currCropYear") %>'; 
 
-					document.getElementById("uniq").value = DI;
-				}
-			});
-		});
-	</script>
+            var reg = this.value;
+            alert(crp);
+            $.ajax({
+                type: "GET",
+                url: "countHo.obj",
+                data: {
+                    "reg": reg
+                },
+                success: function(result) {
+                    try {
+                        var data = parseInt(result); // Assuming the result is a number
+                        if (isNaN(data)) {
+                            throw new Error("Invalid data received");
+                        }
+                        
+                        data = data + 1;
+                        var DI;
+                        if (data < 10)
+                            DI = crp + "/" + reg + "00" + data;
+                        else if (data < 100) // corrected the condition to data < 100
+                            DI = crp + "/" + reg + "0" + data;
+                        else
+                            DI = crp + "/" + reg + data;
+
+                        document.getElementById("uniq").value = DI;
+                    } catch (e) {
+                        console.error("Error processing response:", e);
+                        // Handle error condition here, e.g., display a message to the user
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error:", status, error);
+                    // Handle AJAX error here, e.g., display a message to the user
+                }
+            });
+        });
+    });
+</script>
+
 	<script>
 		
 	</script>

@@ -12,6 +12,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +37,15 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		currentSession().saveOrUpdate(genrationDemandNoteModel);
 	}
 	@Override
-    public List<GenrationDemandNoteModel> getAll() {
-        Criteria criteria = currentSession().createCriteria(GenrationDemandNoteModel.class);
-        return criteria.list();
-    }
+	public List<GenrationDemandNoteModel> getAll() {
+	    Criteria criteria = currentSession().createCriteria(GenrationDemandNoteModel.class);
+	    
+	    // Adding an Order object to criteria to sort by Created_on column in descending order
+	    criteria.addOrder(Order.desc("Created_on"));
+	    
+	    return criteria.list();
+	}
+
 	@Override
 	public void update(GenrationDemandNoteModel genrationDemandNoteModel) {
 		currentSession().update(genrationDemandNoteModel);
@@ -68,11 +74,10 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		
 		
 		
-			String sql = "\r\n"
-					+ "  Select a.Contract_date , b.PaymentDue_date, a.Contract_cancel_date , b.Instrument_No ,a.Contract_qty,CONVERT(VARCHAR, b.Instrument_Date, 105) AS PaymentDate,b.Supporting_document from jcicontract a\r\n"
-					+ "  Inner join jcipayment_arrangement b on a.Contract_No= b.Contract_No\r\n"
-					+ "  inner join jcifinancial_concurrence c on a.Contract_no= c.Contractno\r\n"
-					+ "   where a.Contract_No='"+st+"';";
+			String sql = " Select a.Contract_date , a.Payment_duedate, a.Contract_cancel_date , b.Instrument_No ,a.Mill_qty,CONVERT(VARCHAR, b.Instrument_Date, 105) AS PaymentDate,b.Supporting_document,c.fcdocumentDownload from jcicontract a\r\n"
+					+ "					 Inner join jcipayment_arrangement b on a.Contract_No= b.Contract_No\r\n"
+					+ "					  inner join jcifinancial_concurrence c on a.Contract_no= c.Contractno\r\n"
+					+ "					 where a.Contract_No='"+st+"';";
     		
 	
 		
@@ -132,14 +137,14 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 	@Override
 	public List<Object[]> getData(String contract_No) {
 		// TODO Auto-generated method stub
-		 String sql =" SELECT \r\n"
-		 		+ "    a.unit_name, \r\n"
+		 String sql ="SELECT\r\n"
+		 		+ "    a.unit_name,\r\n"
 		 		+ "    a.unit_address1,\r\n"
 		 		+ "    a.unit_address2,\r\n"
 		 		+ "    a.unit_location,\r\n"
 		 		+ "    a.unit_pin,\r\n"
-		 		+ "    a.unit_state\r\n"
-		 		+ "    , d.state_name ,\r\n"
+		 		+ "    a.unit_state,\r\n"
+		 		+ "    d.state_name,\r\n"
 		 		+ "    b.client_gstin,\r\n"
 		 		+ "    b.client_pan,\r\n"
 		 		+ "    b.client_state,\r\n"
@@ -149,18 +154,22 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		 		+ "    b.client_pin,\r\n"
 		 		+ "    b.client_name,\r\n"
 		 		+ "    a.client_unit_code,\r\n"
-		 		+ "    b.client_pan \r\n"
-		 		+ "\r\n"
-		 		+ "FROM  \r\n"
-		 		+ "    jcimilldetailchild AS a \r\n"
-		 		+ "LEFT JOIN \r\n"
-		 		+ "    jcimilldetailmaster AS b ON a.client_code = b.client_code \r\n"
-		 		+ "inner join jcicontract c on c.Mill_code=  a.client_unit_code\r\n"
-		 		+ "inner join\r\n"
-		 		+ "tbl_states_new d on d.gov_state_code = a.unit_state \r\n"
-		 		+ "WHERE \r\n"
-		 		+ "   c.Contract_no='"+contract_No+"';";
-		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		 		+ "    b.client_pan,\r\n"
+		 		+ "    tbl_states_new.state_name,\r\n"
+		 		+ "    tbl_states_new.gov_state_code\r\n"
+		 		+ "FROM\r\n"
+		 		+ "    jcimilldetailchild AS a\r\n"
+		 		+ "LEFT JOIN\r\n"
+		 		+ "    jcimilldetailmaster AS b ON a.client_code = b.client_code\r\n"
+		 		+ "INNER JOIN\r\n"
+		 		+ "    jcicontract AS c ON c.Mill_code = a.client_unit_code\r\n"
+		 		+ "INNER JOIN\r\n"
+		 		+ "    tbl_states_new AS d ON d.gov_state_code = a.unit_state\r\n"
+		 		+ "inner join \r\n"
+		 		+ "tbl_states_new on tbl_states_new.state_code=b.client_state\r\n"
+		 		+ "WHERE\r\n"
+		 		+ "    c.Contract_no = '"+contract_No+"';";
+				 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 	}
 
@@ -190,7 +199,7 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 	@Override
 	public List<Object[]> Debitdetails(String demand_note_no) {
 		// TODO Auto-generated method stub
-		String sqlString ="Select a.Contract_no,a.Contract_date,b.Instrument_No,CONVERT(VARCHAR(10), b.Instrument_Date, 105) as Payment_Date,CONVERT(VARCHAR(10), a.Demand_note_date, 105) as DemandDatefrom, a.Demand_note_no from jcidemand_note a inner join jcipayment_arrangement b\r\n"
+		String sqlString ="Select a.Contract_no,a.Contract_date,b.Instrument_No,CONVERT(VARCHAR(10), b.Instrument_Date, 105) as Payment_Date,CONVERT(VARCHAR(10), a.Demand_note_date, 105) as DemandDatefrom, a.Demand_note_no ,a.Unit_charge from jcidemand_note a inner join jcipayment_arrangement b\r\n"
 				+ "on b.Contract_No = a.Contract_no \r\n"
 				+ "where a.Demand_note_no='"+demand_note_no+"';";
 				 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();

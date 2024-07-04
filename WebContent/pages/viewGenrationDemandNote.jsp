@@ -6,8 +6,11 @@
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
 <%@page isELIgnored="false"%>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDateTime" %>
 
-
+<%@ page import="java.util.Date" %>
+<%@ page import="java.time.ZoneId" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +105,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View Genration demand  List</h1>
+				<h1 class="page-title">View Generation of Demand Note List</h1>
 
 			</div>
 
@@ -130,20 +133,15 @@ th {
 										<th>Payment / Cancellation Date</th>
 										<th>Delay period</th>
 										<th>Payment Ref </th>
-										<th>Contracted Qty</th>
+										<th>Contracted Qty(Qtls)</th>
 										<th>Unit Charge</th>
 										<th>Carrying Cost</th>
 										<th>Waiver Flag </th>
 										<th>Remarks</th>
 										<th>Waiver Approved By</th>
-										<th>Demand note no</th>
-										<th>Demand note date</th>
-								        <!-- <th>MR No</th>
-										<th>MR Date</th>
-										<th>HO Date</th>
-										<th>Mill id</th>
-										<th>Mill Reciept Qty.</th>
-										<th>Short Qty</th> -->
+										<th>Demand Note no</th>
+										<th>Demand Note date</th>
+								        <th>Demand Note Document</th>
 										
 
 									</tr>
@@ -156,24 +154,37 @@ th {
 										if (i <= 200) {
 									%>
 									<tr>
-										<td><%=i%></td>
-										<td><%= genrationDemandNoteModel.getContract_no() %></td>
-										<td><%= genrationDemandNoteModel.getContract_date() %></td>
-										<td><%= genrationDemandNoteModel.getPayment_due_date() %></td>
-										<td><%= genrationDemandNoteModel.getPayment_date() %></td>
-										<td><%= genrationDemandNoteModel.getDelay_period() %></td>
-										<td><%= genrationDemandNoteModel.getPayment_ref() %></td>
-										<td><%= genrationDemandNoteModel.getContracted_qty() %></td>
-										<td><%= genrationDemandNoteModel.getUnit_charge() %></td>
-										<td><%= genrationDemandNoteModel.getCarrying_cost() %></td>
-										<td><%= genrationDemandNoteModel.getWaiver_flag() %></td>
-										<td><%= genrationDemandNoteModel.getRemarks() %></td>
-										<td><%= genrationDemandNoteModel.getWaiver_approved_by() %></td>
-										<td><%= genrationDemandNoteModel.getDemand_note_no() %></td>
-										<td><%= genrationDemandNoteModel.getDemand_note_date() %></td>
+										<td style="text-align: center;"><%=i%></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getContract_no() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getContract_date() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getPayment_due_date() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getPayment_date() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getDelay_period() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getPayment_ref() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getContracted_qty() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getUnit_charge() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getCarrying_cost() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getWaiver_flag() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getRemarks() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getWaiver_approved_by() %></td>
+										<td style="text-align: center;"><%= genrationDemandNoteModel.getDemand_note_no() %></td>
+<%
+    Date inputDate = genrationDemandNoteModel.getDemand_note_date();
+
+    // Convert java.util.Date to LocalDateTime
+    LocalDateTime localDateTime = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+    // Define the output formatter for the desired format
+    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    // Format LocalDateTime to a string in the desired format
+    String outputDateStr = localDateTime.format(outputFormatter);
+%>
+<td style="text-align: center;"><%= outputDateStr %></td>		
+									
 									
 
-										
+										<td style="text-align: center;"><a href='downloadSupportDocDemandNote.obj?filename=<%= genrationDemandNoteModel.getDocumentName()  %>' class='btn btn-primary btn-sm' target='_blank'>View Generated doc</a></td>
 
 
 
