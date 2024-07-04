@@ -971,9 +971,10 @@
                         
                     }
                     else{
-                    	 if (shipmentValue > 500000) {
-                             shipmentValue = shipmentValue - 500000;
-                             tsccount = 0.01; // Update tsccount without re-declaring
+                    	 if (shipmentValue > 5000000) {
+                             shipmentValue = shipmentValue - 5000000;
+                             if(shipmentValue < 0) tsccount = 0;
+                             else tsccount = 0.01; // Update tsccount without re-declaring
                          } else {
                              tsccount = 0.00; // Update tsccount without re-declaring
                          }

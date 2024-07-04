@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.context.CurrentSessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
@@ -88,12 +89,12 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	@Override
-	public ModelAndView pcso_details(List<String> pcsoDates, List<String> gradeComp) {
+	public ModelAndView pcso_details(List<String> pcsoDates, List<String> gradeComp,String cropyr) {
 
 		pg.clear();
 		// gc.clear();
 
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+		 
 
 		List<Object[]> rows = new ArrayList<>();
 
@@ -121,7 +122,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //			i++;
 //		}
 
-		List<Object[]> listOfGradesPrice = getListOfGradesPriceForMillDelivery(currCropYear);
+		List<Object[]> listOfGradesPrice = getListOfGradesPriceForMillDelivery(cropyr);
          String isPrice = "1"; 
 	    if(listOfGradesPrice.size() == 0) {
 	    	isPrice = "0";
@@ -231,14 +232,13 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	@Override
-	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray) {
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray,String cropyr) {
 		pg.clear();
 		List<Object[]> listOfGradesPrice = new ArrayList<>();
 		if (deliveryType.equals("Ex-Godown")) {
-			listOfGradesPrice = getListOfGradesPriceForExGodown(currCropYear);
+			listOfGradesPrice = getListOfGradesPriceForExGodown(cropyr);
 		} else {
-			listOfGradesPrice = getListOfGradesPriceForMillDelivery(currCropYear);
+			listOfGradesPrice = getListOfGradesPriceForMillDelivery(cropyr);
 		}
 
 		// System.out.println(listOfGradesPrice.size());
@@ -376,7 +376,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	@Override
 
 	public void setContractAuthrizeStatus(String contractNo) {
-		String sqlString = "update jcicontract set Authorize_Status = 1 , Contract_acceptance_flag = 1 , Contract_status = 'Mill Accepted', Contract_date = FORMAT(GETDATE(), 'dd-MM-yyyy') where Contract_no in ("
+		String sqlString = "update jcicontract set Authorize_Status = 1 , Contract_acceptance_flag = 1 , Contract_status = 'Mill Accepted', Contract_date = FORMAT(GETDATE(), 'dd-MM-yyyy'),Payment_duedate = FORMAT(DATEADD(DAY, 14, GETDATE()), 'dd-MM-yyyy') where Contract_no in ("
 				+ contractNo + ")";
 
 		currentSession().createSQLQuery(sqlString).executeUpdate();
@@ -404,6 +404,12 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		String sql = "select unit_name from jcimilldetailchild where client_unit_code = '" + millCode + "'";
 
 		return (String) currentSession().createSQLQuery(sql).uniqueResult();
+	}
+
+	@Override
+	public List<String> getPscoDateByCropYr(String cropYr) {
+		String sql = "select distinct pcso_date from jcientryof_pcso where cropYear ='" + cropYr + "' and Pcso_contract_flag = 0";
+		return ( List<String>) currentSession().createSQLQuery(sql).list();
 	}
 
 }

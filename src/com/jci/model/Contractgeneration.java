@@ -51,7 +51,7 @@ public class Contractgeneration {
 	@Column(name = "Grade_composition", nullable = false)
 	private String  Grade_composition;
 
-	@Column(name = "Payment_duedate", nullable = false)
+	@Column(name = "Payment_duedate")
 	private String Payment_duedate;
 
 	@Column(name = "Contract_cancellation_flag")

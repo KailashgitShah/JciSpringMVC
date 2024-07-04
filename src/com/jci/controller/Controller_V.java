@@ -508,8 +508,8 @@ public class Controller_V {
 		String referenceno = request.getParameter("referenceno");
 		String reqDate = request.getParameter("reqDate");
 
-		//String crop_year = request.getParameter("cropyr");
-		String crop_year = (String) request.getSession().getAttribute("currCropYear");
+		String crop_year = request.getParameter("cropyr");
+//		String crop_year = (String) request.getSession().getAttribute("currCropYear");
 		double system_qty = Double.parseDouble(request.getParameter("uncontractedQty"));
 		double req_qty = Double.parseDouble(request.getParameter("reqQty"));
 
@@ -809,6 +809,7 @@ public class Controller_V {
 			String dispatchPeriod = request.getParameter("dispatchPeriod");
 			String letterRef = request.getParameter("letterRefNo");
 			String pcsoReqDate = request.getParameter("pcsoReqdate");
+			String cropyr = request.getParameter("cropyr");
 			String juteRatio = request.getParameter("juteRatio");
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
 			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
@@ -826,6 +827,7 @@ public class Controller_V {
 				entryofpcsoCopy.setPcso_date(pcsoDate);
 				entryofpcsoCopy.setPcsoReqQty(pcsoReqQty);
 				entryofpcsoCopy.setPcsoQty(pcsoQty);
+				entryofpcsoCopy.setCropYear(cropyr);
 				// entryofpcsoCopy.setReference_date(referencedate);
 				entryofpcsoCopy.setReference_no(referenceno);
 
@@ -851,6 +853,7 @@ public class Controller_V {
 			mv.addObject("deliveryPeriod", dispatchPeriod);
 			mv.addObject("pcsoQty", pcsoQty);
 			mv.addObject("pcsoReqQty", pcsoReqQty);
+			mv.addObject("cropyr", cropyr);
 
 		} catch (Exception e) {
 			System.out.println(e);
@@ -870,6 +873,7 @@ public class Controller_V {
 			String referenceno = request.getParameter("referenceno");
 			String pcsDate = request.getParameter("pcsoDate");
 			String pcsoReqdate = request.getParameter("pcsoReqDate");
+			String cropyr = request.getParameter("cropyr");
 			String dispatchPeriod = request.getParameter("dispatchPeriod");
 
 			pcsDate = formateDate(pcsDate);
@@ -893,6 +897,7 @@ public class Controller_V {
 				entryofpcso.setReference_no(referenceno);
 				entryofpcso.setPcso_req_date(pcsoReqdate);
 				entryofpcso.setPcso_date(pcsDate);
+				entryofpcso.setCropYear(cropyr);
 				entryofpcso.setCreated_date(date);
 				entryofpcso.setPcsoQty(pcsoQty);
 				entryofpcso.setPcsoReqQty(pcsoReqQty);
@@ -1201,10 +1206,10 @@ public class Controller_V {
 			String fileName = contractIdn + "Contract" + millCode + ".pdf";
 			contractgeneration.setContract_acceptance_doc(fileName);
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			LocalDate currentDate = LocalDate.now();
-			LocalDate tenDaysAfter = currentDate.plusDays(10); // Add 10 days
-			contractgeneration.setPayment_duedate(tenDaysAfter.format(formatter));
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//			LocalDate currentDate = LocalDate.now();
+//			LocalDate tenDaysAfter = currentDate.plusDays(14); // Add 10 days
+//			contractgeneration.setPayment_duedate(tenDaysAfter.format(formatter));
 
 			// System.err.println(contractgeneration.toString());
 
@@ -1279,13 +1284,26 @@ public class Controller_V {
 		return gson.toJson(allMillUnderContract);
 
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "getPscoDateByCropYr", method = RequestMethod.GET)
+	public String getPscoDateByCropYr(HttpServletRequest request) {
+		String cropYr = request.getParameter("cropYr");
+		List<String> pcsoDates = contractGenerationService2.getPscoDateByCropYr(cropYr);
+		Gson gson = new Gson();
+		return gson.toJson(pcsoDates);
+
+	}
+	
 
 	@ResponseBody
-	@RequestMapping(value = "pcso_details", method = RequestMethod.GET)
+	@RequestMapping(value = "populateContract", method = RequestMethod.GET)
 	public String pcso_details(HttpServletRequest request) {
 
 		String pcsoDates = request.getParameter("pcso_dates");
 		String grades = request.getParameter("grades");
+		String cropyr = request.getParameter("cropyr");
 
 		// String deliveryType = request.getParameter("deliveryType");
 
@@ -1295,7 +1313,7 @@ public class Controller_V {
 		final List<String> pcsoArray = Arrays.asList(pcsoDates.split(","));
 		final List<String> gradeArray = Arrays.asList(grades.split(","));
 
-		ModelAndView pcso = contractGenerationService2.pcso_details(pcsoArray, gradeArray);
+		ModelAndView pcso = contractGenerationService2.pcso_details(pcsoArray, gradeArray,cropyr);
 		Gson gson = new Gson();
 		return gson.toJson(pcso);
 
@@ -1309,10 +1327,11 @@ public class Controller_V {
 		String deliveryType = request.getParameter("deliveryType");
 		String totalQtyOfMill = request.getParameter("totalQtyOfMill");
 		String grades = request.getParameter("grades");
+		String cropyr = request.getParameter("cropyr");
 		grades = grades.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
 		final List<String> gradeArray = Arrays.asList(grades.split(","));
 
-		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill, gradeArray);
+		int updatedVal = contractGenerationService2.updateContractedValue(deliveryType, totalQtyOfMill, gradeArray,cropyr);
 
 		return updatedVal + "";
 	}
@@ -2164,7 +2183,7 @@ public class Controller_V {
 			parameters.put("sumInv", nominalWt);
 			parameters.put("sumShrt", shortQty);
 			String amountInWord = convertNumberToCurrencyWords(crnAmount);
-			parameters.put("amountInWord", amountInWord);
+			parameters.put("amountInWord", amountInWord + " Only");
 
 			for (Object[] details : getDetailsofSpp_Con_Rec) {
 				parameters.put("Supplier_name", details[0]);
@@ -2462,7 +2481,7 @@ public class Controller_V {
 
 		List<String> challans = this.creditNoteClaimSettlementService.getDistinctChallanOfSettlementId(settlementId);
 		String todayDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-		List<CreditNoteSettledDTO> creditNoteSettleDtoList = new ArrayList<>();
+	
 
 		// crnNo
 		//
@@ -2487,7 +2506,7 @@ public class Controller_V {
 		int getGstCount = 0;
 		int count = 0;
 		for (String challan : challans) {
-
+			List<CreditNoteSettledDTO> creditNoteSettleDtoList = new ArrayList<>();
 			List<Object[]> detailsOfChallan = this.creditNoteClaimSettlementService.viewFullChallanDetails(challan);
 			String gstCode = (String) detailsOfChallan.get(0)[26];
 			String ro = (String) detailsOfChallan.get(0)[27];
@@ -3830,67 +3849,41 @@ public class Controller_V {
 				double moistureContent1 = Double.parseDouble(Nomination1);
 				millRecieptModel.setMoistureContent(moistureContent1);
 
-				if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
+                if (NCVamt != null && i < NCVamt.length && NCVamt[i] != null && !NCVamt[i].equals("null")) {
+                    // Handle NCV amount
+                    String NCVamt1 = NCVamt[i];
+                    double NCV_Qty1 = Double.parseDouble(NCVamt1);
+                    millRecieptModel.setNCV_percentage(NCV_Qty1);
+                    millRecieptModel.setNCV_qty(flag);
+                }
+                if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
+                    // Handle NCV dust
+                    String ncvdust1 = ncvdust[i];
+                    double NCV_Percentage1 = Double.parseDouble(ncvdust1);
+                    double Ncv_qtyconverted = NCV_Percentage1 / Actual_Qty1;
+                    double roundedValue = Math.round(Ncv_qtyconverted * 100.0) / 100.0; // Round to 2 decimal places
+                    millRecieptModel.setNCV_qty(roundedValue);
+                    millRecieptModel.setNCV_percentage(flag);
+                }
 
-					String ncvdust1 = ncvdust[i];
-					System.err.println(ncvdust1);
-					double NCV_Percentage1 = Double.parseDouble(ncvdust1);
-					millRecieptModel.setNCV_percentage(NCV_Percentage1);
-					millRecieptModel.setNCV_qty(flag);
-				} else if (NCVamt != null && i < NCVamt.length && NCVamt[i] != null && !NCVamt[i].equals("null")) {
-					String NCVamt1 = NCVamt[i];
-					System.err.println(NCVamt1);
-					double NCV_Qty1 = Double.parseDouble(NCVamt1);
+                // Handle dust amount and quantity
+                if (dustAmt != null && i < dustAmt.length && dustAmt[i] != null && !dustAmt[i].equals("null")) {
+                    // Handle dust amount
+                    String dustAmt1 = dustAmt[i];
+                    double dustAmt2 = Double.parseDouble(dustAmt1);
+                    millRecieptModel.setDustAmt(dustAmt2);
+                    millRecieptModel.setDustQty(flag);
+                }
+                if (dustQty != null && i < dustQty.length && dustQty[i] != null && !dustQty[i].equals("null")) {
+                    // Handle dust quantity
+                    String dustQty1 = dustQty[i];
+                    double dustQty2 = Double.parseDouble(dustQty1);
+                    double dust_qtyconverted = dustQty2 / Actual_Qty1;
+                    double roundedValue = Math.round(dust_qtyconverted * 100.0) / 100.0; // Round to 2 decimal places
+                    millRecieptModel.setDustQty(roundedValue);
+                    millRecieptModel.setDustAmt(flag);
+                }
 
-					double Ncv_qtyconverted =NCV_Qty1/Actual_Qty1;
-					 String formatted = String.format("%.2f", Ncv_qtyconverted);
-
-				        // Converting formatted string back to double (optional)
-				        double roundedValue = Double.parseDouble(formatted);
-					millRecieptModel.setNCV_qty(roundedValue);
-
-					millRecieptModel.setNCV_percentage(flag);
-				} else {
-					// Handle other cases
-					if (NCVamt == null || i >= NCVamt.length || NCVamt[i] == null || NCVamt[i].equals("null")) {
-						millRecieptModel.setNCV_percentage(flag);
-					}
-					if (ncvdust == null || i >= ncvdust.length || ncvdust[i] == null || ncvdust[i].equals("null")) {
-						millRecieptModel.setNCV_qty(flag);
-					}
-				}
-
-				if (dustAmt != null && i < dustAmt.length && dustAmt[i] != null && !dustAmt[i].equals("null")) {
-
-					String dustAmt1 = dustAmt[i];
-					System.err.println(dustAmt1);
-					double dustAmt2 = Double.parseDouble(dustAmt1);
-					millRecieptModel.setDustAmt(dustAmt2);
-					millRecieptModel.setDustQty(flag);
-				} else if (dustQty != null && i < dustQty.length && dustQty[i] != null && !dustQty[i].equals("null")) {
-					String dustQty1 = dustQty[i];
-					System.err.println(dustQty1);
-					double dustQty2 = Double.parseDouble(dustQty1);
-
-					double dust_qtyconverted =dustQty2/Actual_Qty1;
-					
-					 String formatted = String.format("%.2f", dust_qtyconverted);
-
-				        // Converting formatted string back to double (optional)
-				        double roundedValue = Double.parseDouble(formatted);
-
-					millRecieptModel.setDustQty(roundedValue);
-
-					millRecieptModel.setDustAmt(flag);
-				} else {
-					// Handle other cases
-					if (dustAmt == null || i >= dustAmt.length || dustAmt[i] == null || dustAmt[i].equals("null")) {
-						millRecieptModel.setDustAmt(flag);
-					}
-					if (dustQty == null || i >= dustQty.length || dustQty[i] == null || dustQty[i].equals("null")) {
-						millRecieptModel.setDustQty(flag);
-					}
-				}
 				millRecieptModel.setHO_di(HO_DINO);
 				millRecieptModel.setChallan_no(challanno1);
 				millRecieptModel.setJute_Grade(jutegrade1);
