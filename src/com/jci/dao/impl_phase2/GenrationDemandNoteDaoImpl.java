@@ -12,6 +12,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +37,15 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		currentSession().saveOrUpdate(genrationDemandNoteModel);
 	}
 	@Override
-    public List<GenrationDemandNoteModel> getAll() {
-        Criteria criteria = currentSession().createCriteria(GenrationDemandNoteModel.class);
-        return criteria.list();
-    }
+	public List<GenrationDemandNoteModel> getAll() {
+	    Criteria criteria = currentSession().createCriteria(GenrationDemandNoteModel.class);
+	    
+	    // Adding an Order object to criteria to sort by Created_on column in descending order
+	    criteria.addOrder(Order.desc("Created_on"));
+	    
+	    return criteria.list();
+	}
+
 	@Override
 	public void update(GenrationDemandNoteModel genrationDemandNoteModel) {
 		currentSession().update(genrationDemandNoteModel);
@@ -68,11 +74,10 @@ public class GenrationDemandNoteDaoImpl implements GenrationDemandNoteDao  {
 		
 		
 		
-			String sql = "\r\n"
-					+ "  Select a.Contract_date , b.PaymentDue_date, a.Contract_cancel_date , b.Instrument_No ,a.Contract_qty,CONVERT(VARCHAR, b.Instrument_Date, 105) AS PaymentDate,b.Supporting_document,c.fcdocumentDownload from jcicontract a\r\n"
-					+ "  Inner join jcipayment_arrangement b on a.Contract_No= b.Contract_No\r\n"
-					+ "  inner join jcifinancial_concurrence c on a.Contract_no= c.Contractno\r\n"
-					+ "   where a.Contract_No='"+st+"';";
+			String sql = " Select a.Contract_date , a.Payment_duedate, a.Contract_cancel_date , b.Instrument_No ,a.Mill_qty,CONVERT(VARCHAR, b.Instrument_Date, 105) AS PaymentDate,b.Supporting_document,c.fcdocumentDownload from jcicontract a\r\n"
+					+ "					 Inner join jcipayment_arrangement b on a.Contract_No= b.Contract_No\r\n"
+					+ "					  inner join jcifinancial_concurrence c on a.Contract_no= c.Contractno\r\n"
+					+ "					 where a.Contract_No='"+st+"';";
     		
 	
 		

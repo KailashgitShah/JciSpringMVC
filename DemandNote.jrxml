@@ -360,11 +360,11 @@
 				<textFieldExpression><![CDATA[$P{bosNo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="448" y="137" width="122" height="21" uuid="4687fce9-6c3b-40df-a8bb-dbe406dfba67"/>
+				<reportElement x="446" y="113" width="122" height="21" uuid="4687fce9-6c3b-40df-a8bb-dbe406dfba67"/>
 				<textFieldExpression><![CDATA[$P{crnDate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="447" y="113" width="98" height="21" uuid="bbbda5ae-4a8c-4c6d-b34d-801e3b4d1da1"/>
+				<reportElement x="448" y="136" width="98" height="21" uuid="bbbda5ae-4a8c-4c6d-b34d-801e3b4d1da1"/>
 				<textFieldExpression><![CDATA[$P{crnNo}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -673,7 +673,7 @@ Cost days]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Credit Note Value in words:]]></text>
+				<text><![CDATA[Debit Note Value in words:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="174" y="71" width="360" height="21" uuid="394c7a2c-ddd5-4471-b2bc-8632122e523f"/>

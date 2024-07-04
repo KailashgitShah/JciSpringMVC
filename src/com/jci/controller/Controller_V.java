@@ -3757,7 +3757,7 @@ public class Controller_V {
 			        parameters.put("crnNo", row[4]);
 			        parameters.put("crnDate", row[5]);
 			        
-			        parameters.put("unit", "Carrying Cost Calculation (Carrying Cost @ Rs "+row[6]+"/- per Qtls. per day)");
+			        parameters.put("unit", "Carrying Cost Calculation (Carrying Cost @ Rs "+row[6]+"/- per Qtls. per month)");
 			        System.err.println(row[5]);
 			        System.err.println(row[5]);
 			        System.err.println(row[5]);
