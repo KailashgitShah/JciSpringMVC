@@ -549,6 +549,7 @@ $(document).ready(function() {
                         "jutevariety": jutevariety,
                     },
                     success: function(data) {
+                    	alert(data);
                     
                          var dataArray = JSON.parse(data);
                          if (dataArray.length > 0) {
@@ -956,8 +957,6 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     var DustAmt = document.getElementById(DustAmtId).value;
  
 
-   
-    
     let gradeprice = resultsArray[intvalue - 1];
     let gradeprice1 = gradeprice;
   

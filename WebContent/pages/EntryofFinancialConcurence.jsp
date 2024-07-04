@@ -168,7 +168,7 @@
 			                                         <div class="col-sm-4 form-group">
 															<label>FC Ref No. </label> 
 															<span class="text-danger">* </span>&nbsp; <span id="FC_Ref_No. " name=FC_Ref_No. class="text-danger"> </span>
-															<input class="form-control" name="FC_Ref_No." id="FC_Ref_No." value="<%=fcref_no2 %>" readonly ="readonly" required
+															<input class="form-control" name="FC_Ref_No123" id="FC_Ref_No." value="<%=fcref_no2 %>" readonly ="readonly" required
 													
 															>
 													</div> 

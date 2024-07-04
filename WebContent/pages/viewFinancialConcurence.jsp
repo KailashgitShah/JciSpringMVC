@@ -131,7 +131,7 @@ th {
 										<th>Contracted_Qty</th>
 										<th>QtyAllowed</th>
 										<th>Carrying_Cost_Charged</th>
-										<th>Created_date</th>
+										<!-- <th>Created_date</th> -->
 										<th>Remarks</th>
 										
 									
@@ -154,8 +154,14 @@ th {
 										<td><%=financialConcurenceModel.getContracted_Qty()%></td>
 										<td><%=financialConcurenceModel.getQtyAllowed()%></td>
 										<td><%=financialConcurenceModel.getCarrying_Cost_Charged()%></td>
-										<td><%=financialConcurenceModel.getCreated_date()%></td>
+							<%-- 			<td><%=financialConcurenceModel.getCreated_date()%></td> --%>
 										<td><%=financialConcurenceModel.getRemarks()%></td>
+										
+										 <td>
+								            <a href="downloadFcdocument.obj?filename=<%= financialConcurenceModel.getFcdocumentDownload() %>">
+								              
+								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View fc docs</button>
+								        </td>
 										
 
 

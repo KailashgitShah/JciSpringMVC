@@ -93,6 +93,7 @@ import com.jci.common.Encry;
 import com.jci.model.BankDraftDTO;
 import com.jci.model.BillOFExchangeWithout_LC_DTO;
 import com.jci.model.BillOfExchangeDTO;
+import com.jci.model.BillofSupplyDocDTO;
 import com.jci.model.CashDocumentModel;
 import com.jci.model.ClaimSettlementReport;
 import com.jci.model.ConfirmationClaimSettlementModel;
@@ -3179,6 +3180,47 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
+	
+	
+	@Value("${upload.fcDownoad}")
+	String fcDownoad;
+	
+	
+	@RequestMapping("downloadFcdocument")
+	public void downloaFcdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
+		String imagePath = fcDownoad + File.separator + filename;
+		File imageFile = new File(imagePath);
+        System.err.println(filename);	// Check if the file exists
+		if (imageFile.exists()) {
+
+			try {
+				// Set the content type based on the file type
+				String contentType = determineContentType(filename);
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+				response.setContentLength((int) imageFile.length());
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				response.setHeader("Content-Disposition", "");
+				// Stream the file content to the response
+				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+						OutputStream responseOutputStream = response.getOutputStream()) {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+						responseOutputStream.write(buffer, 0, bytesRead);
+					}
+				}
+			} catch (IOException e) {
+				// Handle IO exception
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+	}
 
 	// Utility method to determine content type based on filename
 	private String determineContentType(String filename) {
@@ -3273,7 +3315,13 @@ public class Controller_V {
 	// save the data of FC after issuing the fc and modfied data.
 	@Value("${upload.fcreport}")
 	String fcreport;
+	
 
+
+	
+	@Value("${upload.fcDownoad1}")
+	String fcDownoad1;
+	
 	@RequestMapping("saveFinancialConcurence")
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
 	    String username = (String) request.getSession().getAttribute("usrname");
@@ -3284,7 +3332,7 @@ public class Controller_V {
 	    try {
 	        String fullcontractno = request.getParameter("fullcontractno");
 	        String FC_Issue_Date = request.getParameter("FC_Issue_Date");
-	        String FC_Ref_No = request.getParameter("FC_Ref_No.");
+	        String FC_Ref_No = request.getParameter("FC_Ref_No123");
 	        String Contracted_Qty = request.getParameter("Contracted_Qty.");
 	        String QtyAllowed = request.getParameter("Shipment_Value1");
 	        String carryingCostParam = request.getParameter("SGST_Amt1");
@@ -3293,7 +3341,7 @@ public class Controller_V {
 	        String remarks = request.getParameter("Remarks1");
 
 	        this.paymentDetailService.remark(remarks, fullcontractno, id);
-	        
+
 	        BigInteger Carrying_Cost_Charged = BigInteger.ZERO;
 	        if (carryingCostParam != null && !carryingCostParam.isEmpty()) {
 	            try {
@@ -3306,7 +3354,7 @@ public class Controller_V {
 
 	        FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 	        financialConcurenceModel.setFullcontractno(fullcontractno);
-	        
+
 	        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 	        Date contdate = formatter1.parse(FC_Issue_Date);
 	        financialConcurenceModel.setFC_Issue_Date(contdate);
@@ -3318,126 +3366,181 @@ public class Controller_V {
 	        Date date = new Date();
 	        financialConcurenceModel.setCreated_date(date);
 	        financialConcurenceModel.setRemarks(remarks);
-	        
+
 	        this.financialConcurenceservice.create(financialConcurenceModel);
 	        this.paymentDetailService.update2(fullcontractno);
-	        
+
 	        String ifsc = "";
 	        String millcode1 = "";
 	        String labelname = "";
 
 	        Map<String, Object> parameters = new HashMap<>();
-	        FcDto fcDto = new FcDto();
+
 	        List<FcDto> listOfFcdto = new ArrayList<>();
-	        
-	    
 
+	        double sum = 0.0;
+
+	        // Fetching details for report
 	        List<Object[]> documentsreport = this.financialConcurenceservice.DetailsForReport(fullcontractno);
-	        for (Object[] row : documentsreport) {
-	            String Contractno = ((String) row[0]);
-	            fcDto.setContrcatno(Contractno);
-	            String QtyAllowed1 = ((String) row[1]);
-	            double QtyAllowed4 = Double.parseDouble(QtyAllowed1);
-	            fcDto.setQty(QtyAllowed4);
-	            String Instrument_No = ((String) row[2]);
-	            fcDto.setInstrument_No(Instrument_No);
-	            String Instrument_Date = ((String) row[3]);
-	            fcDto.setInstrument_Date(Instrument_Date);
-	            
-	            String Instrument_value = ((String) row[4]);
-	            fcDto.setInstrument_Value(Instrument_value);
-	            
-	            String Last_shipment_date = ((String) row[5]);
-	            fcDto.setLast_shipment_date(Last_shipment_date);
-	            String Expiry_date = ((String) row[6]);
-	            fcDto.setExpiry_date(Expiry_date);
-	            String Auto_revolving_amount = ((String) row[7]);
-	            fcDto.setAuto_revolving_amount(Auto_revolving_amount);
-	            millcode1 = ((String) row[8]);
+	        for (Object[] details : documentsreport) {
+	            millcode1 = (String) details[7];
 
-	            if (row[7] != null) {
-	                ifsc = row[4].toString();
-	                fetchBankDetails(ifsc, fcDto);
+	            parameters.put("Contractno", details[0]);
+	            parameters.put("Instrument_No", details[1]);
+	            parameters.put("Instrument_Date", details[2]);
+	            parameters.put("Instrument_value", details[8]);
+	            parameters.put("Last_shipment_date", details[4]);
+	            parameters.put("Expiry_date", details[5]);
+	            parameters.put("Auto_revolving_amount", details[6]);
+	            parameters.put("contarctdate", details[9]);
+
+	            if (details[3] != null) {
+	                ifsc = details[3].toString();
+	                
+	                String url = "https://ifsc.razorpay.com/" + ifsc;
+	        	    RestTemplate restTemplate = new RestTemplate();
+	        	 
+	        	        String result = restTemplate.getForObject(url, String.class);
+	        	        JSONObject jsonObject = new JSONObject(result);
+	        	        String banknameString = jsonObject.optString("BANK");
+	        	        parameters.put("banknameString", banknameString);
+	        	        System.err.println("qty: " + banknameString);
+	        	        String bankaddressString = jsonObject.optString("ADDRESS");
+	        	        parameters.put("bankaddressString", bankaddressString);
+	        	        System.err.println("qty: " + bankaddressString);
 	            }
 	            
-	            listOfFcdto.add(fcDto);
 	        }
-	     
 
+	        // Fetching label name and delivery details
 	        List<Object[]> documentlabel = this.financialConcurenceservice.LabelnameAndDelivery(fullcontractno);
 	        for (Object[] row : documentlabel) {
-	            labelname = ((String) row[0]);
-	            String deliveryString = ((String) row[1]);
-	            fcDto.setDeliveryType(deliveryString);
-	            listOfFcdto.add(fcDto);
+	            labelname = (String) row[0];
+	            parameters.put("deliveryType", row[1]);
 	        }
-            double sum=0.0;
-	        List<Object[]> documentforcomposition = this.financialConcurenceservice.gradecompositionfordetails(labelname);
-	        for (Object[] row : documentforcomposition) {
-	            String composition = ((String) row[0]);
-	            fcDto.setComposition(composition);
-	            
-	            double sumqty = Double.parseDouble(QtyAllowed);
-	            double percentage = Double.parseDouble(row[1].toString());
-	            double compoqty = (sumqty * percentage) / 100;
-	            String compoqtyString = Double.toString(compoqty);
-	            
-	            sum+=compoqty;
-	            fcDto.setQuanity(compoqtyString);
-	           
-	            listOfFcdto.add(fcDto);
-	        }
-	        fcDto.setTotal(sum);
-            listOfFcdto.add(fcDto);
+
 	        List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode1);
 	        for (Object[] row : listofaddress) {
-	            String millname = ((String) row[0]);
-	            fcDto.setMillname(millname);
+	            String millname = (String) row[0];
+	            parameters.put("millname", millname);
+
 	            String address = String.join("", (String) row[1], (String) row[2], (String) row[3], (String) row[4]);
-	            fcDto.setAddress(address);
-	            listOfFcdto.add(fcDto);
+	            parameters.put("address", address);
 	        }
 
-	        
-	       
+	        // Fetching grade composition details
+	        double sumqty = Double.parseDouble(QtyAllowed);
+	    
+	        List<Object[]> documentforcomposition = this.financialConcurenceservice.gradecompositionfordetails(labelname);
+	        for (Object[] row : documentforcomposition) {
+	        	  FcDto fcDto1 = new FcDto();
+	        	    String composition = (String) row[0];
+	        	    fcDto1.setComposition(composition);
+
+	        	    double percentage = Double.parseDouble(row[1].toString());
+	        	    double compoqty = (sumqty * percentage) / 100;
+	        	    System.err.println("qty: " + compoqty);
+	        	    sum += compoqty;
+	        	    fcDto1.setQty(compoqty);
+
+	        	    listOfFcdto.add(fcDto1);
+	        }
+
+	        parameters.put("total", sum);
+	        parameters.put("qtyAllowed", QtyAllowed);
+
+	        // Generating the report
 	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
 	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
-	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+	        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
-	        String fileName = "listOfFcdto" + millcode1 + ".pdf";
-	        String savePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName;
+	        // Defining the file name and save path
+	        String fileName = "listOfFcdto" + FC_Ref_No + ".pdf";
+	        File directory = new File(fcDownoad1);
 
-//	        JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
-	        serveFileAsResponse(savePath, fileName, response);
+	        if (!directory.exists()) {
+	            if (directory.mkdirs()) {
+	                System.out.println("Directory created successfully");
+	            } else {
+	                System.err.println("Failed to create directory: " + directory.getAbsolutePath());
+	                return null;
+	            }
+	        }
 
-	        // Ensure the redirection happens after the file has been served
-	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>");
-	        return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
-
-	    }
+	        String savePath = fcDownoad1 + File.separator + fileName;
+	        financialConcurenceModel.setFcdocumentDownload(fileName);
 	        
-	        catch (Exception e) {
+	        try (OutputStream out = new FileOutputStream(savePath)) {
+	            JRPdfExporter exporter = new JRPdfExporter();
+	            exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	            exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	            exporter.exportReport();
+	        } catch (Exception e) {
+	            System.out.println(e.getLocalizedMessage());
+	        }
+
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "inline");
+
+	    } catch (Exception e) {
 	        e.printStackTrace();
 	        redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-danger\"><b>Error !</b> " + e.getMessage() + "</div>");
 	        return new ModelAndView("errorPage");
 	    }
+
+	    redirectAttributes.addFlashAttribute("msg", "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>");
+	    return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
 	}
 
-	private void fetchBankDetails(String ifsc, FcDto fcDto) {
+
+	private void fetchBankDetails(String ifsc) {
+		
+		Map<String, Object> parameters = new HashMap<>();
 	    String url = "https://ifsc.razorpay.com/" + ifsc;
 	    RestTemplate restTemplate = new RestTemplate();
 	    try {
 	        String result = restTemplate.getForObject(url, String.class);
 	        JSONObject jsonObject = new JSONObject(result);
 	        String banknameString = jsonObject.optString("BANK");
-	        fcDto.setBankname(banknameString);
+	        parameters.put("banknameString", banknameString);
+	        //fcDto.setBankname(banknameString);
 	        String bankaddressString = jsonObject.optString("ADDRESS");
-	        fcDto.setBankAddress(bankaddressString);
-	       
+	        parameters.put("bankaddressString", bankaddressString);
+	       // fcDto.setBankAddress(bankaddressString);
+
 	    } catch (Exception e) {
 	        System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
 	    }
 	}
+
+	private void serveFileAsResponseforfc(String savePath, String fileName, HttpServletResponse response) {
+	    try {
+	    	   File file = new File(savePath);
+	            if (file.exists()) {
+	                response.setContentType("application/pdf");
+	                response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+	                response.setContentLength((int) file.length());
+
+	                FileInputStream fileInputStream = new FileInputStream(file);
+	                OutputStream responseOutputStream = response.getOutputStream();
+	                byte[] bytesBuffer = new byte[4096];
+	                int bytesRead;
+	                while ((bytesRead = fileInputStream.read(bytesBuffer)) != -1) {
+	                    responseOutputStream.write(bytesBuffer, 0, bytesRead);
+	                }
+	                fileInputStream.close();
+	                responseOutputStream.flush();
+	                responseOutputStream.close();
+	            }else {
+	            response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found.");
+	        }
+	    } catch (FileNotFoundException ex) {
+	        System.err.println("File not found: " + ex.getMessage());
+	    } catch (IOException ex) {
+	        System.err.println("Error serving file: " + ex.getMessage());
+	    }
+	}
+
 
 	
 	
@@ -3688,28 +3791,25 @@ public class Controller_V {
 				double moistureContent1 = Double.parseDouble(Nomination1);
 				millRecieptModel.setMoistureContent(moistureContent1);
 
-				if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
-
-					String ncvdust1 = ncvdust[i];
+              if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
+                    String ncvdust1 = ncvdust[i];
 					System.err.println(ncvdust1);
 					double NCV_Percentage1 = Double.parseDouble(ncvdust1);
-					millRecieptModel.setNCV_percentage(NCV_Percentage1);
+					
+					double Ncv_qtyconverted =NCV_Percentage1/Actual_Qty1;
+					 String formatted = String.format("%.2f", Ncv_qtyconverted);
+
+				        // Converting formatted string back to double (optional)
+				     double roundedValue = Double.parseDouble(formatted);
+					millRecieptModel.setNCV_percentage(roundedValue);
 					millRecieptModel.setNCV_qty(flag);
 				} else if (NCVamt != null && i < NCVamt.length && NCVamt[i] != null && !NCVamt[i].equals("null")) {
 					String NCVamt1 = NCVamt[i];
 					System.err.println(NCVamt1);
 					double NCV_Qty1 = Double.parseDouble(NCVamt1);
-					double Ncv_qtyconverted =NCV_Qty1/Actual_Qty1;
-					 String formatted = String.format("%.2f", Ncv_qtyconverted);
-
-				        // Converting formatted string back to double (optional)
-				        double roundedValue = Double.parseDouble(formatted);
-
-					
-					
-					
-					millRecieptModel.setNCV_qty(roundedValue);
-					millRecieptModel.setNCV_percentage(flag);
+				
+                     millRecieptModel.setNCV_qty(flag);
+					millRecieptModel.setNCV_percentage(NCV_Qty1);
 				} else {
 					// Handle other cases
 					if (NCVamt == null || i >= NCVamt.length || NCVamt[i] == null || NCVamt[i].equals("null")) {
@@ -3738,8 +3838,8 @@ public class Controller_V {
 				        // Converting formatted string back to double (optional)
 				        double roundedValue = Double.parseDouble(formatted);
 
-					millRecieptModel.setDustQty(roundedValue);
-					millRecieptModel.setDustAmt(flag);
+					millRecieptModel.setDustQty(flag);
+					millRecieptModel.setDustAmt(roundedValue);
 				} else {
 					// Handle other cases
 					if (dustAmt == null || i >= dustAmt.length || dustAmt[i] == null || dustAmt[i].equals("null")) {
@@ -3749,6 +3849,29 @@ public class Controller_V {
 						millRecieptModel.setDustQty(flag);
 					}
 				}
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+
 				millRecieptModel.setHO_di(HO_DINO);
 				millRecieptModel.setChallan_no(challanno1);
 				millRecieptModel.setJute_Grade(jutegrade1);
@@ -4442,6 +4565,9 @@ public class Controller_V {
 
 	@Value("${upload.Genrationofbill}")
 	String Genrationofbill;
+	
+	@Value("${upload.billofsupply}")
+	String billofsupply;
 
 	@RequestMapping("saveentryofGenrationbill")
 
@@ -4779,6 +4905,227 @@ public class Controller_V {
 			this.generationofBillService.create(generationOfBillSupplyModel);
 
 			this.generationofBillService.billUpdation(Challan_No1);
+			
+			
+			
+
+	        String contaractdate = "";
+	        String DiNo = "";
+	        String DiDate = "";
+	        String Challandate = "";
+	        String InstrumentNo = "";
+	        String Instrumentdate = "";
+	        String dpcname = " ";
+	       
+	       
+	    
+	        for (Object[] row : dateData) {
+	            if (row[0] != null) contaractdate = row[0].toString();
+	            if (row[1] != null) DiNo = row[1].toString();
+	            if (row[2] != null) DiDate = row[2].toString();
+	            if (row[3] != null) Challandate = row[3].toString();
+	            if (row[4] != null) InstrumentNo = row[5].toString();
+	            if (row[5] != null) Instrumentdate = row[6].toString();
+	        }
+	        
+	        String centerName = "";
+	        String centercode = "";
+	        String Roname = "";
+	        String Rocode = "";
+	       
+	       
+	       
+	    
+	        for (Object[] row : RegionAndCenterName1) {
+	            if (row[0] != null) centerName = row[0].toString();
+	            if (row[1] != null) centercode = row[1].toString();
+	            if (row[2] != null) Roname = row[2].toString();
+	            if (row[3] != null) Rocode = row[3].toString();
+	        
+	        }
+
+			
+			
+			  Map<String, Object> parameters = new HashMap<>();
+			 
+              List<BillofSupplyDocDTO> listOfBillofSupplyDocDTO = new ArrayList<>();
+              
+                parameters.put("GstinSupplier", Supplier_GSTN);
+	            parameters.put("contractRef", Conract_no);
+	            parameters.put("contractdate", contaractdate);
+	            String Contdate=Conract_no+"dt."+contaractdate;
+	            parameters.put("Contdate", Contdate);
+	            
+	            parameters.put("namesupplier", Supplier_Name);
+	            parameters.put("Diref", DiNo);
+	            parameters.put("didate", DiDate);
+	            String Didate=DiNo+"dt."+DiDate;
+	            parameters.put("didateinfo", Didate);
+	            
+	            
+	            parameters.put("centername", centerName);
+	            parameters.put("centercode", centercode);
+	            
+	            parameters.put("roname", Roname);
+	            parameters.put("rocode", Rocode);
+	            
+	            
+	            String area=centerName+"("+centercode+")/"+Roname+"("+Rocode+")";
+	            parameters.put("Area", area);
+	            
+	            parameters.put("challanno", Challan_No1);
+	            parameters.put("challandate", Challandate);
+	            
+	            String chalandocinfo=Challan_No1+"dt."+Challandate;
+	            parameters.put("challandocinfo", chalandocinfo);
+	            
+	            parameters.put("Cnno", consignment);
+	         
+	            parameters.put("addresSupplier", Supplier_Address);
+	            parameters.put("instrumentno", InstrumentNo);
+	            parameters.put("instrumendate", Instrumentdate);
+	            
+	            String instudocinfo=InstrumentNo+"dt."+Instrumentdate;
+	            parameters.put("instudocinfo", instudocinfo);
+	            
+	            
+	            parameters.put("statename3", Statename23);
+	            parameters.put("billofsupllyno", Bill_of_Supply);
+	            
+	            
+	         
+	            
+	            parameters.put("statecode3", StaeCode23);
+	            parameters.put("billofsupplydate", BOS_Date);
+	            parameters.put("pan", PAN23);
+	            
+	            
+	            
+	            
+	            
+	            parameters.put("Receipantgstin", Recipient_GSTN);
+	            parameters.put("Consigneegstin", Consignee_GSTN);
+	            parameters.put("receipantsname", Recipient_Name);
+	            parameters.put("millcode", millcode234);
+	            parameters.put("consigneename", Consignee_Name);
+	            parameters.put("receipantsaddress", Recipient_Address);
+	            parameters.put("consigneeaddre", Consignee_Address);
+	            parameters.put("statename", mastterSatename);
+	            parameters.put("statename2", mastterSatename2);
+	            parameters.put("statecode", ReciepentsStatecode);
+	            parameters.put("statecode2", Clientcode);
+	            parameters.put("pan1", ClientPan);
+	          
+	            parameters.put("tcsamount", TCS_Amt);
+	            parameters.put("invoicevalue",Invoice_Value);
+	            parameters.put("transitpolicyno", TrnasitPolicyNo);
+	            parameters.put("driverlicno", Driver_Lic_no);
+	            parameters.put("vehicleno", Vehicle_no);
+	            parameters.put("drivernme", Driver_name);
+	            parameters.put("dpcname", Dpcname);
+	     
+	            
+	            int i=0;
+	            double total=0.0;
+	            double alltotal=0.0;
+	            double qtygradesum=0.0;
+	            for (Object[] row : list) {
+	            	 BillofSupplyDocDTO billofSupplyDocDTO = new BillofSupplyDocDTO();
+				    String cropyear = (String) row[0];
+				    
+				    billofSupplyDocDTO.setCropyear(cropyear);
+					String balemark = (String) row[1];
+					billofSupplyDocDTO.setBalemark(balemark);
+					String jutegrade = (String) row[3];
+					billofSupplyDocDTO.setVariety(jutegrade);
+					billofSupplyDocDTO.setDescription("Raw jute");
+					billofSupplyDocDTO.setHsn("53031010");
+					billofSupplyDocDTO.setUnit("Qntls");
+					billofSupplyDocDTO.setSiNo(i+1);
+					int no_ofbales = (int) row[4];
+					billofSupplyDocDTO.setNo_of_bales(no_ofbales);
+				
+					double nominlwt = (double) row[5];
+					double qty = (double) no_ofbales*nominlwt;
+					qtygradesum+=qty;
+					billofSupplyDocDTO.setNominalWt(nominlwt);
+					billofSupplyDocDTO.setQty(qty);
+					double rate =  (double) row[6];
+					 total = (double) rate*qty;
+					 billofSupplyDocDTO.setTotal(total);
+					 alltotal +=total;
+					
+					
+					billofSupplyDocDTO.setRate(rate);
+					billofSupplyDocDTO.setRate(rate);
+				    i++;
+				    listOfBillofSupplyDocDTO.add(billofSupplyDocDTO);
+					
+					 
+		        }
+	            
+	            double doubleValue = Double.parseDouble(TCS_Amt);
+	            alltotal=alltotal+doubleValue;
+	            alltotal = Math.round(alltotal);
+	           // billofSupplyDocDTO.setAlltotal(alltotal);
+	           // double doubleValue = Double.parseDouble(TCS_Amt);
+//	            total=total+doubleValue;
+	             parameters.put("taotalsum", alltotal);
+	            
+	            ConvertWord_k convertWord_k = new ConvertWord_k();
+	            String stringValue5 = Double.toString(alltotal);
+	           	double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
+	            int convertInt = (int) invoiceDouble;
+	           	String InvoiceNO = convertWord_k.convertToWords(convertInt);
+	           	qtygradesum = Math.round(qtygradesum);
+	            parameters.put("invoicevalue", InvoiceNO);
+	            parameters.put("qtysum", qtygradesum);
+	           
+	            
+	            
+	            
+			 JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(billofsupply));
+		        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfBillofSupplyDocDTO);
+		        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+		        // Defining the file name and save path
+		        String fileName = "billofsupplydoc" + Bill_of_Supply + ".pdf";
+		        File directory = new File(fcDownoad1);
+
+		        if (!directory.exists()) {
+		            if (directory.mkdirs()) {
+		                System.out.println("Directory created successfully");
+		            } else {
+		                System.err.println("Failed to create directory: " + directory.getAbsolutePath());
+		                return null;
+		            }
+		        }
+
+		        String savePath = fcDownoad1 + File.separator + fileName;
+		       
+		        
+		        try (OutputStream out = new FileOutputStream(savePath)) {
+		            JRPdfExporter exporter = new JRPdfExporter();
+		            exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+		            exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+		            exporter.exportReport();
+		        } catch (Exception e) {
+		            System.out.println(e.getLocalizedMessage());
+		        }
+
+		        response.setContentType("application/pdf");
+		        response.setHeader("Content-Disposition", "inline");
+
+		    
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 			List<Object[]> ListLCs = this.generationofBillService.GenrationAginstLCs(Conract_no);
 			

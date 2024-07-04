@@ -201,7 +201,9 @@
 												<!--  <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required> -->
 												<input class="form-control taxtbox" name="InstrumentValue"
 													id="InstrumentValue12" min="0" step="1" pattern="\d+"
-													type="number" placeholder="Instrument Value" required
+													type="text"
+													 oninput="this.value = this.value.replace(/\D/g, '')"
+													 placeholder="Instrument Value" required
 												>
 												<div id="errorMessage" style="color: red; display: none;">Amount
 													exceeds the allowed limit!</div>

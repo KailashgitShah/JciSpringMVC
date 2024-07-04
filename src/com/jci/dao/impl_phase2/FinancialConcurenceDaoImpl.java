@@ -217,22 +217,22 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 
 	@Override
 	public List<Object[]> DetailsForReport(String cont_no) {
-		  String sql ="               SELECT \r\n"
-		  		+ "    a.Contractno,\r\n"
-		  		+ "    a.QtyAllowed,\r\n"
+		  String sql =" SELECT \r\n"
+		  		+ "   b.Contract_No,\r\n"
+		  		+ "  \r\n"
 		  		+ "    b.Instrument_No,\r\n"
 		  		+ "    CONVERT(VARCHAR, b.Instrument_Date, 105) AS Instrument_Date,\r\n"
 		  		+ "    b.ifsc,\r\n"
 		  		+ "    CONVERT(VARCHAR, b.Last_shipment_date, 105) AS Last_shipment_date,\r\n"
 		  		+ "    CONVERT(VARCHAR, b.Expiry_date, 105) AS Expiry_date,\r\n"
 		  		+ "    b.Auto_revolving_amount,\r\n"
-		  		+ "    b.millcode\r\n"
+		  		+ "    b.millcode,\r\n"
+		  		+ "    b.Instrument_value,\r\n"
+		  		+ "     CONVERT(VARCHAR, c.Contract_date, 105) AS Contract_date\r\n"
 		  		+ "FROM \r\n"
-		  		+ "    jcifinancial_concurrence AS a \r\n"
-		  		+ "LEFT JOIN \r\n"
-		  		+ "    jcipayment_arrangement AS b \r\n"
-		  		+ "ON \r\n"
-		  		+ "    b.Contract_No = a.Contractno\r\n"
+		  		+ "  \r\n"
+		  		+ "    jcipayment_arrangement AS b   LEFT JOIN jcicontract as c on c.Contract_no=b.Contract_No\r\n"
+		  		
 		  		+ "WHERE \r\n"
 		  		+ "    b.Contract_No ='" +cont_no+"' "; 
 			    

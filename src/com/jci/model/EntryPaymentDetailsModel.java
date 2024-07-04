@@ -47,7 +47,7 @@ public class EntryPaymentDetailsModel {
 	private String payment ;
 	
 	@Column(name = "Instrument_value")
-	private int InstrumentValue;
+	private  int  InstrumentValue;
 	
 	@Column(name = "Expiry_date")
 	//@Temporal(value=TemporalType.TIMESTAMP)
@@ -293,6 +293,8 @@ public class EntryPaymentDetailsModel {
 		Fc_action_date = fc_action_date;
 		Created_date = created_date;
 	}
+
+
 
 	public int getInstrumentValue() {
 		return InstrumentValue;

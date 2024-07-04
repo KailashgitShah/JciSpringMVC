@@ -43,6 +43,17 @@ public class FinancialConcurenceModel {
 	
 	@Column(name = "Remarks")
 	private  String  Remarks;
+	
+	@Column(name = "fcdocumentDownload")
+	private  String  fcdocumentDownload;
+
+	public String getFcdocumentDownload() {
+		return fcdocumentDownload;
+	}
+
+	public void setFcdocumentDownload(String fcdocumentDownload) {
+		this.fcdocumentDownload = fcdocumentDownload;
+	}
 
 	public int getFc_id() {
 		return Fc_id;

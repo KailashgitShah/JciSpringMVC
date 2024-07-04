@@ -141,7 +141,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 	public List<Object[]> fetchdata(String st) {
 	      String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code "
 	      		+ "		 			FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.ChallanNo = a.Challan_no"
-		 		+ " WHERE a.DI_No =  '" +st+"'"; 
+		 		+ " WHERE a.DI_No =  '" +st+"'  AND a.Challan_no NOT IN (SELECT Challan_no FROM jcimill_receipt);"; 
 	      
 //	      String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code "
 //		      		+ "		 			FROM   jcicredit_note AS s LEFT JOIN jcidispatch_details AS a ON s.Contract_no = a.Contract_No "
