@@ -13,4 +13,5 @@ public interface  GenerationAgaistLCsDao {
 	 public List<Object[]> forQtyintopsheet(String st);
 	 public List<Object[]> listdetailsbillofsupplly(String st);
 	 public List<Object> contractonmill(String millname);
+	  public   String lcno();
 }

@@ -86,5 +86,12 @@ public class GenerationAgaistLCsServiceImpl implements GenerationAgaistLCsServic
 
 
 
+	@Override
+	public String lcno() {
+		return generationAgaistLCsDao.lcno();
+	}
+
+
+
 
 }

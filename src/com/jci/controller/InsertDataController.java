@@ -6243,6 +6243,30 @@ public class InsertDataController
 			return mv;
 		}
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		@RequestMapping({ "documentListing" })
+		public ModelAndView Documentisting(final HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			ModelAndView mv = new ModelAndView("Documentlisting");
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+												
+
+			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
+					this.generationAgaistLCsService.getAll();
+			mv.addObject("genrationcashDocument", allUserRegistration);
+			
+
+			return mv;
+		}
 		@RequestMapping({ "viewCash_against_LCs" })
 		public ModelAndView LCsdocs(final HttpServletRequest request) {
 			String username = (String) request.getSession().getAttribute("usrname");
@@ -6253,12 +6277,33 @@ public class InsertDataController
 												
 			List<Object[]> fetchMill_Namelc = this.generationAgaistLCsService.fetchMill_NameforLC();
 
-		
+			Calendar calendar = Calendar.getInstance();
+	        int currentYear = calendar.get(Calendar.YEAR);
+	        int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+
+	        int financialYearStart, financialYearEnd;
+
+	        if (currentMonth >= 4) { // April or later
+	            financialYearStart = currentYear;
+	            financialYearEnd = currentYear + 1;
+	        } else { // January to March
+	            financialYearStart = currentYear - 1;
+	            financialYearEnd = currentYear;
+	        } 
+	        
+		     String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+			   
+			String yearCode = endYearLastTwoDigits;
+			
+			String status = String.format("%06d", Integer.parseInt(this.generationAgaistLCsService.lcno()));
+			
+			String  serialno =yearCode+status;
 			
 			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
 					this.generationAgaistLCsService.getAll();
 			mv.addObject("genrationAgainstLcs", allUserRegistration);
 			mv.addObject("fetchMill_Namelc", fetchMill_Namelc);
+			mv.addObject("serialno", serialno);
 			
 
 			return mv;

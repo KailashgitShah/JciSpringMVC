@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice.jrxml" pageWidth="901" pageHeight="842" columnWidth="861" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="cce419a3-65c1-406f-9f43-210354e32858">
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice.jrxml" pageWidth="700" pageHeight="842" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="cce419a3-65c1-406f-9f43-210354e32858">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<field name="bankAddress" class="java.lang.String"/>
 	<field name="bankname" class="java.lang.String"/>
 	<field name="bosDate" class="java.lang.String"/>
@@ -12,79 +21,72 @@
 	<title>
 		<band height="120" splitType="Stretch">
 			<staticText>
-				<reportElement x="335" y="50" width="350" height="21" uuid="e05b927a-8799-47fe-afbd-6cc7e070e5ae"/>
+				<reportElement x="226" y="34" width="350" height="21" uuid="e05b927a-8799-47fe-afbd-6cc7e070e5ae"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Registered Office]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="70" width="348" height="20" uuid="70fe76d1-1ea9-4dc7-b769-ac7dd1135c51"/>
+				<reportElement x="169" y="52" width="348" height="20" uuid="70fe76d1-1ea9-4dc7-b769-ac7dd1135c51"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[15N, NELLIE SENGUPTA SARANI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="332" y="92" width="350" height="20" uuid="4cf613e2-89fd-4f17-a0ae-2eedac3650e7"/>
+				<reportElement x="203" y="72" width="350" height="20" uuid="4cf613e2-89fd-4f17-a0ae-2eedac3650e7"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[KOLKATA - 700 087]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="82" width="65" height="20" uuid="8b6d9f2b-7440-4612-a51b-5319233fd38f"/>
+				<reportElement x="4" y="94" width="65" height="20" uuid="8b6d9f2b-7440-4612-a51b-5319233fd38f"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RefNo-]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="720" y="88" width="84" height="20" uuid="2dacfa81-695d-40c3-a62d-fe3543114a0b"/>
+				<reportElement x="525" y="23" width="84" height="20" uuid="2dacfa81-695d-40c3-a62d-fe3543114a0b"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[WEB-SITE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="721" y="69" width="63" height="20" uuid="7d6ce04a-aa10-48f7-ad43-347883dd3915"/>
+				<reportElement x="541" y="3" width="56" height="20" uuid="7d6ce04a-aa10-48f7-ad43-347883dd3915"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[EMAIL :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="3" width="400" height="27" forecolor="#000066" uuid="81977342-d66c-44a7-af9a-6e25281c6604"/>
-				<textElement>
-					<font size="18" isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[THE JUTE COPRATION OF INDIA LIMITED]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="310" y="29" width="350" height="22" uuid="86677f99-2fa4-4622-8d07-1dccab3ce653"/>
-				<textElement>
-					<font size="14" isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[A Goverment of India Enterprise]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="790" y="67" width="89" height="18" uuid="4db9b0f4-5fe3-4270-939c-a1fdee0a483f"/>
+				<reportElement x="601" y="5" width="61" height="18" uuid="4db9b0f4-5fe3-4270-939c-a1fdee0a483f"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[jci@jcimail.in]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="797" y="89" width="82" height="18" uuid="cd613762-c1cb-4010-9468-b938456137d0"/>
+				<reportElement x="604" y="25" width="82" height="18" uuid="cd613762-c1cb-4010-9468-b938456137d0"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[www.jutecorp.in]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="54" y="97" width="123" height="22" uuid="9983b4f1-3306-4874-9213-54ce348cec58"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[jci/ind/SALE/INT/23-24/]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="156" splitType="Stretch">
+		<band height="157" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="3" y="5" width="217" height="20" uuid="6849a6bf-4049-42a7-825a-23a20a909db8"/>
@@ -115,115 +117,115 @@
 				<text><![CDATA[New Market Branch, Kolkata - 87]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="115" width="50" height="20" uuid="f1087209-20a0-4eda-ab45-a3b3f3fbe90f"/>
+				<reportElement x="55" y="115" width="50" height="20" uuid="f1087209-20a0-4eda-ab45-a3b3f3fbe90f"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sub :]]></text>
+				<text><![CDATA[SUB:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="158" y="111" width="92" height="17" uuid="97cc90d6-99f6-4275-9476-ef4b7a7c5eb3"/>
+				<reportElement x="96" y="115" width="92" height="17" uuid="97cc90d6-99f6-4275-9476-ef4b7a7c5eb3"/>
 				<textElement>
-					<font size="12" isBold="false"/>
+					<font size="12" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Our bill for Rs.              ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="723" y="10" width="47" height="20" uuid="77cb8430-9f68-4f09-b223-0f83bd5981e1"/>
+				<reportElement x="516" y="9" width="47" height="20" uuid="77cb8430-9f68-4f09-b223-0f83bd5981e1"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Date :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="770" y="13" width="100" height="19" uuid="af95347d-419e-40c5-b45b-64f260d9873f"/>
+				<reportElement x="568" y="11" width="100" height="19" uuid="af95347d-419e-40c5-b45b-64f260d9873f"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{currentdate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="311" y="112" width="230" height="16" uuid="53e84f24-4123-45e1-b62b-4a7320a13831"/>
+				<reportElement x="243" y="115" width="230" height="16" uuid="53e84f24-4123-45e1-b62b-4a7320a13831"/>
 				<textElement>
-					<font size="12"/>
+					<font size="12" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[for collection and payment under letter of Credit No.]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="251" y="110" width="60" height="19" uuid="8fe9bb09-88fb-484a-9d95-77f95db09359"/>
+				<reportElement x="177" y="115" width="60" height="19" uuid="8fe9bb09-88fb-484a-9d95-77f95db09359"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{invoicevalue}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="546" y="111" width="83" height="18" uuid="0b71dbef-26e9-4233-955b-b86d7099ef67"/>
+				<reportElement x="480" y="113" width="83" height="18" uuid="0b71dbef-26e9-4233-955b-b86d7099ef67"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{instrumentNo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="161" y="133" width="39" height="16" uuid="b2d68ef4-1e3c-43f2-92b3-3e994de7f52b"/>
+				<reportElement x="96" y="131" width="39" height="16" uuid="b2d68ef4-1e3c-43f2-92b3-3e994de7f52b"/>
 				<textElement>
-					<font size="12"/>
+					<font size="12" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Dated]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="200" y="132" width="80" height="22" uuid="03d37fdd-a3cd-4bc6-81cc-715c4ac5e107"/>
+				<reportElement x="135" y="131" width="80" height="22" uuid="03d37fdd-a3cd-4bc6-81cc-715c4ac5e107"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{instrumentDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="290" y="132" width="203" height="22" uuid="b37694bd-f60e-484d-94fc-bd3bb3ca9a21"/>
+				<reportElement x="214" y="131" width="203" height="22" uuid="b37694bd-f60e-484d-94fc-bd3bb3ca9a21"/>
 				<textElement>
-					<font size="12"/>
+					<font size="12" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[A/c The Ganges Mfg. Co. Ltd.]]></text>
 			</staticText>
 			<line>
-				<reportElement x="158" y="129" width="479" height="1" uuid="e962daf1-0c58-4aac-b4d6-be17bcafcb10"/>
+				<reportElement x="98" y="129" width="479" height="1" uuid="e962daf1-0c58-4aac-b4d6-be17bcafcb10"/>
 			</line>
 			<line>
-				<reportElement x="159" y="150" width="277" height="1" uuid="36d74328-243c-4450-8a0e-4f799bb037d7"/>
+				<reportElement x="101" y="147" width="277" height="1" uuid="36d74328-243c-4450-8a0e-4f799bb037d7"/>
 			</line>
 		</band>
 	</columnHeader>
 	<columnFooter>
 		<band height="525">
 			<staticText>
-				<reportElement x="2" y="19" width="90" height="30" uuid="1bbcb789-7d17-40c1-b0d5-36ffb7af3c71"/>
+				<reportElement x="1" y="23" width="90" height="30" uuid="1bbcb789-7d17-40c1-b0d5-36ffb7af3c71"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Dear Sir(s),]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="66" y="58" width="480" height="20" uuid="7bc331b7-f984-4b83-862c-a634342b81a7"/>
+				<reportElement x="43" y="71" width="480" height="20" uuid="7bc331b7-f984-4b83-862c-a634342b81a7"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[We send herewith the following documents together with our Bill of Supply for Rs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="88" width="966" height="20" uuid="d134acb0-fafc-4b74-9e0b-38dbca7ed3bd"/>
+				<reportElement x="4" y="97" width="675" height="20" uuid="d134acb0-fafc-4b74-9e0b-38dbca7ed3bd"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[for despatch of raw Jute to the above mill and receipt of which may kindly be acknowledged.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="110" width="301" height="20" uuid="be67bafb-fb94-4275-b7e1-8db2f3670b20"/>
+				<reportElement x="49" y="121" width="301" height="20" uuid="be67bafb-fb94-4275-b7e1-8db2f3670b20"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[You are requested to collect the bills and pay us the proceeds on maturity]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="146" width="170" height="20" uuid="9e966984-95ef-4c6c-94ab-eb18f4ecf419"/>
+				<reportElement x="8" y="146" width="170" height="20" uuid="9e966984-95ef-4c6c-94ab-eb18f4ecf419"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
@@ -237,7 +239,7 @@
 				<text><![CDATA[2) Our Bill of Supply No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="227" width="540" height="20" uuid="e0bd09be-b838-46c3-97b1-759a6b94a89e"/>
+				<reportElement x="7" y="221" width="540" height="20" uuid="e0bd09be-b838-46c3-97b1-759a6b94a89e"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
@@ -258,14 +260,14 @@
 				<text><![CDATA[5) Original Letter of Credit, being No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="326" width="690" height="20" uuid="ee2dba30-6b19-4d84-adcc-1c28f2741ee4"/>
+				<reportElement x="6" y="326" width="664" height="20" uuid="ee2dba30-6b19-4d84-adcc-1c28f2741ee4"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[6) Certified that the transit risk of the goods consigned against the despatch documents and attached]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="8" y="346" width="700" height="20" uuid="a883b394-11b3-4bbb-b721-08872c1a1be8"/>
+				<reportElement x="8" y="346" width="668" height="20" uuid="a883b394-11b3-4bbb-b721-08872c1a1be8"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
@@ -279,21 +281,21 @@
 				<text><![CDATA[in case of Mill Delivery.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="396" width="874" height="28" uuid="9fefb111-468e-487a-a9a3-213fc150c4ff"/>
+				<reportElement x="4" y="396" width="511" height="24" uuid="9fefb111-468e-487a-a9a3-213fc150c4ff"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
-				<text><![CDATA[7) The proceeds of the bill please be credited to Central Bank of India, Branch - New Market, IFSC - CBIN0280105, A/C No. - 1039797752]]></text>
+				<text><![CDATA[7) The proceeds of the bill please be credited to Central Bank of India, Branch - New Market,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="424" width="280" height="20" uuid="acc6e9c1-d01f-4451-9a00-c19e9fbafcf9"/>
+				<reportElement x="5" y="434" width="280" height="20" uuid="acc6e9c1-d01f-4451-9a00-c19e9fbafcf9"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[8) All bank charges to be borne by the applicant]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="485" width="130" height="20" uuid="3f0b34ec-e53b-4e2e-a72d-16f70948bdf9"/>
+				<reportElement x="9" y="469" width="130" height="20" uuid="3f0b34ec-e53b-4e2e-a72d-16f70948bdf9"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
@@ -307,21 +309,21 @@
 				<text><![CDATA[Enclosure : As above]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="480" width="380" height="20" uuid="c6184090-76d6-435b-85c3-d645a18b8222"/>
+				<reportElement x="279" y="500" width="380" height="20" uuid="c6184090-76d6-435b-85c3-d645a18b8222"/>
 				<textElement textAlignment="Right">
 					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[(Assistant Finance Manager / Deputy Finance Manager)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="787" y="456" width="84" height="20" uuid="08bc786c-e9fa-45c0-8b2a-f4df096d28e3"/>
+				<reportElement x="490" y="454" width="122" height="26" uuid="08bc786c-e9fa-45c0-8b2a-f4df096d28e3"/>
 				<textElement>
-					<font isBold="false"/>
+					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Yours faithfully,]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="590" y="59" width="132" height="18" uuid="497c1fa4-2d98-43a6-ac70-7a7bccf5ff19"/>
+				<reportElement x="538" y="64" width="132" height="18" uuid="497c1fa4-2d98-43a6-ac70-7a7bccf5ff19"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -335,28 +337,28 @@
 				<textFieldExpression><![CDATA[$F{invoicevalue}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="175" y="174" width="631" height="18" uuid="d6dc8b4e-ab4e-4c9f-afef-ec2347ab6b96"/>
+				<reportElement x="175" y="174" width="495" height="18" uuid="d6dc8b4e-ab4e-4c9f-afef-ec2347ab6b96"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{billofsupplyNo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="171" y="208" width="47" height="17" uuid="a21dc985-b2bd-4752-b5e4-29639fdfdb3b"/>
+				<reportElement x="160" y="199" width="47" height="17" uuid="a21dc985-b2bd-4752-b5e4-29639fdfdb3b"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Dated]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="249" y="205" width="80" height="20" uuid="1744eadf-30de-4a5d-8dc4-8ac7d434c6e1"/>
+				<reportElement x="249" y="192" width="80" height="20" uuid="1744eadf-30de-4a5d-8dc4-8ac7d434c6e1"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bosDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="447" y="208" width="100" height="16" uuid="6660ccf7-d698-4fb5-8a88-4b67d2f79e52"/>
+				<reportElement x="434" y="199" width="100" height="16" uuid="6660ccf7-d698-4fb5-8a88-4b67d2f79e52"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
@@ -412,7 +414,7 @@
 				<textFieldExpression><![CDATA[$F{bankAddress}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="547" y="66" width="260" height="14" uuid="c8dd7e48-557a-49e2-b136-13a9e1d25e9c"/>
+				<reportElement x="525" y="77" width="151" height="14" uuid="c8dd7e48-557a-49e2-b136-13a9e1d25e9c"/>
 				<text><![CDATA[-----------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
@@ -424,15 +426,15 @@
 				<text><![CDATA[-----------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="201" y="212" width="246" height="14" uuid="6d32a1c3-2386-4265-a0e6-bf373c91d641"/>
+				<reportElement x="190" y="202" width="246" height="14" uuid="6d32a1c3-2386-4265-a0e6-bf373c91d641"/>
 				<text><![CDATA[-----------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="336" y="237" width="358" height="14" uuid="655fb4b6-97b2-4b91-8bff-d7f9b01abf25"/>
+				<reportElement x="333" y="230" width="304" height="14" uuid="655fb4b6-97b2-4b91-8bff-d7f9b01abf25"/>
 				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="207" y="258" width="488" height="14" uuid="89845d2c-b139-4b62-9496-daa49bffae77"/>
+				<reportElement x="207" y="258" width="430" height="14" uuid="89845d2c-b139-4b62-9496-daa49bffae77"/>
 				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
@@ -440,16 +442,19 @@
 				<text><![CDATA[-----------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="450" y="285" width="246" height="14" uuid="cc00e54d-3d50-4e5c-b936-ccd68acedfe5"/>
+				<reportElement x="450" y="285" width="209" height="14" uuid="cc00e54d-3d50-4e5c-b936-ccd68acedfe5"/>
 				<text><![CDATA[-----------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="31" y="310" width="664" height="14" uuid="54a7d772-c234-4b71-8959-b5a029b2368b"/>
+				<reportElement x="31" y="310" width="634" height="14" uuid="54a7d772-c234-4b71-8959-b5a029b2368b"/>
 				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="181" width="100" height="30" uuid="6dfa2a59-184a-49f0-b056-f3e1ffdf9430"/>
-				<text><![CDATA[------------------------------]]></text>
+				<reportElement x="20" y="415" width="265" height="19" uuid="752d2f25-8276-4f77-b08f-913fe82149f4"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[ IFSC - CBIN0280105, A/C No. - 1039797752]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

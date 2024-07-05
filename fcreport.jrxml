@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FC" pageWidth="595" pageHeight="802" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b85a960-73ca-4168-9e8f-d85d6d930387">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FC" pageWidth="595" pageHeight="702" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b85a960-73ca-4168-9e8f-d85d6d930387">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="Contractno" class="java.lang.String"/>
 	<parameter name="Instrument_No" class="java.lang.String"/>
 	<parameter name="Instrument_Date" class="java.lang.String"/>
@@ -27,20 +36,6 @@
 	</background>
 	<title>
 		<band height="414" splitType="Stretch">
-			<staticText>
-				<reportElement x="66" y="-10" width="434" height="30" uuid="da5bd699-8edd-4870-a9ab-3314e36b1bd6"/>
-				<textElement>
-					<font size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[THE JUTE CORPORATION OF INDIA LIMITED]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="254" y="13" width="170" height="20" uuid="7438c482-278e-4d85-984e-818dc3fc0b1e"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[A Goverment of India Enterprise]]></text>
-			</staticText>
 			<line>
 				<reportElement x="-20" y="37" width="595" height="1" uuid="a48d2440-5610-4148-9606-b298b4b8c457"/>
 			</line>
@@ -55,7 +50,7 @@
 				<reportElement x="-20" y="53" width="595" height="1" uuid="87e76651-260b-4aed-91b4-aa8ff89b1715"/>
 			</line>
 			<staticText>
-				<reportElement x="-1" y="59" width="354" height="15" uuid="7ebc41b8-1ead-4215-8190-67790caf4aa1"/>
+				<reportElement x="47" y="59" width="354" height="15" uuid="7ebc41b8-1ead-4215-8190-67790caf4aa1"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -75,10 +70,10 @@
 				<reportElement x="0" y="113" width="554" height="1" uuid="d648c105-212b-4039-b80f-e44f06d630d4"/>
 			</line>
 			<line>
-				<reportElement x="5" y="137" width="550" height="1" uuid="ff5542dc-4338-4424-bb34-6183c2724a6f"/>
+				<reportElement x="2" y="137" width="555" height="1" uuid="ff5542dc-4338-4424-bb34-6183c2724a6f"/>
 			</line>
 			<line>
-				<reportElement x="2" y="166" width="554" height="1" uuid="00239868-b42c-49dc-9f7b-7ffe836a80c8"/>
+				<reportElement x="2" y="159" width="554" height="1" uuid="00239868-b42c-49dc-9f7b-7ffe836a80c8"/>
 			</line>
 			<line>
 				<reportElement x="0" y="179" width="554" height="1" uuid="b1229142-3582-481e-acce-c3b8ff82975f"/>
@@ -87,7 +82,7 @@
 				<reportElement x="0" y="209" width="554" height="1" uuid="dd263cc3-ae8d-42c8-a421-497826bbe9e1"/>
 			</line>
 			<line>
-				<reportElement x="2" y="225" width="554" height="1" uuid="03fdcdfa-5ef2-42a3-b2dc-c2ec86a11ce6"/>
+				<reportElement x="2" y="231" width="554" height="1" uuid="03fdcdfa-5ef2-42a3-b2dc-c2ec86a11ce6"/>
 			</line>
 			<line>
 				<reportElement x="1" y="253" width="554" height="1" uuid="fe2ded5b-b148-4337-966c-5669d3ff64b7"/>
@@ -105,14 +100,14 @@
 				<reportElement x="3" y="357" width="552" height="1" uuid="4623e65c-02cb-4ef0-98fb-c8e9df3c23cc"/>
 			</line>
 			<staticText>
-				<reportElement x="6" y="97" width="150" height="20" uuid="c4cdacef-0a8a-4c86-bedd-841232bd3c50"/>
+				<reportElement x="4" y="97" width="115" height="20" uuid="c4cdacef-0a8a-4c86-bedd-841232bd3c50"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cheque No. & Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="8" y="120" width="96" height="19" uuid="32470de8-df86-4c93-9d12-097be8851c3a"/>
+				<reportElement x="3" y="120" width="72" height="19" uuid="32470de8-df86-4c93-9d12-097be8851c3a"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -120,7 +115,7 @@
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="9" y="146" width="85" height="20" uuid="45b2f82e-0937-4801-9931-4f2314d132e0"/>
+				<reportElement x="4" y="145" width="85" height="20" uuid="45b2f82e-0937-4801-9931-4f2314d132e0"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -274,11 +269,11 @@ favour of & mill siding
 				<textFieldExpression><![CDATA[$P{qtyAllowed}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="224" y="40" width="186" height="13" uuid="bcef3ffc-aa51-4805-8e6c-a2f348035c1c"/>
+				<reportElement x="220" y="38" width="186" height="13" uuid="bcef3ffc-aa51-4805-8e6c-a2f348035c1c"/>
 				<textFieldExpression><![CDATA[$P{Contractno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="430" y="39" width="124" height="14" uuid="d45afe35-1c98-407f-908f-3b362fa2a1cd"/>
+				<reportElement x="429" y="38" width="124" height="14" uuid="d45afe35-1c98-407f-908f-3b362fa2a1cd"/>
 				<textFieldExpression><![CDATA[$P{contarctdate}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -289,6 +284,14 @@ favour of & mill siding
 				<reportElement x="282" y="232" width="122" height="18" uuid="8a604549-804d-44cc-b318-b4aa05a11d01"/>
 				<textFieldExpression><![CDATA[$P{Expiry_date}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="415" y="38" width="26" height="21" uuid="30aa2b16-f4e2-4faf-bf01-0db88d5945df"/>
+				<text><![CDATA[dt]]></text>
+			</staticText>
+			<image>
+				<reportElement x="6" y="0" width="540" height="37" uuid="ead24c8e-9714-4805-b616-801db78ea69e"/>
+				<imageExpression><![CDATA["C:/Users/admin/Desktop/fcsnip.jpeg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<detail>
@@ -300,7 +303,7 @@ favour of & mill siding
 				<reportElement x="459" y="-4" width="1" height="26" uuid="705414e7-9db4-4346-9cfe-1ef48828bf35"/>
 			</line>
 			<textField>
-				<reportElement x="80" y="1" width="242" height="18" uuid="d8c5bfc3-d1e8-47de-bc26-dd034206b840"/>
+				<reportElement x="99" y="1" width="221" height="18" uuid="d8c5bfc3-d1e8-47de-bc26-dd034206b840"/>
 				<textFieldExpression><![CDATA[$F{composition}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -377,7 +380,7 @@ favour of & mill siding
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 			<line>
-				<reportElement x="64" y="29" width="397" height="1" uuid="54ca1aab-268c-4ef9-8e36-6b317809bcc1"/>
+				<reportElement x="63" y="27" width="397" height="1" uuid="54ca1aab-268c-4ef9-8e36-6b317809bcc1"/>
 			</line>
 			<line>
 				<reportElement x="459" y="0" width="1" height="28" uuid="ecae25b4-7623-44f4-837d-b06ac984b4f5"/>

@@ -1,6 +1,7 @@
 package com.jci.dao.impl_phase2;
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -151,6 +152,47 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 						
 						 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 						 return resultList1;
+	}
+
+	@Override
+	public String lcno() {
+	
+		String sql = "SELECT  count(*) FROM jciboe ";
+		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+		total++;
+		
+		return String.valueOf(total);
+		
+//		 String sql = "SELECT MAX(serialno) FROM jciboe";
+//		 		
+//		  Object result = this.sessionFactory.getCurrentSession()
+//                  .createSQLQuery(sql)
+//                  .uniqueResult();
+//
+//
+//		    if (result == null) {
+//		        // Handle the case where no serial numbers are present in the table
+//		        return "0000000001"; // Example default serial number if none exists
+//		    }
+//
+//		    String maxSerialNoStr = (String) result; // Cast the result to String
+//
+//		    BigInteger maxSerialNo;
+//		    try {
+//		        maxSerialNo = new BigInteger(maxSerialNoStr); // Convert String to BigInteger
+//		    } catch (NumberFormatException e) {
+//		        // Handle the case where maxSerialNoStr is not a valid number format
+//		        return "0000000001"; // Example default serial number if format is unexpected
+//		    }
+//
+//		    // Increment the maximum serial number by 1
+//		    BigInteger nextSerialNo = maxSerialNo.add(BigInteger.ONE);
+//
+//		    // Format the serial number to maintain consistent length (assuming 10 digits)
+////		    String formattedSerialNo = String.format("%010d", nextSerialNo);
+//		    return String.valueOf(nextSerialNo);
+		  
+		
 	}
 
 }

@@ -122,6 +122,7 @@
           
         	List<GenerationofDocumentLCsModel> genrationAgainstLcs = (List<GenerationofDocumentLCsModel>)request.getAttribute("genrationAgainstLcs");
 			List<Object[]> fetchMill_Namelc = (List<Object[]>) request.getAttribute("fetchMill_Namelc");  
+			String number = (String) request.getAttribute("serialno");  
 			String millname="";
 			String millcode="";
 			String contractNo="";
@@ -233,6 +234,8 @@
 								            <table id="billofsupllydetails" class="table table-bordered">
 								                <thead class="thead-light">
 								                    <tr>
+								                        <th></th>
+								                    
 								                        <th>Bill of Supply no</th>
 								                        <th>Bos Date</th>
 								                        <th>Invoice value</th>
@@ -260,7 +263,12 @@
                                              
                                     <div class="row">
                                     
-                             
+                                           <div class="col-sm-4 form-group">
+												<label>Balance Amount</label> <span class="text-danger">*
+												</span>&nbsp; <span id="instrumentdate" name="instrumentdate"
+													class="text-danger"> </span> <input class="form-control"
+													name="instdate" id="instdate"  value="" required>
+											</div>
 	                                      
 												
 	                                </div>  
@@ -268,7 +276,7 @@
 	                              
                                <div class="container mt-5">
 						        <div class="row">
-						            <div class="col-sm-4 form-group">
+						            <!-- <div class="col-sm-4 form-group">
 						                <input type="submit"  name="bankdraft" value="Download BankDraft" class="btn btn-primary btn-block" id="submit1">
 						            </div>
 						            <div class="col-sm-4 form-group">
@@ -276,7 +284,15 @@
 						            </div>
 						            <div class="col-sm-4 form-group">
 						                <input type="submit" name="BillofExchange" value="Download BillofExchange" class="btn btn-primary btn-block" id="submit3">
+						            </div> -->
+						            
+						            
+						            
+						            
+						                <div class="col-sm-4 form-group">
+						                <input type="submit"  name="submit" value="submit" class="btn btn-primary btn-block" id="submit1">
 						            </div>
+						           
 						        </div>
 						    </div>
 
@@ -373,7 +389,7 @@ $(document).ready(function() {
 
         $('#milldetailsTable tbody').empty();
         $('#milldetailsTable').css('display', 'none');
-
+   
         // First AJAX call
         $.ajax({
             type: 'GET',
@@ -387,6 +403,7 @@ $(document).ready(function() {
                 if (dataArray.length > 0) {
                     dataArray.forEach(function(rowData) {
                     	autorevolvingammount=rowData[7];
+                    	alert(autorevolvingammount);
                     	
                         const rowHtml = '<tr>' +
                             '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
@@ -416,6 +433,8 @@ $(document).ready(function() {
                          
 
                         $('#milldetailsTable tbody').append(rowHtml);
+                        $('#instdate').val(rowData[7]);
+                      
                     });
                     $('#milldetailsTable').css('display', 'block');
                 } else {
@@ -434,26 +453,34 @@ $(document).ready(function() {
             url: 'listofbillofsupply.obj',
             data: { "contractno": field1Value },
             success: function(data) {
-             
                 const dataArray = JSON.parse(data);
                 var idx = 0;
                 var sumofInvoiceValue = 0;
                 var billofsupplyno = [];
                 var challanno, bosdate;
                 $('#billofsupllydetails tbody').empty();
+
                 if (dataArray.length > 0) {
+                 
+
                     dataArray.forEach(function(rowData1) {
-                        // Assuming rowData1[0], rowData1[1], rowData1[2], etc. contain the necessary data
                         challanno = rowData1[3];
                         bosdate = rowData1[1];
+
+                        // Set autorevolvingAmount once
+                       
+
+                        // Construct HTML for table row
                         const rowHtml = '<tr>' +
-                        '<td><div class="table-cell"><input type="hidden" name="bosNo[]" value="' + rowData1[0] + '">' + rowData1[0] + '</div></td>' +
-                        '<td><div class="table-cell"><input type="hidden" name="bosdate[]" value="' + rowData1[1] + '">' + rowData1[1] + '</div></td>' +
-                        '<td><div class="table-cell"><input type="hidden" name="invoicevalue[]" value="' + rowData1[2] + '">' + rowData1[2] + '</div></td>' +
-                        '<td><div class="table-cell"><input type="hidden" name="challanno[]" value="' + rowData1[3] + '">' + rowData1[3] + '</div></td>' +
-                        '<td><div class="table-cell"><input type="hidden" name="contractNO[]" value="' + rowData1[4] + '">' + rowData1[4] + '</div></td>' +
-                        '<td><div class="table-cell"><input type="hidden" name="millcode[]" value="' + rowData1[5] + '">' + rowData1[5] + '</div></td>' +
-                        '</tr>';
+                        '<td><div class="table-cell"><input type="checkbox" name="selectRow[]" class="invoice-checkbox"></div></td>' +
+                          '<td><div class="table-cell"><input type="hidden" name="bosNo[]" value="' + rowData1[0] + '">' + rowData1[0] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="bosdate[]" value="' + rowData1[1] + '">' + rowData1[1] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="invoicevalue[]" value="' + rowData1[2] + '">' + rowData1[2] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="challanno[]" value="' + rowData1[3] + '">' + rowData1[3] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="contractNO[]" value="' + rowData1[4] + '">' + rowData1[4] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="millcode[]" value="' + rowData1[5] + '">' + rowData1[5] + '</div></td>' +
+                            '</tr>';
+
                         sumofInvoiceValue += parseFloat(rowData1[2]);
                         billofsupplyno[idx] = rowData1[0];
                         idx++;
@@ -461,28 +488,55 @@ $(document).ready(function() {
                         $('#billofsupllydetails tbody').append(rowHtml);
                     });
 
+                    // Function to update the Balance Amount
+         function updateBalanceAmount() {
+    alert("hjk");
+    let autorevolvingAmount = parseFloat(document.getElementById('instdate').value);
+    let checkedTotal = 0;
+    let selectedRows = [];
+
+    $('.invoice-checkbox:checked').each(function() {
+        let invoiceValue = parseFloat($(this).closest('tr').find('input[name="invoicevalue[]"]').val());
+        checkedTotal += invoiceValue;
+
+        if (invoiceValue <= autorevolvingAmount) {
+            selectedRows.push($(this).closest('tr'));
+        }
+    });
+
+    let dataToSubmit = [];
+    selectedRows.forEach(function(row) {
+        let rowData = {
+            'bosNo': row.find('input[name="bosNo[]"]').val(),
+            'bosdate': row.find('input[name="bosdate[]"]').val(),
+            'invoicevalue': row.find('input[name="invoicevalue[]"]').val(),
+            'challanno': row.find('input[name="challanno[]"]').val(),
+            'contractNO': row.find('input[name="contractNO[]"]').val(),
+            'millcode': row.find('input[name="millcode[]"]').val()
+            // Add more fields as needed
+        };
+        dataToSubmit.push(rowData);
+    });
+
+    // Display selected data for submission
+    console.log(dataToSubmit);
+
+    // Update balance amount field
+    let balanceAmount = autorevolvingAmount - checkedTotal;
+    $('#instdate').val(balanceAmount.toFixed(2));
+    autorevolvingAmount = balanceAmount; // Update the Balance Amount input field
+}
+
+// Attach event listener to checkboxes
+$('.invoice-checkbox').on('change', function() {
+    updateBalanceAmount();
+});
+
+
                     $('#billofsupllydetails').css('display', 'block');
 
                     // Convert billofsupplyno array to a string
                     var billofsupplynoString = billofsupplyno.join(',');
-
-                    // Log values to check if they are updated
-                    console.log({
-                        sumofInvoiceValue: sumofInvoiceValue,
-                        challanno: challanno,
-                        bosdate: bosdate,
-                        billofsupplynoString: billofsupplynoString
-                    });
-
-                   
-
-                    // Ensure millcode is assigned correctly
-                    var millcode = '<%= millcode %>'; // Replace with the correct method of passing millcode from server-side to client-side
-                   
-                    
-
-              
-                    $('#billofsupllydetails').after(bankDraftHtml);
 
                 } else {
                     $('#billofsupllydetails').css('display', 'none');
