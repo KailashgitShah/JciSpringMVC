@@ -16,10 +16,16 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 	@Autowired
 	generationOfCashAgainstDispatchDocumentDao generationOfCashAgainstDispatchDocumentdao;
 	
+//	@Override
+//	public List<TopSheetDto> getTopSheetDatacashAgainstDispatchDocument(String millname, String contractNo) {
+//		// TODO Auto-generated method stub
+//		return generationOfCashAgainstDispatchDocumentdao.getTopSheetDatacashAgainstDispatchDocument(millname, contractNo);
+//	}
+//	
 	@Override
-	public List<TopSheetDto> getTopSheetDatacashAgainstDispatchDocument(String millname, String contractNo) {
+	public List<TopSheetDto> getTopSheetDatacashAgainstDispatchDocument(String contractNo) {
 		// TODO Auto-generated method stub
-		return generationOfCashAgainstDispatchDocumentdao.getTopSheetDatacashAgainstDispatchDocument(millname, contractNo);
+		return generationOfCashAgainstDispatchDocumentdao.getTopSheetDatacashAgainstDispatchDocument( contractNo);
 	}
 	
 	@Override
@@ -71,6 +77,18 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 	public List<Object[]> listdetailsbillofsuppllycash(String st) {
 		// TODO Auto-generated method stub
 		return generationOfCashAgainstDispatchDocumentdao.listdetailsbillofsuppllycash(st);
+	}
+
+	@Override
+	public String getNominalWt(String bos) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.getNominalWt(bos);
+	}
+
+	@Override
+	public String listbalanceAmount(String contractno) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.listbalanceAmount(contractno);
 	}
 
 

@@ -8,7 +8,8 @@ import com.jci.model.boenonlcDTO;
 
 public interface generationOfCashAgainstDispatchDocument{
 	////////////////////////////////////////////////cash against dispatch document ////////////////////////////////////////////////
-	 public List <TopSheetDto> getTopSheetDatacashAgainstDispatchDocument(String millname ,String contractNo);
+//	 public List <TopSheetDto> getTopSheetDatacashAgainstDispatchDocument(String millname ,String contractNo);
+	 public List <TopSheetDto> getTopSheetDatacashAgainstDispatchDocument(String contractNo);
 	 public List <boenonlcDTO> getBOENONLC(String contractno);
 	 public List<Object[]> listdetailsbillofsuppllycash(String st);
 	 public List<Object[]> listdetailsofpaymemt1(String st);
@@ -17,6 +18,8 @@ public interface generationOfCashAgainstDispatchDocument{
 	 public void create(TopsheetDetailsModel topSheet );
 	  public   String topSheetId();
 	  public List<TopsheetDetailsModel> getAlltopsheetdata();
+	  public String getNominalWt(String bos);
+	  public String listbalanceAmount(String contractno);
 	
 	
 }

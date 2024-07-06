@@ -127,12 +127,18 @@
 
 												</select>
 											</div>
+											
 											</div>
 										
 								
 											
 										 <div class="row">
-										  <div class="col-sm-20 form-group"></div>
+										  <div class="col-sm-10 form-group">
+										  <label>Balance Value.</label>
+										  <div>
+										   <input type="" id="balanceAmount" name="balanceAmount" ReadOnly>
+										   </div>
+										  </div>
 										 </div>	
 										 
 						         <!--   <div class="row">
@@ -273,6 +279,7 @@
 								   <div class="row">
 						<div class="col-sm-4 form-group">
 						 <input type="hidden" id="numRows" name="rows">
+						
 						 
 						</div>
 						 <div class="row">
@@ -395,11 +402,12 @@ $(document).ready(function() {
                            '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
                        '</a>' +
                       '</td>'+
-                      '<td>' +
+                     /*  '<td>' +
                       '<a href="downloadSupportingDocumententContract.obj?filename=' + rowData[12] + '">' +
                           '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
                       '</a>' +
-                     '</td>'+
+                     '</td>'+ */
+                     '<td><a href=downloadSupportingDocumententContract.obj?filename=' + rowData[12] + ' class="btn btn-primary" target="_blank"> View Document</a></button></td>'
                     
                            
                            /*  '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
@@ -426,58 +434,30 @@ $(document).ready(function() {
                 // Handle the error as needed
             }
         });
-
-        // Second AJAX call
-    
-     /*    $.ajax({
+        /* second ajax */
+        $.ajax({
             type: 'GET',
-            url: 'listofbillofsupplyNonLC.obj',
+            url: 'balanceAmount.obj',
             data: { "contractno": field1Value },
             success: function(data) {
-                alert(data +"bos");
-                const dataArray = JSON.parse(data);
-                var idx = 0;
-              var sumofInvoiceValue = 0;
-               var billofsupplyno = [];
-                var challanno, bosdate;
-                
-               var num_of_rows = dataArray.length;
-                $('#numRows').val(num_of_rows);
-                alert(num_of_rows +"hhhhhhhh")
-
-                if (dataArray.length > 0) {
-                	
-                    dataArray.forEach(function(rowData1) {
-                        // Assuming rowData1[0], rowData1[1], rowData1[2], etc. contain the necessary data
-                        alert(idx)
-                        challanno = rowData1[3];
-                        bosdate = rowData1[1];
-                        const rowHtml = '<tr>' +
-                            '<td><input type="checkbox" onclick="myFunction(this)" id="checking'+idx+'" class="row-checkbox" name="rowCheckbox'+idx+'" value="0"></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="bosNo1[]" value="'+rowData1[0]+'">' + rowData1[0] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="bosDate1[]" value="'+ rowData1[1] +'">' + rowData1[1] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="invoiceValue1[]" value="'+ rowData1[2] +'">' + rowData1[2] + '</div></td>' +
-                            '</tr>';
-                        sumofInvoiceValue += parseFloat(rowData1[2]);
-                        billofsupplyno[idx] = rowData1[0];
-                        idx++;
-                        $('#billofsupllydetails tbody').append(rowHtml);
-                    });
-
-                   
-                } else {
-                    
-                }
+            	 $('#balanceAmount').val(data);
+          //  alert(data)
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX request failed:', status, error);
+                // Handle the error as needed
             }
         });
-       */
-       
+
+        
+                 /* third ajax */
+      
        $.ajax({
            type: 'GET',
            url: 'listofbillofsupplyNonLC.obj',
            data: { "contractno": field1Value },
            success: function(data) {
-               alert(data +"bos");
+              // alert(data +"bos");
                const dataArray = JSON.parse(data);
                var idx = 0;
              var sumofInvoiceValue = 0;
@@ -486,7 +466,7 @@ $(document).ready(function() {
                
               var num_of_rows = dataArray.length;
                $('#numRows').val(num_of_rows);
-               alert(num_of_rows +"hhhhhhhh")
+             //  alert(num_of_rows +"hhhhhhhh")
 
                if (dataArray.length > 0) {
                	
@@ -508,6 +488,8 @@ $(document).ready(function() {
                            '<td><div class="table-cell"><input type="hidden" name="Contract_no[]" value="'+ rowData1[8] +'"></div></td>' +
                            '<td><div class="table-cell"><input type="hidden" name="Contract_date[]" value="'+ rowData1[9] +'"></div></td>' +
                            '<td><div class="table-cell"><input type="hidden" name="CropYear[]" value="'+ rowData1[10] +'"></div></td>' +
+                           '<td><div class="table-cell"><input type="hidden" name="hodiNo[]" value="'+ rowData1[11] +'"></div></td>' +
+                           '<td><div class="table-cell"><input type="hidden" name="hodiDate[]" value="'+ rowData1[12] +'"></div></td>' +
                            '</tr>';
                        sumofInvoiceValue += parseFloat(rowData1[2]);
                        billofsupplyno[idx] = rowData1[0];
@@ -522,49 +504,7 @@ $(document).ready(function() {
            }
        });
      
-      /*   $.ajax({
-            type: 'GET',
-            url: 'listOfTopSheetDetails.obj',
-            data: { "contractno": field1Value },
-            success: function(data) {
-                alert(data +"top");
-                const dataArray = JSON.parse(data);
-                
-                var idx = 0;
-              var sumofInvoiceValue = 0;
-               var billofsupplyno = [];
-                var challanno, bosdate;
-                
-               var num_of_rows = dataArray.length;
-                $('#numRows').val(num_of_rows);
-                alert(num_of_rows +"hhhhhhhh")
-
-                if (dataArray.length > 0) {
-                	
-                    dataArray.forEach(function(rowData1) {
-                        // Assuming rowData1[0], rowData1[1], rowData1[2], etc. contain the necessary data
-                        alert(idx)
-                        challanno = rowData1[3];
-                        bosdate = rowData1[1];
-                        const rowHtml = '<tr>' +
-                          
-                            '<td><div class="table-cell"><input type="hidden" name="bosNo1[]" value="'+rowData1[0]+'">' + rowData1[0] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="bosDate1[]" value="'+ rowData1[1] +'">' + rowData1[1] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="invoiceValue1[]" value="'+ rowData1[2] +'">' + rowData1[2] + '</div></td>' +
-                            '</tr>';
-                        sumofInvoiceValue += parseFloat(rowData1[2]);
-                        billofsupplyno[idx] = rowData1[0];
-                        idx++;
-                        $('#topSheetDetails tbody').append(rowHtml);
-                    });
-
-                   
-                } else {
-                    
-                }
-            }
-        });
-       */
+   
         
     
 
@@ -589,43 +529,15 @@ function myFunction(checking,i) {
 	
     if (!checking.checked) {
         $(checking).val(0);
-        alert("no" +  $(checking).val(0);)
+       // alert("no" +  $(checking).val(0);)
       
     } else {
         $(checking).val(1);
-        alert("yes" +  $(checking).val(1);)
+       // alert("yes" +  $(checking).val(1);)
     } 
 } 
 </script>
-<!-- <script>
-$(document).ready(function() {
-    // Attach change event handlers for millname13 and contractno13
-    $('#millname12, #contractno12').on('change', function() {
-    	alert
-        var millname = $('#millname12 option:selected').text();
-        var contractno = $('#contractno12 option:selected').text();
-        alert(millname +"tttt" + contractno)
-        $.ajax({
-            type: 'GET',
-            url: 'report.obj',
-            data: { "contractno": contractno,
-            	"millname":millname
-            	
-            },
-            success: function(data) {
-                alert("kkk");
-              
 
-               
-
-                 
-            }
-        });
-        alert("Selected Mill Name: " + millname + "\nSelected Contract No.: " + contractno);
-    });
-});
-</script> -->
-    
     <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>

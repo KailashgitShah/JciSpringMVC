@@ -7770,6 +7770,16 @@ public class Controller_V {
 				return resultString;
 				}
 	            @ResponseBody
+				@RequestMapping(value = "balanceAmount", method = RequestMethod.GET)
+				public String listbalanceAmount(@RequestParam("contractno") String contractno) {
+				
+				String balanceAmount = generationOfCashAgainstDispatchDocumentService.listbalanceAmount(contractno);
+				//System.err.println("resultList++++++++++" + millRecieptModelt1);
+//				Gson gson = new Gson();
+//				String resultString = new Gson().toJson(balanceAmount);
+				return balanceAmount ;
+				}
+	            @ResponseBody
 	        	@RequestMapping(value = "contrcatforCahAginstDispatchDocument", method = RequestMethod.GET)
 	        	public String millvisecontrcatforaginst(@RequestParam("millname") String millname) {
 	        		List<Object> Mill_NameR = generationOfCashAgainstDispatchDocumentService.contractonmill1(millname);
@@ -7860,8 +7870,82 @@ public class Controller_V {
 					} catch (Exception e) {
 					e.printStackTrace(); // Handle exception
 					}
-////					
-	            	
+				
+	            }
+					  @RequestMapping("downloadTopSheet")
+			        	public void downloadTopSheet(@RequestParam("filename") String filename, HttpServletResponse response) throws JRException {
+						  List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService.getTopSheetDatacashAgainstDispatchDocument(filename);
+							
+							double totalQuantity = 0.0;
+							double totalAmount = 0.0;
+							
+							
+							for(TopSheetDto TopSheet1 : pdfTopSheet)
+							{
+//							totalQuantity  += Double.valueOf(TopSheet1.getQuantity());
+							totalAmount += Double.valueOf(TopSheet1.getInvoiceValue());
+//							TopSheet1.setTotalQuantity(totalQuantity);
+							TopSheet1.setTotalAmount(totalAmount);
+							} 
+							Double totalQty=0.0;
+							for(TopSheetDto TopSheet2 : pdfTopSheet)
+							{
+							String challan =  TopSheet2.getChallan_no();
+						//	System.err.println(challan + "challan");
+							String nominal_qty = generationOfCashAgainstDispatchDocumentService.getNominalWt(challan);
+							//System.err.println(nominal_qty + "nominal_qty");
+							 totalQty += Double.valueOf(nominal_qty);
+							
+							 TopSheet2.setTotalQuantity(totalQty);
+							TopSheet2.setQuantity(nominal_qty);
+							} 
+							System.err.println("r"+pdfTopSheet);
+							
+							
+							JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\mspcodemerge_1july\\JCI-CMS\\TopSheetReportNONLC.jrxml");
+							Map<String, Object> parameters = new HashMap<String, Object>();
+							// Prepare data sources
+							JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
+							
+							// Fill JasperPrints
+							JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+							
+							
+							// Set response content type
+							
+							response.setContentType("application/pdf");
+							
+							// Set filename
+							
+							String fileName =  "topsheetcashAgainstDispatchDocument.pdf";
+							
+							// Set content disposition to attachment to trigger download
+							response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+							
+							
+							try (OutputStream out = response.getOutputStream()) {
+							// Export report to PDF
+							JRPdfExporter exporter = new JRPdfExporter();
+							exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+							exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+							exporter.exportReport();
+							} catch (Exception e) {
+							e.printStackTrace(); // Handle exception
+							}
+							
+							// Save PDF to a specific path on the server
+							try {
+							String filePath = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileName; // Modify the path accordingly
+							FileOutputStream outputStream = new FileOutputStream(filePath);
+							JasperExportManager.exportReportToPdfStream(jasperPrint1, outputStream);
+							outputStream.close();
+							System.out.println("PDF saved at: " + filePath);
+							} catch (Exception e) {
+							e.printStackTrace(); // Handle exception
+							}	
+							
+						
+			            	
 
 	        	}
 	            @RequestMapping("viewtopSheet")
@@ -8132,6 +8216,9 @@ public class Controller_V {
 				String[] Contract_no = request.getParameterValues("Contract_no[]");
 				String[] Contract_date= request.getParameterValues("Contract_date[]");
 				String[] CropYear= request.getParameterValues("CropYear[]");
+				String[] hodiNo= request.getParameterValues("hodiNo[]");
+				String[] hodiDate= request.getParameterValues("hodiDate[]");
+				String balance = request.getParameter("balanceAmount");
 				
 				
 				
@@ -8172,9 +8259,10 @@ public class Controller_V {
 						}
 						}
 			       String totalamount = String.valueOf(amount);
-			        
+			       Double balance1 = Double.valueOf(balance)-amount;
+			        String totalBalance = String.valueOf(balance1);
+			        System.err.println(totalBalance +" totalBalance");
 			        System.err.println(amount +" amount");
-			     
 			        System.err.println(totalamount +" totalamount");
 			        
 				  for (int i = 0; i < rows; i++) {
@@ -8197,6 +8285,9 @@ public class Controller_V {
 						topsheetDetailsModel.setMillname(milll_name[i]);
 						topsheetDetailsModel.setMilladdress(mill_address[i]);
 						topsheetDetailsModel.setAmount(totalamount);
+						topsheetDetailsModel.setHodiNo(hodiNo[i]);
+						topsheetDetailsModel.setHodiDate(hodiDate[i]);
+						topsheetDetailsModel.setBalanceAmount(totalBalance );;
 						generationOfCashAgainstDispatchDocumentService.create(topsheetDetailsModel);
 
 					}

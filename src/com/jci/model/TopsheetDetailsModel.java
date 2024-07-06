@@ -27,7 +27,9 @@ public class TopsheetDetailsModel {
 	    private String millcode;
 	    private String millname;
 	    private String milladdress;
-	   
+	    private String hodiNo;
+	    private String hodiDate;
+	    private String balanceAmount;
 	    
 		public Long getTopSheet_id() {
 			return topSheet_id;
@@ -118,13 +120,32 @@ public class TopsheetDetailsModel {
 		}
 		
 		
+		public String getHodiNo() {
+			return hodiNo;
+		}
+		public void setHodiNo(String hodiNo) {
+			this.hodiNo = hodiNo;
+		}
+		public String getHodiDate() {
+			return hodiDate;
+		}
+		public void setHodiDate(String hodiDate) {
+			this.hodiDate = hodiDate;
+		}
+		
+		public String getBalanceAmount() {
+			return balanceAmount;
+		}
+		public void setBalanceAmount(String balanceAmount) {
+			this.balanceAmount = balanceAmount;
+		}
 		public TopsheetDetailsModel() {
 			super();
 		}
 		public TopsheetDetailsModel(Long topSheet_id, String bosDate, String billOfSupplyNo, String topSheetCreateDate,
 				String invoiceValue, String amount, String topsheet_generated_id, String contract_no,
 				String contract_identification_no, String contract_date, String cropYear, String millcode,
-				String millname, String milladdress) {
+				String millname, String milladdress, String hodiNo, String hodiDate, String balanceAmount) {
 			super();
 			this.topSheet_id = topSheet_id;
 			this.bosDate = bosDate;
@@ -140,6 +161,9 @@ public class TopsheetDetailsModel {
 			this.millcode = millcode;
 			this.millname = millname;
 			this.milladdress = milladdress;
+			this.hodiNo = hodiNo;
+			this.hodiDate = hodiDate;
+			this.balanceAmount = balanceAmount;
 		}
 		@Override
 		public String toString() {
@@ -148,9 +172,10 @@ public class TopsheetDetailsModel {
 					+ ", amount=" + amount + ", topsheet_generated_id=" + topsheet_generated_id + ", contract_no="
 					+ contract_no + ", contract_identification_no=" + contract_identification_no + ", contract_date="
 					+ contract_date + ", cropYear=" + cropYear + ", millcode=" + millcode + ", millname=" + millname
-					+ ", milladdress=" + milladdress + "]";
+					+ ", milladdress=" + milladdress + ", hodiNo=" + hodiNo + ", hodiDate=" + hodiDate
+					+ ", balanceAmount=" + balanceAmount + "]";
 		}
 		
-
+		
 
 }

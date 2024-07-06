@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice.jrxml" pageWidth="1200" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="cce419a3-65c1-406f-9f43-210354e32858">
+	<parameter name="subreportParameter" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="TotalPages" class="java.lang.Integer" isForPrompting="false"/>
+	<field name="millcode" class="java.lang.String"/>
+	<field name="contract_no" class="java.lang.String"/>
+	<field name="di_No" class="java.lang.String"/>
+	<field name="di_Date" class="java.lang.String"/>
+	<field name="bos_no" class="java.lang.String"/>
+	<field name="invoiceValue" class="java.lang.String"/>
+	<field name="millName" class="java.lang.String"/>
+	<field name="todayDate" class="java.lang.String"/>
+	<field name="totalAmount" class="java.lang.Double"/>
+	<field name="dateOfShipment" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.String"/>
+	<field name="totalQuantity" class="java.lang.Double"/>
+	<title>
+		<band height="213" splitType="Stretch">
+			<staticText>
+				<reportElement x="340" y="0" width="300" height="30" uuid="2700098b-a28a-4fa1-9a57-5060bc075ec8"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[The Jute Corporation of India]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="27" width="228" height="30" uuid="e05b927a-8799-47fe-afbd-6cc7e070e5ae"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(A Government of India)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="50" width="237" height="20" uuid="70fe76d1-1ea9-4dc7-b769-ac7dd1135c51"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[15N, NELLIE SENGUPTA SARANI
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="69" width="160" height="20" uuid="4cf613e2-89fd-4f17-a0ae-2eedac3650e7"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KOLKATA - 700 087]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="111" width="365" height="34" uuid="bebf415e-3196-4bb3-bacc-8a6898237a21"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BILL OF SUPPLY TOP SHEET DATED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="156" width="88" height="20" uuid="8538f17e-44e1-469a-b982-5b2581ca31f9"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mill Name: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="181" width="420" height="20" uuid="ce6741c8-5f8e-428d-8276-d831d4501871"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LC/Cheque/RTGS No: RTGS-KVBLR52024010999486377]]></text>
+			</staticText>
+			<line>
+				<reportElement x="344" y="138" width="416" height="1" uuid="45dad198-7a58-4db7-80b8-a87f6184f5b6"/>
+			</line>
+			<staticText>
+				<reportElement x="982" y="181" width="48" height="25" uuid="981f0bc5-872e-44fc-a638-d5b65a68b749"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Dated :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="77" y="157" width="230" height="25" uuid="0d8facae-e3d3-40c1-8af4-e6d03712206b"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{millName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="707" y="110" width="112" height="38" uuid="e1991033-58fc-4638-bdf9-59ca698cfa19"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{todayDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="46" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+			<staticText>
+				<reportElement x="780" y="10" width="160" height="26" uuid="de1b1050-a2bb-4ad4-8b93-8f80505f7763"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANTITY
+(Qtls.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="10" width="159" height="25" uuid="e0e3283a-7401-4a33-b386-dd15ae0e6768"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BILL OF SUPPLY NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="9" width="140" height="26" uuid="547e7919-f9a5-42f2-9452-60c752ea79f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HO DI DETAILS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="11" width="75" height="25" uuid="32a5c5ac-1905-473c-9d3a-d0e7096ec235"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRACT NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="12" width="74" height="24" uuid="582c4fd8-de07-4a4c-b90d-5218b5d7c61a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MILL-Code]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1150" y="-2" width="1" height="46" uuid="3ccec436-488c-484d-b493-f40e5e12e793"/>
+			</line>
+			<staticText>
+				<reportElement x="466" y="10" width="139" height="25" uuid="8aa2c354-42ee-4fe1-8e77-d1ee3adcac5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATE OF SHIPMENT]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="-1" width="1150" height="1" uuid="040ef9fc-80b2-4856-ae20-1a94a98256e0"/>
+			</line>
+			<staticText>
+				<reportElement x="960" y="7" width="180" height="24" uuid="ea12c5b6-4767-47ee-bbde-0010baa49afe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BILL OF SUPPLY AMOUNT(RS)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="37" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="141" y="3" width="129" height="26" uuid="9570e348-a0b8-4600-a226-f7a4c65763df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contract_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="621" y="6" width="130" height="25" uuid="d33cc388-a642-42a8-ac67-90c0652ae64e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bos_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="6" width="98" height="23" uuid="851c25c4-62ec-4f7c-88b1-db8bfa7dd749"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{di_No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="4" width="65" height="24" uuid="dd4eaf0a-6369-4ff8-89b2-2d4868fee107"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{millcode}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="1151" height="1" uuid="bfb69711-c511-4e66-8aec-d73023506dd6"/>
+			</line>
+			<textField>
+				<reportElement x="973" y="6" width="120" height="24" uuid="393d79aa-c133-4456-9ac4-482c8a73980c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoiceValue}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="36" width="1150" height="1" uuid="e463e8bb-e524-41bd-a3e9-4f67deb5fd4c"/>
+			</line>
+			<line>
+				<reportElement x="1150" y="0" width="1" height="35" uuid="450af394-d4bc-4e1b-a0aa-2ee363960d65"/>
+			</line>
+			<textField>
+				<reportElement x="403" y="8" width="63" height="19" uuid="a2a274f3-0eb9-4075-8021-ca70cacc8e99"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{di_Date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="950" y="-46" width="1" height="80" uuid="5277eeea-c322-42d0-b6e3-b0a833c101e3"/>
+			</line>
+			<line>
+				<reportElement x="780" y="-46" width="1" height="80" uuid="acb9bb81-549d-46c2-a2a0-3730ab154a5d"/>
+			</line>
+			<line>
+				<reportElement x="609" y="-46" width="1" height="80" uuid="0eed909c-5db9-426e-abac-2f8c7d026cfc"/>
+			</line>
+			<line>
+				<reportElement x="475" y="-45" width="1" height="80" uuid="24cddd88-ad0a-4ca9-89ce-3bd118cd8c4f"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-46" width="1" height="83" uuid="1687d135-b5cc-458c-950b-5cbd9aa0eecb"/>
+			</line>
+			<line>
+				<reportElement x="274" y="-45" width="1" height="80" uuid="b417a2d1-4d6f-475e-8349-9b2981a45287"/>
+			</line>
+			<line>
+				<reportElement x="140" y="-45" width="1" height="80" uuid="84f66a18-22df-4ce4-9c52-5ca18c67f17e"/>
+			</line>
+			<staticText>
+				<reportElement x="383" y="9" width="15" height="23" uuid="28101ed9-8365-4c6b-bcb9-ca0b51688b2e"/>
+				<text><![CDATA[dt]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="494" y="12" width="100" height="17" uuid="c1897560-8c61-41d7-8242-42dd57853b34"/>
+				<textFieldExpression><![CDATA[$F{dateOfShipment}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="783" y="7" width="126" height="25" uuid="417bee51-64b0-48d6-ba9f-ed95081e5707"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="53">
+			<staticText>
+				<reportElement x="436" y="2" width="156" height="30" uuid="dd43ca24-3768-45fc-869b-1de09ac3cfbd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total For the Bill Of Supply]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="33" width="1148" height="1" uuid="ac20822c-c48f-42dc-a952-dcf5edcadf53"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-3" width="1" height="37" uuid="a6135e11-09cf-4e3c-81a9-b3d35eb95735"/>
+			</line>
+			<line>
+				<reportElement x="1150" y="-4" width="1" height="37" uuid="08416246-c881-4e2e-bb21-2f7d95481bd5"/>
+			</line>
+			<line>
+				<reportElement x="950" y="-4" width="1" height="38" uuid="94a98357-f7e0-4d36-b0a9-5c760fd7b5a4"/>
+			</line>
+			<line>
+				<reportElement x="780" y="-5" width="1" height="38" uuid="97806785-4da0-401a-ac48-4470fdc29619"/>
+			</line>
+			<textField>
+				<reportElement x="1008" y="2" width="142" height="30" uuid="fb4f460f-84e9-4b11-80ac-692c5aa58352"/>
+				<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="831" y="2" width="112" height="28" uuid="485823fc-8290-4ac8-9d75-1bbae88796f7"/>
+				<textFieldExpression><![CDATA[$F{totalQuantity}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

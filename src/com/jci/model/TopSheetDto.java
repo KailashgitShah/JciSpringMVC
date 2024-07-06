@@ -9,7 +9,7 @@ public class TopSheetDto {
 	private String di_Date;
 	private String dateOfShipment;
 	private String bos_no;
-	private Double quantity;
+	private String quantity;
 	private String invoiceValue;
 	private Date instrument_Date;
 	private String millName;
@@ -42,10 +42,10 @@ public class TopSheetDto {
 	public void setBos_no(String bos_no) {
 		this.bos_no = bos_no;
 	}
-	public Double getQuantity() {
+	public String getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(Double quantity) {
+	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
 	public String getInvoiceValue() {
@@ -114,7 +114,7 @@ public class TopSheetDto {
 		super();
 	}
 	public TopSheetDto(String contract_no, String challan_no, String di_No, String di_Date, String dateOfShipment,
-			String bos_no, Double quantity, String invoiceValue, Date instrument_Date, String millName, String millcode,
+			String bos_no, String quantity, String invoiceValue, Date instrument_Date, String millName, String millcode,
 			String todayDate, Double totalQuantity, Double totalAmount) {
 		super();
 		this.contract_no = contract_no;
@@ -140,6 +140,7 @@ public class TopSheetDto {
 				+ millName + ", millcode=" + millcode + ", todayDate=" + todayDate + ", totalQuantity=" + totalQuantity
 				+ ", totalAmount=" + totalAmount + "]";
 	}
+	
 	
 	
 }

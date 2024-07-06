@@ -126,6 +126,7 @@ th {
 									<th>Amount</th>
 									<th>Bill OF Supply</th>
 									<th>BOE</th>
+									<th>TopSheet</th>
 																						
 									</tr>
 								</thead>
@@ -143,6 +144,7 @@ th {
 										<td >${item.getAmount()}</td> 
 										<td >${item.getBillOfSupplyNo()}</td>
 										 <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
+                                         <td><a href="downloadTopSheet.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
                                           <%--   <td >${item.getSettlement_id_generated()}</td>
                                            <td>${item.getCreated_on()}</td>
                                             <td>${item.getDateofInspection()}</td>
