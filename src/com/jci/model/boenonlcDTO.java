@@ -13,6 +13,7 @@ public class boenonlcDTO {
 	private String todayDate;
 	private String allBos;
     private Double sumInvoice;
+    private String subject;
 	public String getBos_no() {
 		return bos_no;
 	}
@@ -88,12 +89,20 @@ public class boenonlcDTO {
 	public void setSumInvoice(Double sumInvoice) {
 		this.sumInvoice = sumInvoice;
 	}
+	
+	
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
 	public boenonlcDTO() {
 		super();
 	}
 	public boenonlcDTO(String bos_no, String bos_date, String invoiceValue, String contract_no, String millcode,
 			String millname, String milladdress, String contractdate, String cropyear, String todayDate, String allBos,
-			Double sumInvoice) {
+			Double sumInvoice, String subject) {
 		super();
 		this.bos_no = bos_no;
 		this.bos_date = bos_date;
@@ -107,16 +116,16 @@ public class boenonlcDTO {
 		this.todayDate = todayDate;
 		this.allBos = allBos;
 		this.sumInvoice = sumInvoice;
+		this.subject = subject;
 	}
 	@Override
 	public String toString() {
 		return "boenonlcDTO [bos_no=" + bos_no + ", bos_date=" + bos_date + ", invoiceValue=" + invoiceValue
 				+ ", contract_no=" + contract_no + ", millcode=" + millcode + ", millname=" + millname
 				+ ", milladdress=" + milladdress + ", contractdate=" + contractdate + ", cropyear=" + cropyear
-				+ ", todayDate=" + todayDate + ", allBos=" + allBos + ", sumInvoice=" + sumInvoice + "]";
+				+ ", todayDate=" + todayDate + ", allBos=" + allBos + ", sumInvoice=" + sumInvoice + ", subject="
+				+ subject + "]";
 	}
-	
-	
 	
 
 }

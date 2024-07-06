@@ -482,6 +482,9 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Generation demand Note list</b></a></li>
 								<li data-pre="1130" id="o1130"><a href="viewCash_against_Dispatch_document.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>
+								Cash Against Dispatch document</b></a></li>
+								<li data-pre="1130" id="o1130"><a href="viewtopSheet.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Cash Against Dispatch document</b></a></li>
 									<li data-pre="1131" id="o1131"><a href="viewCash_against_LCs.obj"><i

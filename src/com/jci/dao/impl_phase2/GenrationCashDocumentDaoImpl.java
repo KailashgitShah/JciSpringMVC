@@ -1,5 +1,6 @@
 package com.jci.dao.impl_phase2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao_phase2.GenrationCashDocumentDao;
 import com.jci.model.CashDocumentModel;
+import com.jci.model.Jciclaim_NominationModel;
+import com.jci.model.TopsheetDetailsModel;
 
 
 @Repository
@@ -80,4 +83,20 @@ public class GenrationCashDocumentDaoImpl implements GenrationCashDocumentDao {
 	   
 	}
 
+	@Override
+	public void create(TopsheetDetailsModel topSheet) {
+		currentSession().save(topSheet);
+		
+	}
+
+	@Override
+	public String topSheetId() {
+		String sql = "SELECT  count(*) FROM jcitopsheet ";
+		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+		total++;
+		
+		return String.valueOf(total);
+	}
+
+	
 }

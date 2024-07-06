@@ -129,6 +129,7 @@ import com.jci.model.RoDispatchModel;
 import com.jci.model.StateList;
 import com.jci.model.TopSheeetDTO;
 import com.jci.model.TopSheetDto;
+import com.jci.model.TopsheetDetailsModel;
 import com.jci.model.UserRegistrationModel;
 
 import com.jci.model.UserRoleModel;
@@ -7758,179 +7759,467 @@ public class Controller_V {
 				
 				return mv;
 				}
+	            @ResponseBody
+				@RequestMapping(value = "listofbillofsupplyNonLC", method = RequestMethod.GET)
+				public String listofbillofsupply1(@RequestParam("contractno") String contractno) {
 				
+				List<Object[]> millRecieptModelt1 = generationOfCashAgainstDispatchDocumentService.listdetailsbillofsuppllycash(contractno);
+				System.err.println("resultList++++++++++" + millRecieptModelt1);
+				Gson gson = new Gson();
+				String resultString = new Gson().toJson(millRecieptModelt1);
+				return resultString;
+				}
 	            @ResponseBody
 	        	@RequestMapping(value = "contrcatforCahAginstDispatchDocument", method = RequestMethod.GET)
 	        	public String millvisecontrcatforaginst(@RequestParam("millname") String millname) {
-	        		List<Object> Mill_NameR = genrationCashDocumentService.contractonmill1(millname);
+	        		List<Object> Mill_NameR = generationOfCashAgainstDispatchDocumentService.contractonmill1(millname);
 	        		System.err.println("resultList++++++++++" + Mill_NameR);
 	        		Gson gson = new Gson();
 	        		String resultString = new Gson().toJson(Mill_NameR);
 	        		return resultString;
 	        	}
 
+	            @RequestMapping("downloadBillOfExchangeDocument")
+	        	public void downloadboedocument(@RequestParam("filename") String filename, HttpServletResponse response) throws JRException {
+	            	List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(filename);
+					
+					String sumofBos = "";
+					double totalinvoiceamount = 0.0;
+					String bosDate ="";
+					
+					for (boenonlcDTO pdfBOENONLC1 : pdfBOENONLC) {
+					sumofBos += pdfBOENONLC1.getBos_no();
+					
+					if (pdfBOENONLC.indexOf(pdfBOENONLC1) < pdfBOENONLC.size() - 1) {
+					sumofBos += ",";
+					}
+					
+					totalinvoiceamount += Double.valueOf(pdfBOENONLC1.getInvoiceValue());
+					
+					pdfBOENONLC1.setAllBos(sumofBos);
+					pdfBOENONLC1.setSumInvoice(totalinvoiceamount);
+					
+					}
+					
+					// Now get the values from the last element in the list
+					boenonlcDTO lastBOENONLC = pdfBOENONLC.get(pdfBOENONLC.size() - 1);
+					String lastAllBos = lastBOENONLC.getAllBos();
+					double lastSumInvoice = lastBOENONLC.getSumInvoice();
+					boenonlcDTO firstBOENONLC = pdfBOENONLC.get(0);
+					firstBOENONLC.setAllBos(lastAllBos);
+					firstBOENONLC.setSumInvoice(lastSumInvoice);
+					String subject = "Submission of our Bill of Supply bearing No." + " "+ sumofBos +" "+"dt " + firstBOENONLC.getBos_date() +" "
+							+ "Amounting to " + totalinvoiceamount + " " + "under CAD/Direct Cash/Pay Order.";
+					firstBOENONLC.setSubject(subject);
+					// Display the last allBos and sumInvoice
+					
 				
-				
-				@RequestMapping("savecashAgainstDispatchDocument")
+					System.err.println("pdfBOENONLC " + pdfBOENONLC);
+					
+					
+					//System.out.println("Last SumInvoice: " + lastSumInvoice);
+					
+					JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\mspcodemerge_1july\\JCI-CMS\\BOENONLC.jrxml");
+					Map<String, Object> parametersboe = new HashMap<String, Object>();
+					// Prepare data sources
+					JRBeanCollectionDataSource dataSourceboe = new JRBeanCollectionDataSource( pdfBOENONLC);
+					
+					// Fill JasperPrints
+					JasperPrint jasperPrintboe = JasperFillManager.fillReport(jasperReportboe, parametersboe, dataSourceboe);
+					
+					
+					// Set response content type
+					
+					response.setContentType("application/pdf");
+					
+					// Set filename
+					
+					String fileNameboe =  "boecashAgainstDispatchDocument.pdf";
+					
+					// Set content disposition to attachment to trigger download
+					response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
+					
+					
+					try (OutputStream outboe = response.getOutputStream()) {
+					// Export report to PDF
+					JRPdfExporter exporterboe = new JRPdfExporter();
+					exporterboe.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrintboe);
+					exporterboe.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, outboe);
+					exporterboe.exportReport();
+					} catch (Exception e) {
+					e.printStackTrace(); // Handle exception
+					}
+					
+					// Save PDF to a specific path on the server
+					try {
+					String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
+					FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
+					JasperExportManager.exportReportToPdfStream(jasperPrintboe, outputStreamboe);
+					outputStreamboe.close();
+					System.out.println("PDF saved at: " + filePath1);
+					} catch (Exception e) {
+					e.printStackTrace(); // Handle exception
+					}
+////					
+	            	
+
+	        	}
+	            @RequestMapping("viewtopSheet")
+	        	public ModelAndView ViewTopSheet(Model model, HttpServletRequest request) {
+	        		ModelAndView mv = new ModelAndView("viewCashAgainstDispatchDocument");
+	        		String username = (String) request.getSession().getAttribute("usrname");
+
+	        		if (username == null) {
+	        			mv = new ModelAndView("index");
+	        		}
+	        		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService.getAlltopsheetdata();
+	        		Collections.reverse(AllList);
+	        		model.addAttribute("topsheetdata", AllList);
+	        		
+	        		return mv;
+	        	}
+//				@RequestMapping("savecashAgainstDispatchDocument")
+//				public ModelAndView savecashAgainstDispatchDocument(final HttpServletRequest request ,  HttpServletResponse response) throws JRException {
+//				String username = (String) request.getSession().getAttribute("usrname");
+//				ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
+//				if (username == null) {
+//				mv = new ModelAndView("index");
+//				}
+//		
+//				
+//				String millname = request.getParameter("millname65");
+//				String contractNo = request.getParameter("fullcontractno");
+//				String topSheet = request.getParameter("Topsheet");
+//				String billofExchange = request.getParameter("BillofExchange");
+//				
+//				int rows = Integer.parseInt(request.getParameter("rows"));
+//				String[] bosNo = request.getParameterValues("bosNo1[]");
+//				String[]bosDate= request.getParameterValues("bosDate1[]");
+//				String[] invoiceValue = request.getParameterValues("invoiceValue1[]");
+//				  
+//				LocalDate currentDate = LocalDate.now();
+//			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//			        String formattedDate = currentDate.format(formatter);
+//			    	Calendar calendar = Calendar.getInstance();
+//					int currentYear = calendar.get(Calendar.YEAR);
+//					int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+//
+//					int financialYearStart, financialYearEnd;
+//
+//					if (currentMonth >= 4) { // April or later
+//						financialYearStart = currentYear;
+//						financialYearEnd = currentYear + 1;
+//					} else { // January to March
+//						financialYearStart = currentYear - 1;
+//						financialYearEnd = currentYear;
+//					}
+//					String startYearLastTwoDigits =Integer.toString(financialYearStart).substring(2);
+//					String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+//
+//					String yearCode = endYearLastTwoDigits;
+//				    String  financialYearCurrent = startYearLastTwoDigits + endYearLastTwoDigits;
+//			        String status = String.format("%06d", Integer.parseInt(this.genrationCashDocumentService.topSheetId()));
+//				
+//			        String topSheetGeneratedId =   financialYearCurrent+status;
+//			        System.err.println(topSheetGeneratedId);
+//				  for (int i = 0; i < rows; i++) {
+//					
+//					String check = request.getParameter("rowCheckbox" + i);
+//					if (check != null) {
+//						System.err.println( bosNo[i] +"bossnumber");
+//						TopsheetDetailsModel topsheetDetailsModel  = new TopsheetDetailsModel();
+//						topsheetDetailsModel.setTopsheet_generated_id(topSheetGeneratedId);
+//						topsheetDetailsModel.setTopSheetCreateDate(formattedDate);
+//						//topsheetDetailsModel.setAmount(check);
+//						topsheetDetailsModel.setBillOfSupplyNo(bosNo[i]);
+//						topsheetDetailsModel.setBosDate(bosDate[i]);
+//						topsheetDetailsModel.setInvoiceValue(invoiceValue[i]);
+//						
+//						genrationCashDocumentService.create(topsheetDetailsModel);
+////
+////						jciclaim_NominationModel.setMill(Mill);
+////						jciclaim_NominationModel.setContractNo(ContractNo);
+////						jciclaim_NominationModel.setOMOfficial(omofficial);
+////						jciclaim_NominationModel.setFAOfficial(FAofficial);
+////						jciclaim_NominationModel.setCreated_by(username);
+////						jciclaim_NominationModel.setHoDi(HoDI);
+////						jciclaim_NominationModel.setDateofInspection(DateofInpection);
+////						jciclaim_NominationModel.setChallans(challanNos[i]);
+////						jciclaim_NominationModel.setMr_number(mr_no[i]);
+////						jciclaim_NominationModel.setMr_Date(mr_date[i]);
+////						jciclaim_NominationModel.setBillOfSupply_number(billofsupply[i]);
+////						jciclaim_NominationModel.setDateofshipment(dateofshipment[i]);
+////						jciclaim_NominationModel.setShipmentquantity(shipmentquantity[i]);
+////						jciclaim_NominationModel.setClaimValuation(claimamount[i]);
+////						jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);
+////						jciclaim_NominationModel.setDispute_flag(0);
+////
+////						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+////						LocalDate currentDate = LocalDate.now();
+////						String formattedDate = currentDate.format(formatter);
+////						jciclaim_NominationModel.setCreated_on(formattedDate);
+////						nominalOfficialService.create(jciclaim_NominationModel);
+////						String mr = mr_no[i];
+////						nominalOfficialService.millrecieptstatus(mr);
+//					}
+//				
+//				}
+//				
+//				if ("Download BillofExchange".equals(billofExchange)) {
+//				List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(contractNo);
+//				
+//				String sumofBos = "";
+//				double totalinvoiceamount = 0.0;
+//				
+//				for (boenonlcDTO pdfBOENONLC1 : pdfBOENONLC) {
+//				sumofBos += pdfBOENONLC1.getBos_no();
+//				
+//				if (pdfBOENONLC.indexOf(pdfBOENONLC1) < pdfBOENONLC.size() - 1) {
+//				sumofBos += ",";
+//				}
+//				
+//				totalinvoiceamount += Double.valueOf(pdfBOENONLC1.getInvoiceValue());
+//				
+//				pdfBOENONLC1.setAllBos(sumofBos);
+//				pdfBOENONLC1.setSumInvoice(totalinvoiceamount);
+//				}
+//				
+//				// Now get the values from the last element in the list
+//				boenonlcDTO lastBOENONLC = pdfBOENONLC.get(pdfBOENONLC.size() - 1);
+//				String lastAllBos = lastBOENONLC.getAllBos();
+//				double lastSumInvoice = lastBOENONLC.getSumInvoice();
+//				boenonlcDTO firstBOENONLC = pdfBOENONLC.get(0);
+//				firstBOENONLC.setAllBos(lastAllBos);
+//				firstBOENONLC.setSumInvoice(lastSumInvoice);
+//				// Display the last allBos and sumInvoice
+//				System.err.println("pdfBOENONLC " + pdfBOENONLC);
+//				//System.out.println("Last SumInvoice: " + lastSumInvoice);
+//				
+//				JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\cashAgainst Dispatch\\JCI-CMS\\BOE(NON-LC)NEW.jrxml");
+//				Map<String, Object> parametersboe = new HashMap<String, Object>();
+//				// Prepare data sources
+//				JRBeanCollectionDataSource dataSourceboe = new JRBeanCollectionDataSource( pdfBOENONLC);
+//				
+//				// Fill JasperPrints
+//				JasperPrint jasperPrintboe = JasperFillManager.fillReport(jasperReportboe, parametersboe, dataSourceboe);
+//				
+//				
+//				// Set response content type
+//				
+//				response.setContentType("application/pdf");
+//				
+//				// Set filename
+//				
+//				String fileNameboe =  "boecashAgainstDispatchDocument.pdf";
+//				
+//				// Set content disposition to attachment to trigger download
+//				response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
+//				
+//				
+//				try (OutputStream outboe = response.getOutputStream()) {
+//				// Export report to PDF
+//				JRPdfExporter exporterboe = new JRPdfExporter();
+//				exporterboe.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrintboe);
+//				exporterboe.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, outboe);
+//				exporterboe.exportReport();
+//				} catch (Exception e) {
+//				e.printStackTrace(); // Handle exception
+//				}
+//				
+//				// Save PDF to a specific path on the server
+//				try {
+//				String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
+//				FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
+//				JasperExportManager.exportReportToPdfStream(jasperPrintboe, outputStreamboe);
+//				outputStreamboe.close();
+//				System.out.println("PDF saved at: " + filePath1);
+//				} catch (Exception e) {
+//				e.printStackTrace(); // Handle exception
+//				}
+//				
+//				}
+//				else if ("Download TopSheet".equals(topSheet))  {
+//				List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService.getTopSheetDatacashAgainstDispatchDocument(millname , contractNo);
+//				System.err.println("r"+pdfTopSheet);
+//				double totalQuantity = 0.0;
+//				double totalAmount = 0.0;
+//				
+//				
+//				for(TopSheetDto TopSheet1 : pdfTopSheet)
+//				{
+//				totalQuantity  += Double.valueOf(TopSheet1.getQuantity());
+//				totalAmount += Double.valueOf(TopSheet1.getInvoiceValue());
+//				TopSheet1.setTotalQuantity(totalQuantity);
+//				TopSheet1.setTotalAmount(totalAmount);
+//				} 
+//				
+//				
+//				
+//				JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\cashAgainst Dispatch\\JCI-CMS\\TopSheetReport.jrxml");
+//				Map<String, Object> parameters = new HashMap<String, Object>();
+//				// Prepare data sources
+//				JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
+//				
+//				// Fill JasperPrints
+//				JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+//				
+//				
+//				// Set response content type
+//				
+//				response.setContentType("application/pdf");
+//				
+//				// Set filename
+//				
+//				String fileName =  "topsheetcashAgainstDispatchDocument.pdf";
+//				
+//				// Set content disposition to attachment to trigger download
+//				response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+//				
+//				
+//				try (OutputStream out = response.getOutputStream()) {
+//				// Export report to PDF
+//				JRPdfExporter exporter = new JRPdfExporter();
+//				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+//				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+//				exporter.exportReport();
+//				} catch (Exception e) {
+//				e.printStackTrace(); // Handle exception
+//				}
+//				
+//				// Save PDF to a specific path on the server
+//				try {
+//				String filePath = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileName; // Modify the path accordingly
+//				FileOutputStream outputStream = new FileOutputStream(filePath);
+//				JasperExportManager.exportReportToPdfStream(jasperPrint1, outputStream);
+//				outputStream.close();
+//				System.out.println("PDF saved at: " + filePath);
+//				} catch (Exception e) {
+//				e.printStackTrace(); // Handle exception
+//				}
+//				
+//				}	
+//				
+//				
+//				
+//				
+//				return mv;
+//				
+//				}
+//				
+	            @RequestMapping("savecashAgainstDispatchDocument")
 				public ModelAndView savecashAgainstDispatchDocument(final HttpServletRequest request ,  HttpServletResponse response) throws JRException {
 				String username = (String) request.getSession().getAttribute("usrname");
 				ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
 				if (username == null) {
 				mv = new ModelAndView("index");
 				}
-				String millname = request.getParameter("millname65");
+		
+				
+				String millcode1= request.getParameter("millname65");
 				String contractNo = request.getParameter("fullcontractno");
 				String topSheet = request.getParameter("Topsheet");
 				String billofExchange = request.getParameter("BillofExchange");
 				
-				if ("Download BillofExchange".equals(billofExchange)) {
-				List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(contractNo);
+				int rows = Integer.parseInt(request.getParameter("rows"));
+				String[] bosNo = request.getParameterValues("bosNo1[]");
+				String[]bosDate= request.getParameterValues("bosDate1[]");
+				String[] invoiceValue = request.getParameterValues("invoiceValue1[]");
+				String[] challan = request.getParameterValues("challan[]");  
+				String[] millcode = request.getParameterValues("millcode[]");
+				String[] milll_name = request.getParameterValues("unit_name[]");
+				String[] mill_address = request.getParameterValues("unit_address1[]");
+				String[] Contract_identification_no = request.getParameterValues("Contract_identification_no[]");
+				String[] Contract_no = request.getParameterValues("Contract_no[]");
+				String[] Contract_date= request.getParameterValues("Contract_date[]");
+				String[] CropYear= request.getParameterValues("CropYear[]");
 				
-				String sumofBos = "";
-				double totalinvoiceamount = 0.0;
 				
-				for (boenonlcDTO pdfBOENONLC1 : pdfBOENONLC) {
-				sumofBos += pdfBOENONLC1.getBos_no();
 				
-				if (pdfBOENONLC.indexOf(pdfBOENONLC1) < pdfBOENONLC.size() - 1) {
-				sumofBos += ",";
+				LocalDate currentDate = LocalDate.now();
+			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			        String formattedDate = currentDate.format(formatter);
+			    	Calendar calendar = Calendar.getInstance();
+					int currentYear = calendar.get(Calendar.YEAR);
+					int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
+
+					int financialYearStart, financialYearEnd;
+
+					if (currentMonth >= 4) { // April or later
+						financialYearStart = currentYear;
+						financialYearEnd = currentYear + 1;
+					} else { // January to March
+						financialYearStart = currentYear - 1;
+						financialYearEnd = currentYear;
+					}
+					String startYearLastTwoDigits =Integer.toString(financialYearStart).substring(2);
+					String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+
+					String yearCode = endYearLastTwoDigits;
+				    String  financialYearCurrent = startYearLastTwoDigits + endYearLastTwoDigits;
+			        String status = String.format("%06d", Integer.parseInt(this.generationOfCashAgainstDispatchDocumentService.topSheetId()));
+				
+			        String topSheetGeneratedId =   financialYearCurrent+status;
+			        System.err.println(topSheetGeneratedId);
+			        
+			        
+			        Double amount = 0.0;
+			        for (int i = 0; i < rows; i++) {
+						
+						String check = request.getParameter("rowCheckbox" + i);
+						if (check != null) {
+							 amount +=	 Double.valueOf(invoiceValue[i]);
+							
+						}
+						}
+			       String totalamount = String.valueOf(amount);
+			        
+			        System.err.println(amount +" amount");
+			     
+			        System.err.println(totalamount +" totalamount");
+			        
+				  for (int i = 0; i < rows; i++) {
+					
+					String check = request.getParameter("rowCheckbox" + i);
+					if (check != null) {
+						System.err.println( bosNo[i] +"bossnumber" + challan[i]);
+						TopsheetDetailsModel topsheetDetailsModel  = new TopsheetDetailsModel();
+						topsheetDetailsModel.setTopsheet_generated_id(topSheetGeneratedId);
+						topsheetDetailsModel.setTopSheetCreateDate(formattedDate);
+						//topsheetDetailsModel.setAmount(check);
+						topsheetDetailsModel.setBillOfSupplyNo(bosNo[i]);
+						topsheetDetailsModel.setBosDate(bosDate[i]);
+						topsheetDetailsModel.setInvoiceValue(invoiceValue[i]);
+						topsheetDetailsModel.setContract_no(contractNo);
+						topsheetDetailsModel.setContract_identification_no(Contract_identification_no[i]);
+						topsheetDetailsModel.setContract_date(Contract_date[i]);
+						topsheetDetailsModel.setCropYear(CropYear[i]);
+						topsheetDetailsModel.setMillcode(millcode1);
+						topsheetDetailsModel.setMillname(milll_name[i]);
+						topsheetDetailsModel.setMilladdress(mill_address[i]);
+						topsheetDetailsModel.setAmount(totalamount);
+						generationOfCashAgainstDispatchDocumentService.create(topsheetDetailsModel);
+
+					}
+				
 				}
 				
-				totalinvoiceamount += Double.valueOf(pdfBOENONLC1.getInvoiceValue());
-				
-				pdfBOENONLC1.setAllBos(sumofBos);
-				pdfBOENONLC1.setSumInvoice(totalinvoiceamount);
-				}
-				
-				// Now get the values from the last element in the list
-				boenonlcDTO lastBOENONLC = pdfBOENONLC.get(pdfBOENONLC.size() - 1);
-				String lastAllBos = lastBOENONLC.getAllBos();
-				double lastSumInvoice = lastBOENONLC.getSumInvoice();
-				boenonlcDTO firstBOENONLC = pdfBOENONLC.get(0);
-				firstBOENONLC.setAllBos(lastAllBos);
-				firstBOENONLC.setSumInvoice(lastSumInvoice);
-				// Display the last allBos and sumInvoice
-				System.err.println("pdfBOENONLC " + pdfBOENONLC);
-				//System.out.println("Last SumInvoice: " + lastSumInvoice);
-				
-				JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\cashAgainst Dispatch\\JCI-CMS\\BOE(NON-LC)NEW.jrxml");
-				Map<String, Object> parametersboe = new HashMap<String, Object>();
-				// Prepare data sources
-				JRBeanCollectionDataSource dataSourceboe = new JRBeanCollectionDataSource( pdfBOENONLC);
-				
-				// Fill JasperPrints
-				JasperPrint jasperPrintboe = JasperFillManager.fillReport(jasperReportboe, parametersboe, dataSourceboe);
+			
 				
 				
-				// Set response content type
-				
-				response.setContentType("application/pdf");
-				
-				// Set filename
-				
-				String fileNameboe =  "boecashAgainstDispatchDocument.pdf";
-				
-				// Set content disposition to attachment to trigger download
-				response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
-				
-				
-				try (OutputStream outboe = response.getOutputStream()) {
-				// Export report to PDF
-				JRPdfExporter exporterboe = new JRPdfExporter();
-				exporterboe.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrintboe);
-				exporterboe.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, outboe);
-				exporterboe.exportReport();
-				} catch (Exception e) {
-				e.printStackTrace(); // Handle exception
-				}
-				
-				// Save PDF to a specific path on the server
-				try {
-				String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
-				FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
-				JasperExportManager.exportReportToPdfStream(jasperPrintboe, outputStreamboe);
-				outputStreamboe.close();
-				System.out.println("PDF saved at: " + filePath1);
-				} catch (Exception e) {
-				e.printStackTrace(); // Handle exception
-				}
+				  return new ModelAndView(new RedirectView("viewtopSheet.obj"));
+			//	return viewtopSheet;
 				
 				}
-				else if ("Download TopSheet".equals(topSheet))  {
-				List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService.getTopSheetDatacashAgainstDispatchDocument(millname , contractNo);
-				System.err.println("r"+pdfTopSheet);
-				double totalQuantity = 0.0;
-				double totalAmount = 0.0;
 				
-				
-				for(TopSheetDto TopSheet1 : pdfTopSheet)
-				{
-				totalQuantity  += Double.valueOf(TopSheet1.getQuantity());
-				totalAmount += Double.valueOf(TopSheet1.getInvoiceValue());
-				TopSheet1.setTotalQuantity(totalQuantity);
-				TopSheet1.setTotalAmount(totalAmount);
-				} 
-				
-				
-				
-				JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\cashAgainst Dispatch\\JCI-CMS\\TopSheetReport.jrxml");
-				Map<String, Object> parameters = new HashMap<String, Object>();
-				// Prepare data sources
-				JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
-				
-				// Fill JasperPrints
-				JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-				
-				
-				// Set response content type
-				
-				response.setContentType("application/pdf");
-				
-				// Set filename
-				
-				String fileName =  "topsheetcashAgainstDispatchDocument.pdf";
-				
-				// Set content disposition to attachment to trigger download
-				response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-				
-				
-				try (OutputStream out = response.getOutputStream()) {
-				// Export report to PDF
-				JRPdfExporter exporter = new JRPdfExporter();
-				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
-				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
-				exporter.exportReport();
-				} catch (Exception e) {
-				e.printStackTrace(); // Handle exception
-				}
-				
-				// Save PDF to a specific path on the server
-				try {
-				String filePath = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileName; // Modify the path accordingly
-				FileOutputStream outputStream = new FileOutputStream(filePath);
-				JasperExportManager.exportReportToPdfStream(jasperPrint1, outputStream);
-				outputStream.close();
-				System.out.println("PDF saved at: " + filePath);
-				} catch (Exception e) {
-				e.printStackTrace(); // Handle exception
-				}
-				
-				}	
-				
-				
-				
-				
-				return mv;
-				}
 				
 				
 				
 				
 				@ResponseBody
-				@RequestMapping(value = "listofbillofsupply1", method = RequestMethod.GET)
-				public String listofbillofsupply1(@RequestParam("contractno") String contractno) {
+				@RequestMapping(value = "listOfTopSheetDetails", method = RequestMethod.GET)
+				public String listOfTopSheetDetails(@RequestParam("contractno") String contractno) {
 				
-				List<Object[]> millRecieptModelt1 = generationOfCashAgainstDispatchDocumentService.listdetailsbillofsupplly1(contractno);
+				List<Object[]> millRecieptModelt1 = generationOfCashAgainstDispatchDocumentService.listOfTopSheetDetails();
 				System.err.println("resultList++++++++++" + millRecieptModelt1);
 				Gson gson = new Gson();
 				String resultString = new Gson().toJson(millRecieptModelt1);

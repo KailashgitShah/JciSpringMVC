@@ -2,6 +2,7 @@ package com.jci.service.Impl_phase2;
 
 import java.util.List;
 import com.jci.model.TopSheetDto;
+import com.jci.model.TopsheetDetailsModel;
 import com.jci.model.boenonlcDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,43 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 	}
 
 
+
+
 	@Override
-	public List<Object[]> listdetailsbillofsupplly1(String st) {
+	public List<Object[]> listOfTopSheetDetails() {
 		// TODO Auto-generated method stub
-		return generationOfCashAgainstDispatchDocumentdao.listdetailsbillofsupplly1(st);
+		return generationOfCashAgainstDispatchDocumentdao.listOfTopSheetDetails();
 	}
+	
+	@Override
+	public List<Object> contractonmill1(String millname) {
+		
+		return generationOfCashAgainstDispatchDocumentdao.contractonmill1(millname);
+	}
+
+	@Override
+	public void create(TopsheetDetailsModel topSheet ) {
+		generationOfCashAgainstDispatchDocumentdao.create(topSheet  );
+		
+	}
+
+	@Override
+	public String topSheetId() {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.topSheetId();
+	}
+
+	@Override
+	public List<TopsheetDetailsModel> getAlltopsheetdata() {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.getAlltopsheetdata();
+	}
+
+	@Override
+	public List<Object[]> listdetailsbillofsuppllycash(String st) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.listdetailsbillofsuppllycash(st);
+	}
+
 
 }
