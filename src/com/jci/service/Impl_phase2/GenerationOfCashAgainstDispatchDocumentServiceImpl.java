@@ -91,5 +91,11 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 		return generationOfCashAgainstDispatchDocumentdao.listbalanceAmount(contractno);
 	}
 
+	@Override
+	public List<TopsheetDetailsModel> getAlldetails(String topSheetIdGenerated) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.getAlldetails(topSheetIdGenerated);
+	}
+
 
 }

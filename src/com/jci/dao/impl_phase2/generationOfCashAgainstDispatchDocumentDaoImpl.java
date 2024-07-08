@@ -591,9 +591,30 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 
 
 
+//		@Override
+//		public List<TopsheetDetailsModel> getAlltopsheetdata() {
+//			  String sqlQuery = "SELECT DISTINCT topsheet_generated_id, billOfSupplyNo, topSheetCreateDate, amount from jcitopsheet ORDER BY topSheetCreateDate DESC";
+//				List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+//
+//				List<TopsheetDetailsModel> list = new ArrayList<>();
+//
+//				for (Object[] eleObject : contracts) {
+//					TopsheetDetailsModel topSheet = new TopsheetDetailsModel();
+//
+//					topSheet.setTopsheet_generated_id((String) eleObject[0]);
+//					topSheet.setBillOfSupplyNo((String) eleObject[1]);
+//					topSheet.setTopSheetCreateDate((String) eleObject[2]);
+//					topSheet.setAmount((String) eleObject[3]);
+//					list.add(topSheet);
+//
+//				}
+//
+//				return list;
+//
+//		}
 		@Override
 		public List<TopsheetDetailsModel> getAlltopsheetdata() {
-			  String sqlQuery = "SELECT DISTINCT topsheet_generated_id, billOfSupplyNo, topSheetCreateDate, amount from jcitopsheet ORDER BY topSheetCreateDate DESC";
+			  String sqlQuery = "SELECT DISTINCT topsheet_generated_id, topSheetCreateDate, amount from jcitopsheet ORDER BY topSheetCreateDate DESC";
 				List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 				List<TopsheetDetailsModel> list = new ArrayList<>();
@@ -602,9 +623,9 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 					TopsheetDetailsModel topSheet = new TopsheetDetailsModel();
 
 					topSheet.setTopsheet_generated_id((String) eleObject[0]);
-					topSheet.setBillOfSupplyNo((String) eleObject[1]);
-					topSheet.setTopSheetCreateDate((String) eleObject[2]);
-					topSheet.setAmount((String) eleObject[3]);
+					//topSheet.setBillOfSupplyNo((String) eleObject[1]);
+					topSheet.setTopSheetCreateDate((String) eleObject[1]);
+					topSheet.setAmount((String) eleObject[2]);
 					list.add(topSheet);
 
 				}
@@ -651,20 +672,29 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 		}
 
 
-//		@Override
-//		public String getNominalWt(String challanNo) {
-//		    String sql = "SELECT SUM(nominal_qty) AS total_nominal_qty " +
-//		                 "FROM jcidispatch_details_child " +
-//		                 "WHERE Challan_no = '"+challanNo+"'";
-//
-//		    Query query = sessionFactory.getCurrentSession().createSQLQuery(sql)
-//		                     .setParameter("challanNo",challanNo);
-//
-//		    Double nominalwt = (Double) query.uniqueResult();
-//		    
-//		  
-//		        return String.valueOf(nominalwt);
-//		   
-//		}
+
+		@Override
+		public List<TopsheetDetailsModel> getAlldetails(String topSheetIdGenerated) {
+			
+			String sqlQuery = "  select billOfSupplyNo , invoiceValue  from jcitopsheet WHERE topsheet_generated_id = '"+topSheetIdGenerated+"'";
+
+			List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+
+			List<TopsheetDetailsModel> list = new ArrayList<>();
+
+			for (Object[] eleObject1 : contracts) {
+				TopsheetDetailsModel topsheetdata = new TopsheetDetailsModel();
+
+				topsheetdata.setBillOfSupplyNo((String) eleObject1[0]);
+				
+				
+				
+
+				list.add(topsheetdata);
+		}
+			return list;
+		}
+
+
 
 }

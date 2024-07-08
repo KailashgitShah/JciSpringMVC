@@ -7957,9 +7957,24 @@ public class Controller_V {
 	        			mv = new ModelAndView("index");
 	        		}
 	        		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService.getAlltopsheetdata();
-	        		Collections.reverse(AllList);
+	        		//Collections.reverse(AllList);
 	        		model.addAttribute("topsheetdata", AllList);
 	        		
+	        		return mv;
+	        	}
+	            
+	            
+	            @RequestMapping(value = "billOfSupplyDetails", method = RequestMethod.GET)
+	        	public ModelAndView billOfSupplyDetails(HttpServletRequest request, Model model) {
+	        		String username = (String) request.getSession().getAttribute("usrname");
+	        		ModelAndView mv = new ModelAndView("cadDetails");
+	        		if (username == null) {
+	        			mv = new ModelAndView("index");
+	        		}
+
+	        		String topSheetId = request.getParameter("id");
+	        		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService.getAlldetails(topSheetId);
+	        		model.addAttribute("topSheetDetails", AllList);
 	        		return mv;
 	        	}
 //				@RequestMapping("savecashAgainstDispatchDocument")
@@ -8494,6 +8509,7 @@ public class Controller_V {
 
 				}
 
+				
 
 //////////////////////////////////////////////////////////// cash against dispatch document end//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

@@ -103,7 +103,8 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View TopSheet Details</h1>
+				<h1 class="page-title">
+					Settlement Schedule</h1>
 
 			</div>
 
@@ -113,7 +114,14 @@ th {
 					<span>${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
-						<div text-center><a href="viewCash_against_Dispatch_document.obj"><button class="btn btn-primary" type="button">Back</button></a></div>
+						<div text-center><a href="viewtopSheet.obj"><button class="btn btn-primary" type="button">Back</button></a></div>
+							<%-- <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
+                        <div text-center>Settlement Id : ${firstItem.settlement_id_generated}</div> --%>
+                     <%--    <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
+							<div style="text-align: center;">
+                          <p style="font-weight: bold; ">Settlement Id: ${firstItem.settlement_id_generated}</p>
+                         </div> --%>
+							
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
@@ -122,52 +130,36 @@ th {
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-									<th>TopSheet Start Date</th>
-									<th>Amount</th>
-									<th>Bill OF Supply</th>
-									<th>BOE</th>
-									<th>TopSheet</th>
-																						
+									<th>Bill Of Supply Number</th>
+																		
 									</tr>
 								</thead>
 								<tbody>
-								
-                                      <%int i=1; %>
+								<%int i=1; %>
 
-									<c:forEach items="${topsheetdata}" var="item">
+								<c:forEach items="${topSheetDetails}" var="item">
 
 
 										<tr>
-										<%-- <td  class="sorting_1"><%=i%></td> --%>
-										<td >${item.getTopsheet_generated_id()}</td>
-										<td >${item.getTopSheetCreateDate()}</td>
-										<td >${item.getAmount()}</td> 
-										<%-- <td >${item.getBillOfSupplyNo()}</td> --%>
-										<td><a href="billOfSupplyDetails.obj?id=${item.getTopsheet_generated_id()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
-										 <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
-                                         <td><a href="downloadTopSheet.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
-                                          <%--   <td >${item.getSettlement_id_generated()}</td>
-                                           <td>${item.getCreated_on()}</td>
-                                            <td>${item.getDateofInspection()}</td>
-											<td >${item.getMill()}</td>
-											 <td>${item.getContractNo()}</td>
-											 <td>${item.getHoDi()}</td>
-											 <td>${item.getOMOfficial()}</td>																
-                                         <td><a href="nominationdetails.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
-                                         
-                                <c:choose>
-							    <c:when test="${empty item.getFAOfficial()}">
-							        <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-primary" type="button">Add F&A Official</button></a></td>
-							    </c:when>
-							    <c:otherwise>
-							        <td>${item.getFAOfficial()}</td>
-							    </c:otherwise>
-							</c:choose>
- --%>
-
+										<td  class="sorting_1"><%=i%></td>
+										 <td>${item.getBillOfSupplyNo()}</td>
+										<%-- <td>${item.getMr_number()}</td>
+										<td>${item.getMr_Date()}</td>
+										<td>${item.getMR_qty()}</td>
+									  <td>${item.getQualityPercentage()}</td> 
+										 <td>${item.getBillOfSupply_number()}</td>
+										<td>${item.getDateofshipment()}</td>
+										<td>${item.getShipmentquantity()}</td>
+										<td>${item.getClaimValuation()}</td>
+									     <td>${item.getBos_file_path()}</td>  
+										 <td><a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	 --%>
+                                       
 										</tr>
 										<%i++; %>
-									</c:forEach>
+									</c:forEach> 
+
+
+
 
 
 

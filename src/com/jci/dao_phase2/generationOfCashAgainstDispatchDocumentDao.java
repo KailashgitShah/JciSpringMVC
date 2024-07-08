@@ -18,5 +18,6 @@ public interface generationOfCashAgainstDispatchDocumentDao {
 	  public List<TopsheetDetailsModel> getAlltopsheetdata();
 	  public String getNominalWt(String bos);
 	  public String listbalanceAmount(String contractno) ;
+	  public List<TopsheetDetailsModel>getAlldetails(String topSheetIdGenerated);
 	  
 }

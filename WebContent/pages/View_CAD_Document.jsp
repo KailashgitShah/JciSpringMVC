@@ -389,6 +389,7 @@ $(document).ready(function() {
                     	alert(rowData[12])
                     	alert(rowData[6]) */
                     	//alert(autorevolvingammount);
+                    	//alert(rowData[6])
                         const rowHtml = '<tr>' +
                         '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
                         '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
@@ -397,19 +398,19 @@ $(document).ready(function() {
                        '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
                        '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
                        '<td><div class="table-cell"><input type="hidden" name="ifsc[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
-                       '<td>' +
-                       '<a href="downloadSupportingDocumentenPaymentArrangement.obj?filename=' + rowData[6] + '">' +
-                           '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
-                       '</a>' +
-                      '</td>'+
-                     /*  '<td>' +
-                      '<a href="downloadSupportingDocumententContract.obj?filename=' + rowData[12] + '">' +
-                          '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
-                      '</a>' +
-                     '</td>'+ */
+                     '<td><a href="downloadSupportingDocumentenPaymentArrangement.obj?filename=' + rowData[6] + '" class="btn btn-primary" target="_blank"> View Document</a></button></td>'+
                      '<td><a href=downloadSupportingDocumententContract.obj?filename=' + rowData[12] + ' class="btn btn-primary" target="_blank"> View Document</a></button></td>'
                     
-                           
+                     /* '<td>' +
+                     '<a href="downloadSupportingDocumentenPaymentArrangement.obj?filename=' + rowData[6] + '">' +
+                         '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                     '</a>' +
+                    '</td>'+ */
+                   /*  '<td>' +
+                    '<a href="downloadSupportingDocumententContract.obj?filename=' + rowData[12] + '">' +
+                        '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                    '</a>' +
+                   '</td>'+ */
                            /*  '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +

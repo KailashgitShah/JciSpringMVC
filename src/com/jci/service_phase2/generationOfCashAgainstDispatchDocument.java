@@ -2,6 +2,7 @@ package com.jci.service_phase2;
 
 import java.util.List;
 
+import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.TopSheetDto;
 import com.jci.model.TopsheetDetailsModel;
 import com.jci.model.boenonlcDTO;
@@ -20,6 +21,7 @@ public interface generationOfCashAgainstDispatchDocument{
 	  public List<TopsheetDetailsModel> getAlltopsheetdata();
 	  public String getNominalWt(String bos);
 	  public String listbalanceAmount(String contractno);
+	  public List<TopsheetDetailsModel>getAlldetails(String topSheetIdGenerated);
 	
 	
 }
