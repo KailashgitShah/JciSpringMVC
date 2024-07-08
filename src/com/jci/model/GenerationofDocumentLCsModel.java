@@ -65,7 +65,18 @@ public class GenerationofDocumentLCsModel {
 	private String instrumentdate;
 	
 
+	@Column(name = "balanceammount")
+	private String balanceammount;
 	
+	
+
+	public String getBalanceammount() {
+		return balanceammount;
+	}
+
+	public void setBalanceammount(String balanceammount) {
+		this.balanceammount = balanceammount;
+	}
 
 	public String getInstrumentno() {
 		return instrumentno;

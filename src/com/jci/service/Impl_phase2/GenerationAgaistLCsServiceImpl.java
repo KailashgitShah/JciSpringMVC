@@ -93,5 +93,13 @@ public class GenerationAgaistLCsServiceImpl implements GenerationAgaistLCsServic
 
 
 
+	@Override
+	public List<Object[]> balanceammount(String st) {
+		// TODO Auto-generated method stub
+		return generationAgaistLCsDao.balanceammount(st);
+	}
+
+
+
 
 }

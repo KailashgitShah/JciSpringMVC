@@ -101,9 +101,11 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 //		 		+ " LEFT join jcibos_generation as b on b.Bill_of_supply_no=a.BOS_No \r\n"
 //		 		+ " WHERE b.Contract_no= '" +st+"'"; 
 		
-		 String sql =" SELECT b.Bill_of_supply_no,b.BOS_Date,b.Invoice_value,b.Challan_No,b.Contract_no,b.millcode from  \r\n"
-		 		+ "		 	 jcibos_generation as b"
-			 		+ " WHERE b.Contract_no= '" +st+"'";
+		 String sql ="    SELECT b.Bill_of_supply_no, b.BOS_Date, b.Invoice_value, b.Challan_No, b.Contract_no, b.millcode \r\n"
+		 		+ "FROM jcibos_generation AS b\r\n"
+		 		+ " WHERE b.Contract_no= '" +st+"'"
+		 		+ "AND b.Bill_of_supply_no NOT IN (SELECT BOS_No FROM jciboe)";
+			 		
 			    
 					 		
 					
@@ -162,7 +164,7 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 		total++;
 		
 		return String.valueOf(total);
-		
+//		
 //		 String sql = "SELECT MAX(serialno) FROM jciboe";
 //		 		
 //		  Object result = this.sessionFactory.getCurrentSession()
@@ -194,5 +196,21 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 		  
 		
 	}
+
+	@Override
+	public List<Object[]> balanceammount(String st) {
+//        String sql ="SELECT COALESCE(\r\n"
+//        		+ "    (SELECT TOP 1 balanceammount\r\n"
+//        		+ "     FROM jciboe \r\n"
+//        		+ "     WHERE contractno = '" +st+"\r\n"
+//        		+ "     ORDER BY BOS_No\r\n"
+//        		+ "    ), 0) AS balanceamount; ";
+		  
+		  String sql ="   SELECT COALESCE((SELECT balanceammount FROM jciboe WHERE contractno='" +st+"'), 0) AS balanceamount\r\n"
+		  		+ "";
+		   List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+							 return resultList1;
+		}
+	
 
 }

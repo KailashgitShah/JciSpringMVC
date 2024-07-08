@@ -85,9 +85,11 @@
 										<th>Sl.No</th>
 										<th>SerialNo</th>
 										<th>BillofSupplyno</th>
+									    <th>TopSheet Date</th> 
 										<th>TopSheet</th>
-										<th>BankDraft</th>
+										
 										<th>BillofExchange</th>
+										<th>BankDraft</th>
 									
 										
 										<th></th>
@@ -96,7 +98,7 @@
                            <tbody>
 									<%
 									int i = 1;
-								
+									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (GenerationofDocumentLCsModel  generationofDocumentLCsModel : allUserRegistration) {
 
 										if (i <= 200) {
@@ -109,6 +111,7 @@
 								
 								      	<td><%= generationofDocumentLCsModel.getSerialno() %></td>
 								      	<td><%= generationofDocumentLCsModel.getbOS_No() %></td>
+								        <td><%= sdf.format( generationofDocumentLCsModel.getBoe_Date()) %></td>
 								      
 									
 									 <td>
@@ -119,12 +122,12 @@
 								          <td>
 								            <a href="downloadLetterofcreditdocument.obj?filename=<%= generationofDocumentLCsModel.getBankdrftpath() %>"  target="_blank">
 								             
-								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View bankDrft</button>
+								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View billofexchange</button>
 								        </td>
 								          <td>
 								            <a href="downloadLetterofcreditdocument.obj?filename=<%= generationofDocumentLCsModel.getBillofexchangepath() %>"  target="_blank">
 								          
-								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View billofexchange</button>
+								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View bankdraft </button>
 								        </td>
 
 

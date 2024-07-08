@@ -122,7 +122,7 @@
           
         	List<GenerationofDocumentLCsModel> genrationAgainstLcs = (List<GenerationofDocumentLCsModel>)request.getAttribute("genrationAgainstLcs");
 			List<Object[]> fetchMill_Namelc = (List<Object[]>) request.getAttribute("fetchMill_Namelc");  
-			String number = (String) request.getAttribute("serialno");  
+			/* String number = (String) request.getAttribute("serialno");  */ 
 			String millname="";
 			String millcode="";
 			String contractNo="";
@@ -267,7 +267,13 @@
 												<label>Balance Amount</label> <span class="text-danger">*
 												</span>&nbsp; <span id="instrumentdate" name="instrumentdate"
 													class="text-danger"> </span> <input class="form-control"
-													name="instdate" id="instdate"  value="" required>
+													name="balenceammount" id="instdate"  value="" required readonly="readonly">
+											</div>
+											     <div class="col-sm-2 form-group" style="display: none;">
+												    <label  "display:none; >indexes </label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													 type="hidden" class="form-control" name="index"
+													id="indexses" value="" readonly="readonly">
 											</div>
 	                                      
 												
@@ -289,9 +295,10 @@
 						            
 						            
 						            
-						                <div class="col-sm-4 form-group">
-						                <input type="submit"  name="submit" value="submit" class="btn btn-primary btn-block" id="submit1">
-						            </div>
+						             <div class="col-sm-4 form-group">
+							    <input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block" id="submit12" ">
+							</div>
+
 						           
 						        </div>
 						    </div>
@@ -333,13 +340,22 @@
 	
   </script>
 
-	<script type="text/javascript">
+
+<script>
+    // Reset select element to default value on page load
+    document.addEventListener("DOMContentLoaded", function() {
+        var selectElement = document.getElementById("millname12");
+        selectElement.value = "select"; // Set to the default option value
+    });
+</script>
+<script type="text/javascript">
 $(document).ready(function() {
-	var record=[];
-	var billofsupplyno=[];
-	var index=0;
-	    var sumofInvoiceValue = 0; // Initialize sumofInvoiceValue
-	    var autorevolvingammount = 0;
+    var record = [];
+    var billofsupplyno = [];
+    var index = 0;
+    var sumofInvoiceValue = 0; // Initialize sumofInvoiceValue
+    var autorevolvingAmount = 0;
+    var dataToSubmit = [];
 
     // Millname change event handler
     $('#millname12').on('change', function() {
@@ -358,7 +374,7 @@ $(document).ready(function() {
 
                 // Add the default option
                 const selectOption = document.createElement('option');
-                selectOption.value = ''; 
+                selectOption.value = '';
                 selectOption.textContent = '-Select-';
                 dropdownElement.appendChild(selectOption);
 
@@ -385,26 +401,24 @@ $(document).ready(function() {
         const field2Value = selectedOption.attr('data-value2');
         const field1Value = selectedOption.attr('data-value1');
         contractNo = field1Value;
-      
 
         $('#milldetailsTable tbody').empty();
         $('#milldetailsTable').css('display', 'none');
-   
+
         // First AJAX call
         $.ajax({
             type: 'GET',
             url: 'listofpaymentdetails.obj',
             data: { "contractno": field1Value },
             success: function(data) {
-
                 const dataArray = JSON.parse(data);
                 $('#milldetailsTable tbody').empty();
 
                 if (dataArray.length > 0) {
                     dataArray.forEach(function(rowData) {
-                    	autorevolvingammount=rowData[7];
-                    	alert(autorevolvingammount);
-                    	
+                        autorevolvingAmount = rowData[7];
+                        alert(autorevolvingAmount);
+
                         const rowHtml = '<tr>' +
                             '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
@@ -412,40 +426,60 @@ $(document).ready(function() {
                             '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
-                         /*    '<td><div class="table-cell"><input type="hidden" name="supportingdoc[]" value="' + rowData[6] + '">' + rowData[6] + '</div></td>' +
-                           */  
-                           
-                         '<td>' +
-                           '<a href="downloadSupportingDocument.obj?filename=' + rowData[6] + '">' +
-                               '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
-                           '</a>' +
-                          '</td>'+
-                        
-                           '<td><div class="table-cell"><input type="hidden" name="autorevolving" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
-                             
-                         
-                          
+                            '<td>' +
+                                '<a href="downloadSupportingDocument.obj?filename=' + rowData[6] + '">' +
+                                    '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                                '</a>' +
+                            '</td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="autorevolving" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + rowData[8] + '">' + rowData[8] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + rowData[9] + '">' + rowData[9] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="paymentduedate[]" value="' + rowData[11] + '">' + rowData[11] + '</div></td>' +
                             '</tr>';
-                         
 
                         $('#milldetailsTable tbody').append(rowHtml);
-                        $('#instdate').val(rowData[7]);
-                      
                     });
                     $('#milldetailsTable').css('display', 'block');
                 } else {
                     $('#milldetailsTable').css('display', 'none');
                 }
+                alert("gfhjk");
+                $.ajax({
+                    type: 'GET',
+                    url: 'balanceamount.obj',
+                    data: { "contractno": field1Value },
+                    success: function(data) {
+                        try {
+                            const parsedData = JSON.parse(data);
+                            alert(parsedData);
+
+                            if (parsedData == 0) {
+                                $('#instdate').val(autorevolvingAmount);
+                            } else {
+                                $('#instdate').val(parsedData);
+                            }
+                        } catch (e) {
+                            console.error('Error parsing JSON response:', e);
+                            alert('Failed to parse server response.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX request failed:', status, error);
+                        // Handle the error as needed
+                    }
+                });
+
+                
+                
             },
             error: function(xhr, status, error) {
                 console.error('AJAX request failed:', status, error);
                 // Handle the error as needed
             }
         });
+
+      
 
         // Second AJAX call
         $.ajax({
@@ -461,19 +495,14 @@ $(document).ready(function() {
                 $('#billofsupllydetails tbody').empty();
 
                 if (dataArray.length > 0) {
-                 
-
-                    dataArray.forEach(function(rowData1) {
+                    dataArray.forEach(function(rowData1, index) {
                         challanno = rowData1[3];
                         bosdate = rowData1[1];
 
-                        // Set autorevolvingAmount once
-                       
-
                         // Construct HTML for table row
                         const rowHtml = '<tr>' +
-                        '<td><div class="table-cell"><input type="checkbox" name="selectRow[]" class="invoice-checkbox"></div></td>' +
-                          '<td><div class="table-cell"><input type="hidden" name="bosNo[]" value="' + rowData1[0] + '">' + rowData1[0] + '</div></td>' +
+                            '<td><div class="table-cell"><input type="checkbox" id="checkbox_' + index + '" name="selectRow[]" class="invoice-checkbox"></div></td>' +
+                            '<td><div class="table-cell"><input type="hidden" name="bosNo[]" value="' + rowData1[0] + '">' + rowData1[0] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="bosdate[]" value="' + rowData1[1] + '">' + rowData1[1] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="invoicevalue[]" value="' + rowData1[2] + '">' + rowData1[2] + '</div></td>' +
                             '<td><div class="table-cell"><input type="hidden" name="challanno[]" value="' + rowData1[3] + '">' + rowData1[3] + '</div></td>' +
@@ -488,66 +517,70 @@ $(document).ready(function() {
                         $('#billofsupllydetails tbody').append(rowHtml);
                     });
 
-                    // Function to update the Balance Amount
-         function updateBalanceAmount() {
-    alert("hjk");
-    let autorevolvingAmount = parseFloat(document.getElementById('instdate').value);
-    let checkedTotal = 0;
-    let selectedRows = [];
-
-    $('.invoice-checkbox:checked').each(function() {
-        let invoiceValue = parseFloat($(this).closest('tr').find('input[name="invoicevalue[]"]').val());
-        checkedTotal += invoiceValue;
-
-        if (invoiceValue <= autorevolvingAmount) {
-            selectedRows.push($(this).closest('tr'));
-        }
-    });
-
-    let dataToSubmit = [];
-    selectedRows.forEach(function(row) {
-        let rowData = {
-            'bosNo': row.find('input[name="bosNo[]"]').val(),
-            'bosdate': row.find('input[name="bosdate[]"]').val(),
-            'invoicevalue': row.find('input[name="invoicevalue[]"]').val(),
-            'challanno': row.find('input[name="challanno[]"]').val(),
-            'contractNO': row.find('input[name="contractNO[]"]').val(),
-            'millcode': row.find('input[name="millcode[]"]').val()
-            // Add more fields as needed
-        };
-        dataToSubmit.push(rowData);
-    });
-
-    // Display selected data for submission
-    console.log(dataToSubmit);
-
-    // Update balance amount field
-    let balanceAmount = autorevolvingAmount - checkedTotal;
-    $('#instdate').val(balanceAmount.toFixed(2));
-    autorevolvingAmount = balanceAmount; // Update the Balance Amount input field
-}
-
-// Attach event listener to checkboxes
-$('.invoice-checkbox').on('change', function() {
-    updateBalanceAmount();
-});
-
-
                     $('#billofsupllydetails').css('display', 'block');
 
-                    // Convert billofsupplyno array to a string
                     var billofsupplynoString = billofsupplyno.join(',');
 
+                    // Bind change event for checkboxes
+                    $('.invoice-checkbox').on('change', function() {
+                        updateBalanceAmount();
+                    });
                 } else {
                     $('#billofsupllydetails').css('display', 'none');
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error occurred while fetching data:", error);
             }
         });
 
+        // Function to update the Balance Amount
+        function updateBalanceAmount() {
+    let autorevolvingAmount = parseFloat(document.getElementById('instdate').value);
+    let checkedTotal = 0;
+    let prevcheckedTotal = 0;
+    let selectedRowIndices = [];
+    let checked = 0;
+
+    $('.invoice-checkbox:checked').each(function() {
+        let closestRow = $(this).closest('tr');
+
+        let rowIndex = closestRow.index();
+        let invoiceValue = parseFloat(closestRow.find('input[name="invoicevalue[]"]').val());
+        prevcheckedTotal=checkedTotal;
+        if (checkedTotal + invoiceValue <= autorevolvingAmount) {
+            checkedTotal += invoiceValue;
+            checked=invoiceValue;
+            selectedRowIndices.push(rowIndex);
+        } else {
+            $(this).prop('checked', false);
+        }
+    });
+
+    let balanceAmount = autorevolvingAmount - checked;
+    if (balanceAmount < 0) {
+        balanceAmount =prevcheckedTotal;
+    }
+
+     $('#instdate').val(balanceAmount);
+            $('#indexses').val(selectedRowIndices.join(','));
+            console.log(selectedRowIndices);
+        }
 
     });
 });
 </script>
+
+
+
+
+
+
+
+
+
+
+
  
 
 

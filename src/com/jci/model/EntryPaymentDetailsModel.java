@@ -51,11 +51,11 @@ public class EntryPaymentDetailsModel {
 	
 	@Column(name = "Expiry_date")
 	//@Temporal(value=TemporalType.TIMESTAMP)
-	private Date dateofexpiry ;
+	private String dateofexpiry ;
 	
 	@Column(name = "Last_shipment_date")
 	//@Temporal(value=TemporalType.TIMESTAMP)
-	private Date dateofship;
+	private String dateofship;
 	
 	@Column(name = "Auto_revolving_amount")
 	private String autorevolvingamount ;
@@ -204,19 +204,19 @@ public class EntryPaymentDetailsModel {
 
 
 
-	public Date getDateofexpiry() {
+	public String getDateofexpiry() {
 		return dateofexpiry;
 	}
 
-	public void setDateofexpiry(Date dateofexpiry) {
+	public void setDateofexpiry(String dateofexpiry) {
 		this.dateofexpiry = dateofexpiry;
 	}
 
-	public Date getDateofship() {
+	public String getDateofship() {
 		return dateofship;
 	}
 
-	public void setDateofship(Date dateofship) {
+	public void setDateofship(String dateofship) {
 		this.dateofship = dateofship;
 	}
 
@@ -271,7 +271,7 @@ public class EntryPaymentDetailsModel {
 	}
 
 	public EntryPaymentDetailsModel(int payment_id, String instrumentno, String contractno, Date instdate, String iFSC,
-			String branch, String bankName, String payment, int instrumentValue, Date dateofexpiry, Date dateofship,
+			String branch, String bankName, String payment, int instrumentValue, String dateofexpiry, String dateofship,
 			String autorevolvingamount, String qtyAllowed, String supportingDocument, int fc_status,
 			String fc_remarks, Date fc_action_date, Date created_date) {
 		super();

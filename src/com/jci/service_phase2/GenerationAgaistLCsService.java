@@ -13,6 +13,7 @@ public interface GenerationAgaistLCsService {
 	 public List<Object[]> forQtyintopsheet(String st);
 	 public List<Object[]> listdetailsofpaymemt(String st);
 	 public List<Object[]> listdetailsbillofsupplly(String st);
+	 public List<Object[]> balanceammount(String st);
 	 public List<Object> contractonmill(String millname);
 	  public   String lcno();
 }

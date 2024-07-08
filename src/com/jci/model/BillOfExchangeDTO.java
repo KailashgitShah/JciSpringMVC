@@ -10,8 +10,15 @@ public class BillOfExchangeDTO {
 	private String bankname;
 	private String bankAddress;
 	private String currentdate;
+	private String subdetails;
 	
 	
+	public String getSubdetails() {
+		return subdetails;
+	}
+	public void setSubdetails(String subdetails) {
+		this.subdetails = subdetails;
+	}
 	public String getCurrentdate() {
 		return currentdate;
 	}

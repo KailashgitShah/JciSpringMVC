@@ -38,7 +38,7 @@
 				<text><![CDATA[No. ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="424" y="2" width="51" height="20" uuid="30d10445-4547-47ad-b437-cab5ee11b0cb"/>
+				<reportElement x="417" y="2" width="51" height="20" uuid="30d10445-4547-47ad-b437-cab5ee11b0cb"/>
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
@@ -105,14 +105,14 @@
 				<text><![CDATA[F I R S T]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="479" y="3" width="78" height="18" uuid="78436063-f960-494e-aa75-0af4500034a7"/>
+				<reportElement x="481" y="3" width="77" height="18" uuid="78436063-f960-494e-aa75-0af4500034a7"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{currentdate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="31" y="0" width="186" height="21" uuid="9c217c55-5155-484c-8466-09e91dd60f03"/>
+				<reportElement x="31" y="0" width="186" height="60" uuid="9c217c55-5155-484c-8466-09e91dd60f03"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>

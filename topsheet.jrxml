@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice.jrxml" pageWidth="1200" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="cce419a3-65c1-406f-9f43-210354e32858">
 	<parameter name="subreportParameter" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="TotalPages" class="java.lang.Integer" isForPrompting="false"/>
@@ -72,26 +72,12 @@
 			<line>
 				<reportElement x="344" y="127" width="496" height="1" uuid="45dad198-7a58-4db7-80b8-a87f6184f5b6"/>
 			</line>
-			<staticText>
-				<reportElement x="692" y="160" width="48" height="25" uuid="981f0bc5-872e-44fc-a638-d5b65a68b749"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<text><![CDATA[Dated :]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="499" y="135" width="230" height="25" uuid="0d8facae-e3d3-40c1-8af4-e6d03712206b"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{millname}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="750" y="159" width="120" height="21" uuid="518ecb3c-dc4d-45f2-bf53-d38051d7005e"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{instrumentdate}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="736" y="99" width="112" height="38" uuid="e1991033-58fc-4638-bdf9-59ca698cfa19"/>
@@ -101,7 +87,10 @@
 				<textFieldExpression><![CDATA[$F{currentdate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="510" y="162" width="180" height="19" uuid="32e43b13-a0b1-44cb-bf31-3ed3617811a5"/>
+				<reportElement x="510" y="162" width="550" height="19" uuid="32e43b13-a0b1-44cb-bf31-3ed3617811a5"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{instrumentno}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -112,7 +101,7 @@
 			<staticText>
 				<reportElement x="780" y="10" width="160" height="26" uuid="de1b1050-a2bb-4ad4-8b93-8f80505f7763"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[QUANTITY
 (Qtls.)]]></text>
@@ -120,28 +109,28 @@
 			<staticText>
 				<reportElement x="570" y="10" width="199" height="25" uuid="e0e3283a-7401-4a33-b386-dd15ae0e6768"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BILL OF SUPPLY NO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="241" y="9" width="140" height="26" uuid="547e7919-f9a5-42f2-9452-60c752ea79f2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[HO DI DETAILS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="125" y="11" width="75" height="25" uuid="32a5c5ac-1905-473c-9d3a-d0e7096ec235"/>
+				<reportElement x="125" y="11" width="106" height="25" uuid="32a5c5ac-1905-473c-9d3a-d0e7096ec235"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONTRACT NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="12" width="74" height="24" uuid="582c4fd8-de07-4a4c-b90d-5218b5d7c61a"/>
+				<reportElement x="13" y="12" width="74" height="24" uuid="582c4fd8-de07-4a4c-b90d-5218b5d7c61a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[MILL-Code]]></text>
 			</staticText>
@@ -149,9 +138,9 @@
 				<reportElement x="1150" y="-2" width="1" height="46" uuid="3ccec436-488c-484d-b493-f40e5e12e793"/>
 			</line>
 			<staticText>
-				<reportElement x="450" y="6" width="139" height="25" uuid="8aa2c354-42ee-4fe1-8e77-d1ee3adcac5d"/>
+				<reportElement x="450" y="10" width="139" height="25" uuid="8aa2c354-42ee-4fe1-8e77-d1ee3adcac5d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DATE OF SHIPMENT]]></text>
 			</staticText>
@@ -161,7 +150,7 @@
 			<staticText>
 				<reportElement x="960" y="7" width="180" height="24" uuid="ea12c5b6-4767-47ee-bbde-0010baa49afe"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BILL OF SUPPLY AMOUNT(RS)]]></text>
 			</staticText>
@@ -171,44 +160,44 @@
 		<band height="38" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="114" y="3" width="119" height="26" uuid="9570e348-a0b8-4600-a226-f7a4c65763df"/>
+				<reportElement x="114" y="3" width="116" height="26" uuid="9570e348-a0b8-4600-a226-f7a4c65763df"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contract_no}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="782" y="5" width="134" height="24" uuid="128058ce-bc12-48f3-a626-9fbd7ebe843c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nominalQty}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="620" y="7" width="130" height="25" uuid="d33cc388-a642-42a8-ac67-90c0652ae64e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{billOfSupplyNo}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="233" y="8" width="98" height="23" uuid="851c25c4-62ec-4f7c-88b1-db8bfa7dd749"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{hodiNO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="460" y="7" width="110" height="25" uuid="51c3f1a8-5d3c-462e-a967-3211e089dbff"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dateofShipment}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="30" y="4" width="65" height="24" uuid="dd4eaf0a-6369-4ff8-89b2-2d4868fee107"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mill_code}]]></textFieldExpression>
 			</textField>
@@ -218,7 +207,7 @@
 			<textField>
 				<reportElement x="965" y="7" width="120" height="24" uuid="393d79aa-c133-4456-9ac4-482c8a73980c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{invoicevalue}]]></textFieldExpression>
 			</textField>
@@ -251,6 +240,9 @@
 			</line>
 			<textField>
 				<reportElement x="346" y="13" width="81" height="23" uuid="321699b6-e68f-4397-9f29-062666b8d46c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{hodiDate}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -280,11 +272,17 @@
 				<reportElement x="780" y="-5" width="1" height="38" uuid="97806785-4da0-401a-ac48-4470fdc29619"/>
 			</line>
 			<textField>
-				<reportElement x="832" y="6" width="86" height="30" uuid="4aed100a-eafc-4462-8cb8-27e6df145e0b"/>
+				<reportElement x="818" y="6" width="86" height="30" uuid="4aed100a-eafc-4462-8cb8-27e6df145e0b"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{totalqty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1013" y="7" width="118" height="30" uuid="fb4f460f-84e9-4b11-80ac-692c5aa58352"/>
+				<reportElement x="993" y="7" width="118" height="30" uuid="fb4f460f-84e9-4b11-80ac-692c5aa58352"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{totalamount}]]></textFieldExpression>
 			</textField>
 		</band>

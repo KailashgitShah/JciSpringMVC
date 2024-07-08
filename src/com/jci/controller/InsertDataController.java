@@ -5775,10 +5775,10 @@ public class InsertDataController
 				final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date=entryPaymentDetailsModel.getInstdate();
-				Date date1=entryPaymentDetailsModel.getDateofexpiry();
+				String date1=entryPaymentDetailsModel.getDateofexpiry();
 				
-				Date date2=entryPaymentDetailsModel.getDateofship();
-				Date date3=entryPaymentDetailsModel.getDateofexpiry();
+				String date2=entryPaymentDetailsModel.getDateofship();
+				String date3=entryPaymentDetailsModel.getDateofexpiry();
 				
 				
 				String parsed = date.toString().split(" ")[0];
@@ -5942,9 +5942,9 @@ public class InsertDataController
 				if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
 					autorevolvingamount = "0";
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship(newDate);
+					entryPaymentDetailsModel.setDateofship("");
 					
-					entryPaymentDetailsModel.setDateofexpiry(date3);
+					entryPaymentDetailsModel.setDateofexpiry("");
 
 					entryPaymentDetailsModel.setIFSC(IFSC);
 					entryPaymentDetailsModel.setBranch(Branch);
@@ -5954,8 +5954,8 @@ public class InsertDataController
 
 					autorevolvingamount = "0";
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship(newDate);
-					entryPaymentDetailsModel.setDateofexpiry(date3);
+					entryPaymentDetailsModel.setDateofship("");
+					entryPaymentDetailsModel.setDateofexpiry("");
 
 					entryPaymentDetailsModel.setIFSC(IFSC);
 					entryPaymentDetailsModel.setBranch(Branch);
@@ -5967,11 +5967,11 @@ public class InsertDataController
 					entryPaymentDetailsModel.setBankName(BankName);
 
 					Date dateofship1 = formatter1.parse(dateofship);
-					entryPaymentDetailsModel.setDateofship(dateofship1);
+					entryPaymentDetailsModel.setDateofship(dateofship);
 					System.err.println(dateofship1);
 
 					Date dateofexpiry1 = formatter1.parse(dateofexpiry);
-					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry1);
+					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry);
 					System.err.println(dateofship1);
 
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
@@ -6276,6 +6276,7 @@ public class InsertDataController
 			}
 												
 			List<Object[]> fetchMill_Namelc = this.generationAgaistLCsService.fetchMill_NameforLC();
+		
 
 			Calendar calendar = Calendar.getInstance();
 	        int currentYear = calendar.get(Calendar.YEAR);

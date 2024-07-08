@@ -77,6 +77,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.common.base.Supplier;
+import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.itextpdf.text.Element;
@@ -3037,13 +3038,13 @@ public class Controller_V {
 				cal.setTime(instdate1);
 				cal.add(Calendar.DAY_OF_MONTH, 30);
 				Date newDate = cal.getTime();
-
+			
+             
 				if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
 					autorevolvingamount = "0";
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship(newDate);
-
-					entryPaymentDetailsModel.setDateofexpiry(date3);
+					entryPaymentDetailsModel.setDateofship("");
+                    entryPaymentDetailsModel.setDateofexpiry("");
 
 					entryPaymentDetailsModel.setIFSC(IFSC);
 					entryPaymentDetailsModel.setBranch(Branch);
@@ -3053,8 +3054,8 @@ public class Controller_V {
 
 					autorevolvingamount = "0";
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship(newDate);
-					entryPaymentDetailsModel.setDateofexpiry(date3);
+					entryPaymentDetailsModel.setDateofship("");
+					entryPaymentDetailsModel.setDateofexpiry("");
 
 					entryPaymentDetailsModel.setIFSC(IFSC);
 					entryPaymentDetailsModel.setBranch(Branch);
@@ -3065,13 +3066,13 @@ public class Controller_V {
 					entryPaymentDetailsModel.setBranch(Branch);
 					entryPaymentDetailsModel.setBankName(BankName);
 
-					Date dateofship1 = formatter1.parse(dateofship);
-					entryPaymentDetailsModel.setDateofship(dateofship1);
-					System.err.println(dateofship1);
+					//String dateofship1 = formatter1.parse(dateofship);
+					entryPaymentDetailsModel.setDateofship(dateofship);
+					System.err.println(dateofship);
 
-					Date dateofexpiry1 = formatter1.parse(dateofexpiry);
-					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry1);
-					System.err.println(dateofship1);
+					//Date dateofexpiry1 = formatter1.parse(dateofexpiry);
+					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry);
+					System.err.println(dateofship);
 
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
 				}
@@ -3959,6 +3960,12 @@ public class Controller_V {
 
 	            int count = Integer.parseInt(secondCount);
 
+	            String index = request.getParameter("index");
+	            
+	            if (index == null || index.isEmpty()) throw new IllegalArgumentException("Index is missing.");
+	            String[] indexArray = index.split(",");
+	            System.err.println(indexArray);
+	            
 	            String[] bosNo = request.getParameterValues("bosNo[]");
 	            String[] millcode = request.getParameterValues("millcode[]");
 	            String[] challanno = request.getParameterValues("challanno[]");
@@ -3967,6 +3974,7 @@ public class Controller_V {
 	            String[] contractNo = request.getParameterValues("contractNO[]");
 
 	            String autorevolving = request.getParameter("autorevolving");
+	            String balenceammount1 = request.getParameter("balenceammount");
 	            if (autorevolving == null) throw new IllegalArgumentException("Autorevolving is missing.");
 	            double autorevolving1 = Double.parseDouble(autorevolving);
 
@@ -3975,45 +3983,48 @@ public class Controller_V {
 	            String billofExchange = request.getParameter("BillofExchange");
 	            
 	            GenerationofDocumentLCsModel     generationofDocumentLCsModel = new GenerationofDocumentLCsModel(); // Initialize the model
-
-//
-				
-				
-				
-
-	            String bosConcatenate = "";
+	           
+                String bosConcatenate = "";
 	            Double sumOfInvoiceValue = 0.0;
 	            Double sumOfInvoiceValue1 = 0.0;
 	            String contractno = "";
 	            String millcode1 = "";
 	            int num = 0;
 
-	            for (int i = 0; i < count; i++) {
-	                String invoicevalue1 = invoicevalue[i];
-	                sumOfInvoiceValue1 += Double.parseDouble(invoicevalue1);
-	                if (autorevolving1 >= sumOfInvoiceValue1) {
-	                    num++;
+	            
+	            for (String idx : indexArray) {
+	                int k = Integer.parseInt(idx);
+	                
+	                if (k >= 0 && k < invoicevalue.length) { // Ensure index is within bounds
+	                    String invoicevalue1 = invoicevalue[k]; // Use k directly as index to access invoicevalue
+	                    sumOfInvoiceValue1 += Double.parseDouble(invoicevalue1);
+	                    
+	                    if (autorevolving1 >= sumOfInvoiceValue1) {
+	                        num++;
+	                    }
 	                }
-	            }
+	            
+	                    
+	                    
+	                    String bosNo1 = bosNo[k];
+		                millcode1 = millcode[k];
+		            
+		                contractno = contractNo[k];
 
-	            for (int i = 0; i < num; i++) {
-	                String bosNo1 = bosNo[i];
-	                millcode1 = millcode[i];
-	                String invoicevalue1 = invoicevalue[i];
-	                contractno = contractNo[i];
-
-	                sumOfInvoiceValue += Double.parseDouble(invoicevalue1);
-	                if (!bosConcatenate.isEmpty()) {
-	                    bosConcatenate += ", ";
+		                if (!bosConcatenate.isEmpty()) {
+		                    bosConcatenate += ", ";
+		                }
+		                bosConcatenate += bosNo1;
 	                }
-	                bosConcatenate += bosNo1;
-	            }
+	            System.err.println(bosConcatenate);
+	          
 
 	            final String finalBosConcatenate = bosConcatenate;
 	            final String finalContractno = contractno;
 	            final String finalMillcode1 = millcode1;
 	            final String finalBosdate = bosdate[0];
-	            final Double finalSumOfInvoiceValue = sumOfInvoiceValue;
+	            final String balance = balenceammount1;
+	            final Double finalSumOfInvoiceValue = sumOfInvoiceValue1;
 	            final int finalnum = num;
 
 	            CompletableFuture<Void> bankDraftFuture = CompletableFuture.runAsync(() -> {
@@ -4035,7 +4046,7 @@ public class Controller_V {
 	            CompletableFuture<Void> topSheetFuture = CompletableFuture.runAsync(() -> {
 	                try {
 	                    generateTopSheet(finalBosConcatenate, finalContractno, finalMillcode1, finalBosdate, 
-	                                     finalSumOfInvoiceValue, finalSumOfInvoiceValue, finalnum, bosNo, invoicevalue, response);
+	                                     finalSumOfInvoiceValue, finalSumOfInvoiceValue, finalnum, bosNo, invoicevalue,indexArray,balance, response);
 	                } catch (Exception e) {
 	                    e.printStackTrace();
 	                }
@@ -4055,7 +4066,7 @@ public class Controller_V {
 	        return new ModelAndView(new RedirectView("documentListing.obj"));
 	    }
 
-	    private void generateBankDraft(String bosConcatenate, String contractno, String millcode1, String bosdate, Double sumOfInvoiceValue, HttpServletResponse response) throws Exception {
+	    private void generateBankDraft(String bosConcatenate, String contractno, String millcode1, String bosdate, Double finalSumOfInvoiceValue, HttpServletResponse response) throws Exception {
 	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(BankDraftpathJsaper));
 	        Map<String, Object> parameters = new HashMap<>();
 	        BankDraftDTO bankDraftDTO = new BankDraftDTO();
@@ -4078,7 +4089,7 @@ public class Controller_V {
 	        }
 
 	        ConvertWord_k convertWord_k = new ConvertWord_k();
-	        String invoiceValueString = String.valueOf(sumOfInvoiceValue);
+	        String invoiceValueString = String.valueOf(finalSumOfInvoiceValue);
 	        double invoiceDouble = Double.parseDouble(invoiceValueString);
 	        int convertInt = (int) invoiceDouble;
 	        bankDraftDTO.setInvoicevalue(convertWord_k.convertToWords(convertInt));
@@ -4141,18 +4152,26 @@ public class Controller_V {
 	        Map<String, Object> parameters = new HashMap<>();
 	        BillOfExchangeDTO billOfExchangeDTO = new BillOfExchangeDTO();
 	        List<BillOfExchangeDTO> listOfBillofExchange = new ArrayList<>();
-
+          String instnoString="";
+          String instdate="";
 	        List<Object[]> dateData = generationAgaistLCsService.forIFSC(contractno);
 	        for (Object[] row : dateData) {
 	            if (row[5] != null) billOfExchangeDTO.setInstrumentNo(row[5].toString());
 	            if (row[6] != null) billOfExchangeDTO.setInstrumentDate(row[6].toString());
+	            instnoString=row[5].toString();
+	            instdate=row[6].toString();
 	            if (row[7] != null) {
 	                String ifsc = row[7].toString();
 	                fetchBankDetails1(ifsc, billOfExchangeDTO);
 	            }
 	        }
 
+	        
+	        String subdetails= "Our bill for Rs.  "+sumOfInvoiceValue+" for collection and payment under letter of  "+instnoString+" Dated "+instdate+"  A/c The Ganges Mfg. Co. Ltd";
+	        
+	        
 	        String invoiceValueString = String.valueOf(sumOfInvoiceValue);
+	        billOfExchangeDTO.setSubdetails(subdetails);
 	        billOfExchangeDTO.setInvoicevalue(invoiceValueString);
 	        billOfExchangeDTO.setBillofsupplyNo(bosConcatenate);
 	        billOfExchangeDTO.setBosDate(bosdate);
@@ -4206,11 +4225,14 @@ public class Controller_V {
 
 	    private void generateTopSheet(String bosConcatenate, String contractno, String millcode1, String bosdate, 
                 Double sumOfInvoiceValue, Double sumOfInvoiceValue1, int num, String[] bosNo, 
-                String[] invoicevalue, HttpServletResponse response) throws Exception {
+                String[] invoicevalue,String[] indexArray,String balance, HttpServletResponse response) throws Exception {
 					JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(TopSheetPathJasper));
 					Map<String, Object> parameters = new HashMap<>();
 					List<TopSheeetDTO> listOfTopSheet = new ArrayList<>();
 					
+					
+					  String lastPart = contractno.substring(contractno.lastIndexOf('/') + 1);
+				        
 					String millcode2 = "";
 					String hodino = "";
 					String hodidate = "";
@@ -4279,38 +4301,48 @@ public class Controller_V {
 				     String fileName1 = "BankerCopy" + bosConcatenate + ".pdf";
 				     
 				     String fileName2 = "bankdraft" + bosConcatenate + ".pdf";
-					for (int i = 0; i < num; i++) {
-					TopSheeetDTO topSheeetDTO = new TopSheeetDTO();
-					topSheeetDTO.setBillOfSupplyNo(bosNo[i]);
+				     String invoice= String.valueOf(sumOfInvoiceValue);
+				    for (String idx : indexArray) {
+			        int j = Integer.parseInt(idx);
+			       
+				    TopSheeetDTO topSheeetDTO = new TopSheeetDTO();
+					topSheeetDTO.setBillOfSupplyNo(bosNo[j]);
+					//topSheeetDTO.setBillOfSupplyNo(bosConcatenate);
 					topSheeetDTO.setNominalQty(sumofQty);
 					topSheeetDTO.setDateofShipment(dtaeofshipment);
 					topSheeetDTO.setMill_code(millcode2);
 					topSheeetDTO.setHodiNO(hodino);
 					topSheeetDTO.setHodiDate(hodidate);
-					topSheeetDTO.setContract_no(contractno);
-					topSheeetDTO.setInvoicevalue(invoicevalue[i]);
+					topSheeetDTO.setContract_no(lastPart);
+					topSheeetDTO.setInvoicevalue(invoicevalue[j]);
+					//topSheeetDTO.setInvoicevalue(invoice);
 					totalQuantity += sumofQty;
 					topSheeetDTO.setTotalqty(totalQuantity);
 					topSheeetDTO.setTotalamount(sumOfInvoiceValue);
 					topSheeetDTO.setMillname(millname);
-					topSheeetDTO.setInstrumentno(instrumentno);
-					topSheeetDTO.setInstrumentdate(instrumentdate);
+					
+					String newvalueString=instrumentno+"  Dated "+instrumentdate;
+					topSheeetDTO.setInstrumentno(newvalueString);
+					//topSheeetDTO.setInstrumentdate(instrumentdate);
 					topSheeetDTO.setCurrentdate(formattedDate);
 					listOfTopSheet.add(topSheeetDTO);
 					
 					GenerationofDocumentLCsModel	generationofDocumentLCsModel = new GenerationofDocumentLCsModel(); 
-
+					  int balance1 = Integer.parseInt(balance);
+//					  BigDecimal decimalValue = new BigDecimal(balance);
+//				       int intValue1 = decimalValue.intValue();
 						generationofDocumentLCsModel.setBoe_Date(date);
-						generationofDocumentLCsModel.setbOS_No(bosNo[i]);
+						generationofDocumentLCsModel.setbOS_No(bosNo[j]);
 						generationofDocumentLCsModel.setContractno(contractno);
 						generationofDocumentLCsModel.setInstrumentno(instrumentno);
 						generationofDocumentLCsModel.setInstrumentdate(instrumentdate);
-						generationofDocumentLCsModel.setIvoice_value(invoicevalue[i]);
+						generationofDocumentLCsModel.setIvoice_value(invoicevalue[j]);
 						generationofDocumentLCsModel.setMill_code(millcode2);
 						generationofDocumentLCsModel.setSerialno(number);
 					    generationofDocumentLCsModel.setTopsheetpath(fileName);
 					    generationofDocumentLCsModel.setBillofexchangepath(fileName2);
 					    generationofDocumentLCsModel.setBankdrftpath(fileName1);
+					    generationofDocumentLCsModel.setBalanceammount(balance);
 						  
 					   // generationofDocumentLCsModel.setBillofexchangepath(fileName);
 						this.generationAgaistLCsService.create(generationofDocumentLCsModel);
@@ -4319,7 +4351,7 @@ public class Controller_V {
 
 					
 					}
-					
+				 
 					JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfTopSheet);
 					JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 					
@@ -4468,6 +4500,17 @@ public class Controller_V {
 		String resultString = new Gson().toJson(getcontractddownlist);
 		return resultString;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "balanceamount", method = RequestMethod.GET)
+	public String balanceamount(@RequestParam("contractno") String contractno) {
+		List<Object[]> balance =  this.generationAgaistLCsService.balanceammount(contractno);
+		System.err.println("resultList++++++++++" + balance);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(balance);
+		return resultString;
+	}
+
 
 	@ResponseBody
 	@RequestMapping(value = "millchildbased", method = RequestMethod.GET)
