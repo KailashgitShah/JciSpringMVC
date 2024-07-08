@@ -2628,7 +2628,7 @@ public class Controller_V {
 				creditNoteClaimSettlementService.saveCreditNoteSettled(creditNoteSettled);
 			}
 
-			// creditNoteClaimSettlementService.updateContractStatus(contractNo);
+			 creditNoteClaimSettlementService.updateContractStatus(contractNo);
 
 			try {
 				JasperReport jasperReport1 = JasperCompileManager.compileReport(creditNoteSettledJRXML);
@@ -2845,13 +2845,39 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		List<Object[]> millsOfContract = creditNoteGenerationService.getAllMillsOfContracts();
+		List<String> millsOfContract = creditNoteGenerationService.getMillNames();
 		ModelAndView mView = new ModelAndView("settlementCnDnPage");
 
-		mView.addObject("millsOfContract", millsOfContract);
+		mView.addObject("mills", millsOfContract);
 
 		return mView;
 	}
+	
+	
+	
+
+	@ResponseBody
+	@RequestMapping(value = { "selectContractForSettlement" }, method = { RequestMethod.GET })
+	public String selectContractForSettlement(final HttpServletRequest request) {
+		final String mill = request.getParameter("mill");
+		List<String> contractNos = creditNoteGenerationService.getAllContractNos(mill);
+
+		Gson gson = new Gson();
+
+		return gson.toJson(contractNos);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = { "getFullDetailsOfCrnAndDebit" }, method = { RequestMethod.GET })
+	public String getFullDetailsOfCrnAndDebit(final HttpServletRequest request) {
+		final String contract = request.getParameter("contractNo");
+		List<Object[]> contractNos = creditNoteGenerationService.getFullDetailsOfCrnAndDebit(contract);
+		
+		Gson gson = new Gson();
+		
+		return gson.toJson(contractNos);
+	}
+	
 
 	// redirected page of the settlement form
 	@RequestMapping("finalsettlementNoteJsp")

@@ -16,8 +16,6 @@ public interface CreditNoteGenerationService {
 	public void chageStatusTo1(int id);
 
 
-	public List<Object[]> getAllMillsOfContracts();
-
 	public List<Object[]> findDetails(String string, String contractNoString);
 
 	public void saveSettlementOfCnDn(settlemetCnDnModel settlemetCnDnModel);
@@ -47,4 +45,12 @@ public interface CreditNoteGenerationService {
 	public int getGstCount(String gstCode);
 
 	public int getTotalCount();
+	
+	//Settlement crn and debit
+
+	List<String> getMillNames();
+
+	public List<String> getAllContractNos(String mill);
+
+	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract);
 }
