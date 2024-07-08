@@ -358,63 +358,60 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 				
 			}
 
-//		@Override
-//		public List<Object[]> listdetailsbillofsupplly1(String st) {
-//			 String sql = "SELECT DISTINCT Bill_of_supply_no, BOS_date, Invoice_value, Challan_No " +
-//	                 "FROM jcibos_generation " +
-//	                 "WHERE Contract_no = '"+st+"' " ;
-//
-//						
-//						 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-//						 return resultList1;
-//		}
-//		
-//		@Override
-//		public List<Object[]> listdetailsbillofsuppllycash(String st) {
-//			 String sql = "SELECT DISTINCT Bill_of_supply_no, BOS_date, Invoice_value, Challan_No " +
-//	                 "FROM jcibos_generation " +
-//	                 "WHERE Contract_no = '"+st+"' " ;
-////		    String sql = "SELECT DISTINCT Bill_of_supply_no, BOS_date, Invoice_value, Challan_No " +
-////		                 "FROM jcibos_generation g " +
-////		                 "WHERE Contract_no = '"+st+"'" +
-////		                 "AND NOT EXISTS (" +
-////		                 "    SELECT 1 " +
-////		                 "    FROM jcitopsheet t " +
-////		                 "    WHERE t.billOfSupplyNo = g.Bill_of_supply_no" +
-////		                 ");";
-//
-//		    List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-//			 return resultList1;
-//		}
-		
-		@Override
-		public List<Object[]> listdetailsbillofsuppllycash(String st) {
-			String sql = "SELECT DISTINCT " +
-	                 "    g.Bill_of_supply_no, " +
-	                 "    g.BOS_date, " +
-	                 "    g.Invoice_value, " +
-	                 "    g.Challan_No, " +
-	                 "    g.millcode, " +
-	                 "    m.unit_name, " +
-	                 "    m.unit_address1, " +
-	                 "    c.Contract_identification_no, " +
-	                 "    c.Contract_no, " +
-	                 "    c.Contract_date, " +
-	                 "    c.CropYear, " +
-	                 "    di.DI_no, "+
-	                 "    di.DI_Date "+
-	                 "FROM " +
-	                 "    jcibos_generation g " +
-	                 "    INNER JOIN jcicontract c ON c.Contract_no = '"+st+"'" +
-	                 "    INNER JOIN jcimilldetailchild m ON m.client_unit_code = g.millcode " +
-	                 "    INNER JOIN jciDI_ho di ON di.Contract_No = '"+st+"' "+
-	               
-	                 "WHERE " +
-	                 "    g.Contract_no = '"+st+"'";
 
-		    List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-			 return resultList1;
-		}
+	@Override
+	public List<Object[]> listdetailsbillofsuppllycash(String st) {
+		String sql = "SELECT DISTINCT " +
+                "    g.Bill_of_supply_no, " +
+                "    g.BOS_date, " +
+                "    g.Invoice_value, " +
+                "    g.Challan_No, " +
+                "    g.millcode, " +
+                "    m.unit_name, " +
+                "    m.unit_address1, " +
+                "    c.Contract_identification_no, " +
+                "    c.Contract_no, " +
+                "    c.Contract_date, " +
+                "    c.CropYear, " +
+                "    di.DI_no, "+
+                "    di.DI_Date "+
+                "FROM " +
+                "    jcibos_generation g " +
+                "    INNER JOIN jcicontract c ON c.Contract_no = '"+st+"'" +
+                "    INNER JOIN jcimilldetailchild m ON m.client_unit_code = g.millcode " +
+                "    INNER JOIN jciDI_ho di ON di.Contract_No = '"+st+"' "+
+                "WHERE " +
+                "    g.Contract_no = '"+st+"' AND NOT EXISTS (" +
+                "        SELECT 1 " +
+                "        FROM jcitopsheet t " +
+                "        WHERE t.billOfSupplyNo = g.Bill_of_supply_no" +
+                "    )";
+//		String sql = "SELECT DISTINCT " +
+//                 "    g.Bill_of_supply_no, " +
+//                 "    g.BOS_date, " +
+//                 "    g.Invoice_value, " +
+//                 "    g.Challan_No, " +
+//                 "    g.millcode, " +
+//                 "    m.unit_name, " +
+//                 "    m.unit_address1, " +
+//                 "    c.Contract_identification_no, " +
+//                 "    c.Contract_no, " +
+//                 "    c.Contract_date, " +
+//                 "    c.CropYear, " +
+//                 "    di.DI_no, "+
+//                 "    di.DI_Date "+
+//                 "FROM " +
+//                 "    jcibos_generation g " +
+//                 "    INNER JOIN jcicontract c ON c.Contract_no = '"+st+"'" +
+//                 "    INNER JOIN jcimilldetailchild m ON m.client_unit_code = g.millcode " +
+//                 "    INNER JOIN jciDI_ho di ON di.Contract_No = '"+st+"' "+
+//               
+//                 "WHERE " +
+//                 "    g.Contract_no = '"+st+"'";
+
+	    List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		 return resultList1;
+	}
 //		
 
 //		@Override

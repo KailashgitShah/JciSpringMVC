@@ -103,7 +103,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View TopSheet Details</h1>
+				<h1 class="page-title">Details Of TopSheet Generated</h1>
 
 			</div>
 
@@ -143,27 +143,10 @@ th {
 										<td >${item.getTopSheetCreateDate()}</td>
 										<td >${item.getAmount()}</td> 
 										<%-- <td >${item.getBillOfSupplyNo()}</td> --%>
-										<td><a href="billOfSupplyDetails.obj?id=${item.getTopsheet_generated_id()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
+										<td><a href="billOfSupplyDetails.obj?id=${item.getTopsheet_generated_id()}"><button class="btn btn-warning" type="button">BILL OF SUPPLY</button></a></td>    
 										 <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
                                          <td><a href="downloadTopSheet.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
-                                          <%--   <td >${item.getSettlement_id_generated()}</td>
-                                           <td>${item.getCreated_on()}</td>
-                                            <td>${item.getDateofInspection()}</td>
-											<td >${item.getMill()}</td>
-											 <td>${item.getContractNo()}</td>
-											 <td>${item.getHoDi()}</td>
-											 <td>${item.getOMOfficial()}</td>																
-                                         <td><a href="nominationdetails.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
-                                         
-                                <c:choose>
-							    <c:when test="${empty item.getFAOfficial()}">
-							        <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-primary" type="button">Add F&A Official</button></a></td>
-							    </c:when>
-							    <c:otherwise>
-							        <td>${item.getFAOfficial()}</td>
-							    </c:otherwise>
-							</c:choose>
- --%>
+                                        
 
 										</tr>
 										<%i++; %>
