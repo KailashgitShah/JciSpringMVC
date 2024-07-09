@@ -11,12 +11,13 @@ public class TopSheetDto {
 	private String bos_no;
 	private String quantity;
 	private String invoiceValue;
-	private Date instrument_Date;
+	private String  instrument_Date;
 	private String millName;
 	private String millcode;
 	private String todayDate;
 	private Double totalQuantity;
 	private Double totalAmount;
+	private String fullContractNumber;
 	public String getChallan_no() {
 		return challan_no;
 	}
@@ -54,12 +55,7 @@ public class TopSheetDto {
 	public void setInvoiceValue(String invoiceValue) {
 		this.invoiceValue = invoiceValue;
 	}
-	public Date getInstrument_Date() {
-		return instrument_Date;
-	}
-	public void setInstrument_Date(Date instrument_Date) {
-		this.instrument_Date = instrument_Date;
-	}
+	
 	public String getMillName() {
 		return millName;
 	}
@@ -110,12 +106,26 @@ public class TopSheetDto {
 	public void setDateOfShipment(String dateOfShipment) {
 		this.dateOfShipment = dateOfShipment;
 	}
+	
+	public String getFullContractNumber() {
+		return fullContractNumber;
+	}
+	public void setFullContractNumber(String fullContractNumber) {
+		this.fullContractNumber = fullContractNumber;
+	}
+	
+	public String getInstrument_Date() {
+		return instrument_Date;
+	}
+	public void setInstrument_Date(String instrument_Date) {
+		this.instrument_Date = instrument_Date;
+	}
 	public TopSheetDto() {
 		super();
 	}
 	public TopSheetDto(String contract_no, String challan_no, String di_No, String di_Date, String dateOfShipment,
-			String bos_no, String quantity, String invoiceValue, Date instrument_Date, String millName, String millcode,
-			String todayDate, Double totalQuantity, Double totalAmount) {
+			String bos_no, String quantity, String invoiceValue, String instrument_Date, String millName,
+			String millcode, String todayDate, Double totalQuantity, Double totalAmount, String fullContractNumber) {
 		super();
 		this.contract_no = contract_no;
 		this.challan_no = challan_no;
@@ -131,6 +141,7 @@ public class TopSheetDto {
 		this.todayDate = todayDate;
 		this.totalQuantity = totalQuantity;
 		this.totalAmount = totalAmount;
+		this.fullContractNumber = fullContractNumber;
 	}
 	@Override
 	public String toString() {
@@ -138,8 +149,9 @@ public class TopSheetDto {
 				+ ", di_Date=" + di_Date + ", dateOfShipment=" + dateOfShipment + ", bos_no=" + bos_no + ", quantity="
 				+ quantity + ", invoiceValue=" + invoiceValue + ", instrument_Date=" + instrument_Date + ", millName="
 				+ millName + ", millcode=" + millcode + ", todayDate=" + todayDate + ", totalQuantity=" + totalQuantity
-				+ ", totalAmount=" + totalAmount + "]";
+				+ ", totalAmount=" + totalAmount + ", fullContractNumber=" + fullContractNumber + "]";
 	}
+	
 	
 	
 	

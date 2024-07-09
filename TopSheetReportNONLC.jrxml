@@ -15,6 +15,7 @@
 	<field name="dateOfShipment" class="java.lang.String"/>
 	<field name="quantity" class="java.lang.String"/>
 	<field name="totalQuantity" class="java.lang.Double"/>
+	<field name="instrument_Date" class="java.lang.String"/>
 	<title>
 		<band height="213" splitType="Stretch">
 			<staticText>
@@ -54,31 +55,31 @@
 				<text><![CDATA[BILL OF SUPPLY TOP SHEET DATED]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="156" width="88" height="20" uuid="8538f17e-44e1-469a-b982-5b2581ca31f9"/>
+				<reportElement x="431" y="150" width="79" height="20" uuid="8538f17e-44e1-469a-b982-5b2581ca31f9"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mill Name: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="181" width="420" height="20" uuid="ce6741c8-5f8e-428d-8276-d831d4501871"/>
+				<reportElement x="210" y="181" width="395" height="20" uuid="ce6741c8-5f8e-428d-8276-d831d4501871"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[LC/Cheque/RTGS No: RTGS-KVBLR52024010999486377]]></text>
 			</staticText>
 			<line>
-				<reportElement x="344" y="138" width="416" height="1" uuid="45dad198-7a58-4db7-80b8-a87f6184f5b6"/>
+				<reportElement x="344" y="139" width="475" height="1" uuid="45dad198-7a58-4db7-80b8-a87f6184f5b6"/>
 			</line>
 			<staticText>
-				<reportElement x="982" y="181" width="48" height="25" uuid="981f0bc5-872e-44fc-a638-d5b65a68b749"/>
+				<reportElement x="620" y="181" width="48" height="25" uuid="981f0bc5-872e-44fc-a638-d5b65a68b749"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Dated :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="77" y="157" width="230" height="25" uuid="0d8facae-e3d3-40c1-8af4-e6d03712206b"/>
+				<reportElement x="506" y="150" width="230" height="25" uuid="0d8facae-e3d3-40c1-8af4-e6d03712206b"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
@@ -90,6 +91,10 @@
 					<font size="20"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{todayDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="185" width="100" height="16" uuid="786e9d85-b6d1-48a0-8180-fff153e8d918"/>
+				<textFieldExpression><![CDATA[$F{instrument_Date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -133,7 +138,7 @@
 				<text><![CDATA[MILL-Code]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1150" y="-2" width="1" height="46" uuid="3ccec436-488c-484d-b493-f40e5e12e793"/>
+				<reportElement x="1150" y="-1" width="1" height="46" uuid="3ccec436-488c-484d-b493-f40e5e12e793"/>
 			</line>
 			<staticText>
 				<reportElement x="466" y="10" width="139" height="25" uuid="8aa2c354-42ee-4fe1-8e77-d1ee3adcac5d"/>
@@ -143,7 +148,7 @@
 				<text><![CDATA[DATE OF SHIPMENT]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1" y="-1" width="1150" height="1" uuid="040ef9fc-80b2-4856-ae20-1a94a98256e0"/>
+				<reportElement x="1" y="0" width="1150" height="1" uuid="040ef9fc-80b2-4856-ae20-1a94a98256e0"/>
 			</line>
 			<staticText>
 				<reportElement x="960" y="7" width="180" height="24" uuid="ea12c5b6-4767-47ee-bbde-0010baa49afe"/>
@@ -215,7 +220,7 @@
 				<reportElement x="780" y="-46" width="1" height="80" uuid="acb9bb81-549d-46c2-a2a0-3730ab154a5d"/>
 			</line>
 			<line>
-				<reportElement x="609" y="-46" width="1" height="80" uuid="0eed909c-5db9-426e-abac-2f8c7d026cfc"/>
+				<reportElement x="609" y="-45" width="1" height="80" uuid="0eed909c-5db9-426e-abac-2f8c7d026cfc"/>
 			</line>
 			<line>
 				<reportElement x="475" y="-45" width="1" height="80" uuid="24cddd88-ad0a-4ca9-89ce-3bd118cd8c4f"/>
@@ -249,9 +254,9 @@
 	<summary>
 		<band height="53">
 			<staticText>
-				<reportElement x="436" y="2" width="156" height="30" uuid="dd43ca24-3768-45fc-869b-1de09ac3cfbd"/>
+				<reportElement x="438" y="8" width="202" height="18" uuid="dd43ca24-3768-45fc-869b-1de09ac3cfbd"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Total For the Bill Of Supply]]></text>
 			</staticText>
@@ -271,11 +276,11 @@
 				<reportElement x="780" y="-5" width="1" height="38" uuid="97806785-4da0-401a-ac48-4470fdc29619"/>
 			</line>
 			<textField>
-				<reportElement x="1008" y="2" width="142" height="30" uuid="fb4f460f-84e9-4b11-80ac-692c5aa58352"/>
+				<reportElement x="1010" y="2" width="131" height="30" uuid="fb4f460f-84e9-4b11-80ac-692c5aa58352"/>
 				<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="831" y="2" width="112" height="28" uuid="485823fc-8290-4ac8-9d75-1bbae88796f7"/>
+				<reportElement x="833" y="2" width="112" height="28" uuid="485823fc-8290-4ac8-9d75-1bbae88796f7"/>
 				<textFieldExpression><![CDATA[$F{totalQuantity}]]></textFieldExpression>
 			</textField>
 		</band>

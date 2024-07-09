@@ -131,6 +131,7 @@ th {
 									<tr>
 									<th>Sl.NO</th>
 									<th>Bill Of Supply Number</th>
+									<th>BOE Document</th>
 																		
 									</tr>
 								</thead>
@@ -143,17 +144,7 @@ th {
 										<tr>
 										<td  class="sorting_1"><%=i%></td>
 										 <td>${item.getBillOfSupplyNo()}</td>
-										<%-- <td>${item.getMr_number()}</td>
-										<td>${item.getMr_Date()}</td>
-										<td>${item.getMR_qty()}</td>
-									  <td>${item.getQualityPercentage()}</td> 
-										 <td>${item.getBillOfSupply_number()}</td>
-										<td>${item.getDateofshipment()}</td>
-										<td>${item.getShipmentquantity()}</td>
-										<td>${item.getClaimValuation()}</td>
-									     <td>${item.getBos_file_path()}</td>  
-										 <td><a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	 --%>
-                                       
+										<td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
 										</tr>
 										<%i++; %>
 									</c:forEach> 

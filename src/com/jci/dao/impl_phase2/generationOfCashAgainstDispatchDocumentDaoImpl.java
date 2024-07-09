@@ -257,6 +257,7 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 				    	topSheet.setTodayDate((String)eleObject[5]);
 				    	topSheet.setDi_No((String) eleObject[6]);
 				    	topSheet.setDi_Date((String) eleObject[7]);
+				    	topSheet.setFullContractNumber((String) eleObject[8]);
 				    	topSheet.setDateOfShipment((String) eleObject[9]);
 				    	topSheet.setChallan_no((String) eleObject[10]);
 
@@ -673,7 +674,7 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 		@Override
 		public List<TopsheetDetailsModel> getAlldetails(String topSheetIdGenerated) {
 			
-			String sqlQuery = "  select billOfSupplyNo , invoiceValue  from jcitopsheet WHERE topsheet_generated_id = '"+topSheetIdGenerated+"'";
+			String sqlQuery = "  select billOfSupplyNo , invoiceValue ,topsheet_generated_id from jcitopsheet WHERE topsheet_generated_id = '"+topSheetIdGenerated+"'";
 
 			List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -683,6 +684,7 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 				TopsheetDetailsModel topsheetdata = new TopsheetDetailsModel();
 
 				topsheetdata.setBillOfSupplyNo((String) eleObject1[0]);
+				topsheetdata.setTopsheet_generated_id((String) eleObject1[2]);
 				
 				
 				
@@ -690,6 +692,17 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 				list.add(topsheetdata);
 		}
 			return list;
+		}
+
+
+
+		@Override
+		public Date getInstrumentDate(String ContractNo) {
+			 String sql = "SELECT  Instrument_Date from jcipayment_arrangement where  Contract_No = '"+ContractNo+"' AND Payment_type <> 'Letter_of_Credit'";
+			 Date instrumentDate = (Date)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+			System.err.println(instrumentDate + "instrumentDate");			
+			 //String resultList1= (String)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+						 return instrumentDate ;
 		}
 
 

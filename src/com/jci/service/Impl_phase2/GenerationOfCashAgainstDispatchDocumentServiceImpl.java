@@ -1,5 +1,6 @@
 package com.jci.service.Impl_phase2;
 
+import java.util.Date;
 import java.util.List;
 import com.jci.model.TopSheetDto;
 import com.jci.model.TopsheetDetailsModel;
@@ -95,6 +96,12 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 	public List<TopsheetDetailsModel> getAlldetails(String topSheetIdGenerated) {
 		// TODO Auto-generated method stub
 		return generationOfCashAgainstDispatchDocumentdao.getAlldetails(topSheetIdGenerated);
+	}
+
+	@Override
+	public Date getInstrumentDate(String ContractNo) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.getInstrumentDate( ContractNo);
 	}
 
 

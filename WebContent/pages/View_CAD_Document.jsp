@@ -48,6 +48,19 @@
   padding: 14px;
   text-decoration: none;
 }
+.warning-background {
+    background-color: #3498DB; /* Yellow as warning */
+    padding: 10px;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+
+.primary-background {
+    background-color: #007bff; /* Blue as primary */
+}
+
 </style>
 <style>
 .custom-label {
@@ -255,17 +268,33 @@
 											<div class="row">
 										  <div class="col-sm-20 form-group"></div>
 										 </div>
-								           
+								      <!--  <input onclick="selectAllCheckboxes()" placeholder ="Select All"> -->
+								      <!--  <label onclick="selectAllCheckboxes()">Select All</label>  -->
+								       <!-- <th class="text-center"  onclick="selectAllCheckboxes()">Select All <br><input  id="selectAll" name="allcb"></th> -->
+								            
 								    <div class="row">
+								    <div class="col-sm-10">
+								     <div id="controlBox" class="warning-background">
+												    <label onclick="selectAllCheckboxes()">Select All</label>
+												</div>
+								                </div>
+								                 <div class="col-sm-10"></div>
 								    <div class="col-sm-10">
 								        <div class="table-responsive">
 								            <table id="billofsupllydetails" class="table table-bordered">
 								                <thead class="thead-light">
+								                <!-- <label onclick="selectAllCheckboxes()">Select All</label>  -->
+								              <!--   <div id="controlBox" class="warning-background">
+												    <label onclick="selectAllCheckboxes()">Select All</label>
+												</div> -->
+								                
 								                    <tr>
 								                    <th>Check Box</th>
+								                   
 								                        <th>Bill of Supply no</th>
 								                        <th>Bos Date</th>
 								                        <th>Invoice value</th>
+								                        
 								                    </tr>
 								                </thead>
 								                <tbody>
@@ -312,7 +341,7 @@
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
-   <script type="text/javascript">
+  <script type="text/javascript">
 $(document).ready(function() {
 	var record=[];
 	var billofsupplyno=[];
@@ -452,7 +481,7 @@ $(document).ready(function() {
 
         
                  /* third ajax */
-      
+     
        $.ajax({
            type: 'GET',
            url: 'listofbillofsupplyNonLC.obj',
@@ -511,7 +540,7 @@ $(document).ready(function() {
 
     });
 });
-function myFunction(checking,i) {
+/* function myFunction(checking,i) {
 	//alert("rrrrrrrr")
 	
     if (!checking.checked) {
@@ -524,8 +553,27 @@ function myFunction(checking,i) {
      
     }
 }  
-</script> 
-<script>
+
+<script> */
+
+function selectAllCheckboxes() {
+    var confirmed = confirm("Are you sure you want to select all?");
+    if (confirmed) {
+      $('input.row-checkbox').prop('checked', true); // Check all checkboxes
+      updateCheckboxValues();
+    }
+  }
+  
+  // Function to update hidden input values based on checkbox state
+  function updateCheckboxValues() {
+    $('input.row-checkbox').each(function() {
+      if ($(this).prop('checked')) {
+        $(this).val(1); // Set value to 1 if checked
+      } else {
+        $(this).val(0); // Set value to 0 if unchecked
+      }
+    });
+  }
  function myFunction(checking,idx) {
 	
     if (!checking.checked) {
@@ -536,8 +584,12 @@ function myFunction(checking,i) {
         $(checking).val(1);
        // alert("yes" +  $(checking).val(1);)
     } 
-} 
+}  
+
+
+  
 </script>
+
 
     <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>

@@ -7764,7 +7764,7 @@ public class Controller_V {
 				public String listofbillofsupply1(@RequestParam("contractno") String contractno) {
 				
 				List<Object[]> millRecieptModelt1 = generationOfCashAgainstDispatchDocumentService.listdetailsbillofsuppllycash(contractno);
-				System.err.println("resultList++++++++++" + millRecieptModelt1);
+				//System.err.println("resultList++++++++++" + millRecieptModelt1);
 				Gson gson = new Gson();
 				String resultString = new Gson().toJson(millRecieptModelt1);
 				return resultString;
@@ -7773,22 +7773,23 @@ public class Controller_V {
 				@RequestMapping(value = "balanceAmount", method = RequestMethod.GET)
 				public String listbalanceAmount(@RequestParam("contractno") String contractno) {
 				
-				String balanceAmount = generationOfCashAgainstDispatchDocumentService.listbalanceAmount(contractno);
-				//System.err.println("resultList++++++++++" + millRecieptModelt1);
-//				Gson gson = new Gson();
-//				String resultString = new Gson().toJson(balanceAmount);
+				String balanceAmount = generationOfCashAgainstDispatchDocumentService.listbalanceAmount(contractno);	
 				return balanceAmount ;
 				}
 	            @ResponseBody
 	        	@RequestMapping(value = "contrcatforCahAginstDispatchDocument", method = RequestMethod.GET)
 	        	public String millvisecontrcatforaginst(@RequestParam("millname") String millname) {
 	        		List<Object> Mill_NameR = generationOfCashAgainstDispatchDocumentService.contractonmill1(millname);
-	        		System.err.println("resultList++++++++++" + Mill_NameR);
+	        		//System.err.println("resultList++++++++++" + Mill_NameR);
 	        		Gson gson = new Gson();
 	        		String resultString = new Gson().toJson(Mill_NameR);
 	        		return resultString;
 	        	}
-
+                
+	            @Value("${upload.BOENONLCJasperReport}")
+	        	String BOENONLCJasperReport;
+	            @Value("${upload.BOENONLCDownload}")
+	            String BOENONLCDownload;
 	            @RequestMapping("downloadBillOfExchangeDocument")
 	        	public void downloadboedocument(@RequestParam("filename") String filename, HttpServletResponse response) throws JRException {
 	            	List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(filename);
@@ -7824,12 +7825,13 @@ public class Controller_V {
 					// Display the last allBos and sumInvoice
 					
 				
-					System.err.println("pdfBOENONLC " + pdfBOENONLC);
+					//System.err.println("pdfBOENONLC " + pdfBOENONLC);
 					
 					
 					//System.out.println("Last SumInvoice: " + lastSumInvoice);
 					
-					JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\mspcodemerge_1july\\JCI-CMS\\BOENONLC.jrxml");
+//					JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\mspcodemerge_1july\\JCI-CMS\\BOENONLC.jrxml");
+					JasperReport jasperReportboe = JasperCompileManager.compileReport(BOENONLCJasperReport);
 					Map<String, Object> parametersboe = new HashMap<String, Object>();
 					// Prepare data sources
 					JRBeanCollectionDataSource dataSourceboe = new JRBeanCollectionDataSource( pdfBOENONLC);
@@ -7844,7 +7846,7 @@ public class Controller_V {
 					
 					// Set filename
 					
-					String fileNameboe =  "boecashAgainstDispatchDocument.pdf";
+					String fileNameboe = filename+ "boeNONLCcashAgainstDispatchDocument.pdf";
 					
 					// Set content disposition to attachment to trigger download
 					response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
@@ -7862,8 +7864,9 @@ public class Controller_V {
 					
 					// Save PDF to a specific path on the server
 					try {
-					String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
-					FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
+//					String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
+						String filePath1 = BOENONLCDownload + fileNameboe;
+						FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
 					JasperExportManager.exportReportToPdfStream(jasperPrintboe, outputStreamboe);
 					outputStreamboe.close();
 					System.out.println("PDF saved at: " + filePath1);
@@ -7872,6 +7875,11 @@ public class Controller_V {
 					}
 				
 	            }
+	            
+	                 @Value("${upload.TopSheetNONLCJasperReport}")
+	                 String TopSheetNONLCJasperReport;
+	                 @Value("${upload.TopSheetNONLCDownload}")
+	                 String TopSheetNONLCDownload;
 					  @RequestMapping("downloadTopSheet")
 			        	public void downloadTopSheet(@RequestParam("filename") String filename, HttpServletResponse response) throws JRException {
 						  List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService.getTopSheetDatacashAgainstDispatchDocument(filename);
@@ -7893,16 +7901,25 @@ public class Controller_V {
 							String challan =  TopSheet2.getChallan_no();
 						//	System.err.println(challan + "challan");
 							String nominal_qty = generationOfCashAgainstDispatchDocumentService.getNominalWt(challan);
+							
 							//System.err.println(nominal_qty + "nominal_qty");
 							 totalQty += Double.valueOf(nominal_qty);
 							
 							 TopSheet2.setTotalQuantity(totalQty);
-							TopSheet2.setQuantity(nominal_qty);
+							  TopSheet2.setQuantity(nominal_qty);
+							  
+							  Date instrumentDate = generationOfCashAgainstDispatchDocumentService.getInstrumentDate(TopSheet2.getFullContractNumber());
+							   // System.err.println( instrumentDate + "instrumentDate instrumentDate" +  TopSheet2.getFullContractNumber());
+							    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+							    String formattedDate = sdf.format(instrumentDate);
+							    TopSheet2.setInstrument_Date(formattedDate);
+							   
 							} 
-							System.err.println("r"+pdfTopSheet);
+
+							//System.err.println("r"+pdfTopSheet);
 							
 							
-							JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\mspcodemerge_1july\\JCI-CMS\\TopSheetReportNONLC.jrxml");
+							JasperReport jasperReport1 = JasperCompileManager.compileReport(TopSheetNONLCJasperReport);
 							Map<String, Object> parameters = new HashMap<String, Object>();
 							// Prepare data sources
 							JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
@@ -7917,7 +7934,7 @@ public class Controller_V {
 							
 							// Set filename
 							
-							String fileName =  "topsheetcashAgainstDispatchDocument.pdf";
+							String fileName = filename+ "topsheetNonLCcashAgainstDispatchDocument.pdf";
 							
 							// Set content disposition to attachment to trigger download
 							response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
@@ -7935,11 +7952,11 @@ public class Controller_V {
 							
 							// Save PDF to a specific path on the server
 							try {
-							String filePath = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileName; // Modify the path accordingly
+							String filePath = TopSheetNONLCDownload + fileName; // Modify the path accordingly
 							FileOutputStream outputStream = new FileOutputStream(filePath);
 							JasperExportManager.exportReportToPdfStream(jasperPrint1, outputStream);
 							outputStream.close();
-							System.out.println("PDF saved at: " + filePath);
+							//System.out.println("PDF saved at: " + filePath);
 							} catch (Exception e) {
 							e.printStackTrace(); // Handle exception
 							}	
@@ -8030,7 +8047,8 @@ public class Controller_V {
 					String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
 
 					String yearCode = endYearLastTwoDigits;
-				    String  financialYearCurrent = startYearLastTwoDigits + endYearLastTwoDigits;
+//				    String  financialYearCurrent = startYearLastTwoDigits + endYearLastTwoDigits;
+					  String  financialYearCurrent =  endYearLastTwoDigits;
 			        String status = String.format("%06d", Integer.parseInt(this.generationOfCashAgainstDispatchDocumentService.topSheetId()));
 				
 			        String topSheetGeneratedId =   financialYearCurrent+status;
@@ -8118,13 +8136,14 @@ public class Controller_V {
 				
 		
 
-
+                @Value("${upload.paymentDocumentDownload}")
+                String paymentDocumentDownload;
 				@RequestMapping("downloadSupportingDocumentenPaymentArrangement")
 				public void downloadDocumentpayment(@RequestParam("filename") String filename, HttpServletResponse response) {
 
-					//String imageDirectory = millAcceptDownolad; // directory path
-					//String idn = filename.split("C")[0];
-					String imagePath ="C:\\Users\\Mansi.Gupta\\Documents\\paymentDocument"+ File.separator + filename;
+				
+					
+					String imagePath = paymentDocumentDownload+ File.separator + filename;
 //							imageDirectory + File.separator + idn + File.separator + filename;
 
 					File imageFile = new File(imagePath);
@@ -8212,13 +8231,14 @@ public class Controller_V {
 					}
 
 				}
-				
+				@Value("${upload.contractDocumentDownload}")
+				String contractDocumentDownload;
 				@RequestMapping("downloadSupportingDocumententContract")
 				public void downloadDocumentcashAagainstDispatchDocumentContract(@RequestParam("filename") String filename, HttpServletResponse response) {
 
 //					String imageDirectory = millAcceptDownolad; // directory path
 //					String idn = filename.split("C")[0];
-					String imagePath = "C:\\Users\\Mansi.Gupta\\Documents\\CashContract"  + File.separator + filename;
+					String imagePath = contractDocumentDownload  + File.separator + filename;
 //							imageDirectory + File.separator + idn + File.separator + filename;
 
 					File imageFile = new File(imagePath);

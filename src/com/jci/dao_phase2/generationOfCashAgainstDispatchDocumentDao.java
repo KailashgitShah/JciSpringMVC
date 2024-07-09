@@ -1,4 +1,5 @@
 package com.jci.dao_phase2;
+import java.util.Date;
 import java.util.List;
 
 import com.jci.model.TopSheetDto;
@@ -19,5 +20,6 @@ public interface generationOfCashAgainstDispatchDocumentDao {
 	  public String getNominalWt(String bos);
 	  public String listbalanceAmount(String contractno) ;
 	  public List<TopsheetDetailsModel>getAlldetails(String topSheetIdGenerated);
+	  public Date  getInstrumentDate(String ContractNo);
 	  
 }
