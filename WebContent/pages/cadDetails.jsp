@@ -104,7 +104,7 @@ th {
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
 				<h1 class="page-title">
-					Settlement Schedule</h1>
+					Bill Of Supply Details</h1>
 
 			</div>
 

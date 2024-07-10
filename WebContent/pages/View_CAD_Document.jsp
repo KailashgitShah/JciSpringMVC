@@ -154,14 +154,7 @@
 										  </div>
 										 </div>	
 										 
-						         <!--   <div class="row">
-						            <div class="col-sm-3 form-group">
-						                <input type="submit"  name="Topsheet" value="Download TopSheet" class="btn btn-info btn-block" id="submit2">
-						            </div>
-						            <div class="col-sm-3 form-group">
-						                <input type="submit" name="BillofExchange" value="Download BillofExchange" class="btn btn-info btn-block" id="submit3">
-						            </div>
-						        </div> -->
+						       
 						   
 											<div class="row">
 										  <div class="col-sm-100 form-group"></div>
@@ -341,7 +334,8 @@
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
-  <script type="text/javascript">
+
+   <script type="text/javascript">
 $(document).ready(function() {
 	var record=[];
 	var billofsupplyno=[];
@@ -430,25 +424,7 @@ $(document).ready(function() {
                      '<td><a href="downloadSupportingDocumentenPaymentArrangement.obj?filename=' + rowData[6] + '" class="btn btn-primary" target="_blank"> View Document</a></button></td>'+
                      '<td><a href=downloadSupportingDocumententContract.obj?filename=' + rowData[12] + ' class="btn btn-primary" target="_blank"> View Document</a></button></td>'
                     
-                     /* '<td>' +
-                     '<a href="downloadSupportingDocumentenPaymentArrangement.obj?filename=' + rowData[6] + '">' +
-                         '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
-                     '</a>' +
-                    '</td>'+ */
-                   /*  '<td>' +
-                    '<a href="downloadSupportingDocumententContract.obj?filename=' + rowData[12] + '">' +
-                        '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
-                    '</a>' +
-                   '</td>'+ */
-                           /*  '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="supportingdoc[]" value="' + rowData[6] + '">' + rowData[6] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="autorevolving[]" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + rowData[8] + '">' + rowData[8] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + rowData[9] + '">' + rowData[9] + '</div></td>' +
-                            
-                            '<td><div class="table-cell"><input type="hidden" name="paymentduedate[]" value="' + rowData[11] + '">' + rowData[11] + '</div></td>' + */
+                 
                             '</tr>';
                          
 
@@ -540,21 +516,7 @@ $(document).ready(function() {
 
     });
 });
-/* function myFunction(checking,i) {
-	//alert("rrrrrrrr")
-	
-    if (!checking.checked) {
-        $(checking).val(0);
-        alert((checking).val())
-      
-    } else {
-        $(checking).val(1);
-        alert( $(checking).val())
-     
-    }
-}  
 
-<script> */
 
 function selectAllCheckboxes() {
     var confirmed = confirm("Are you sure you want to select all?");
@@ -588,7 +550,7 @@ function selectAllCheckboxes() {
 
 
   
-</script>
+</script> 
 
 
     <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>

@@ -7908,11 +7908,12 @@ public class Controller_V {
 							 TopSheet2.setTotalQuantity(totalQty);
 							  TopSheet2.setQuantity(nominal_qty);
 							  
-							  Date instrumentDate = generationOfCashAgainstDispatchDocumentService.getInstrumentDate(TopSheet2.getFullContractNumber());
+							 Date instrumentDate = generationOfCashAgainstDispatchDocumentService.getInstrumentDate(TopSheet2.getFullContractNumber());
 							   // System.err.println( instrumentDate + "instrumentDate instrumentDate" +  TopSheet2.getFullContractNumber());
 							    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-							    String formattedDate = sdf.format(instrumentDate);
+							   String formattedDate = sdf.format(instrumentDate);
 							    TopSheet2.setInstrument_Date(formattedDate);
+							// TopSheet2.setInstrument_Date(instrumentDate);
 							   
 							} 
 
@@ -8051,8 +8052,8 @@ public class Controller_V {
 					  String  financialYearCurrent =  endYearLastTwoDigits;
 			        String status = String.format("%06d", Integer.parseInt(this.generationOfCashAgainstDispatchDocumentService.topSheetId()));
 				
-			        String topSheetGeneratedId =   financialYearCurrent+status;
-			        System.err.println(topSheetGeneratedId);
+			        String topSheetGeneratedId =   "NONLC" +financialYearCurrent+status;
+			       // System.err.println(topSheetGeneratedId);
 			        
 			        
 			        Double amount = 0.0;
