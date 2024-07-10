@@ -20,7 +20,7 @@ public class GenerationAgaistLCsServiceImpl implements GenerationAgaistLCsServic
 	
 
 	@Override
-	public List<GenerationofDocumentLCsModel> getAll() {
+	public List<Object[]> getAll() {
 		
 		return generationAgaistLCsDao.getAll();
 	}
@@ -97,6 +97,14 @@ public class GenerationAgaistLCsServiceImpl implements GenerationAgaistLCsServic
 	public List<Object[]> balanceammount(String st) {
 		// TODO Auto-generated method stub
 		return generationAgaistLCsDao.balanceammount(st);
+	}
+
+
+
+	@Override
+	public List<Object[]> bosnolist(String st) {
+		// TODO Auto-generated method stub
+		return generationAgaistLCsDao.bosnolist(st);
 	}
 
 

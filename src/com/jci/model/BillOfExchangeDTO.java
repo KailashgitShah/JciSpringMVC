@@ -11,8 +11,25 @@ public class BillOfExchangeDTO {
 	private String bankAddress;
 	private String currentdate;
 	private String subdetails;
+	private String jciref;
+	private int jno;
 	
 	
+	
+	
+	
+	public int getJno() {
+		return jno;
+	}
+	public void setJno(int jno) {
+		this.jno = jno;
+	}
+	public String getJciref() {
+		return jciref;
+	}
+	public void setJciref(String jciref) {
+		this.jciref = jciref;
+	}
 	public String getSubdetails() {
 		return subdetails;
 	}

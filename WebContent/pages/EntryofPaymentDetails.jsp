@@ -332,7 +332,7 @@
 
 
 										<div class="row" id="gradesDiv">
-											<div class="col-sm-15">
+										<!-- 	<div class="col-sm-15">
 												<table class="table">
 													<thead>
 														<tr>
@@ -373,7 +373,7 @@
 													</tbody>
 
 												</table>
-											</div>
+											</div> -->
 										</div>
 
 
@@ -957,6 +957,7 @@ $(document).ready(function() {
                                     "contractno": field2Value
                                 },
                                 success: function(data) {
+                                
                                 
                                 	 console.log("data"+data)
                                     try {

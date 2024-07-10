@@ -118,14 +118,19 @@
 									
 										<td><%= entryPaymentDetailsModel.getContractno() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
-										 <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
+										  <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
+										 <%--  <td><%= entryPaymentDetailsModel.getInstdate() %></td>  --%>
 										<td><%= entryPaymentDetailsModel.getIFSC() %></td>
 										<td><%= entryPaymentDetailsModel.getBankName() %></td>
 										<td><%= entryPaymentDetailsModel.getBranch() %></td>
 										<td><%= entryPaymentDetailsModel.getPayment() %></td>
 										<td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
-											 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
-										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
+											<%--  <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td> --%>
+											 <td><%= entryPaymentDetailsModel.getDateofexpiry() %></td> 
+											
+										<%--  <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td> --%>
+										  <td><%= entryPaymentDetailsModel.getDateofship() %></td> 
+									
 										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
 									 	
                                         <td>

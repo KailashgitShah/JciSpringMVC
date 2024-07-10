@@ -166,8 +166,8 @@ public class EntryPaymentDetailsModel {
 		return instdate;
 	}
 
-	public void setInstdate(Date date1) {
-		this.instdate = date1;
+	public void setInstdate(Date instdate2) {
+		this.instdate = instdate2;
 	}
 
 	public String getIFSC() {

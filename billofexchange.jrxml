@@ -19,24 +19,26 @@
 	<field name="invoicevalue" class="java.lang.String"/>
 	<field name="currentdate" class="java.lang.String"/>
 	<field name="subdetails" class="java.lang.String"/>
+	<field name="jciref" class="java.lang.String"/>
+	<field name="jno" class="java.lang.Integer"/>
 	<title>
 		<band height="120" splitType="Stretch">
 			<staticText>
-				<reportElement x="226" y="34" width="350" height="21" uuid="e05b927a-8799-47fe-afbd-6cc7e070e5ae"/>
+				<reportElement x="250" y="34" width="350" height="21" uuid="e05b927a-8799-47fe-afbd-6cc7e070e5ae"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Registered Office]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="169" y="52" width="348" height="20" uuid="70fe76d1-1ea9-4dc7-b769-ac7dd1135c51"/>
+				<reportElement x="200" y="57" width="348" height="20" uuid="70fe76d1-1ea9-4dc7-b769-ac7dd1135c51"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[15N, NELLIE SENGUPTA SARANI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="203" y="72" width="350" height="20" uuid="4cf613e2-89fd-4f17-a0ae-2eedac3650e7"/>
+				<reportElement x="241" y="75" width="350" height="20" uuid="4cf613e2-89fd-4f17-a0ae-2eedac3650e7"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -77,13 +79,21 @@
 				</textElement>
 				<text><![CDATA[www.jutecorp.in]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="54" y="97" width="146" height="22" uuid="9983b4f1-3306-4874-9213-54ce348cec58"/>
+			<image>
+				<reportElement x="195" y="-8" width="321" height="43" uuid="a9a5fa51-8f00-4922-9d23-a52b3ee4fe4e"/>
+				<imageExpression><![CDATA["C:/Users/kailash.shah/Desktop/vishal/title.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="41" y="1" width="79" height="56" uuid="f7ff8fa0-8b21-40d7-88dd-9b728cc44fb2"/>
+				<imageExpression><![CDATA["C:/Users/kailash.shah/Desktop/vishal/logoani.gif"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="55" y="94" width="164" height="26" uuid="957d96a0-e4ed-4915-866e-3a3572fa9df0"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="14"/>
 				</textElement>
-				<text><![CDATA[jci/ind/SALE/INT/23-24/]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{jciref}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -196,7 +206,7 @@
 				<textElement>
 					<font size="14" isBold="false"/>
 				</textElement>
-				<text><![CDATA[3) Challan/Consignment Note/Boat Note/Mill Receipt 1 No(s)]]></text>
+				<text><![CDATA[3) Challan/Consignment Note/Boat Note/Mill Receipt ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="5" y="249" width="204" height="20" uuid="9c74d80f-bc1f-444b-a32b-78b9312cd83c"/>
@@ -353,14 +363,14 @@
 				<text><![CDATA[of]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="45" y="303" width="245" height="16" uuid="dd648085-8e36-4d30-91c7-091abe9394f9"/>
+				<reportElement x="45" y="303" width="245" height="20" uuid="dd648085-8e36-4d30-91c7-091abe9394f9"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bankname}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="351" y="304" width="308" height="20" uuid="08bd16e5-b32d-4df2-9326-7e55e8abd6a8"/>
+				<reportElement x="330" y="302" width="308" height="26" uuid="08bd16e5-b32d-4df2-9326-7e55e8abd6a8"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -383,7 +393,7 @@
 				<text><![CDATA[-----------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="333" y="230" width="304" height="14" uuid="655fb4b6-97b2-4b91-8bff-d7f9b01abf25"/>
+				<reportElement x="333" y="233" width="157" height="14" uuid="655fb4b6-97b2-4b91-8bff-d7f9b01abf25"/>
 				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
@@ -399,18 +409,25 @@
 				<text><![CDATA[-----------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="31" y="310" width="634" height="14" uuid="54a7d772-c234-4b71-8959-b5a029b2368b"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="20" y="415" width="340" height="19" uuid="752d2f25-8276-4f77-b08f-913fe82149f4"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[ IFSC - CBIN0280105, A/C No. - 1039797752]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="353" y="223" width="37" height="26" uuid="d90f8e05-34bb-495f-a3f6-b4e6de03a2e3"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="387" y="224" width="52" height="25" uuid="288621eb-adec-4eca-9c0d-88d7acd3dfbd"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[No(s)]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

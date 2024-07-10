@@ -48,6 +48,25 @@
   padding: 14px;
   text-decoration: none;
 }
+
+.single-click {
+    color: blue; 
+    cursor: pointer; 
+}
+.single-click:hover {
+    text-decoration: underline;
+}
+
+#childTable {
+    display: none; 
+}
+
+
+
+.newchildbos{
+    min-width: 50px;
+    height: 10px; /* Adjust the width as needed */
+}
 </style>
 
 </head>
@@ -68,7 +87,9 @@
 			</div>
 
 			<%
-			List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)request.getAttribute("genrationcashDocument");
+		/* 	List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)request.getAttribute("genrationcashDocument");
+			 */
+			 List<Object[]> allUserRegistration = (List<Object[]>)request.getAttribute("genrationcashDocument");
 			
 		%>
                   <div class="page-content fade-in-up">
@@ -84,12 +105,13 @@
 									<tr>
 										<th>Sl.No</th>
 										<th>SerialNo</th>
-										<th>BillofSupplyno</th>
+										<!-- <th>BillofSupplyno</th> -->
 									    <th>TopSheet Date</th> 
 										<th>TopSheet</th>
 										
+									 	
+										<th>BankDraft</th> 
 										<th>BillofExchange</th>
-										<th>BankDraft</th>
 									
 										
 										<th></th>
@@ -99,7 +121,7 @@
 									<%
 									int i = 1;
 									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-									for (GenerationofDocumentLCsModel  generationofDocumentLCsModel : allUserRegistration) {
+									for(Object[] row : allUserRegistration ){
 
 										if (i <= 200) {
 											
@@ -107,14 +129,30 @@
 									<tr>
 										<td><%=i%></td>
 									
+											  <td>
+							                <span class="single-click" data-id="<%=row[0]%>" > <%= row[0] %></span>
+							            </td>
+									
+										<td><%= row[1] %></td>
+										
+									
+									
 										
 								
-								      	<td><%= generationofDocumentLCsModel.getSerialno() %></td>
+										
+
+
+										<td><a href="downloadLetterofcreditdocument.obj?filename=<%= row[2] %>" target="_blank" style="color:blue;">TopSheet</a></td>
+											<td><a href="downloadLetterofcreditdocument.obj?filename=<%= row[3] %>" target="_blank" style="color:blue;">bankDraft</a></td>
+											<td><a href="downloadLetterofcreditdocument.obj?filename=<%= row[4] %>" target="_blank" style="color:blue;">BillofExchange</a></td>
+
+								
+								    <%--   	<td><%= generationofDocumentLCsModel.getSerialno() %></td>
 								      	<td><%= generationofDocumentLCsModel.getbOS_No() %></td>
 								        <td><%= sdf.format( generationofDocumentLCsModel.getBoe_Date()) %></td>
-								      
+								       --%>
 									
-									 <td>
+									<%--  <td>
 								            <a href="downloadLetterofcreditdocument.obj?filename=<%= generationofDocumentLCsModel.getTopsheetpath() %>"  target="_blank">
 								             
 								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View TopSheet</button>
@@ -128,7 +166,7 @@
 								            <a href="downloadLetterofcreditdocument.obj?filename=<%= generationofDocumentLCsModel.getBillofexchangepath() %>"  target="_blank">
 								          
 								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View bankdraft </button>
-								        </td>
+								        </td> --%>
 
 
 									</tr>
@@ -145,34 +183,18 @@
 
                         </table>
                         
-                        				<div class="modal fade" id="rejectModal" tabindex="-1"
-								role="dialog" aria-labelledby="rejectModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="rejectModalLabel">Reject
-												Confirmation</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<p>Are you sure you want to reject this record?</p>
-											<label for="remarks">Remarks:</label> <input
-												class="form-control" type="text" id="remarks" name="remarks">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-danger"
-												 id="rejectModalButton" onclick="rejectRecord()">Yes, Reject</button>
-
-										</div>
-									</div>
-								</div>
-							</div>
+                                    <table id="childTable" class="newchildbos">
+											    <thead class="thead-light">
+											        <tr>
+											            <th>BosNo</th>
+											        </tr>
+											    </thead>
+											    <tbody>
+											        <tr>
+											            <td><input type="text" id="bosno1" value=""></td>
+											        </tr>
+											    </tbody>
+											</table>
                         
                      </div>
                    </div>
@@ -191,51 +213,53 @@
     
     
  
-<script>
-    function openRejectModal(contractNo) {
-        $('#rejectModalButton').data('contractNo', contractNo);
-        $('#rejectModal').modal('show');
-    }
 
-    function closeRejectModal() {
-        $('#rejectModal').modal('hide');
-    }
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.single-click').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+       
 
-    function rejectAndNavigate(contractNo, paymentId) {
-        openRejectModal(contractNo)
-    
-        $('#rejectModalButton').off('click').on('click', function () {
-            var remarks = $('#remarks').val().trim();
+        $.ajax({
+            type: 'GET',
+            url: 'listofLCBOS.obj', 
+            data: { "serialno": id},
+            success: function(data) {
+            	alert(data);
+            	var dataArray = JSON.parse(data);
 
-            if (remarks === "") {
-                return;
-            }
-            $.ajax({
-                type: 'POST',
-                url: 'saveRemarks.obj',
-                data: {
-                    "remarks": remarks,
-                    "con_no": contractNo,
-                    "id": paymentId
-                },
-                success: function (data) {
-                    var responseData = JSON.parse(data);
-						 if (responseData.redirect) {
-                        window.location.href = responseData.redirect;
-                    } else {
+                // Clear the existing rows in the table body
+                $('#childTable tbody').empty();
+
+                // Iterate over the data array and add rows with input elements
+                dataArray.forEach(function(row, rowIndex) {
+                    var newRow = $('<tr>');  // Create a new table row
+                    var newCell = $('<td>');  // Create a new table cell
+                    var input = $('<input>')
+                        .attr('type', 'text')  // Set the input type to 'text'
+                        .attr('id', 'bosno_' + rowIndex)  // Set a dynamic ID based on the row index
+                        .val(row);  // Set the value of the input to the row data (assuming it's a string)
                         
-                    }
-                },
-                error: function (error) {
-                    console.error('Ajax error:', error);
-                }
-            });
+                     newCell.append(input);   // Append the input to the cell
+                     newRow.append(newCell);   // Append the cell to the row
+                    $('#childTable tbody').append(newRow);  // Append the row to the table body
+                });
 
-
-            closeRejectModal(); 
+                $('#childTable').show(); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
         });
-    }
+    });
+    
+    $('#childTable').on('dblclick', function(e) {
+        $('#childTable').hide();
+    });
+});
 </script>
+
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->

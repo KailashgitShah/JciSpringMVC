@@ -481,6 +481,9 @@ body {
 								Cash Against Dispatch document</b></a></li>
 									<li data-pre="1131" id="o1131"><a href="viewCash_against_LCs.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Against  LCs  list</b></a></li>
+							
+							<li data-pre="1131" id="o1131"><a href="documentListing.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>DocumentListing</b></a></li>
 								
 								
 				</ul></li>

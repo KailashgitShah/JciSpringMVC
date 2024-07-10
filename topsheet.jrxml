@@ -160,14 +160,14 @@
 		<band height="38" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="114" y="3" width="116" height="26" uuid="9570e348-a0b8-4600-a226-f7a4c65763df"/>
+				<reportElement x="114" y="8" width="116" height="26" uuid="9570e348-a0b8-4600-a226-f7a4c65763df"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contract_no}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="782" y="5" width="134" height="24" uuid="128058ce-bc12-48f3-a626-9fbd7ebe843c"/>
+				<reportElement x="786" y="5" width="134" height="24" uuid="128058ce-bc12-48f3-a626-9fbd7ebe843c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -195,7 +195,7 @@
 				<textFieldExpression><![CDATA[$F{dateofShipment}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="4" width="65" height="24" uuid="dd4eaf0a-6369-4ff8-89b2-2d4868fee107"/>
+				<reportElement x="30" y="10" width="65" height="24" uuid="dd4eaf0a-6369-4ff8-89b2-2d4868fee107"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -239,7 +239,7 @@
 				<reportElement x="111" y="-45" width="1" height="80" uuid="84f66a18-22df-4ce4-9c52-5ca18c67f17e"/>
 			</line>
 			<textField>
-				<reportElement x="346" y="13" width="81" height="23" uuid="321699b6-e68f-4397-9f29-062666b8d46c"/>
+				<reportElement x="346" y="12" width="81" height="23" uuid="321699b6-e68f-4397-9f29-062666b8d46c"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -272,7 +272,7 @@
 				<reportElement x="780" y="-5" width="1" height="38" uuid="97806785-4da0-401a-ac48-4470fdc29619"/>
 			</line>
 			<textField>
-				<reportElement x="818" y="6" width="86" height="30" uuid="4aed100a-eafc-4462-8cb8-27e6df145e0b"/>
+				<reportElement x="834" y="6" width="86" height="30" uuid="4aed100a-eafc-4462-8cb8-27e6df145e0b"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>

@@ -48,13 +48,13 @@
 /* CSS classes for the green link */
  .table-cell {
    
-     width: 200px;
+     width: 150px;
     height: 10px;
     
 } 
 
 #childTable {
-    width: 100%; /* Ensure the table takes the full width */
+    width: 80%; /* Ensure the table takes the full width */
     table-layout: fixed; /* Fix the table layout */
 }
 
@@ -184,6 +184,13 @@
 
 												</select>
 											</div>
+											
+											 <div class="col-sm-4 form-group">
+												<label>Balance LC Amount</label> <span class="text-danger">*
+												</span>&nbsp; <span id="instrumentdate" name="instrumentdate"
+													class="text-danger"> </span> <input class="form-control"
+													name="balenceammount" id="instdate"  value="" required readonly="readonly">
+											</div>
 											  <div class="col-sm-2 form-group"  style="display: none;">
 												    <label "display:none;" >rowindex </label> <span
 													class="text-danger">* </span>&nbsp;  <input
@@ -227,6 +234,8 @@
 								        </div>
 								    </div>
 							  </div> 
+								<button id="selectAll">Select All</button>
+                              <!--   <button id="deselectAll">Deselect All</button> -->
 								  
 						  <div class="row">
 								    <div class="col-sm-10">
@@ -263,17 +272,15 @@
                                              
                                     <div class="row">
                                     
-                                           <div class="col-sm-4 form-group">
-												<label>Balance Amount</label> <span class="text-danger">*
-												</span>&nbsp; <span id="instrumentdate" name="instrumentdate"
-													class="text-danger"> </span> <input class="form-control"
-													name="balenceammount" id="instdate"  value="" required readonly="readonly">
-											</div>
+                                          
 											     <div class="col-sm-2 form-group" style="display: none;">
 												    <label  "display:none; >indexes </label> <span
 													class="text-danger">* </span>&nbsp;  <input
 													 type="hidden" class="form-control" name="index"
 													id="indexses" value="" readonly="readonly">
+													 <input
+													 type="hidden" class="form-control" name="hideData"
+													id="hideData" value="" readonly="readonly">
 											</div>
 	                                      
 												
@@ -322,20 +329,24 @@
  
      <script type="text/javascript">
     
-	$(document).ready(function(){
-		 $("#submit").click(function(){
-		
-			  var contractdate = $("#Date_of_Shipment134").val();
-			  var instdate = $("#HO_Date1").val();
-			  var instdate1 = $("#MR_Date1").val();
-			 
-			  
-			  if(contractdate =="" || instdate =="" || instdate1 =="")
-				  {
-				    alert("Please select mandatory Fields!");
-				  }  
-		    });
-	 });
+     $(document).ready(function() {
+    	    $('#submit12').on('click', function(event) {
+    	        var isChecked = $('.invoice-checkbox:checked').length > 0;
+
+    	        if (!isChecked) {
+    	            event.preventDefault();
+    	            alert("Please select at least one checkbox before submitting.");
+    	        }
+    	        
+    	        var autorevolvingAmount = parseFloat($('#instdate').val());
+    	        if (autorevolvingAmount === 0) {
+    	            $('#submit12').prop('disabled', true);
+    	        } else {
+    	            $('#submit12').prop('disabled', false);
+    	        }
+    	    });
+    	});
+
 	
 	
   </script>
@@ -456,8 +467,10 @@ $(document).ready(function() {
 
                             if (parsedData == 0) {
                                 $('#instdate').val(autorevolvingAmount);
+                                $('#hideData').val(autorevolvingAmount);
                             } else {
                                 $('#instdate').val(parsedData);
+                                $('#hideData').val(parsedData);
                             }
                         } catch (e) {
                             console.error('Error parsing JSON response:', e);
@@ -482,6 +495,8 @@ $(document).ready(function() {
       
 
         // Second AJAX call
+        let selectedRowIndices = []; // Declare selectedRowIndices globally
+
         $.ajax({
             type: 'GET',
             url: 'listofbillofsupply.obj',
@@ -523,7 +538,16 @@ $(document).ready(function() {
 
                     // Bind change event for checkboxes
                     $('.invoice-checkbox').on('change', function() {
-                        updateBalanceAmount();
+                    	  if ($(this).is(':checked')) {
+                    		  alert("checked");
+                    		  let closestRow = $(this).closest('tr');
+                              let rowIndex = closestRow.index();
+                              updateBalanceAmount(rowIndex);
+                          } else {
+                        	  alert("checkednot");
+                        	  updateBalanceAmount();
+                             // updateBalanceAmountForUncheck();
+                          }
                     });
                 } else {
                     $('#billofsupllydetails').css('display', 'none');
@@ -534,38 +558,124 @@ $(document).ready(function() {
             }
         });
 
-        // Function to update the Balance Amount
-        function updateBalanceAmount() {
-    let autorevolvingAmount = parseFloat(document.getElementById('instdate').value);
-    let checkedTotal = 0;
-    let prevcheckedTotal = 0;
-    let selectedRowIndices = [];
-    let checked = 0;
 
-    $('.invoice-checkbox:checked').each(function() {
-        let closestRow = $(this).closest('tr');
+        function updateBalanceAmountForUncheck() {
+            let autorevolvingAmount1 = parseFloat(document.getElementById('instdate').value);
 
-        let rowIndex = closestRow.index();
-        let invoiceValue = parseFloat(closestRow.find('input[name="invoicevalue[]"]').val());
-        prevcheckedTotal=checkedTotal;
-        if (checkedTotal + invoiceValue <= autorevolvingAmount) {
-            checkedTotal += invoiceValue;
-            checked=invoiceValue;
-            selectedRowIndices.push(rowIndex);
-        } else {
-            $(this).prop('checked', false);
+            console.log(autorevolvingAmount1); // Log the original amount stored in data attribute
+
+            let balanceAmount = autorevolvingAmount;
+
+            // Get the index of unchecked checkbox
+            let uncheckedIndex = -1;
+            $('.invoice-checkbox').each(function(index) {
+                if (!$(this).is(':checked')) {
+                    uncheckedIndex = index;
+                    return false; // Exit the loop
+                }
+            });
+
+            if (uncheckedIndex !== -1) {
+                // Remove the unchecked index from selectedRowIndices
+                selectedRowIndices = selectedRowIndices.filter(index => index !== uncheckedIndex);
+            }
+
+            $('.invoice-checkbox:checked').each(function() {
+                let closestRow = $(this).closest('tr');
+                let invoiceValue = parseFloat(closestRow.find('input[name="invoicevalue[]"]').val());
+                balanceAmount += invoiceValue;
+            });
+
+            $('#instdate').val(balanceAmount);
+            $('#indexses').val(selectedRowIndices.join(','));
         }
-    });
 
-    let balanceAmount = autorevolvingAmount - checked;
-    if (balanceAmount < 0) {
-        balanceAmount =prevcheckedTotal;
-    }
+        // Ensure the original amount is stored in data attribute
+        $('#instdate').data('originalAmount', $('#instdate').val());
 
-     $('#instdate').val(balanceAmount);
+    
+        
+          function updateBalanceAmount(idx) {
+        let autorevolvingAmount = parseFloat($("#hideData").val());
+        let checkedTotal = 0;
+        let selectedRowIndices = [];
+
+        $('.invoice-checkbox:checked').each(function() {
+            let closestRow = $(this).closest('tr');
+            let rowIndex = closestRow.index();
+            let invoiceValue = parseFloat(closestRow.find('input[name="invoicevalue[]"]').val());
+
+         /*    // Check if adding the current invoice value exceeds autorevolvingAmount
+            if (checkedTotal + invoiceValue <= autorevolvingAmount) {
+                checkedTotal += invoiceValue;
+                selectedRowIndices.push(rowIndex);
+            } else {
+                // If adding the invoice value exceeds autorevolvingAmount, uncheck the checkbox
+                let checkbox = closestRow.find('.invoice-checkbox');
+                checkbox.prop('checked', false);
+            } */
+            
+            
+            checkedTotal += invoiceValue;
+
+         
+            if (checkedTotal > autorevolvingAmount) {
+         
+                let checkbox = closestRow.find('.invoice-checkbox');
+                checkbox.prop('checked', false);
+                checkedTotal -= invoiceValue; // Adjust checkedTotal
+            } else {
+             
+                selectedRowIndices.push(rowIndex);
+            }
+            
+        });
+
+        let balanceAmount = autorevolvingAmount - checkedTotal;
+        $('#instdate').val(balanceAmount);
+        $('#indexses').val(selectedRowIndices.join(','));
+        console.log(selectedRowIndices);
+    } 
+      
+        // Function to update the balance amount when checkboxes are unchecked
+        function updateBalanceAmountForUncheck() {
+            let autorevolvingAmount = parseFloat(document.getElementById('instdate').value);
+            let balanceAmount = autorevolvingAmount;
+            let selectedRowIndices = [];
+
+            $('.invoice-checkbox:checked').each(function() {
+                let closestRow = $(this).closest('tr');
+                let rowIndex = closestRow.index();
+                let invoiceValue = parseFloat(closestRow.find('input[name="invoicevalue[]"]').val());
+                balanceAmount -= invoiceValue;
+                selectedRowIndices.push(rowIndex);
+            });
+
+            $('#instdate').val(balanceAmount);
             $('#indexses').val(selectedRowIndices.join(','));
             console.log(selectedRowIndices);
         }
+
+        // "Select All" button click event
+        $('#selectAll').on('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+            $('.invoice-checkbox').each(function() {
+                $(this).prop('checked', true);
+                updateBalanceAmount();
+            });
+            
+            $('#selectAll').prop('disabled', true);
+        });
+
+        // "Deselect All" button click event
+      /*   $('#deselectAll').on('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+            $('.invoice-checkbox').each(function() {
+                $(this).prop('checked', false);
+            });
+            updateBalanceAmountForUncheck();
+        }); */
+
 
     });
 });
@@ -600,7 +710,7 @@ $(document).ready(function() {
       
         setTimeout(function(){
             $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
+        }, 3000);
     });
 </script>
 

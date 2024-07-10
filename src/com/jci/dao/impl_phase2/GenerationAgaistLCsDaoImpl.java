@@ -31,9 +31,18 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 		currentSession().saveOrUpdate(generationofDocumentLCsModel);
 	}
 	@Override
-    public List<GenerationofDocumentLCsModel> getAll() {
-        Criteria criteria = currentSession().createCriteria(GenerationofDocumentLCsModel.class);
-        return criteria.list();
+    public List<Object[]> getAll() {
+		String sql ="SELECT DISTINCT \r\n"
+				+ "    Serialno,\r\n"
+				+ "    CONVERT(VARCHAR, Boe_Date, 105) AS FormattedBoe_Date,\r\n"
+				+ "    topsheetpath,\r\n"
+				+ "    billofexchangepath,\r\n"
+				+ "    bankdrftpath \r\n"
+				+ "FROM jciboe;\r\n"
+				+ "";
+			
+		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		 return resultList1;
     }
 
 	@Override
@@ -148,7 +157,7 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 	@Override
 	public List<Object[]> forQtyintopsheet(String st) {
 		  String sql ="   select   a.Crop_year,a.Bale_mark,a.Jute_variety,a.Jute_grade,a.No_of_bales,a.Nominal_wt,a.Rate,a.Nominal_qty,a.Jute_value  from  jcidispatch_details_child  as a \r\n"
-		  		+ "   left JOIN jcidispatch_details on jcidispatch_details.Challan_no=a.Challan_no where jcidispatch_details.Contract_No= '" +st+"'"; 
+		  		+ "   left JOIN jcidispatch_details on jcidispatch_details.Challan_no=a.Challan_no where jcidispatch_details.Challan_no= '" +st+"'"; 
 				    
 						 		
 						
@@ -160,6 +169,20 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 	public String lcno() {
 	
 		String sql = "SELECT  count(*) FROM jciboe ";
+		
+//		String sql = "SELECT \r\n"
+//				+ "    topsheet_count + serialno_count AS total_count\r\n"
+//				+ "FROM (\r\n"
+//				+ "    SELECT \r\n"
+//				+ "        COUNT(DISTINCT a.topsheet_generated_id) AS topsheet_count,\r\n"
+//				+ "        COUNT(DISTINCT b.Serialno) AS serialno_count\r\n"
+//				+ "    FROM \r\n"
+//				+ "        jcitopsheet AS a\r\n"
+//				+ "    LEFT JOIN \r\n"
+//				+ "        jciboe AS b \r\n"
+//				+ "    ON \r\n"
+//				+ "        b.Serialno = a.topsheet_generated_id\r\n"
+//				+ ") AS counts;";
 		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
 		total++;
 		
@@ -199,18 +222,26 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 
 	@Override
 	public List<Object[]> balanceammount(String st) {
-//        String sql ="SELECT COALESCE(\r\n"
-//        		+ "    (SELECT TOP 1 balanceammount\r\n"
-//        		+ "     FROM jciboe \r\n"
-//        		+ "     WHERE contractno = '" +st+"\r\n"
-//        		+ "     ORDER BY BOS_No\r\n"
-//        		+ "    ), 0) AS balanceamount; ";
+        String sql ="SELECT COALESCE(\r\n"
+        		+ "    (SELECT TOP 1 balanceammount\r\n"
+        		+ "     FROM jciboe \r\n"
+        		+ "     WHERE contractno = '" +st+"'\r\n"
+        		+ "     ORDER BY BOS_No\r\n"
+        		+ "    ), 0) AS balanceamount; ";
 		  
-		  String sql ="   SELECT COALESCE((SELECT balanceammount FROM jciboe WHERE contractno='" +st+"'), 0) AS balanceamount\r\n"
-		  		+ "";
+//		  String sql ="   SELECT COALESCE((SELECT balanceammount FROM jciboe WHERE contractno='" +st+"'), 0) AS balanceamount\r\n"
+//		  		+ "";
 		   List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 							 return resultList1;
 		}
+
+	@Override
+	public List<Object[]> bosnolist(String st) {
+		  String sql ="   Select BOS_No from jciboe where Serialno='" +st+"'  ";
+			  		
+			   List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+								 return resultList1;
+	}
 	
 
 }

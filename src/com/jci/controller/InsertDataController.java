@@ -6260,7 +6260,7 @@ public class InsertDataController
 			}
 												
 
-			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
+			final List<Object[]> allUserRegistration = (List<Object[]>)
 					this.generationAgaistLCsService.getAll();
 			mv.addObject("genrationcashDocument", allUserRegistration);
 			
@@ -6300,7 +6300,7 @@ public class InsertDataController
 			
 			String  serialno =yearCode+status;
 			
-			final List<GenerationofDocumentLCsModel> allUserRegistration = (List<GenerationofDocumentLCsModel>)
+			final List<Object[]> allUserRegistration = (List<Object[]>)
 					this.generationAgaistLCsService.getAll();
 			mv.addObject("genrationAgainstLcs", allUserRegistration);
 			mv.addObject("fetchMill_Namelc", fetchMill_Namelc);

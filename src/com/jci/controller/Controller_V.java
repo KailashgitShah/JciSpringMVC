@@ -3008,7 +3008,7 @@ public class Controller_V {
 				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date instdate1 = formatter1.parse(instdate);
 //			SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
-//			String instdate3 = formatter2.format(instdate2);
+//			String instdate3 = formatter2.format(instdate);
 //			Date instdate1 = formatter2.parse(instdate3);
 
 				// Set the time portion to midnight
@@ -3030,6 +3030,7 @@ public class Controller_V {
 				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
 				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
 				entryPaymentDetailsModel.setFc_status(0);
+				String spaceString="";
 
 				Date date3 = new Date();
 				Double flag = 0.0;
@@ -3043,8 +3044,8 @@ public class Controller_V {
 				if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
 					autorevolvingamount = "0";
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship("");
-                    entryPaymentDetailsModel.setDateofexpiry("");
+					entryPaymentDetailsModel.setDateofship(spaceString);
+                    entryPaymentDetailsModel.setDateofexpiry(spaceString);
 
 					entryPaymentDetailsModel.setIFSC(IFSC);
 					entryPaymentDetailsModel.setBranch(Branch);
@@ -3054,8 +3055,8 @@ public class Controller_V {
 
 					autorevolvingamount = "0";
 					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship("");
-					entryPaymentDetailsModel.setDateofexpiry("");
+					entryPaymentDetailsModel.setDateofship(spaceString);
+					entryPaymentDetailsModel.setDateofexpiry(spaceString);
 
 					entryPaymentDetailsModel.setIFSC(IFSC);
 					entryPaymentDetailsModel.setBranch(Branch);
@@ -3397,18 +3398,25 @@ public class Controller_V {
 
 	            if (details[3] != null) {
 	                ifsc = details[3].toString();
-	                
 	                String url = "https://ifsc.razorpay.com/" + ifsc;
-	        	    RestTemplate restTemplate = new RestTemplate();
-	        	 
-	        	        String result = restTemplate.getForObject(url, String.class);
-	        	        JSONObject jsonObject = new JSONObject(result);
-	        	        String banknameString = jsonObject.optString("BANK");
-	        	        parameters.put("banknameString", banknameString);
-	        	        System.err.println("qty: " + banknameString);
-	        	        String bankaddressString = jsonObject.optString("ADDRESS");
-	        	        parameters.put("bankaddressString", bankaddressString);
-	        	        System.err.println("qty: " + bankaddressString);
+	                
+	                try {
+	                    RestTemplate restTemplate = new RestTemplate();
+	                    String result = restTemplate.getForObject(url, String.class);
+	                    JSONObject jsonObject = new JSONObject(result);
+
+	                    String banknameString = jsonObject.optString("BANK");
+	                    String bankaddressString = jsonObject.optString("ADDRESS");
+
+	                    parameters.put("banknameString", banknameString);
+	                    parameters.put("bankaddressString", bankaddressString);
+
+	                    System.err.println("Bank Name: " + banknameString);
+	                    System.err.println("Bank Address: " + bankaddressString);
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                    System.err.println("Failed to retrieve or parse IFSC data");
+	                }
 	            }
 	            
 	        }
@@ -3964,7 +3972,7 @@ public class Controller_V {
 	            
 	            if (index == null || index.isEmpty()) throw new IllegalArgumentException("Index is missing.");
 	            String[] indexArray = index.split(",");
-	            System.err.println(indexArray);
+	           
 	            
 	            String[] bosNo = request.getParameterValues("bosNo[]");
 	            String[] millcode = request.getParameterValues("millcode[]");
@@ -4037,7 +4045,7 @@ public class Controller_V {
 
 	            CompletableFuture<Void> billOfExchangeFuture = CompletableFuture.runAsync(() -> {
 	                try {
-	                    generateBillOfExchange(finalBosConcatenate, finalContractno, finalMillcode1, finalBosdate, finalSumOfInvoiceValue, response);
+	                    generateBillOfExchange(finalBosConcatenate, finalContractno, finalMillcode1, finalBosdate, finalSumOfInvoiceValue,finalnum, response);
 	                } catch (Exception e) {
 	                    e.printStackTrace();
 	                }
@@ -4046,7 +4054,7 @@ public class Controller_V {
 	            CompletableFuture<Void> topSheetFuture = CompletableFuture.runAsync(() -> {
 	                try {
 	                    generateTopSheet(finalBosConcatenate, finalContractno, finalMillcode1, finalBosdate, 
-	                                     finalSumOfInvoiceValue, finalSumOfInvoiceValue, finalnum, bosNo, invoicevalue,indexArray,balance, response);
+	                                     finalSumOfInvoiceValue, finalSumOfInvoiceValue, finalnum, bosNo, invoicevalue,indexArray,balance,challanno, response);
 	                } catch (Exception e) {
 	                    e.printStackTrace();
 	                }
@@ -4147,7 +4155,7 @@ public class Controller_V {
 	        
 	    }
 
-	    private void generateBillOfExchange(String bosConcatenate, String contractno, String millcode1, String bosdate, Double sumOfInvoiceValue, HttpServletResponse response) throws Exception {
+	    private void generateBillOfExchange(String bosConcatenate, String contractno, String millcode1, String bosdate, Double sumOfInvoiceValue,int num, HttpServletResponse response) throws Exception {
 	        JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(BillofExchagePathJasper));
 	        Map<String, Object> parameters = new HashMap<>();
 	        BillOfExchangeDTO billOfExchangeDTO = new BillOfExchangeDTO();
@@ -4165,13 +4173,33 @@ public class Controller_V {
 	                fetchBankDetails1(ifsc, billOfExchangeDTO);
 	            }
 	        }
+	        
+	    	Calendar calendar = Calendar.getInstance();
+	        int currentYear = calendar.get(Calendar.YEAR);
+	        int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
 
+	        int financialYearStart, financialYearEnd;
+
+	        if (currentMonth >= 4) { // April or later
+	            financialYearStart = currentYear;
+	            financialYearEnd = currentYear + 1;
+	        } else { // January to March
+	            financialYearStart = currentYear - 1;
+	            financialYearEnd = currentYear;
+	        } 
+	        
+		     String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+		     String StartYearLastTwoDigits = Integer.toString(financialYearStart).substring(2);
+		     String jciref = "JCI/ind/SALE/INT/ "+StartYearLastTwoDigits+"-"+endYearLastTwoDigits+"/";
+			   
 	        
 	        String subdetails= "Our bill for Rs.  "+sumOfInvoiceValue+" for collection and payment under letter of  "+instnoString+" Dated "+instdate+"  A/c The Ganges Mfg. Co. Ltd";
 	        
 	        
 	        String invoiceValueString = String.valueOf(sumOfInvoiceValue);
 	        billOfExchangeDTO.setSubdetails(subdetails);
+	        billOfExchangeDTO.setJciref(jciref);
+	        billOfExchangeDTO.setJno(num);
 	        billOfExchangeDTO.setInvoicevalue(invoiceValueString);
 	        billOfExchangeDTO.setBillofsupplyNo(bosConcatenate);
 	        billOfExchangeDTO.setBosDate(bosdate);
@@ -4225,7 +4253,7 @@ public class Controller_V {
 
 	    private void generateTopSheet(String bosConcatenate, String contractno, String millcode1, String bosdate, 
                 Double sumOfInvoiceValue, Double sumOfInvoiceValue1, int num, String[] bosNo, 
-                String[] invoicevalue,String[] indexArray,String balance, HttpServletResponse response) throws Exception {
+                String[] invoicevalue,String[] indexArray,String balance,String[] challanno, HttpServletResponse response) throws Exception {
 					JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(TopSheetPathJasper));
 					Map<String, Object> parameters = new HashMap<>();
 					List<TopSheeetDTO> listOfTopSheet = new ArrayList<>();
@@ -4240,17 +4268,12 @@ public class Controller_V {
 					String millname = "";
 					String instrumentno = "";
 					String instrumentdate = "";
-					double sumofQty = 0.0;
+					
 					double totalQuantity = 0.0;
 					
-					List<Object[]> list = generationAgaistLCsService.forQtyintopsheet(contractno);
+					
 					List<Object[]> list1 = generationofBillService.DocumentLcsEntry(contractno);
-					for (Object[] details : list) {
-					double value4 = (details[4] instanceof Integer) ? ((Integer) details[4]).doubleValue() : Double.parseDouble(details[4].toString());
-					double value5 = (details[5] instanceof String) ? Double.parseDouble((String) details[5]) : ((Number) details[5]).doubleValue();
-					double result = value4 * value5;
-					sumofQty += result;
-					}
+					
 					
 					for (Object[] details : list1) {
 					millcode2 = (String) details[0];
@@ -4294,7 +4317,7 @@ public class Controller_V {
 					
 				    String status = String.format("%06d", Integer.parseInt(this.generationAgaistLCsService.lcno()));
 					
-				     String  number= yearCode+status;
+				     String  number= "LC"+yearCode+status;
 					 
 				     String fileName = "Topsheet" + bosConcatenate + ".pdf";
 				     
@@ -4304,7 +4327,15 @@ public class Controller_V {
 				     String invoice= String.valueOf(sumOfInvoiceValue);
 				    for (String idx : indexArray) {
 			        int j = Integer.parseInt(idx);
-			       
+			        List<Object[]> list = generationAgaistLCsService.forQtyintopsheet(challanno[j]);
+			        double sumofQty = 0.0;
+			        for (Object[] details : list) {
+						double value4 = (details[4] instanceof Integer) ? ((Integer) details[4]).doubleValue() : Double.parseDouble(details[4].toString());
+						double value5 = (details[5] instanceof String) ? Double.parseDouble((String) details[5]) : ((Number) details[5]).doubleValue();
+						double result = value4 * value5;
+						sumofQty += result;
+						}
+			        System.err.println(sumofQty);
 				    TopSheeetDTO topSheeetDTO = new TopSheeetDTO();
 					topSheeetDTO.setBillOfSupplyNo(bosNo[j]);
 					//topSheeetDTO.setBillOfSupplyNo(bosConcatenate);
@@ -4333,6 +4364,7 @@ public class Controller_V {
 //				       int intValue1 = decimalValue.intValue();
 						generationofDocumentLCsModel.setBoe_Date(date);
 						generationofDocumentLCsModel.setbOS_No(bosNo[j]);
+						//generationofDocumentLCsModel.setbOS_No(bosConcatenate);
 						generationofDocumentLCsModel.setContractno(contractno);
 						generationofDocumentLCsModel.setInstrumentno(instrumentno);
 						generationofDocumentLCsModel.setInstrumentdate(instrumentdate);
@@ -6066,6 +6098,20 @@ public class Controller_V {
 	public String listofdispatchChildinbos(@RequestParam("challanNo") String challanNo) {
 
 		List<Object[]> ObjdispatchChildlist = generationofBillService.dispatchChildlist(challanNo);
+		System.err.println("resultList++++++++++" + ObjdispatchChildlist);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(ObjdispatchChildlist);
+		return resultString;
+	}
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "listofLCBOS", method = RequestMethod.GET)
+	public String listofLetterofcreditinbos(@RequestParam("serialno") String serialno) {
+
+		List<Object[]> ObjdispatchChildlist = generationAgaistLCsService.bosnolist(serialno);
 		System.err.println("resultList++++++++++" + ObjdispatchChildlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(ObjdispatchChildlist);

@@ -67,13 +67,23 @@
 		    String issuedate = (String) request.getAttribute("parsed");
 		    String paymentDueDate = (String) request.getAttribute("paymentDueDate");
 		    Object instrumentvalue =request.getAttribute("instrumentvalue");
-		    Object instrumentDateObject = request.getAttribute("instrumentDate");
+		    Object  instrumentDateObject =request.getAttribute("instrumentDate");
 		    Object remainquantity = request.getAttribute("remainquantity");
 		    
-		    Date instrumentDate1 = (Date) instrumentDateObject;
+		    Date instrumentDate1 = (Date) instrumentDateObject; 
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy"); // Change the format as needed
-	        String formattedInstrumentDate = dateFormat.format(instrumentDate1);
-	        
+	        String formattedInstrumentDate = dateFormat.format(instrumentDateObject);
+	         
+	         
+	         
+	       /*   SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+	         SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+	             Date date = inputFormat.parse(instrumentDateObject);
+
+	             String formattedDate = outputFormat.format(date); */
+	             
+	             
 		    String ContractValue = (String) request.getAttribute("ContractValue");
 		    Double qtyallowed = (Double) request.getAttribute("qtyallowed");
 		    int Payment_id = (int) request.getAttribute("Payment_id");
@@ -500,7 +510,7 @@
       
         setTimeout(function(){
             $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
+        }, 3000); 
     });
 </script>
 					 	 
