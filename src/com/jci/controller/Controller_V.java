@@ -7846,7 +7846,7 @@ public class Controller_V {
 					
 					// Set filename
 					
-					String fileNameboe = filename+ "boeNONLCcashAgainstDispatchDocument.pdf";
+					String fileNameboe = "BOE" +filename +".pdf";
 					
 					// Set content disposition to attachment to trigger download
 					response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
@@ -7935,7 +7935,7 @@ public class Controller_V {
 							
 							// Set filename
 							
-							String fileName = filename+ "topsheetNonLCcashAgainstDispatchDocument.pdf";
+							String fileName ="TopSheet"+ filename+ ".pdf";
 							
 							// Set content disposition to attachment to trigger download
 							response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
