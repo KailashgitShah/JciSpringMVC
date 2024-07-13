@@ -30,6 +30,8 @@ public class TopsheetDetailsModel {
 	    private String hodiNo;
 	    private String hodiDate;
 	    private String balanceAmount;
+	    private String topSheetNl;
+	    private String boeNl;
 	    
 		public Long getTopSheet_id() {
 			return topSheet_id;
@@ -139,13 +141,27 @@ public class TopsheetDetailsModel {
 		public void setBalanceAmount(String balanceAmount) {
 			this.balanceAmount = balanceAmount;
 		}
+		
+		public String getTopSheetNl() {
+			return topSheetNl;
+		}
+		public void setTopSheetNl(String topSheetNl) {
+			this.topSheetNl = topSheetNl;
+		}
+		public String getBoeNl() {
+			return boeNl;
+		}
+		public void setBoeNl(String boeNl) {
+			this.boeNl = boeNl;
+		}
 		public TopsheetDetailsModel() {
 			super();
 		}
 		public TopsheetDetailsModel(Long topSheet_id, String bosDate, String billOfSupplyNo, String topSheetCreateDate,
 				String invoiceValue, String amount, String topsheet_generated_id, String contract_no,
 				String contract_identification_no, String contract_date, String cropYear, String millcode,
-				String millname, String milladdress, String hodiNo, String hodiDate, String balanceAmount) {
+				String millname, String milladdress, String hodiNo, String hodiDate, String balanceAmount,
+				String topSheetNl, String boeNl) {
 			super();
 			this.topSheet_id = topSheet_id;
 			this.bosDate = bosDate;
@@ -164,6 +180,8 @@ public class TopsheetDetailsModel {
 			this.hodiNo = hodiNo;
 			this.hodiDate = hodiDate;
 			this.balanceAmount = balanceAmount;
+			this.topSheetNl = topSheetNl;
+			this.boeNl = boeNl;
 		}
 		@Override
 		public String toString() {
@@ -173,7 +191,7 @@ public class TopsheetDetailsModel {
 					+ contract_no + ", contract_identification_no=" + contract_identification_no + ", contract_date="
 					+ contract_date + ", cropYear=" + cropYear + ", millcode=" + millcode + ", millname=" + millname
 					+ ", milladdress=" + milladdress + ", hodiNo=" + hodiNo + ", hodiDate=" + hodiDate
-					+ ", balanceAmount=" + balanceAmount + "]";
+					+ ", balanceAmount=" + balanceAmount + ", topSheetNl=" + topSheetNl + ", boeNl=" + boeNl + "]";
 		}
 		
 		

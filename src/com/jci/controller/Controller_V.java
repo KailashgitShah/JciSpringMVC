@@ -8052,7 +8052,7 @@ public class Controller_V {
 					  String  financialYearCurrent =  endYearLastTwoDigits;
 			        String status = String.format("%06d", Integer.parseInt(this.generationOfCashAgainstDispatchDocumentService.topSheetId()));
 				
-			        String topSheetGeneratedId =   "NONLC" +financialYearCurrent+status;
+			        String topSheetGeneratedId =   "NL" +financialYearCurrent+status;
 			       // System.err.println(topSheetGeneratedId);
 			        
 			        
