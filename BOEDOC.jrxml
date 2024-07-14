@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mySheet123" pageWidth="695" pageHeight="1213" columnWidth="655" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02124c31-1035-4c25-926b-79a305c36716">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mySheet123" pageWidth="650" pageHeight="1013" columnWidth="610" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02124c31-1035-4c25-926b-79a305c36716">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -244,7 +253,7 @@
 				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="377" y="9" width="223" height="23" uuid="c7f39c9f-0977-4364-96c6-5aafa37220f9"/>
+				<reportElement x="364" y="11" width="223" height="23" uuid="c7f39c9f-0977-4364-96c6-5aafa37220f9"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -278,7 +287,7 @@
 				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="326" y="8" width="40" height="23" uuid="0650a0cb-9ccf-4556-a0c3-281a1f828df2"/>
+				<reportElement x="326" y="11" width="40" height="23" uuid="0650a0cb-9ccf-4556-a0c3-281a1f828df2"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -321,7 +330,7 @@
 				<text><![CDATA[-----------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="222" y="372" width="100" height="19" uuid="21c22c5d-c77e-4492-8959-4910dcad8b96"/>
+				<reportElement x="237" y="367" width="100" height="19" uuid="21c22c5d-c77e-4492-8959-4910dcad8b96"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -370,7 +379,7 @@
 				<text><![CDATA[Drawn under Letter of Credit No. ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="71" y="402" width="85" height="20" uuid="5711fc82-7fcf-4e98-8e81-63e94941b623"/>
+				<reportElement x="65" y="402" width="85" height="20" uuid="5711fc82-7fcf-4e98-8e81-63e94941b623"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -423,7 +432,7 @@
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{instrumentDate}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{invoicevalueInnumber}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="75" y="556" width="483" height="18" uuid="a9bc5f71-b842-4382-95bc-15104999ebcd"/>
@@ -458,7 +467,7 @@
 				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="381" y="470" width="207" height="23" uuid="d93cd874-ad67-42ff-a389-879b59744179"/>
+				<reportElement x="360" y="472" width="207" height="23" uuid="d93cd874-ad67-42ff-a389-879b59744179"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -524,11 +533,15 @@
 				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="296" width="25" height="30" uuid="f1b92260-a43d-4862-8c1d-34dfefd40316"/>
+				<reportElement x="15" y="290" width="25" height="30" uuid="f1b92260-a43d-4862-8c1d-34dfefd40316"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="382" width="139" height="24" uuid="d9148655-02e0-45fb-85ff-ca6dd393ca40"/>
+				<text><![CDATA[-------------------------------------------]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

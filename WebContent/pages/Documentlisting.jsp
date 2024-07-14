@@ -239,8 +239,8 @@ $(document).ready(function() {
                     var input = $('<input>')
                         .attr('type', 'text')  // Set the input type to 'text'
                         .attr('id', 'bosno_' + rowIndex)  // Set a dynamic ID based on the row index
-                        .val(row);  // Set the value of the input to the row data (assuming it's a string)
-                        
+                        .val(row)  // Set the value of the input to the row data (assuming it's a string)
+                        .prop('readonly', true);
                      newCell.append(input);   // Append the input to the cell
                      newRow.append(newCell);   // Append the cell to the row
                     $('#childTable tbody').append(newRow);  // Append the row to the table body

@@ -2973,6 +2973,11 @@ public class Controller_V {
 
 				String dateofexpiry = request.getParameter("dateofexpiry");
 				String dateofship = request.getParameter("dateofship");
+				
+				System.err.println(dateofship);
+				System.err.println(dateofexpiry);
+				
+				
 				String Pyamentduedate = request.getParameter("payment_dueDate12");
 				String contrcat_value23 = request.getParameter("contrcat_value23");
 				String autorevolvingamount = request.getParameter("autorevolvingamount");
@@ -3759,7 +3764,7 @@ public class Controller_V {
 			String vehicleNo1 = request.getParameter("vehicleNo1");
 			String diDate1 = request.getParameter("diDate1");
 			// String actualqty = request.getParameter("actualqty1");
-//            String shortqty = request.getParameter("shortqty1");
+            // String shortqty = request.getParameter("shortqty1");
 			String MR_No2 = request.getParameter("MR_No1");
 			String MR_Date1 = request.getParameter("MR_Date1");
 			String millcode1 = request.getParameter("millcode");
@@ -3800,21 +3805,26 @@ public class Controller_V {
 				double moistureContent1 = Double.parseDouble(Nomination1);
 				millRecieptModel.setMoistureContent(moistureContent1);
 
+			    String ncvdust1 = ncvdust[i];
+				System.err.println(ncvdust1);
+				String NCVamt1 = NCVamt[i];
+				System.err.println(NCVamt1);
+				String dustAmt1 = dustAmt[i];
+				System.err.println(dustAmt1);
+				String dustQty1 = dustQty[i];
+				System.err.println(dustQty1);
               if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
-                    String ncvdust1 = ncvdust[i];
-					System.err.println(ncvdust1);
+                
 					double NCV_Percentage1 = Double.parseDouble(ncvdust1);
 					
 					double Ncv_qtyconverted =NCV_Percentage1/Actual_Qty1;
 					 String formatted = String.format("%.2f", Ncv_qtyconverted);
 
-				        // Converting formatted string back to double (optional)
 				     double roundedValue = Double.parseDouble(formatted);
 					millRecieptModel.setNCV_percentage(roundedValue);
 					millRecieptModel.setNCV_qty(flag);
 				} else if (NCVamt != null && i < NCVamt.length && NCVamt[i] != null && !NCVamt[i].equals("null")) {
-					String NCVamt1 = NCVamt[i];
-					System.err.println(NCVamt1);
+				
 					double NCV_Qty1 = Double.parseDouble(NCVamt1);
 				
                      millRecieptModel.setNCV_qty(flag);
@@ -3831,14 +3841,12 @@ public class Controller_V {
 
 				if (dustAmt != null && i < dustAmt.length && dustAmt[i] != null && !dustAmt[i].equals("null")) {
 
-					String dustAmt1 = dustAmt[i];
-					System.err.println(dustAmt1);
+				
 					double dustAmt2 = Double.parseDouble(dustAmt1);
 					millRecieptModel.setDustAmt(dustAmt2);
 					millRecieptModel.setDustQty(flag);
 				} else if (dustQty != null && i < dustQty.length && dustQty[i] != null && !dustQty[i].equals("null")) {
-					String dustQty1 = dustQty[i];
-					System.err.println(dustQty1);
+				
 					double dustQty2 = Double.parseDouble(dustQty1);
 					double dust_qtyconverted =dustQty2/Actual_Qty1;
 					
@@ -3862,24 +3870,7 @@ public class Controller_V {
                 
                 
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-
+           
 
 				millRecieptModel.setHO_di(HO_DINO);
 				millRecieptModel.setChallan_no(challanno1);
@@ -3914,7 +3905,7 @@ public class Controller_V {
 					millRecieptModel.setClaim_status(2);
 				}
 
-				this.millRecieptService.create(millRecieptModel);
+				//this.millRecieptService.create(millRecieptModel);
 				this.millRecieptService.UpdateContractstatus(Contractno1);
 				redirectAttributes.addFlashAttribute("msg",
 						"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n"

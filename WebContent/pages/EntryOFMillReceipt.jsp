@@ -841,7 +841,10 @@ $(document).ready(function() {
        
        checkcondition = 1; 
        toggleInputFields(checkbox, inputFields, index);
-       tableRow.find('input[id="ncvdust_' + index + '"]').val('0');
+       if (checkbox.is(':checked')) {
+    	     tableRow.find('input[id="ncvdust_' + index + '"]').val('0');
+       }
+  
    });
 
    // Event handler for DustAMt percentage checkbox
@@ -853,7 +856,10 @@ $(document).ready(function() {
       
        checkcondition = 1; 
        toggleInputFields1(checkbox, inputFields, index);
-       tableRow.find('input[id="DustQty_' + index + '"]').val('0');
+       if (checkbox.is(':checked')) {
+    	   tableRow.find('input[id="DustQty_' + index + '"]').val('0');
+       }
+       
    });
 
    // Event handler for Ncv Qty checkbox
@@ -865,7 +871,10 @@ $(document).ready(function() {
       
        checkcondition = 2; 
        toggleInputFields(checkbox, inputFields, index);
-       tableRow.find('input[id="NCVamt_' + index + '"]').val('0');
+       if (checkbox.is(':checked')) {
+    	   tableRow.find('input[id="NCVamt_' + index + '"]').val('0');
+       }
+     
    });
   
    // Event handler for DustQty checkbox
@@ -876,8 +885,10 @@ $(document).ready(function() {
        var inputFields = tableRow.find('input[name="DustQty_[]"]');
        checkcondition = 2; 
        toggleInputFields1(checkbox, inputFields, index);
+       if (checkbox.is(':checked')) {
+    	   tableRow.find('input[id="DustAMt_' + index + '"]').val('0');
+       }
       
-       tableRow.find('input[id="DustAMt_' + index + '"]').val('0');
    });
 });
     

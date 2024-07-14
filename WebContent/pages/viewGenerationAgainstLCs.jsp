@@ -352,13 +352,32 @@
   </script>
 
 
+
+
+
 <script>
     // Reset select element to default value on page load
     document.addEventListener("DOMContentLoaded", function() {
         var selectElement = document.getElementById("millname12");
         selectElement.value = "select"; // Set to the default option value
     });
+
+   
+    function formatDate(dateStr) {
+        var date = new Date(dateStr);
+
+        if (isNaN(date.getTime())) {
+            return dateStr; 
+        }
+
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var year = date.getFullYear();
+
+        return day + '-' + month + '-' + year;
+    }
 </script>
+
 <script type="text/javascript">
 $(document).ready(function() {
     var record = [];
@@ -407,55 +426,56 @@ $(document).ready(function() {
     });
 
     // Contractno change event handler
-    $('#contractno12').on('change', function() {
-        const selectedOption = $(this).find(':selected');
-        const field2Value = selectedOption.attr('data-value2');
-        const field1Value = selectedOption.attr('data-value1');
-        contractNo = field1Value;
+   $('#contractno12').on('change', function() {
+    const selectedOption = $(this).find(':selected');
+    const field2Value = selectedOption.attr('data-value2');
+    const field1Value = selectedOption.attr('data-value1');
+    contractNo = field1Value;
 
-        $('#milldetailsTable tbody').empty();
-        $('#milldetailsTable').css('display', 'none');
+    $('#milldetailsTable tbody').empty();
+    $('#milldetailsTable').css('display', 'none');
+    
+ 
 
-        // First AJAX call
-        $.ajax({
-            type: 'GET',
-            url: 'listofpaymentdetails.obj',
-            data: { "contractno": field1Value },
-            success: function(data) {
-                const dataArray = JSON.parse(data);
-                $('#milldetailsTable tbody').empty();
+    // First AJAX call
+    $.ajax({
+        type: 'GET',
+        url: 'listofpaymentdetails.obj',
+        data: { "contractno": field1Value },
+        success: function(data) {
+            const dataArray = JSON.parse(data);
+            $('#milldetailsTable tbody').empty();
 
-                if (dataArray.length > 0) {
-                    dataArray.forEach(function(rowData) {
-                        autorevolvingAmount = rowData[7];
-                        alert(autorevolvingAmount);
+            if (dataArray.length > 0) {
+                dataArray.forEach(function(rowData) {
+                    autorevolvingAmount = rowData[7];
 
-                        const rowHtml = '<tr>' +
-                            '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="ifsc[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
-                            '<td>' +
-                                '<a href="downloadSupportingDocument.obj?filename=' + rowData[6] + '">' +
-                                    '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
-                                '</a>' +
-                            '</td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="autorevolving" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + rowData[8] + '">' + rowData[8] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + rowData[9] + '">' + rowData[9] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
-                            '<td><div class="table-cell"><input type="hidden" name="paymentduedate[]" value="' + rowData[11] + '">' + rowData[11] + '</div></td>' +
-                            '</tr>';
+                    const rowHtml = '<tr>' +
+                        '<td><div class="table-cell"><input type="hidden" name="bank[]" value="' + rowData[0] + '">' + rowData[0] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="branch[]" value="' + rowData[1] + '">' + rowData[1] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="ifsc[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                        '<td>' +
+                            '<a href="downloadSupportingDocument.obj?filename=' + rowData[6] + '">' +
+                                '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
+                            '</a>' +
+                        '</td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="autorevolving" value="' + rowData[7] + '">' + rowData[7] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="expirydate[]" value="' + formatDate(rowData[8]) + '">' + formatDate(rowData[8]) + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="lastshipment[]" value="' + formatDate(rowData[9]) + '">' + formatDate(rowData[9]) + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="paymenttype[]" value="' + rowData[10] + '">' + rowData[10] + '</div></td>' +
+                        '<td><div class="table-cell"><input type="hidden" name="paymentduedate[]" value="' + formatDate(rowData[11]) + '">' + formatDate(rowData[11]) + '</div></td>' +
+                        '</tr>';
 
-                        $('#milldetailsTable tbody').append(rowHtml);
-                    });
-                    $('#milldetailsTable').css('display', 'block');
-                } else {
-                    $('#milldetailsTable').css('display', 'none');
-                }
-                alert("gfhjk");
+                    $('#milldetailsTable tbody').append(rowHtml);
+                });
+                $('#milldetailsTable').css('display', 'block');
+            } else {
+                $('#milldetailsTable').css('display', 'none');
+            }
+               
                 $.ajax({
                     type: 'GET',
                     url: 'balanceamount.obj',
@@ -463,7 +483,7 @@ $(document).ready(function() {
                     success: function(data) {
                         try {
                             const parsedData = JSON.parse(data);
-                            alert(parsedData);
+                          
 
                             if (parsedData == 0) {
                                 $('#instdate').val(autorevolvingAmount);
@@ -539,12 +559,12 @@ $(document).ready(function() {
                     // Bind change event for checkboxes
                     $('.invoice-checkbox').on('change', function() {
                     	  if ($(this).is(':checked')) {
-                    		  alert("checked");
+                    		 
                     		  let closestRow = $(this).closest('tr');
                               let rowIndex = closestRow.index();
                               updateBalanceAmount(rowIndex);
                           } else {
-                        	  alert("checkednot");
+                        	
                         	  updateBalanceAmount();
                              // updateBalanceAmountForUncheck();
                           }
@@ -625,7 +645,7 @@ $(document).ready(function() {
                 checkbox.prop('checked', false);
                 checkedTotal -= invoiceValue; // Adjust checkedTotal
             } else {
-             
+                
                 selectedRowIndices.push(rowIndex);
             }
             
