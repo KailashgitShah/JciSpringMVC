@@ -52,7 +52,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Purchase Register List</h1>
+                <h1 class="page-title">Purchase Register Report</h1>
             </div>
 			<%
 				 //List <PurchaseRegisterDTO>  batch = null; //= (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
@@ -155,6 +155,10 @@ tr:nth-child(even) {background-color: #f2f2f2;}
             $("#farmerVerific").DataTable({         
               scrollX: true
             });
+            
+            function reloadPage() {
+                window.location.reload(true); // true parameter forces a reload from the server
+            }
           }); 
     </script>
      <script type="text/javascript">

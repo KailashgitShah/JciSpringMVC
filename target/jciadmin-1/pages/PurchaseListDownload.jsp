@@ -64,7 +64,7 @@ th     { background:#eee; }
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Purchase Register List</h1>
+                <h1 class="page-title">Purchase Register Report</h1>
                  
             </div>
 				
@@ -83,6 +83,8 @@ th     { background:#eee; }
 				</div>
 				</div>
 			<div class="row">
+			<div class="col-sm-1 form-group">
+			</div>
 						<div class="col-sm-2 form-group">
 							<label class="required">Crop Year</label>
 						    <input class="form-control" value="<%=cropyear%>" name="cropyear" readonly id="cropyear" type="text">
@@ -105,14 +107,16 @@ th     { background:#eee; }
 						    <label class="required">Purchase Date To</label>
 						    <input class="form-control" value="<%=purchasesdateTo%>" name="purchasesdateto" readonly id="purchasesdateto" type="text">
 						</div>
-						 <div class="col-sm-2 form-group">
-						 <br><br>
-						 <input type="submit" value="Download Report" id="submit" class="btn btn-primary">
-				        </div>	
 			</div>
 			<div class="row">
-			
-			           
+			<div class="col-sm-1 form-group">
+			</div>
+			 <div class="col-sm-2 form-group">
+			     <a href="PurchaseRegisterlist.obj" class="btn btn-primary">Go Back</a>
+			 </div>
+                 <div class="col-sm-2 form-group">
+						 <input type="submit" value="Download Report" id="submit" class="btn btn-primary">
+				 </div>
 			</div>
 			</form>
 			 <div class="page-content fade-in-up">

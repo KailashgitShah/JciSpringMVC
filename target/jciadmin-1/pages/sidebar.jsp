@@ -140,8 +140,8 @@ body {
 					class="fa fa-angle-left arrow"></i></a> 
 				<ul class="nav-2-level ">
   					<li  data-pre="25" id="o25"><a href="balePreparation.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Bale Preparation</b></a></li>  
-					<li  data-pre="26" id="o26"><a href="viewbalePreparation.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale Preparation</b></a></li>
-<!-- 					<li  data-pre="27" id="o27"><a href="addRopeMaking.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Rope Making</b></a></li> -->
+<!-- 					<li  data-pre="26" id="o26"><a href="viewbalePreparation.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale Preparation</b></a></li>
+					<li  data-pre="27" id="o27"><a href="addRopeMaking.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Rope Making</b></a></li> -->
 					<li  data-pre="28" id="o28"><a href="ropeMakingListing.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Rope Making</b></a></li>
 				
 				</ul> </li>
@@ -167,11 +167,13 @@ body {
 				<span class="nav-label"> &nbsp;Report</span> 
 				<i class="fa fa-angle-left arrow"></i></a> 
 					<ul class="nav-2-level ">
-				      <li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register list</b></a></li>				
-					  <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Market Arrival Report</b></a></li>				 
+				      <li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register Report</b></a></li>				
+					  <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Market Report</b></a></li>				 
 					  <li  data-pre="" id=""><a href="downloadexcelregionwise.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Download Excel Region wise</b></a></li>				 
-					  <li  data-pre="26" id="o26"><a href="viewbalePreparationList.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale Preparation</b></a></li>
-					</ul> 
+					  <li  data-pre="26" id="o26"><a href="viewbalePreparationList.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>Bin Wise Packing Register</b></a></li>
+					  <li data-pre="" id=""><a href="balePreparationOverallList.obj"><i
+					  				class="sidebar-item-icon fa fa-th-large"></i><b>All Bale Report</b></a></li>
+				  </ul> 
 				</li>
 				
 				<!-- <li><a href="javascript:void(0);"><i

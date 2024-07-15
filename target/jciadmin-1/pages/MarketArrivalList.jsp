@@ -32,7 +32,7 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Market Arrival Report</h1>
+                <h1 class="page-title">Daily Market Report</h1>
                 <%
 			List<RoDetailsModel> Regions = (List<RoDetailsModel>) request.getAttribute("regionList");
 			%>

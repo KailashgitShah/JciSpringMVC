@@ -19,5 +19,6 @@ public interface PurchaseCenterDao {
 	public String findDpcname(String dpccode);
 	public Map<String, String> getdpcbyregionid(String regionid);
 	public float findNominalWt(String dpc);
+	public String findDpIdbyName(String dpc);
 
 }

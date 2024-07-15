@@ -1,27 +1,6 @@
 package com.jci.controller;
 import org.apache.log4j.LogManager;
-import com.jci.model.MSPPriceCalculationModel;
-import com.jci.model.MarkerArrivalModelDTO;
-import com.jci.model.RulingMarket;
-import com.jci.model.BatchIdentificationModel;
-import com.jci.model.BinListFromDbDTO;
-import com.jci.model.BinPurchaseMappingDTO;
-import com.jci.model.CommercialJuteVarietyModel;
-import com.jci.model.VerifyTallySlip;
-import com.jci.model.DistributionoftallyslipModel;
-import com.jci.model.CommercialCeilingPriceIntimationModel;
-import com.jci.model.VerifyFarmerModel;
-import com.jci.model.FarmerRegModelDTO;
-import com.jci.model.MarketArrivalModel;
-import com.jci.model.PaymentprocesstellyslipModel;
-import com.jci.model.UserRegistrationModel;
-import com.jci.model.UserRoleModel;
-import com.jci.model.RoleMasterModel;
-import com.jci.model.ZoneModel;
-import com.jci.model.ProgOfAssortmentModel;
-import com.jci.model.DailyPurchaseConfModel;
-import com.jci.model.PurchaseCenterModel;
-import com.jci.model.PurchaseRegisterDTO;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,23 +8,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.jci.model.RawJuteProcurementAndPayment;
-import com.jci.model.RoDetailsModel;
-import com.jci.model.JbaModel;
-import com.jci.model.AreaDetailCode;
-import com.jci.model.BalePrepDto;
+
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import com.jci.model.BalePreparation;
 import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import com.jci.model.FarmerRegModel;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
@@ -171,7 +144,158 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.apache.log4j.LogManager;
+import com.jci.model.MSPPriceCalculationModel;
+import com.jci.model.MarkerArrivalModelDTO;
+import com.jci.model.RulingMarket;
+import com.jci.model.BatchIdentificationModel;
+import com.jci.model.BinListFromDbDTO;
+import com.jci.model.BinPurchaseMappingDTO;
+import com.jci.model.CommercialJuteVarietyModel;
+import com.jci.model.VerifyTallySlip;
+import com.jci.model.DistributionoftallyslipModel;
+import com.jci.model.CommercialCeilingPriceIntimationModel;
+import com.jci.model.VerifyFarmerModel;
+import com.jci.model.FarmerRegModelDTO;
+import com.jci.model.MarketArrivalModel;
+import com.jci.model.PaymentprocesstellyslipModel;
+import com.jci.model.UserRegistrationModel;
+import com.jci.model.UserRoleModel;
+import com.jci.model.RoleMasterModel;
+import com.jci.model.ZoneModel;
+import com.jci.model.ProgOfAssortmentModel;
+import com.jci.model.DailyPurchaseConfModel;
+import com.jci.model.PurchaseCenterModel;
+import com.jci.model.PurchaseRegisterDTO;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.jci.model.RawJuteProcurementAndPayment;
+import com.jci.model.RoDetailsModel;
+import com.jci.model.JbaModel;
+import com.jci.model.AreaDetailCode;
+import com.jci.model.BalePrepDto;
+
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import com.jci.model.BalePreparation;
+import javax.servlet.http.HttpSession;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import com.jci.model.FarmerRegModel;
+import java.io.File;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.google.gson.Gson;
+import com.jci.model.SalesModel;
+import java.time.temporal.TemporalAccessor;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import com.jci.model.RopeMakingModel;
+import java.text.SimpleDateFormat;
+
+import com.jci.common.Encry;
+import com.jci.model.AddOrganizationModel;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import com.jci.model.FarmerRegistrationModel;
+
+import com.jci.model.ImageVerificationModel;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.jci.model.DistrictModel;
+import com.jci.model.StateList;
+import com.jci.model.PincodeModel;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.crypto.SecretKey;
+import javax.mail.internet.InternetAddress;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import com.jci.service.BalePrepareService;
+import com.jci.service.PoliceStationService;
+import com.jci.service.blockService;
+import com.jci.service.Impl.SendMail;
+
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+
+import com.jci.service.CommercialJuteVarietyGradesPriceService;
+import com.jci.service.MSPPriceCalculationService;
+import com.jci.service.RulingMarketService;
+import com.jci.service.CommercialCeilingPriceIntimationService;
+import com.jci.service.VerifyTallySlipService;
+import com.jci.service.DistributionoftallyslipService;
+import com.jci.service.VerifyFarmerService;
+import com.jci.service.RoleMasterService;
+import com.jci.service.PurchaseCenterService;
+import com.jci.service.RoDetailsService;
+import com.jci.service.ZoneService;
+import com.jci.service.MarketArrivalService;
+import com.jci.service.ProgOfAssortmentService;
+import com.jci.service.DailyPurchaseModelConfService;
+import com.jci.service.RawJuteProcurementAndPaymentService;
+import com.jci.service.FarmerRegService;
+import com.jci.service.SalesService;
+import com.jci.service.StateService;
+import com.jci.service.UserActionService;
+import com.jci.service.UserPriviligeService;
+import com.jci.service.AreaService;
+import com.jci.service.JBAService;
+import com.jci.service.BalePreparationService;
+import com.jci.service.DistrictService;
+import com.jci.service.BatchIdentificationService;
+import com.jci.service.RopeMakingService;
+import com.jci.service.AddOrganisationService;
+import com.jci.service.FarmerRegistrationService;
+import com.jci.service.UserRegistrationService;
+import com.jci.service.UserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import com.jci.service.PincodeService;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONArray;
+import org.json.JSONObject;
 @Controller
 public class InsertDataController
 {
@@ -6515,4 +6639,1172 @@ System.out.println();
 	         
 	        return mv;
 	    }
+	    @RequestMapping(value = { "balePreparationOverallList" })
+	      public ModelAndView balePreparationOverallList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	      	String username =(String)request.getSession().getAttribute("usrname");
+	      	ModelAndView mv = new ModelAndView("baleOverallList");
+	      	 if(username == null) {
+	           	return new ModelAndView("index");
+	               }
+	          try {
+	            
+	        	  final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+	  	        mv.addObject("zoneList", (Object)zoneList);
+	             
+	          }
+	          catch (Exception e) {
+	              System.out.println(e.getLocalizedMessage());
+	          }
+	           
+	          return mv;
+	      }
+	      @ResponseBody
+		  @RequestMapping(value = {"allListofBalePrep"}, method = { RequestMethod.GET })
+		    public String allListofBalePrep(@RequestParam("cropyear") String cropyear,@RequestParam("fromdate") String fromdate ,@RequestParam("todate") String todate , @RequestParam("basis") String basis, @RequestParam("juteVariety") String juteVariety) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	 JSONObject objParent = new JSONObject();
+	              JSONArray arr = new JSONArray();
+
+		        try {
+		        	
+		            DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+			    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+			    	  final String datearrival1 = request.getParameter("todate");
+					    Date date1 = inputFormat.parse(datearrival1);
+				        String purchasesdateTo = outputFormat.format(date1);
+			    	final String datearrival = fromdate;
+			    	Date date = inputFormat.parse(datearrival);
+		            String purchasesdateFrom = outputFormat.format(date);
+		            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+		    		viewBale = (List<BalePreparation>)this.balePrepareService.allBaleDataList(purchasesdateFrom,purchasesdateTo, cropyear,  basis,  juteVariety);
+		    	List<BalePreparation> newbalelist = new ArrayList<BalePreparation>();
+		  		 Set<String> uniqueCombos = new HashSet<>();
+		  		 List<BalePreparation> filteredList = new ArrayList<>();
+		  		for(BalePreparation baleprep : viewBale) {
+            	  JSONObject obj = new JSONObject();
+		  			 String combo = baleprep.getRegion();
+			        	String binNo =   baleprep.getRegion();
+			        	String packaingDate =     baleprep.getPacking_date();
+			        	String regionId = baleprep.getRegion();
+			        	String juteGrade =    baleprep.getJute_grade();
+			        	float nominalWt = baleprep.getNominalWt();
+			        	BalePrepDto bprip = new BalePrepDto();
+			        	baleprep.setFromdate(fromdate);
+			        	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+				        	for(BalePreparation prepBale : viewBale) {
+				        		if(prepBale.getRegion().equalsIgnoreCase(binNo))
+				        		{
+				        			if(prepBale.getJute_grade().contains("1"))
+				        			{
+				        				s1 += prepBale.getBale_no();
+
+				        				bprip.setGarde1(s1);
+				        			}
+				        			if(prepBale.getJute_grade().contains("2"))
+				        			{
+				        				s2 += prepBale.getBale_no();
+
+				        				bprip.setGarde2(s2);
+				        			}
+				        			if(prepBale.getJute_grade().contains("3"))
+				        			{
+				        				s3 += prepBale.getBale_no();
+				        				bprip.setGarde3(s3);
+				        			}
+				        			if(prepBale.getJute_grade().contains("4"))
+				        			{
+				        				s4 += prepBale.getBale_no();
+				        				bprip.setGarde4(s4);
+				        			}
+				        			if(prepBale.getJute_grade().contains("5"))
+				        			{
+				        			
+				        				s5 += prepBale.getBale_no();
+				        				bprip.setGarde5(s5);
+				        			}
+				        			if(prepBale.getJute_grade().contains("6"))
+				        			{
+				        				s6 += prepBale.getBale_no();
+
+				        				bprip.setGarde6(s6);
+				        			}
+				        			
+				        			if(prepBale.getJute_grade().contains("7"))
+				        			{
+				        				s7 += prepBale.getBale_no();
+
+				        				bprip.setGarde7(s7);
+				        			}
+				        			
+				        			if(prepBale.getJute_grade().contains("8"))
+				        			{
+				        				s8 += prepBale.getBale_no();
+
+				        				bprip.setGarde8(s8);
+				        			}
+				        			
+				        		}
+				        	}
+	                        obj.put("Region", baleprep.getRegion());
+	                        obj.put("Nominal", baleprep.getNominalWt());
+	                        obj.put("Grade1", bprip.getGarde1());
+	                        obj.put("Grade2", bprip.getGarde2());
+	                        obj.put("Grade3", bprip.getGarde3());
+	                        obj.put("Grade4", bprip.getGarde4());
+	                        obj.put("Grade5", bprip.getGarde5());
+	                        obj.put("Grade6", bprip.getGarde6());
+	                        obj.put("Grade7", bprip.getGarde7());
+	                        obj.put("Grade8", bprip.getGarde8());
+
+
+				      baleprep.setGarde1(bprip.getGarde1());
+				      baleprep.setGarde2(bprip.getGarde2());
+				      baleprep.setGarde3(bprip.getGarde3());
+				      baleprep.setGarde4(bprip.getGarde4());
+				      baleprep.setGarde5(bprip.getGarde5());
+				      baleprep.setGarde6(bprip.getGarde6());
+				      baleprep.setGarde7(bprip.getGarde7());
+				      baleprep.setGarde8(bprip.getGarde8());
+				      if (!uniqueCombos.contains(combo)) {
+		                  uniqueCombos.add(combo);
+			               	 arr.put(obj);
+		              }  
+		  		}
+
+		               	 objParent.put("data", arr);
+		                 return objParent.toString();
+		                 
+		             } catch (ParseException e) {
+		                 // Handle the ParseException
+		                 e.printStackTrace();
+		                 return objParent.toString();
+		            
+		             }
+		          
+	      }
+		    
+	      
+	      
+	      
+		  @RequestMapping(value = {"pdfallListofBalePrep"})
+		    public ModelAndView allListofBalePrep(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpServletResponse response) {
+				String username =(String)request.getSession().getAttribute("usrname");
+		    	ModelAndView mv = new ModelAndView("RegionWiseBalePacking");
+		    	 if(username == null) {
+		         	return new ModelAndView("index");
+		             }
+
+		        try {
+		        	 final String cropyear = request.getParameter("cropyear");
+			            final String basis = request.getParameter("basis");
+			            final String juteVariety = request.getParameter("juteVariety");
+			            final String fromdate = request.getParameter("fromdate");
+			           // final String todate = request.getParameter("todate");
+		            DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+			    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+			    	 final String datearrival1 = request.getParameter("todate");
+					    Date date1 = inputFormat.parse(datearrival1);
+				        String purchasesdateTo = outputFormat.format(date1);
+			    	final String datearrival = fromdate;
+			    	Date date = inputFormat.parse(datearrival);
+		            String purchasesdateFrom = outputFormat.format(date);
+		            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+		    		viewBale = (List<BalePreparation>)this.balePrepareService.allBaleDataList(purchasesdateFrom,purchasesdateTo, cropyear,  basis,  juteVariety);
+		        List<BalePreparation> newbalelist = new ArrayList<>();
+		  		 Set<String> uniqueCombos = new HashSet<>();
+		  		 List<BalePreparation> filteredList = new ArrayList<>();
+		  		for(BalePreparation baleprep : viewBale) {
+		  			 String combo = baleprep.getRegion();
+			        	String binNo =   baleprep.getRegion();
+			        	String packaingDate =     baleprep.getPacking_date();
+			        	String regionId = baleprep.getRegion();
+			        	String juteGrade =    baleprep.getJute_grade();
+			        	float nominalWt = baleprep.getNominalWt();
+			        	BalePrepDto bprip = new BalePrepDto();
+			        	baleprep.setFromdate(fromdate);
+			        	baleprep.setTodate(datearrival1);
+			        	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+			        	for(BalePreparation prepBale : viewBale) {
+			        		if(prepBale.getRegion().equalsIgnoreCase(binNo))
+			        		{
+			        			if(prepBale.getJute_grade().contains("1"))
+			        			{
+			        				s1 += prepBale.getBale_no();
+
+			        				bprip.setGarde1(s1);
+			        			}
+			        			if(prepBale.getJute_grade().contains("2"))
+			        			{
+			        				s2 += prepBale.getBale_no();
+
+			        				bprip.setGarde2(s2);
+			        			}
+			        			if(prepBale.getJute_grade().contains("3"))
+			        			{
+			        				s3 += prepBale.getBale_no();
+			        				bprip.setGarde3(s3);
+			        			}
+			        			if(prepBale.getJute_grade().contains("4"))
+			        			{
+			        				s4 += prepBale.getBale_no();
+			        				bprip.setGarde4(s4);
+			        			}
+			        			if(prepBale.getJute_grade().contains("5"))
+			        			{
+			        			
+			        				s5 += prepBale.getBale_no();
+			        				bprip.setGarde5(s5);
+			        			}
+			        			if(prepBale.getJute_grade().contains("6"))
+			        			{
+			        				s6 += prepBale.getBale_no();
+
+			        				bprip.setGarde6(s6);
+			        			}
+			        			
+			        			if(prepBale.getJute_grade().contains("7"))
+			        			{
+			        				s7 += prepBale.getBale_no();
+
+			        				bprip.setGarde7(s7);
+			        			}
+			        			
+			        			if(prepBale.getJute_grade().contains("8"))
+			        			{
+			        				s8 += prepBale.getBale_no();
+
+			        				bprip.setGarde8(s8);
+			        			}
+			        			
+			        		}
+			        	}
+
+
+				      baleprep.setGarde1(bprip.getGarde1());
+				      baleprep.setGarde2(bprip.getGarde2());
+				      baleprep.setGarde3(bprip.getGarde3());
+				      baleprep.setGarde4(bprip.getGarde4());
+				      baleprep.setGarde5(bprip.getGarde5());
+				      baleprep.setGarde6(bprip.getGarde6());
+				      baleprep.setGarde7(bprip.getGarde7());
+				      baleprep.setGarde8(bprip.getGarde8());
+				
+				      if (!uniqueCombos.contains(combo)) {
+		                  uniqueCombos.add(combo);
+		                  newbalelist.add(baleprep);
+		              }  
+				      
+		                
+		                int total = bprip.getGarde1() + bprip.getGarde2() + bprip.getGarde3() + bprip.getGarde4() + bprip.getGarde5() + bprip.getGarde6() + bprip.getGarde7() + bprip.getGarde8();
+		                baleprep.setTotal(total);
+		            
+		        }
+
+		        int g1sum = 0, g2sum = 0, g3sum = 0, g4sum = 0, g5sum = 0, g6sum = 0, g7sum= 0,g8sum =0, totalsum = 0;
+
+		        for (BalePreparation baleprep : newbalelist) {
+		            g1sum += baleprep.getGarde1();
+		            g2sum += baleprep.getGarde2();
+		            g3sum += baleprep.getGarde3();
+		            g4sum += baleprep.getGarde4();
+		            g5sum += baleprep.getGarde5();
+		            g6sum += baleprep.getGarde6();
+		            g7sum += baleprep.getGarde7();
+		            g8sum += baleprep.getGarde8();
+		            totalsum += baleprep.getTotal();
+
+		            baleprep.setSum1(g1sum);
+		            baleprep.setSum2(g2sum);
+		            baleprep.setSum3(g3sum);
+		            baleprep.setSum4(g4sum);
+		            baleprep.setSum5(g5sum);
+		            baleprep.setSum6(g6sum);
+		            baleprep.setSum7(g7sum);
+		            baleprep.setSum8(g8sum);
+		            baleprep.setSum9(totalsum);
+		                   }
+		  		 JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI-CMS\\AllListBalePrep.jrxml");
+		         Map<String, Object> parameters = new HashMap<String, Object>();
+		         // Prepare data sources
+		         JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
+
+		         // Fill JasperPrints
+		         JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+		         response.setContentType("application/pdf");
+		         response.setHeader("Content-Disposition", "attachment; filename=AllBaleList.pdf");
+		         try (OutputStream out = response.getOutputStream()) {
+		             JRPdfExporter exporter = new JRPdfExporter();
+		             exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+		          //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+		             exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+		             exporter.exportReport();}
+		         catch (Exception e) {
+		 	            System.out.println(e.getLocalizedMessage());
+		 	        }
+		     }
+		     catch (Exception e) {
+		         System.out.println(e.getLocalizedMessage());
+		     }
+		      
+		     return mv;
+		 }
+
+
+		
+		 @RequestMapping(value = { "balePreparationRegionList" })
+	      public ModelAndView balePreparationRegionList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	      	String username =(String)request.getSession().getAttribute("usrname");
+	      	ModelAndView mv = new ModelAndView("baleRegionList");
+	      	 if(username == null) {
+	           	return new ModelAndView("index");
+	               }
+	          try {
+	            
+	        	  final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+	  	        mv.addObject("zoneList", (Object)zoneList);
+	             
+	          }
+	          catch (Exception e) {
+	              System.out.println(e.getLocalizedMessage());
+	          }
+	           
+	          return mv;
+	      }
+	    
+		 
+		 
+		   @RequestMapping(value = {"RegionWiseBaleDataajax"})
+		    public String RegionWiseBaleDataajax(@RequestParam String cropyear ,@RequestParam String fromdate ,@RequestParam String todate , @RequestParam String juteVariety ,@RequestParam String region , @RequestParam String basis ,final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) {
+		    	ModelAndView mv = new ModelAndView("RegionWiseBalePacking");
+		    	JSONObject objParent = new JSONObject();
+	              JSONArray arr = new JSONArray();
+		    	
+		        try {
+		            final String dpc = request.getParameter("dpc");
+		           
+		   	    // String roname = request.getParameter("region");
+//System.err.println("cropyear===="+cropyear);
+                   juteVariety.replaceAll("%20", " ");
+		            DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+			    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+			    	final String datearrival = request.getParameter("fromdate");
+			    	Date date = inputFormat.parse(datearrival);
+		            String purchasesdateFrom = outputFormat.format(date);
+		            String regions = this.roService.findregionbyname(region);
+		            final String datearrival1 = request.getParameter("todate");
+				    Date date1 = inputFormat.parse(datearrival1);
+			        String purchasesdateTo = outputFormat.format(date1);
+		            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+		            //System.out.println("roname==="+roname);
+		            //System.out.println("purchasesdateTo=="+purchasesdateTo);
+		    		viewBale = (List<BalePreparation>)this.balePrepareService.RegionWiseData(regions, purchasesdateFrom, purchasesdateTo, cropyear,  basis,  juteVariety);
+		    	List<BalePreparation> newbalelist = new ArrayList<BalePreparation>();
+		  		 Set<String> uniqueCombos = new HashSet<>();
+		  		 List<BalePreparation> filteredList = new ArrayList<>();
+		  		for(BalePreparation baleprep : viewBale) {
+	              	  JSONObject obj = new JSONObject();
+
+		  			 String combo = baleprep.getPlace_of_packing() + "-" + baleprep.getPacking_date();
+			        	String binNo =   baleprep.getPlace_of_packing();
+			        	String packaingDate =     baleprep.getPacking_date();
+			        	String regionId = baleprep.getRegion();
+			        	String juteGrade =    baleprep.getJute_grade();
+			        	float nominalWt = baleprep.getNominalWt();
+			        	BalePrepDto bprip = new BalePrepDto();
+			        	baleprep.setFromdate(fromdate);
+			        	baleprep.setTodate(todate);
+			 			//baleprep.setTodate(todate);
+			        	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+
+				        	for(BalePreparation prepBale : viewBale) {
+				        		if(prepBale.getPlace_of_packing().equalsIgnoreCase(binNo) && prepBale.getPacking_date().equalsIgnoreCase(packaingDate)  )
+				        		{
+				        			if(prepBale.getJute_grade().contains("1"))
+				        			{
+				        				s1 += prepBale.getBale_no();
+
+				        				bprip.setGarde1(s1);
+				        			}
+				        			if(prepBale.getJute_grade().contains("2"))
+				        			{
+				        				s2 += prepBale.getBale_no();
+
+				        				bprip.setGarde2(s2);
+				        			}
+				        			if(prepBale.getJute_grade().contains("3"))
+				        			{
+				        				s3 += prepBale.getBale_no();
+				        				bprip.setGarde3(s3);
+				        			}
+				        			if(prepBale.getJute_grade().contains("4"))
+				        			{
+				        				s4 += prepBale.getBale_no();
+				        				bprip.setGarde4(s4);
+				        			}
+				        			if(prepBale.getJute_grade().contains("5"))
+				        			{
+				        			
+				        				s5 += prepBale.getBale_no();
+				        				bprip.setGarde5(s5);
+				        			}
+				        			if(prepBale.getJute_grade().contains("6"))
+				        			{
+				        				s6 += prepBale.getBale_no();
+
+				        				bprip.setGarde6(s6);
+				        			}
+				        			
+				        			if(prepBale.getJute_grade().contains("7"))
+				        			{
+				        				s7 += prepBale.getBale_no();
+
+				        				bprip.setGarde7(s7);
+				        			}
+				        			
+				        			if(prepBale.getJute_grade().contains("8"))
+				        			{
+				        				s8 += prepBale.getBale_no();
+
+				        				bprip.setGarde8(s8);
+				        			}
+				        			
+				        		}
+				        	}
+				      baleprep.setGarde1(bprip.getGarde1());
+				      baleprep.setGarde2(bprip.getGarde2());
+				      baleprep.setGarde3(bprip.getGarde3());
+				      baleprep.setGarde4(bprip.getGarde4());
+				      baleprep.setGarde5(bprip.getGarde5());
+				      baleprep.setGarde6(bprip.getGarde6());
+				      baleprep.setGarde7(bprip.getGarde7());
+				      baleprep.setGarde8(bprip.getGarde8());
+				      obj.put("PackingDate", baleprep.getPacking_date());
+                    obj.put("DPC", baleprep.getPlace_of_packing());
+                    obj.put("Nominal", baleprep.getNominalWt());
+                    obj.put("Grade1", bprip.getGarde1());
+                    obj.put("Grade2", bprip.getGarde2());
+                    obj.put("Grade3", bprip.getGarde3());
+                    obj.put("Grade4", bprip.getGarde4());
+                    obj.put("Grade5", bprip.getGarde5());
+                    obj.put("Grade6", bprip.getGarde6());
+				
+                    if (!uniqueCombos.contains(combo)) {
+		                  uniqueCombos.add(combo);
+			               	 arr.put(obj);
+		              }  
+		  		}
+
+		               	 objParent.put("data", arr);
+		                 return objParent.toString();
+		                 
+		             } catch (ParseException e) {
+		                 // Handle the ParseException
+		                 e.printStackTrace();
+		                 return objParent.toString();
+		            
+		             }
+		          
+	      }
+
+		
+		   @RequestMapping(value = {"RegionWiseBaleData"})
+		    public ModelAndView RegionWiseBaleData(@RequestParam String cropyear ,@RequestParam String fromdate , @RequestParam String todate, @RequestParam String juteVariety ,@RequestParam String region , @RequestParam String basis ,final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	ModelAndView mv = new ModelAndView("RegionWiseBalePacking");
+		    	 if(username == null) {
+		         	return new ModelAndView("index");
+		             }
+		        try {
+		            final String dpc = request.getParameter("dpc");
+		           
+		   	    // String roname = request.getParameter("region");
+juteVariety.replaceAll("%20", " ");
+		            DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+			    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+			    	final String datearrival = request.getParameter("fromdate");
+			    	 final String datearrival1 = request.getParameter("todate");
+					    Date date1 = inputFormat.parse(datearrival1);
+				        String purchasesdateTo = outputFormat.format(date1);
+			    	Date date = inputFormat.parse(datearrival);
+		            String purchasesdateFrom = outputFormat.format(date);
+		            String regions = this.roService.findregionbyname(region);
+		            List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+		            //System.out.println("roname==="+roname);
+		            //System.out.println("purchasesdateTo=="+purchasesdateTo);
+		    		viewBale = (List<BalePreparation>)this.balePrepareService.RegionWiseData(regions,purchasesdateFrom, purchasesdateTo, cropyear,  basis,  juteVariety);
+		    	List<BalePreparation> newbalelist = new ArrayList<BalePreparation>();
+		  		 Set<String> uniqueCombos = new HashSet<>();
+		  		 List<BalePreparation> filteredList = new ArrayList<>();
+		  		for(BalePreparation baleprep : viewBale) {
+		  			 String combo = baleprep.getPlace_of_packing();
+			        	String binNo =   baleprep.getPlace_of_packing();
+			        	String packaingDate =     baleprep.getPacking_date();
+			        	String regionId = baleprep.getRegion();
+			        	String juteGrade =    baleprep.getJute_grade();
+			        	float nominalWt = baleprep.getNominalWt();
+			        	BalePrepDto bprip = new BalePrepDto();
+			        	baleprep.setFromdate(fromdate);
+			 			baleprep.setTodate(todate);
+			        	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+
+				        	for(BalePreparation prepBale : viewBale) {
+				        		if(prepBale.getPlace_of_packing().equalsIgnoreCase(binNo)  )
+				        		{
+				        			if(prepBale.getJute_grade().contains("1"))
+				        			{
+				        				s1 += prepBale.getBale_no();
+
+				        				bprip.setGarde1(s1);
+				        			}
+				        			if(prepBale.getJute_grade().contains("2"))
+				        			{
+				        				s2 += prepBale.getBale_no();
+
+				        				bprip.setGarde2(s2);
+				        			}
+				        			if(prepBale.getJute_grade().contains("3"))
+				        			{
+				        				s3 += prepBale.getBale_no();
+				        				bprip.setGarde3(s3);
+				        			}
+				        			if(prepBale.getJute_grade().contains("4"))
+				        			{
+				        				s4 += prepBale.getBale_no();
+				        				bprip.setGarde4(s4);
+				        			}
+				        			if(prepBale.getJute_grade().contains("5"))
+				        			{
+				        			
+				        				s5 += prepBale.getBale_no();
+				        				bprip.setGarde5(s5);
+				        			}
+				        			if(prepBale.getJute_grade().contains("6"))
+				        			{
+				        				s6 += prepBale.getBale_no();
+
+				        				bprip.setGarde6(s6);
+				        			}
+				        			
+				        			if(prepBale.getJute_grade().contains("7"))
+				        			{
+				        				s7 += prepBale.getBale_no();
+
+				        				bprip.setGarde7(s7);
+				        			}
+				        			
+				        			if(prepBale.getJute_grade().contains("8"))
+				        			{
+				        				s8 += prepBale.getBale_no();
+
+				        				bprip.setGarde8(s8);
+				        			}
+				        			
+				        		}
+				        	}
+				      baleprep.setGarde1(bprip.getGarde1());
+				      baleprep.setGarde2(bprip.getGarde2());
+				      baleprep.setGarde3(bprip.getGarde3());
+				      baleprep.setGarde4(bprip.getGarde4());
+				      baleprep.setGarde5(bprip.getGarde5());
+				      baleprep.setGarde6(bprip.getGarde6());
+				      baleprep.setGarde7(bprip.getGarde7());
+				      baleprep.setGarde8(bprip.getGarde8());
+				      if (!uniqueCombos.contains(combo)) {
+		                  uniqueCombos.add(combo);
+		                  newbalelist.add(baleprep);
+		              }  
+		         }
+		  		
+		  		String cropYear = this.balePrepareService.getcropYear(cropyear);
+		          String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
+		          String Basises = this.balePrepareService.getbasis(basis);
+		          //String regions = this.roService.findregionbyid(region);
+		         // String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+		  		//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+		         // mv.addObject("placeOfPurchase", (Object)placeOfPurchase);
+		          mv.addObject("balePrepList", (Object)newbalelist);
+		          mv.addObject("cropYear", (Object)cropYear);
+		          mv.addObject("jutevariety", (Object)jutevariety);  
+		          mv.addObject("Basises", (Object)Basises);
+		          mv.addObject("fromdate", (Object)fromdate);
+		          mv.addObject("todate", (Object)todate);
+		          mv.addObject("region", (Object)region);
+		         // System.err.println("dpckkkdk=="+dpc);
+		  
+
+		      }
+		      catch (Exception e) {
+		          System.out.println(e.getLocalizedMessage());
+		      }
+		       
+		      return mv;
+		  }
+
+@RequestMapping(value = { "pdfRegionBalePrep" })
+public ModelAndView pdfRegionBalePrep(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+  String username = (String) request.getSession().getAttribute("usrname");
+  if (username == null) {
+      return new ModelAndView("index");
+  }
+
+  ModelAndView mv = new ModelAndView("RegionWisebalePrepartionReport");
+
+  try {
+  	final String dpc = request.getParameter("dpc");
+      final String fromdate = request.getParameter("fromdate");
+      //final String todate = request.getParameter("todate");
+      final String cropyear = request.getParameter("cropyear");
+      final String basis = request.getParameter("basis");
+      final String juteVariety = request.getParameter("juteVariety");
+	     String roname = request.getParameter("region");
+       String regions = this.roService.findregionbyname(roname);
+
+     // final String jutevariety = request.getParameter("jute");
+   //   System.out.println("todate=="+todate);
+      DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+  	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+  	final String datearrival = request.getParameter("fromdate");
+  	 final String datearrival1 = request.getParameter("todate");
+		    Date date1 = inputFormat.parse(datearrival1);
+	        String purchasesdateTo = outputFormat.format(date1);
+  	Date date = inputFormat.parse(datearrival);
+       //System.out.println("arrivaldate=="+datearrival);
+      String purchasesdateFrom = outputFormat.format(date);
+      //final String datearrival1 = request.getParameter("todate");
+	    //Date date1 = inputFormat.parse(datearrival1);
+      //System.out.println("arrivaldate1=="+datearrival1);
+     // String purchasesdateTo = outputFormat.format(date1);
+      List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+     // System.out.println("purchasesdateTo=="+purchasesdateTo);
+		viewBale = (List<BalePreparation>)this.balePrepareService.RegionWiseData(regions,purchasesdateFrom, purchasesdateTo,cropyear,  basis,  juteVariety);
+      Set<String> uniqueCombos = new HashSet<>();
+      List<BalePreparation> newbalelist = new ArrayList<>();
+
+      for (BalePreparation baleprep : viewBale) {
+			 String combo = baleprep.getPlace_of_packing();
+			String datefrom = baleprep.setFromdate(fromdate);
+			baleprep.setTodate(datearrival1);
+
+			//String todates = baleprep.setTodate(todate);
+//System.out.println("todates==="+todate);
+
+          if (!uniqueCombos.contains(combo)) {
+              uniqueCombos.add(combo);
+              newbalelist.add(baleprep);
+              String binNo =   baleprep.getPlace_of_packing();
+            //  String packaingDate = baleprep.getPacking_date();
+              BalePrepDto bprip = new BalePrepDto();
+	        	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+
+              for (BalePreparation prepBale : viewBale) {
+	        		if(prepBale.getPlace_of_packing().equalsIgnoreCase(binNo) )
+	        		{
+	        			if(prepBale.getJute_grade().contains("1"))
+	        			{
+	        				s1 += prepBale.getBale_no();
+
+	        				bprip.setGarde1(s1);
+	        			}
+	        			if(prepBale.getJute_grade().contains("2"))
+	        			{
+	        				s2 += prepBale.getBale_no();
+
+	        				bprip.setGarde2(s2);
+	        			}
+	        			if(prepBale.getJute_grade().contains("3"))
+	        			{
+	        				s3 += prepBale.getBale_no();
+	        				bprip.setGarde3(s3);
+	        			}
+	        			if(prepBale.getJute_grade().contains("4"))
+	        			{
+	        				s4 += prepBale.getBale_no();
+	        				bprip.setGarde4(s4);
+	        			}
+	        			if(prepBale.getJute_grade().contains("5"))
+	        			{
+	        			
+	        				s5 += prepBale.getBale_no();
+	        				bprip.setGarde5(s5);
+	        			}
+	        			if(prepBale.getJute_grade().contains("6"))
+	        			{
+	        				s6 += prepBale.getBale_no();
+
+	        				bprip.setGarde6(s6);
+	        			}
+	        			
+	        			if(prepBale.getJute_grade().contains("7"))
+	        			{
+	        				s7 += prepBale.getBale_no();
+
+	        				bprip.setGarde7(s7);
+	        			}
+	        			
+	        			if(prepBale.getJute_grade().contains("8"))
+	        			{
+	        				s8 += prepBale.getBale_no();
+
+	        				bprip.setGarde8(s8);
+	        			}
+	        			
+	        		}
+	        	}
+
+              baleprep.setGarde1(bprip.getGarde1());
+              baleprep.setGarde2(bprip.getGarde2());
+              baleprep.setGarde3(bprip.getGarde3());
+              baleprep.setGarde4(bprip.getGarde4());
+              baleprep.setGarde5(bprip.getGarde5());
+              baleprep.setGarde6(bprip.getGarde6());
+
+              baleprep.setGarde7(bprip.getGarde7());
+			      baleprep.setGarde8(bprip.getGarde8());
+              
+              
+              int total = bprip.getGarde1() + bprip.getGarde2() + bprip.getGarde3() + bprip.getGarde4() + bprip.getGarde5() + bprip.getGarde6() + bprip.getGarde7() + bprip.getGarde8();
+              baleprep.setTotal(total);
+          }
+      }
+
+      int g1sum = 0, g2sum = 0, g3sum = 0, g4sum = 0, g5sum = 0, g6sum = 0, g7sum= 0,g8sum =0, totalsum = 0;
+
+      for (BalePreparation baleprep : newbalelist) {
+          g1sum += baleprep.getGarde1();
+          g2sum += baleprep.getGarde2();
+          g3sum += baleprep.getGarde3();
+          g4sum += baleprep.getGarde4();
+          g5sum += baleprep.getGarde5();
+          g6sum += baleprep.getGarde6();
+          g7sum += baleprep.getGarde7();
+          g8sum += baleprep.getGarde8();
+          totalsum += baleprep.getTotal();
+
+          baleprep.setSum1(g1sum);
+          baleprep.setSum2(g2sum);
+          baleprep.setSum3(g3sum);
+          baleprep.setSum4(g4sum);
+          baleprep.setSum5(g5sum);
+          baleprep.setSum6(g6sum);
+          baleprep.setSum7(g7sum);
+          baleprep.setSum8(g8sum);
+          baleprep.setSum9(totalsum);
+                 }
+
+      String cropYear = this.balePrepareService.getcropYear(cropyear);
+      String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
+      //String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+		//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll()
+      JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI-CMS\\baleReportRegionWise.jrxml");
+      Map<String, Object> parameters = new HashMap<String, Object>();
+      // Prepare data sources
+      JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
+
+      // Fill JasperPrints
+      JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+      response.setContentType("application/pdf");
+      response.setHeader("Content-Disposition", "attachment; filename=BalePreparationRegionwise.pdf");
+      try (OutputStream out = response.getOutputStream()) {
+          JRPdfExporter exporter = new JRPdfExporter();
+          exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+       //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+          exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+          exporter.exportReport();}
+      catch (Exception e) {
+	            System.out.println(e.getLocalizedMessage());
+	        }
+  }
+  catch (Exception e) {
+      System.out.println(e.getLocalizedMessage());
+  }
+   
+  return mv;
+}
+
+
+
+
+/* dpc */
+
+
+@RequestMapping(value = { "balePreparationDpcList" })
+public ModelAndView balePreparationDpcList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	String username =(String)request.getSession().getAttribute("usrname");
+	ModelAndView mv = new ModelAndView("baleDpcList");
+	 if(username == null) {
+   	return new ModelAndView("index");
+       }
+  try {
+    
+	  final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+      mv.addObject("zoneList", (Object)zoneList);
+     
+  }
+  catch (Exception e) {
+      System.out.println(e.getLocalizedMessage());
+  }
+   
+  return mv;
+}
+
+
+@RequestMapping(value = { "DpcWiseBaleData" })
+public ModelAndView DpcWiseBaleData(@RequestParam String basis, @RequestParam String cropyear ,@RequestParam String fromdate, @RequestParam String todate,@RequestParam String juteVariety ,@RequestParam String dpc ,final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) {
+	String username =(String)request.getSession().getAttribute("usrname");
+	ModelAndView mv = new ModelAndView("DpcWiseBalePacking");
+	 if(username == null) {
+     	return new ModelAndView("index");
+         }
+    try {
+
+	     String roname = request.getParameter("region"); 
+      
+        
+        String dpcId = this.purchaseCenterService.findDpIdbyName(dpc);
+
+        DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    	DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    	final String datearrival = request.getParameter("fromdate");
+	    	Date date = inputFormat.parse(datearrival);
+        String purchasesdateFrom = outputFormat.format(date);
+        final String datearrival1 = request.getParameter("todate");
+		    Date date1 = inputFormat.parse(datearrival1);
+	        String purchasesdateTo = outputFormat.format(date1);
+        List<BalePreparation> viewBale = new ArrayList<BalePreparation>();
+      
+		viewBale = (List<BalePreparation>)this.balePrepareService.DpcWiseData(purchasesdateFrom, purchasesdateTo, cropyear,  basis,  juteVariety,  dpcId);
+		List<BalePreparation> newbalelist = new ArrayList<BalePreparation>();
+		 Set<String> uniqueCombos = new HashSet<>();
+		 List<BalePreparation> filteredList = new ArrayList<>();
+		for(BalePreparation baleprep : viewBale) {
+			 String combo = baleprep.getBin_no() + "-" + baleprep.getPacking_date();
+	        	String binNo =   baleprep.getPlace_of_packing();
+	        	String packaingDate =     baleprep.getPacking_date();
+	        	String juteGrade =    baleprep.getJute_grade();
+	        	BalePrepDto bprip = new BalePrepDto();
+	        	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+
+	        	   for (BalePreparation prepBale : viewBale) {
+	        	       	if(prepBale.getPacking_date().equalsIgnoreCase(packaingDate) )
+	        	       	{
+	        	       		if(prepBale.getJute_grade().contains("1"))
+	        			{
+	        				s1 += prepBale.getBale_no();
+
+	        				bprip.setGarde1(s1);
+	        			}
+	        			if(prepBale.getJute_grade().contains("2"))
+	        			{
+	        				s2 += prepBale.getBale_no();
+
+	        				bprip.setGarde2(s2);
+	        			}
+	        			if(prepBale.getJute_grade().contains("3"))
+	        			{
+	        				s3 += prepBale.getBale_no();
+	        				bprip.setGarde3(s3);
+	        			}
+	        			if(prepBale.getJute_grade().contains("4"))
+	        			{
+	        				s4 += prepBale.getBale_no();
+	        				bprip.setGarde4(s4);
+	        			}
+	        			if(prepBale.getJute_grade().contains("5"))
+	        			{
+	        			
+	        				s5 += prepBale.getBale_no();
+	        				bprip.setGarde5(s5);
+	        			}
+	        			if(prepBale.getJute_grade().contains("6"))
+	        			{
+	        				s6 += prepBale.getBale_no();
+
+	        				bprip.setGarde6(s6);
+	        			}
+	        			
+	        			if(prepBale.getJute_grade().contains("7"))
+	        			{
+	        				s7 += prepBale.getBale_no();
+
+	        				bprip.setGarde7(s7);
+	        			}
+	        			
+	        			if(prepBale.getJute_grade().contains("8"))
+	        			{
+	        				s8 += prepBale.getBale_no();
+
+	        				bprip.setGarde8(s8);
+	        			}
+	        	       	}
+		        		}
+		        	
+		      baleprep.setGarde1(bprip.getGarde1());
+		      baleprep.setGarde2(bprip.getGarde2());
+		      baleprep.setGarde3(bprip.getGarde3());
+		      baleprep.setGarde4(bprip.getGarde4());
+		      baleprep.setGarde5(bprip.getGarde5());
+		      baleprep.setGarde6(bprip.getGarde6());
+		      baleprep.setGarde7(bprip.getGarde7());
+		      baleprep.setGarde8(bprip.getGarde8());
+		      if (!uniqueCombos.contains(combo)) {
+                uniqueCombos.add(combo);
+                newbalelist.add(baleprep);
+            }  
+		      int total = bprip.getGarde1() + bprip.getGarde2() + bprip.getGarde3() + bprip.getGarde4() + bprip.getGarde5() + bprip.getGarde6() + bprip.getGarde7() + bprip.getGarde8();
+            baleprep.setTotal(total);
+        
+    }
+
+    int g1sum = 0, g2sum = 0, g3sum = 0, g4sum = 0, g5sum = 0, g6sum = 0, g7sum= 0,g8sum =0, totalsum = 0;
+
+    for (BalePreparation baleprep : newbalelist) {
+        g1sum += baleprep.getGarde1();
+        g2sum += baleprep.getGarde2();
+        g3sum += baleprep.getGarde3();
+        g4sum += baleprep.getGarde4();
+        g5sum += baleprep.getGarde5();
+        g6sum += baleprep.getGarde6();
+        g7sum += baleprep.getGarde7();
+        g8sum += baleprep.getGarde8();
+        totalsum += baleprep.getTotal();
+
+        baleprep.setSum1(g1sum);
+        baleprep.setSum2(g2sum);
+        baleprep.setSum3(g3sum);
+        baleprep.setSum4(g4sum);
+        baleprep.setSum5(g5sum);
+        baleprep.setSum6(g6sum);
+        baleprep.setSum7(g7sum);
+        baleprep.setSum8(g8sum);
+        baleprep.setSum9(totalsum);
+    }
+
+		
+		String cropYear = this.balePrepareService.getcropYear(cropyear);
+        String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
+        String Basises = this.balePrepareService.getbasis(basis);
+
+       // String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+		//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+       // mv.addObject("placeOfPurchase", (Object)placeOfPurchase);
+        //System.err.println("dsfsdw222");
+        mv.addObject("balePrepList", (Object)newbalelist);
+        mv.addObject("cropYear", (Object)cropYear);
+        mv.addObject("jutevariety", (Object)jutevariety);  
+        mv.addObject("Basises", (Object)Basises);
+        mv.addObject("fromdate", (Object)fromdate);
+        mv.addObject("todate", (Object)todate);
+        mv.addObject("roname", (Object)roname);
+
+        mv.addObject("dpc", (Object)dpc);
+
+       // System.err.println("dpckkkdk=="+dpc);
+
+
+    }
+    catch (Exception e) {
+        System.out.println(e.getLocalizedMessage());
+    }
+     
+    return mv;
+}
+
+@RequestMapping(value = { "pdfDpcBalePrep" })
+public ModelAndView pdfDpcBalePrep(HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+String username = (String) request.getSession().getAttribute("usrname");
+if (username == null) {
+return new ModelAndView("index");
+}
+
+ModelAndView mv = new ModelAndView("DpcWisebalePrepartionReport");
+
+try {
+String dpc = request.getParameter("dpc");
+String fromdate = request.getParameter("fromdate");
+String todate = request.getParameter("todate");
+String cropyear = request.getParameter("cropyear");
+String basis = request.getParameter("basis");
+String juteVariety = request.getParameter("juteVariety");
+String roname = request.getParameter("roname");
+
+String dpcId = this.purchaseCenterService.findDpIdbyName(dpc);
+
+DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+Date fromDateParsed = inputFormat.parse(fromdate);
+Date toDateParsed = inputFormat.parse(todate);
+
+
+String purchasesdateFrom = outputFormat.format(fromDateParsed);
+String purchasesdateTo = outputFormat.format(toDateParsed);
+
+List<BalePreparation> viewBale = balePrepareService.DpcWiseData( purchasesdateFrom, purchasesdateTo, cropyear, basis, juteVariety, dpcId);
+Set<String> uniqueCombos = new HashSet<>();
+List<BalePreparation> newbalelist = new ArrayList<>();
+
+for (BalePreparation baleprep : viewBale) {
+ String combo = baleprep.getBin_no() + "-" + baleprep.getPacking_date();
+	String packaingDate =     baleprep.getPacking_date();
+
+ if (!uniqueCombos.contains(combo)) {
+     uniqueCombos.add(combo);
+     newbalelist.add(baleprep);
+     String binNo =   baleprep.getPlace_of_packing();
+     BalePrepDto bprip = new BalePrepDto();
+ 	int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0;
+
+     for (BalePreparation prepBale : viewBale) {
+     	if(prepBale.getPacking_date().equalsIgnoreCase(packaingDate) )
+ 		{
+     		if(prepBale.getJute_grade().contains("1"))
+			{
+				s1 += prepBale.getBale_no();
+
+				bprip.setGarde1(s1);
+			}
+			if(prepBale.getJute_grade().contains("2"))
+			{
+				s2 += prepBale.getBale_no();
+
+				bprip.setGarde2(s2);
+			}
+			if(prepBale.getJute_grade().contains("3"))
+			{
+				s3 += prepBale.getBale_no();
+				bprip.setGarde3(s3);
+			}
+			if(prepBale.getJute_grade().contains("4"))
+			{
+				s4 += prepBale.getBale_no();
+				bprip.setGarde4(s4);
+			}
+			if(prepBale.getJute_grade().contains("5"))
+			{
+			
+				s5 += prepBale.getBale_no();
+				bprip.setGarde5(s5);
+			}
+			if(prepBale.getJute_grade().contains("6"))
+			{
+				s6 += prepBale.getBale_no();
+
+				bprip.setGarde6(s6);
+			}
+			
+			if(prepBale.getJute_grade().contains("7"))
+			{
+				s7 += prepBale.getBale_no();
+
+				bprip.setGarde7(s7);
+			}
+			
+			if(prepBale.getJute_grade().contains("8"))
+			{
+				s8 += prepBale.getBale_no();
+
+				bprip.setGarde8(s8);
+			}
+			
+ 		}
+ 	}
+
+     baleprep.setGarde1(bprip.getGarde1());
+     baleprep.setGarde2(bprip.getGarde2());
+     baleprep.setGarde3(bprip.getGarde3());
+     baleprep.setGarde4(bprip.getGarde4());
+     baleprep.setGarde5(bprip.getGarde5());
+     baleprep.setGarde6(bprip.getGarde6());
+     baleprep.setGarde7(bprip.getGarde7());
+	      baleprep.setGarde8(bprip.getGarde8());
+     String datefrom = baleprep.setFromdate(fromdate);
+		//String todates = baleprep.setTodate(todate);
+String todates  = baleprep.setTodate(todate);
+
+int total = bprip.getGarde1() + bprip.getGarde2() + bprip.getGarde3() + bprip.getGarde4() + bprip.getGarde5() + bprip.getGarde6() + bprip.getGarde7() + bprip.getGarde8();
+baleprep.setTotal(total);
+
+}
+}
+int g1sum = 0, g2sum = 0, g3sum = 0, g4sum = 0, g5sum = 0, g6sum = 0, g7sum= 0,g8sum =0, totalsum = 0;
+
+for (BalePreparation baleprep : newbalelist) {
+g1sum += baleprep.getGarde1();
+g2sum += baleprep.getGarde2();
+g3sum += baleprep.getGarde3();
+g4sum += baleprep.getGarde4();
+g5sum += baleprep.getGarde5();
+g6sum += baleprep.getGarde6();
+g7sum += baleprep.getGarde7();
+g8sum += baleprep.getGarde8();
+totalsum += baleprep.getTotal();
+
+baleprep.setSum1(g1sum);
+baleprep.setSum2(g2sum);
+baleprep.setSum3(g3sum);
+baleprep.setSum4(g4sum);
+baleprep.setSum5(g5sum);
+baleprep.setSum6(g6sum);
+baleprep.setSum7(g7sum);
+baleprep.setSum8(g8sum);
+baleprep.setSum9(totalsum);
+}
+
+String cropYear = this.balePrepareService.getcropYear(cropyear);
+String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
+//String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+//String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
+//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll()
+JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI-CMS\\baleReportDpcWise.jrxml");             
+Map<String, Object> parameters = new HashMap<String, Object>();
+// Prepare data sources
+JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
+
+// Fill JasperPrints
+JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+response.setContentType("application/pdf");
+response.setHeader("Content-Disposition", "attachment; filename=BalePreparationDPCwise.pdf");
+try (OutputStream out = response.getOutputStream()) {
+   JRPdfExporter exporter = new JRPdfExporter();
+   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+//   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+   exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+   exporter.exportReport();}
+catch (Exception e) {
+       System.out.println(e.getLocalizedMessage());
+   }
+}
+catch (Exception e) {
+System.out.println(e.getLocalizedMessage());
+}
+
+return mv;
+}
+
+
+@RequestMapping(value = { "PurchaseRegisterList" })
+public ModelAndView PurchaseRegisterList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	String username =(String)request.getSession().getAttribute("usrname");
+	ModelAndView mv = new ModelAndView("PurchaseList");
+	 if(username == null) {
+   	return new ModelAndView("index");
+       }
+  try {
+    
+	  final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+      mv.addObject("zoneList", (Object)zoneList);
+     
+  }
+  catch (Exception e) {
+      System.out.println(e.getLocalizedMessage());
+  }
+   
+  return mv;
+}
+
+
+
+
+	
+
 }

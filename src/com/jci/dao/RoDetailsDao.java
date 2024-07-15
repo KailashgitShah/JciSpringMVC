@@ -14,4 +14,5 @@ public interface RoDetailsDao {
 	public boolean submitform(RoDetailsModel roDetails);
 	public List<String> zonecode(String zoneCode);
 	public String getRoname(String region_id);
+	public String findregionbyname(String region);
 }

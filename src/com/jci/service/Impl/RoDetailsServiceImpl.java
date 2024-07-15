@@ -66,4 +66,9 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 		// TODO Auto-generated method stub
 		return roDao.getRoname(region_id);
 	}
+	
+	public String findregionbyname(String region) {
+		// TODO Auto-generated method stub
+		return roDao.findregionbyname(region);
+	}
 }

@@ -97,4 +97,13 @@ public class RoDetailsDaoimpl implements RoDetailsDao {
 		return region;
 
 	}
+	
+	public String findregionbyname(String region) {
+		String querystr = "select rocode from jcirodetails where roname ='" + region + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		String regions = query.list().get(0).toString();
+		return regions;
+	}
 }

@@ -21,4 +21,6 @@ public interface PurchaseCenterService {
 //	public List<PurchaseCenterModel>getCenterCodeByCode(int rocode);
 	public Map<String, String> getdpcbyregionid(String regionid);
 	public float findNominalWt(String dpc);
+	public String findDpIdbyName(String dpc);
+
 }

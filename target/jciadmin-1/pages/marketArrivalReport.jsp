@@ -55,7 +55,7 @@ th     { background:#eee; }
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Market Arrival Report</h1>
+                <h1 class="page-title">Daily Market Report</h1>
             </div>
                             <% List<MarkerArrivalModelDTO> marketList = (List<MarkerArrivalModelDTO>) request.getAttribute("allMarketArrival"); 
                  String region =  (String)request.getAttribute("roName"); 
@@ -78,7 +78,8 @@ th     { background:#eee; }
 								</div>
 								<div class="form-group">
 								<label></label> <br>
-                                        <button class="btn btn-default" type="submit">Download</button>
+										<a href="MarketArrival.obj" class="btn btn-primary">Go Back</a>
+                                        <button class="btn btn-primary" type="submit">Download</button>
                                     </div>
 			</div>
 			</form>

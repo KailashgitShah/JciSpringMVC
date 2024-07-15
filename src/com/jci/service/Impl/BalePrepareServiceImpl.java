@@ -73,4 +73,31 @@ public class BalePrepareServiceImpl implements BalePrepareService	{
 		return balePrepare.getbasis(basis);
 	}
 
+	@Override
+	public List<BalePreparation> RegionWiseData(String roname, String fromdate, String purchasesdateTo, String cropyear,
+			String basis, String juteVariety) {
+		// TODO Auto-generated method stub
+		return balePrepare.RegionWiseData(roname, fromdate, purchasesdateTo, cropyear,  basis,  juteVariety);
+	}
+
+	@Override
+	public List<BalePreparation> DpcWiseData( String purchasesdateFrom, String purchasesdateTo,
+			String cropyear, String basis, String juteVariety, String dpc) {
+		// TODO Auto-generated method stub
+		return balePrepare.DpcWiseData(purchasesdateFrom, purchasesdateTo, cropyear,  basis,  juteVariety,  dpc);
+	}
+
+	@Override
+	public String regionId(String roname) {
+		// TODO Auto-generated method stub
+		return balePrepare.regionId(roname);
+	}
+
+	@Override
+	public List<BalePreparation> allBaleDataList(String purchasesdateFrom, String purchasesdateTo, String cropyear, String basis,
+			String juteVariety) {
+		// TODO Auto-generated method stub
+		return balePrepare.allBaleDataList(purchasesdateFrom,  purchasesdateTo, cropyear, basis, juteVariety );
+	}
+
 }

@@ -16,5 +16,12 @@ public interface BalePrepareService {
 	public String getcropYear(String cropyear);
 	public String getjuteVariety(String juteVariety);
 	public String getbasis(String basis);
+	public List<BalePreparation> RegionWiseData(String roname, String fromdate, String purchasesdateTo, String purchasesdateFrom, String cropyear,
+			String basis);
+	public List<BalePreparation> DpcWiseData( String purchasesdateFrom, String purchasesdateTo,
+			String cropyear, String basis, String juteVariety, String dpc);
+	public String regionId(String roname);
+	public List<BalePreparation> allBaleDataList(String purchasesdateFrom, String purchasesdateTo, String cropyear, String basis,
+			String juteVariety);
 	
 }

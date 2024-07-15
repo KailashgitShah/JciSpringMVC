@@ -41,7 +41,7 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Packing Register</h1>
+                <h1 class="page-title">Bin Wise Packing Register</h1>
                  
             </div>
 				

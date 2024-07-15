@@ -171,4 +171,17 @@ public class PurchaseCenterDaoImpl implements PurchaseCenterDao {
 		    float result = resultDouble.floatValue();
 		    return result;
 	}
+	
+
+	@Override
+	public String findDpIdbyName(String dpc) {
+		String querystr = "SELECT  center_code FROM jcipurchasecenter where centername = '"+dpc+"'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<Object> rows = query.list();
+		String result = (String)rows.get(0);
+		
+		return result;
+	}
 }

@@ -127,6 +127,15 @@ public class BalePreparation {
 	@Transient
 	private int sum9;
 	
+	@Transient
+	private String dpcId;
+	
+	@Transient
+	private String fromdate;
+
+	@Transient
+	private String todate;
+	
 	
 	public String getRegion() {
 		return region;
@@ -454,6 +463,38 @@ public class BalePreparation {
 
 	public void setSum9(int sum9) {
 		this.sum9 = sum9;
+	}
+
+
+	
+	
+	public String getDpcId() {
+		return dpcId;
+	}
+
+
+	public void setDpcId(String dpcId) {
+		this.dpcId = dpcId;
+	}
+
+
+	public String getFromdate() {
+		return fromdate;
+	}
+
+
+	public String setFromdate(String fromdate) {
+		return this.fromdate = fromdate;
+	}
+
+
+	public String getTodate() {
+		return todate;
+	}
+
+
+	public String setTodate(String todate) {
+		return this.todate = todate;
 	}
 
 

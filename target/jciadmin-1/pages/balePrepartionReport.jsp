@@ -41,7 +41,7 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Packing Register</h1>
+                <h1 class="page-title">Bin Wise Packing Register</h1>
                  
             </div>
 				
@@ -94,6 +94,13 @@
 											<input class="form-control" name="todate" id="todate"  placeholder="dd-mm-yyyy" value="<%=todate%>" readonly>
 										</div>
 										</div>
+						<div class ="row">				
+										<div class="col-sm-4 form-group">
+											<label> </label> &nbsp;&nbsp;&nbsp; 
+					                      <a href="viewbalePreparationList.obj" class="btn btn-primary">Go Back</a>
+					                        <button class="btn btn-primary" type="submit">Submit</button>	
+					                         </div>
+                     </div>
 <div class="ibox">
 		
                     <span>${msg}</span>
@@ -104,17 +111,17 @@
 								<thead>
 									<tr>
 										<th>S.No.</th> 
-											 <th>Bin No</th>
+										<th>Bin No</th>
 									    <th>Packing Date</th>	
-									    	 <th>Grade 1</th>
+									    <th>Grade 1</th>
 									    <th>Grade 2</th>
 									    <th>Grade 3</th>
-									     <th>Grade 4</th>
+									    <th>Grade 4</th>
 									    <th>Grade 5</th>	
 									    <th>Grade 6</th>
 									    <th>Grade 7</th>						
-									<th>Grade 8</th>
-									<th>Total</th>
+									    <th>Grade 8</th>
+									    <th>Total</th>
 										<!-- <th></th>
 										<th></th> -->
 									</tr>
@@ -154,10 +161,7 @@
 							
                         </table>
                     </div>
-                    	<div class="col-sm-4 form-group">
-										<label> </label> &nbsp;&nbsp;&nbsp; 
-										
- <button class="btn btn-default" type="submit">Submit</button>										</div>
+                     
                 </div>
                  </form>
             </div>
