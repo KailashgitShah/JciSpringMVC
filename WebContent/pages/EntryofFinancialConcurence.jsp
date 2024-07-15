@@ -147,10 +147,10 @@
 			  
 		    BigDecimal qtdivtotal1 = qtdiv.multiply(instrumentValueBigInt);
 		    
-		    BigDecimal qtdivtotal2 = qtdivtotal1.add(remainquantity1);
-
+		/*     BigDecimal qtdivtotal2 = qtdivtotal1.add(remainquantity1);
+ */
 		    
-		    BigDecimal qtdivtotal = qtdivtotal2.setScale(2, RoundingMode.HALF_UP);
+		    BigDecimal qtdivtotal = qtdivtotal1.setScale(2, RoundingMode.HALF_UP);
 		    
 		    
 	 	    

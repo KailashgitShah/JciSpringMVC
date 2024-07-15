@@ -3455,6 +3455,7 @@ public class Controller_V {
 	        	    double compoqty = (sumqty * percentage) / 100;
 	        	    System.err.println("qty: " + compoqty);
 	        	    sum += compoqty;
+	        	    sum = Math.round(sum);
 	        	    fcDto1.setQty(compoqty);
 
 	        	    listOfFcdto.add(fcDto1);
@@ -3905,7 +3906,7 @@ public class Controller_V {
 					millRecieptModel.setClaim_status(2);
 				}
 
-				//this.millRecieptService.create(millRecieptModel);
+				this.millRecieptService.create(millRecieptModel);
 				this.millRecieptService.UpdateContractstatus(Contractno1);
 				redirectAttributes.addFlashAttribute("msg",
 						"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n"
