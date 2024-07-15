@@ -6923,7 +6923,7 @@ System.out.println();
 		            baleprep.setSum8(g8sum);
 		            baleprep.setSum9(totalsum);
 		                   }
-		  		 JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI-CMS\\AllListBalePrep.jrxml");
+		  		 JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\microservise\\AllListBalePrep.jrxml");
 		         Map<String, Object> parameters = new HashMap<String, Object>();
 		         // Prepare data sources
 		         JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
@@ -7395,7 +7395,7 @@ public ModelAndView pdfRegionBalePrep(HttpServletRequest request, RedirectAttrib
       String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
       //String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
 		//final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll()
-      JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI-CMS\\baleReportRegionWise.jrxml");
+      JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\microservise\\baleReportRegionWise.jrxml");
       Map<String, Object> parameters = new HashMap<String, Object>();
       // Prepare data sources
       JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
@@ -7755,7 +7755,7 @@ String jutevariety = this.balePrepareService.getjuteVariety(juteVariety);
 //String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
 //String placeOfPurchase = this.purchaseCenterService.findDpcname(dpc);
 //final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll()
-JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI-CMS\\baleReportDpcWise.jrxml");             
+JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\microservise\\baleReportDpcWise.jrxml");             
 Map<String, Object> parameters = new HashMap<String, Object>();
 // Prepare data sources
 JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(newbalelist);
