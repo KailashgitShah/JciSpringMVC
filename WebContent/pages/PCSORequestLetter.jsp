@@ -49,13 +49,19 @@
 </head>
 <%
 String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+ String[] years = currCropYear.split("-");
+int startYear = Integer.parseInt(years[0]);
+int endYear = Integer.parseInt(years[1]);
+
+// Calculate the past crop years
+String pastCropYear1 = (startYear - 1) + "-" + (endYear - 1);
+String pastCropYear2 = (startYear - 2) + "-" + (endYear - 2); 
+
 List<PCSORequestLetter> topThreeRecords = (List<PCSORequestLetter>) request.getAttribute("topThreeRecords");
 List<String> cropYr = (List<String>) request.getAttribute("distinctCropYear");
 double totalContractedVal = (double) request.getAttribute("totalContract");
 
-
-List<Double> jute = (List<Double>)request.getAttribute("jute");
-			  
+List<Double> jute = (List<Double>) request.getAttribute("jute");
 %>
 
 <body class="fixed-navbar">
@@ -139,17 +145,14 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 										<div class="col-sm-4 form-group">
 											<label>Crop Year</label> <span class="text-danger">* </span>&nbsp;
 											<span id="errcropyr" name="errcropyr" class="text-danger">
-											</span> <select name="cropyr" id="cropyr" class="form-control" readonly>
+											</span> <select name="cropyr" id="cropyr" class="form-control"
+												readonly>
 												<option value="">-Select-</option>
-												<%
-												for (String crpyr : cropYr) {
-												%>
-												<option value="<%=crpyr%>"
-													<%if (crpyr.equals("2023-2024"))
-	out.print("selected");%>><%=crpyr%></option>
-												<%
-												}
-												%>
+												<option selected value="<%=currCropYear%>" ><%=currCropYear %></option>
+												<option value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
+												<option value="<%=pastCropYear2%>"><%=pastCropYear2%></option>
+													
+												 
 											</select>
 										</div>
 									</div>
@@ -179,20 +182,20 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 										<tbody>
 
 
-												<tr>
-										<td>(1)</td>
-										<td><a href = "regionwiseinventory.obj" >Procured/Baled</a></td>
-										<td id="loosejute"><%=jute.get(7) %></td>
-										<td id="grade0"><%=jute.get(0) %></td>
-										<td id="grade1"><%=jute.get(1) %></td>
-										<td id="grade2"><%=jute.get(2) %></td>
-										<td id="grade3"><%=jute.get(3) %></td>
-										<td id="grade4"><%=jute.get(4) %></td>
-										<td id="grade5"><%=jute.get(5) %></td>
-										<td id="grade6">0</td>
-										<td id="grade7">0</td>
-										<td id="total"><%=jute.get(6)%></td>
-										</tr>
+											<tr>
+												<td>(1)</td>
+												<td><a href="regionwiseinventory.obj">Procured/Baled</a></td>
+												<td id="loosejute"><%=jute.get(7)%></td>
+												<td id="grade0"><%=jute.get(0)%></td>
+												<td id="grade1"><%=jute.get(1)%></td>
+												<td id="grade2"><%=jute.get(2)%></td>
+												<td id="grade3"><%=jute.get(3)%></td>
+												<td id="grade4"><%=jute.get(4)%></td>
+												<td id="grade5"><%=jute.get(5)%></td>
+												<td id="grade6">0</td>
+												<td id="grade7">0</td>
+												<td id="total"><%=jute.get(6)%></td>
+											</tr>
 
 										</tbody>
 										<tbody>
@@ -280,9 +283,9 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 
 									</div>
 									<div class="row">
-										 	<input class="form-control" name="uncontractedQty"
-											id="uncontractedQty" type="hidden"
-											value="<%=jute.get(6)%>" readonly>
+										<input class="form-control" name="uncontractedQty"
+											id="uncontractedQty" type="hidden" value="<%=jute.get(6)%>"
+											readonly>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty. (Qtls.)</label> <input

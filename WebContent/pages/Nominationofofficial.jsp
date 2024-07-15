@@ -158,11 +158,11 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
 								  
 								  
-								  <div class="col-sm-4 form-group">
+								    <div class="col-sm-4 form-group">
                                        <label>Date of Inspection</label>
-                                       <input class="form-control taxtbox" id="DateofInpection" name="DateofInpection" placeholder="dd-mm-yyyy" required>                                   
-								 </div>
-									
+                                       <input class="form-control taxtbox" id="DateofInpection" id1="newdate" name="DateofInpection" placeholder="dd-mm-yyyy" required >                                   
+								 </div>  
+								 										
 									</div>
 					          <!-- <div class="row"> -->
 
@@ -230,11 +230,14 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<!--  <script>
+<!-- <script>
       $( "#DateofInpection" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 
       
-</script> -->
+</script>  -->
+
+
+
 
 
 	<script type="text/javascript">
@@ -245,13 +248,24 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
       </script>
 
 
- <script type="text/javascript">
+
+<script type="text/javascript">
 
     // Initialize the Datepicker
     $("#DateofInpection").datepicker({
         dateFormat: 'dd-mm-yy',
         onSelect: function(selectedDate) {
-            var selectedOption = selectedDate;
+        	var currentDate = new Date();
+        	var formattedDate = ("0" + currentDate.getDate()).slice(-2) + "-" + ("0" + (currentDate.getMonth() + 1)).slice(-2) + "-" + currentDate.getFullYear();
+        	var selectedOption = selectedDate;
+        	var selectedDateObject = new Date(selectedDate.split("-").reverse().join("-")); // Convert selected date to Date object
+          // alert(selectedDateObject +"RRRRR" +   currentDate)
+        	if (selectedOption< formattedDate) { // Check if selected date is before or equal to current date
+        	    alert("Please Select a Date From Today Onwards. " );
+        	    $(this).val(''); // Clear the input field
+        	}
+
+
             $.ajax({
                 type: 'GET',
                 url: 'fetchdateOfInspection.obj',
@@ -360,6 +374,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
     });
 </script>
 
+
  
    
    <script>
@@ -435,22 +450,7 @@ $(document).ready(function() {
 
 </script> 
 
-<!-- 
-                <script type="text/javascript">
-                function myFunction()() 
-                {
-                    if (!document.getElementById("checkbox1").checked) {
-                      alert("rrrrr")
-                             var k =   $('#checkbox1').val(0);
-                                alert(k)
-                    }else{
-                              var k =  $('#checkbox1').val(1);
-                              alert(K)
-                    }
-                }
-                
-             
-   </script> -->
+
    
     
        <script type="text/javascript">

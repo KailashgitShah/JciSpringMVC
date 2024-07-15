@@ -35,6 +35,14 @@
 </head>
 <%
 String cropYear = (String) request.getSession().getAttribute("currCropYear");
+String[] years = cropYear.split("-");
+int startYear = Integer.parseInt(years[0]);
+int endYear = Integer.parseInt(years[1]);
+
+//Calculate the past crop years
+String pastCropYear1 = (startYear - 1) + "-" + (endYear - 1);
+String pastCropYear2 = (startYear - 2) + "-" + (endYear - 2);
+
 int count = (int) request.getAttribute("count") + 1;
 List<Object> allJuteVariety = (List<Object>) request.getAttribute("allJuteVariety");
 int sizeOfJuteVariey = allJuteVariety.size();
@@ -70,9 +78,13 @@ String contactIdnNo = "BT-" + count;
 
 									<div class="row">
 										<div class="col-sm-5 form-group">
-											<label>Crop Year</label> <input class="form-control"
-												name="crop_year" id="crop_year" value="<%=cropYear%>"
-												readonly>
+											<label>Crop Year</label> <select name="crop_year"
+												id="crop_year" class="form-control">
+												<option value="">-Select-</option>
+												<option value="<%=cropYear%>"><%=cropYear%></option>
+												<option selected value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
+												<option value="<%=pastCropYear2%>"><%=pastCropYear2%></option>
+											</select>
 										</div>
 
 										<div class="col-sm-5 form-group">
@@ -100,6 +112,7 @@ String contactIdnNo = "BT-" + count;
 													value="<%=contactIdnNo%>/<%=cropYear%>" readonly />
 											</div>
 										</div>
+
 
 										<div class="row table-responsive-sm m-4">
 											<table>
@@ -167,10 +180,8 @@ String contactIdnNo = "BT-" + count;
 									<div class="ibox-body" id="contractgeneration">
 
 										<div class="row">
-											<div class="col-sm-4 form-group">
-												<label class="required">PCSO Date</label>
 
-												<%
+											<%-- 		<%
 												List<Date> pcsoDates = (List<Date>) request.getAttribute("pcsoDates");
 												%>
 												<select data-placeholder='Choose Dates..'
@@ -184,9 +195,16 @@ String contactIdnNo = "BT-" + count;
 													</option>
 													<%
 													}
-													%>
+													%> --%>
+											<!--</select> -->
+											<div class="col-sm-4 form-group" id="pcso_div">
+												<label id="pcsoDateLable" class="required">PCSO Date</label>
+												&nbsp;&nbsp;&nbsp; <select name="pcso_date" id="pcso_div"
+													class="form-control" required>
+													<option disabled selected value="">-Select</option>
 												</select>
 											</div>
+
 
 
 											<div class="col-sm-3 form-group">
@@ -252,16 +270,59 @@ String contactIdnNo = "BT-" + count;
 <!-- CORE SCRIPTS-->
 <script src="assets/js/app.min.js" type="text/javascript"></script>
 
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+ 
+ function loadPcsoDateBasedOnCropYr(cropyr){
+	 var pcsoDateHtml = "<label id='pcsoDateLable' class='required'>Pcso Date</label> <select data-placeholder='Choose Pcso Date...' class='chosen-select form-control pcso' name='pcso_date'  multiple tabindex='3' id = 'pcso_date'>";
+
+	    $
+		.ajax({
+			type : 'GET',
+			url : 'getPscoDateByCropYr.obj',
+			data : {
+				"cropYr" :cropyr
+			},
+			success : function(result) {	
+				var finalresult = jQuery.parseJSON(result);
+				pcsoDateHtml += "<option disabled>-Select-</option>";
+				for (var i = 0; i < finalresult.length; i++) {
+					pcsoDateHtml += "<option value='"+finalresult[i]+"'>"+finalresult[i]+ "</option>";
+				}
+				pcsoDateHtml += "</select>"
+				
+
+				$("#list").html('<div></div>'); 
+				$("#pcso_div").html(pcsoDateHtml);
+				 $("#pcso_date").chosen();
+				 $("#pcso_date").addClass("chosen-select");
+				
+			
+			}
+	    })
+ }
+ 
+$("#crop_year").on("change" , function(){   
+	loadPcsoDateBasedOnCropYr($(this).val()); 
+})
+
+</script>
+
 <script>
-$("#pcso_date").chosen();
-$("#pcso_date").addClass("chosen-select");
-
 $(".contractLoader").hide();
-
-
 
 var flag = 1; //user for show and hide the content
 $("#toggle").on("click" ,async () => {
+
+	loadPcsoDateBasedOnCropYr($("#crop_year").val());
+/* 	by pass */
+/*  	document.getElementById("contractgeneration").style.setProperty('display' , 'block');
+	document.getElementById("gradeCompostion").style.setProperty('display' , 'none'); 
+	return true;  */
 	
 	var avaQty =$('#available_qty').val();
 	var remark = $('#remark').val();
@@ -298,7 +359,7 @@ $("#toggle").on("click" ,async () => {
 		document.getElementById("error").innerHTML = "";
 	}
 	
-	
+
 	
 	
 	//display properties
@@ -330,13 +391,10 @@ var count = 0;
 var array = [];
 var gradeArray = [];
 
-
-
-	$(".pcso")
+	$("#pcso_div")
 			.on(
 					"change",
 					function() {
-						
 						contractedValueMillWise = [];
 						listOfTotalQty = [];
 						parsedArray = [];
@@ -346,8 +404,9 @@ var gradeArray = [];
 						
 						 array = [];
 						 gradeArray = [];
-					
-						
+						 
+						 var cropyr = $("#crop_year").val();
+				
 						for(var i=1 ; i<= 6 ;i++){
 							var grade = $("#grade"+i).val();
 							if(grade != '') gradeArray.push(+grade);
@@ -383,16 +442,26 @@ var gradeArray = [];
 						 $
 								.ajax({
 									type : 'GET',
-									url : 'pcso_details.obj',
+									url : 'populateContract.obj',
 									data : {
 										"pcso_dates" : jsonPcsoDates,
-										"grades" : jsonGrades
-										//"deliveryType":deliveryType
+										"grades" : jsonGrades,
+										"cropyr":cropyr
 									},
-									success : function(result) {
+									success : function(result) {										
 										var data1 = jQuery.parseJSON(result).model;
+										var isPrice = data1.isPrice;
+										
+										
+										if(isPrice == 0){
+											alert("Derivate Price is not decided yet !!!");
+											return;
+										}
+										
 										parsedArray = JSON.parse(jsonPcsoDates);
+										
 										var List = data1.List;
+										
 										var TotelContractedValue = data1.totelContractedValue;
 									     contractedValueMillWise = data1.contractedValueMillWise;
 									     
@@ -571,7 +640,7 @@ function updateOnChange(id){
 var prevQty = listOfTotalQty[id];
 var currDeleType = $("#deliveryType"+id).val();
 var prevDelType = currDeleType == "Ex-Godown" ? "Mill-Delivery" : "Ex-Godown";
-
+var cropyr = $("crop_year").val();
 //console.log(currDeleType , prevDelType);
 
 //console.log(contractedValueMillWise , listOfTotalQty ,prevQty, "inside change funtion");
@@ -582,7 +651,8 @@ var prevDelType = currDeleType == "Ex-Godown" ? "Mill-Delivery" : "Ex-Godown";
 		data:{
 			"deliveryType" : currDeleType,
 			"totalQtyOfMill":prevQty,
-			"grades" : jsonGrades
+			"grades" : jsonGrades,
+			"cropyr" : cropyr
 		},
 		success : function(result){
 			//console.log(result);
@@ -599,7 +669,6 @@ var prevDelType = currDeleType == "Ex-Godown" ? "Mill-Delivery" : "Ex-Godown";
 	})   
 }
 </script>
-
 
 
 

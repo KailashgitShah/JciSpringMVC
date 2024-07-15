@@ -65,16 +65,10 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public int getGstCount(String gstGstCode) {
-		String sql = "select count( distinct Credit_note_no) from jcicredit_note where gstCode = '" + gstGstCode + "' and Crn_status = 0";
+		String sql = "select count( distinct Credit_note_no) from jcicredit_note where gstCode = '" + gstGstCode
+				+ "' and Crn_status = 0";
 		return (int) currentSession().createSQLQuery(sql).uniqueResult();
 
-	}
-
-	@Override
-	public List<Object[]> getAllMillsOfContracts() {
-		String sqlString = "select a.Mill_code , a.Mill_name, a.Contract_no from jcicontract a  where  a.Contract_no in  (SELECT Contract_no FROM jcicredit_note UNION  SELECT Contract_no FROM jcidemand_note )";
-
-		return (List<Object[]>) currentSession().createSQLQuery(sqlString).list();
 	}
 
 	@Override
@@ -93,9 +87,9 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<String> getParamenterDetails(String parameter) {
 		String sqlString = "";
 		if (parameter.equals("Region")) {
-			sqlString = " select distinct(b.Ro_id) from jcibos_generation a INNER JOIN "
-					+ " jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
-					+ " a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0))";
+			sqlString = "  select distinct CONCAT(b.Ro_id, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
+					+ "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) inner join jcirodetails c on b.Ro_id = c.rocode;\r\n"
+					+ "";
 		} else {
 			sqlString = " select distinct(a.Contract_no) from jcibos_generation a INNER JOIN "
 					+ " jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
@@ -161,7 +155,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 		String sql = "select a.Crop_year,a.Bale_mark,a.Jute_grade,a.No_of_bales,a.Nominal_qty,a.Rate,a.Nominal_wt,\r\n"
 				+ "   CONVERT(VARCHAR, b.Contract_date, 105) AS Contract_date,\r\n"
 				+ "    CONVERT(VARCHAR, b.DI_Date, 105) AS DI_Date,\r\n"
-				+ "    CONVERT(VARCHAR, b.Date_of_shipment, 105) AS Date_of_shipment\r\n"
+				+ "    CONVERT(VARCHAR, b.Date_of_shipment, 105) AS Date_of_shipment ,  b.Consignment_note_text "
 				+ " from  jcidispatch_details_child a INNER join jcidispatch_details b on a.Challan_no = b.Challan_no and a.Challan_no='"
 				+ challanNo + "' ";
 		List<Object[]> resultList1 = (List<Object[]>) currentSession().createSQLQuery(sql).list();
@@ -183,7 +177,6 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 		String sql = "select a.Bill_of_supply_no,a.BOS_date ,a.Contract_no ,a.Challan_No,"
 				+ " a.Invoice_value, b.Nominal_wt , b.Dpc_actual_wt ,c.Mill_name , c.DI_No"
 				+ "  ,a.Ro_id,c.Mill_code , c.Place_of_Shipment ,a.Statecode_forBOs, c.Contract_date , c.DI_Date,c.Date_of_shipment  from  jcibos_generation a INNER JOIN jciweighment_entry b"
-
 				+ "  on b.Verification_status = 1 and a.Bill_of_supply_no = b.Bos_no and a.Challan_No = '" + challan
 				+ "'" + " inner JOIN jcidispatch_details c on a.Challan_No = c.Challan_no";
 
@@ -225,6 +218,38 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public int getTotalCount() {
 		String sql = "select count( distinct Credit_note_no) from jcicredit_note where Crn_status = 0";
 		return (int) currentSession().createSQLQuery(sql).uniqueResult();
+	}
+
+	// settlement of credit and debit notes
+
+	@Override
+	public List<String> getMillNames() {
+		String sqlString = "SELECT DISTINCT CONCAT(a.client_name,'&-&', b.client_unit_code) as mill FROM jcimilldetailmaster a\r\n"
+				+ "INNER JOIN jcimilldetailchild b ON a.client_code = b.client_code\r\n"
+				+ "INNER JOIN jcicontract c ON c.Mill_code = b.client_unit_code\r\n"
+				+ "LEFT JOIN jcicredit_note d ON d.Contract_no = c.Contract_no\r\n"
+				+ "LEFT JOIN jcicredit_note_settled e ON e.Contract_no = c.Contract_no\r\n"
+				+ "LEFT JOIN jcidemand_note f ON f.Contract_no = c.Contract_no\r\n"
+				+ "WHERE d.Contract_no IS NOT NULL OR e.Contract_no IS NOT NULL  OR f.Contract_no IS NOT NULL;";
+
+		return (List<String>) currentSession().createSQLQuery(sqlString).list();
+	}
+
+	@Override
+	public List<String> getAllContractNos(String millCode) {
+		String sql = "SELECT DISTINCT a.Contract_no from jcicontract a\r\n"
+				+ "LEFT JOIN jcicredit_note d ON d.Contract_no = a.Contract_no\r\n"
+				+ "LEFT JOIN jcicredit_note_settled e ON e.Contract_no = a.Contract_no\r\n"
+				+ "LEFT JOIN jcidemand_note f ON f.Contract_no = a.Contract_no\r\n" + "where a.Mill_code ='" + millCode
+				+ "'";
+		return (List<String>) currentSession().createSQLQuery(sql).list();
+	}
+
+	@Override
+	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract) {
+		String sql = "select * from jcicredit_note where Contract_no = '" + contract + "'";
+
+		return (List<Object[]>) currentSession().createSQLQuery(sql).list();
 	}
 
 }

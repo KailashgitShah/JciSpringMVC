@@ -137,7 +137,7 @@ th {
 										
 										<th style="text-align: center">Settlement Amount</th>
 										<th style="text-align: center">Inspection by</th>
-										<th style='text-align: center'>Supporting Document</th>
+										<!-- <th style='text-align: center'>Supporting Document</th> -->
 
 
 									</tr>
@@ -162,11 +162,11 @@ th {
 										<td style="text-align: center"><%=confirmationClaimSettlementModel.getSettlement_amt()%></td>
 										<td style="text-align: center"><%=confirmationClaimSettlementModel.getInspection_by()%></td>
 										<%-- <td style="text-align:center"><%= confirmationClaimSettlementModel.getSupporting_doc() %></td> --%>
-										<td><a
+										<%-- <td><a
 											href="downloadSupportDocument.obj?filename=<%=confirmationClaimSettlementModel.getSupporting_doc()%>"
 											class="btn btn-primary btn-sm" target="_blank"> View
 												Supporting docs</a></td>
-
+ --%>
 
 
 									</tr>

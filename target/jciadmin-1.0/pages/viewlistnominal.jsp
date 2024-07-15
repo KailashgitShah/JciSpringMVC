@@ -103,8 +103,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View Nomination of Officials for Claim
-					Settlement</h1>
+				<h1 class="page-title">Settlement Schedule</h1>
 
 			</div>
 
@@ -122,29 +121,15 @@ th {
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-										<th>Mill</th>
-										<th>Contract No</th>
-										<th>Challan No</th>
-										<th>MR NO</th>
-										<!--  <th>Quality Claim</th> -->
-										<!-- <th>Moisture Content</th>
-										<th>NCV Percentage</th> -->
-										<th>Claim Amount</th>
-										<th>O&M Official</th>
-
-
-										<th>F&A Official</th>
-
-										<th>Date of Inspection</th>
-
-
-
-									 
-
-
-
-
-
+									<th>Settlement ID</th>
+									<th>Date Of Entry</th>
+									<th>Date of Inspection</th>
+									<th>Mill</th>
+									<th>Contract No</th>
+									<th>HO DI No</th>
+									<th>O&M Official</th> 
+									<th>Details	</th>	
+									<th>Nominate F&A Official</th>															
 									</tr>
 								</thead>
 								<tbody>
@@ -155,36 +140,28 @@ th {
 
 										<tr>
 										<td  class="sorting_1"><%=i%></td>
-                                               
+                                            <td >${item.getSettlement_id_generated()}</td>
+                                           <td>${item.getCreated_on()}</td>
+                                            <td>${item.getDateofInspection()}</td>
 											<td >${item.getMill()}</td>
-											<td>${item.getContractNo()}
-											<td>${item.getChallanNo()}</td>
-											<td>${item.getMr_No()}</td>
-											<%-- <td>  ${item.getQuality_settlement()}</td> --%>
-											<%-- <td>${item.getMoisture_settlement()}</td>
-											<td>${item.getNcv_settlement()}</td> --%>
-											<td>${item.getClaimAmount()}</td>
-											<td>${item.getOMOfficial()}</td>
-
-
-											<td>${item. getFAOfficial()}</td>
-											<td>${item.getDateofInspection()}</td>
-											
-
-
-
-
-
-
-
+											 <td>${item.getContractNo()}</td>
+											 <td>${item.getHoDi()}</td>
+											 <td>${item.getOMOfficial()}</td>																
+                                         <td><a href="nominationdetails.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
+                                         
+                                <c:choose>
+							    <c:when test="${empty item.getFAOfficial()}">
+							        <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-primary" type="button">Add F&A Official</button></a></td>
+							    </c:when>
+							    <c:otherwise>
+							        <td>${item.getFAOfficial()}</td>
+							    </c:otherwise>
+							</c:choose>
 
 
 										</tr>
 										<%i++; %>
 									</c:forEach>
-
-
-
 
 
 

@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.jci.model.PCSORequestLetter"%>
@@ -22,7 +23,6 @@
 	content: " *";
 	color: red;
 }
-
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,34 +53,9 @@ List<PCSORequestLetter> topThreeRecords = (List<PCSORequestLetter>) request.getA
 List<String> cropYr = (List<String>) request.getAttribute("distinctCropYear");
 double totalContractedVal = (double) request.getAttribute("totalContract");
 
-double grade1 = 0.0;
-double grade2 = 0.0;
-double grade3 = 0.0;
-double grade4 = 0.0;
-double grade5 = 0.0;
-double grade6 = 0.0;
-double grade7 = 0.0;
-double grade0 = 0.0;
-List<Double> jute = new ArrayList<Double>();
-List<Integer> bale = new ArrayList<Integer>();
-jute = (List<Double>) request.getAttribute("jute");
-bale = (List<Integer>) request.getAttribute("bale");
-if (bale.get(0) != null)
-	grade0 = bale.get(0);
-if (bale.get(1) != null)
-	grade1 = bale.get(1);
-if (bale.get(2) != null)
-	grade2 = bale.get(2);
-if (bale.get(3) != null)
-	grade3 = bale.get(3);
-if (bale.get(4) != null)
-	grade4 = bale.get(4);
-if (bale.get(5) != null)
-	grade5 = bale.get(5);
-if (bale.get(6) != null)
-	grade6 = bale.get(6);
-if (bale.get(7) != null)
-	grade7 = bale.get(7);
+
+List<Double> jute = (List<Double>)request.getAttribute("jute");
+			  
 %>
 
 <body class="fixed-navbar">
@@ -164,13 +139,13 @@ if (bale.get(7) != null)
 										<div class="col-sm-4 form-group">
 											<label>Crop Year</label> <span class="text-danger">* </span>&nbsp;
 											<span id="errcropyr" name="errcropyr" class="text-danger">
-											</span> <select name="cropyr" id="cropyr" class="form-control">
+											</span> <select name="cropyr" id="cropyr" class="form-control" readonly>
 												<option value="">-Select-</option>
 												<%
 												for (String crpyr : cropYr) {
 												%>
 												<option value="<%=crpyr%>"
-													<%if (crpyr.equals("2022-2023"))
+													<%if (crpyr.equals("2023-2024"))
 	out.print("selected");%>><%=crpyr%></option>
 												<%
 												}
@@ -204,31 +179,71 @@ if (bale.get(7) != null)
 										<tbody>
 
 
-											<tr>
-												<%
-												double jutesum = (jute.get(0) + jute.get(1) + jute.get(2) + jute.get(3) + jute.get(4) + jute.get(5) + jute.get(6)
-														+ jute.get(7));
-												double balesum = (grade0 + grade1 + grade2 + grade3 + grade4 + grade5 + grade6 + grade7);
-												double loosejute = jutesum - balesum;
-												double totalUnContractedQty = loosejute + balesum;
-												%>
-												<td>(1)</td>
-												<td><a href="regionwiseinventory.obj">Procured/Baled</a></td>
-												<td id="loosejute"><%=loosejute%></td>
-												<td id="grade0"><%=grade0%></td>
-												<td id="grade1"><%=grade1%></td>
-												<td id="grade2"><%=grade2%></td>
-												<td id="grade3"><%=grade3%></td>
-												<td id="grade4"><%=grade4%></td>
-												<td id="grade5"><%=grade5%></td>
-												<td id="grade6"><%=grade6%></td>
-												<td id="grade7"><%=grade7%></td>
-												<td id="total"><%=loosejute + balesum%></td>
-
-											</tr>
-
+												<tr>
+										<td>(1)</td>
+										<td><a href = "regionwiseinventory.obj" >Procured/Baled</a></td>
+										<td id="loosejute"><%=jute.get(7) %></td>
+										<td id="grade0"><%=jute.get(0) %></td>
+										<td id="grade1"><%=jute.get(1) %></td>
+										<td id="grade2"><%=jute.get(2) %></td>
+										<td id="grade3"><%=jute.get(3) %></td>
+										<td id="grade4"><%=jute.get(4) %></td>
+										<td id="grade5"><%=jute.get(5) %></td>
+										<td id="grade6">0</td>
+										<td id="grade7">0</td>
+										<td id="total"><%=jute.get(6)%></td>
+										</tr>
 
 										</tbody>
+										<tbody>
+											<tr>
+												<td>(2)</td>
+												<td>Available</td>
+												<td id="loosejute">0.0</td>
+												<td id="grade0">0.0</td>
+												<td id="grade1">0.0</td>
+												<td id="grade2">0.0</td>
+												<td id="grade3">0.0</td>
+												<td id="grade4">0.0</td>
+												<td id="grade5">0.0</td>
+												<td id="grade6">0.0</td>
+												<td id="grade7">0.0</td>
+												<td id="total">0.0</td>
+											</tr>
+										</tbody>
+										<tbody>
+											<tr>
+												<td>(3)</td>
+												<td>Contract In Hand</td>
+												<td id="loosejute">0.0</td>
+												<td id="grade0">0.0</td>
+												<td id="grade1">0.0</td>
+												<td id="grade2">0.0</td>
+												<td id="grade3">0.0</td>
+												<td id="grade4">0.0</td>
+												<td id="grade5">0.0</td>
+												<td id="grade6">0.0</td>
+												<td id="grade7">0.0</td>
+												<td id="total">0.0</td>
+											</tr>
+										</tbody>
+										<tbody>
+											<tr>
+												<td>(4)</td>
+												<td>Contract Un-covered</td>
+												<td id="loosejute">0.0</td>
+												<td id="grade0">0.0</td>
+												<td id="grade1">0.0</td>
+												<td id="grade2">0.0</td>
+												<td id="grade3">0.0</td>
+												<td id="grade4">0.0</td>
+												<td id="grade5">0.0</td>
+												<td id="grade6">0.0</td>
+												<td id="grade7">0.0</td>
+												<td id="total">0.0</td>
+											</tr>
+										</tbody>
+
 
 									</table>
 
@@ -265,12 +280,12 @@ if (bale.get(7) != null)
 
 									</div>
 									<div class="row">
-										<input class="form-control" name="uncontractedQty"
+										 	<input class="form-control" name="uncontractedQty"
 											id="uncontractedQty" type="hidden"
-											value="<%=totalUnContractedQty%>" readonly>
+											value="<%=jute.get(6)%>" readonly>
 
 										<div class="col-sm-4 form-group">
-											<label class="required">Requested Qty.</label> <input
+											<label class="required">Requested Qty. (Qtls.)</label> <input
 												class="form-control" name="reqQty" id="reqQty" type="number"
 												min="0" required /> <span id="errMsg" class="text-danger"></span>
 										</div>
@@ -296,11 +311,11 @@ if (bale.get(7) != null)
 	</div>
 
 
-	 <script>
+	<script>
 		$(document).ready(function() {
-			 var currentDate = new Date();
-			  var formattedDate = currentDate.toISOString().split('T')[0];
-			  document.getElementById("reqDate").min = formattedDate;
+			var currentDate = new Date();
+			var formattedDate = currentDate.toISOString().split('T')[0];
+			document.getElementById("reqDate").min = formattedDate;
 		});
 	</script>
 	<script type="text/javascript">
@@ -355,7 +370,6 @@ if (bale.get(7) != null)
 				});
 	</script>
 
-
 	<script>
 		$(document)
 				.ready(
@@ -366,9 +380,9 @@ if (bale.get(7) != null)
 											function() {
 												var cropyr = $("#cropyr").val();
 												var basis = "MSP";
+												//var basis = $("#basis").val();
 												var loosejute = 0.0;
 												var baled = 0.0;
-
 												$
 														.ajax({
 															type : "GET",
@@ -381,7 +395,7 @@ if (bale.get(7) != null)
 																	result) {
 																var jute = jQuery
 																		.parseJSON(result);
-																//alert(jute);
+
 																for (var i = 0; i < jute.length; i++) {
 
 																	//console.log("jute["+i+"] =  "+ jute[i]);
@@ -412,7 +426,6 @@ if (bale.get(7) != null)
 
 																				}
 
-																				//	console.log("baled = "+baled);
 																				var loosefinal = loosejute
 																						- baled;
 																				var total = loosefinal
@@ -447,6 +460,16 @@ if (bale.get(7) != null)
 											});
 						});
 	</script>
+
+
+
+
+
+
+
+
+
+
 
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"

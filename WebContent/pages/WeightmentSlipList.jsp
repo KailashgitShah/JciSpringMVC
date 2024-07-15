@@ -135,7 +135,7 @@ tr:nth-child(even) {
         <td style="text-align: center"><a href="http://49.50.118.112:8080/WeightSlipment/<%= row[12] %>"  target="_blank">Mill Weight Document</a></td> 
         <td style="text-align: center"><a href="http://49.50.118.112:8080/WeightSlipment/<%= row[11] %>"  target="_blank">Mill Receipt Document</a></td> 
         <td style="text-align: center"><a href="http://49.50.118.112:8080/JCIStuff/billofsupply/<%= row[19] %>"  target="_blank">Bill Of Supply</a></td>
-        <td style="text-align: center"><a href="http://49.50.118.112:8080/DispatchDetail/<%= row[50] %>"  target="_blank">Challan Document</a></td>
+        <td style="text-align: center"><a href="http://49.50.118.112:8080/DispatchDetail/<%= row[51] %>"  target="_blank">Challan Document</a></td>
     </tr>
     <% i++; } %>
 </tbody>

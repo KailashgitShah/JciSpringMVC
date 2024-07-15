@@ -89,11 +89,11 @@ th     { background:#eee; }
 								<thead>
 									<tr>
 									<th>Sl.No</th>
-									<th>Mill</th>
-										<th>Financial year</th>
-										<th>Date of Intimation</th>
+									<th>Mill Name</th>
+										<th>Financial Year</th>
+										<th>Date Of Intimation</th>
 										 
-										 <th>View Supporting Document</th>
+									<!-- 	 <th>View Supporting Document</th> -->
 										
 										<th>View Upload Signed Doc</th>
 										 
@@ -112,7 +112,7 @@ th     { background:#eee; }
 								<td> ${item.getMill()}</td>
 							    <td> ${item.getFinancial_year()} 
 								<td>  ${item.getDate_of_Intimation()}</td>
-								<td>  ${item.getSupporting_document()}</td>
+								<%-- <td>  ${item.getSupporting_document()}</td> --%>
 							
 							
 								

@@ -28,4 +28,16 @@ public interface ConfirmationClaimSettlementDao {
 	public void acceptClaim(String challan, String username, String filename);
 
 	public void rejectClaim(String challan, String username);
+
+	public List<Object[]> getFAData(String setId);
+
+	public List<Object[]> getMillAcc();
+
+	public List<Object[]> getMillData(String setId);
+
+	public void acceptMill(String settleId);
+
+	public List<Object[]> getContract();
+
+	public List<Object[]> getSettlementId(String contract);
 }

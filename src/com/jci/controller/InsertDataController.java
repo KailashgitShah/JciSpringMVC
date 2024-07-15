@@ -6233,11 +6233,14 @@ public class InsertDataController
 			if (username == null) {
 				mv = new ModelAndView("index");
 			}
-												
+				
+			List<Object[]> fetchMill_Name = this.genrationCashDocumentService.fetchMill_Name();
+			System.err.println();
 
 			final List<CashDocumentModel> allUserRegistration = (List<CashDocumentModel>)
 					this.genrationCashDocumentService.getAll();
 			mv.addObject("genrationcashDocument", allUserRegistration);
+			mv.addObject("fetchMill_Name", fetchMill_Name);
 			
 
 			return mv;

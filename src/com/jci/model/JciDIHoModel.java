@@ -94,9 +94,18 @@ public class JciDIHoModel {
                     
                     @Column(name = "Creation_date",nullable = false) 
                     private String Creation_date;
-
+                    @Column(name = "HoDIDoc") 
+                    private String HoDIDoc;
                                 
-                                public Long getDI_HO_ID() {
+                                public String getHoDIDoc() {
+						return HoDIDoc;
+					}
+
+					public void setHoDIDoc(String hoDIDoc) {
+						HoDIDoc = hoDIDoc;
+					}
+
+								public Long getDI_HO_ID() {
                                                 return DI_HO_ID;
                                 }
 
@@ -288,22 +297,62 @@ public class JciDIHoModel {
                                                 Creation_date = currentTimestamp;
                                 }
 
-                                @Override
-                                public String toString() {
-                                                return "JciDIHoModel [DI_HO_ID=" + DI_HO_ID + ", DI_no=" + DI_no + ", DI_Date=" + DI_Date + ", Contract_No="
-                                                                                + Contract_No + ", Contract_Date=" + Contract_Date + ", Crop_year=" + Crop_year + ", FC_Ref_No="
-                                                                                + FC_Ref_No + ", Contracted_Qty=" + Contracted_Qty + ", Allowed_qty=" + Allowed_qty
-                                                                                + ", Regional_office=" + Regional_office + ", DPC=" + DPC + ", Last_date_of_Shipment="
-                                                                                + Last_date_of_Shipment + ", Jute_variety=" + Jute_variety + ", Remarks=" + Remarks + ", Gr1_qty="
-                                                                                + Gr1_qty + ", Gr2_qty=" + Gr2_qty + ", Gr3_qty=" + Gr3_qty + ", Gr4_qty=" + Gr4_qty + ", Gr5_qty="
-                                                                                + Gr5_qty + ", Gr6_qty=" + Gr6_qty + ", Gr7_qty=" + Gr7_qty + ", Gr8_qty=" + Gr8_qty
-                                                                                + ", Created_by=" + Created_by + ", Creation_date=" + Creation_date + "]";
-                                }
+								@Override
+								public String toString() {
+									return "JciDIHoModel [DI_HO_ID=" + DI_HO_ID + ", DI_no=" + DI_no + ", DI_Date="
+											+ DI_Date + ", Contract_No=" + Contract_No + ", Contract_Date="
+											+ Contract_Date + ", Crop_year=" + Crop_year + ", FC_Ref_No=" + FC_Ref_No
+											+ ", Contracted_Qty=" + Contracted_Qty + ", Allowed_qty=" + Allowed_qty
+											+ ", Regional_office=" + Regional_office + ", DPC=" + DPC
+											+ ", Last_date_of_Shipment=" + Last_date_of_Shipment + ", Jute_variety="
+											+ Jute_variety + ", Remarks=" + Remarks + ", Gr1_qty=" + Gr1_qty
+											+ ", Gr2_qty=" + Gr2_qty + ", Gr3_qty=" + Gr3_qty + ", Gr4_qty=" + Gr4_qty
+											+ ", Gr5_qty=" + Gr5_qty + ", Gr6_qty=" + Gr6_qty + ", Gr7_qty=" + Gr7_qty
+											+ ", Gr8_qty=" + Gr8_qty + ", Created_by=" + Created_by + ", Creation_date="
+											+ Creation_date + ", HoDIDoc=" + HoDIDoc + "]";
+								}
 
-                
-                    
-                  
+								public JciDIHoModel(Long dI_HO_ID, String dI_no, String dI_Date, String contract_No,
+										String contract_Date, String crop_year, String fC_Ref_No, double contracted_Qty,
+										double allowed_qty, String regional_office, String dPC,
+										String last_date_of_Shipment, String jute_variety, String remarks,
+										double gr1_qty, double gr2_qty, double gr3_qty, double gr4_qty, double gr5_qty,
+										double gr6_qty, double gr7_qty, double gr8_qty, String created_by,
+										String creation_date, String hoDIDoc) {
+									super();
+									DI_HO_ID = dI_HO_ID;
+									DI_no = dI_no;
+									DI_Date = dI_Date;
+									Contract_No = contract_No;
+									Contract_Date = contract_Date;
+									Crop_year = crop_year;
+									FC_Ref_No = fC_Ref_No;
+									Contracted_Qty = contracted_Qty;
+									Allowed_qty = allowed_qty;
+									Regional_office = regional_office;
+									DPC = dPC;
+									Last_date_of_Shipment = last_date_of_Shipment;
+									Jute_variety = jute_variety;
+									Remarks = remarks;
+									Gr1_qty = gr1_qty;
+									Gr2_qty = gr2_qty;
+									Gr3_qty = gr3_qty;
+									Gr4_qty = gr4_qty;
+									Gr5_qty = gr5_qty;
+									Gr6_qty = gr6_qty;
+									Gr7_qty = gr7_qty;
+									Gr8_qty = gr8_qty;
+									Created_by = created_by;
+									Creation_date = creation_date;
+									HoDIDoc = hoDIDoc;
+								}
 
+								public JciDIHoModel() {
+									super();
+									// TODO Auto-generated constructor stub
+								}
+
+                             
                 
 
 }

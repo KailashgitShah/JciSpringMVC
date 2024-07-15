@@ -113,6 +113,7 @@ tr:nth-child(even) {
 							<th>Grade-7</th>
 							<th>Grade-8</th>
 							<th>Total</th>
+							<th>HO Document</th>
 							<th>Delete</th>
 						</tr>
 					</thead>
@@ -148,6 +149,7 @@ tr:nth-child(even) {
     out.print(sum); // Output the sum in the <td> element
     %>
 </td>
+<td><a href='downloadSupportDocHO.obj?filename=<%= row[25] %>' class='btn btn-primary btn-sm' target='_blank'>View Supporting doc</a></td>
 	<td><a href="deleteHO.obj?id=<%= s1 %>"
 									onclick="return confirm('Are you sure you want to delete this item?');"><i
 										class="btn btn-danger btn-sm btn-block"><i

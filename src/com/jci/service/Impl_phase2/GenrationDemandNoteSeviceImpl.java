@@ -54,7 +54,7 @@ public class GenrationDemandNoteSeviceImpl  implements GenratedDemandNoteService
 		return GenrationdemandNoteDao.find(id);
 	}
 	@Override
-	public GenrationDEmandDto fetchContract_no(String st) {
+	public List<Object[]> fetchContract_no(String st) {
 		// TODO Auto-generated method stub
 		return GenrationdemandNoteDao.fetchContract_no(st);
 	}
@@ -66,6 +66,32 @@ public class GenrationDemandNoteSeviceImpl  implements GenratedDemandNoteService
 	public String demandnono(String st) {
 		
 		return GenrationdemandNoteDao.demandnono(st);
+	}
+	@Override
+	public String count() {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.count();
+	}
+	@Override
+	public List<Object[]> getData(String contract_No) {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.getData(contract_No);
+	}
+	@Override
+	public List<Object[]> DemandNoteData(String demand_note_no) {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.getDemandNote(demand_note_no);
+	}
+	@Override
+	public List<Object[]> DetailsDebit(String demand_note_no) {
+		// TODO Auto-generated method stub
+		return GenrationdemandNoteDao.Debitdetails(demand_note_no);
+	}
+	@Override
+	public void updateStatus(String contract_No) {
+		// TODO Auto-generated method stub
+	 GenrationdemandNoteDao.UpdateStatus(contract_No);
+	 return;
 	}
 	
    

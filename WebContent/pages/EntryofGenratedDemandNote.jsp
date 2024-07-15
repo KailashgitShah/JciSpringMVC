@@ -63,8 +63,8 @@
 			</div>
 
 			<%
-			GenrationDEmandDto genrationDemandNoteModel  = (GenrationDEmandDto) request.getAttribute("cotract_No");
-			List<Object>getdataList1=(List<Object>)request.getAttribute("getdataList1");
+	/* 		GenrationDEmandDto genrationDemandNoteModel  = (GenrationDEmandDto) request.getAttribute("cotract_No"); */
+		 	List<Object>getdataList1=(List<Object>)request.getAttribute("contract"); 
 			String demandNoteNo= (String)request.getAttribute("demandNoteNumber");
 			
 				String formattedDate = (String)request.getAttribute("formattedDate");
@@ -80,13 +80,11 @@
 								<form action="saveentryofGenrationDeamandNote.obj" method="POST">
 									<!--  <div class="child-checkbox" id="disableform">  -->
 									   <div class="col-4">
-											    <div class="form-check mb-4">
-											      <input class="form-check-input" type="checkbox" id="inlineFormCheck" name ="Waiver_flag" >
-											      
-											       <label class="form-check-label" for="inlineFormCheck">
-											       Waiver_flag
-											      </label> 
-											    </div>
+											   <div class="form-check mb-4">
+    <input class="form-check-input" type="checkbox" id="waiverflag" name="Waiver_flag" value="1">
+    <label class="form-check-label" for="waiverflag">Waiver Flag</label>
+</div>
+
 											  </div>  
 										<div class="row">
 											<div class="col-sm-4 form-group">
@@ -158,10 +156,16 @@
 
 										<div class="row">
 											<div class="col-sm-4 form-group">
-												<label>Contracted Qty </label> <input
+												<label>Allowed Quantity </label> <input
 													class="form-control taxtbox" name="Contracted_Qty" id="Contracted_Qty" min="0"
 													step="0.01" readonly="readonly"   value=""
 													placeholder="Contracted_Qty" required>
+											</div>
+											<div class="col-sm-4 form-group">
+												<label>Unit_charge</label> <input
+													class="form-control taxtbox" name="Unit_charge"
+													id="Unit_charge" min="0" step="0.01" type="number" 
+													placeholder="0" required value =70>
 											</div>
 											<div class="col-sm-4 form-group">
 												<label>Carrying_cost</label> <input
@@ -169,12 +173,7 @@
 													step="0.01" readonly="readonly"  value=""
 													placeholder="Carrying_cost" required>
 											</div>
-											<div class="col-sm-4 form-group">
-												<label>Unit_charge</label> <input
-													class="form-control taxtbox" name="Unit_charge"
-													id=" Unit_charge" min="0" step="0.01" type="number" 
-													placeholder="Unit_charge" required>
-											</div>
+											
 											
 
 
@@ -186,18 +185,7 @@
 
 										<div class="row">
 
-											<!--  <div class="col-sm-4 form-group">
-												<label>Waiver_flag</label> <input
-													class="form-control taxtbox" name="Waiver_flag"
-													type="number" min="1" step="1" placeholder="Waiver_flag"
-													required>
-											</div>  -->
-
-											<div class="col-sm-4 form-group">
-												<label>Remarks </label> <input class="form-control taxtbox"
-													name="Remarks" id="Remarks" type="text" placeholder="Remarks" required>
-											</div>
-
+										
 											<div class="col-sm-4 form-group">
 												<label>Demand note no</label> <input
 													class="form-control taxtbox" name="Demand_note_no" 
@@ -209,19 +197,41 @@
 												<label>Demand note date</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Created_on" name="Created_on"
 													class="text-danger"> </span> <input class="form-control"
-													name="Demand_note_date" id="Created_on" type="date" required>
+													name="Demand_note_date" id="Created_on" type="date" required value="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>" readonly>
+											</div>
+											
+
+											<div class="col-sm-4 form-group">
+												<label>Remarks </label> <input class="form-control taxtbox"
+													name="Remarks" id="Remarks" type="text" placeholder="Remarks" >
 											</div>
 
+											
 										</div>
-
+										<div class="row">
+											<div class="col-sm-4 form-group">
+    <label id="lblName"></label>
+    <div id="form3"></div>
+    <span id="misQty"></span>
+</div>
+<div class="col-sm-4 form-group">
+    <label id="lblName"></label>
+    <div id="form4"></div>
+    <span id="misQty"></span>
+</div>
+										</div> 
+  
 
 										<div class="row">
 											
-
+<div class="col-sm-12 form-group">
+    <label id="lblName"></label>
+   <input class="form-control taxtbox" name="q" type="text" id="q" value="" placeholder="q" style="display: none;">
+</div>										
 											
 
 											
-											  <div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;">
+											<!--   <div class="col-sm-4 form-group" id="carryingCostFormGroup" style="display: none;">
 														  <label>Waiver Approved By</label>
 														  <span class="text-danger">*</span>&nbsp;
 														  <span id="WaiverApprovedBy1" name="Waiver_Approved_By" class="text-danger"></span>
@@ -230,10 +240,10 @@
 														        <option value="JCI_Mill_officer_1">JCI_Mill_officer_1</option>
 														        <option value="MllOfficer_2">MllOfficer_2</option>
 														       <option value="Mill_officer_3">Mill_officer_3</option>
-														       <!--  Add more options as needed -->
+														        Add more options as needed
 														    </select>
 														  
-				                                    </div>  
+				                                    </div>   -->
 				                                    
 
 
@@ -259,6 +269,29 @@
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var waiverCheckbox = document.getElementById('waiverflag');
+    var remarksField = document.getElementById('Remarks');
+
+    // Check initial state of the checkbox
+    if (waiverCheckbox.checked) {
+    	
+        remarksField.setAttribute('required', ''); // Make remarks field mandatory
+    } else {
+        remarksField.removeAttribute('required'); // Remove mandatory requirement
+    }
+
+    // Add change event listener to checkbox
+    waiverCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            remarksField.setAttribute('required', ''); // Make remarks field mandatory
+        } else {
+            remarksField.removeAttribute('required'); // Remove mandatory requirement
+        }
+    });
+});
+</script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -269,7 +302,16 @@
 				var instdate1 = $("#Cancellation_Date").val();
 				var paymenttype = $("#Unit_charge").val();
 				var Remarks = $("#Remarks").val();
+			
+				
+				
+			
 
+				
+
+				
+				
+				
 				if (contractdate == "" || instdate == "" || instdate1 == "" || paymenttype == "" || Remarks == "") {
 					alert("Please select mandatory Fields!");
 				}
@@ -300,33 +342,11 @@
 							document.getElementById("Cancellation_Date").textContent = formattedDate;
 						});
 	</script>
-		<script>
-				
-				  $(document).ready(function() {
-					  const checkbox = $('#inlineFormCheck');
-				      const carryingCostFormGroup = $('#carryingCostFormGroup');
-					  const waiverApprovedByLabel = $('#WaiverApprovedBy1');
-					  const waiverApprovedBySelect = $('#WaiverApprovedBy2'); 
 
-					  // ...
-
-					  checkbox.change(function() {
-					      if (checkbox.is(':checked')) {
-					          carryingCostFormGroup.show();
-					           waiverApprovedByLabel.show();
-					          waiverApprovedBySelect.show(); 
-					      } else {
-					          carryingCostFormGroup.hide();
-					         waiverApprovedByLabel.hide();
-					          waiverApprovedBySelect.hide(); 
-					      }
-					  });
-				  });
-				</script>
-				
 				
 			<script type="text/javascript">
 			$(document).ready(function () {
+				$("#q").hide();
 			    function formatDate(date) {
 			        var day = date.getDate().toString().padStart(2, '0');
 			        var month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -346,29 +366,86 @@
 			            type: 'GET',
 			            url: 'fetchingdatatocontractno.obj',
 			            data: { "contractno": field2Value },
-			            success: function (data) {
-			                console.log(data);
+			            success: function (result) {
+			               
+			            	 var data = JSON.parse(result);
 			                alert(data);
-			                var data1 = JSON.parse(data);
+			                var Payment_due_date_str = data[0][1]; // Assuming '23-06-2024'
+			                var Payment_date_str = data[0][5]; // Assuming '13-06-2024'
 
-			                var Contract_date = new Date(data1.Contract_date);
-			                var Payment_due_date = parseCustomDate(data1.Payment_duedate);
-			                var Payment_date = new Date(data1.Contract_cancel_date);
+			                // Function to convert 'DD-MM-YYYY' formatted date string to 'YYYY-MM-DD' format
+			                function convertDateFormat(dateStr) {
+			                    var parts = dateStr.split('-');
+			                    if (parts.length === 3) {
+			                        return parts[2] + '-' + parts[1] + '-' + parts[0]; // Convert to 'YYYY-MM-DD' format
+			                    }
+			                    return null; // Return null if dateStr is not in expected format
+			                }
 
-			                var formattedDate = formatDate(Contract_date);
-			                var formattedDate1 = formatDate(Payment_due_date);
-			                var formattedDate2 = formatDate(Payment_date);
+			                // Convert date strings to 'YYYY-MM-DD' format
+			                var Payment_due_date_iso = convertDateFormat(Payment_due_date_str); // '2024-06-23'
+			                var Payment_date_iso = convertDateFormat(Payment_date_str); // '2024-06-13'
 
-			                var timeDifference = Math.abs(Payment_due_date - Contract_date);
-			                var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+			                if (Payment_due_date_iso && Payment_date_iso) {
+			                    // Parse dates into Date objects
+			                    var Payment_due_date = new Date(Payment_due_date_iso);
+			                    var Payment_date = new Date(Payment_date_iso);
 
-			                $('#ContractDate1').val(formattedDate);
-			                $('#PaymentDueDate234').val(formattedDate1);
-			                $('#CancellationDate1').val(formattedDate2);
-			                $('#Delayperiod234').val(daysDifference);
-			                $('#PaymentRef1').val(data1.Instrument_No);
-			                $('#Contracted_Qty').val(data1.Contracted_qty);
-			                $('#Carrying_cost').val(data1.Carrying_Cost_Charged);
+			                    // Calculate the difference in days
+			                    var timeDifference = Math.abs(Payment_due_date.getTime() - Payment_date.getTime());
+			                    var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+			                    alert("Payment due date: " + Payment_due_date_iso + "\nPayment date: " + Payment_date_iso + "\nDays difference: " + daysDifference);
+			                } else {
+			                    alert("Invalid date format detected.");
+			                }
+			                $('#ContractDate1').val(data[0][0]);
+			                $('#PaymentDueDate234').val(data[0][1]);
+			              /*   $('#CancellationDate1').val(data[0][2]); */
+			              console.log(data[0][2])
+			                 $('#Delayperiod234').val(daysDifference); 
+			                $('#PaymentRef1').val(data[0][3]);
+			                $('#Contracted_Qty').val(data[0][4]);
+			               $("#q").val(data[0][5]);//Payment date
+			               alert();
+			               if (data[0][2] === null) {
+			            	   $('#CancellationDate1').val(data[0][5]);
+			               }
+			               else{
+			            	   $('#CancellationDate1').val(data[0][2]);
+			               }
+			               $(document).ready(function() {
+			            	    // Initial calculation on page load
+			            	    var unitCharge = $('#Unit_charge').val(); // Get the initial input value from #Unit_charge
+			            	    var carryingCost = data[0][4] * daysDifference * (unitCharge) / 30; // Calculate carrying cost
+			            	    $('#Carrying_cost').val(Math.ceil(carryingCost.toFixed(2))); // Update #Carrying_cost input with calculated value
+
+			            	    // Function to recalculate and update carrying cost on input change
+			            	    $("#Unit_charge").on('input', function() {
+			            	        var unitCharge = $(this).val(); // Get the input value from #Unit_charge
+			            	        var carryingCost = data[0][4] * daysDifference * (unitCharge) / 30; // Calculate carrying cost
+			            	        $('#Carrying_cost').val(Math.ceil(carryingCost.toFixed(2))); // Update #Carrying_cost input with calculated value, rounded to 2 decimal places
+			            	    });
+			            	});
+			                $("#form3").empty();
+			                var downloadLink = $('<a></a>').attr({
+			                    href: 'downloadSupportingDocument.obj?filename=' + encodeURIComponent(data[0][6]),
+			                    class: 'btn btn-primary btn-sm mt-2',
+			                    target: '_blank'
+			                }).text('View Payment doc');
+
+			                // Append the download link to the form inside .col-sm-4.form-group
+			                $("#form3").append(downloadLink);
+			                $("#form4").empty();
+			                var downloadLink = $('<a></a>').attr({
+			                    href: 'downloadFcdocument.obj?filename=' + encodeURIComponent(data[0][7]),
+			                    class: 'btn btn-primary btn-sm mt-2',
+			                    target: '_blank'
+			                }).text('View FC doc');
+
+			                // Append the download link to the form inside .col-sm-4.form-group
+			                $("#form4").append(downloadLink);
+			              
 			            },
 			            error: function (error) {
 			                alert("Error: " + error);
@@ -385,7 +462,7 @@
       
         setTimeout(function(){
             $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
+        }, 3000); 
     });
 </script>
 				

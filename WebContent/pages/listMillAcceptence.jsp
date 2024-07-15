@@ -228,6 +228,9 @@ input[type="file"] {
 
                 <ul class="side-menu metismenu">
                     <li><a href="viewmillAcc.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Mill Acceptance list</span></a></li>
+
+                <li><a href="verifyMillClaim.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <span class="nav-label">Mill Claim Settlement</span></a></li>
+
                 </ul>
             </div>
         </nav>

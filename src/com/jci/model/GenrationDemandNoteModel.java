@@ -69,6 +69,33 @@ public class GenrationDemandNoteModel {
 	
 	@Column(name = "Created_on")
 	private Date Created_on;
+	
+	@Column(name = "StateCode")
+	private String StateCode;
+	
+
+	
+	@Column(name = "DocumentName")
+	private String DocumentName;
+	
+	public String getDocumentName() {
+		return DocumentName;
+	}
+
+
+	public void setDocumentName(String documentName) {
+		DocumentName = documentName;
+	}
+
+
+	public String getStateCode() {
+		return StateCode;
+	}
+	
+
+	public void setStateCode(String stateCode) {
+		StateCode = stateCode;
+	}
 
 	public int getDn_id() {
 		return Dn_id;
@@ -214,10 +241,26 @@ public class GenrationDemandNoteModel {
 		Created_on = instdate4;
 	}
 
+	
+
+	@Override
+	public String toString() {
+		return "GenrationDemandNoteModel [Dn_id=" + Dn_id + ", Demand_note_no=" + Demand_note_no + ", Demand_note_date="
+				+ Demand_note_date + ", Contract_no=" + Contract_no + ", Contract_date=" + Contract_date
+				+ ", Payment_due_date=" + Payment_due_date + ", Payment_date=" + Payment_date + ", Delay_period="
+				+ Delay_period + ", Payment_ref=" + Payment_ref + ", Contracted_qty=" + Contracted_qty
+				+ ", Unit_charge=" + Unit_charge + ", Carrying_cost=" + Carrying_cost + ", Waiver_flag=" + Waiver_flag
+				+ ", Remarks=" + Remarks + ", Waiver_approved_by=" + Waiver_approved_by + ", Dn_status=" + Dn_status
+				+ ", Created_by=" + Created_by + ", Created_on=" + Created_on + ", StateCode=" + StateCode
+				+ ", DocumentName=" + DocumentName + "]";
+	}
+
+
 	public GenrationDemandNoteModel(int dn_id, String demand_note_no, Date demand_note_date, String contract_no,
 			String contract_date, String payment_due_date, String payment_date, String delay_period, String payment_ref,
 			double contracted_qty, double unit_charge, double carrying_cost, int waiver_flag, String remarks,
-			String waiver_approved_by, int dn_status, String created_by, Timestamp created_on) {
+			String waiver_approved_by, int dn_status, String created_by, Date created_on, String stateCode,
+			String documentName) {
 		super();
 		Dn_id = dn_id;
 		Demand_note_no = demand_note_no;
@@ -237,23 +280,15 @@ public class GenrationDemandNoteModel {
 		Dn_status = dn_status;
 		Created_by = created_by;
 		Created_on = created_on;
+		StateCode = stateCode;
+		DocumentName = documentName;
 	}
+
 
 	public GenrationDemandNoteModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public String toString() {
-		return "GenrationDemandNoteModel [Dn_id=" + Dn_id + ", Demand_note_no=" + Demand_note_no + ", Demand_note_date="
-				+ Demand_note_date + ", Contract_no=" + Contract_no + ", Contract_date=" + Contract_date
-				+ ", Payment_due_date=" + Payment_due_date + ", Payment_date=" + Payment_date + ", Delay_period="
-				+ Delay_period + ", Payment_ref=" + Payment_ref + ", Contracted_qty=" + Contracted_qty
-				+ ", Unit_charge=" + Unit_charge + ", Carrying_cost=" + Carrying_cost + ", Waiver_flag=" + Waiver_flag
-				+ ", Remarks=" + Remarks + ", Waiver_approved_by=" + Waiver_approved_by + ", Dn_status=" + Dn_status
-				+ ", Created_by=" + Created_by + ", Created_on=" + Created_on + "]";
-	}
-	
 	
 }

@@ -69,6 +69,10 @@
 
 			<%
 			List<CashDocumentModel> allUserRegistration = (List<CashDocumentModel>)request.getAttribute("genrationcashDocument");
+			List<Object[]> fetchMill_Name =     (List<Object[]>) request.getAttribute("fetchMill_Name");  
+			String millname="";
+			String millcode="";
+			
 	
 		%>
                   <div class="page-content fade-in-up">
@@ -79,6 +83,42 @@
                     </div>
                     <div class="ibox-body">
                       <div class="scrollmenu">
+                      
+                      <div  class ="row">
+						                 <div class="col-sm-4 form-group">
+												<label>Mill name.</label> <span class="text-danger">*
+												</span>&nbsp; <span id="millname1" name="Millname"
+													class="text-danger"> </span> <select name="millname65"
+													id="millname12" class="form-control taxtbox" required>
+
+													<option value="select">-Select-</option>
+													 <%
+													for (Object[] row : fetchMill_Name) {
+														 millname = (String) row[0];  
+													     millcode = (String) row[1]; 
+													    
+													%>
+													<option value="<%=millcode%>"><%=millname%></option>
+													<%
+													}
+													%> 
+												</select>
+
+
+											</div>
+											
+											<div class="col-sm-4 form-group" id="dpc_div">
+												<label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
+												<span id="contractno" class="text-danger"></span> <select
+													name="fullcontractno" id="contractno12"
+													class="form-control taxtbox"
+													style="height: = 50; width: 350px;" required>
+													<option disabled selected value="">-Select</option>
+
+												</select>
+											</div>
+											</div>
+                      
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
                                <thead>
 									<tr>
@@ -180,6 +220,8 @@
             });
         })
     </script>
+    
+    
 
 </body>
 

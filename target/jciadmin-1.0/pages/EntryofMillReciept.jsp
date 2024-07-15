@@ -38,6 +38,58 @@
 	content: " *";
 	color: red;
 }
+#milldetailsTable {
+    display: none; 
+}
+#childTable {
+    display: none; 
+}
+/* CSS classes for the green link */
+ .table-cell {
+   
+    width: 250px;
+    height: 20px;
+    
+} 
+
+#childTable {
+    width: 100%; /* Ensure the table takes the full width */
+    table-layout: fixed; /* Fix the table layout */
+}
+
+
+
+
+.colored-cell {
+    color: green; 
+    
+}
+
+ .colored-cell:hover {
+    
+    color: blue; 
+  }
+  
+  .form-check-input {
+        margin-right: 10px; 
+        vertical-align: middle; 
+    }
+
+.alert {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        /* Match width and height */
+        width: 100%;
+        height: 100%;
+    }
+
+    .alert-info {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
 </style> 
 </head>
 <body class="fixed-navbar"  onload="myFunction()" >
@@ -57,7 +109,11 @@
             <% 
           
             List<Object>getdataList1=(List<Object>)request.getAttribute("getdataList1");
+            List<Object[]>fetchMill_NameR=(List<Object[]>)request.getAttribute("fetchMill_NameR");
+            
             String date = (String) request.getAttribute("parsed");
+            
+            String millname="";
 		%>
           <div class="page-content fade-in-up">
                 <div class="row">
@@ -68,163 +124,152 @@
                        <form action="saveentryofMillreciept.obj" method="POST">
                            <div class="child-checkbox" id="disableform">
                                  <div class="row">
+                                   <div id="messageContainer" style="display: none;" class="alert alert-info">
+															    MR No has been received for this HO DI.
+															</div>
                                        <div class="col-sm-4 form-group">
-	                                             <label>HO DI </label>
-	                                              <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
-	                                        	<select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
+	                                             <label>Mill name </label>
+	                                              <span class="text-danger">* </span>&nbsp; <span id="Mill_name" name="Mill_name" class="text-danger"> </span>
+	                                        	<select name="Mill_name" id="Mill_name1" class="form-control taxtbox" required>
 													   <option value="">-Select-</option>
 													    <%
-													    for (int i = 0; i < getdataList1.size(); i++) {
-													        Object[] data =  (Object[])getdataList1.get(i);
-													        String field1 = (String) data[0]; 
-													        String field2 = (String) data[1];
-													       
-													       
-													    %>
+													    for (Object[] row : fetchMill_NameR) {
+													        String field1 = (String) row[0];
+													        millname = (String) row[0];
+													        String field2 = (String) row[1];
+													        
 													    
-													       <option value="<%= field2 %>"><%= field1  %></option>
+															       
+													    %>
+													     <option value="<%= field2%>"><%= field1  %></option>
 													    <%
 													    }
-													    %>
+													    %>  
 													</select>
 
                                         </div>
                                         
-										  <div class="col-sm-4 form-group">
-												<label>HO Date</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="HO_Date" name="HO_Date1" class="text-danger"> </span>
-												<input class="form-control" name="HO_Date" id="HO_Date1"  value="" readonly ="true"  required>
-										</div>
-		                                       
-		                                       
-		                                          <div class="col-sm-4 form-group">
-												    <label>Challan Qty</label>
-												    <input class="form-control taxtbox"  id ="ChallanQty1" name="Challan_Qty" value="" min="0" step="0.01" type="number" placeholder="Challan Qty"  readonly ="true"   required>
-												</div>
-                                   </div>
-                                    
-                                   <div class="row">
-                                   
-                                   <div class="col-sm-4 form-group">
-												<label>Vehicle No.</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="Vehicle_No." name="Vehicle_No." class="text-danger"> </span>
-												<input class="form-control" name="Vehicle_No." id="Vehicle_No" type="text"  value=""  <%-- value="<%=millreceiptDto.getChallan_qty() %>" --%>  readonly ="true"  required>
-										</div>
-                                      <div class="col-sm-4 form-group">
-												<label>Challan No</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="Challan_No" name="Challan_No" class="text-danger"> </span>
-												<input class="form-control" name="Challan_No" id="Challan_No12"  type="text"    value=""  <%--  value="<%=millreceiptDto.getChallan_no() %>"  --%>  readonly ="true" required>
-										</div>
-										
-										 <div class="col-sm-4 form-group">
-												<label>Date of Shipment</label> 
-												<span class="text-danger">* </span>&nbsp; <span  name="Date_of_Shipment" class="text-danger"> </span>
-												<input class="form-control" name="Date_of_Shipment" id="Date_of_Shipment134"   value=""   readonly ="true" required>
-										</div>
+                                         <div class="col-sm-4 form-group">
+	                                             <label>HO DI </label>
+	                                              <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
+	                                        	<select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
+													   <option value="">-Select-</option>
+													   
+													 
+													    
+													</select>
+
+                                        </div>
+                                       
+															
+															
                                         
-	                                                      
-                                    </div>
-                                    
-                                      <div class="row">
-                                   
-                                          <div class="col-sm-4 form-group">
-	                                             <label>Bale Mark</label>
-	                                             <input class="form-control taxtbox" name="Bale_Mark" id ="Bale_Mark"  type="text" placeholder="Bale Mark" value="" <%--  value="<%=millreceiptDto.getBale_mark() %>"  --%>  readonly ="true" required>
-	                                       </div>
-	                                     
-	                                       <div class="col-sm-4 form-group">
-	                                             <label>Jute Variety Grade wise </label>
-	                                             <input class="form-control taxtbox" name="juteewiseqty"  id="juteewiseqty"   placeholder="Jute Variety Grade wise"  value=""   <%-- value="<%=millreceiptDto.getJute_variety() %>"   --%>readonly ="true"  required>
-	                                       </div>
-	                                       
-	                                       <div class="col-sm-4 form-group">
-	                                             <label>Crop Year </label>
-	                                             <input class="form-control taxtbox" name="Crop_Year"  id="Crop_Year"   type="text" placeholder="Crop Year"  value="" readonly ="true" required>
-	                                       </div>
-	                                     
-	                                </div>
-                            <div class="row">
-                                    
-	                                       <div class="col-sm-4 form-group">
-	                                             <label>MR No</label>
-	                                             <input class="form-control taxtbox" name="MR_No" type="Text" placeholder="MR No" required>
-	                                       </div>
-	                                       
-											<div class="col-sm-4 form-group">
-												<label>MR Date</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="MR_Date" id="MR_Date1" type="date" required>
-										</div>
-										<div class="col-sm-4 form-group">
-										   <label>Mill Reciept Qty. </label>
-	                                             <input class="form-control taxtbox" name="Mill_Reciept_Qty"  type="text" placeholder="Mill_Reciept_Qty." required>
-	                                       </div>
-	                                        
-                                         
-	                                       
-                                    </div>
-                                    <div class="row">
-                                   
-	                                             
-	                                         <div class="col-sm-4 form-group">
-	                                             <label>Short Qty  </label>
-	                                             <input class="form-control taxtbox" name="Short_Qty" id ="Short_Qty1"  placeholder="Short Qty" value="" required>
-	                                       </div>
-	                                       <div class="col-sm-4 form-group">
-														  <label>Actual Qty</label>
-														    <input class="form-control taxtbox" name="Actual_Qty" id ="Actual_Qty1"min="0" step="0.01" type="number" value="" placeholder="Actual Qty" required>
-														</div> 
-	                                       
-										   <div class="col-sm-4 form-group">
-	                                             <label>Quality Claim  </label>
-	                                             <input type="checkbox" id="enableQualityClaim">
-	                                             <select name="Quality_Claim" id="Quality_Claim" class="form-control taxtbox"  disabled>
-	                                        		<option value="">-Select-</option>
-	                                        		<option value="Quality" >Quality</option>
-	                                        		<option value="Quantity" >Quantity</option>
-	                                        		<option value="Moisture_Gain" >Moisture Gain</option>
-	                                        		<option value="Dust_NCV" > Dust / NCV.</option>
-	                                        	</select>
-	                                       </div>
-                                           
+                                        
+                                      
+		                                       
+		                                         
                                    </div>
+                                   <div class="row">
+								    <div class="col-sm-10">
+								        <div class="table-responsive">
+								            <table id="milldetailsTable" class="table table-bordered">
+								                <thead class="thead-light">
+								                    <tr>
+								                        <th>Challan No</th>
+								                        <th>Date of Shipment</th>
+								                        <th>Vehicle No</th>
+								                        <th>DI date</th>
+								                        <th>ContractNO</th>
+								                      
+								                    </tr>
+								                </thead>
+								                <tbody>
+								                    <!-- Dynamically generated rows will be appended here -->
+								                </tbody>
+								            </table>
+								        </div>
+								    </div>
+								</div>
+								
+								
+							
+                                    </div> 
+								  
+								  <table id="childTable" name="chilnametable" class="table table-bordered">
+											    <thead class="thead-light">
+											        <tr>
+											            <th>Challan no</th>
+											             <th>Bale Mark</th>
+											              <th>Jute_variety</th>
+											               <th>Jute_grade</th>
+											               <th>Crop_year</th>
+											              <th>Nominal_qty</th>
+											             <!--  <th>claim </th>
+											              <th>Claim Type </th>
+											              <th> </th> -->
+											              <th>Quality percent</th>
+											              <th>Shortage qty </th>
+											              <th> Moisture Content</th>
+											              <th>Ncv percentage </th>
+											              <th> Ncv qty</th>
+											              <th>Mill receipt qty</th>
+											           
+											        </tr>
+											    </thead>
+											    <tbody>
+											        <!-- Data rows will be dynamically added here -->
+											    </tbody>
+											</table>
+											
+                                   
+                             
+                           
+                                 
                                              
                                     <div class="row">
                                     
-                                         
-	                                        <div class="col-sm-4 form-group">
-	                                             <label id="Moisture_Cont">Moisture Content</label>
-	                                             <input class="form-control taxtbox"  id ="Moisture_Content" name="MoistureContent12" min="8.0"  step="1.0"  max="40.0"  type="number" placeholder="Moisture_Content" >
-	                                      
-	                                            
-	                                       </div>
-	                                       
-	                                        <div class="col-sm-4 form-group">
-	                                             <label id="NCV_Percent">NCV Percentage</label>
-	                                             
-	                                              <input class="form-control taxtbox"  id ="NCV_Percentage1" name="NCVPercentage12" min="0.0"  step="0.01"   max="10.0"   type="number" placeholder="NCV_Percentage" >
-
-	                                       </div>
-	                                       <div class="col-sm-4 form-group">
-	                                             <label id="NCV_Qty34">NCV Qty</label>
-	                                             <input class="form-control taxtbox"  id ="NCV_Qty12" name="NCVQty12" min="0"  step="0.01"  type="Text" placeholder="NCV Qty." >
-	                                       </div>
-	                                       <div class="col-sm-4 form-group" style="display: none;"  >
-														  <label "display:none;">Mill  code</label>
-														    <input class="form-control taxtbox" name="Millcode2" id ="Millcode1" type="hidden" value="" placeholder="Millcode1" required>
-														</div> 
+                                <div class="col-sm-2 form-group" style="display: none;">
+												    <label "display:none;">ClientPan </label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													type="hidden" class="form-control" name="millcode"
+													id="millcode1" value="" readonly="readonly">
+											</div>
+											  <div class="col-sm-2 form-group" style="display: none;">
+												    <label "display:none;">firstloop</label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													 class="form-control" name="firstloop"
+													id="firstloop1" value="" readonly="readonly">
+											</div>
+											  <div class="col-sm-2 form-group"  style="display: none;">
+												    <label "display:none;" >rowindex </label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													class="form-control" name="rowindex2"
+													id="rowindex2" value="" readonly="readonly">
+											</div>
+											
+											 <div class="col-sm-2 form-group"  style="display: none;">
+												    <label "display:none;" >millname234 </label> <span
+													class="text-danger">* </span>&nbsp;  <input
+													class="form-control" name="rowindex2"
+													id="millname234" value="<%=millname %>" readonly="readonly">
+											</div>
+											
+										
+											
+											
 	                                      
 												
 	                                </div>  
 	                                
 	                              
-                                    <div class="row">
+                                  <!--   <div class="row">
                                       
                                     	
                                                 <div class="col-sm-12 form-group">
 									             <input type="submit" value="Submit"class="btn btn-primary" id="submit">
 									            </div>
-									          </div>
+									           
+									          </div> -->
                                 </form>
                             </div>
                         </div>
@@ -239,6 +284,8 @@
     <div class="sidenav-backdrop backdrop"></div>
     
     
+  
+ 
      <script type="text/javascript">
     
 	$(document).ready(function(){
@@ -264,27 +311,97 @@
         document.getElementById("Date_of_Shipment").textContent = formattedDate;
 	});
   </script>
-    
-    <script>
-  $(document).ready(function() {
-    const checkbox = $('#enableQualityClaim');
-    const qualityClaimSelect = $('#Quality_Claim');
-    checkbox.change(function() {
-      if (checkbox.is(':checked')) {
-        qualityClaimSelect.prop('disabled', false);
-      } else {
-        qualityClaimSelect.prop('disabled', true);
-      }
-    });
-  });
- </script>
 
 <script type="text/javascript">
 $(document).ready(function() {
-    // When the element with ID 'HODate' changes
-    $('#HODate').on('change', function() {
-        // Get the selected value
+
+    $('#Mill_name1').on('change', function() {
+     
+    	
+    	 $('#HODate').val(''); 
+         $('#millcode1').val('');
+         $('#milldetailsTable').css('display', 'none');
         var field2Value = $(this).val();
+
+        $.ajax({
+            type: 'GET',
+            url: 'millreceiptbased.obj', 
+            data: { "millname": field2Value },
+            success: function(data) {
+             
+
+                var dataArray = JSON.parse(data);
+                var dropdownElement = document.getElementById('HODate');
+
+            
+                dropdownElement.innerHTML = '';
+
+                var selectOption = document.createElement('option');
+                selectOption.value = ''; 
+                selectOption.textContent = '-Select-';
+                dropdownElement.appendChild(selectOption);
+                
+                
+                var field0Values = [];
+                var field1Values = [];
+                var field2Values = [];
+                dataArray.forEach(function(innerArray) {
+                    var option = document.createElement('option');
+                     option.textContent = innerArray[0];
+                    option.value = innerArray[0]; 
+                   
+                    
+                /*     let lastSlashIndex = innerArray[0].lastIndexOf('/');
+                    let remainingPart = innerArray[0].substring(0, lastSlashIndex);
+                    let lastPart = innerArray[0].substring(lastSlashIndex + 1);
+                    alert(remainingPart); */
+                    
+             /*        
+                    option.textContent = remainingPart;
+                    option.value = remainingPart;  */
+	                    
+                    option.setAttribute('data-value1', innerArray[0]);  // Value for backend
+                    option.setAttribute('data-value2', innerArray[2]); 
+                    
+                   /*  option.setAttribute('data-value1', remainingPart); */ // Value for backend
+              
+                    
+                    // Value for AJAX
+                 
+                    dropdownElement.appendChild(option);
+                    
+                   /*  field0Values.push(remainingPart); */
+                    field0Values.push(innerArray[0]); 
+                    field1Values.push(innerArray[1]);
+                  /*   alert(field0Values);
+                    alert(field1Values); */
+                    
+                    $('#millcode1').val(field1Values[0]);
+                   
+                    field2Values.push(innerArray[2]);
+                });
+                
+              
+            }
+        });
+    });
+});
+</script>
+ 
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	  var firstloopindex = 0;
+    $('#HODate').on('change', function() {
+        var field2Value = $(this).find(':selected').attr('data-value2');
+        var field1Value = $(this).find(':selected').attr('data-value1');
+      
+    
 
         // Function to format date
         function formatDate(date) {
@@ -294,86 +411,103 @@ $(document).ready(function() {
             return day + '/' + month + '/' + year;
         }
 
-        // AJAX request
         $.ajax({
             type: 'GET',
-            url: 'fetchingdata.obj', // Make sure this URL is correct
-            data: { "contractno": field2Value }, // Data to send to the server
+            url: 'findmillreceiptNO.obj',
+            data: { "hodino": field1Value },
             success: function(data) {
-                alert(data); // For debugging, remove in production
+                
+                var jsonResponse = JSON.parse(data);
+                var dataFoundValue = jsonResponse.dataFound;
 
-                var dataArray = JSON.parse(data);
+             
 
-                if (dataArray && dataArray.length > 0) {
-                  
-                    var Challan_no = dataArray[0][0];
-                    var Date_of_shipment = new Date(dataArray[0][1]); // Convert to date object
-                    var Vehicle_no = dataArray[0][2];
-                    var Bale_mark = dataArray[0][3];
-                    var Jute_variety = dataArray[0][4];
-                    var Crop_year = dataArray[0][5];
-                    var DI_Date = new Date(dataArray[0][6]); 
-                    var Actual_qty = dataArray[0][7];
-                    var Short_qty = dataArray[0][8];
-                    var Nominal_qty  = dataArray[0][9];
+               /*  if (dataFoundValue === false) { */
+                	 $('#MR_No').prop('readonly', false);
+                	    $('#MR_Date1').prop('readonly', false);
+                	    $('#Mill_Reciept_Qty').prop('readonly', false);
 
-                    // Set values to corresponding HTML elements
-                    $('#Challan_No12').val(Challan_no);
-                    $('#Date_of_Shipment134').val(formatDate(Date_of_shipment));
-                    $('#Vehicle_No').val(Vehicle_no);
-                    $('#Bale_Mark').val(Bale_mark);
-                    $('#juteewiseqty').val(Jute_variety);
-                    $('#Crop_Year').val(Crop_year);
-                    $('#HO_Date1').val(formatDate(DI_Date));
-                    $('#Short_Qty1').val(Actual_qty);
-                    $('#Actual_Qty1').val(Short_qty);
-                    $('#ChallanQty1').val(Nominal_qty);
+                	    $('#messageContainer').hide();
+                    // AJAX request for fetching data
+                    $.ajax({
+                        type: 'GET',
+                        url: 'fetchingdata.obj',
+                        data: { "contractno": field1Value },
+                        success: function(data) {
+                          
+
+                            var dataArray = JSON.parse(data);
+                            $('#milldetailsTable tbody').empty();
+                            if (dataArray.length > 0) {
+                            	 dataArray.forEach(function(rowData) {
+                            		 var currentDate = new Date().toISOString().split('T')[0];
+                                     var rowHtml = '<tr>' +
+                                     '<td><div class="table-cell colored-cell" id="myCell" data-id="' + rowData[0] + '" ><input type="hidden" name="challanNo[]" value="' + rowData[0] + '"> <a href="#" class="green-link">${rowData[0]}</a> ' + rowData[0] + '</div></td>' +
+                                       '<td><div class="table-cell"><input type="hidden" name="dateOfShipment[]" value="' + formatDate(new Date(rowData[1])) + '">' + formatDate(new Date(rowData[1])) + '</div></td>' +
+                                         '<td><div class="table-cell"><input type="hidden" name="vehicleNo[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
+                                         '<td><div class="table-cell"><input type="hidden" name="diDate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
+                                        '<td><div class="table-cell"><input type="hidden" name="ContractNo[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
+                                        /*  '<td><div class="table-cell"><input type="hidden" name="shortQty[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                                        */ '<td style="display:none;"><div class="table-cell"><input type="hidden" name="millcode[]" value="' + rowData[4] + '">' + rowData[7] + '</div></td>' +
+                                        
+                                        '</tr>';
+
+                                     $('#milldetailsTable tbody').append(rowHtml);
+                                     firstloopindex++;
+                                 });
+                                
+                               
+                                
+                                document.getElementById("firstloop1").value = firstloopindex;
+                                $('#milldetailsTable').css('display', 'block');
+                            } else {
+                                $('#milldetailsTable').css('display', 'none');
+                            }
+                        }
+                    });
+               /*  } else { */
+                  /*   $('#MR_No').prop('readonly', true);
+                    $('#MR_Date1').prop('readonly', true);
+                    $('#Mill_Reciept_Qty').prop('readonly', true);
+                    $('#messageContainer').show();
                     
-                }
+                    setTimeout(function() {
+                        $('#messageContainer').hide();
+                    }, 5000); */ 
+                /* } */
             }
         });
     });
 });
 </script>
- 
- 
- <script>
-        function myFunction() {
-            // Your code to be executed when the page loads goes here
-           	
-      	   $("#Moisture_Cont").hide();
-      	  $("#Moisture_Content").hide();
-      	   $("#NCV_Percent").hide();
-      	  $("#NCV_Percentage1").hide();
-      	  
-      	   $("#NCV_Qty34").hide();
-      	  $("#NCV_Qty12").hide();  
-      	 
-      	   
-        }
-    </script>
-<script>
+
+ <script> 
 $(document).ready(function() {
-  $("#Quality_Claim").on("change", function() {
-    var selectedOption = $(this).val();
-    
-    if (selectedOption === "Dust_NCV") {
- 
-        $('#NCV_Qty34, #NCV_Percent, #NCV_Percentage1, #NCV_Qty12').show();
-        $('#Moisture_Content, #Moisture_Cont').hide();
-      }
-    
-    else if (selectedOption === "Moisture_Gain") {
-      $('#Moisture_Content, #Moisture_Cont').show();
-      $('#NCV_Qty34, #NCV_Percent, #NCV_Percentage1, #NCV_Qty12').hide();
-    } 
-    
-     else {
-      $('#Moisture_Content, #Moisture_Cont, #NCV_Percent, #NCV_Qty34, #NCV_Percentage1, #NCV_Qty12').hide();
-    }
-  });
+    $('#milldetailsTable').on('click', '#myCell', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        var millNameValue = $('#Mill_name1').val(); // Get the value from #Mill_name1
+        var millNameValue1 = $('#millname234').val(); // Get the value from #Mill_name1
+        var hoDateValue = $('#HODate').find(':selected').attr('data-value1'); // Get the data-value2 attribute
+      // Get the data-value2 attribute
+
+        // Construct the URL with the parameters
+        var url = 'EntryofMillreceiptChild.obj';
+        url += '?contarctno=' + encodeURIComponent(id);
+        url += '&millName=' + encodeURIComponent(millNameValue1); 
+        url += '&hoDate=' + encodeURIComponent(hoDateValue);
+        
+
+        window.open(url, '_blank');
+    });
 });
 </script>
+
+
+
+
+
+
 
 <script>
     $(document).ready(function(){
@@ -386,7 +520,7 @@ $(document).ready(function() {
 
 
 
-		   -->
+		   
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->

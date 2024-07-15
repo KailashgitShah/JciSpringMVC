@@ -150,8 +150,20 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		result.add(String.valueOf(list6.size()));
 		result.addAll(list6);
 
-		String sqlString8 = "SELECT TOP 5 jcidispatch_details.DI_No, jcirodetails.roname FROM jcidispatch_details INNER JOIN jcirodetails ON jcidispatch_details.Regional_Office = jcirodetails.rocode WHERE Mill_name = '"
-				+ result.get(3) + "' ORDER BY Dientry_id DESC          ;";
+		String sqlString8 = "SELECT TOP 5 \r\n"
+				+ "    jcidispatch_details.DI_No,\r\n"
+				+ "    jcirodetails.roname\r\n"
+				+ "FROM \r\n"
+				+ "    jcidispatch_details\r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcirodetails ON jcidispatch_details.Regional_Office = jcirodetails.rocode\r\n"
+				+ "inner join \r\n"
+				+ "jcimilldetailchild on jcimilldetailchild.client_unit_code = jcidispatch_details.Mill_code\r\n"
+				+ "\r\n"
+				+ "WHERE \r\n"
+				+ "    jcimilldetailchild.unit_name = '"+result.get(3)+"'\r\n"
+				+ "ORDER BY \r\n"
+				+ "    jcidispatch_details.Dientry_id DESC;";
 
 		List<String> list8 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString8).list();
 
@@ -245,6 +257,39 @@ public class HODispatchDaoImpl implements DispatchHODao {
 		String sqlString = "select distinct jutevariety from jcijutevariety where basis='1';";
 		List<String> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 		return list;
+	}
+
+	@Override
+	public List<Object[]> getJasperData(String diNoString) {
+		// TODO Auto-generated method stub
+		String sqlString ="SELECT \r\n"
+				+ "    a.DI_no,\r\n"
+				+ "    a.DI_Date,\r\n"
+				+ "    c.unit_name,\r\n"
+				+ "    c.unit_address1,\r\n"
+				+ "    c.unit_address2,\r\n"
+				+ "    c.unit_location,\r\n"
+				+ "    c.unit_pin,\r\n"
+				+ "    a.Contract_No,\r\n"
+				+ "    b.Contract_date,\r\n"
+				+ "    b.CropYear,\r\n"
+				+ "    a.Last_date_of_Shipment,\r\n"
+				+ " \r\n"
+				+ "    d.roname\r\n"
+				+ "   \r\n"
+				+ "FROM \r\n"
+				+ "    jciDI_ho a\r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcicontract b ON a.Contract_No = b.Contract_no\r\n"
+				+ "INNER JOIN \r\n"
+				+ "    jcimilldetailchild c ON b.Mill_code = c.client_unit_code\r\n"
+				+ "Inner join \r\n"
+				+ "   jcirodetails d on a.Regional_office = d.rocode\r\n"
+				+ "WHERE  \r\n"
+				+ "    a.DI_no = '"+diNoString+"';";
+		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		return list1;
+		
 	}
 
 }

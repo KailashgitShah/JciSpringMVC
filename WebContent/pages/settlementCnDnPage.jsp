@@ -1,19 +1,14 @@
-
-<%@page import="com.jci.model.EntryDerivativePrice"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.List"%>
-<%@page import="java.io.File"%>
-
-<%@page import="com.jci.model.RawJuteProcurementAndPayment"%>
-
 <!DOCTYPE html>
+<%@page import="org.apache.commons.lang3.ObjectUtils.Null"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.jci.model.StateList"%>
+<%@page import="java.util.List"%>
 <html lang="en">
-
+<%@ page import="javax.servlet.http.HttpServletRequest"%>
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
-<title>JCI | CMS</title>
 <title>JCI | CMS</title>
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
@@ -21,37 +16,46 @@
 	rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 <!-- PLUGINS STYLES-->
 <link href="./assets/vendors/DataTables/datatables.min.css"
 	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/chosen.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"
+	type="text/javascript"></script>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-<!-- PAGE LEVEL STYLES-->
 <style>
-.scrollmenu {
-	overflow: auto;
-	white-space: nowrap;
+.field-icon {
+	float: right;
+	margin-left: -25px;
+	margin-top: -25px;
+	position: relative;
+	z-index: 2;
 }
 
-.scrollmenu a {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 14px;
-	text-decoration: none;
+.container {
+	padding-top: 50px;
+	margin: auto;
+}
+
+.required:after {
+	content: " *";
+	color: red;
+}
+
+input[type="radio"] {
+	display: inline;
 }
 </style>
-
 </head>
+
+<%
+String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+%>
 
 <body class="fixed-navbar">
 	<div class="page-wrapper">
@@ -64,99 +68,157 @@
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Settlement of Credit and Debit note</h1>
+				<h1 class="page-title">Settlement of Credit And Debit Note</h1>
 			</div>
-			<%
-			List<Object[]> list = (List<Object[]>) request.getAttribute("millsOfContract");
-			%>
 			<div class="page-content fade-in-up">
-				<div class="ibox">
-					<div class="ibox-head">
-						<span>${msg}</span>
-						<div class="ibox-title"></div>
-					</div>
-					<div class="ibox-body">
-						<div class="scrollmenu">
+				<div class="row">
+					<div class="col-md-11">
+						<div class="ibox">
+							<div class="ibox-head">
+								<!-- <div class="ibox-title">Basic form</div> -->
+								<span>${msg}</span>
+							</div>
+							<div class="ibox-body">
+								<form action="saveEDPrice.obj" method="POST">
+									<div class="row">
 
-							<table class="table table-striped table-bordered table-hover"
-								id="example-table" cellspacing="0" width="100%">
-								<thead>
-									<tr>
+										<div class="col-sm-6 form-group">
+											<label>Mill Name</label>
 
-										<th>Sl.No</th>
-										<th>Mill Code</th>
-										<th>Mill Name</th>
-										<th>Contract No</th>
-										<th></th>
-								</thead>
-								<tbody>
-									<%
-									int i = 1;
-									for (Object[] ele : list) {
-										//String codid = encodeId.encrypt(edpl.getDer_id()+"",key);
-									%>
-									<tr>
-										<td><%=i%></td>
-										<td><%=ele[0]%></td>
-										<td><%=ele[1]%></td>
-										<td><%=ele[2]%></td>
+											<%
+											List<String> mills = (List<String>) request.getAttribute("mills");
+											%>
+											<select class="form-control" name="mill" id="mill" required>
+												<option value="">-Select-</option>
+												<%
+												for (String mill : mills) {
+													String millArray[] = mill.split("&-&");
+												%>
+												<option value="<%=millArray[1]%>"><%=millArray[0]%></option>
+												<%
+												}
+												%>
+											</select>
+										</div>
 
-										<%-- <td><a href="editentryderivativeprice.obj?der_id=<%=codid%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
+										<div class="col-sm-6 form-group">
+											<label>Contract No</label> <select class="form-control"
+												name="contract" id="contract" required>
+												<option disabled selected value="">-Select-</option>
+											</select>
+										</div>
+									</div>
 
-										<td>
-											<form action="finalsettlementNoteJsp.obj">
-												<button type="submit" name="contractNo" value="<%=ele[2]%>"
-													class="btn btn-outline-dark">Settle Amount</button>
-											</form>
-										</td>
 
-									</tr>
-									<%
-									i++;
-									}
-									%>
-								</tbody>
+									<div class="row">
 
-							</table>
+										<div id="list"></div>
+									</div>
 
+
+
+									<div class="row">
+
+										<div class="form-group col-sm-1">
+											<button class="btn btn-success" id="submit" type="submit">Submit</button>
+										</div>
+
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+
 			<!-- END PAGE CONTENT-->
 			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
-	<!-- BEGIN THEME CONFIG PANEL-->
 
-	<!-- END THEME CONFIG PANEL-->
-	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
 
-	<!-- END PAGA BACKDROPS-->
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
-	<script type="text/javascript">
-		$(function() {
-			$('#example-table').DataTable();
-		})
+	<script>
+		$("#mill")
+				.on(
+						"change",
+						function() {
+
+							$
+									.ajax({
+										type : "GET",
+										url : "selectContractForSettlement.obj",
+										//url : "pIcon.obj",
+										data : {
+											"mill" : $(this).val()
+										},
+										success : function(result) {
+
+											var result = JSON.parse(result);
+
+											var options = '<option selected value="">-Select-</option>';
+
+											for (var i = 0; i < result.length; i++) {
+												options += '<option value="' + result[i] + '">'
+														+ result[i]
+														+ '</option>';
+											}
+											$("#contract").html(options);
+										}
+
+									});
+
+						})
 	</script>
 
-</body>
+	<script>
+		$("#contract")
+				.on(
+						"change",
+						function() {
+							$
+									.ajax({
+										type : "GET",
+										url : "getFullDetailsOfCrnAndDebit.obj",
+										data : {
+											"contractNo" : $(this).val()
+										},
+										success : function(result) {
 
+											var result = JSON.parse(result);
+											alert(result);
+
+											var htmlTable = '<table border="3px" id="table_r" class="table table-hover table-striped" style="margin-top:16px"><thead><tr><td>Select</td><td>SN.</td><td>Credit Note No.</td><td>Contract No</td><td>Crn Amount</td></tr></thead>';
+											
+											htmlTable += '<tbody id="body">';
+											for (var i = 0; i < result.length; i++) {
+												console.log(result[i]);
+												htmlTable += '<tr border="2px"><td id="check'+i+'" style="text-align:center"><input type="checkbox" /></td><td>' + i + '</td>'
+															+ '<td id="crn'+i+'"style="text-align:center">'+ result[i][8] + '</td>'
+															+ '<td id="contract'+i+'"style="text-align:center">'+ result[i][13] + '</td>'
+															+ '<td id="crnAmt'+i+'"style="text-align:center">'+ result[i][6] + '</td></tr>';
+
+											}
+											
+											htmlTable += '</tbody></table>';
+
+											$("#list").html(htmlTable);
+											console.log(htmlTable);
+
+										}
+
+									});
+
+						})
+	</script>
+
+
+
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
+
+</body>
 </html>

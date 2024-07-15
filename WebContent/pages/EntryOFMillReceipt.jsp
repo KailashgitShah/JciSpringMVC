@@ -984,15 +984,6 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let valueinprice1 = (gradeprice * qty2).toFixed(2);
     let dustValue = parseFloat(valueinprice1);
     
-   
-
-
-  /*   let qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
-    let valueinprice2 = (gradeprice * qty3).toFixed(2);
-    let moisturevalue = parseFloat(valueinprice2);
-    alert(moisturevalue); */
-    
-  
         qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
         valueinprice2 = (gradeprice * qty3).toFixed(2);
         moisturevalue = parseFloat(valueinprice2);

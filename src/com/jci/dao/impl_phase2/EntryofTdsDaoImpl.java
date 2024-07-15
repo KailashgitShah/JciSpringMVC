@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,29 +53,32 @@ public class EntryofTdsDaoImpl implements EntryofTdsDao {
 
 	@Override
 	public List<String> MillName() {
-		String q = "SELECT DISTINCT unit_name FROM jcimilldetailchild";
+//		
+		LocalDate today = LocalDate.now();
+		int currentYear = today.getYear();
+		
+
+		String financialYear;
+		if (today.getMonthValue() < 4) {
+			financialYear = (currentYear - 1) + "-" + currentYear;
+		} else {
+			financialYear = currentYear + "-" + (currentYear + 1);
+		}
+
+	        System.err.println("Fiscal Year: " + financialYear);
+		String q = "SELECT DISTINCT m.client_name " +
+                "FROM jcimilldetailmaster m " +
+                "LEFT JOIN jcitds_entry e ON m.client_name = e.mill " +
+                "                         AND e.mill IS NOT NULL " +
+                "                         AND e.Financial_year = '"+financialYear+"' " +
+                "WHERE e.mill IS NULL";
+		
 		List r = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 		return r;
 
 	}
 
-//	@Override
-//
-//    public String contractIdentification(String Mill) {
-//
-//           // TODO Auto-generated method stub
-//		
-//		String q="SELECT DISTINCT CropYear FROM jcicontract WHERE Mill_name = '"+Mill+"'";
-//
-//           //String q="SELECT  Mill_name FROM jcicontract where Mill_name = '"+Mill+"'";
-//
-//           String contractIdentication= (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
-//
-//             System.out.println(contractIdentication);
-//
-//             return contractIdentication;
-//
-//    }
+
 
 	@Override
 

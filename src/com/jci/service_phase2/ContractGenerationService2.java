@@ -14,11 +14,15 @@ public interface ContractGenerationService2 {
 	public List<Object[]> getListOfGradesPriceForExGodown(String cropYear) ;
 	public List<Object[]> getListOfGradeComposition(String gradeComp);
 //	ModelAndView pcso_details(List<String> pcso,String gradeComp , String deliveryType);
-	ModelAndView pcso_details(List<String> pcso,List<String> gradeArray);
-	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray);
+	ModelAndView pcso_details(List<String> pcso,List<String> gradeArray, String cropyr);
+	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray, String cropyr);
 	public List<Contractgeneration> getContractFullDetails(String contractidn, String pcsoDates);
 	public List<Object> getFullAddressByMillName(String millNameString);
 	public List<Contractgeneration> getAllUnAuthorizedContract();
 	public void setContractAuthrizeStatus(String contractNOString);
+	public void setPcsoFlag1(String commaSeparatedPcsoDates);
+	public List<String> findRefNos(String formatedPcsoDateWithQuotes);
+	public String millFullName(String millCode);
+	public List<String> getPscoDateByCropYr(String cropYr);
 
 }

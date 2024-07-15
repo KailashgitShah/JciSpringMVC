@@ -458,9 +458,14 @@ body {
 								<li data-pre="1106" id="o1106"><a href="verifyClaimReport.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Verify Claim Report
 								 </b></a></li>
-								
+								<li data-pre="o1141" id="1141"><a href="verifyMillClaim.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Mill Settlement Acceptance</b></a></li>
 								<li data-pre="" id=""><a href="creditNoteForClaimSettlement.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note For Claim Settlement 
+								 </b></a></li>
+								
+								<li data-pre="" id=""><a href="creditNoteSettlementList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note Settlement List
 								 </b></a></li>
 				</ul></li>
 

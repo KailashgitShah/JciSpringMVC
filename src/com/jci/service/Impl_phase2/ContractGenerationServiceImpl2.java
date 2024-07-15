@@ -29,8 +29,8 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	}
 
 	@Override
-	public ModelAndView pcso_details(List<String> pcso,List<String> gradeComp) {
-		return this.contractGenerationDao2.pcso_details(pcso,gradeComp);
+	public ModelAndView pcso_details(List<String> pcso,List<String> gradeComp,String cropyr) {
+		return this.contractGenerationDao2.pcso_details(pcso,gradeComp,cropyr);
 	}
 
 	@Override
@@ -53,8 +53,8 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	}
 
 	@Override
-	public int updateContractedValue(String deliveryType ,String totalQtyOfMill, List<String> gradeArray) {
-		return contractGenerationDao2.updateContractedValue(deliveryType,totalQtyOfMill,gradeArray);
+	public int updateContractedValue(String deliveryType ,String totalQtyOfMill, List<String> gradeArray,String cropyr) {
+		return contractGenerationDao2.updateContractedValue(deliveryType,totalQtyOfMill,gradeArray,cropyr);
 	}
 
 	@Override
@@ -76,6 +76,29 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	public void setContractAuthrizeStatus(String contractNOString) {
 		 contractGenerationDao2.setContractAuthrizeStatus(contractNOString);
 		
+	}
+
+	@Override
+	public void setPcsoFlag1(String commaSeparatedPcsoDates) {
+		contractGenerationDao2.setPcsoFlag1(commaSeparatedPcsoDates);
+		
+	}
+
+	@Override
+	public List<String> findRefNos(String formatedPcsoDateWithQuotes) {
+		return (List<String>) contractGenerationDao2.findRefNos(formatedPcsoDateWithQuotes);
+	}
+
+	@Override
+	public String millFullName(String millCode) {
+		// TODO Auto-generated method stub
+		
+		return contractGenerationDao2.getMillname(millCode);
+	}
+
+	@Override
+	public List<String> getPscoDateByCropYr(String cropYr) {
+		return contractGenerationDao2.getPscoDateByCropYr(cropYr);
 	}
 
 
