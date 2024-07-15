@@ -514,6 +514,9 @@ body {
 					<li data-pre="1134" id="o1134"><a href="settlementcndn.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> Settlement
 								Of Credit And Debit Notes</b></a></li>
+								<li data-pre="1134" id="o1134"><a href="viewlistCnAndDn.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View  Settlement
+								Of Credit And Debit Notes</b></a></li>
 
 					<li data-pre="1135" id="o1135"><a
 						href="uploadPaymentRealizationDisDetails.obj"><i

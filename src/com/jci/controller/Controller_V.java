@@ -14,10 +14,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -197,6 +200,20 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 //import com.itextpdf.text.pdf.PdfContentByte;
 import net.sf.jasperreports.engine.JRException;
 import com.jci.service_phase2.verifyClaimService;
+
+
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @Transactional
 @Repository
@@ -2833,102 +2850,7 @@ public class Controller_V {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// ---------------------------------------------------------
-	// Settlement Of Credit and Debit notes
-	// ---------------------------------------------------------
-
-	// settlement page listing
-	@RequestMapping("settlementcndn")
-	public ModelAndView settlementcndn(HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		List<String> millsOfContract = creditNoteGenerationService.getMillNames();
-		ModelAndView mView = new ModelAndView("settlementCnDnPage");
-
-		mView.addObject("mills", millsOfContract);
-
-		return mView;
-	}
 	
-	
-	
-
-	@ResponseBody
-	@RequestMapping(value = { "selectContractForSettlement" }, method = { RequestMethod.GET })
-	public String selectContractForSettlement(final HttpServletRequest request) {
-		final String mill = request.getParameter("mill");
-		List<String> contractNos = creditNoteGenerationService.getAllContractNos(mill);
-
-		Gson gson = new Gson();
-
-		return gson.toJson(contractNos);
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = { "getFullDetailsOfCrnAndDebit" }, method = { RequestMethod.GET })
-	public String getFullDetailsOfCrnAndDebit(final HttpServletRequest request) {
-		final String contract = request.getParameter("contractNo");
-		List<Object[]> contractNos = creditNoteGenerationService.getFullDetailsOfCrnAndDebit(contract);
-		
-		Gson gson = new Gson();
-		
-		return gson.toJson(contractNos);
-	}
-	
-
-	// redirected page of the settlement form
-	@RequestMapping("finalsettlementNoteJsp")
-	public ModelAndView finalsettlementNoteJsp(HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		String contractNoString = request.getParameter("contractNo");
-
-		List<Object[]> creditList = creditNoteGenerationService.findDetails("jcicredit_note", contractNoString);
-		List<Object[]> demandList = creditNoteGenerationService.findDetails("jcidemand_note", contractNoString);
-
-		ModelAndView mView = new ModelAndView("finalSettlementPage");
-
-		mView.addObject("creditList", creditList);
-		mView.addObject("demandList", demandList);
-
-		return mView;
-	}
-
-	// create the instance of the finalSettlelment
-	@RequestMapping("finalSettlement")
-	public ModelAndView finalSettlement(HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		if (username == null) {
-			return new ModelAndView("index");
-		}
-
-		double initiationAmt = Double.parseDouble((String) request.getParameter("initiationAmt"));
-		String initiateDate = request.getParameter("initiateDate");
-		String contractNo = request.getParameter("contractNo");
-		String creditNoteNo = request.getParameter("creditNoteNo");
-		String debitNoteNo = request.getParameter("debitNoteNo");
-
-		Date todaysDate = new Date();
-		settlemetCnDnModel settlemetCnDnModel = new settlemetCnDnModel();
-		settlemetCnDnModel.setContractNo(contractNo);
-		settlemetCnDnModel.setCreditNoteNo(creditNoteNo);
-		settlemetCnDnModel.setDebitNoteNo(debitNoteNo);
-		settlemetCnDnModel.setInitiateDate(todaysDate);
-		settlemetCnDnModel.setInitiationAmt(initiationAmt);
-
-		creditNoteGenerationService.saveSettlementOfCnDn(settlemetCnDnModel);
-		return new ModelAndView(new RedirectView("settlementcndn.obj"));
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// ---------------------------------------------------------
@@ -8140,6 +8062,609 @@ public class Controller_V {
 		System.err.println("-----------------------" + list);
 		return resultString;
 	}
+	
+	
+	// ---------------------------------------------------------
+///////////////////////////////////////////////// Settlement Of Credit and Debit notes //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// ---------------------------------------------------------
+
+		// settlement page listing
+		@RequestMapping("settlementcndn")
+		public ModelAndView settlementcndn(HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
+				return new ModelAndView("index");
+			}
+
+			List<String> millsOfContract = creditNoteGenerationService.getMillNames();
+			ModelAndView mView = new ModelAndView("settlementCnDnPage");
+
+			mView.addObject("mills", millsOfContract);
+
+			return mView;
+		}
+		
+		
+		
+
+		@ResponseBody
+		@RequestMapping(value = { "selectContractForSettlement" }, method = { RequestMethod.GET })
+		public String selectContractForSettlement(final HttpServletRequest request) {
+			final String mill = request.getParameter("mill");
+			List<String> contractNos = creditNoteGenerationService.getAllContractNos(mill);
+
+			Gson gson = new Gson();
+
+			return gson.toJson(contractNos);
+		}
+		
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value = { "getFullDetailsOfCrnAndDebit" }, method = { RequestMethod.GET })
+		public String getFullDetailsOfCrnAndDebit(final HttpServletRequest request) {
+			final String contract = request.getParameter("contractNo");
+			List<Object[]> contractNos = creditNoteGenerationService.getFullDetailsOfCrnAndDebit(contract);
+			
+			Gson gson = new Gson();
+			
+			return gson.toJson(contractNos);
+		}
+		
+		
+		
+
+
+		// redirected page of the settlement form
+		@RequestMapping("finalsettlementNoteJsp")
+		public ModelAndView finalsettlementNoteJsp(HttpServletRequest request) {
+			String username = (String) request.getSession().getAttribute("usrname");
+			if (username == null) {
+				return new ModelAndView("index");
+			}
+
+			String contractNoString = request.getParameter("contractNo");
+
+			List<Object[]> creditList = creditNoteGenerationService.findDetails("jcicredit_note", contractNoString);
+			List<Object[]> demandList = creditNoteGenerationService.findDetails("jcidemand_note", contractNoString);
+
+			ModelAndView mView = new ModelAndView("finalSettlementPage");
+
+			mView.addObject("creditList", creditList);
+			mView.addObject("demandList", demandList);
+
+			return mView;
+		}
+
+		// create the instance of the finalSettlelment
+//		@RequestMapping("saveCnAndDn")
+//		public ModelAndView finalSettlement(HttpServletRequest request) {
+//			String username = (String) request.getSession().getAttribute("usrname");
+//
+//			if (username == null) {
+//				return new ModelAndView("index");
+//			}
+//			String mill= request.getParameter("mill");
+//			String contract= request.getParameter("contract");
+//			int rows = Integer.parseInt(request.getParameter("rows"));
+//			String[] creditNoteNo = request.getParameterValues("creditNoteNo[]");
+//			String[] DateOfIssue  = request.getParameterValues("DateOfIssue[]");
+//			String[] Hodi = request.getParameterValues("Hodi[]");
+//			String[]  consigneeNoteText= request.getParameterValues("consigneeNoteText[]");
+//			String[] bosNo  = request.getParameterValues("bosNo[]");
+//			String [] dateOfShipment = request.getParameterValues("dateOfShipment[]");
+//			String [] dateOfInspection = request.getParameterValues("dateOfInspection[]");
+//			String [] creditNoteAmount = request.getParameterValues("creditNoteAmount[]");
+//			String [] settlementId = request.getParameterValues("settlementId[]");
+//			String [] consigneeDoc = request.getParameterValues("consigneeDoc[]");
+//			String []  BosDoc= request.getParameterValues("BosDoc[]");
+//			String []  creditNoteDoc= request.getParameterValues("creditNoteDoc[]");
+//			
+//			Double creditNoteSum = 0.0;
+//			Double debitNoteSum = 0.0;
+//
+//			for (int i = 0; i < rows; i++) {
+//			    String check = request.getParameter("rowCheckbox" + i);
+//			    if (check != null) {
+//			        String cnDnNo = creditNoteNo[i];
+//			        // Check if the first character of cnDnNo is 'C'
+//			        if (cnDnNo != null && !cnDnNo.isEmpty() && cnDnNo.charAt(0) == 'C') {
+//			            creditNoteSum += Double.valueOf(creditNoteAmount[i]);
+//			        } else {
+//			            debitNoteSum += Double.valueOf(creditNoteAmount[i]);
+//			        }
+//			    }
+//			}
+//             Double CnAndDnAmountDifference =  creditNoteSum - debitNoteSum;
+//			System.err.println("Credit Note Sum: " + creditNoteSum + " | Debit Note Sum: " + debitNoteSum);
+//            
+//
+//			LocalDate today = LocalDate.now();
+//	        // Define the date format
+//	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//	        // Format the date to a string in dd-MM-yyyy format
+//	        String formattedDate = today.format(formatter);
+//	        // Print the formatted date
+//	        System.out.println(formattedDate);  // Output
+//			
+//	        for (int i = 0; i < rows; i++) {
+//				String check = request.getParameter("rowCheckbox" + i);
+//				if (check != null) {
+//					
+//					
+//					
+//				settlemetCnDnModel settlemetCnDnModel = new settlemetCnDnModel();
+//				settlemetCnDnModel.setMillCode(mill);
+//				settlemetCnDnModel.setContractNo(contract);
+//				settlemetCnDnModel.setCreditNoteNo(creditNoteNo[i]);
+//				settlemetCnDnModel.setDateOfIssue(DateOfIssue[i]);
+//				settlemetCnDnModel.setHodi(Hodi[i]);
+//				settlemetCnDnModel.setConsigneeNoteText(consigneeNoteText[i]);
+//				settlemetCnDnModel.setBosNo(bosNo[i]);
+//				settlemetCnDnModel.setDateOfShipment(dateOfShipment[i]);
+//				settlemetCnDnModel.setDateOfInspection(dateOfInspection[i]);
+//				settlemetCnDnModel.setCreditNoteAmount(creditNoteAmount[i]);
+//				settlemetCnDnModel.setSettlementId(settlementId[i]);
+//				settlemetCnDnModel.setConsigneeDoc(consigneeDoc[i]);
+//				settlemetCnDnModel.setBosDoc(BosDoc[i]);
+//				settlemetCnDnModel.setCreditNoteDoc(creditNoteDoc[i]);
+//				settlemetCnDnModel.setCreate_date_cndn(formattedDate);
+//				settlemetCnDnModel.setAmountDiffCnAndDn(CnAndDnAmountDifference );
+//				creditNoteGenerationService.saveSettlementOfCnDn(settlemetCnDnModel);
+//			
+//				
+//				}
+// }
+//		
+//	        
+//
+//
+//			
+//			return new ModelAndView(new RedirectView("viewlistCnAndDn.obj"));
+//		}
+		
+		@RequestMapping("saveCnAndDn")
+		public ModelAndView finalSettlement(HttpServletRequest request) {
+		    String username = (String) request.getSession().getAttribute("usrname");
+
+		    if (username == null) {
+		        return new ModelAndView("index");
+		    }
+
+		    String mill = request.getParameter("mill");
+		    String contract = request.getParameter("contract");
+		    int rows = Integer.parseInt(request.getParameter("rows"));
+		    String[] creditNoteNo = request.getParameterValues("creditNoteNo[]");
+		    String[] DateOfIssue  = request.getParameterValues("DateOfIssue[]");
+		    String[] Hodi = request.getParameterValues("Hodi[]");
+		    String[] consigneeNoteText = request.getParameterValues("consigneeNoteText[]");
+		    String[] bosNo  = request.getParameterValues("bosNo[]");
+		    String[] dateOfShipment = request.getParameterValues("dateOfShipment[]");
+		    String[] dateOfInspection = request.getParameterValues("dateOfInspection[]");
+		    String[] creditNoteAmount = request.getParameterValues("creditNoteAmount[]");
+		    String[] settlementId = request.getParameterValues("settlementId[]");
+		    String[] consigneeDoc = request.getParameterValues("consigneeDoc[]");
+		    String[] BosDoc = request.getParameterValues("BosDoc[]");
+		    String[] creditNoteDoc = request.getParameterValues("creditNoteDoc[]");
+           
+
+		    
+		    String total = creditNoteGenerationService.CountRecord();
+			int value1;
+			if (total != null) {
+				
+
+			value1 =Integer.valueOf(total)+1;
+			} else {
+				value1 = 1;
+
+			}
+			//System.err.println(value1 + "rrrrrrrrrrrr");
+			String UniqueIdentification = contract + "/" +String.valueOf(value1);
+		    
+		    
+		    Double creditNoteSum = 0.0;
+		    Double debitNoteSum = 0.0;
+
+		    // Calculate sums for credit and debit notes
+		    for (int i = 0; i < rows; i++) {
+		        String check = request.getParameter("rowCheckbox" + i);
+		        if (check != null) {
+		            String cnDnNo = creditNoteNo[i];
+		            // Check if the first character of cnDnNo is 'C'
+		            if (cnDnNo != null && !cnDnNo.isEmpty() && cnDnNo.charAt(0) == 'C') {
+		                creditNoteSum += Double.valueOf(creditNoteAmount[i]);
+		            } else {
+		                debitNoteSum += Double.valueOf(creditNoteAmount[i]);
+		            }
+		        }
+		    }
+
+		    Double CnAndDnAmountDifference = creditNoteSum - debitNoteSum;
+		    System.err.println("Credit Note Sum: " + creditNoteSum + " | Debit Note Sum: " + debitNoteSum);
+
+		    // Get current date in dd-MM-yyyy format
+		    LocalDate today = LocalDate.now();
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		    String formattedDate = today.format(formatter);
+
+		    // Create an Excel workbook and sheet
+		    Workbook workbook = new XSSFWorkbook();
+		    Sheet sheet = workbook.createSheet("Settlement Data");
+		    Font headerFont = workbook.createFont();
+		    headerFont.setBold(true);
+		    headerFont.setFontHeightInPoints((short)11);
+		    headerFont.setColor(IndexedColors.BLACK.getIndex());
+		    CellStyle headerCellStyle = workbook.createCellStyle();
+		    headerCellStyle.setFont(headerFont);
+		    String filepath = "C:\\Users\\Mansi.Gupta\\Documents\\CNDNExcelSave";
+		    	//	"C:\\Users\\Mansi.Gupta\\Documents";
+		    String filename = filepath +File.separator + UniqueIdentification+"cndn"+ ".xlsx";  // Change path as needed
+		    // Define the columns for the Excel sheet
+		    String[] columns = {"Mill Code", "Contract No", "Credit Note No", "Date Of Issue", "Hodi", "Consignee Note Text",
+		                        "BOS No", "Date Of Shipment", "Date Of Inspection", "Credit Note Amount", "Settlement ID",
+		                        "Consignee Doc", "BOS Doc", "Credit Note Doc", "Create Date", "Amount Difference"};
+		    Row headerRow = sheet.createRow(0);
+		    for (int j = 0; j < columns.length; j++) {
+		        Cell cell = headerRow.createCell(j);
+		        cell.setCellValue(columns[j]);
+		        cell.setCellStyle(headerCellStyle);
+		    }
+
+		    int rownum = 1;
+		    for (int i = 0; i < rows; i++) {
+		        String check = request.getParameter("rowCheckbox" + i);
+		        if (check != null) {
+		            settlemetCnDnModel settlemetCnDnModel = new settlemetCnDnModel();
+		            settlemetCnDnModel.setMillCode(mill);
+		            settlemetCnDnModel.setContractNo(contract);
+		            settlemetCnDnModel.setCreditNoteNo(creditNoteNo[i]);
+		            settlemetCnDnModel.setDateOfIssue(DateOfIssue[i]);
+		            settlemetCnDnModel.setHodi(Hodi[i]);
+		            settlemetCnDnModel.setConsigneeNoteText(consigneeNoteText[i]);
+		            settlemetCnDnModel.setBosNo(bosNo[i]);
+		            settlemetCnDnModel.setDateOfShipment(dateOfShipment[i]);
+		            settlemetCnDnModel.setDateOfInspection(dateOfInspection[i]);
+		            settlemetCnDnModel.setCreditNoteAmount(creditNoteAmount[i]);
+		            settlemetCnDnModel.setSettlementId(settlementId[i]);
+		            settlemetCnDnModel.setConsigneeDoc(consigneeDoc[i]);
+		            settlemetCnDnModel.setBosDoc(BosDoc[i]);
+		            settlemetCnDnModel.setCreditNoteDoc(creditNoteDoc[i]);
+		            settlemetCnDnModel.setCreate_date_cndn(formattedDate);
+		            settlemetCnDnModel.setAmountDiffCnAndDn(CnAndDnAmountDifference);
+		            settlemetCnDnModel.setCndnExcel_link("cndn.xlsx");
+		            settlemetCnDnModel.setRowNumber(value1);
+		            settlemetCnDnModel.setIdentificationCnDn(UniqueIdentification);
+		            creditNoteGenerationService.saveSettlementOfCnDn(settlemetCnDnModel);
+
+		            // Add data to the Excel sheet
+		            Row row = sheet.createRow(rownum++);
+		            row.createCell(0).setCellValue(mill);
+		            row.createCell(1).setCellValue(contract);
+		            row.createCell(2).setCellValue(creditNoteNo[i]);
+		            row.createCell(3).setCellValue(DateOfIssue[i]);
+		            row.createCell(4).setCellValue(Hodi[i]);
+		            row.createCell(5).setCellValue(consigneeNoteText[i]);
+		            row.createCell(6).setCellValue(bosNo[i]);
+		            row.createCell(7).setCellValue(dateOfShipment[i]);
+		            row.createCell(8).setCellValue(dateOfInspection[i]);
+		            row.createCell(9).setCellValue(creditNoteAmount[i]);
+		            row.createCell(10).setCellValue(settlementId[i]);
+		            row.createCell(11).setCellValue(consigneeDoc[i]);
+		            row.createCell(12).setCellValue(BosDoc[i]);
+		            row.createCell(13).setCellValue(creditNoteDoc[i]);
+		            row.createCell(14).setCellValue(formattedDate);
+		            row.createCell(15).setCellValue(CnAndDnAmountDifference);
+		        }
+		    }
+
+		    // Resize columns to fit the content
+		    for (int j = 0; j < columns.length; j++) {
+		        sheet.autoSizeColumn(j);
+		    }
+             
+		    // Save the Excel file
+//		    String filename = "C:\\Users\\Mansi.Gupta\\Documents" + "cndn"+ formattedDate + ".xlsx";  // Change path as needed
+		    try (FileOutputStream fileOut = new FileOutputStream(filename)) {
+		        workbook.write(fileOut);
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            workbook.close();
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    return new ModelAndView(new RedirectView("viewlistCnAndDn.obj"));
+		}
+
+		
+		
+		@RequestMapping("viewlistCnAndDn")
+		public ModelAndView ViewCnAndDn(Model model, HttpServletRequest request) {
+			ModelAndView mv = new ModelAndView("viewCnAndDn");
+			String username = (String) request.getSession().getAttribute("usrname");
+
+			if (username == null) {
+				mv = new ModelAndView("index");
+			}
+			List<settlemetCnDnModel> AllList = (List<settlemetCnDnModel>) creditNoteGenerationService.getAll();
+		//	List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService.getAll();
+		Collections.reverse(AllList);
+			model.addAttribute("cnAndDnModel", AllList);
+//			String omofficial = request.getParameter("omofficial");
+			return mv;
+		}
+		
+		
+
+//        @Value("${upload.paymentDocumentDownload}")
+//        String paymentDocumentDownload;
+		@RequestMapping("downloadSupportingbosDoc")
+		public void downloadDocumentpayment(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+		
+			
+			String imagePath = "C:\\Users\\Mansi.Gupta\\Documents\\bosdownload"+ File.separator + filename;
+//					imageDirectory + File.separator + idn + File.separator + filename;
+
+			File imageFile = new File(imagePath);
+
+			// Check if the file exists
+
+			if (imageFile.exists()) {
+
+				try {
+
+					// Set the content type based on the file type
+
+					String contentType = determineContentType(filename);
+
+					response.setContentType(contentType);
+
+					// Set the content length and attachment disposition
+
+					response.setContentLength((int) imageFile.length());
+
+					// response.setHeader("Content-Disposition", "attachment; filename=" +
+					// filename);
+
+					response.setHeader("Content-Disposition", "");
+
+					// Stream the file content to the response
+
+					FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+					OutputStream responseOutputStream = response.getOutputStream();
+
+					byte[] buffer = new byte[1024];
+
+					int bytesRead;
+
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+						responseOutputStream.write(buffer, 0, bytesRead);
+
+					}
+
+					fileInputStream.close();
+
+					responseOutputStream.close();
+
+				} catch (IOException e) {
+
+					// Handle IO exception
+
+					e.printStackTrace();
+
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+				}
+
+			} else {
+
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+			}
+		
+
+		}
+		@RequestMapping("downloadSupportingConsigneeDoc")
+		public void downloadSupportingConsigneeDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+		
+			
+			String imagePath = "C:\\Users\\Mansi.Gupta\\Documents\\CreditNoteDOc DownLoad"+ File.separator + filename;
+//					imageDirectory + File.separator + idn + File.separator + filename;
+
+			File imageFile = new File(imagePath);
+
+			// Check if the file exists
+
+			if (imageFile.exists()) {
+
+				try {
+
+					// Set the content type based on the file type
+
+					String contentType = determineContentType(filename);
+
+					response.setContentType(contentType);
+
+					// Set the content length and attachment disposition
+
+					response.setContentLength((int) imageFile.length());
+
+					// response.setHeader("Content-Disposition", "attachment; filename=" +
+					// filename);
+
+					response.setHeader("Content-Disposition", "");
+
+					// Stream the file content to the response
+
+					FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+					OutputStream responseOutputStream = response.getOutputStream();
+
+					byte[] buffer = new byte[1024];
+
+					int bytesRead;
+
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+						responseOutputStream.write(buffer, 0, bytesRead);
+
+					}
+
+					fileInputStream.close();
+
+					responseOutputStream.close();
+
+				} catch (IOException e) {
+
+					// Handle IO exception
+
+					e.printStackTrace();
+
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+				}
+
+			} else {
+
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+			}
+		
+
+		}
+		
+		@RequestMapping("downloadSupportingCreditNoteDoc")
+		public void downloadSupportingCreditNoteDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
+
+		
+			
+			String imagePath = "C:\\Users\\Mansi.Gupta\\Documents\\CreditNoteDOc DownLoad"+ File.separator + filename;
+//					imageDirectory + File.separator + idn + File.separator + filename;
+
+			File imageFile = new File(imagePath);
+
+			// Check if the file exists
+
+			if (imageFile.exists()) {
+
+				try {
+
+					// Set the content type based on the file type
+
+					String contentType = determineContentType(filename);
+
+					response.setContentType(contentType);
+
+					// Set the content length and attachment disposition
+
+					response.setContentLength((int) imageFile.length());
+
+					// response.setHeader("Content-Disposition", "attachment; filename=" +
+					// filename);
+
+					response.setHeader("Content-Disposition", "");
+
+					// Stream the file content to the response
+
+					FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+					OutputStream responseOutputStream = response.getOutputStream();
+
+					byte[] buffer = new byte[1024];
+
+					int bytesRead;
+
+					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+						responseOutputStream.write(buffer, 0, bytesRead);
+
+					}
+
+					fileInputStream.close();
+
+					responseOutputStream.close();
+
+				} catch (IOException e) {
+
+					// Handle IO exception
+
+					e.printStackTrace();
+
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+				}
+
+			} else {
+
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+			}
+		
+
+		}
+		@RequestMapping("downloadcndnXsl")
+	    public void downloadcndnXsl(@RequestParam("filename") String filename, HttpServletResponse response) {
+	        // Path where files are stored. Use the filename parameter to dynamically specify the file.
+	    
+			
+			
+		    	//	"C:\\Users\\Mansi.Gupta\\Documents";
+		   // String filename = filepath +File.separator + "cndn"+ ".xlsx"; 
+		//	String filePath = "C:\\Users\\Mansi.Gupta\\Documents" ;
+	     //   String fileName = filePath  +filename;
+			
+			 String filepath = "C:\\Users\\Mansi.Gupta\\Documents\\CNDNExcelSave";
+			 String fileName = filepath + File.separator  +filename;
+	        System.err.println( fileName);
+
+	        // Create a File object
+	        File file = new File(fileName);
+	        
+	        // Check if the file exists
+	        if (!file.exists()) {
+	            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	            return;
+	        }
+
+	        // Set the content type based on the file extension
+	        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	        response.setHeader("Content-Disposition", "attachment; filename=" +fileName);
+	        response.setContentLength((int) file.length());
+
+	        // Try-with-resources to ensure that InputStream and OutputStream are closed properly
+	        try (InputStream inputStream = new FileInputStream(file);
+	             // Explicit type instead of var for Java 8 or 9
+	             java.io.OutputStream outputStream = response.getOutputStream()) {
+
+	            // Read the file and write it to the response output stream
+	            byte[] buffer = new byte[1024];
+	            int bytesRead;
+	            while ((bytesRead = inputStream.read(buffer)) != -1) {
+	                outputStream.write(buffer, 0, bytesRead);
+	            }
+
+	        } catch (IOException e) {
+	            // Log the exception and set response status code
+	            e.printStackTrace();
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        }
+	    }
+		
+		
+
+
+
+//////////////////////////////////////////////////////////   Settlement Of Credit and Debit notes End  ///////////////////////////////////////
+
 }
 
 //	  ******************************************>>>>>>>>Code ends here<<<<<<<<<<*********************************************************

@@ -53,4 +53,8 @@ public interface CreditNoteGenerationService {
 	public List<String> getAllContractNos(String mill);
 
 	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract);
+	
+	public List<settlemetCnDnModel> getAll();
+	
+	public String CountRecord();
 }

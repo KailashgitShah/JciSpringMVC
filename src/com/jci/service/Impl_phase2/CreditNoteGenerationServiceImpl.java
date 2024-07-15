@@ -131,4 +131,18 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 		return creditNoteGenerationDao.getFullDetailsOfCrnAndDebit(contract);
 	}
 
+	@Override
+	public List<settlemetCnDnModel> getAll() {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao.getAll();
+	}
+
+	@Override
+	public String CountRecord() {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao.CountRecord();
+	}
+	
+	
+
 }
