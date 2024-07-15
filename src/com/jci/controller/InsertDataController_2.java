@@ -92,6 +92,9 @@ public class InsertDataController_2 {
 	UserPriviligeService userpriviligeservice;
 	
 	@Autowired
+	PurchaseReportService purchaseReportService;
+	
+	@Autowired
 	PurchaseReportService purchasereportService;
 	
 	@Autowired
@@ -866,6 +869,14 @@ public class InsertDataController_2 {
 
 		     return mv;
 		 }
+		 @ResponseBody
+		    @RequestMapping({ "getfarmerdetail" })
+		    public String findDpcByRegion(final HttpServletRequest request) {
+			  String value =  request.getParameter("value");
+			  final Gson gson = new Gson();
+		        return gson.toJson((Object) this.purchaseReportService.farmerdetail(request.getParameter("value")));
+
+		    }
 
 	
 	 
