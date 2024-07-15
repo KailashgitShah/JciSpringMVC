@@ -165,7 +165,7 @@
 												<label>Unit_charge</label> <input
 													class="form-control taxtbox" name="Unit_charge"
 													id="Unit_charge" min="0" step="0.01" type="number" 
-													placeholder="0" required>
+													placeholder="0" required value =70>
 											</div>
 											<div class="col-sm-4 form-group">
 												<label>Carrying_cost</label> <input
@@ -212,6 +212,11 @@
 											<div class="col-sm-4 form-group">
     <label id="lblName"></label>
     <div id="form3"></div>
+    <span id="misQty"></span>
+</div>
+<div class="col-sm-4 form-group">
+    <label id="lblName"></label>
+    <div id="form4"></div>
     <span id="misQty"></span>
 </div>
 										</div> 
@@ -409,15 +414,20 @@ document.addEventListener('DOMContentLoaded', function() {
 			               else{
 			            	   $('#CancellationDate1').val(data[0][2]);
 			               }
-			                $("#Unit_charge").on('input', function() {
-			                    var unitCharge = $(this).val(); // Get the input value from #Unit_charge
-			                    
-			                    var carryingCost = data[0][4] * daysDifference * (unitCharge)/30; // Calculate carrying cost
+			               $(document).ready(function() {
+			            	    // Initial calculation on page load
+			            	    var unitCharge = $('#Unit_charge').val(); // Get the initial input value from #Unit_charge
+			            	    var carryingCost = data[0][4] * daysDifference * (unitCharge) / 30; // Calculate carrying cost
+			            	    $('#Carrying_cost').val(Math.ceil(carryingCost.toFixed(2))); // Update #Carrying_cost input with calculated value
 
-			                    // Update #Carrying_cost input with calculated value, rounded to 2 decimal places
-			                    $('#Carrying_cost').val(Math.ceil(carryingCost.toFixed(2)));
-			                });
-			                
+			            	    // Function to recalculate and update carrying cost on input change
+			            	    $("#Unit_charge").on('input', function() {
+			            	        var unitCharge = $(this).val(); // Get the input value from #Unit_charge
+			            	        var carryingCost = data[0][4] * daysDifference * (unitCharge) / 30; // Calculate carrying cost
+			            	        $('#Carrying_cost').val(Math.ceil(carryingCost.toFixed(2))); // Update #Carrying_cost input with calculated value, rounded to 2 decimal places
+			            	    });
+			            	});
+			                $("#form3").empty();
 			                var downloadLink = $('<a></a>').attr({
 			                    href: 'downloadSupportingDocument.obj?filename=' + encodeURIComponent(data[0][6]),
 			                    class: 'btn btn-primary btn-sm mt-2',
@@ -426,7 +436,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			                // Append the download link to the form inside .col-sm-4.form-group
 			                $("#form3").append(downloadLink);
+			                $("#form4").empty();
+			                var downloadLink = $('<a></a>').attr({
+			                    href: 'downloadFcdocument.obj?filename=' + encodeURIComponent(data[0][7]),
+			                    class: 'btn btn-primary btn-sm mt-2',
+			                    target: '_blank'
+			                }).text('View FC doc');
 
+			                // Append the download link to the form inside .col-sm-4.form-group
+			                $("#form4").append(downloadLink);
 			              
 			            },
 			            error: function (error) {

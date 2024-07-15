@@ -231,8 +231,8 @@
 										<div class="col-sm-4 form-group">
 											<span id="errMsg" class="text-danger"></span>
 										</div>
-
 										<input name="count" id="count" type="hidden" value="<%=mill%>">
+										<input name="cropyr" id="cropyr" type="hidden" >
 									</div>
 									<div class="form-group col-sm-12">
 										<button class="btn btn-default" type="submit" id="submit">Next</button>
@@ -302,17 +302,19 @@
 				success : function(result) {
 					var data = jQuery.parseJSON(result);
                     
-					var details = data[0]
+					var details = data[0];
 					var pcsoReqdate = data[0][6].split("-");
 					var newDate = pcsoReqdate[2]+"-"+pcsoReqdate[1]+"-"+pcsoReqdate[0];
 					
 				    
 					var reqQty = data[0][7]/10;
+					var cropyr = data[0][2];
 					// $("#pcsoDate").prop("readonly", false);
 					$("#pcsoReqdate").val(newDate);
 					$("#pcsoReqQty").val(reqQty);
 					document.getElementById("pcsoDate").min = newDate;
 					 $("#pcsoDate").prop("readonly", false);
+					 $("#cropyr").val(cropyr);
 
 				}
 			})

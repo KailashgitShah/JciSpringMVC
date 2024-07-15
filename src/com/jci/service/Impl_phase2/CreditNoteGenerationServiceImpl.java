@@ -41,8 +41,8 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	}
 
 	@Override
-	public List<Object[]> getAllMillsOfContracts() {
-	return creditNoteGenerationDao.getAllMillsOfContracts();
+	public List<String> getMillNames() {
+	return creditNoteGenerationDao.getMillNames();
 	}
 
 	@Override
@@ -120,5 +120,29 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	public int getTotalCount() {
 		return creditNoteGenerationDao.getTotalCount();
 	}
+
+	@Override
+	public List<String> getAllContractNos(String mill) {
+		return creditNoteGenerationDao.getAllContractNos(mill);
+	}
+
+	@Override
+	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract) {
+		return creditNoteGenerationDao.getFullDetailsOfCrnAndDebit(contract);
+	}
+
+	@Override
+	public List<settlemetCnDnModel> getAll() {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao.getAll();
+	}
+
+	@Override
+	public String CountRecord() {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao.CountRecord();
+	}
+	
+	
 
 }

@@ -23,12 +23,10 @@
 	height: 32px;
 }
 
-
 .required:after {
 	content: " *";
 	color: red;
 }
-
 </style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,13 +70,13 @@
 			List<EntryofpcsoModel> allentryofpcsolist = (List<EntryofpcsoModel>) request.getAttribute("entryofpcso");
 			String pcsodate = (String) request.getAttribute("pcsoDate");
 			String pcsoReqDate = (String) request.getAttribute("pcsoReqDate");
-			String referenceNo = (String) request.getAttribute("referenceno");		
-			String deliveryPeriod = (String)request.getAttribute("deliveryPeriod");
-			String juteRatio = (String)request.getAttribute("juteRatio");
-			String letterRef = (String)request.getAttribute("letterRef");
-			Double pcsoQty = (Double)request.getAttribute("pcsoQty");
-			Double pcsoReqQty = (Double)request.getAttribute("pcsoReqQty");
-			
+			String cropyr = (String) request.getAttribute("cropyr");
+			String referenceNo = (String) request.getAttribute("referenceno");
+			String deliveryPeriod = (String) request.getAttribute("deliveryPeriod");
+			String juteRatio = (String) request.getAttribute("juteRatio");
+			String letterRef = (String) request.getAttribute("letterRef");
+			Double pcsoQty = (Double) request.getAttribute("pcsoQty");
+			Double pcsoReqQty = (Double) request.getAttribute("pcsoReqQty");
 			%>
 			<div class="page-content fade-in-up">
 				<div class="row">
@@ -99,43 +97,45 @@
 
 										<div class="col-sm-3 form-group">
 											<label>PCO Date</label> <input class="form-control"
-												type="date" name="pcsoDate" value="<%=pcsodate%>" readonly
-												>
+												type="date" name="pcsoDate" value="<%=pcsodate%>" readonly>
 										</div>
 
 										<div class="col-sm-3 form-group">
 											<label>PCO Request Date</label> <input class="form-control"
-												type="date" name="pcsoReqDate" value="<%=pcsoReqDate%>" readonly>
+												type="date" name="pcsoReqDate" value="<%=pcsoReqDate%>"
+												readonly>
 										</div>
 										<div class="col-sm-3 form-group">
 											<label>PCO Requested Qty</label> <input class="form-control"
-												 name="pcsoReqQty" id="pcsoReqQty" readonly value="<%=pcsoReqQty%>"
-												>
+												name="pcsoReqQty" id="pcsoReqQty" readonly
+												value="<%=pcsoReqQty%>">
 										</div>
 									</div>
 									<div class="row">
-									<div class="col-sm-3 form-group">
+										<div class="col-sm-3 form-group">
 											<label>JCI letter Ref.</label> <input class="form-control"
-												name="letterRefNo" id="letterRefNo" value="<%=letterRef %>" readonly>	
+												name="letterRefNo" id="letterRefNo" value="<%=letterRef%>"
+												readonly>
 										</div>
 
 										<div class="col-sm-3 form-group">
 											<label>Dispatch Period</label> <input class="form-control"
-												name="dispatchPeriod" type="date" id="dispatchPeriod" value="<%=deliveryPeriod %>" readonly
-												 >
+												name="dispatchPeriod" type="date" id="dispatchPeriod"
+												value="<%=deliveryPeriod%>" readonly>
 										</div>
 
 										<div class="col-sm-3 form-group">
 											<label>JCI Jute Ratio.</label> <input class="form-control"
-												 name="juteRatio" id="juteRatio" readonly value="<%=juteRatio%>"
-												>
+												name="juteRatio" id="juteRatio" readonly
+												value="<%=juteRatio%>">
 										</div>
 										<div class="col-sm-3 form-group">
 											<label>PCO Qty</label> <input class="form-control"
-												 name="pcsoQty" id="pcsoQty" readonly value="<%=pcsoQty%>"
-												>
+												name="pcsoQty" id="pcsoQty" readonly value="<%=pcsoQty%>">
+											<input class="form-control" type="hidden" name="cropyr" id="cropyr"
+												readonly value="<%=cropyr%>">
 										</div>
-										
+
 									</div>
 
 									<br>
@@ -155,16 +155,15 @@
 									double num = 0, sum = 0;
 									int mill = 0;
 									for (EntryofpcsoModel entryofpcsolist : allentryofpcsolist) {
-							
-											//SimpleDateFormat formatter = new SimpleDateFormat("yyyy/dd/MM");
-											
+
+										//SimpleDateFormat formatter = new SimpleDateFormat("yyyy/dd/MM");
 									%>
 
 									<div class="row">
 										<div class="col-sm-4 form-group">
 											<input type="text" class="form-control"
 												name="millcode<%=mill%>" id="millcode<%=mill%>"
-												value="<%=entryofpcsolist.getMill_code() %>" readonly>
+												value="<%=entryofpcsolist.getMill_code()%>" readonly>
 										</div>
 										<div class="col-sm-4 form-group">
 											<input type="text" class="form-control"
@@ -175,26 +174,26 @@
 											<input type="text" class="myname form-control"
 												name="totalallocation<%=mill%>"
 												id="totalallocation<%=mill%>"
-												value="<%=entryofpcsolist.getAllocatedQty() %>" readonly>
+												value="<%=entryofpcsolist.getAllocatedQty()%>" readonly>
 										</div>
 									</div>
 
 									<%
 									mill++;
 
-									num =  entryofpcsolist.getAllocatedQty();
+									num = entryofpcsolist.getAllocatedQty();
 									sum += num;
 									}
-									
+
 									DecimalFormat df = new DecimalFormat("#.##");
-							        String formatedSum = df.format(sum);
+									String formatedSum = df.format(sum);
 									%>
 									<div class="row">
 										<div class="col-sm-4 form-group"></div>
 										<div class="col-sm-4 form-group"></div>
 										<div class="col-sm-4 form-group">
-											<input type="text" class="form-control myname" name="sumoftotalallocation"
-												id="sumoftotalallocation"
+											<input type="text" class="form-control myname"
+												name="sumoftotalallocation" id="sumoftotalallocation"
 												value="Sum of total allocation = <%=formatedSum%> " readonly>
 										</div>
 									</div>
@@ -205,10 +204,10 @@
 											<a href="entryofpcso.obj">Reset</a>
 										</button> -->
 										<button class="btn btn-default" type="submit" id="submit">Submit</button>
-										<button class="btn btn-default" type="button"  onclick="history.go(-1)" 
-										>Back</button>
-										
-<!-- 										<button class="btn btn-default" type="submit" id="reset"
+										<button class="btn btn-default" type="button"
+											onclick="history.go(-1)">Back</button>
+
+										<!-- 										<button class="btn btn-default" type="submit" id="reset"
 											formaction="entryofpcso.obj">Back</button> -->
 									</div>
 								</form>

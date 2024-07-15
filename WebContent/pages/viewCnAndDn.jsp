@@ -1,16 +1,14 @@
-<%@page import="com.jci.model.GenrationDemandNoteModel"%>
-
+<%@page import="com.jci.model.JciDIHoModel"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
-<%@page isELIgnored="false"%>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.time.LocalDateTime" %>
 
-<%@ page import="java.util.Date" %>
-<%@ page import="java.time.ZoneId" %>
+<%@page import="com.jci.model.UserRegistrationModel"%>
+
+<%@page isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -105,15 +103,11 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">View Generation of Demand Note List</h1>
+				<h1 class="page-title">Credit Note And Debit Note View</h1>
 
 			</div>
 
-			<%
-			List<GenrationDemandNoteModel> genrationlist = (List<GenrationDemandNoteModel>)request.getAttribute("genrationDemandNoteModel");
-		   
-			%>
-			
+
 			<div class="page-content fade-in-up">
 				<div class="ibox">
 					<span>${msg}</span>
@@ -126,88 +120,57 @@ th {
 
 								<thead>
 									<tr>
-										<th>Sl.No</th>
-										<th>Contract No </th>
-										<th>Contract Date</th>
-										<th>Payment Due Date</th>
-										<th>Payment / Cancellation Date</th>
-										<th>Delay period</th>
-										<th>Payment Ref </th>
-										<th>Contracted Qty(Qtls)</th>
-										<th>Unit Charge</th>
-										<th>Carrying Cost</th>
-										<th>Waiver Flag </th>
-										<th>Remarks</th>
-										<th>Waiver Approved By</th>
-										<th>Demand Note no</th>
-										<th>Demand Note date</th>
-								        <th>Demand Note Document</th>
-										
-
+									<th>Sl.NO</th>
+									<th>CN/DN Identification No</th>
+									<th>Contract No</th>
+									<th>CN/DN No</th>
+									<th>Date Of Issue</th>
+									<th>HODI No</th>
+									<th>Consignment_Note	</th>
+									<th>Bos_No</th> 
+									<th>Date_Of_Shipment</th>
+									<th>Date_Of_Inspection</th>	
+									<th>CN/DN Amount</th>
+									<th>CN/DN Amount Difference</th>
+									<th>Settlement_Id</th>
+									<th>DownLoad<th>
+									<!-- <th>Download</th> -->
+									
+									
+													
 									</tr>
 								</thead>
 								<tbody>
-									<%
-									int i = 1;
-									for (GenrationDemandNoteModel  genrationDemandNoteModel : genrationlist) {
+								<%int i=1; %>
 
-										if (i <= 200) {
-									%>
-									<tr>
-										<td style="text-align: center;"><%=i%></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getContract_no() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getContract_date() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getPayment_due_date() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getPayment_date() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getDelay_period() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getPayment_ref() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getContracted_qty() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getUnit_charge() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getCarrying_cost() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getWaiver_flag() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getRemarks() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getWaiver_approved_by() %></td>
-										<td style="text-align: center;"><%= genrationDemandNoteModel.getDemand_note_no() %></td>
-<%
-    Date inputDate = genrationDemandNoteModel.getDemand_note_date();
-
-    // Convert java.util.Date to LocalDateTime
-    LocalDateTime localDateTime = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-    // Define the output formatter for the desired format
-    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-    // Format LocalDateTime to a string in the desired format
-    String outputDateStr = localDateTime.format(outputFormatter);
-%>
-<td style="text-align: center;"><%= outputDateStr %></td>		
-									
-									
-
-										<td style="text-align: center;"><a href='downloadSupportDocDemandNote.obj?filename=<%= genrationDemandNoteModel.getDocumentName()  %>' class='btn btn-primary btn-sm' target='_blank'>View Generated doc</a></td>
+									 <c:forEach items="${cnAndDnModel}" var="item">
 
 
 
-										<%-- <td><%=bnaList.getEnable()==1?"Active":"Inactive"%></td> --%>
-										<%-- <td><a
-											href="updatePaymentInstrument.obj?id=<%=PaymentInstrumentList.getEopiid()%>"><button
-													class="btn btn-default" type="button">Edit</button></a></td> --%>
+										<tr>
+										<td  class="sorting_1"><%=i%></td>
+										<td>${item.getIdentificationCnDn()}</td>
+                                            <td >${item.getContractNo()}</td>
+                                           <td>${item.getCreditNoteNo()}</td>
+                                            <td>${item.getDateOfIssue()}</td>
+											<td>${item.getHodi()}</td>
+											 <td>${item.getConsigneeNoteText()}</td>
+											 <td>${item.getBosNo()}</td>	
+											 	 <td>${item.getDateOfShipment()}</td>	
+											 	  <td>${item.getDateOfInspection()}</td>	
+											 	   <td>${item.getCreditNoteAmount()}</td>
+											 	   <td>${item.getBosDoc()}</td>	
+											 	    <td>${item.getSettlementId()}</td>	
+											 	    <%-- <td>${item.getCndnExcel_link()}</td>	 --%>													
+                                              <td><a href="downloadcndnXsl.obj?filename=${item.getCndnExcel_link()}" class="btn btn-success" target="_blank"> View Excel</a></button></td> 
 
-<%-- 
-										<td><a
-											href="editPaymentDetail.obj?id=<%=entryPaymentDetailsModel.getDopiid() %>">
-												<button class="btn btn-primary btn-sm" type="button">Edit</button>
-										</a></td> --%>
 
-										
+										</tr>
+										<%i++; %>
+									</c:forEach>
+ 
 
 
-									</tr>
-									<%
-									}
-									i++;
-									}
-									%>
 								</tbody>
 
 							</table>

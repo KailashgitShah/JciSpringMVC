@@ -75,6 +75,11 @@ public class EntryofpcsoModel {
 
 	@Column(name = "created_date")
 	private Date created_date;
+	
+
+	@Column(name = "cropYear" , length = 256)
+	@NotNull
+	private String cropYear;
 
 	@Column(name = "Pcso_contract_flag")
 	private int pcsoContractFlag = 0;
@@ -198,11 +203,31 @@ public class EntryofpcsoModel {
 	public void setPcsoContractFlag(int pcsoContractFlag) {
 		this.pcsoContractFlag = pcsoContractFlag;
 	}
+	
+	
+
+	public String getCropYear() {
+		return cropYear;
+	}
+
+	public void setCropYear(String cropYear) {
+		this.cropYear = cropYear;
+	}
+
+	@Override
+	public String toString() {
+		return "EntryofpcsoModel [pcsorefid=" + pcsorefid + ", reference_no=" + reference_no + ", pcso_date="
+				+ pcso_date + ", pcso_req_date=" + pcso_req_date + ", letterRef=" + letterRef + ", juteRatio="
+				+ juteRatio + ", dispatch_period=" + dispatch_period + ", letterPath=" + letterPath + ", mill_code="
+				+ mill_code + ", mill_name=" + mill_name + ", allocatedQty=" + allocatedQty + ", pcsoQty=" + pcsoQty
+				+ ", pcsoReqQty=" + pcsoReqQty + ", created_date=" + created_date + ", cropYear=" + cropYear
+				+ ", pcsoContractFlag=" + pcsoContractFlag + "]";
+	}
 
 	public EntryofpcsoModel(int pcsorefid, String reference_no, String pcso_date, String pcso_req_date,
 			String letterRef, String juteRatio, String dispatch_period, String letterPath, String mill_code,
 			String mill_name, Double allocatedQty, Double pcsoQty, Double pcsoReqQty, Date created_date,
-			int pcsoContractFlag) {
+			String cropYear, int pcsoContractFlag) {
 		super();
 		this.pcsorefid = pcsorefid;
 		this.reference_no = reference_no;
@@ -218,6 +243,7 @@ public class EntryofpcsoModel {
 		this.pcsoQty = pcsoQty;
 		this.pcsoReqQty = pcsoReqQty;
 		this.created_date = created_date;
+		this.cropYear = cropYear;
 		this.pcsoContractFlag = pcsoContractFlag;
 	}
 
@@ -226,16 +252,8 @@ public class EntryofpcsoModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public String toString() {
-		return "EntryofpcsoModel [pcsorefid=" + pcsorefid + ", reference_no=" + reference_no + ", pcso_date="
-				+ pcso_date + ", pcso_req_date=" + pcso_req_date + ", letterRef=" + letterRef + ", juteRatio="
-				+ juteRatio + ", dispatch_period=" + dispatch_period + ", letterPath=" + letterPath + ", mill_code="
-				+ mill_code + ", mill_name=" + mill_name + ", allocatedQty=" + allocatedQty + ", pcsoQty=" + pcsoQty
-				+ ", pcsoReqQty=" + pcsoReqQty + ", created_date=" + created_date + ", pcsoContractFlag="
-				+ pcsoContractFlag + "]";
-	}
-
+	
+	
 	
 	
 	

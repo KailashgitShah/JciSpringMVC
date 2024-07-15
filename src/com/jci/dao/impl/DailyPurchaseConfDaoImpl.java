@@ -686,7 +686,6 @@ public class DailyPurchaseConfDaoImpl implements DailyPurchaseConfDao {
 
 	@Override
 	public List<String> getCropYear() {
-
 		String sql = "select distinct cropyr from jciprocurement where cropyr is not NULL";
 		List<String> list = currentSession().createSQLQuery(sql).list();
 		return list;
