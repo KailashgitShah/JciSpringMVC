@@ -2,14 +2,20 @@
 package com.jci.controller;
 
 import java.io.IOException;
+import com.jci.model.FarmerRegModel;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -33,6 +39,7 @@ import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.EntryofsaleService;
 import com.jci.service.HoDispatchService;
 import com.jci.service.PaymentInstrumentService;
+import com.jci.service.PurchaseReportService;
 import com.jci.service.RawJuteProcurementAndPaymentService;
 import com.jci.service.UploadRecieptService;
 import com.jci.service.UserActionService;
@@ -41,6 +48,15 @@ import com.jci.service.UserRoleService;
 import com.jci.service.labelGenerationService;
 import com.lowagie.text.Element;
 import com.lowagie.text.pdf.PdfPCell;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+
 import com.google.gson.Gson;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -48,6 +64,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.jci.model.EntryofSaleModel;
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.HODispatchInstructionModel;
+import com.jci.model.LedgerReportDTO;
 import com.jci.model.EntryofpcsoModel;
 
 @Controller
@@ -74,7 +91,8 @@ public class InsertDataController_2 {
 	@Autowired
 	UserPriviligeService userpriviligeservice;
 	
-	
+	@Autowired
+	PurchaseReportService purchasereportService;
 	
 	@Autowired
 	labelGenerationService labelgenerationService;
@@ -727,6 +745,128 @@ public class InsertDataController_2 {
          return arr.toString();
       }
 	  
+		 @RequestMapping(value = { "LedgerReport" })
+		  public ModelAndView LedgerReport(final HttpServletRequest request,RedirectAttributes red) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		        ModelAndView mv = new ModelAndView("LedgerReport");
+		        System.out.println("jhfhfghfjhgk");
+		    	   if(username == null) {
+		    		    return mv = new ModelAndView("index");
+		               }
+			
+			  try { 
+				  final List<FarmerRegModel> farmerList= null;//(List<FarmerRegModel>)this.farmerService.getAll();
+			       mv.addObject("farmerList",(Object)farmerList);
+			  
+			  } catch(Exception e) { 
+				  e.printStackTrace(); 
+				  }
+			 
+			 
+		        return mv;
+		    }
+		 
+		 
+		 @RequestMapping("LedgerReportList")
+		    public ModelAndView LedgerReportList(final HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	 
+		    	   String Crop_Year = request.getParameter("crop_year");
+		    	    String Basis = request.getParameter("basis");
+		    	    Basis = Basis.toUpperCase();
+		    	    String Farmer = request.getParameter("customInput");
+		    	    Farmer=Farmer.split("-")[0];
+		    	    System.err.println(Farmer);
+		    	   ModelAndView mv = new ModelAndView("LedgerReportList");
+			        System.out.println("bbbbbbbbhfgdgh");
+
+		    	   
+		    	 if(username == null)
+		    	 {
+		         	return new ModelAndView("index");
+		          }
+		        try {
+		            final List<LedgerReportDTO> allLedgerReport = (List<LedgerReportDTO>)this.purchasereportService.LedgerReportList( Basis,Crop_Year, Farmer);
+		            System.err.println("allDailyReport===77"+allLedgerReport);
+
+		            if(allLedgerReport ==null)
+		            {
+		                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+		                return new ModelAndView((View)new RedirectView("LedgerReportList.obj"));
+			    	}
+		               mv.addObject("allLedgerReport", (Object)allLedgerReport);
+		               mv.addObject("basis", (Object)Basis);
+		               mv.addObject("customInput", (Object)Farmer);
+		              mv.addObject("crop_year", (Object)Crop_Year);
+		              
+		           System.err.println("mmmmmmmmmmmmmmmmmm");
+		        }
+		        catch (Exception e) {
+		            System.out.println(e.getLocalizedMessage());
+		        }
+		         
+		        return mv;
+		    }
+	  
+		 
+		 @RequestMapping(value = { "LedgerReportDownload" })
+		 public ModelAndView LedgerReportDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpServletResponse response) {
+		     String username = (String) request.getSession().getAttribute("usrname");
+
+		     String Crop_Year = request.getParameter("crop_year");
+		     String Basis = request.getParameter("basis").toUpperCase();
+		     String Farmer = request.getParameter("farmer");
+
+		     ModelAndView mv = new ModelAndView("LedgerReport");
+		     if (username == null) {
+		         return new ModelAndView("index");
+		     }
+
+		     try {
+		         final List<LedgerReportDTO> allLedgerReport = this.purchasereportService.LedgerReportList(Basis, Crop_Year, Farmer);
+		         System.out.println("my list" + allLedgerReport);
+
+		         for (LedgerReportDTO ledgerlist : allLedgerReport) {
+		             ledgerlist.setCropyear(Crop_Year);
+		             ledgerlist.setFarmerRegNo(Farmer);
+		             ledgerlist.setBasis(Basis);
+
+		             // Mask Aadhaar number
+		             String aadharNum = ledgerlist.getAadharNo();
+		             if (aadharNum != null) {
+		                 String aadharNo = "********" + aadharNum.substring(aadharNum.length() - 4);
+		                 ledgerlist.setAadharNo(aadharNo);
+		                 System.err.println(aadharNo);
+		             }
+		         }
+
+		         mv.addObject("allLedgerReport", allLedgerReport);
+
+		         JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\Farmer_LEDGER.jrxml");
+
+		         Map<String, Object> parameters = new HashMap<>();
+		         JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allLedgerReport);
+
+		         JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+		         response.setContentType("application/pdf");
+		         response.setHeader("Content-Disposition", "attachment; filename=Ledger Report.pdf");
+
+		         try (ServletOutputStream out = response.getOutputStream()) {
+		             JRPdfExporter exporter = new JRPdfExporter();
+		             exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+		             exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+		             exporter.exportReport();
+		         } catch (Exception e) {
+		             System.out.println(e.getLocalizedMessage());
+		         }
+
+		     } catch (Exception e) {
+		         System.out.println(e.getLocalizedMessage());
+		     }
+
+		     return mv;
+		 }
+
 	
 	 
 }

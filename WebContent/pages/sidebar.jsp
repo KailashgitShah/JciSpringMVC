@@ -173,6 +173,8 @@ body {
 					  <li  data-pre="26" id="o26"><a href="viewbalePreparationList.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>Bin Wise Packing Register</b></a></li>
 					  <li data-pre="" id=""><a href="balePreparationOverallList.obj"><i
 					  				class="sidebar-item-icon fa fa-th-large"></i><b>All Bale Report</b></a></li>
+					  <li  data-pre="" id=""><a href="LedgerReport.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Ledger Report</b></a></li>		
+
 				  </ul> 
 				</li>
 				
