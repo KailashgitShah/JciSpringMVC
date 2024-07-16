@@ -107,7 +107,7 @@
              regform = images.getF_REG_FORM();
              tallyImage = images.getSlip_image();
              
-			}
+			
 				 
 			  if(farmerno == null)
 			  {
@@ -126,6 +126,23 @@
 		            <label class="center">Tally Slip Image</label>
 		            </div>
 		            </div>
+		            </div>
+		            <div class="col-md-5">
+		            <label></label><br>
+		            <label class="center">Farmer Name</label> = <label class="center"><%=images.getFname()%></label><br>
+		            <label class="center">Farmer Registration No</label> = <label class="center"><%=images.getRegno()%></label><br>
+		            <label class="center">Purchase Date</label> = <label class="center"><%=images.getPurchasedate()%></label><br>
+		            <label class="center">Date of Entry</label> = <label class="center"><%=images.getDateofentry()%></label><br>
+		            <label class="center">Basis</label> = <label class="center"><%=images.getBasis()%></label><br>
+		            <label class="center">Crop Year</label> = <label class="center"><%=images.getCropyear()%></label><br>
+		            <label class="center">Center Name</label> = <label class="center"><%=images.getPlacepurchase()%></label><br>
+		            <label class="center">Rate Slip No</label> = <label class="center"><%=images.getRateslipno()%></label><br>
+		            <label class="center">Jute Variety</label> = <label class="center"><%=images.getJutevarity()%></label><br>
+		            <label class="center">Gross Qty</label> = <label class="center"><%=images.getGrossqty()%></label><br>
+		            <label class="center">Deduction Qty</label> = <label class="center"><%=images.getDedqty()%></label><br>
+		            <label class="center">Net Qty</label> = <label class="center"><%=images.getNetqty()%></label><br>
+		            <label class="center">Amount Payable</label> = <label class="center"><%=images.getAmountpayble()%></label><br>
+		            <label class="center">Garsat Rate</label> = <label class="center"><%=images.getGarsatrate()%></label><br>
 		            </div>
 	            </div>
 	            </div>
@@ -193,6 +210,7 @@
 	            </div>
 	          <%
 			  }
+			}
 	          %>
             
             <!-- END PAGE CONTENT-->

@@ -369,8 +369,9 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 		try {
 
 			List<Object[]> list = new ArrayList();
-			String querystr = "select a.F_DOC_Mandate, a.F_BANK_DOC, a.F_ID_PROF, a.F_REG_FORM, b.slip_image, b.tallyslipno FROM jcirmt a left join jciprocurement b on b.farmerregno = a.F_REG_NO where b.tallyslipno ='"
-					+ tallyNo + "'";
+			String querystr = "select a.F_DOC_Mandate, a.F_BANK_DOC, a.F_ID_PROF, a.F_REG_FORM, b.slip_image, b.tallyslipno,a.F_NAME,b.farmerregno,b.datepurchase,b.dateof_entry,b.basis,b.cropyr,pur.centername,b.rateslipno,b.jutevariety,b.grossquantity,b.deductionquantity,b.netquantity,b.amountpayable,b.grasatrate FROM jcirmt a left join jciprocurement b on b.farmerregno = a.F_REG_NO left join jcipurchasecenter pur on b.placeofpurchase = pur.CENTER_CODE where b.tallyslipno = '"+ tallyNo +"'"; 
+					
+					
 			Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
 			SQLQuery query = session.createSQLQuery(querystr);
@@ -387,7 +388,22 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 					images.setF_REG_FORM((String) rows[3]);
 					images.setSlip_image((String) rows[4]);
 					images.setGettally((String) rows[5]);
+					images.setFname((String) rows[6]);
+					images.setRegno((String) rows[7]);
+					images.setPurchasedate((String) rows[8]);
+					images.setDateofentry((String) rows[9]);
+					images.setBasis((String) rows[10]);
+					images.setCropyear((String) rows[11]);
+					images.setPlacepurchase((String) rows[12]);
+					images.setRateslipno((int) rows[13]);
+					images.setJutevarity((String) rows[14]);
+					images.setGrossqty(((BigDecimal) rows[15]).doubleValue());
+					images.setDedqty(((BigDecimal) rows[16]).doubleValue());
+					images.setNetqty(((BigDecimal) rows[17]).doubleValue());
+					images.setAmountpayble(((BigDecimal) rows[18]).doubleValue());
+					images.setGarsatrate(((BigDecimal) rows[19]).doubleValue());
 					result.add(images);
+                  System.err.println("result+++++++++++"+result);
 				}
 			}
 
