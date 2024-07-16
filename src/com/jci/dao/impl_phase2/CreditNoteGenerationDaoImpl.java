@@ -16,6 +16,7 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.CreditNoteGenerationDao;
 import com.jci.model.CreditNotes;
 import com.jci.model.EntryDerivativePrice;
+import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.settlemetCnDnModel;
 
 @Repository
@@ -245,11 +246,191 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 		return (List<String>) currentSession().createSQLQuery(sql).list();
 	}
 
+
+	
+
+	
+//	@Override
+//	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract) {
+//	    // Define the first SQL query
+//	     String sql = "SELECT DISTINCT a.Credit_note_no, a.Credit_note_amount, a.Credit_note_date, a.ChallanNo, "
+//	               + "c.Consignment_note_text, d.Bill_of_supply_no, c.Date_of_shipment, "
+//	               + "e.DateofInspection, e.Settlement_id_generated, d.Bos_file_path, c.DI_No, "
+//	               + "c.Consignment_note, a.document "
+//	               + "FROM jcicredit_note a "
+//	               + "LEFT JOIN jcicredit_note_settled b ON a.ChallanNo = b.Challan_No "
+//	               + "LEFT JOIN jcidispatch_details c ON c.Challan_no = a.ChallanNo "
+//	               + "LEFT JOIN jcibos_generation d ON d.Challan_No = a.ChallanNo "
+//	               + "LEFT JOIN jciclaimNomination e ON e.Challans = a.ChallanNo "
+//	               + "WHERE b.Challan_No IS NULL "
+//	               + "  AND a.Contract_no = '"+contract+"' "
+//	               + "  AND a.Credit_note_no NOT IN ("
+//	               + "      SELECT Credit_note_no "
+//	               + "      FROM jcisettlement_cndn"
+//	               + "  );";
+//
+//	    
+//	    String sql1 = "SELECT DISTINCT f.Demand_note_no, f.Carrying_cost, f.Demand_note_date, f.DocumentName "
+//                + "FROM jcidemand_note f "
+//                + "WHERE f.Contract_no = '"+contract+"' "
+//                + "  AND f.Demand_note_no NOT IN ("
+//                + "      SELECT Credit_note_no "
+//                + "      FROM jcisettlement_cndn"
+//                + "  );";
+//
+//
+//	    // Execute the first query
+//	    List<Object[]> creditNoteDetails = (List<Object[]>) currentSession().createSQLQuery(sql).list();
+//
+//	    // Execute the second query
+//	    List<Object[]> demandNoteDetails = (List<Object[]>) currentSession().createSQLQuery(sql1).list();
+//
+//	    // Create a list to hold the combined results
+//	    List<Object[]> combinedResults = new ArrayList<>();
+//
+//	    // Add results from the first query
+//	    for (Object[] record : creditNoteDetails) {
+//	        combinedResults.add(record);
+//	    }
+//
+//	    // Add results from the second query
+//	    for (Object[] record : demandNoteDetails) {
+//	        combinedResults.add(record);
+//	    }
+//
+//	    // Return the combined results
+//	    return combinedResults;
+//	}
+//
+//	
+
 	@Override
 	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract) {
-		String sql = "select * from jcicredit_note where Contract_no = '" + contract + "'";
+	    // Define the first SQL query
+	     String sql =  "SELECT DISTINCT a.Credit_note_no, "
+	               + "SUM(a.Credit_note_amount) AS Credit_note_amount, "
+	               + "a.Credit_note_date, "
+	               + "a.ChallanNo, "
+	               + "c.Consignment_note_text, "
+	               + "d.Bill_of_supply_no, "
+	               + "c.Date_of_shipment, "
+	               + "e.DateofInspection, "
+	               + "e.Settlement_id_generated, "
+	               + "d.Bos_file_path, "
+	               + "c.DI_No, "
+	               + "c.Consignment_note, "
+	               + "a.document "
+	               + "FROM jcicredit_note a "
+	               + "LEFT JOIN jcicredit_note_settled b ON a.ChallanNo = b.Challan_No "
+	               + "LEFT JOIN jcidispatch_details c ON c.Challan_no = a.ChallanNo "
+	               + "LEFT JOIN jcibos_generation d ON d.Challan_No = a.ChallanNo "
+	               + "LEFT JOIN jciclaimNomination e ON e.Challans = a.ChallanNo "
+	               + "WHERE b.Challan_No IS NULL "
+	               + "  AND a.Contract_no = '"+contract+"' "
+	               + "  AND a.Credit_note_no NOT IN ("
+	               + "      SELECT Credit_note_no "
+	               + "      FROM jcisettlement_cndn"
+	               + "  ) "
+	               + "GROUP BY a.Credit_note_no, "
+	               + "         a.Credit_note_date, "
+	               + "         a.ChallanNo, "
+	               + "         c.Consignment_note_text, "
+	               + "         d.Bill_of_supply_no, "
+	               + "         c.Date_of_shipment, "
+	               + "         e.DateofInspection, "
+	               + "         e.Settlement_id_generated, "
+	               + "         d.Bos_file_path, "
+	               + "         c.DI_No, "
+	               + "         c.Consignment_note, "
+	               + "         a.document";
 
-		return (List<Object[]>) currentSession().createSQLQuery(sql).list();
+	    
+	    String sql1 = "SELECT f.Demand_note_no, "
+                + "       SUM(f.Carrying_cost) AS Total_Carrying_cost, "
+                + "       f.Demand_note_date, "
+                + "       f.DocumentName "
+                + "FROM jcidemand_note f "
+                + "WHERE f.Contract_no = '"+contract+"' "
+                + "  AND f.Demand_note_no NOT IN ("
+                + "      SELECT Credit_note_no "
+                + "      FROM jcisettlement_cndn "
+                + "  ) "
+                + "GROUP BY f.Demand_note_no, f.Demand_note_date, f.DocumentName";
+
+
+	    // Execute the first query
+	    List<Object[]> creditNoteDetails = (List<Object[]>) currentSession().createSQLQuery(sql).list();
+
+	    // Execute the second query
+	    List<Object[]> demandNoteDetails = (List<Object[]>) currentSession().createSQLQuery(sql1).list();
+
+	    // Create a list to hold the combined results
+	    List<Object[]> combinedResults = new ArrayList<>();
+
+	    // Add results from the first query
+	    for (Object[] record : creditNoteDetails) {
+	        combinedResults.add(record);
+	    }
+
+	    // Add results from the second query
+	    for (Object[] record : demandNoteDetails) {
+	        combinedResults.add(record);
+	    }
+
+	    // Return the combined results
+	    return combinedResults;
 	}
+
+	
+
+
+	@Override
+	public List<settlemetCnDnModel> getAll() {
+	
+		
+		  String sqlQuery = "SELECT Contract_no, Credit_note_no, bosNo, "
+	            + "consigneeNoteText, creditNoteAmount,  dateOfInspection, "
+	            + "dateOfIssue, dateOfShipment, hodi, settlementId , cndnExcel_link, IdentificationCnDn ,AmountDiffCnAndDn FROM jcisettlement_cndn";
+		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+
+		List<settlemetCnDnModel> list = new ArrayList<>();
+
+		for (Object[] result : contracts) {
+			settlemetCnDnModel settlementCnDn = new settlemetCnDnModel();
+			String difference = String.valueOf(result[12]);
+			settlementCnDn.setContractNo((String) result[0]);
+	        settlementCnDn.setCreditNoteNo((String) result[1]);
+	        settlementCnDn.setBosNo((String) result[2]);
+	        settlementCnDn.setConsigneeNoteText((String) result[3]);
+	        settlementCnDn.setCreditNoteAmount((String) result[4]);
+	        settlementCnDn.setDateOfInspection((String) result[5]);
+	        settlementCnDn.setDateOfIssue((String) result[6]);
+	        settlementCnDn.setDateOfShipment((String) result[7]);
+	        settlementCnDn.setHodi((String) result[8]);
+	        settlementCnDn.setSettlementId((String) result[9]);
+	        settlementCnDn.setCndnExcel_link((String) result[10]);
+	        settlementCnDn.setIdentificationCnDn((String)result[11]);
+	        settlementCnDn.setBosDoc(difference);
+			list.add(settlementCnDn);
+
+		}
+
+		return list;
+		
+	
+	}
+
+	@Override
+	public String CountRecord() {
+		
+		
+		String q = "SELECT MAX(RowNumber) AS LastRowNumber FROM jcisettlement_cndn";
+		
+		 String result = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+		  System.err.println(result);
+		    return result;
+		
+	}
+//	
 
 }

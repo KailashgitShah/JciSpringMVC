@@ -31,4 +31,6 @@ public interface CreditNoteGenerationDao {
 	List<String> getMillNames();
 	List<String> getAllContractNos(String millCode);
 	List<Object[]> getFullDetailsOfCrnAndDebit(String contract);
+	public List<settlemetCnDnModel> getAll();
+	public String CountRecord();
 }

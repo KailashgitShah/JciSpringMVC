@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.jci.dao_phase2.GenrationCashDocumentDao;
 
 import com.jci.model.CashDocumentModel;
-
+import com.jci.model.TopsheetDetailsModel;
 import com.jci.service_phase2.GenrationCashDocumentService;
 
 @Service
@@ -48,6 +48,31 @@ public class GenrationCashDocumentServiceImpl implements GenrationCashDocumentSe
 		return genrationCashDocumentDao.fetchMill_Name();
 	}
 
+	@Override
+	public List<Object> contractonmill1(String millname) {
+		
+		return genrationCashDocumentDao.contractonmill1(millname);
+	}
+
+	@Override
+	public void create(TopsheetDetailsModel topSheet ) {
+		genrationCashDocumentDao.create(topSheet  );
+		
+	}
+
+	@Override
+	public String topSheetId() {
+		// TODO Auto-generated method stub
+		return genrationCashDocumentDao.topSheetId();
+	}
+
+	@Override
+	public List<TopsheetDetailsModel> getAlltopsheetdata() {
+		// TODO Auto-generated method stub
+		return genrationCashDocumentDao.getAlltopsheetdata();
+	}
+
+	
 	
 
 }

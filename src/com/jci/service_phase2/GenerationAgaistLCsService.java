@@ -4,6 +4,8 @@ import java.util.List;
 
 
 import com.jci.model.GenerationofDocumentLCsModel;
+import com.jci.model.Jciclaim_NominationModel;
+import com.jci.model.TopsheetDetailsModel;
 
 public interface GenerationAgaistLCsService {
 	public void create(GenerationofDocumentLCsModel generationofDocumentLCsModel);
@@ -17,4 +19,5 @@ public interface GenerationAgaistLCsService {
 	 public List<Object[]> balanceammount(String st);
 	 public List<Object> contractonmill(String millname);
 	  public   String lcno();
+
 }

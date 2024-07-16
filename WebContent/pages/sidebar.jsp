@@ -482,6 +482,9 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Generation demand Note list</b></a></li>
 								<li data-pre="1130" id="o1130"><a href="viewCash_against_Dispatch_document.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>
+								Cash Against Dispatch document</b></a></li>
+								<li data-pre="1130" id="o1130"><a href="viewtopSheet.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Cash Against Dispatch document</b></a></li>
 									<li data-pre="1131" id="o1131"><a href="viewCash_against_LCs.obj"><i
@@ -516,6 +519,9 @@ body {
 
 					<li data-pre="1134" id="o1134"><a href="settlementcndn.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> Settlement
+								Of Credit And Debit Notes</b></a></li>
+								<li data-pre="1134" id="o1134"><a href="viewlistCnAndDn.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View  Settlement
 								Of Credit And Debit Notes</b></a></li>
 
 					<li data-pre="1135" id="o1135"><a

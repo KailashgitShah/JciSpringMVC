@@ -47,7 +47,51 @@ src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js">
 src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- CORE SCRIPTS-->
 
+<style>
+.scrollmenu {
+	overflow: scroll;
+	white-space: nowrap;
+}
 
+.scrollmenu a {
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 14px;
+	text-decoration: none;
+}
+
+.tableFixHead {
+	overflow: auto;
+	height: 100px;
+	width: 240px;
+}
+
+.tableFixHead thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.tableFixHead tbody th {
+	position: sticky;
+	left: 0;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	padding: 8px 16px;
+	white-space: nowrap;
+}
+
+th {
+	background: #eee;
+}
+</style>
 <style>
 .required:after {
       content: " *";
@@ -179,7 +223,8 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 						 <input type="hidden" id="numRows" name="rows">
 						 
 						</div>
-					</div>   
+					</div>  
+					<div class="scrollmenu"> 
                       <div class="row ">
 						      <div class="col-sm-4 form-group">
 						
@@ -203,7 +248,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 		
 						 </div>		
 						 </div>    
-						        		
+						  </div>      		
 					
 					
 					<div class="row">
