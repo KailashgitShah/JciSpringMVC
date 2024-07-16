@@ -389,6 +389,7 @@ public class InsertDataController_2 {
 				  Date dateofexpiry1 = formatter1.parse(dateofexpiry);
 				  paymentinstrument.setDateofexpiry(dateofexpiry1);
 				}
+			//System.out.println();
 			 Date date= new Date();
 			 String currdate = date.toString();
 		     paymentinstrument.setGenerateddate(currdate);
