@@ -157,7 +157,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 		//String sql ="  SELECT  distinct a.Mill_name,b.Contract_No FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
 //		String sql ="  SELECT  distinct a.Mill_name FROM jcicontract AS a LEFT JOIN jciDI_ho AS b ON a.Contract_no = b.Contract_No where b.Contract_No is NOT NULL";
 //		
-		String sql ="  select  distinct s.client_name,s.client_unit_code,z.Contract_no from \r\n"
+		String sql ="  select distinct s.client_name,s.client_unit_code from \r\n"
 				+ "			(SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s \r\n"
 				+ "      INNER join (SELECT a.Contract_No,b.Mill_code from jcicredit_note as a INNER JOIN  jcicontract as b on  b.Contract_no=a.Contract_No ) as z on z.Mill_code=s.client_unit_code \r\n";
 			

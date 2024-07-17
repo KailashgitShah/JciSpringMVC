@@ -35,8 +35,8 @@
   
  <style>
 .required:after {
-	content: " *";
-	color: red;
+       content: " *";
+       color: red;
 }
 #milldetailsTable {
     display: none; 
@@ -45,7 +45,7 @@
     display: none; 
 }
 
- .table-cell {
+.table-cell {
    
     width: 150px;
     height: 20px;
@@ -62,16 +62,16 @@
     height: 25px; /* Adjust the width as needed */
 }
 
- .table3-cell {
+.table3-cell {
    
     width: 80px;
     height: 10px;
     
 }
- .form-check-label {
+.form-check-label {
         display: inline-block;
     }
- 
+
 #childTable {
     width: 100%; /* Ensure the table takes the full width */
     table-layout: fixed; /* Fix the table layout */
@@ -108,7 +108,7 @@
 /* .table3-cell input[type="number"] {
   left: calc(100% + 5px); /* Adjust horizontal position for number input */
 }
- */
+*/
 
 
 
@@ -122,7 +122,7 @@
     
 }
 
- .colored-cell:hover {
+.colored-cell:hover {
     
     color: blue; 
   }
@@ -175,7 +175,7 @@
             String millcode=(String)request.getAttribute("millcode");
             
             String date = (String) request.getAttribute("parsed");
-		%>
+             %>
           <div class="page-content fade-in-up">
                 <div class="row">
                     <div class="col-md-11">
@@ -187,150 +187,150 @@
                                  <div class="row">
                                   
                                        <div class="col-sm-4 form-group">
-												<label>Mill name</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="Mill_name" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="Mill_name" id="Mill_name" value="<%=millName %>"  readonly="readonly" required>
-										</div>
-                                        
+                                                                                <label>Mill name</label> 
+                                                                                 <span class="text-danger">* </span>&nbsp; <span id="Mill_name" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="Mill_name" id="Mill_name" value="<%=millName %>"  readonly="readonly" required>
+                                                                   </div>
+                                       
                                         <div class="col-sm-4 form-group">
-												<label>HO_DINO</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="HO_DINO" id="HO_DINO1"  value="<%=hoDate %>"  readonly="readonly" required>
-										</div>
-										 <div class="col-sm-4 form-group">
-												<label>Di_date</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="diDate1" id="diDate"  value="" readonly="readonly" required>
-										</div>
-										 
+                                                                                <label>HO_DINO</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="HO_DINO" id="HO_DINO1"  value="<%=hoDate %>"  readonly="readonly" required>
+                                                                   </div>
+                                                                   <div class="col-sm-4 form-group">
+                                                                                <label>Di_date</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="diDate1" id="diDate"  value="" readonly="readonly" required>
+                                                                   </div>
+                                                                   
                                      </div>
                                      
                                       <div class="row">
                                       
                                        <div class="col-sm-4 form-group">
-												<label>Challan no</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="challanno2" name="challanno3" class="text-danger"> </span>
-												<input class="form-control" name="challanno1" id="challanno4" value="<%=contractNo %>" readonly="readonly" required>
-										</div>
+                                                                                <label>Challan no</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="challanno2" name="challanno3" class="text-danger"> </span>
+                                                                                <input class="form-control" name="challanno1" id="challanno4" value="<%=contractNo %>" readonly="readonly" required>
+                                                                   </div>
                                        <div class="col-sm-4 form-group">
-												<label>Date of Shipment</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="dateOfShipmentValue1" id="dateOfShipmentValue" value="" readonly="readonly" required>
-										</div>
+                                                                                <label>Date of Shipment</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="dateOfShipmentValue1" id="dateOfShipmentValue" value="" readonly="readonly" required>
+                                                                   </div>
                                        <div class="col-sm-4 form-group">
-												<label>Vehicle no</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="Mill_name" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="vehicleNo1" id="vehicleNo" value="" readonly="readonly" required>
-										</div>
+                                                                                <label>Vehicle no</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="Mill_name" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="vehicleNo1" id="vehicleNo" value="" readonly="readonly" required>
+                                                                   </div>
                                         
                                        
-										 
+                                                                    
                                      </div>
                                      
                                     <!--    <div class="row">
                                          <div class="col-sm-4 form-group">
-												<label>Invoice Qty </label> 
-												<span class="text-danger">* </span>&nbsp; <span id="InvoiceQty" name="InvoiceQty" class="text-danger"> </span>
-												<input class="form-control" name="InvoiceQty" id="InvoiceQty1"  value="" readonly="readonly"required>
-										</div>
+                                                                                <label>Invoice Qty </label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="InvoiceQty" name="InvoiceQty" class="text-danger"> </span>
+                                                                                <input class="form-control" name="InvoiceQty" id="InvoiceQty1"  value="" readonly="readonly"required>
+                                                                   </div>
                                      <div class="col-sm-4 form-group">
-												<label>Actual Qty</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="actualqty1" id="actualqty"  value="" readonly="readonly" required>
-										</div> -->
+                                                                                <label>Actual Qty</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="actualqty1" id="actualqty"  value="" readonly="readonly" required>
+                                                                   </div> -->
                                      
-							
+                                               
                                        
                                   
                                      
                                  <div class="row">
                                 
-	                                       <div class="col-sm-4 form-group">
-										        <label>MR No</label>
-										        <span class="text-danger">*</span>&nbsp;
-										        <span id="MR_N" name="MR_dante" class="text-danger"></span>
-										        <input class="form-control" name="MR_No1" id="MR_No" type="text" maxlength="16"
-										            oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);" pattern="[A-Za-z0-9/-]*"
-										            title="Only alphanumeric characters, slashes, and hyphens are allowed" required>
-										    </div>
-	                                       
-											<div class="col-sm-4 form-group">
-												<label>MR Date</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
-												<input class="form-control" name="MR_Date1" id="MR_Date1" type="date" required>
-										</div>
-										<div class="col-sm-4 form-group">
-												<label>Mill Receipt Qty</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="Mill_receiptQty" name="Mill_receiptQty" class="text-danger"> </span>
-												<input class="form-control" name="Mill_receiptQty1" id="Mill_receiptQty" type="number" required>
-										</div>
+                                              <div class="col-sm-4 form-group">
+                                                                           <label>MR No</label>
+                                                                           <span class="text-danger">*</span>&nbsp;
+                                                                           <span id="MR_N" name="MR_dante" class="text-danger"></span>
+                                                                           <input class="form-control" name="MR_No1" id="MR_No" type="text" maxlength="16"
+                                                                               oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);" pattern="[A-Za-z0-9/-]*"
+                                                                               title="Only alphanumeric characters, slashes, and hyphens are allowed" required>
+                                                                       </div>
+                                              
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>MR Date</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="MR_Date" name="MR_Date" class="text-danger"> </span>
+                                                                                <input class="form-control" name="MR_Date1" id="MR_Date1" type="date" required>
+                                                                   </div>
+                                                                   <div class="col-sm-4 form-group">
+                                                                                <label>Mill Receipt Qty</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="Mill_receiptQty" name="Mill_receiptQty" class="text-danger"> </span>
+                                                                                <input class="form-control" name="Mill_receiptQty1" id="Mill_receiptQty" type="number" required>
+                                                                   </div>
                                  </div>
                                  
                                   <div class="row">
                                 <div class="col-sm-4 form-group">
-												<label>Contractno</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="Contractno3" name="Contractno4" class="text-danger"> </span>
-												<input class="form-control" name="Contractno" id="Contractno12"  value="" required>
-										</div>
+                                                                                <label>Contractno</label> 
+                                                                                <span class="text-danger">* </span>&nbsp; <span id="Contractno3" name="Contractno4" class="text-danger"> </span>
+                                                                                <input class="form-control" name="Contractno" id="Contractno12"  value="" required>
+                                                                   </div>
                                  </div>
-								
-								
-						
-								  <div class="table-container">
-								  <table id="childTable1" name="chilnametable1" class="table table-bordered">
-											    <thead class="thead-light">
-											        <tr>
-											           
-											             <th>Bale Mark</th>
-											              <th>Jute_variety</th>
-											              <th>Jute_grade</th>
-											              <th>Crop_year</th>
-											              <th>Invoice qty</th>
-											              
-											              <th> Actual Qty</th>
-											               <th> No of Bales</th>
-											             <!--  <th>claim </th>
-											              <th>Claim Type </th>
-											              <th> </th> -->
-											              <th>Quality Claim Percentage</th>
-											             <!--  <th>Quality Claim Value</th> -->
-											               <th> Moisture Content</th>
-											           <!--   <th> Moisture Value</th> -->
-											              <th> Ncv percent</th>
-											              <th> Ncv Qty</th>
-											            <!--   <th> Ncv Value</th> -->
-											               <th>Dust percent </th>
-											              <th> Dust Qty</th>
-											           <!--    <th> Dust Value</th> -->
-											             <th> </th>
-											              <th> Claim Ammount</th>
-											            <!--  <th>
-													        <div class="form-check">
-													            
-													           
-													           <label class="form-check-label" for="checkNcvPercentage" >Ncv percent &nbsp; &nbsp;&nbsp; <input class="form-check-input" type="checkbox"  id="checkNcvPercentage"></label>
-													        </div>
-													      </th>
-													      <th>
-													        <div class="form-check">
-													         
-													           
-													            <label class="form-check-label" for="checkNcvQty">Ncv Qty &nbsp; &nbsp;&nbsp; <input class="form-check-input" type="checkbox"   id="checkNcvQty"></label>
-													        </div>
-													      </th> -->
-											             
-											            
-											             
-											             
-											           
-											        </tr>
-											    </thead>
-											    <tbody>
-											        <!-- Data rows will be dynamically added here -->
-											    </tbody>
-											</table>
-											</div>
-											
+                                                     
+                                                     
+                                        
+                                                       <div class="table-container">
+                                                       <table id="childTable1" name="chilnametable1" class="table table-bordered">
+                                                                             <thead class="thead-light">
+                                                                                 <tr>
+                                                                                    
+                                                                                      <th>Bale Mark</th>
+                                                                                       <th>Jute_variety</th>
+                                                                                       <th>Jute_grade</th>
+                                                                                       <th>Crop_year</th>
+                                                                                       <th>Invoice qty</th>
+                                                                                       
+                                                                                       <th> Actual Qty</th>
+                                                                                        <th> No of Bales</th>
+                                                                                      <!--  <th>claim </th>
+                                                                                       <th>Claim Type </th>
+                                                                                       <th> </th> -->
+                                                                                       <th>Quality Claim Percentage</th>
+                                                                                      <!--  <th>Quality Claim Value</th> -->
+                                                                                        <th> Moisture Content</th>
+                                                                                    <!--   <th> Moisture Value</th> -->
+                                                                                       <th> Ncv percent</th>
+                                                                                       <th> Ncv Qty</th>
+                                                                                     <!--   <th> Ncv Value</th> -->
+                                                                                        <th>Dust percent </th>
+                                                                                       <th> Dust Qty</th>
+                                                                                    <!--    <th> Dust Value</th> -->
+                                                                                      <th> </th>
+                                                                                       <th> Claim Ammount</th>
+                                                                                     <!--  <th>
+                                                                                              <div class="form-check">
+                                                                                                  
+                                                                                                 
+                                                                                                 <label class="form-check-label" for="checkNcvPercentage" >Ncv percent &nbsp; &nbsp;&nbsp; <input class="form-check-input" type="checkbox"  id="checkNcvPercentage"></label>
+                                                                                              </div>
+                                                                                            </th>
+                                                                                            <th>
+                                                                                              <div class="form-check">
+                                                                                               
+                                                                                                 
+                                                                                                  <label class="form-check-label" for="checkNcvQty">Ncv Qty &nbsp; &nbsp;&nbsp; <input class="form-check-input" type="checkbox"   id="checkNcvQty"></label>
+                                                                                              </div>
+                                                                                            </th> -->
+                                                                                      
+                                                                                     
+                                                                                      
+                                                                                      
+                                                                                    
+                                                                                 </tr>
+                                                                             </thead>
+                                                                             <tbody>
+                                                                                 <!-- Data rows will be dynamically added here -->
+                                                                             </tbody>
+                                                                          </table>
+                                                                          </div>
+                                                                         
                                    
                              
                            
@@ -338,36 +338,36 @@
                                              
                                     <div class="row">
                                     <div class="col-sm-2 form-group" style="display: none;">
-												    <label "display:none;">MIllCode</label> <span
-													class="text-danger">* </span>&nbsp;  <input
-													type="hidden" class="form-control" name="millcode"
-													id="millcode1" value="" readonly="readonly">
-											</div>
-											  <div class="col-sm-2 form-group"  style= "display:none;">
-												    <label "display:none;">firstloop</label> <span
-													class="text-danger">* </span>&nbsp;  <input
-													 class="form-control" name="firstloop"
-													id="firstloop1" value="" readonly="readonly">
-											</div>
-										 <div class="col-sm-2 form-group" style= "display:none;" >
-												    <label  "display:none;" >rowindex </label> <span
-													class="text-danger">* </span>&nbsp;  <input
-													class="form-control" name="rowindex2"
-													id="rowindex2" value="" readonly="readonly">
-											</div>
-	                                      
-												
-	                                </div>  
-	                                
-	                              
+                                                                                    <label "display:none;">MIllCode</label> <span
+                                                                                      class="text-danger">* </span>&nbsp;  <input
+                                                                                      type="hidden" class="form-control" name="millcode"
+                                                                                      id="millcode1" value="" readonly="readonly">
+                                                                          </div>
+                                                                           <div class="col-sm-2 form-group"  style= "display:none;">
+                                                                                    <label "display:none;">firstloop</label> <span
+                                                                                       class="text-danger">* </span>&nbsp;  <input
+                                                                                      class="form-control" name="firstloop"
+                                                                                      id="firstloop1" value="" readonly="readonly">
+                                                                          </div>
+                                                                   <div class="col-sm-2 form-group" style= "display:none;" >
+                                                                                    <label  "display:none;" >rowindex </label> <span
+                                                                                      class="text-danger">* </span>&nbsp;  <input
+                                                                                      class="form-control" name="rowindex2"
+                                                                                      id="rowindex2" value="" readonly="readonly">
+                                                                          </div>
+                                             
+                                                                                
+                                       </div>  
+                                       
+                                     
                                     <div class="row">
-                                      	 
-                                    	
+                                       
+                                       
                                                 <div class="col-sm-12 form-group">
-									             <input type="submit" value="Submit"class="btn btn-primary" id="submit">
-									            <!--  <input type="button" value="Back" class="btn btn-primary" id="backButton">
-												 -->	
-										   </div>
+                                                                         <input type="submit" value="Submit"class="btn btn-primary" id="submit">
+                                                                        <!--  <input type="button" value="Back" class="btn btn-primary" id="backButton">
+                                                                                -->   
+                                                                      </div>
                                 </form>
                             </div>
                         </div>
@@ -386,43 +386,43 @@
  
      <script type="text/javascript">
     
-	$(document).ready(function(){
-		 $("#submit").click(function(){
-		
-			  var contractdate = $("#Date_of_Shipment134").val();
-			  var instdate = $("#HO_Date1").val();
-			  var instdate1 = $("#MR_Date1").val();
-			 
-			  
-			  if(contractdate =="" || instdate =="" || instdate1 =="")
-				  {
-				    alert("Please select mandatory Fields!");
-				  }  
-		    });
-	 });
-	
-	const dateInput = document.getElementById("Date_of_Shipment");
+       $(document).ready(function(){
+             $("#submit").click(function(){
+             
+                      var contractdate = $("#Date_of_Shipment134").val();
+                      var instdate = $("#HO_Date1").val();
+                      var instdate1 = $("#MR_Date1").val();
+                    
+                      
+                      if(contractdate =="" || instdate =="" || instdate1 =="")
+                             {
+                               alert("Please select mandatory Fields!");
+                             }  
+                 });
+       });
+       
+       const dateInput = document.getElementById("Date_of_Shipment");
         dateInput.addEventListener("change", function() {
-	    const selectedDate = this.value;
-	    const dateParts = selectedDate.split("-");
-	    const formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+           const selectedDate = this.value;
+           const dateParts = selectedDate.split("-");
+           const formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
         document.getElementById("Date_of_Shipment").textContent = formattedDate;
-	});
+       });
   </script>
     
   <script>
         function validateInstrumentNo(input) {
-        	  var pattern = /^[A-Za-z0-9/-]*$/; // Pattern to allow alphanumeric characters, slashes, and hyphens
-        	    var inputValue = input.value; // Get the input value
+               var pattern = /^[A-Za-z0-9/-]*$/; // Pattern to allow alphanumeric characters, slashes, and hyphens
+                 var inputValue = input.value; // Get the input value
 
-        	    if (!pattern.test(inputValue)) {
-        	        input.setCustomValidity("Only alphanumeric characters, slashes (/), and hyphens (-) are allowed.");
-        	        document.getElementById("MR_N").textContent = "Only alphanumeric characters, slashes, and hyphens are allowed"; 
-        	        input.value = inputValue.slice(0, -1);// Display error message near the input
-        	    } else {
-        	        input.setCustomValidity("");
-        	        document.getElementById("MR_N").textContent = ""; // Clear error message if input is valid
-        	    } // Update input value to uppercase
+                 if (!pattern.test(inputValue)) {
+                    input.setCustomValidity("Only alphanumeric characters, slashes (/), and hyphens (-) are allowed.");
+                     document.getElementById("MR_N").textContent = "Only alphanumeric characters, slashes, and hyphens are allowed"; 
+                     input.value = inputValue.slice(0, -1);// Display error message near the input
+                 } else {
+                     input.setCustomValidity("");
+                     document.getElementById("MR_N").textContent = ""; // Clear error message if input is valid
+                 } // Update input value to uppercase
         }
     </script>
     
@@ -432,22 +432,22 @@
     const qualityClaimSelect = $('#Quality_Claim');
     checkbox.change(function() {
       if (checkbox.is(':checked')) {
-        qualityClaimSelect.prop('disabled', false);
+        qualityClaimSelect.prop('readonly', false);
       } else {
-        qualityClaimSelect.prop('disabled', true);
+        qualityClaimSelect.prop('readonly', true);
       }
     });
   });
- </script>
+</script>
   -->
 
- <script>
- $(document).ready(function() {
-	    // Use event delegation for dynamically added buttons
-	    $(document).on('click', '#backButton', function() {
-	        window.history.back();
-	    });
-	});
+<script>
+$(document).ready(function() {
+           // Use event delegation for dynamically added buttons
+           $(document).on('click', '#backButton', function() {
+               window.history.back();
+           });
+       });
 
 </script>
 
@@ -459,7 +459,7 @@
         var currentDate = new Date();
         var currentDateString = currentDate.toISOString().split('T')[0];
         instDateInput.setAttribute('max', currentDateString);
- 
+
     });
 </script> 
 
@@ -481,14 +481,14 @@ var numberOfElements = 10;
 
 
 for (var i = 0; i < numberOfElements; i++) {
- some.push(0.00);
+some.push(0.00);
 }
 
 
 
 
 for (var i = 0; i < numberOfElements; i++) {
-	claimAmount.push(0.00);
+       claimAmount.push(0.00);
 }
 
 $(document).ready(function() {
@@ -549,7 +549,7 @@ $(document).ready(function() {
                         "jutevariety": jutevariety,
                     },
                     success: function(data) {
-                    	alert(data);
+                          alert(data);
                     
                          var dataArray = JSON.parse(data);
                          if (dataArray.length > 0) {
@@ -557,21 +557,21 @@ $(document).ready(function() {
                           
                              resultsArray = dataArray[0].slice(0); // Copy the elements from dataArray[0] to resultsArray
                             
-                			
-                			grade1=resultsArray[0]; 
-                		
-                			grade2=resultsArray[1];
-                			
-                			grade3=resultsArray[2]; 
-                		
-                			grade4=resultsArray[3];
-                			
-                			grade5=resultsArray[4];
-                		
-                			grade6=resultsArray[5];
-                		
-                			
-                        	 loadMillChildBasedData(contractNo,grade1,grade2,grade3,grade4,grade5,grade6);
+                                 
+                                 grade1=resultsArray[0]; 
+                          
+                                 grade2=resultsArray[1];
+                                 
+                                 grade3=resultsArray[2]; 
+                          
+                                 grade4=resultsArray[3];
+                                 
+                                 grade5=resultsArray[4];
+                          
+                                 grade6=resultsArray[5];
+                         
+                                 
+                           loadMillChildBasedData(contractNo,grade1,grade2,grade3,grade4,grade5,grade6);
                         }
                         
                         
@@ -626,7 +626,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '</td>' +
 
 
- 
+
 
                     '<td>' +
                     '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> ' + row[2] + '</div>' +
@@ -711,6 +711,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table3-cell">' +
                     '<label for="NCVamt_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkNcvPercentage' + index + '">' +
+                 
                     '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
@@ -719,6 +720,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table3-cell">' +
                     '<label for="ncvdust_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkNcvQty' + index + '">' +
+                     
                     '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
@@ -735,6 +737,7 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<div class="table3-cell">' +
                     '<label for="DustAMt_' + index + '"></label>' +
                     '<input class="form-check-input" type="checkbox" id="checkDustAMt_Percentage' + index + '">' +
+                    
                     '<input type="number" id="DustAMt_' + index + '" name="DustAMt_[]" min="0" max="10" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
@@ -742,8 +745,9 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                     '<td>' +
                     '<div class="table3-cell">' +
                     '<label for="DustQty_' + index + '"></label>' +
-                    '<input class="form-check-input" type="checkbox" id="checkDustQty_' + index + '">' +
-                    '<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" >' +
+                     '<input class="form-check-input" type="checkbox" id="checkDustQty_' + index + '">' +
+                     
+                     '<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" >' +
                     '</div>' +
                     '</td>' +
                     
@@ -771,17 +775,17 @@ function loadMillChildBasedData(contractNo,resultsArray) {
                    
 
            
-               	
+                    
                   
                 
 
                 $('#childTable1 tbody').append(rowHtml); // Append rowHtml to your table or container
                 
                 
-                $('#NCVamt_' + index).prop('disabled', true).val('0');
-                $('#ncvdust_' + index).prop('disabled', true).val('0');
-                $('#DustAMt_' + index).prop('disabled', true).val('0');
-                $('#DustQty_' + index).prop('disabled', true).val('0');
+                $('#NCVamt_' + index).prop('readonly', true).val('0');
+                $('#ncvdust_' + index).prop('readonly', true).val('0');
+                $('#DustAMt_' + index).prop('readonly', true).val('0');
+                $('#DustQty_' + index).prop('readonly', true).val('0');
                 
                 index++;
                 document.getElementById("rowindex2").value = index;
@@ -831,7 +835,7 @@ function handleNominationChange(selectElement, intValue, actualvalue1) {
 
 $(document).ready(function() {
     // Initial disabling of input fields
-   $('input[name="NCVamt[]"], input[name="ncvdust[]"], input[name="DustAMt_[]"], input[name="DustQty_[]"]').prop('disabled', true).val('0');
+   $('input[name="NCVamt[]"], input[name="ncvdust[]"], input[name="DustAMt_[]"], input[name="DustQty_[]"]').prop('readonly', true).val('0');
 // Event handler for Ncv percentage checkbox
    $(document).on('change', 'input[id^="checkNcvPercentage"]', function() {
        var checkbox = $(this);
@@ -842,7 +846,7 @@ $(document).ready(function() {
        checkcondition = 1; 
        toggleInputFields(checkbox, inputFields, index);
        if (checkbox.is(':checked')) {
-    	     tableRow.find('input[id="ncvdust_' + index + '"]').val('0');
+            tableRow.find('input[id="ncvdust_' + index + '"]').val('0');
        }
   
    });
@@ -857,7 +861,7 @@ $(document).ready(function() {
        checkcondition = 1; 
        toggleInputFields1(checkbox, inputFields, index);
        if (checkbox.is(':checked')) {
-    	   tableRow.find('input[id="DustQty_' + index + '"]').val('0');
+          tableRow.find('input[id="DustQty_' + index + '"]').val('0');
        }
        
    });
@@ -872,7 +876,7 @@ $(document).ready(function() {
        checkcondition = 2; 
        toggleInputFields(checkbox, inputFields, index);
        if (checkbox.is(':checked')) {
-    	   tableRow.find('input[id="NCVamt_' + index + '"]').val('0');
+          tableRow.find('input[id="NCVamt_' + index + '"]').val('0');
        }
      
    });
@@ -886,7 +890,7 @@ $(document).ready(function() {
        checkcondition = 2; 
        toggleInputFields1(checkbox, inputFields, index);
        if (checkbox.is(':checked')) {
-    	   tableRow.find('input[id="DustAMt_' + index + '"]').val('0');
+          tableRow.find('input[id="DustAMt_' + index + '"]').val('0');
        }
       
    });
@@ -898,20 +902,20 @@ $(document).ready(function() {
     
     
 function toggleInputFields(checkbox, inputFields, index) {
-    inputFields.prop('disabled', !checkbox.is(':checked'));
+    inputFields.prop('readonly', !checkbox.is(':checked'));
 
     if (checkbox.attr('id').startsWith('checkNcvPercentage')) {
-        checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[id="ncvdust_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[id^="checkNcvQty_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').prop('readonly', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id="ncvdust_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('readonly', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkNcvQty_' + index + '"]').prop('readonly', checkbox.is(':checked'));
         // $('input[name="ncvdust[]"]').val('0'); // Commented out as it might not be necessary
         if (!checkbox.is(':checked')) {
             checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').val('');
         }
     } else if (checkbox.attr('id').startsWith('checkNcvQty')) {
-        checkbox.closest('tr').find('input[id="ncvdust_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[id^="checkNcvPercentage_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id="ncvdust_' + index + '"]').prop('readonly', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id="NCVamt_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('readonly', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkNcvPercentage_' + index + '"]').prop('readonly', checkbox.is(':checked'));
         // $('input[name="NCVamt[]"]').val('0'); // Commented out as it might not be necessary
         if (!checkbox.is(':checked')) {
             checkbox.closest('tr').find('input[name="ncvdust_' + index + '"]').val('');
@@ -922,20 +926,20 @@ function toggleInputFields(checkbox, inputFields, index) {
 }
 
 function toggleInputFields1(checkbox, inputFields, index) {
-    inputFields.prop('disabled', !checkbox.is(':checked'));
+    inputFields.prop('readonly', !checkbox.is(':checked'));
 
     if (checkbox.attr('id').startsWith('checkDustAMt_Percentage')) {
-        checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[id^="checkDustQty_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').prop('readonly', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('readonly', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkDustQty_' + index + '"]').prop('readonly', checkbox.is(':checked'));
         // $('input[name="DustQty_[]"]').val('0'); // Commented out as it might not be necessary
         if (!checkbox.is(':checked')) {
             checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').val('');
         }
     } else if (checkbox.attr('id').startsWith('checkDustQty_')) {
-        checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').prop('disabled', !checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('disabled', checkbox.is(':checked'));
-        checkbox.closest('tr').find('input[id^="checkDustAMt_Percentage_' + index + '"]').prop('disabled', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').prop('readonly', !checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[name="DustAMt_' + index + '"]').prop('checked', checkbox.is(':checked')).prop('readonly', checkbox.is(':checked'));
+        checkbox.closest('tr').find('input[id^="checkDustAMt_Percentage_' + index + '"]').prop('readonly', checkbox.is(':checked'));
         // $('input[name="DustAMt_[]"]').val('0'); // Commented out as it might not be necessary
         if (!checkbox.is(':checked')) {
             checkbox.closest('tr').find('input[name="DustQty_' + index + '"]').val('');
@@ -955,7 +959,7 @@ $('#childTable1').show();
 <script>
 
 
- 
+
  
 function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, DustAmtId, NCVQty, DUSTQty, actualvalue, intvalue, index) {
     // Retrieve the actual input values using the IDs
@@ -966,7 +970,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     var NCVQty = document.getElementById(NCVQty).value;
     var DUSTQty = document.getElementById(DUSTQty).value;
     var DustAmt = document.getElementById(DustAmtId).value;
- 
+
 
     let gradeprice = resultsArray[intvalue - 1];
     let gradeprice1 = gradeprice;
@@ -993,7 +997,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     let qty4 = parseFloat(NCVQty);
     let valueinprice3 = (gradeprice * qty4).toFixed(2);
     let ncvqty = parseFloat(valueinprice3);
- 
+
     
     let qty5 =  parseFloat(DUSTQty);
     let valueinprice4 = (gradeprice * qty5).toFixed(2);
@@ -1017,7 +1021,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
 
     let qs = integerResult;
     let rem = parseFloat(Qualitypercentage) % 100;
- 
+
 
 
     let gradeprice6 = resultsArray[intvalue - 1];
@@ -1043,7 +1047,7 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
         console.log('qs is 0, valueinprice:', valueinprice);
 
     } else if (qs > 1 && qs < 2 || qs == 1) {
-        rem = parseFloat(Qualitypercentage) % 100;
+       rem = parseFloat(Qualitypercentage) % 100;
         if (rem === 0) {
             intvalue++;
             gradeprice = resultsArray[intvalue - 1];
@@ -1137,15 +1141,15 @@ function calculateQtyfrompercent(QualitypercentageId, NominationId, NCVamtId, Du
     // Update the value of the input field
     document.getElementById('claimAmmount' + index).value = totalvalue.toFixed(2);
 }
-	
+       
 
     </script>
 
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	
+       
+       
 });
 </script>
 
@@ -1157,7 +1161,7 @@ $(document).ready(function() {
     var selectedOption = $(this).val();
     
     if (selectedOption === "Dust_NCV") {
- 
+
         $('#NCV_Qty34, #NCV_Percent, #NCV_Percentage1, #NCV_Qty12').show();
         $('#Moisture_Content, #Moisture_Cont').hide();
       }
@@ -1185,7 +1189,7 @@ $(document).ready(function() {
 
 
 
-		   
+                
     
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
@@ -1201,3 +1205,4 @@ $(document).ready(function() {
     <!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>
+
