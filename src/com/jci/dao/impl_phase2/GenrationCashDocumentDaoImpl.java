@@ -54,7 +54,7 @@ public class GenrationCashDocumentDaoImpl implements GenrationCashDocumentDao {
 	}
 
 	@Override
-	public List<Object[]> fetchMill_Name() {
+	public List<Object> fetchMill_Name() {
 		String sql ="   SELECT DISTINCT s.client_name, s.client_unit_code\r\n"
 				+ "FROM (\r\n"
 				+ "    SELECT d.client_name, c.client_unit_code\r\n"
@@ -63,7 +63,7 @@ public class GenrationCashDocumentDaoImpl implements GenrationCashDocumentDao {
 				+ ") AS s\r\n"
 				+ "INNER join  jcibos_generation as b on b.millcode=s.client_unit_code ";
 			
-		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		 List<Object>resultList1= (List<Object>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		 return resultList1;
 	}
 	@Override

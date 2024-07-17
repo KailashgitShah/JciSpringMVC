@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.jci.model.ClaimSettlementReport;
 import com.jci.model.EntryPaymentDetailsModel;
-import com.jci.model.FarmerRegModel;
 import com.jci.model.Jciclaim_NominationModel;
 import com.jci.model.UserRegistrationModel;
 

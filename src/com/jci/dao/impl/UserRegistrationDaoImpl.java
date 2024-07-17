@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao.UserRegistrationDao;
-import com.jci.model.ConcurrentLoginModel;
 import com.jci.model.UserRegistrationModel;
 
 @Transactional

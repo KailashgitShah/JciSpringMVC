@@ -24,6 +24,7 @@ public interface generationOfCashAgainstDispatchDocument{
 	  public String listbalanceAmount(String contractno);
 	  public List<TopsheetDetailsModel>getAlldetails(String topSheetIdGenerated);
 	  public Date  getInstrumentDate(String ContractNo);
+	public List<Object[]> fetchMill_Name();
 	
 	
 }

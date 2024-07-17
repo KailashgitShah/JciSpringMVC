@@ -14,7 +14,7 @@ public interface GenrationCashDocumentService {
 	 public List<CashDocumentModel>getAll();
 	public String fetchBos_No();
 	public List<Object> Non_lc(String St);
-	 public List<Object[]> fetchMill_Name();
+	 public List<Object> fetchMill_Name();
 	 public List<Object> contractonmill1(String millname);
 	 public void create(TopsheetDetailsModel topSheet );
 	  public   String topSheetId();

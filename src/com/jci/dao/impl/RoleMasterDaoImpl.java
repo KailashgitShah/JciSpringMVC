@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao.RoleMasterDao;
-import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.RoleMasterModel;
 
 @Transactional
@@ -39,13 +38,6 @@ public class RoleMasterDaoImpl implements RoleMasterDao{
 		return find(id);
 	}
 
-	@Override
-	public void delete(int id) {
-		FarmerRegistrationModel farmerRegistrationModel = new FarmerRegistrationModel();
-		String hql = "Delete from dbo.bna where id = '"+id+"' " ;
-		this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-
-	}
 
 	@Override
 	public RoleMasterModel find(int id) {
@@ -64,5 +56,7 @@ public class RoleMasterDaoImpl implements RoleMasterDao{
 		this.sessionFactory.getCurrentSession().save(roleMaster);
 		return false;
 	}
+
+	
 
 }

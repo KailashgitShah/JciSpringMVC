@@ -31,7 +31,6 @@ import com.jci.dao_phase2.FinancialConcurenceDao;
 import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.FinancialConcurenceDto;
 import com.jci.model.FinancialConcurenceModel;
-import com.jci.model.VerifyTallySlip;
 
 @Repository
 @Transactional

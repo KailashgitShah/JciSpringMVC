@@ -25,7 +25,6 @@ import com.jci.dao_phase2.NominalOfficialDao;
 import com.jci.model.ClaimSettlementReport;
 import com.jci.model.Contractgeneration;
 import com.jci.model.EntryPaymentDetailsModel;
-import com.jci.model.FarmerRegModel;
 import com.jci.model.JciDIHoModel;
 import com.jci.model.JciEntryTdsModel;
 import com.jci.model.Jciclaim_NominationModel;

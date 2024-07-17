@@ -32,11 +32,6 @@ public class RoleMasterServiceImpl implements RoleMasterService {
 	}
 
 	@Override
-	public void delete(int id) {
-		roleDao.delete(id);
-	}
-
-	@Override
 	public RoleMasterModel find(int id) {
 		return roleDao.find(id);
 	}

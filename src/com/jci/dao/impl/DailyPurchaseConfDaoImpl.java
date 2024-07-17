@@ -3,8 +3,6 @@ package com.jci.dao.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao.DailyPurchaseConfDao;
 import com.jci.model.DailyPurchaseConfModel;
-import com.jci.model.JbaModel;
-import com.jci.model.RawJuteProcurementAndPayment;
+
 
 @Transactional
 @Repository

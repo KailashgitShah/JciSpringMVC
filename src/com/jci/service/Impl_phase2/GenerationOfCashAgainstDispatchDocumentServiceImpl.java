@@ -104,5 +104,10 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 		return generationOfCashAgainstDispatchDocumentdao.getInstrumentDate( ContractNo);
 	}
 
+	@Override
+	public List<Object[]> fetchMill_Name() {
+		return generationOfCashAgainstDispatchDocumentdao.fetchMill_Name();
+	}
+
 
 }

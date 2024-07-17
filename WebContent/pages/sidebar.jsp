@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<%@page import="com.jci.controller.InsertDataController"%>
-
 <html lang="en">
 <head>
 <script src="./assets/vendors/jquery/dist/jquery.min.js"
@@ -70,11 +68,11 @@ body {
 		</div>
 
 		<ul class="side-menu metismenu">
-			<li><a href="dashboard.obj"><i
+		<!-- 	<li><a href="dashboard.obj"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">Dashboard</span> </a></li>
+					class="nav-label">Dashboard</span> </a></li> -->
 
-			<li><a href="javascript:void(0);"><i
+			<!-- <li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label"> &nbsp;Privileges</span> <i
 					class="fa fa-angle-left arrow"></i></a>
@@ -89,11 +87,11 @@ body {
 						href="userprivilige.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Add
 								Privileges</b></a></li>
-					<!-- <li class="nav-label" data-pre="4" id="o4"><a href="viewuserrole.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Role</b></a></li>
-					 -->
-				</ul></li>
+					<li class="nav-label" data-pre="4" id="o4"><a href="viewuserrole.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Role</b></a></li>
+					
+				</ul></li> -->
 
-			<li><a href="javascript:void(0);;"><i
+			<!-- <li><a href="javascript:void(0);;"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label"> &nbsp;User Management</span><i
 					class="fa fa-angle-left arrow"></i></a>
@@ -120,7 +118,7 @@ body {
 					class="nav-label"> &nbsp;Farmer Registration</span><i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level">
-					<!-- <li  data-pre="7" id="o7"><a  href="FarmerRegistration.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Registration</b></a></li> -->
+					<li  data-pre="7" id="o7"><a  href="FarmerRegistration.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Registration</b></a></li>
 					<li data-pre="8" id="o8"><a href="ViewFarmerRegistration.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Farmer
 								List Reg</b></a></li>
@@ -131,7 +129,7 @@ body {
 					class="nav-label"> &nbsp;Market Arrival</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-					<!-- 					<li  data-pre="9" id="o9"><a href="rulingMarketForm.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Ruling Market Rate at DPC</b></a></li> -->
+										<li  data-pre="9" id="o9"><a href="rulingMarketForm.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Ruling Market Rate at DPC</b></a></li>
 					<li data-pre="10" id="o10"><a href="viewmarketArrival.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Ruling
 								Market List</b></a></li>
@@ -153,8 +151,8 @@ body {
 						href="commercialPriceCalculation.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Commercial
 								Ceiling Price Intimation </b></a></li>
-					<!-- 					<li data-pre="15" id="o15"><a href="rawJutePaymentAndProcurement.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Raw Jute Procurement & Payment</b></a></li>	 -->
-					<!-- 					<li data-pre="16" id="o16"><a href="dailyPurchaseConf.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase Confirmation</b></a></li> -->
+										<li data-pre="15" id="o15"><a href="rawJutePaymentAndProcurement.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Raw Jute Procurement & Payment</b></a></li>	
+										<li data-pre="16" id="o16"><a href="dailyPurchaseConf.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase Confirmation</b></a></li>
 					<li data-pre="17" id="o15"><a
 						href="Distributionoftallyslips.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Distribution
@@ -215,7 +213,7 @@ body {
 					<li data-pre="26" id="o26"><a href="viewbalePreparation.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale
 								Preparation</b></a></li>
-					<!-- 					<li  data-pre="27" id="o27"><a href="addRopeMaking.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Rope Making</b></a></li> -->
+										<li  data-pre="27" id="o27"><a href="addRopeMaking.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Rope Making</b></a></li>
 					<li data-pre="28" id="o28"><a href="ropeMakingListing.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View Rope
 								Making</b></a></li>
@@ -241,7 +239,7 @@ body {
 					<li data-pre="33" id="o33"><a href="BinListfromDb.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>BIN Gain List</b></a></li>
 
-				</ul></li>
+				</ul></li> -->
 
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span

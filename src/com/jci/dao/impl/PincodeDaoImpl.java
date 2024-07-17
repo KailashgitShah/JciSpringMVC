@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jci.dao.PincodeDao;
-import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.PincodeModel;
 
 @Transactional
@@ -41,14 +40,6 @@ public class PincodeDaoImpl implements PincodeDao {
 	}
 
 	@Override
-	public void delete(int id) {
-		FarmerRegistrationModel farmerRegistrationModel = new FarmerRegistrationModel();
-		String hql = "Delete from dbo.bna where id = '"+id+"' " ;
-		this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
-
-	}
-
-	@Override
 	public PincodeModel find(int id) {
 		return (PincodeModel) currentSession().get(PincodeModel.class, id);
 	}
@@ -64,6 +55,12 @@ public class PincodeDaoImpl implements PincodeDao {
 	public boolean submitform(PincodeModel pincode) {
 		this.sessionFactory.getCurrentSession().save(pincode);
 		return false;
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

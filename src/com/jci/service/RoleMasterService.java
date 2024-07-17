@@ -9,7 +9,6 @@ public interface RoleMasterService {
 	public void create(RoleMasterModel role);
 	public void update(RoleMasterModel role);
 	public RoleMasterModel edit(int id);
-	public void delete(int id);
 	public RoleMasterModel find(int id);
 	public List <RoleMasterModel> getAll();
 	public boolean submitform(RoleMasterModel role);
