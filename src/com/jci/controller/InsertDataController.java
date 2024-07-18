@@ -4523,7 +4523,6 @@ System.out.println();
          List<VerifyTallySlip> verifyList = (List<VerifyTallySlip>)this.verifyTallySlipService.getAll("RMD",region, role_type);
         mv.addObject("verifyTallySliList", (Object)verifyList);
         Integer userRole= (Integer)request.getSession().getAttribute("roleId");
-   		//System.out.println("userRole=="+userRole);
    		  }
         catch (Exception e)
 		{
@@ -4671,6 +4670,8 @@ System.out.println();
         //System.out.println(request.getParameter("cropyr") +"   "+request.getParameter("dpcid"));
         final List<String> result = (List<String>)this.ropeMakingService.findBinno(request.getParameter("cropyr"), request.getParameter("dpcid"));
         return gson.toJson((Object)result);
+        
+        
     }
     
     @RequestMapping(value = { "verificationTallyslip2" }, method = { RequestMethod.GET })

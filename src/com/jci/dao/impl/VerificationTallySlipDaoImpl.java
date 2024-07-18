@@ -365,11 +365,11 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	public List<ImageVerificationModel> getImages(String tallyNo) {
 		// TODO Auto-generated method stub
 		List<ImageVerificationModel> result = new ArrayList<>();
-
+		  String region =(String)request.getSession().getAttribute("regionId"); 
 		try {
 
 			List<Object[]> list = new ArrayList();
-			String querystr = "select a.F_DOC_Mandate, a.F_BANK_DOC, a.F_ID_PROF, a.F_REG_FORM, b.slip_image, b.tallyslipno,a.F_NAME,b.farmerregno,b.datepurchase,b.dateof_entry,b.basis,b.cropyr,pur.centername,b.rateslipno,b.jutevariety,b.grossquantity,b.deductionquantity,b.netquantity,b.amountpayable,b.grasatrate FROM jcirmt a left join jciprocurement b on b.farmerregno = a.F_REG_NO left join jcipurchasecenter pur on b.placeofpurchase = pur.CENTER_CODE where b.tallyslipno = '"+ tallyNo +"'"; 
+			String querystr = "select a.F_DOC_Mandate, a.F_BANK_DOC, a.F_ID_PROF, a.F_REG_FORM, b.slip_image, b.tallyslipno,a.F_NAME,b.farmerregno,b.datepurchase,b.dateof_entry,b.basis,b.cropyr,pur.centername,b.rateslipno,b.jutevariety,b.grossquantity,b.deductionquantity,b.netquantity,b.amountpayable,b.grasatrate FROM jcirmt a left join jciprocurement b on b.farmerregno = a.F_REG_NO left join jcipurchasecenter pur on b.placeofpurchase = pur.CENTER_CODE where b.tallyslipno = '"+ tallyNo +"' and b.regionId = '"+region+"'"; 
 					
 					
 			Session session = sessionFactory.getCurrentSession();
