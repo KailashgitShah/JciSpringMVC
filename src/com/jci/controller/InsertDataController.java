@@ -6458,188 +6458,9 @@ System.out.println();
 
 		  return new ModelAndView((View)new RedirectView("PurchaseRegisterlist.obj"));
 	    }
-	    @RequestMapping(value = { "MarketArrival" })
-	    public ModelAndView MarketArrival(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
-	    	String username =(String)request.getSession().getAttribute("usrname");
-	    	ModelAndView mv = new ModelAndView("MarketArrivalList");
-	    	 if(username == null) {
-	         	return new ModelAndView("index");
-	             }
-	        try {
-	          
-	                final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
-	                mv.addObject("regionList", (Object)regionList);
-	           
-	        }
-	        catch (Exception e) {
-	            System.out.println(e.getLocalizedMessage());
-	        }
-	         
-	        return mv;
-	    }
+	  
 	    
-	    @RequestMapping(value = { "MarketArrivalList" })
-	    public ModelAndView MarketArrivalList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) throws ParseException {
-	    	String username =(String)request.getSession().getAttribute("usrname");
-	    	 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    	 DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
-	    	 final String datearrival = request.getParameter("datearrival");
-	    	  Date date = inputFormat.parse(datearrival);
-               System.out.println("arrivaldate=="+datearrival);
-               String arrivaldate = outputFormat.format(date);
-	    	   final String region_id = request.getParameter("region_id");
-
-	    	ModelAndView mv = new ModelAndView("marketArrivalReport");
-	    	 if(username == null) {
-	         	return new ModelAndView("index");
-	             }
-	        try {
-	            final String dpc = request.getParameter("dpc");
-	            final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldate,region_id);
-	           
-	            if(allMarketArrival ==null)
-	            {
-	                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
-	                return new ModelAndView((View)new RedirectView("MarketArrival.obj"));
-		    	}
-	            String roName = this.roService.getRoname(region_id);
-	            String dateArrival = this.rulingMarketService.getdatArrival(arrivaldate);
-	            System.out.println("allMarketArrival==="+allMarketArrival);
-	               mv.addObject("allMarketArrival", (Object)allMarketArrival);
-	               mv.addObject("roName", (Object)roName);
-	               mv.addObject("region_id", (Object)region_id);
-	               mv.addObject("dateArrival", (Object)dateArrival);
-	           
-	        }
-	        catch (Exception e) {
-	            System.out.println(e.getLocalizedMessage());
-	        }
-	         
-	        return mv;
-	    }
-	    
-	    @RequestMapping(value = { "MarketArrivalDownload" })
-	    public ModelAndView MarketArrivalDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) throws ParseException {
-	    	String username =(String)request.getSession().getAttribute("usrname");
-	    	 final String arrivaldate = request.getParameter("datearrival");
-	    	 final String region_id = request.getParameter("region_id");
-	    	 ModelAndView mv = new ModelAndView("marketArrivalReport");
-	    	 if(username == null)
-	    	     {
-	         	   return new ModelAndView("index");
-	             }
-	        try {
-	            final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldate,region_id);
-	            String roname =   roService.getRoname(region_id);
-	            MarkerArrivalModelDTO marketlists = allMarketArrival.get(0);
-	            boolean flag1 = false;
-	            boolean flag2 = false;
-	            boolean flag3 = false;
-	            boolean flag4 = false;
-	            boolean flag5 = false;
-	            double td1min = 0;
-	            double td1max = marketlists.getGrade_rate1();
-	            double td2min = 0;
-	            double td2max = marketlists.getGrade_rate2();
-	            double td3min = 0;
-	            double td3max = marketlists.getGrade_rate3();
-	            double td4min = 0;
-	            double td4max = marketlists.getGrade_rate4();
-	            double td5min = 0;
-	            double td5max = marketlists.getGrade_rate5();
-	            int Mmin =0;
-	            int Mmax =0;
-	             Mmin = Integer.valueOf(marketlists.getMixmois());
-	             Mmax = Integer.valueOf(marketlists.getMaxmois());
-	            double qtytotal = 0.0;
-	            double g2total = 0.0;
-	            double g3total = 0.0;
-	            double g4total = 0.0;
-	            double g5total = 0.0;
-	            List<MarkerArrivalModelDTO> marketlistt = new ArrayList<MarkerArrivalModelDTO>();
-	            for(MarkerArrivalModelDTO marketlist : allMarketArrival)
-	            {
-				    if (marketlist.getGrade_rate1() !=0	 &&(!flag1 || marketlist.getGrade_rate1() < td1min))
-				       { td1min = marketlist.getGrade_rate1(); flag1 = true;}
-		            if (marketlist.getGrade_rate1() > td1max) {td1max = marketlist.getGrade_rate1(); }
-		            if (marketlist.getGrade_rate2() !=0	 &&(!flag2 || marketlist.getGrade_rate2() < td2min))
-				       { td2min = marketlist.getGrade_rate2(); flag2 = true;}	
-	                if (marketlist.getGrade_rate2() > td2max) {td2max = marketlist.getGrade_rate2(); }
-	                if (marketlist.getGrade_rate3() !=0	 &&(!flag3 || marketlist.getGrade_rate3() < td3min))
-					   { td3min = marketlist.getGrade_rate3(); flag3 = true;}
-	                if (marketlist.getGrade_rate3() > td3max) {td3max = marketlist.getGrade_rate3(); }
-	                if (marketlist.getGrade_rate4() !=0	 &&(!flag4 || marketlist.getGrade_rate4() < td4min))
-					   { td4min = marketlist.getGrade_rate4(); flag4 = true;}
-	                if (marketlist.getGrade_rate4() > td4max) {td4max = marketlist.getGrade_rate4(); }
-	                if (marketlist.getGrade_rate5() !=0	 &&(!flag5 || marketlist.getGrade_rate5() < td5min))
-					   { td5min = marketlist.getGrade_rate5(); flag5 = true;}
-	                if (marketlist.getGrade_rate5() > td5max) {td5max = marketlist.getGrade_rate5(); }
-	                
-	                if (Integer.valueOf(marketlist.getMixmois()) < Mmin) {
-	                	Mmin = Integer.valueOf(marketlist.getMixmois());
-	                }
-	                if (Integer.valueOf(marketlist.getMaxmois()) > Mmax) {
-	                	Mmax = Integer.valueOf(marketlist.getMaxmois());
-	                }
-	                qtytotal += Double.valueOf(marketlist.getArrivedqty());
-	            	g2total += marketlist.getGrade2();
-	            	g3total += marketlist.getGrade3();
-	            	g4total += marketlist.getGrade4();
-	            	g5total += marketlist.getGrade5();
-
-	            	marketlist.setQtytotal(qtytotal);
-	            	marketlist.setG2total(g2total);
-	            	marketlist.setG3total(g3total);
-	            	marketlist.setG4total(g4total);
-	            	marketlist.setG5total(g5total);
-	            	marketlist.setRo_name(roname);
-	            	
-	            	marketlist.setTD1_max(td1max);
-	            	marketlist.setTD2_max(td2max);
-	            	marketlist.setTD3_max(td3max);
-	            	marketlist.setTD4_max(td4max);
-	            	marketlist.setTD5_max(td5max);
-	            	marketlist.setTD1_min(td1min);
-	            	marketlist.setTD2_min(td2min);
-	            	marketlist.setTD3_min(td3min);
-	            	marketlist.setTD4_min(td4min);
-	            	marketlist.setTD5_min(td5min);
-	            	marketlist.setM_min(Mmin+"");
-	            	marketlist.setM_max(Mmax+"");
-	            	
-	            	marketlistt.add(marketlist);
-	            }
-	            mv.addObject("allMarketArrival", (Object)marketlistt);
-	            System.out.println(marketlistt.toString());
-	               
-			        	//local file location
-			        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("D:\\JCI\\MarketArrival.jrxml");
-			        	
-			        	//live file location
-			        	JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\MarketArrival.jrxml");
-			        	
-	                    Map<String, Object> parameters = new HashMap<String, Object>();
-	                    // Prepare data sources
-	                    JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(marketlistt);
-
-	                    // Fill JasperPrints
-	                    JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-	                 response.setHeader("Content-Disposition", "attachment; filename=MarketArrivalReport.pdf");
-	                 try (OutputStream out = response.getOutputStream()) {
-	                     JRPdfExporter exporter = new JRPdfExporter();
-	                     exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
-	                  //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
-	                     exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
-	                     exporter.exportReport();
-	                 }
-	               
-	        }
-	        catch (Exception e) {
-	            System.out.println("catch ="+e.getLocalizedMessage());
-	        }
-	         
-	        return mv;
-	    }
+	
 	    @RequestMapping(value = { "balePreparationOverallList" })
 	      public ModelAndView balePreparationOverallList(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
 	      	String username =(String)request.getSession().getAttribute("usrname");
@@ -7805,7 +7626,516 @@ public ModelAndView PurchaseRegisterList(final HttpServletRequest request, final
 
 
 
+@RequestMapping(value = { "MarketArrival" })
+public ModelAndView MarketArrival(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	String username =(String)request.getSession().getAttribute("usrname");
+	ModelAndView mv = new ModelAndView("MarketArrivalList");
+	 if(username == null) {
+     	return new ModelAndView("index");
+         }
+    try {
+      
+            final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
+            mv.addObject("regionList", (Object)regionList);
+       
+    }
+    catch (Exception e) {
+        System.out.println(e.getLocalizedMessage());
+    }
+     
+    return mv;
+}
 
-	
+
+@RequestMapping(value = { "MarketArrivalRegions" })
+public ModelAndView MarketArrivalRegions(final HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	String username =(String)request.getSession().getAttribute("usrname");
+	ModelAndView mv = new ModelAndView("DailyMarketArivalList");
+	 if(username == null) {
+     	return new ModelAndView("index");
+         }
+    try {
+      
+            final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
+            mv.addObject("regionList", (Object)regionList);
+       
+    }
+    catch (Exception e) {
+        System.out.println(e.getLocalizedMessage());
+    }
+     
+    return mv;
+}
+
+@ResponseBody
+@RequestMapping(value = { "MarketArrivalListAllRegion" }, method = { RequestMethod.GET })
+public String MarketArrivalRegionList(@RequestParam String arrivaldate, @RequestParam String cropyear ) {
+	String username =(String)request.getSession().getAttribute("usrname");
+	 JSONObject objParent = new JSONObject();
+     JSONArray arr = new JSONArray();
+
+
+    try {
+
+    	 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	 DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+    	// final String datearrival = request.getParameter("datearrival");
+    	  Date date = inputFormat.parse(arrivaldate);
+           System.out.println("arrivaldate=="+arrivaldate);
+           String datearrival = outputFormat.format(date);
+    	  // final String region_id = request.getParameter("region_id");
+         //  final String cropYear = request.getParameter("cropYear");
+        final String dpc = request.getParameter("dpc");
+        final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalListRegion(arrivaldate,cropyear);
+    	List<MarkerArrivalModelDTO> newmarketlist = new ArrayList<MarkerArrivalModelDTO>();
+
+
+        for(MarkerArrivalModelDTO marketArrivalDTO : allMarketArrival) {
+          	  JSONObject obj = new JSONObject();
+            obj.put("Region", marketArrivalDTO.getRo_name());
+            obj.put("DateArrival",marketArrivalDTO.getDatearrival());
+            obj.put("ArrivedQuantity",marketArrivalDTO.getArrivedqty());
+            obj.put("GradeRate1",marketArrivalDTO.getGrade_rate1());
+            obj.put("GradeRate2",marketArrivalDTO.getGrade_rate2());
+            obj.put("GradeRate3",marketArrivalDTO.getGrade_rate3());
+            obj.put("GradeRate4",marketArrivalDTO.getGrade_rate4());
+            obj.put("GradeRate5",marketArrivalDTO.getGrade_rate5());
+            obj.put("Mixmois",marketArrivalDTO.getMixmois());
+            obj.put("Maxmois",marketArrivalDTO.getMaxmois());
+			 obj.put("Grade2",marketArrivalDTO.getGrade2());
+			 obj.put("Grade3",marketArrivalDTO.getGrade3());
+			 obj.put("Grade4",marketArrivalDTO.getGrade4());
+			 obj.put("Grade5",marketArrivalDTO.getGrade5());
+			 obj.put("JuteVariety",marketArrivalDTO.getJute_verity());
+           	 arr.put(obj);
+
+        }
+           	objParent.put("data", arr);
+             System.err.println("objParent = "+objParent);
+             return objParent.toString();
+             
+     } catch (ParseException e) {
+             // Handle the ParseException
+             e.printStackTrace();
+             return objParent.toString();
+        
+         }
+      
+}
+
+
+
+@RequestMapping(value = { "MarketArrivalRegionDownload" }, method = { RequestMethod.GET })
+public ModelAndView MarketArrivalRegionDownload(@RequestParam String arrivaldate, @RequestParam String cropyear, final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) throws ParseException {
+	String username =(String)request.getSession().getAttribute("usrname");
+	// final String arrivaldate = request.getParameter("arrivaldate");
+	 System.out.println("arrivaldate==duuu"+arrivaldate);
+    //final String cropYear = request.getParameter("cropyear");
+	 System.out.println("cropyear==xnxnn"+cropyear);
+
+	 ModelAndView mv = new ModelAndView("MarketArrivalRegionDownloadsss");
+	 if(username == null)
+	     {
+     	   return new ModelAndView("index");
+         }
+    try {
+        final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalListRegion(arrivaldate,cropyear);
+    	 System.out.println("allMarketArrivalffff"+allMarketArrival.toString());
+
+        //String roname =   roService.getRoname(region_id);
+        MarkerArrivalModelDTO marketlists = allMarketArrival.get(0);
+        boolean flag1 = false;
+        boolean flag2 = false;
+        boolean flag3 = false;
+        boolean flag4 = false;
+        boolean flag5 = false;
+        double td1min = 0;
+        double td1max = marketlists.getGrade_rate1();
+        double td2min = 0;
+        double td2max = marketlists.getGrade_rate2();
+        double td3min = 0;
+        double td3max = marketlists.getGrade_rate3();
+        double td4min = 0;
+        double td4max = marketlists.getGrade_rate4();
+        double td5min = 0;
+        double td5max = marketlists.getGrade_rate5();
+        int Mmin =0;
+        int Mmax =0;
+        
+
+        	
+             Mmin = marketlists.getMixmois();
+
+        	
+             Mmax = marketlists.getMaxmois();
+
+        double qtytotal = 0.0;
+        int g2total = 0;
+        int g3total = 0;
+        int g4total = 0;
+        int g5total = 0;
+        List<MarkerArrivalModelDTO> marketlistt = new ArrayList<MarkerArrivalModelDTO>();
+        int length = allMarketArrival.size();
+        double lengthAsDouble = (double) length;
+
+        for(MarkerArrivalModelDTO marketlist : allMarketArrival)
+        {
+		    if (marketlist.getGrade_rate1() !=0	 &&(!flag1 || marketlist.getGrade_rate1() < td1min))
+		       { td1min = marketlist.getGrade_rate1(); flag1 = true;}
+            if (marketlist.getGrade_rate1() > td1max) {td1max = marketlist.getGrade_rate1(); }
+            if (marketlist.getGrade_rate2() !=0	 &&(!flag2 || marketlist.getGrade_rate2() < td2min))
+		       { td2min = marketlist.getGrade_rate2(); flag2 = true;}	
+            if (marketlist.getGrade_rate2() > td2max) {td2max = marketlist.getGrade_rate2(); }
+            if (marketlist.getGrade_rate3() !=0	 &&(!flag3 || marketlist.getGrade_rate3() < td3min))
+			   { td3min = marketlist.getGrade_rate3(); flag3 = true;}
+            if (marketlist.getGrade_rate3() > td3max) {td3max = marketlist.getGrade_rate3(); }
+            if (marketlist.getGrade_rate4() !=0	 &&(!flag4 || marketlist.getGrade_rate4() < td4min))
+			   { td4min = marketlist.getGrade_rate4(); flag4 = true;}
+            if (marketlist.getGrade_rate4() > td4max) {td4max = marketlist.getGrade_rate4(); }
+            if (marketlist.getGrade_rate5() !=0	 &&(!flag5 || marketlist.getGrade_rate5() < td5min))
+			   { td5min = marketlist.getGrade_rate5(); flag5 = true;}
+            if (marketlist.getGrade_rate5() > td5max) {td5max = marketlist.getGrade_rate5(); }
+            
+            if (Integer.valueOf(marketlist.getMixmois()) < Mmin) {
+            	Mmin = Integer.valueOf(marketlist.getMixmois());
+            }
+            if (Integer.valueOf(marketlist.getMaxmois()) > Mmax) {
+            	Mmax = Integer.valueOf(marketlist.getMaxmois());
+            }
+            qtytotal += Double.valueOf(marketlist.getArrivedqty());
+        	g2total += marketlist.getGrade2();
+        	g3total += marketlist.getGrade3();
+        	g4total += marketlist.getGrade4();
+        	g5total += marketlist.getGrade5();
+
+        	  double g2totalAsDouble = (double) g2total;
+	            double g3totalAsDouble = (double) g3total;
+	            double g4totalAsDouble = (double) g4total;
+	            double g5totalAsDouble = (double) g5total;
+
+	            // Check for division by zero
+	            double g2 = (length > 0) ? (g2totalAsDouble / lengthAsDouble) : 0;
+          	double g3 = (length > 0) ? (g3totalAsDouble / lengthAsDouble) : 0;
+          	double g4 = (length > 0) ? (g4totalAsDouble / lengthAsDouble) : 0;
+          	double g5 = (length > 0) ? (g5totalAsDouble / lengthAsDouble) : 0;
+          	
+            String g2Formatted = String.format("%.2f", g2);
+        	String g3Formatted = String.format("%.2f", g3);
+        	String g4Formatted = String.format("%.2f", g4);
+        	String g5Formatted = String.format("%.2f", g5);
+
+        	double g2Final = Double.parseDouble(g2Formatted);
+        	double g3Final = Double.parseDouble(g3Formatted);
+        	double g4Final = Double.parseDouble(g4Formatted);
+        	double g5Final = Double.parseDouble(g5Formatted);
+        	
+        	marketlist.setQtytotal(qtytotal);
+        	marketlist.setG2total(g2Final);
+        	marketlist.setG3total(g3Final);
+        	marketlist.setG4total(g4Final);
+        	marketlist.setG5total(g5Final);
+        	marketlist.setRo_name(marketlist.getRo_name());
+        	
+        	marketlist.setTD1_max(td1max);
+        	marketlist.setTD2_max(td2max);
+        	marketlist.setTD3_max(td3max);
+        	marketlist.setTD4_max(td4max);
+        	marketlist.setTD5_max(td5max);
+        	marketlist.setTD1_min(td1min);
+        	marketlist.setTD2_min(td2min);
+        	marketlist.setTD3_min(td3min);
+        	marketlist.setTD4_min(td4min);
+        	marketlist.setTD5_min(td5min);
+        	marketlist.setM_min(Mmin+"");
+        	marketlist.setM_max(Mmax+"");
+        	
+        	marketlistt.add(marketlist);
+        }
+       // mv.addObject("allMarketArrival", (Object)marketlistt);
+        System.out.println(marketlistt.toString());
+           
+	        	//local file location
+	        	JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\MarketArrival.jrxml");
+	        	
+	        	//live file location
+	        	//JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\MarketArrival.jrxml");
+	        	
+                Map<String, Object> parameters = new HashMap<String, Object>();
+                // Prepare data sources
+                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(marketlistt);
+
+                // Fill JasperPrints
+                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+             response.setHeader("Content-Disposition", "attachment; filename=MarketArrivalReport.pdf");
+             try (OutputStream out = response.getOutputStream()) {
+                 JRPdfExporter exporter = new JRPdfExporter();
+                 exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+              //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+                 exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+                 exporter.exportReport();
+             }
+           
+    }
+    catch (Exception e) {
+        System.out.println("catch ="+e.getLocalizedMessage());
+    }
+     
+    return mv;
+}
+
+@RequestMapping(value = { "MarketArrivalList" })
+public ModelAndView MarketArrivalList(@RequestParam String cropyear,@RequestParam String region,@RequestParam String arrivaldates,final HttpServletRequest request, final RedirectAttributes redirectAttributes) throws ParseException {
+	String username =(String)request.getSession().getAttribute("usrname");
+	 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+	 DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+	 final String datearrival = request.getParameter("datearrival");
+	//  Date date = inputFormat.parse(datearrival);
+       System.out.println("arrivaldate=="+datearrival);
+      // String arrivaldate = outputFormat.format(date);
+	  // final String region_id = request.getParameter("region_id");
+	   
+	   String region_id = this.roService.getregionIdbyName(region);
+
+	ModelAndView mv = new ModelAndView("marketArrivalReport");
+	 if(username == null) {
+     	return new ModelAndView("index");
+         }
+    try {
+        final String dpc = request.getParameter("dpc");
+        final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldates,region_id,cropyear);
+       
+        if(allMarketArrival ==null)
+        {
+            redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+            return new ModelAndView((View)new RedirectView("MarketArrival.obj"));
+    	}
+        //String roName = this.roService.getRoname(region_id);
+       // String dateArrival = this.rulingMarketService.getdatArrival(arrivaldate);
+        System.err.println("allMarketArrival==="+allMarketArrival);
+           mv.addObject("allMarketArrival", (Object)allMarketArrival);
+           mv.addObject("region", (Object)region);
+           mv.addObject("region_id", (Object)region_id);
+           mv.addObject("cropyear", (Object)cropyear);
+           mv.addObject("arrivaldates", (Object)arrivaldates);
+       
+    }
+    catch (Exception e) {
+        System.err.println(e.getLocalizedMessage());
+    }
+     
+    return mv;
+}
+
+@ResponseBody
+@RequestMapping(value = { "MarketArrivalListajax" }, method = { RequestMethod.GET })
+public String MarketArrivalListajax(@RequestParam String region,@RequestParam String cropyear,@RequestParam String arrivaldates,final HttpServletRequest request, final RedirectAttributes redirectAttributes)  {
+	String username =(String)request.getSession().getAttribute("usrname");
+	 JSONObject objParent = new JSONObject();
+     JSONArray arr = new JSONArray();
+    final String dpc = request.getParameter("dpc");
+	DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+	 DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+	 final String datearrival = request.getParameter("datearrival");
+	 System.out.println("arrivaldates"+arrivaldates);
+	//   String region_id = this.roService.getregionIdbyName(region);
+	final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>)this.rulingMarketService.MarketArrivalList(arrivaldates,region,cropyear);
+/*
+ * for(MarkerArrivalModelDTO marketArrivalDTO : allMarketArrival) { JSONObject
+ * obj = new JSONObject(); obj.put("CropYear", marketArrivalDTO.getCropyr());
+ * obj.put("Dpc", marketArrivalDTO.getCentername());
+ * obj.put("DateArrival",marketArrivalDTO.getDatearrival());
+ * obj.put("ArrivedQuantity",marketArrivalDTO.getArrivedqty());
+ * obj.put("GradeRate1",marketArrivalDTO.getGrade_rate1());
+ * obj.put("GradeRate2",marketArrivalDTO.getGrade_rate2());
+ * obj.put("GradeRate3",marketArrivalDTO.getGrade_rate3());
+ * obj.put("GradeRate4",marketArrivalDTO.getGrade_rate4());
+ * obj.put("GradeRate5",marketArrivalDTO.getGrade_rate5());
+ * obj.put("Mixmois",marketArrivalDTO.getMixmois());
+ * obj.put("Maxmois",marketArrivalDTO.getMaxmois());
+ * obj.put("Grade2",marketArrivalDTO.getGrade2());
+ * obj.put("Grade3",marketArrivalDTO.getGrade3());
+ * obj.put("Grade4",marketArrivalDTO.getGrade4());
+ * obj.put("Grade5",marketArrivalDTO.getGrade5());
+ * obj.put("JuteVariety",marketArrivalDTO.getJute_verity()); arr.put(obj); }
+ * objParent.put("data", arr); System.err.println("objParent = "+objParent);
+ * return objParent.toString();
+ * 
+ * }
+ */
+Map<String, List<MarkerArrivalModelDTO>> resultMap = new HashMap<>();
+resultMap.put("allMarketArrival", allMarketArrival);
+// resultMap.put("regionbale", regionbale);
+final Gson gson = new Gson();  
+return gson.toJson((Object)(resultMap));
+
+
 
 }
+
+
+
+@RequestMapping(value = { "MarketArrivalDownload" })
+public ModelAndView MarketArrivalDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpServletResponse response) throws ParseException {
+    String username = (String) request.getSession().getAttribute("usrname");
+    final String arrivaldate = request.getParameter("datearrival");
+    final String region_id = request.getParameter("region_id");
+    final String cropyear = request.getParameter("cropyear");
+    ModelAndView mv = new ModelAndView("marketArrivalReport");
+    if (username == null) {
+        return new ModelAndView("index");
+    }
+
+    try {
+        final List<MarkerArrivalModelDTO> allMarketArrival = (List<MarkerArrivalModelDTO>) this.rulingMarketService.MarketArrivalList(arrivaldate, region_id, cropyear);
+        String roname = roService.getRoname(region_id);
+        MarkerArrivalModelDTO marketlists = allMarketArrival.get(0);
+
+        boolean flag1 = false;
+        boolean flag2 = false;
+        boolean flag3 = false;
+        boolean flag4 = false;
+        boolean flag5 = false;
+        double td1min = 0;
+        double td1max = marketlists.getGrade_rate1();
+        double td2min = 0;
+        double td2max = marketlists.getGrade_rate2();
+        double td3min = 0;
+        double td3max = marketlists.getGrade_rate3();
+        double td4min = 0;
+        double td4max = marketlists.getGrade_rate4();
+        double td5min = 0;
+        double td5max = marketlists.getGrade_rate5();
+        int Mmin = Integer.valueOf(marketlists.getMixmois());
+        int Mmax = Integer.valueOf(marketlists.getMaxmois());
+        double qtytotal = 0.0;
+        int g2total = 0;
+        int g3total = 0;
+        int g4total = 0;
+        int g5total = 0;
+        List<MarkerArrivalModelDTO> marketlistt = new ArrayList<MarkerArrivalModelDTO>();
+        int length = allMarketArrival.size();
+        double lengthAsDouble = (double) length;
+
+        for (MarkerArrivalModelDTO marketlist : allMarketArrival) {
+            if (marketlist.getGrade_rate1() != 0 && (!flag1 || marketlist.getGrade_rate1() < td1min)) {
+                td1min = marketlist.getGrade_rate1();
+                flag1 = true;
+            }
+            if (marketlist.getGrade_rate1() > td1max) {
+                td1max = marketlist.getGrade_rate1();
+            }
+            if (marketlist.getGrade_rate2() != 0 && (!flag2 || marketlist.getGrade_rate2() < td2min)) {
+                td2min = marketlist.getGrade_rate2();
+                flag2 = true;
+            }
+            if (marketlist.getGrade_rate2() > td2max) {
+                td2max = marketlist.getGrade_rate2();
+            }
+            if (marketlist.getGrade_rate3() != 0 && (!flag3 || marketlist.getGrade_rate3() < td3min)) {
+                td3min = marketlist.getGrade_rate3();
+                flag3 = true;
+            }
+            if (marketlist.getGrade_rate3() > td3max) {
+                td3max = marketlist.getGrade_rate3();
+            }
+            if (marketlist.getGrade_rate4() != 0 && (!flag4 || marketlist.getGrade_rate4() < td4min)) {
+                td4min = marketlist.getGrade_rate4();
+                flag4 = true;
+            }
+            if (marketlist.getGrade_rate4() > td4max) {
+                td4max = marketlist.getGrade_rate4();
+            }
+            if (marketlist.getGrade_rate5() != 0 && (!flag5 || marketlist.getGrade_rate5() < td5min)) {
+                td5min = marketlist.getGrade_rate5();
+                flag5 = true;
+            }
+            if (marketlist.getGrade_rate5() > td5max) {
+                td5max = marketlist.getGrade_rate5();
+            }
+
+            if (Integer.valueOf(marketlist.getMixmois()) < Mmin) {
+                Mmin = Integer.valueOf(marketlist.getMixmois());
+            }
+            if (Integer.valueOf(marketlist.getMaxmois()) > Mmax) {
+                Mmax = Integer.valueOf(marketlist.getMaxmois());
+            }
+            qtytotal += Double.valueOf(marketlist.getArrivedqty());
+            g2total += marketlist.getGrade2();
+            g3total += marketlist.getGrade3();
+            g4total += marketlist.getGrade4();
+            g5total += marketlist.getGrade5();
+        }
+        double g2totalAsDouble = (double) g2total;
+        double g3totalAsDouble = (double) g3total;
+        double g4totalAsDouble = (double) g4total;
+        double g5totalAsDouble = (double) g5total;
+
+        // Check for division by zero
+        double g2 = (length > 0) ? (g2totalAsDouble / lengthAsDouble) : 0;
+    	double g3 = (length > 0) ? (g3totalAsDouble / lengthAsDouble) : 0;
+    	double g4 = (length > 0) ? (g4totalAsDouble / lengthAsDouble) : 0;
+    	double g5 = (length > 0) ? (g5totalAsDouble / lengthAsDouble) : 0;
+
+        String g2Formatted = String.format("%.2f", g2);
+    	String g3Formatted = String.format("%.2f", g3);
+    	String g4Formatted = String.format("%.2f", g4);
+    	String g5Formatted = String.format("%.2f", g5);
+
+    	double g2Final = Double.parseDouble(g2Formatted);
+    	double g3Final = Double.parseDouble(g3Formatted);
+    	double g4Final = Double.parseDouble(g4Formatted);
+    	double g5Final = Double.parseDouble(g5Formatted);
+    	
+    	
+
+
+        for (MarkerArrivalModelDTO marketlist : allMarketArrival) {
+        	marketlist.setQtytotal(qtytotal);
+        	marketlist.setG2total(g2Final);
+        	marketlist.setG3total(g3Final);
+        	marketlist.setG4total(g4Final);
+        	marketlist.setG5total(g5Final);
+            marketlist.setRo_name(roname);
+
+            marketlist.setTD1_max(td1max);
+            marketlist.setTD2_max(td2max);
+            marketlist.setTD3_max(td3max);
+            marketlist.setTD4_max(td4max);
+            marketlist.setTD5_max(td5max);
+            marketlist.setTD1_min(td1min);
+            marketlist.setTD2_min(td2min);
+            marketlist.setTD3_min(td3min);
+            marketlist.setTD4_min(td4min);
+            marketlist.setTD5_min(td5min);
+            marketlist.setM_min(Mmin + "");
+            marketlist.setM_max(Mmax + "");
+
+            marketlistt.add(marketlist);
+        }
+
+        mv.addObject("allMarketArrival", marketlistt);
+        System.out.println(marketlistt.toString());
+
+        JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\MarketArrivalList.jrxml");
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(marketlistt);
+
+        JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+        response.setHeader("Content-Disposition", "attachment; filename=MarketArrivalReport.pdf");
+        try (OutputStream out = response.getOutputStream()) {
+            JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+            exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+            exporter.exportReport();
+        }
+
+    } catch (Exception e) {
+        System.out.println("catch =" + e.getLocalizedMessage());
+    }
+
+    return mv;
+}
+}
+	
+

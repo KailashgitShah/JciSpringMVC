@@ -22,9 +22,9 @@ public class MarkerArrivalModelDTO {
 	    
 	  private int grade_rate5;
 	  
-	  private String mixmois;
+	  private int mixmois;
 	  
-	  private String maxmois;
+	  private int maxmois;
 	  
 	  private double grade2;
 	    
@@ -145,38 +145,7 @@ public class MarkerArrivalModelDTO {
 		TD1_max = tD1_max;
 	}
 
-		public double getG2total() {
-		return g2total;
-	}
-
-	public void setG2total(double g2total) {
-		this.g2total = g2total;
-	}
-
-	public double getG3total() {
-		return g3total;
-	}
-
-	public void setG3total(double g3total) {
-		this.g3total = g3total;
-	}
-
-	public double getG4total() {
-		return g4total;
-	}
-
-	public void setG4total(double g4total) {
-		this.g4total = g4total;
-	}
-
-	public double getG5total() {
-		return g5total;
-	}
-
-	public void setG5total(double g5total) {
-		this.g5total = g5total;
-	}
-
+	
 	public double getQtytotal() {
 		return qtytotal;
 	}
@@ -273,20 +242,91 @@ public class MarkerArrivalModelDTO {
 			this.grade_rate5 = grade_rate5;
 		}
 
-		public String getMixmois() {
+		
+
+	
+
+		public int getMixmois() {
 			return mixmois;
 		}
 
-		public void setMixmois(String mixmois) {
+		public void setMixmois(int mixmois) {
 			this.mixmois = mixmois;
 		}
 
-		public String getMaxmois() {
+		public int getMaxmois() {
 			return maxmois;
 		}
 
-		public void setMaxmois(String maxmois) {
+		public void setMaxmois(int maxmois) {
 			this.maxmois = maxmois;
+		}
+
+		public String getM_min() {
+			return m_min;
+		}
+
+		public void setM_min(String m_min) {
+			this.m_min = m_min;
+		}
+
+		public String getM_max() {
+			return m_max;
+		}
+
+		public void setM_max(String m_max) {
+			this.m_max = m_max;
+		}
+		@Override
+		public String toString() {
+			return "MarkerArrivalModelDTO [cropyr=" + cropyr + ", centername=" + centername + ", datearrival="
+					+ datearrival + ", arrivedqty=" + arrivedqty + ", grade_rate1=" + grade_rate1 + ", grade_rate2="
+					+ grade_rate2 + ", grade_rate3=" + grade_rate3 + ", grade_rate4=" + grade_rate4 + ", grade_rate5="
+					+ grade_rate5 + ", mixmois=" + mixmois + ", maxmois=" + maxmois + ", grade2=" + grade2 + ", grade3="
+					+ grade3 + ", grade4=" + grade4 + ", grade5=" + grade5 + ", ro_name=" + ro_name + ", jute_verity="
+					+ jute_verity + ", g2total=" + g2total + ", g3total=" + g3total + ", g4total=" + g4total
+					+ ", g5total=" + g5total + ", qtytotal=" + qtytotal + ", m_min=" + m_min + ", m_max=" + m_max
+					+ ", TD1_min=" + TD1_min + ", TD2_min=" + TD2_min + ", TD3_min=" + TD3_min + ", TD4_min=" + TD4_min
+					+ ", TD5_min=" + TD5_min + ", TD5_max=" + TD5_max + ", TD4_max=" + TD4_max + ", TD3_max=" + TD3_max
+					+ ", TD2_max=" + TD2_max + ", TD1_max=" + TD1_max + "]";
+		}
+
+		public double getG2total() {
+			return g2total;
+		}
+
+		public void setG2total(double g2total) {
+			this.g2total = g2total;
+		}
+
+		public double getG3total() {
+			return g3total;
+		}
+
+		public void setG3total(double g3total) {
+			this.g3total = g3total;
+		}
+
+		public double getG4total() {
+			return g4total;
+		}
+
+		public void setG4total(double g4total) {
+			this.g4total = g4total;
+		}
+
+		public double getG5total() {
+			return g5total;
+		}
+
+		public void setG5total(double g5total) {
+			this.g5total = g5total;
+		}
+
+
+		public MarkerArrivalModelDTO() {
+			super();
+			// TODO Auto-generated constructor stub
 		}
 
 		public double getGrade2() {
@@ -321,84 +361,9 @@ public class MarkerArrivalModelDTO {
 			this.grade5 = grade5;
 		}
 
-		public String getM_min() {
-			return m_min;
-		}
-
-		public void setM_min(String m_min) {
-			this.m_min = m_min;
-		}
-
-		public String getM_max() {
-			return m_max;
-		}
-
-		public void setM_max(String m_max) {
-			this.m_max = m_max;
-		}
-		@Override
-		public String toString() {
-			return "MarkerArrivalModelDTO [cropyr=" + cropyr + ", centername=" + centername + ", datearrival="
-					+ datearrival + ", arrivedqty=" + arrivedqty + ", grade_rate1=" + grade_rate1 + ", grade_rate2="
-					+ grade_rate2 + ", grade_rate3=" + grade_rate3 + ", grade_rate4=" + grade_rate4 + ", grade_rate5="
-					+ grade_rate5 + ", mixmois=" + mixmois + ", maxmois=" + maxmois + ", grade2=" + grade2 + ", grade3="
-					+ grade3 + ", grade4=" + grade4 + ", grade5=" + grade5 + ", ro_name=" + ro_name + ", jute_verity="
-					+ jute_verity + ", g2total=" + g2total + ", g3total=" + g3total + ", g4total=" + g4total
-					+ ", g5total=" + g5total + ", qtytotal=" + qtytotal + ", m_min=" + m_min + ", m_max=" + m_max
-					+ ", TD1_min=" + TD1_min + ", TD2_min=" + TD2_min + ", TD3_min=" + TD3_min + ", TD4_min=" + TD4_min
-					+ ", TD5_min=" + TD5_min + ", TD5_max=" + TD5_max + ", TD4_max=" + TD4_max + ", TD3_max=" + TD3_max
-					+ ", TD2_max=" + TD2_max + ", TD1_max=" + TD1_max + "]";
-		}
-
 	
 
-		public MarkerArrivalModelDTO(String cropyr, String centername, String datearrival, String arrivedqty,
-				int grade_rate1, int grade_rate2, int grade_rate3, int grade_rate4, int grade_rate5, String mixmois,
-				String maxmois, double grade2, double grade3, double grade4, double grade5, String ro_name,
-				String jute_verity, double g2total, double g3total, double g4total, double g5total, double qtytotal,
-				String m_min, String m_max, double tD1_min, double tD2_min, double tD3_min, double tD4_min,
-				double tD5_min, double tD5_max, double tD4_max, double tD3_max, double tD2_max, double tD1_max) {
-			super();
-			this.cropyr = cropyr;
-			this.centername = centername;
-			this.datearrival = datearrival;
-			this.arrivedqty = arrivedqty;
-			this.grade_rate1 = grade_rate1;
-			this.grade_rate2 = grade_rate2;
-			this.grade_rate3 = grade_rate3;
-			this.grade_rate4 = grade_rate4;
-			this.grade_rate5 = grade_rate5;
-			this.mixmois = mixmois;
-			this.maxmois = maxmois;
-			this.grade2 = grade2;
-			this.grade3 = grade3;
-			this.grade4 = grade4;
-			this.grade5 = grade5;
-			this.ro_name = ro_name;
-			this.jute_verity = jute_verity;
-			this.g2total = g2total;
-			this.g3total = g3total;
-			this.g4total = g4total;
-			this.g5total = g5total;
-			this.qtytotal = qtytotal;
-			this.m_min = m_min;
-			this.m_max = m_max;
-			TD1_min = tD1_min;
-			TD2_min = tD2_min;
-			TD3_min = tD3_min;
-			TD4_min = tD4_min;
-			TD5_min = tD5_min;
-			TD5_max = tD5_max;
-			TD4_max = tD4_max;
-			TD3_max = tD3_max;
-			TD2_max = tD2_max;
-			TD1_max = tD1_max;
-		}
-
-		public MarkerArrivalModelDTO() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+	
 
 		
 	    

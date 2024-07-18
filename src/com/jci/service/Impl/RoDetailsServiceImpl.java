@@ -71,4 +71,10 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 		// TODO Auto-generated method stub
 		return roDao.findregionbyname(region);
 	}
+	
+	@Override
+	public String getregionIdbyName(String region) {
+		// TODO Auto-generated method stub
+		return roDao.getregionIdbyName(region);
+	}
 }

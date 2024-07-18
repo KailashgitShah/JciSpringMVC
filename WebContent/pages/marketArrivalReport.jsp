@@ -58,31 +58,48 @@ th     { background:#eee; }
                 <h1 class="page-title">Daily Market Report</h1>
             </div>
                             <% List<MarkerArrivalModelDTO> marketList = (List<MarkerArrivalModelDTO>) request.getAttribute("allMarketArrival"); 
-                 String region =  (String)request.getAttribute("roName"); 
+                 String region =  (String)request.getAttribute("region"); 
                  String region_id =  (String)request.getAttribute("region_id");
-                 String dateArrival =  (String)request.getAttribute("dateArrival"); %>
+                 String arrivaldates =  (String)request.getAttribute("arrivaldates"); 
+                 String cropyear =  (String)request.getAttribute("cropyear");%>
             
           
 								
             <div class="page-content fade-in-up">
-            <form action = "MarketArrivalDownload.obj">
+           <form action = "MarketArrivalDownload.obj">
             <div class="row">
               <div class="col-sm-4 form-group">
 									<label class="required">Region</label> <input class="form-control"
 										type="text" name="binnumb" placeholder="Farmer Address" value="<%=region %>" readonly>
-								<input type="hidden" name="region_id" value="<%=region_id %>">
+								<input type="hidden" id="region_id" name="region_id" value="<%=region_id %>">
 								</div>
-								  <div class="col-sm-4 form-group">
-									<label class="required">Arival Dtae</label> <input class="form-control"
-										type="text" name="datearrival" value="<%=dateArrival %>" readonly>
-								</div>
-								<div class="form-group">
-								<label></label> <br>
-										<a href="MarketArrival.obj" class="btn btn-primary">Go Back</a>
-                                        <button class="btn btn-primary" type="submit">Download</button>
-                                    </div>
+								
+								    <div class="col-sm-4 form-group">
+											<label>Date Arrival</label> 
+											<span class="text-danger">* </span>&nbsp; <span id="errfromdate" name="errfromdate"
+												class="text-danger"> </span>
+											<input class="form-control" name="datearrival" id="datearrival"  placeholder="dd-mm-yyyy" value="<%=arrivaldates %>" readonly>
+										</div>
+												    <div class="col-sm-4 form-group">
+											<label>Crop Year</label> 
+											<span class="text-danger">* </span>&nbsp; <span id="errcropyear" name="errcropyear"
+												class="text-danger"> </span>
+											<input class="form-control" name="cropyear" id="cropyear"  placeholder="Crop Year" value="<%=cropyear %>" readonly>
+										</div>
+								
+								
 			</div>
-			</form>
+			            <div class="row">
+			
+			<div class="form-group">
+								<label></label> <br>
+                                        <button class="btn btn-primary" type="submit">Download</button>
+    <a href="http://localhost:8080/jciadmin/MarketArrivalRegions.obj">Go Back</a>
+                                        
+        			</div>
+                                        
+                                    </div>
+			
             <div class="ibox">
                     <span>${msg}</span>
                     <div class="ibox-body">
@@ -91,8 +108,7 @@ th     { background:#eee; }
                     <thead>
                         <tr>
                             <th class="col-sm-3 text-center">S.N.</th>
-                            <th class="col-sm-3 text-center">Crop Year</th>
-                            <th class="col-sm-3 text-center">Center Name</th>
+                             <th class="col-sm-3 text-center">Center Name</th>
                             <th class="col-sm-3 text-center">Arrival Date</th>
                             <th class="col-sm-3 text-center">Arrived Quantity</th>
                             <th class="col-sm-3 text-center">Jute Varity</th>
@@ -113,23 +129,54 @@ th     { background:#eee; }
                         <% int i = 1;
                         for (MarkerArrivalModelDTO list : marketList) { %>
                         <tr>
-                            <td><%= i %></td>
-                            <td><%= list.getCropyr() %></td>
+                                                    <td><%= i %></td>
+                        
                             <td><%= list.getCentername() %></td>
-                            <td><%= list.getDatearrival() %></td>
-                            <td><%= list.getArrivedqty() %></td>
-                            <td><%= list.getJute_verity() %></td>
-                            <td><%= list.getGrade_rate1() %></td>
-                            <td><%= list.getGrade_rate2() %></td>
-                            <td><%= list.getGrade_rate3() %></td>
-                            <td><%= list.getGrade_rate4() %></td>
-                            <td><%= list.getGrade_rate5() %></td>
-                            <td><%= list.getMixmois() %></td>
-                            <td><%= list.getMaxmois() %></td>
-                            <td><%= list.getGrade2() %></td>
-                            <td><%= list.getGrade3() %></td>
-                            <td><%= list.getGrade4() %></td>
-                            <td><%= list.getGrade5() %></td>
+                            <td>  <%= list.getDatearrival() %></td>
+
+                   <td>
+    <%
+        if ("0".equals(list.getArrivedqty())) {
+            out.print("No Arrival");
+        } else {
+            out.print(list.getArrivedqty());
+        }
+    %>
+</td>
+              <td>
+    <%
+        if ("0".equals(list.getJute_verity())) {
+            out.print("No Arrival");
+        } else {
+            out.print(list.getJute_verity());
+        }
+    %>
+</td>
+                            <td>  <%= list.getGrade_rate1() %></td>
+
+                            <td>  <%= list.getGrade_rate2() %></td>
+
+                            <td>  <%= list.getGrade_rate3() %></td>
+
+                            <td>  <%= list.getGrade_rate4() %></td>
+
+                            <td>  <%= list.getGrade_rate5() %></td>
+    <td>  <%= list.getMixmois() %></td>
+
+
+                            <td>  <%= list.getMaxmois()%></td>
+                            <td>  <%= list.getGrade2() %></td>
+
+
+                            <td>  <%= list.getGrade3() %></td>
+
+
+                            <td>  <%= list.getGrade4() %></td>
+
+                             <td>  <%= list.getGrade5() %></td>
+
+
+
                         </tr>
                         <% i++;
                         } %>
@@ -153,6 +200,28 @@ th     { background:#eee; }
     <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
     <!-- CORE SCRIPTS-->
     <script src="assets/js/app.min.js" type="text/javascript"></script>
+       
+    <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- Include jQuery UI JavaScript -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>  
+
+ 
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.0/css/jquery.dataTables.min.css">
+    <!-- Include DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.13.0/js/jquery.dataTables.min.js"></script>
+    <!-- Include DataTables Buttons CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css">
+    <!-- Include DataTables Buttons JavaScript -->
+    <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/vfs_fonts.js"></script>
     <!-- PAGE LEVEL SCRIPTS-->
     <!-- <script type="text/javascript">
         $(function () {
@@ -161,6 +230,13 @@ th     { background:#eee; }
             });
         })
     </script> -->
+    
+ <script>
+        function goBack() {
+            window.location.href = "http://localhost:8080/jciadmin/MarketArrivalRegions.obj";
+        }
+    </script>
+    
  <script type="text/javascript">
     $(document).ready(function() {
         $('#example-table').DataTable({
@@ -172,6 +248,10 @@ th     { background:#eee; }
         });
     });
 </script>
+<script>
+$( "#datearrival" ).datepicker({ dateFormat: 'dd-mm-yy'    });
+</script>
+
 </body>
 
 </html>

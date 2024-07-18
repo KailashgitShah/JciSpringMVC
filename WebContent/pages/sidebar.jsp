@@ -168,12 +168,13 @@ body {
 				<i class="fa fa-angle-left arrow"></i></a> 
 					<ul class="nav-2-level ">
 				      <li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register Report</b></a></li>				
-					  <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Market Report</b></a></li>				 
+					<!--   <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Market Report</b></a></li> -->				 
 					  <li  data-pre="" id=""><a href="downloadexcelregionwise.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Download Excel Region wise</b></a></li>				 
 					  <li  data-pre="26" id="o26"><a href="viewbalePreparationList.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>Bin Wise Packing Register</b></a></li>
 					  <li data-pre="" id=""><a href="balePreparationOverallList.obj"><i
 					  				class="sidebar-item-icon fa fa-th-large"></i><b>All Bale Report</b></a></li>
 					  <li  data-pre="" id=""><a href="LedgerReport.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Ledger Report</b></a></li>		
+					  <li  data-pre="" id=""><a href="MarketArrivalRegions.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Market Report</b></a></li>		
 
 				  </ul> 
 				</li>

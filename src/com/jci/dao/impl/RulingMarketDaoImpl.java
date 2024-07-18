@@ -1,5 +1,6 @@
 package com.jci.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,12 +69,38 @@ public class RulingMarketDaoImpl implements RulingMarketDao {
 	}
 
 	@Override
-	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id) {
+	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id, String cropyear) {
 		List<Integer> result = new ArrayList<>();
 		String querystr = "";
 			//querystr = "Select  a.*, b.verficationid, b.regno, b.ifsccode, b.accountno, b.farmername, b.address, b.status, b.verificationdate, st.state_name, d.district_name from jcirmt a left Join jcifarmerverification b on a.F_REG_NO = b.regno left join tbl_states st on a.F_STATE = st.id left join tbl_districts d on F_District = d.id where a.dpc_id ='"+dpc+"'";
-			querystr = "	Select r1.cropyr, p1.centername, r1.datearrival, r1.arrivedqty, r1.grade_rate1, r1.grade_rate2, r1.grade_rate3, r1.grade_rate4, r1.grade_rate5, r1.mixmois, r1.maxmois, r1.grade2, r1.grade3, r1.grade4, r1.grade5, r1.jutevariety FROM jcimra r1 left join jcipurchasecenter p1 on r1.dpc_code = p1.CENTER_CODE where r1.region_id = '"+region_id+"' and r1.datearrival = '"+arrivaldate+"'";
-	
+			querystr = "SELECT \r\n" + 
+					"        r1.cropyr,\r\n" + 
+					"        p1.centername,\r\n" + 
+					"        r1.datearrival,\r\n" + 
+					"        r1.arrivedqty,\r\n" + 
+					"        r1.grade_rate1,\r\n" + 
+					"        r1.grade_rate2,\r\n" + 
+					"        r1.grade_rate3,\r\n" + 
+					"        r1.grade_rate4,\r\n" + 
+					"        r1.grade_rate5,\r\n" + 
+					"        r1.mixmois,\r\n" + 
+					"        r1.maxmois,\r\n" + 
+					"        ROUND(CAST(r1.grade2 AS DECIMAL), 2) AS grade2_rounded,\r\n" + 
+					"        ROUND(CAST(r1.grade3 AS DECIMAL), 2) AS grade3_rounded,\r\n" + 
+					"        ROUND(CAST(r1.grade4 AS DECIMAL), 2) AS grade4_rounded,\r\n" + 
+					"        ROUND(CAST(r1.grade5 AS DECIMAL), 2) AS grade5_rounded,\r\n" + 
+					"        r1.jutevariety\r\n" + 
+					"    FROM \r\n" + 
+					"        jcimra r1\r\n" + 
+					"    LEFT JOIN \r\n" + 
+					"        jcipurchasecenter p1 \r\n" + 
+					"    ON \r\n" + 
+					"        r1.dpc_code = p1.CENTER_CODE \r\n" + 
+					"    WHERE \r\n" + 
+					"        r1.region_id = '" + region_id + "' AND     r1.cropyr ='" + cropyear + "' \r\n" + 
+							"\r\n" + 
+					"        AND r1.datearrival = '" + arrivaldate + "';\r\n" + 
+					"";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -93,12 +120,18 @@ public class RulingMarketDaoImpl implements RulingMarketDao {
 			int grade_rate5 = (int)row[8];
 			String mixmois = (String)row[9];
 			String maxmois = (String) row[10];
-			double grade2 = (double)row[11];
-			double grade3 = (double)row[12];
-			double grade4 = (double)row[13];
-			double grade5 = (double)row[14];
+			BigDecimal grade2 = (BigDecimal)row[11];
+			BigDecimal grade3 = (BigDecimal)row[12];
+			BigDecimal grade4 = (BigDecimal)row[13];
+			BigDecimal grade5 = (BigDecimal)row[14];
 			String jutevarity = (String) row[15];
-			
+			//System.err.println("mixmois"+mixmois);
+			double grade2Double = grade2.doubleValue();
+			double grade3Double = grade3.doubleValue();
+			double grade4Double = grade4.doubleValue();
+			double grade5Double = grade5.doubleValue();
+			int mixmoisInt = Integer.parseInt(mixmois);
+			int maxmoisInt = Integer.parseInt(maxmois);
 			MarkerArrivalModelDTO marketArrivalDTO = new MarkerArrivalModelDTO();
 			marketArrivalDTO.setCropyr(cropyr);
 			marketArrivalDTO.setCentername(centername);
@@ -109,12 +142,12 @@ public class RulingMarketDaoImpl implements RulingMarketDao {
 			marketArrivalDTO.setGrade_rate3(grade_rate3);
 			marketArrivalDTO.setGrade_rate4(grade_rate4);
 			marketArrivalDTO.setGrade_rate5(grade_rate5);
-			marketArrivalDTO.setMixmois(mixmois);
-			marketArrivalDTO.setMaxmois(maxmois);
-			marketArrivalDTO.setGrade2(grade2);
-			marketArrivalDTO.setGrade3(grade3);
-			marketArrivalDTO.setGrade4(grade4);
-			marketArrivalDTO.setGrade5(grade5);
+			marketArrivalDTO.setMixmois(mixmoisInt);
+			marketArrivalDTO.setMaxmois(maxmoisInt);
+			marketArrivalDTO.setGrade2(grade2Double);
+			marketArrivalDTO.setGrade3(grade3Double);
+			marketArrivalDTO.setGrade4(grade4Double);
+			marketArrivalDTO.setGrade5(grade5Double);
 			marketArrivalDTO.setJute_verity(jutevarity);
 			ll.add(marketArrivalDTO);
 		}
@@ -132,5 +165,95 @@ public class RulingMarketDaoImpl implements RulingMarketDao {
 		String region = query.list().get(0).toString();
 		return region;
 
+	}
+
+	@Override
+	public List<MarkerArrivalModelDTO> MarketArrivalListRegion(String arrivaldate, String cropYear) {
+	    List<Integer> result = new ArrayList<>();
+	    String querystr = "";
+	  querystr = 
+	    	    "SELECT " +
+	    	    "    p1.roname, " +
+	    	    "    r1.datearrival, " +
+	    	    "    SUM(CAST(r1.arrivedqty AS NUMERIC)) AS total_arrivedqty, " +
+	    	    "    AVG(CAST(r1.grade_rate1 AS NUMERIC)) AS avg_grade_rate1, " +
+	    	    "    AVG(CAST(r1.grade_rate2 AS NUMERIC)) AS avg_grade_rate2, " +
+	    	    "    AVG(CAST(r1.grade_rate3 AS NUMERIC)) AS avg_grade_rate3, " +
+	    	    "    AVG(CAST(r1.grade_rate4 AS NUMERIC)) AS avg_grade_rate4, " +
+	    	    "    AVG(CAST(r1.grade_rate5 AS NUMERIC)) AS avg_grade_rate5, " +
+	    	    "    AVG(CAST(r1.mixmois AS NUMERIC)) AS avg_mixmois, " +
+	    	    "    AVG(CAST(r1.maxmois AS NUMERIC)) AS avg_maxmois, " +
+	    	    "    ROUND(AVG(CAST(r1.grade2 AS DECIMAL)), 2) AS avg_grade2, " +
+	    	    "    ROUND(AVG(CAST(r1.grade3 AS DECIMAL)), 2) AS avg_grade3, " +
+	    	    "    ROUND(AVG(CAST(r1.grade4 AS DECIMAL)), 2) AS avg_grade4, " +
+	    	    "    ROUND(AVG(CAST(r1.grade5 AS DECIMAL)), 2) AS avg_grade5, " +
+	    	    "    r1.jutevariety, " +
+	    	    "    r1.cropyr " +
+	    	    "FROM " +
+	    	    "    jcimra r1 " +
+	    	    "LEFT JOIN " +
+	    	    "    jcirodetails p1 " +
+	    	    "ON " +
+	    	    "    r1.region_id = p1.rocode " +
+	    	    "WHERE " +
+	    	    "    r1.cropyr = '" + cropYear + "' " +
+	    	    "    AND r1.datearrival = '" + arrivaldate + "' " +
+	    	    "GROUP BY " +
+	    	    "    p1.roname, " +
+	    	    "    r1.datearrival, " +
+	    	    "    r1.jutevariety, " +
+	    	    "    r1.cropyr";
+
+
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tx = session.beginTransaction();
+	    SQLQuery query = session.createSQLQuery(querystr);
+	    List<Object[]> rows = query.list();
+	    List<MarkerArrivalModelDTO> ll = new ArrayList<>();
+	    for (Object[] row : rows) {
+	        String roname = (String) row[0];
+	        String arrival = (String) row[1];
+	        BigDecimal arrivedqty = (BigDecimal) row[2];
+	        BigDecimal grade_rate1 = (BigDecimal) row[3];
+	        BigDecimal grade_rate2 = (BigDecimal) row[4];
+	        BigDecimal grade_rate3 = (BigDecimal) row[5];
+	        BigDecimal grade_rate4 = (BigDecimal) row[6];
+	        BigDecimal grade_rate5 = (BigDecimal) row[7];
+	        BigDecimal mixmois = (BigDecimal) row[8];
+	        BigDecimal maxmois = (BigDecimal) row[9];
+	        int mixmoisInt = mixmois.intValue();
+	        int maxmoisInt = maxmois.intValue();
+	        BigDecimal grade2 = (BigDecimal) row[10];
+	        BigDecimal grade3 = (BigDecimal) row[11];
+	        BigDecimal grade4 = (BigDecimal) row[12];
+	        BigDecimal grade5 = (BigDecimal) row[13];
+	        String jutevarity = (String) row[14];
+	        String cropyear = (String) row[15];
+
+double grade2Double = grade2.doubleValue();
+double grade3Double = grade3.doubleValue();
+double grade4Double = grade4.doubleValue();
+double grade5Double = grade5.doubleValue();
+
+	        MarkerArrivalModelDTO marketArrivalDTO = new MarkerArrivalModelDTO();
+	        marketArrivalDTO.setRo_name(roname);
+	        marketArrivalDTO.setDatearrival(arrival);
+	        marketArrivalDTO.setArrivedqty(arrivedqty.toString());
+	        marketArrivalDTO.setGrade_rate1(grade_rate1.intValue());
+	        marketArrivalDTO.setGrade_rate2(grade_rate2.intValue());
+	        marketArrivalDTO.setGrade_rate3(grade_rate3.intValue());
+	        marketArrivalDTO.setGrade_rate4(grade_rate4.intValue());
+	        marketArrivalDTO.setGrade_rate5(grade_rate5.intValue());
+	        marketArrivalDTO.setMixmois(mixmoisInt);
+	        marketArrivalDTO.setMaxmois(maxmoisInt);
+	        marketArrivalDTO.setGrade2(grade2Double);
+	        marketArrivalDTO.setGrade3(grade3Double);
+	        marketArrivalDTO.setGrade4(grade4Double);
+	        marketArrivalDTO.setGrade5(grade5Double);
+	        marketArrivalDTO.setJute_verity(jutevarity);
+	        marketArrivalDTO.setCropyr(cropyear);
+	        ll.add(marketArrivalDTO);
+	    }
+	    return ll;
 	}
 }

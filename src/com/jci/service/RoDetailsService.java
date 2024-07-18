@@ -15,5 +15,7 @@ public interface RoDetailsService {
 	public List<String> zonecode(String zoneCode);
 	public String getRoname(String region_id);
 	public String findregionbyname(String region);
+	public String getregionIdbyName(String region);
+
 
 }

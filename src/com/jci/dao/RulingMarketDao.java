@@ -12,6 +12,8 @@ public interface RulingMarketDao {
 	public RulingMarket find(int id);
 	public List <RulingMarket> getAll();
 	public boolean submitform(RulingMarket RulingMarket);
-	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id);
+
+	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id, String cropyear);
 	public String getdatArrival(String arrivaldate);
+	public List<MarkerArrivalModelDTO> MarketArrivalListRegion(String arrivaldate, String cropYear);
 }

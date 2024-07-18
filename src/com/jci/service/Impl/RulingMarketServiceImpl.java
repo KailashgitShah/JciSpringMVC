@@ -52,15 +52,21 @@ public class RulingMarketServiceImpl implements RulingMarketService {
 	}
 
 	@Override
-	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id) {
+	public List<MarkerArrivalModelDTO> MarketArrivalList(String arrivaldate, String region_id, String cropyear) {
 		// TODO Auto-generated method stub
-		return rulingDao.MarketArrivalList(arrivaldate, region_id);
+		return rulingDao.MarketArrivalList(arrivaldate, region_id,cropyear);
 	}
 
 	@Override
 	public String getdatArrival(String arrivaldate) {
 		// TODO Auto-generated method stub
 		return rulingDao.getdatArrival(arrivaldate);
+	}
+
+	@Override
+	public List<MarkerArrivalModelDTO> MarketArrivalListRegion(String arrivaldate, String cropYear) {
+		// TODO Auto-generated method stub
+		return rulingDao.MarketArrivalListRegion(arrivaldate,cropYear);
 	}
 
 }
