@@ -31,6 +31,12 @@ src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 <link rel="stylesheet" href="assets/css/chosen.css">
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
        type="text/javascript"></script>
+       <link rel="stylesheet" href="assets/css/docsupport/style.css">
+  <link rel="stylesheet" href="assets/css/docsupport/prism.css">
+  <link rel="stylesheet" href="assets/css/chosen.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+       
 
 
 <style>
@@ -426,7 +432,7 @@ input[type="radio"] {
 
        <script>
              if (hasData) {
-                     document.getElementById("l1").classList.add("has-data");
+                    document.getElementById("l1").classList.add("has-data");
              }
        </script>
 
@@ -472,7 +478,7 @@ input[type="radio"] {
                                                      //alert(data);
                                                     var d = jQuery.parseJSON(data);
                                                      console.log(d);
-                                                    //alert(d);
+                                                     //alert(d);
                                                      document.getElementById("contractdate").value = d[0];
                                                      document.getElementById("cropyear").value = d[1];
                                                      document.getElementById("contractquantity").value = d[2];
@@ -480,10 +486,12 @@ input[type="radio"] {
                                                      //alert(d[4]);//Label name
                                                      document.getElementById("fc").value = d[5];
                                                      document.getElementById("qty").value = d[6];
-                                                   // alert(data)
+                                                     //alert(data)
+                                                     //alert(d[7])
+                                                     if(d[7]!=""){
                                                     if (d[15] == "Letter_of_Credit") {
 
-                                                            document.getElementById("instdate")
+                                                           document.getElementById("instdate")
                                                            .setAttribute("max", d[7]);
                                               document.getElementById("instdate").value = d[7];
                                                            //alert(instdate);
@@ -502,11 +510,12 @@ input[type="radio"] {
 
                                                            // Access the element with ID "instdate" using JavaScript (assuming you have access to it)
                                                            const instdateElement = document
-                                                                        .getElementById("instdate");
+                                                                         .getElementById("instdate");
 
                                                            // Set the min attribute of the element to the updated date
                                                            instdateElement.setAttribute("max",
                                                                         updatedDate);
+                                                    }
                                                     }
                                                      //alert(d[8][1]);//Grade Comp
                                                      //alert(d[13]);//Grade Comp end;
@@ -545,11 +554,11 @@ input[type="radio"] {
                                                         if (d[14][i - 8] == null) {
                                                             d[14][i - 8] = 0;
                                                         }
-                                                        var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8]).toFixed(2);
+                                                         var no = (+(d[i][1] * d[2] / 100) - +d[14][i - 8]).toFixed(2);
                                                         total += parseFloat(d[i][1] * d[2] / 100);
                                                         good += parseFloat(no);
                                                         console.log(parseFloat(d[i][1] * d[2] / 100) - parseFloat(d[14][i - 8]));
-                                                        contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>" +
+                                                         contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>" +
                                                             d[i][0] +
                                                             "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
                                                             (d[i][1] * d[2] / 100) +
@@ -570,15 +579,18 @@ input[type="radio"] {
                                                      contentToDisplay += "<p>Allowed Qty: <span style='color: blue;'>"
                                                                   + d[6] + "</span></p>";
                                                     /*  contentToDisplay += "<p>Date of Issue: <span style='color: blue;'>"
-                                                                    + d[16] + "</span></p>"; */
+                                                                   + d[16] + "</span></p>"; */
+                                                              if(d[7]!=""){
                                                     var dateParts = document
                                                                   .getElementById("instdate").value
                                                                   .split("-");
 
                                                     var formattedDate = dateParts[2] + "-"
                                                                   + dateParts[1] + "-" + dateParts[0]; //DD_MM_YYYY form
+                                                                  
                                                      contentToDisplay += "<p>Last Date of Shipment: <span style='color: blue;'>"
-                                                                  + formattedDate + "</span></p>";
+                                                                  + formattedDate + "</span></p>";}
+                                                    
 
                                                      contentToDisplay += "<br><h1 style='text-align: center; text-decoration: underline; font-weight: bold;'>DI's Against this Contract</h1><br>";
                                                      contentToDisplay += "<table style='border: 1px solid black; width: 100%; text-align: center;'><tr><th style='border: 1px solid black; width: 20%;  text-align: center;'>Previous HO DI's</th><th style='border: 1px solid black; width: 20%;  text-align: center;'>Issue Date</th><th style='border: 1px solid black; width: 20%;  text-align: center;'>To</th><th style='border: 1px solid black; width: 40%;  text-align: center;'>Quantity(Qtls)</th></tr>";
@@ -673,57 +685,56 @@ input[type="radio"] {
                                                                                                   });
                                                                                }
 
-                                                                         });
+                                                                        });
 
                                        });
        </script>
 
 <script>
-    // Ensure DOM is ready before executing JavaScript
-    $(document).ready(function() {
-        // DI No. generation
-        $("#region").on("change", function() {
-            /* var cp = $("#cropyear").val(); */
-            //alert();
-            var crp = '<%= (String)session.getAttribute("currCropYear") %>'; 
 
-            var reg = this.value;
-           // alert(crp);
-            $.ajax({
-                type: "GET",
-                url: "countHo.obj",
-                data: {
-                    "reg": reg
-                },
-                success: function(result) {
-                    try {
-                        var data = parseInt(result); // Assuming the result is a number
-                        if (isNaN(data)) {
-                            throw new Error("Invalid data received");
-                        }
-                        
-                        data = data + 1;
-                        var DI;
-                        if (data < 10)
-                            DI = crp + "/" + reg + "00" + data;
-                        else if (data < 100) // corrected the condition to data < 100
-                            DI = crp + "/" + reg + "0" + data;
-                        else
-                            DI = crp + "/" + reg + data;
-
-                        document.getElementById("uniq").value = DI;
-                    } catch (e) {
-                        console.error("Error processing response:", e);
-                        // Handle error condition here, e.g., display a message to the user
+$(document).ready(function() {
+    // DI No. generation
+    $("#region").on("change", function() {
+        var crp = '<%= (String)session.getAttribute("currCropYear") %>'; // Fetch current crop year from session
+        var reg = this.value; // Get selected region value
+        
+        $.ajax({
+            type: "GET",
+            url: "countHo.obj",
+            data: {
+                "reg": reg
+            },
+            success: function(result) {
+                try {
+                    var data = parseInt(result); // Parse the result as an integer
+                    if (isNaN(data)) {
+                        throw new Error("Invalid data received"); // Handle unexpected data
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX error:", status, error);
-                    // Handle AJAX error here, e.g., display a message to the user
+                    
+                    data = data + 1; // Increment the received data
+                    var DI;
+                    if (data < 10) {
+                        DI = crp + "/" + reg + "00" + data;
+                    } else if (data < 100) {
+                        DI = crp + "/" + reg + "0" + data;
+                    } else {
+                        DI = crp + "/" + reg + data;
+                    }
+
+                    $("#uniq").val(DI); // Update the value of element with id "uniq"
+                } catch (e) {
+                    console.error("Error processing response:", e); // Log any errors to console
+                    // Handle error condition here, e.g., display a message to the user
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error); // Log AJAX errors to console
+                // Handle AJAX error here, e.g., display a message to the user
+            }
         });
     });
+});
+
 </script>
 
        <script>
@@ -775,7 +786,7 @@ input[type="radio"] {
                            document.getElementById("misQty").innerText = "Allocated quantity should be less than or equal to remaining quantity";
                            document.getElementById("misQty").style.color = "red";
 
-                           // Set a timer to make the message vanish after 5 seconds (5000 milliseconds)
+                          // Set a timer to make the message vanish after 5 seconds (5000 milliseconds)
                           setTimeout(function() {
                                  document.getElementById("misQty").innerText = "";
                           }, 8000);
@@ -795,7 +806,7 @@ input[type="radio"] {
                     $("input:radio:checked").click();
 
                     $("input:radio").click(function() {
-                          if ($(this).val() == "head") {
+                           if ($(this).val() == "head") {
                                  /*  $("#head").show(); */
                                  $("#dpclabel").hide();
                                  $("#dpc_div").hide();

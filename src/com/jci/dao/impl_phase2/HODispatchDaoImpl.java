@@ -107,15 +107,21 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
                              SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
                              Date date1;
-                             try {
-                                           date1 = sdfInput.parse(list3);
-                                           SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
-                                           String formattedDate = sdfOutput.format(date1);
-                                           result.add(formattedDate);
+                             if(list3.length()==0) {
+                                           result.add(list3);
+                             }             
+                             else {
+                                           try {
+                                                          date1 = sdfInput.parse(list3);
+                                                          SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
+                                                          String formattedDate = sdfOutput.format(date1);
+                                                          result.add(formattedDate);
 
-                             } catch (ParseException e) {
-                                           // TODO Auto-generated catch block
-                                           e.printStackTrace();
+                                           } catch (ParseException e) {
+                                                          // TODO Auto-generated catch block
+                                                          e.printStackTrace();
+                                           }
+                                           
                              }
                              
               
