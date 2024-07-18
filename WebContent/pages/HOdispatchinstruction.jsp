@@ -480,7 +480,7 @@ input[type="radio"] {
                                                      //alert(d[4]);//Label name
                                                      document.getElementById("fc").value = d[5];
                                                      document.getElementById("qty").value = d[6];
-                                                    alert(data)
+                                                   // alert(data)
                                                     if (d[15] == "Letter_of_Credit") {
 
                                                             document.getElementById("instdate")
@@ -684,11 +684,11 @@ input[type="radio"] {
         // DI No. generation
         $("#region").on("change", function() {
             /* var cp = $("#cropyear").val(); */
-            alert();
+            //alert();
             var crp = '<%= (String)session.getAttribute("currCropYear") %>'; 
 
             var reg = this.value;
-            alert(crp);
+           // alert(crp);
             $.ajax({
                 type: "GET",
                 url: "countHo.obj",

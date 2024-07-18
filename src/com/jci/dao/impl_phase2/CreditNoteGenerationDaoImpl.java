@@ -236,15 +236,29 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 		return (List<String>) currentSession().createSQLQuery(sqlString).list();
 	}
 
+//	@Override
+//	public List<String> getAllContractNos(String millCode) {
+//		String sql = "SELECT DISTINCT a.Contract_no from jcicontract a\r\n"
+//				+ "LEFT JOIN jcicredit_note d ON d.Contract_no = a.Contract_no\r\n"
+//				+ "LEFT JOIN jcicredit_note_settled e ON e.Contract_no = a.Contract_no\r\n"
+//				+ "LEFT JOIN jcidemand_note f ON f.Contract_no = a.Contract_no\r\n" + "where a.Mill_code ='" + millCode
+//				+ "'";
+//		return (List<String>) currentSession().createSQLQuery(sql).list();
+//	}
 	@Override
-	public List<String> getAllContractNos(String millCode) {
-		String sql = "SELECT DISTINCT a.Contract_no from jcicontract a\r\n"
-				+ "LEFT JOIN jcicredit_note d ON d.Contract_no = a.Contract_no\r\n"
-				+ "LEFT JOIN jcicredit_note_settled e ON e.Contract_no = a.Contract_no\r\n"
-				+ "LEFT JOIN jcidemand_note f ON f.Contract_no = a.Contract_no\r\n" + "where a.Mill_code ='" + millCode
-				+ "'";
-		return (List<String>) currentSession().createSQLQuery(sql).list();
-	}
+    public List<String> getAllContractNos(String millCode) {
+          String sql ="SELECT DISTINCT C.Contract_no " +
+             "FROM jcicredit_note C " +
+             "INNER JOIN jcicontract a ON C.Contract_no = a.Contract_no " +
+             "WHERE a.Mill_code = '"+millCode+"' " +
+             "UNION " +
+             "SELECT DISTINCT d.Contract_no " +
+             "FROM jcidemand_note d " +
+             "INNER JOIN jcicontract a ON d.Contract_no = a.Contract_no " +
+             "WHERE a.Mill_code = '"+millCode+"'";
+          return (List<String>) currentSession().createSQLQuery(sql).list();
+    }
+
 
 
 	

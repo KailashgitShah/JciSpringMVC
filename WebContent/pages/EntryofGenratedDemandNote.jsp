@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			            success: function (result) {
 			               
 			            	 var data = JSON.parse(result);
-			                alert(data);
+			            //    alert(data);
 			                var Payment_due_date_str = data[0][1]; // Assuming '23-06-2024'
 			                var Payment_date_str = data[0][5]; // Assuming '13-06-2024'
 
@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			                    var timeDifference = Math.abs(Payment_due_date.getTime() - Payment_date.getTime());
 			                    var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 
-			                    alert("Payment due date: " + Payment_due_date_iso + "\nPayment date: " + Payment_date_iso + "\nDays difference: " + daysDifference);
+			                  //  alert("Payment due date: " + Payment_due_date_iso + "\nPayment date: " + Payment_date_iso + "\nDays difference: " + daysDifference);
 			                } else {
 			                    alert("Invalid date format detected.");
 			                }
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			                $('#PaymentRef1').val(data[0][3]);
 			                $('#Contracted_Qty').val(data[0][4]);
 			               $("#q").val(data[0][5]);//Payment date
-			               alert();
+			             //  alert();
 			               if (data[0][2] === null) {
 			            	   $('#CancellationDate1').val(data[0][5]);
 			               }

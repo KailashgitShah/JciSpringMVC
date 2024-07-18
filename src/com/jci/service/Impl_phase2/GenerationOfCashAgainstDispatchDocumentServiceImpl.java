@@ -51,7 +51,7 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 	}
 	
 	@Override
-	public List<Object> contractonmill1(String millname) {
+	public List<Object[]> contractonmill1(String millname) {
 		
 		return generationOfCashAgainstDispatchDocumentdao.contractonmill1(millname);
 	}
@@ -107,6 +107,11 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 	@Override
 	public List<Object[]> fetchMill_Name() {
 		return generationOfCashAgainstDispatchDocumentdao.fetchMill_Name();
+	}
+	@Override
+	public void update(String topSheetGeneratedId , String fileNameboe ,  String fileNameTopSheetNL) {
+		 generationOfCashAgainstDispatchDocumentdao.update(topSheetGeneratedId , fileNameboe , fileNameTopSheetNL);
+		
 	}
 
 

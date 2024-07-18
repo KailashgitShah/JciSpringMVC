@@ -144,7 +144,9 @@ th {
 										<tr>
 										<td  class="sorting_1"><%=i%></td>
 										 <td>${item.getBillOfSupplyNo()}</td>
-										<td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
+										<%-- <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td> --%>
+										
+																			<td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getBoeNl()}"  class="btn btn-primary" target="_blank"> View Document</a></button></td>
 										</tr>
 										<%i++; %>
 									</c:forEach> 

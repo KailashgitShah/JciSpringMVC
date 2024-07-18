@@ -212,8 +212,8 @@
 function myFunc(){
 	var actual = $("#DpcEndWt").val();
 	var net = $("#DPCNetqty").val();
-	alert("Actual"+actual);
-	alert("Net"+net);
+	//alert("Actual"+actual);
+	//alert("Net"+net);
 	if(net === actual) {return true;}
 	 var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight" ;
      var errorDiv = $("<div>").text(errorMessage).css({

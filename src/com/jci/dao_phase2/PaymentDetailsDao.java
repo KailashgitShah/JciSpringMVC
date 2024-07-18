@@ -30,4 +30,5 @@ public interface PaymentDetailsDao {
 		  public  List<Object[]>millnamecontractvise(String st);
 		  public  List<Object>PreviousInstruValue(String st);
 		  public void remark(String remark,String  con_No,int id);
+		public void deleteupdate(String contract2, int payid);
 }

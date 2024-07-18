@@ -226,7 +226,7 @@ $(document).ready(function() {
             url: 'listofLCBOS.obj', 
             data: { "serialno": id},
             success: function(data) {
-            	alert(data);
+            
             	var dataArray = JSON.parse(data);
 
                 // Clear the existing rows in the table body

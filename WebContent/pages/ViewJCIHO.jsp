@@ -2,8 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
 <%@page import="com.jci.model.ZoneModel"%>
-<%@page import="com.jci.model.VerifyFarmerModel"%>
-<%@page import="com.jci.model.FarmerRegModelDTO"%>
+
 <%@page import="com.jci.model.StateList"%>
 <%@page isELIgnored="false"%>
 <%@page import="java.math.BigDecimal"%>

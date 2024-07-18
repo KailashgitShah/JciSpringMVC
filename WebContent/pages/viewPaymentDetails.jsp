@@ -196,10 +196,11 @@ th {
                                                                    
                                                             <%--   <td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
                                                             <%--   <td><%= entryPaymentDetailsModel.getSupportingDocument() %></td> --%>
-                                         <td>
-                                                                 <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>"
-                                                                    class="btn btn-primary btn-sm" target="_blank"> View Supporting docs</a>
-                                                             </td>
+                                       <td>
+								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
+								              <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->
+								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>
+								        </td>
                                                                    
 
 

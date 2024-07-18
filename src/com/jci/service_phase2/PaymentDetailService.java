@@ -36,4 +36,5 @@ public interface PaymentDetailService {
 		  public  List<Object>PreviousInstruValue(String  st);
 		  
 		  public void remark(String cont_no,String  con_No,int id);
+		public void deleteupdate(String contract2, int payid);
 }

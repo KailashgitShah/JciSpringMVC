@@ -246,7 +246,7 @@ function handleRejection(settleId, file) {
 	<script type="text/javascript">
 	$("#setId").on("change", function() {
 	    var setId = $(this).val(); // Corrected line
-	    alert(setId);
+	    //alert(setId);
 	    $.ajax({
 	        url: 'settlementFA.obj',
 	        method: 'GET', // Assuming you want to use GET method
@@ -373,7 +373,7 @@ $("#form2").append(confirmButtonHTML);
 	});
 	// Function for Confirm action
 	function confirmAction() {
-	    alert("Confirmed"); 
+	   // alert("Confirmed"); 
 	    var setId = $("#setId").val();
 	    
 	    
@@ -405,17 +405,17 @@ $("#form2").append(confirmButtonHTML);
             }, 5000);
 	    }
 	    else{
-	    alert(setId+"-----"+fileInput);
+	   // alert(setId+"-----"+fileInput);
 	    handleConfirmation(setId,fileInput);
 	    }
 	}
 
 	// Function for Reject action
 	function rejectAction() {
-	    alert("Rejected");
+	  //  alert("Rejected");
 	    var setId = $("#setId").val();
 	    
-	    alert(setId+"-----");
+	  //  alert(setId+"-----");
 	 /*    const fileInput = $('#fileUpload')[0].files[0]; */
 	   /*  if (fileInput === undefined || fileInput === null) {
 	        var errorMessage = "Please upload the file for confirmation.";
@@ -444,7 +444,7 @@ $("#form2").append(confirmButtonHTML);
             }, 5000);
 	    }
 	    else{
-	    alert(setId+"-----");
+	   // alert(setId+"-----");
 	    handleRejection(setId);
 	    }
 	   
@@ -458,7 +458,7 @@ $("#form2").append(confirmButtonHTML);
 	    var formData = new FormData();
 	    formData.append('settleId', settleId);
 	    formData.append('file', file);
-		alert();
+		//alert();
 	    $.ajax({
 	        url: 'acceptClaim.obj',
 	        method: 'POST', // Assuming you want to use POST method for file upload

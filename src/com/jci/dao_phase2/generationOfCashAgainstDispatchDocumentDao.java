@@ -13,7 +13,7 @@ public interface generationOfCashAgainstDispatchDocumentDao {
 	 public List<Object[]> listdetailsbillofsuppllycash(String st);
 	 public List<Object[]> listdetailsofpaymemt1(String st);
 	 public List<Object[]>  listOfTopSheetDetails();
-	 public List<Object> contractonmill1(String millname);
+	 public List<Object[]> contractonmill1(String millname);
 	 public void create(TopsheetDetailsModel topSheet );
 	  public   String topSheetId();
 	  public List<TopsheetDetailsModel> getAlltopsheetdata();
@@ -22,5 +22,6 @@ public interface generationOfCashAgainstDispatchDocumentDao {
 	  public List<TopsheetDetailsModel>getAlldetails(String topSheetIdGenerated);
 	  public Date  getInstrumentDate(String ContractNo);
 	public List<Object[]> fetchMill_Name();
+	 public void update(String topSheetGeneratedId ,String fileNameboe ,String fileNameTopSheetNL);
 	  
 }

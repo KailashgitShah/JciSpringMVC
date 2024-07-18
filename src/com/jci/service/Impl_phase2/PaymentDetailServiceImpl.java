@@ -132,6 +132,10 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
 		
 		return paymentDetailsdao.difrencecandsum(st);
 	}
+	@Override
+	public void deleteupdate(String contract2, int payid) {
+		 paymentDetailsdao.deleteupdate(contract2 , payid);
+	}
 	
 
 }

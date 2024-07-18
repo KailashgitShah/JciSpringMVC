@@ -3099,9 +3099,11 @@ public class Controller_V {
 				String Branch = request.getParameter("Branch");
 				String BankName = request.getParameter("BankName");
 				String payment = request.getParameter("paymenttype");
+			
 
 				String dateofexpiry = request.getParameter("dateofexpiry");
 				String dateofship = request.getParameter("dateofship");
+				String Millnameletest = request.getParameter("millname234");
 
 				System.err.println(dateofship);
 				System.err.println(dateofexpiry);
@@ -3129,6 +3131,7 @@ public class Controller_V {
 
 				entryPaymentDetailsModel.setInstrumentno(Instrument);
 				entryPaymentDetailsModel.setMillcode(millname65);
+				entryPaymentDetailsModel.setMillname(Millnameletest);
 				entryPaymentDetailsModel.setContractno(st);
 
 				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
@@ -3696,9 +3699,10 @@ public class Controller_V {
 		return mv;
 	}
 
+
 	@RequestMapping(value = "EntryofMillreceiptChild.obj", method = RequestMethod.GET)
-	public ModelAndView entryOfMillReceiptChild(@RequestParam("contarctno") String contractNo,
-			@RequestParam("millName") String millName, @RequestParam("hoDate") String hoDate,
+	public ModelAndView entryOfMillReceiptChild(@RequestParam("challanno") String contractNo,
+			@RequestParam("millName") String millName, @RequestParam("cropyear") String hoDate,
 			HttpServletRequest request) {
 		System.err.println("EntryofMillreceiptChild");
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -3918,62 +3922,69 @@ public class Controller_V {
 				double moistureContent1 = Double.parseDouble(Nomination1);
 				millRecieptModel.setMoistureContent(moistureContent1);
 
-				if (ncvdust != null && i < ncvdust.length && ncvdust[i] != null && !ncvdust[i].equals("null")) {
-					String ncvdust1 = ncvdust[i];
-					System.err.println(ncvdust1);
-					double NCV_Percentage1 = Double.parseDouble(ncvdust1);
 
-					double Ncv_qtyconverted = NCV_Percentage1 / Actual_Qty1;
-					String formatted = String.format("%.2f", Ncv_qtyconverted);
 
-					double roundedValue = Double.parseDouble(formatted);
-					millRecieptModel.setNCV_percentage(roundedValue);
-					millRecieptModel.setNCV_qty(flag);
-				} else if (NCVamt != null && i < NCVamt.length && NCVamt[i] != null && !NCVamt[i].equals("null")) {
-					String NCVamt1 = NCVamt[i];
-					System.err.println(NCVamt1);
-					double NCV_Qty1 = Double.parseDouble(NCVamt1);
+			   
+				// Assuming 'flag' and 'Actual_Qty1' are defined elsewhere in your code
+				// Loop index 'i' should be defined as per your context
 
-					millRecieptModel.setNCV_qty(flag);
-					millRecieptModel.setNCV_percentage(NCV_Qty1);
-				} else {
-					// Handle other cases
-					if (NCVamt == null || i >= NCVamt.length || NCVamt[i] == null || NCVamt[i].equals("null")) {
-						millRecieptModel.setNCV_percentage(flag);
-					}
-					if (ncvdust == null || i >= ncvdust.length || ncvdust[i] == null || ncvdust[i].equals("null")) {
-						millRecieptModel.setNCV_qty(flag);
-					}
+				
+				String NCVamt1 = NCVamt[i];
+				System.err.println(NCVamt1);
+				double NCV_Qty1 = Double.parseDouble(NCVamt1);
+				millRecieptModel.setNCV_qty(flag);
+				millRecieptModel.setNCV_percentage(NCV_Qty1);
+				
+				
+				if (NCV_Qty1 == 0) {
+				    String ncvdust1 = ncvdust[i];
+				    System.err.println(ncvdust1);
+				    double NCV_Percentage1 = Double.parseDouble(ncvdust1);
+				    double Ncv_qtyconverted = NCV_Percentage1 / Actual_Qty1;
+				    String formattedNcv = String.format("%.2f", Ncv_qtyconverted);
+				    double roundedNcvValue = Double.parseDouble(formattedNcv);
+				    millRecieptModel.setNCV_percentage(roundedNcvValue);
+				}
+				
+//				millRecieptModel.setNCV_qty(flag);
+
+			
+
+				if (NCVamt == null || i >= NCVamt.length || NCVamt[i] == null || NCVamt[i].equals("null")) {
+				    millRecieptModel.setNCV_percentage(flag);
+				}
+				if (ncvdust == null || i >= ncvdust.length || ncvdust[i] == null || ncvdust[i].equals("null")) {
+				    millRecieptModel.setNCV_qty(flag);
+
 				}
 
-				if (dustAmt != null && i < dustAmt.length && dustAmt[i] != null && !dustAmt[i].equals("null")) {
+				String dustAmt1 = dustAmt[i];
+				System.err.println(dustAmt1);
+				double dustAmt2 = Double.parseDouble(dustAmt1);
+				millRecieptModel.setDustAmt(dustAmt2);
+				millRecieptModel.setDustQty(flag);
 
-					String dustAmt1 = dustAmt[i];
-					System.err.println(dustAmt1);
-					double dustAmt2 = Double.parseDouble(dustAmt1);
-					millRecieptModel.setDustAmt(dustAmt2);
-					millRecieptModel.setDustQty(flag);
-				} else if (dustQty != null && i < dustQty.length && dustQty[i] != null && !dustQty[i].equals("null")) {
-					String dustQty1 = dustQty[i];
-					System.err.println(dustQty1);
-					double dustQty2 = Double.parseDouble(dustQty1);
-					double dust_qtyconverted = dustQty2 / Actual_Qty1;
 
-					String formatted = String.format("%.2f", dust_qtyconverted);
 
-					// Converting formatted string back to double (optional)
-					double roundedValue = Double.parseDouble(formatted);
+				
+				if (dustAmt2 == 0) {
+				String dustQty1 = dustQty[i];
+				System.err.println(dustQty1);
+				double dustQty2 = Double.parseDouble(dustQty1);
+				double dust_qtyconverted = dustQty2 / Actual_Qty1;
+				String formattedDustQty = String.format("%.2f", dust_qtyconverted);
+				double roundedDustQtyValue = Double.parseDouble(formattedDustQty);
+				millRecieptModel.setDustQty(flag);
+				millRecieptModel.setDustAmt(roundedDustQtyValue);
+				}
+				
+				
+				if (dustAmt == null || i >= dustAmt.length || dustAmt[i] == null || dustAmt[i].equals("null")) {
+				    millRecieptModel.setDustAmt(flag);
+				}
+				if (dustQty == null || i >= dustQty.length || dustQty[i] == null || dustQty[i].equals("null")) {
+				    millRecieptModel.setDustQty(flag);
 
-					millRecieptModel.setDustQty(flag);
-					millRecieptModel.setDustAmt(roundedValue);
-				} else {
-					// Handle other cases
-					if (dustAmt == null || i >= dustAmt.length || dustAmt[i] == null || dustAmt[i].equals("null")) {
-						millRecieptModel.setDustAmt(flag);
-					}
-					if (dustQty == null || i >= dustQty.length || dustQty[i] == null || dustQty[i].equals("null")) {
-						millRecieptModel.setDustQty(flag);
-					}
 				}
 
 				millRecieptModel.setHO_di(HO_DINO);
@@ -5727,7 +5738,7 @@ public class Controller_V {
 	public void downloadPDF(@RequestParam("filename") String filename, HttpServletResponse response) {
 		// String imageDirectory = "upload.Imagedownload";
 
-		String imagePath = fcDownoad1 + File.separator + filename;
+		String imagePath =  Genrationofbill + File.separator + filename;
 
 		File imageFile = new File(imagePath);
 
@@ -8321,8 +8332,7 @@ public class Controller_V {
 ////////////////////////////////////////////////////privacy policy page end /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////cash against dispatch document /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-
-
+//
 	@RequestMapping({ "viewCash_against_Dispatch_document" })
 	public ModelAndView viewCash_against_Dispatch_document(final HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -8365,220 +8375,90 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "contrcatforCahAginstDispatchDocument", method = RequestMethod.GET)
 	public String millvisecontrcatforaginst(@RequestParam("millname") String millname) {
-		List<Object> Mill_NameR = generationOfCashAgainstDispatchDocumentService.contractonmill1(millname);
+		List<Object[]> Mill_NameR = generationOfCashAgainstDispatchDocumentService.contractonmill1(millname);
 		// System.err.println("resultList++++++++++" + Mill_NameR);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(Mill_NameR);
 		return resultString;
 	}
-
-	@Value("${upload.BOENONLCJasperReport}")
-	String BOENONLCJasperReport;
-	@Value("${upload.BOENONLCDownload}")
-	String BOENONLCDownload;
-
+	
 	@RequestMapping("downloadBillOfExchangeDocument")
 	public void downloadboedocument(@RequestParam("filename") String filename, HttpServletResponse response)
 			throws JRException {
-		List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(filename);
+		String imagePath = BOENONLCDownload + File.separator + filename;
+//		imageDirectory + File.separator + idn + File.separator + filename;
 
-		String sumofBos = "";
-		double totalinvoiceamount = 0.0;
-		String bosDate = "";
-
-		for (boenonlcDTO pdfBOENONLC1 : pdfBOENONLC) {
-			sumofBos += pdfBOENONLC1.getBos_no();
-
-			if (pdfBOENONLC.indexOf(pdfBOENONLC1) < pdfBOENONLC.size() - 1) {
-				sumofBos += ",";
-			}
-
-			totalinvoiceamount += Double.valueOf(pdfBOENONLC1.getInvoiceValue());
-
-			pdfBOENONLC1.setAllBos(sumofBos);
-			pdfBOENONLC1.setSumInvoice(totalinvoiceamount);
-
-		}
-
-		// Now get the values from the last element in the list
-		boenonlcDTO lastBOENONLC = pdfBOENONLC.get(pdfBOENONLC.size() - 1);
-		String lastAllBos = lastBOENONLC.getAllBos();
-		double lastSumInvoice = lastBOENONLC.getSumInvoice();
-		boenonlcDTO firstBOENONLC = pdfBOENONLC.get(0);
-		firstBOENONLC.setAllBos(lastAllBos);
-		firstBOENONLC.setSumInvoice(lastSumInvoice);
-		String subject = "Submission of our Bill of Supply bearing No." + " " + sumofBos + " " + "dt "
-				+ firstBOENONLC.getBos_date() + " " + "Amounting to " + totalinvoiceamount + " "
-				+ "under CAD/Direct Cash/Pay Order.";
-		firstBOENONLC.setSubject(subject);
-		// Display the last allBos and sumInvoice
-
-		// System.err.println("pdfBOENONLC " + pdfBOENONLC);
-
-		// System.out.println("Last SumInvoice: " + lastSumInvoice);
-
-//					JasperReport jasperReportboe = JasperCompileManager.compileReport("C:\\Users\\Mansi.Gupta\\Documents\\mspcodemerge_1july\\JCI-CMS\\BOENONLC.jrxml");
-		JasperReport jasperReportboe = JasperCompileManager.compileReport(BOENONLCJasperReport);
-		Map<String, Object> parametersboe = new HashMap<String, Object>();
-		// Prepare data sources
-		JRBeanCollectionDataSource dataSourceboe = new JRBeanCollectionDataSource(pdfBOENONLC);
-
-		// Fill JasperPrints
-		JasperPrint jasperPrintboe = JasperFillManager.fillReport(jasperReportboe, parametersboe, dataSourceboe);
-
-		// Set response content type
-
-		response.setContentType("application/pdf");
-
-		// Set filename
-
-		String fileNameboe = "BOE" + filename + ".pdf";
-
-		// Set content disposition to attachment to trigger download
-		response.setHeader("Content-Disposition", "attachment; filename=" + fileNameboe);
-
-		try (OutputStream outboe = response.getOutputStream()) {
-			// Export report to PDF
-			JRPdfExporter exporterboe = new JRPdfExporter();
-			exporterboe.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrintboe);
-			exporterboe.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, outboe);
-			exporterboe.exportReport();
-		} catch (Exception e) {
-			e.printStackTrace(); // Handle exception
-		}
-
-		// Save PDF to a specific path on the server
-		try {
-//					String filePath1 = "C:\\Users\\Mansi.Gupta\\Documents\\filesave" + fileNameboe; // Modify the path accordingly
-			String filePath1 = BOENONLCDownload + fileNameboe;
-			FileOutputStream outputStreamboe = new FileOutputStream(filePath1);
-			JasperExportManager.exportReportToPdfStream(jasperPrintboe, outputStreamboe);
-			outputStreamboe.close();
-			System.out.println("PDF saved at: " + filePath1);
-		} catch (Exception e) {
-			e.printStackTrace(); // Handle exception
-		}
+				File imageFile = new File(imagePath);
+				
+				// Check if the file exists
+				
+				if (imageFile.exists()) {
+				
+				try {
+				
+				// Set the content type based on the file type
+				
+				String contentType = determineContentType(filename);
+				
+				response.setContentType(contentType);
+				
+				// Set the content length and attachment disposition
+				
+				response.setContentLength((int) imageFile.length());
+				
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				
+				response.setHeader("Content-Disposition", "");
+				
+				// Stream the file content to the response
+				
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				
+				OutputStream responseOutputStream = response.getOutputStream();
+				
+				byte[] buffer = new byte[1024];
+				
+				int bytesRead;
+				
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+				
+				responseOutputStream.write(buffer, 0, bytesRead);
+				
+				}
+				
+				fileInputStream.close();
+				
+				responseOutputStream.close();
+				
+				} catch (IOException e) {
+				
+				// Handle IO exception
+				
+				e.printStackTrace();
+				
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				
+				}
+				
+				} else {
+				
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				
+				}
+		
 
 	}
 
+	
 	@Value("${upload.TopSheetNONLCJasperReport}")
 	String TopSheetNONLCJasperReport;
 	@Value("${upload.TopSheetNONLCDownload}")
 	String TopSheetNONLCDownload;
-
-	@RequestMapping("downloadTopSheet")
-	public void downloadTopSheet(@RequestParam("filename") String filename, HttpServletResponse response)
-			throws JRException {
-		List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService
-				.getTopSheetDatacashAgainstDispatchDocument(filename);
-
-		double totalQuantity = 0.0;
-		double totalAmount = 0.0;
-
-		for (TopSheetDto TopSheet1 : pdfTopSheet) {
-//							totalQuantity  += Double.valueOf(TopSheet1.getQuantity());
-			totalAmount += Double.valueOf(TopSheet1.getInvoiceValue());
-//							TopSheet1.setTotalQuantity(totalQuantity);
-			TopSheet1.setTotalAmount(totalAmount);
-		}
-		Double totalQty = 0.0;
-		for (TopSheetDto TopSheet2 : pdfTopSheet) {
-			String challan = TopSheet2.getChallan_no();
-			// System.err.println(challan + "challan");
-			String nominal_qty = generationOfCashAgainstDispatchDocumentService.getNominalWt(challan);
-
-			// System.err.println(nominal_qty + "nominal_qty");
-			totalQty += Double.valueOf(nominal_qty);
-
-			TopSheet2.setTotalQuantity(totalQty);
-			TopSheet2.setQuantity(nominal_qty);
-
-			Date instrumentDate = generationOfCashAgainstDispatchDocumentService
-					.getInstrumentDate(TopSheet2.getFullContractNumber());
-			// System.err.println( instrumentDate + "instrumentDate instrumentDate" +
-			// TopSheet2.getFullContractNumber());
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			String formattedDate = sdf.format(instrumentDate);
-			TopSheet2.setInstrument_Date(formattedDate);
-			// TopSheet2.setInstrument_Date(instrumentDate);
-
-		}
-
-		// System.err.println("r"+pdfTopSheet);
-
-		JasperReport jasperReport1 = JasperCompileManager.compileReport(TopSheetNONLCJasperReport);
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		// Prepare data sources
-		JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
-
-		// Fill JasperPrints
-		JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-
-		// Set response content type
-
-		response.setContentType("application/pdf");
-
-		// Set filename
-
-		String fileName = "TopSheet" + filename + ".pdf";
-
-		// Set content disposition to attachment to trigger download
-		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-
-		try (OutputStream out = response.getOutputStream()) {
-			// Export report to PDF
-			JRPdfExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
-			exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
-			exporter.exportReport();
-		} catch (Exception e) {
-			e.printStackTrace(); // Handle exception
-		}
-
-		// Save PDF to a specific path on the server
-		try {
-			String filePath = TopSheetNONLCDownload + fileName; // Modify the path accordingly
-			FileOutputStream outputStream = new FileOutputStream(filePath);
-			JasperExportManager.exportReportToPdfStream(jasperPrint1, outputStream);
-			outputStream.close();
-			// System.out.println("PDF saved at: " + filePath);
-		} catch (Exception e) {
-			e.printStackTrace(); // Handle exception
-		}
-
-	}
-
-	@RequestMapping("viewtopSheet")
-	public ModelAndView ViewTopSheet(Model model, HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("viewCashAgainstDispatchDocument");
-		String username = (String) request.getSession().getAttribute("usrname");
-
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService
-				.getAlltopsheetdata();
-		// Collections.reverse(AllList);
-		model.addAttribute("topsheetdata", AllList);
-
-		return mv;
-	}
-
-	@RequestMapping(value = "billOfSupplyDetails", method = RequestMethod.GET)
-	public ModelAndView billOfSupplyDetails(HttpServletRequest request, Model model) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		ModelAndView mv = new ModelAndView("cadDetails");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
-
-		String topSheetId = request.getParameter("id");
-		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService
-				.getAlldetails(topSheetId);
-		model.addAttribute("topSheetDetails", AllList);
-		return mv;
-	}
-
+	@Value("${upload.BOENONLCJasperReport}")
+	String BOENONLCJasperReport;
+	@Value("${upload.BOENONLCDownload}")
+	String BOENONLCDownload;
 	@RequestMapping("savecashAgainstDispatchDocument")
 	public ModelAndView savecashAgainstDispatchDocument(final HttpServletRequest request, HttpServletResponse response)
 			throws JRException {
@@ -8682,11 +8562,224 @@ public class Controller_V {
 			}
 
 		}
+    //////////////////////////////////////////// boe non lc save ////////////////////////////////////////////////
+		List<boenonlcDTO> pdfBOENONLC = generationOfCashAgainstDispatchDocumentService.getBOENONLC(topSheetGeneratedId);
+
+		String sumofBos = "";
+		double totalinvoiceamount = 0.0;
+		String bosDate1 = "";
+
+		for (boenonlcDTO pdfBOENONLC1 : pdfBOENONLC) {
+			sumofBos += pdfBOENONLC1.getBos_no();
+
+			if (pdfBOENONLC.indexOf(pdfBOENONLC1) < pdfBOENONLC.size() - 1) {
+				sumofBos += ",";
+			}
+
+			totalinvoiceamount += Double.valueOf(pdfBOENONLC1.getInvoiceValue());
+
+			pdfBOENONLC1.setAllBos(sumofBos);
+			pdfBOENONLC1.setSumInvoice(totalinvoiceamount);
+
+		}
+
+		// Now get the values from the last element in the list
+		boenonlcDTO lastBOENONLC = pdfBOENONLC.get(pdfBOENONLC.size() - 1);
+		String lastAllBos = lastBOENONLC.getAllBos();
+		double lastSumInvoice = lastBOENONLC.getSumInvoice();
+		boenonlcDTO firstBOENONLC = pdfBOENONLC.get(0);
+		firstBOENONLC.setAllBos(lastAllBos);
+		firstBOENONLC.setSumInvoice(lastSumInvoice);
+		String subject = "Submission of our Bill of Supply bearing No." + " " + sumofBos + " " + "dt "
+				+ firstBOENONLC.getBos_date() + " " + "Amounting to " + totalinvoiceamount + " "
+				+ "under CAD/Direct Cash/Pay Order.";
+		firstBOENONLC.setSubject(subject);
+		// Display the last allBos and sumInvoice
+
+
+		String fileNameboe =  topSheetGeneratedId + "BOENL" +".pdf";	
+		String filePathboenonlc = BOENONLCDownload +File.separator+ fileNameboe;
+		System.err.println(filePathboenonlc + " r");
+
+		try {
+			JasperReport jasperReport1 = JasperCompileManager.compileReport(BOENONLCJasperReport);
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			// Prepare data sources
+			JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfBOENONLC);
+			// Fill JasperPrints
+			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+			// Create the file on the server
+			JasperExportManager.exportReportToPdfFile(jasperPrint1, filePathboenonlc);
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+		/////////////////////////////////////top Sheet non lc save ////////////////////////////////
+		
+		List<TopSheetDto> pdfTopSheet = generationOfCashAgainstDispatchDocumentService
+				.getTopSheetDatacashAgainstDispatchDocument(topSheetGeneratedId);
+
+		double totalQuantity = 0.0;
+		double totalAmount = 0.0;
+
+		for (TopSheetDto TopSheet1 : pdfTopSheet) {
+//							totalQuantity  += Double.valueOf(TopSheet1.getQuantity());
+			totalAmount += Double.valueOf(TopSheet1.getInvoiceValue());
+//							TopSheet1.setTotalQuantity(totalQuantity);
+			TopSheet1.setTotalAmount(totalAmount);
+		}
+		Double totalQty = 0.0;
+		for (TopSheetDto TopSheet2 : pdfTopSheet) {
+			String challantopsheet = TopSheet2.getChallan_no();
+			// System.err.println(challan + "challan");
+			String nominal_qty = generationOfCashAgainstDispatchDocumentService.getNominalWt(challantopsheet);
+
+			// System.err.println(nominal_qty + "nominal_qty");
+			totalQty += Double.valueOf(nominal_qty);
+
+			TopSheet2.setTotalQuantity(totalQty);
+			TopSheet2.setQuantity(nominal_qty);
+
+			Date instrumentDate = generationOfCashAgainstDispatchDocumentService
+					.getInstrumentDate(TopSheet2.getFullContractNumber());
+			// System.err.println( instrumentDate + "instrumentDate instrumentDate" +
+			// TopSheet2.getFullContractNumber());
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String InstrumentformattedDatetopsheet = sdf.format(instrumentDate);
+			TopSheet2.setInstrument_Date(InstrumentformattedDatetopsheet);
+			// TopSheet2.setInstrument_Date(instrumentDate);
+
+		}
+
+		// System.err.println("r"+pdfTopSheet);
+		String fileNameTopSheetNL =  topSheetGeneratedId + "TopSheetNL" + ".pdf";
+		String filePathtop = TopSheetNONLCDownload +File.separator + fileNameTopSheetNL; 
+		try {
+			JasperReport jasperReport1 = JasperCompileManager.compileReport(TopSheetNONLCJasperReport);
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			// Prepare data sources
+			JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(pdfTopSheet);
+			// Fill JasperPrints
+			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+			// Create the file on the server
+			JasperExportManager.exportReportToPdfFile(jasperPrint1, filePathtop);
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+
+
+
+
+		/////////////////////////////////////////////update and save  ////////////////////////////////
+		generationOfCashAgainstDispatchDocumentService.update(topSheetGeneratedId , fileNameboe ,fileNameTopSheetNL );
 
 		return new ModelAndView(new RedirectView("viewtopSheet.obj"));
 		// return viewtopSheet;
 
 	}
+	
+
+	@RequestMapping("downloadTopSheet")
+	public void downloadTopSheet(@RequestParam("filename") String filename, HttpServletResponse response)
+			throws JRException {
+		String imagePath = TopSheetNONLCDownload + File.separator + filename;
+//		imageDirectory + File.separator + idn + File.separator + filename;
+
+				File imageFile = new File(imagePath);
+				
+				// Check if the file exists
+				
+				if (imageFile.exists()) {
+				
+				try {
+				
+				// Set the content type based on the file type
+				
+				String contentType = determineContentType(filename);
+				
+				response.setContentType(contentType);
+				
+				// Set the content length and attachment disposition
+				
+				response.setContentLength((int) imageFile.length());
+				
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				
+				response.setHeader("Content-Disposition", "");
+				
+				// Stream the file content to the response
+				
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				
+				OutputStream responseOutputStream = response.getOutputStream();
+				
+				byte[] buffer = new byte[1024];
+				
+				int bytesRead;
+				
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+				
+				responseOutputStream.write(buffer, 0, bytesRead);
+				
+				}
+				
+				fileInputStream.close();
+				
+				responseOutputStream.close();
+				
+				} catch (IOException e) {
+				
+				// Handle IO exception
+				
+				e.printStackTrace();
+				
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				
+				}
+				
+				} else {
+				
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				
+				}
+		
+
+	}
+
+
+
+	@RequestMapping("viewtopSheet")
+	public ModelAndView ViewTopSheet(Model model, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("viewCashAgainstDispatchDocument");
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService
+				.getAlltopsheetdata();
+		// Collections.reverse(AllList);
+		model.addAttribute("topsheetdata", AllList);
+
+		return mv;
+	}
+
+	@RequestMapping(value = "billOfSupplyDetails", method = RequestMethod.GET)
+	public ModelAndView billOfSupplyDetails(HttpServletRequest request, Model model) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("cadDetails");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		String topSheetId = request.getParameter("id");
+		List<TopsheetDetailsModel> AllList = (List<TopsheetDetailsModel>) generationOfCashAgainstDispatchDocumentService
+				.getAlldetails(topSheetId);
+		model.addAttribute("topSheetDetails", AllList);
+		return mv;
+	}
+
+
 
 	@ResponseBody
 	@RequestMapping(value = "listOfTopSheetDetails", method = RequestMethod.GET)
@@ -8711,15 +8804,12 @@ public class Controller_V {
 		return resultString;
 	}
 
-	@Value("${upload.paymentDocumentDownload}")
-	String paymentDocumentDownload;
-
 	@RequestMapping("downloadSupportingDocumentenPaymentArrangement")
 	public void downloadDocumentpayment1(@RequestParam("filename") String filename, HttpServletResponse response) {
 
-		String imagePath = paymentDocumentDownload + File.separator + filename;
+		String imagePath = PaymentDocument + File.separator + filename;
 //							imageDirectory + File.separator + idn + File.separator + filename;
-
+		System.out.println();
 		File imageFile = new File(imagePath);
 
 		// Check if the file exists
@@ -8809,11 +8899,11 @@ public class Controller_V {
 	public void downloadDocumentcashAagainstDispatchDocumentContract(@RequestParam("filename") String filename,
 			HttpServletResponse response) {
 
-//					String imageDirectory = millAcceptDownolad; // directory path
-//					String idn = filename.split("C")[0];
-		String imagePath = authorizedContracts + File.separator + filename;
+//		String imageDirectory = millAcceptDownolad; // directory path
+		String idn = filename.split("C")[0];
+		String imagePath = authorizedContracts + File.separator + idn + File.separator + filename;
 //							imageDirectory + File.separator + idn + File.separator + filename;
-
+		System.err.println(imagePath);
 		File imageFile = new File(imagePath);
 
 		// Check if the file exists
@@ -8877,6 +8967,10 @@ public class Controller_V {
 
 //////////////////////////////////////////////////////////// cash against dispatch document end//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+	
+	
 //	
 	@ResponseBody
 	@RequestMapping(value = { "fetchChallan" }, method = { RequestMethod.GET })
@@ -9404,80 +9498,9 @@ public class Controller_V {
 	}
 
 	@RequestMapping("downloadSupportingbosDoc")
-	public void downloadDocumentpayment(@RequestParam("filename") String filename, HttpServletResponse response) {
+	public void downloadSupportingbosDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
 		// String imagePath = paymentDocumentDownload;
-		String imagePath = fcDownoad + File.separator + filename;
-		// imageDirectory + File.separator + idn + File.separator + filename;
-
-		File imageFile = new File(imagePath);
-
-		// Check if the file exists
-
-		if (imageFile.exists()) {
-
-			try {
-
-				// Set the content type based on the file type
-
-				String contentType = determineContentType(filename);
-
-				response.setContentType(contentType);
-
-				// Set the content length and attachment disposition
-
-				response.setContentLength((int) imageFile.length());
-
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-
-				response.setHeader("Content-Disposition", "");
-
-				// Stream the file content to the response
-
-				FileInputStream fileInputStream = new FileInputStream(imageFile);
-
-				OutputStream responseOutputStream = response.getOutputStream();
-
-				byte[] buffer = new byte[1024];
-
-				int bytesRead;
-
-				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-
-					responseOutputStream.write(buffer, 0, bytesRead);
-
-				}
-
-				fileInputStream.close();
-
-				responseOutputStream.close();
-
-			} catch (IOException e) {
-
-				// Handle IO exception
-
-				e.printStackTrace();
-
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
-			}
-
-		} else {
-
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-
-		}
-
-	}
-
-	@Value("${upload.ConsigneeDocDownloadForSettlementOfCNDN}")
-	String ConsigneeDocDownloadForSettlementOfCNDN;
-
-	@RequestMapping("downloadSupportingConsigneeDoc")
-	public void downloadSupportingConsigneeDoc(@RequestParam("filename") String filename,
-			HttpServletResponse response) {
-
-		String imagePath = ConsigneeDocDownloadForSettlementOfCNDN + File.separator + filename;
+		String imagePath = Genrationofbill + File.separator + filename;
 		// imageDirectory + File.separator + idn + File.separator + filename;
 
 		File imageFile = new File(imagePath);
@@ -9764,53 +9787,59 @@ public class Controller_V {
 		return mv;
 	}
 
-	@RequestMapping(value = { "editPaymentDetail" }, method = { RequestMethod.GET })
-	public ModelAndView editPaymentDetail(final HttpServletRequest request) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		if (username == null) {
-			return new ModelAndView("index");
-		}
 
-		ModelAndView mv = new ModelAndView("editPaymentDetails");
-		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
-		List<Object[]> getcontractList2 = this.paymentDetailService.Millname();
+   	
+   	@RequestMapping(value = {"editPaymentDetail"}, method = { RequestMethod.GET })
+   	public ModelAndView editPaymentDetailupdation(final HttpServletRequest request) {
+   		String username = (String) request.getSession().getAttribute("usrname");
+   		if (username == null) {
+   			return new ModelAndView("index");
+   		}
+   		
+   		
+   		ModelAndView mv = new ModelAndView("editPaymentDetails");
+   		List<Object> getcontractList1 = this.paymentDetailService.ContractNo();
+   		List<Object[]> getcontractList2 = this.paymentDetailService.Millname();
 
-		mv.addObject("getcontractList1", getcontractList1);
-		mv.addObject("getcontractList2", getcontractList2);
+   		mv.addObject("getcontractList1", getcontractList1);
+   		mv.addObject("getcontractList2", getcontractList2);
+   		String millString=request.getParameter("millname");
+   		
+   		if (request.getParameter("id") != null) {
+   			final int id = Integer.parseInt(request.getParameter("id"));
+   			System.out.println(id+"date########");
+   			final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
+   			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+   			Date date=entryPaymentDetailsModel.getInstdate();
+   			String date1=entryPaymentDetailsModel.getDateofexpiry();
+   			
+   			String date2=entryPaymentDetailsModel.getDateofship();
+   			String date3=entryPaymentDetailsModel.getDateofexpiry();
+   			String milname=entryPaymentDetailsModel.getMillname();
+   			
+   			
+   			String parsed = date.toString().split(" ")[0];
+   			String parsed1 =  date1.toString().split(" ")[0];
+   			String parsed2 = date2.toString().split(" ")[0];
+   			//String parsed3 =  date3.toString().split(" ")[0];
+   			
+   			//final List<PaymentInstrumentModel>paymentInstrumentModel =(List<PaymentInstrumentModel>)paymentInstrumentService.find(id);
+   			mv.addObject("entryPaymentDetailsModel",entryPaymentDetailsModel);
+   			mv.addObject("parsed",  parsed);
+   			mv.addObject("parsed1",  parsed1);
+   			mv.addObject("parsed2",  parsed2);
+   			mv.addObject("id1",  id);
+   			mv.addObject("milname1",  milname);
+   			
+   			//mv.addObject("parsed3",  parsed3);
+   		}
 
-		if (request.getParameter("id") != null) {
-			final int id = Integer.parseInt(request.getParameter("id"));
-			System.out.println(id + "date########");
-			final EntryPaymentDetailsModel entryPaymentDetailsModel = this.paymentDetailService.find(id);
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = entryPaymentDetailsModel.getInstdate();
-			String date1 = entryPaymentDetailsModel.getDateofexpiry();
+   		return mv;
+   	}
+   	
 
-			String date2 = entryPaymentDetailsModel.getDateofship();
-			String date3 = entryPaymentDetailsModel.getDateofexpiry();
-
-			String parsed = date.toString().split(" ")[0];
-			String parsed1 = date1.toString().split(" ")[0];
-			String parsed2 = date2.toString().split(" ")[0];
-			// String parsed3 = date3.toString().split(" ")[0];
-
-			// final List<PaymentInstrumentModel>paymentInstrumentModel
-			// =(List<PaymentInstrumentModel>)paymentInstrumentService.find(id);
-			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
-			mv.addObject("parsed", parsed);
-			mv.addObject("parsed1", parsed1);
-			mv.addObject("parsed2", parsed2);
-			mv.addObject("id1", id);
-
-			// mv.addObject("parsed3", parsed3);
-		}
-
-		return mv;
-	}
-
-	// save the data of payment detail data
 	@RequestMapping("updatePaymentDetail")
-	public ModelAndView updatePaymentDetail(HttpServletRequest request, RedirectAttributes redirectAttributes,
+	public ModelAndView saveentryofPIDupdate(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			@RequestParam("SupportingDocument") final MultipartFile SupportingDocument) {
 
 		final File theDir = new File(PaymentDocument);
@@ -9838,154 +9867,164 @@ public class Controller_V {
 
 		String username = (String) request.getSession().getAttribute("usrname");
 		try {
-			String[] selectedContracts = request.getParameterValues("contract");
-			String[] contractValue2 = request.getParameterValues("contractValue[]");
-			String[] paymentDueDate2 = request.getParameterValues("paymentDueDate[]");
+//               String[] selectedContracts = request.getParameterValues("contract");
+//               String[] contractValue2 = request.getParameterValues("contractValue[]");
+//               String[] paymentDueDate2 = request.getParameterValues("paymentDueDate[]");
 
-			String ratiosJson = request.getParameter("ratios");
-			double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
-			for (int i = 0; i < selectedContracts.length; i++) {
-				String st = selectedContracts[i];
-				double ratio = ratios[i];
-				String contractvalueajax = contractValue2[i];
-				String paymentDueDateajax = paymentDueDate2[i];
-				System.out.println(ratio);
+			String contract2 = request.getParameter("contnoteupd");
+			String contrcatdate = request.getParameter("contrcatdate");
+			String Paaymentduedate = request.getParameter("Paaymentduedate");
+			String paymentid = request.getParameter("paymentid");
+			int payid = Integer.parseInt(paymentid);
+			System.err.println(contract2);
+			System.err.println(contrcatdate);
+			System.err.println(Paaymentduedate);
+			System.err.println(paymentid);
+			// String ratiosJson = request.getParameter("ratios");
+			// double[] ratios = new Gson().fromJson(ratiosJson, double[].class);
+//               for (int i = 0; i <1; i++) {
 
-				String InstrumentValue = request.getParameter("InstrumentValue");
-				double InstrumentValue1 = Double.parseDouble(InstrumentValue);
-				double instvalue = ratio * InstrumentValue1;
-				int intValue1 = (int) instvalue;
+			// String st = selectedContracts[i];
+			// double ratio = ratios[i];
+			// String contractvalueajax = contractValue2[i];
+			// String paymentDueDateajax = paymentDueDate2[i];
+			// System.out.println(ratio);
 
-				String millname65 = request.getParameter("millname65");
-				String Instrument = request.getParameter("Instrument");
-				String instdate = request.getParameter("instdate");
-				String IFSC = request.getParameter("IFSC");
-				String Branch = request.getParameter("Branch");
-				String BankName = request.getParameter("BankName");
-				String payment = request.getParameter("paymenttype");
-				String id = request.getParameter("PaymentId1");
-//							
+			String InstrumentValue = request.getParameter("InstrumentValue");
+			double InstrumentValue1 = Double.parseDouble(InstrumentValue);
+			double instvalue = InstrumentValue1;
+			int intValue1 = (int) instvalue;
 
-				String dateofexpiry = request.getParameter("dateofexpiry");
-				String dateofship = request.getParameter("dateofship");
-				String Pyamentduedate = request.getParameter("payment_dueDate12");
-				String contrcat_value23 = request.getParameter("contrcat_value23");
-				String autorevolvingamount = request.getParameter("autorevolvingamount");
-				// String QtyAllowed = request.getParameter("QtyAllowed");
-				// String originalFilename = SupportingDocument.getOriginalFilename();
+			String millname65 = request.getParameter("millname65");
+			String Instrument = request.getParameter("Instrument");
+			String instdate = request.getParameter("instdate");
+			String IFSC = request.getParameter("IFSC");
+			String Branch = request.getParameter("Branch");
+			String BankName = request.getParameter("BankName");
+			String payment = request.getParameter("paymenttype");
 
-//						 	 String uniqueFilename = generateUniqueFilename(originalFilename);
-////				            File serverFile = new File(theDir, uniqueFilename);
-////							SupportingDocument.transferTo(serverFile);
-//							
+			String dateofexpiry = request.getParameter("dateofexpiry");
+			String dateofship = request.getParameter("dateofship");
 
-//							 // Create unique identifier based on contract details
-//						 	 String uniqueFilename = generateUniqueFilename(originalFilename); 
-//							 File serverFile = new File(theDir,uniqueFilename);
-//							 SupportingDocument.transferTo(serverFile);
-//							 
+			String Millnameletest = request.getParameter("millname234");
+			System.err.println(Millnameletest);
+			System.err.println(dateofship);
+			System.err.println(dateofexpiry);
 
-				// Conditionally set autorevolvingamount based on payment type
+			String Pyamentduedate = request.getParameter("payment_dueDate12");
+			String contrcat_value23 = request.getParameter("contrcat_value23");
+			String autorevolvingamount = request.getParameter("autorevolvingamount");
+			// String QtyAllowed = request.getParameter("QtyAllowed");
+			// String originalFilename = SupportingDocument.getOriginalFilename();
 
-				EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
+//                String uniqueFilename = generateUniqueFilename(originalFilename);
+////            File serverFile = new File(theDir, uniqueFilename);
+////                    SupportingDocument.transferTo(serverFile);
+//               
 
-				entryPaymentDetailsModel.setInstrumentno(Instrument);
-				entryPaymentDetailsModel.setMillname(millname65);
-				entryPaymentDetailsModel.setContractno(st);
+//                // Create unique identifier based on contract details
+//                String uniqueFilename = generateUniqueFilename(originalFilename); 
+//                File serverFile = new File(theDir,uniqueFilename);
+//                SupportingDocument.transferTo(serverFile);
+//                
 
-				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
-				entryPaymentDetailsModel.setContract_value(contractvalueajax);
-//							SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-//							Date instdate1 = formatter1.parse(instdate);
-//							entryPaymentDetailsModel.setInstdate(instdate1);
+			// Conditionally set autorevolvingamount based on payment type
 
-//							
-				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-				Date instdate1 = formatter1.parse(instdate);
-//							SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
-//							String instdate3 = formatter2.format(instdate2);
-//							Date instdate1 = formatter2.parse(instdate3);
+			EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 
-				// Set the time portion to midnight
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(instdate1);
-				calendar.set(Calendar.HOUR_OF_DAY, 0);
-				calendar.set(Calendar.MINUTE, 0);
-				calendar.set(Calendar.SECOND, 0);
-				calendar.set(Calendar.MILLISECOND, 0);
+			entryPaymentDetailsModel.setInstrumentno(Instrument);
+			entryPaymentDetailsModel.setMillcode(millname65);
+			entryPaymentDetailsModel.setContractno(contract2);
+			entryPaymentDetailsModel.setMillname(Millnameletest);
+			System.err.println(dateofship);
+			entryPaymentDetailsModel.setPaymentDue_date(Paaymentduedate);
+			entryPaymentDetailsModel.setContract_value(contrcatdate);
+//               SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//               Date instdate1 = formatter1.parse(instdate);
+//               entryPaymentDetailsModel.setInstdate(instdate1);
 
-				// Date instdateWithoutTime = calendar.getTime();
-				Date instdateWithoutTime = calendar.getTime();
+//               
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date instdate1 = formatter1.parse(instdate);
+//               SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+//               String instdate3 = formatter2.format(instdate);
+//               Date instdate1 = formatter2.parse(instdate3);
 
-				// entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
-				entryPaymentDetailsModel.setInstdate(instdate1);
-				entryPaymentDetailsModel.setPayment(payment);
-				// int instruValue= Integer.parseInt(InstrumentValue);
-				entryPaymentDetailsModel.setInstrumentValue(intValue1);
-				// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
-				entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
-				entryPaymentDetailsModel.setFc_status(0);
+			// Set the time portion to midnight
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(instdate1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
 
-				Date date3 = new Date();
-				Double flag = 0.0;
+			// Date instdateWithoutTime = calendar.getTime();
+			Date instdateWithoutTime = calendar.getTime();
 
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(instdate1);
-				cal.add(Calendar.DAY_OF_MONTH, 30);
-				Date newDate = cal.getTime();
+			// entryPaymentDetailsModel.setInstdate(instdateWithoutTime);
+			entryPaymentDetailsModel.setInstdate(instdate1);
+			entryPaymentDetailsModel.setPayment(payment);
+			// int instruValue= Integer.parseInt(InstrumentValue);
+			entryPaymentDetailsModel.setInstrumentValue(intValue1);
+			// entryPaymentDetailsModel.setQtyAllowed(QtyAllowed);
+			entryPaymentDetailsModel.setSupportingDocument(uniqueFilename);
+			entryPaymentDetailsModel.setFc_status(0);
+			String spaceString = "";
 
-				if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
-					autorevolvingamount = "0";
-					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship("");
+			Date date3 = new Date();
+			Double flag = 0.0;
 
-					entryPaymentDetailsModel.setDateofexpiry("");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(instdate1);
+			cal.add(Calendar.DAY_OF_MONTH, 30);
+			Date newDate = cal.getTime();
 
-					entryPaymentDetailsModel.setIFSC(IFSC);
-					entryPaymentDetailsModel.setBranch(Branch);
-					entryPaymentDetailsModel.setBankName(BankName);
+			if ("NEFT/RTGS".equalsIgnoreCase(payment)) {
+				autorevolvingamount = "0";
+				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+				entryPaymentDetailsModel.setDateofship(spaceString);
+				entryPaymentDetailsModel.setDateofexpiry(spaceString);
 
-				} else if ("Cheque/DD".equalsIgnoreCase(payment)) {
+				entryPaymentDetailsModel.setIFSC(IFSC);
+				entryPaymentDetailsModel.setBranch(Branch);
+				entryPaymentDetailsModel.setBankName(BankName);
 
-					autorevolvingamount = "0";
-					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-					entryPaymentDetailsModel.setDateofship("");
-					entryPaymentDetailsModel.setDateofexpiry("");
+			} else if ("Cheque/DD".equalsIgnoreCase(payment)) {
 
-					entryPaymentDetailsModel.setIFSC(IFSC);
-					entryPaymentDetailsModel.setBranch(Branch);
-					entryPaymentDetailsModel.setBankName(BankName);
-				} else if ("Letter_of_Credit".equalsIgnoreCase(payment)) {
+				autorevolvingamount = "0";
+				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
+				entryPaymentDetailsModel.setDateofship(spaceString);
+				entryPaymentDetailsModel.setDateofexpiry(spaceString);
 
-					entryPaymentDetailsModel.setIFSC(IFSC);
-					entryPaymentDetailsModel.setBranch(Branch);
-					entryPaymentDetailsModel.setBankName(BankName);
+				entryPaymentDetailsModel.setIFSC(IFSC);
+				entryPaymentDetailsModel.setBranch(Branch);
+				entryPaymentDetailsModel.setBankName(BankName);
+			} else if ("Letter_of_Credit".equalsIgnoreCase(payment)) {
 
-					Date dateofship1 = formatter1.parse(dateofship);
-					entryPaymentDetailsModel.setDateofship(dateofship);
-					System.err.println(dateofship1);
+				entryPaymentDetailsModel.setIFSC(IFSC);
+				entryPaymentDetailsModel.setBranch(Branch);
+				entryPaymentDetailsModel.setBankName(BankName);
 
-					Date dateofexpiry1 = formatter1.parse(dateofexpiry);
-					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry);
-					System.err.println(dateofship1);
+				// String dateofship1 = formatter1.parse(dateofship);
+				entryPaymentDetailsModel.setDateofship(dateofship);
+				System.err.println(dateofship);
 
-					entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
-				}
+				// Date dateofexpiry1 = formatter1.parse(dateofexpiry);
+				entryPaymentDetailsModel.setDateofexpiry(dateofexpiry);
+				System.err.println(dateofship);
 
-				Date date = new Date();
-				entryPaymentDetailsModel.setCreated_date(date);
-
-				this.paymentDetailService.create(entryPaymentDetailsModel);
-				int id1 = Integer.parseInt(id);
-				this.paymentDetailService.deleteEntry(id1);
-
-				this.paymentDetailService.contratTable(st);
-
-				redirectAttributes.addFlashAttribute("msg",
-						"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n"
-								+ "");
-
+				entryPaymentDetailsModel.setAutorevolvingamount(autorevolvingamount);
 			}
+
+			Date date = new Date();
+			entryPaymentDetailsModel.setCreated_date(date);
+			this.paymentDetailService.deleteupdate(contract2, payid);
+			this.paymentDetailService.create(entryPaymentDetailsModel);
+
+			this.paymentDetailService.contratTable(contract2);
+
+			redirectAttributes.addFlashAttribute("msg",
+					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
 
 		} catch (Exception e) {
 
@@ -9995,15 +10034,14 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		return new ModelAndView(new RedirectView("EntryofPaymentDetails.obj"));
+		return new ModelAndView(new RedirectView("viewPaymentEntryDetails.obj"));
 	}
 
 	@Autowired
 	FinancialConcurenceService fiannacialConcurenceService;
-	
+
 	@Autowired
 	DispatchService dispatchService;
-	
 
 	@RequestMapping({ "viewFinancialConcurence" })
 	public ModelAndView viewFinancialConcurence(final HttpServletRequest request) {

@@ -6,7 +6,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
 
-<%@page import="com.jci.model.RawJuteProcurementAndPayment"%>
+
 
 <!DOCTYPE html>
 <html lang="en">

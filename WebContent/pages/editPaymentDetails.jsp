@@ -1,226 +1,3 @@
-<%-- <%@page import="org.apache.poi.util.SystemOutLogger"%>
-
-<%@page import="com.jci.model.EntryPaymentDetailsModel"%>
-<%@page import="java.util.List"%>
-<%@page import="java.time.LocalDate"%>
-<%@page import="java.time.LocalDateTime"%>
-<%@page import="java.time.format.DateTimeFormatter"%>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width initial-scale=1.0">
-<title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
-<!-- PLUGINS STYLES-->
-<!-- THEME STYLES-->
-<link href="assets/css/main.min.css" rel="stylesheet" />
-<!-- PAGE LEVEL STYLES-->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- CORE SCRIPTS-->
-
-<style>
-.required:after {
-	content: " *";
-	color: red;
-}
-</style>
-</head>
-<body class="fixed-navbar" onload="myFunction()">
-	<div class="page-wrapper">
-		<!-- START HEADER-->
-		<%@ include file="header.jsp"%>
-		<!-- END HEADER-->
-		<!-- START SIDEBAR-->
-		<%@ include file="sidebar.jsp"%>
-		<!-- END SIDEBAR-->
-		<div class="content-wrapper">
-			<!-- START PAGE CONTENT-->
-			<div class="page-heading">
-				<h1 class="page-title">Edit the Payment Instrument</h1>
-			</div>
-
-			<%
-			EntryPaymentDetailsModel entryPaymentDetailsModel  = (EntryPaymentDetailsModel) request.getAttribute("entryPaymentDetailsModel");
-		    out.println(entryPaymentDetailsModel);
-		    //String date = (String) request.getAttribute("parsed");
-		    String date1 = (String) request.getAttribute("parsed");
-			String date3 = (String) request.getAttribute("parsed1");
-			String date4 = (String) request.getAttribute("parsed2"); 
-			%>
-
-			<div class="page-content fade-in-up">
-				<div class="row">
-					<div class="col-md-11">
-						<div class="ibox">
-							<span>${msg}</span>
-							<div class="ibox-body">
-								<form action="updatePaymentDetail.obj" method="post">
-									<div class="child-checkbox" id="disableform">
-										<%
-										if (entryPaymentDetailsModel != null) {
-										%>
-										<input type="hidden" name="Payment_id"
-											value="<%=entryPaymentDetailsModel.getPayment_id() %>">
-										<%
-										}
-										%>
-
-									
-										<div class="row">
-											<%
-
-											%>
-											<div class="col-sm-4 form-group">
-										    <label>Contract No.</label>
-										    <span class="text-danger">*</span>
-										    <span id="contractno" name="contractno" class="text-danger"></span>
-										    <select name="fullcontractno" id="fullcontractno" class="form-control taxtbox"  required >
-										        <option value="">-Select-</option>
-										        <option value="12345"  <% if(entryPaymentDetailsModel.getContractno().equals("12345")) { out.print("selected"); } %>>12345</option>
-										        <option value="1234567"  <% if(entryPaymentDetailsModel.getContractno().equals("1234567")) { out.print("selected"); } %>>1234567</option>
-										        <option value="19764567"  <% if(entryPaymentDetailsModel.getContractno().equals("19764567")) { out.print("selected"); } %>>19764567</option>
-										    </select>
-										</div>
-										       
-                                         <div class="col-sm-4 form-group">
-												<label>Instrument No</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="instrument" name=instrument class="text-danger" value="<%=entryPaymentDetailsModel.getInstrumentno() %>"  "> </span>
-												<input class="form-control" name="instrument" id="instrument" type="Number" value="<%=entryPaymentDetailsModel.getInstrumentno() %>" required>
-										</div> 
-										 <div class="col-sm-4 form-group">
-												<label>Instrument Date</label> 
-												<span class="text-danger">* </span>&nbsp; <span id="instdate" name="instdate" class="text-danger"> </span>
-												<input class="form-control" name="instdate" id="instdate" type="date" value=<%= date1 %> required>
-										   </div>
-																					
-										</div>
-
-										<div class="row">
-										 
-										 <div class="col-sm-4 form-group">
-	                                             <label>IFSC </label>
-	                                             <input class="form-control taxtbox" name="IFSC"  type="text" placeholder="IFSC"  value="<%=entryPaymentDetailsModel.getIFSC() %>" required>
-	                                       </div>
-	                                       
-	                                       <div class="col-sm-4 form-group">
-	                                             <label>Bank Name</label>
-	                                             <input class="form-control taxtbox" name="BankName" min="0" type="text" placeholder="Branch" onchange="deleteErrorMsg()"  value="<%=entryPaymentDetailsModel.getBankName() %>"required>
-	                                       </div>
-	                                       
-	                                       <div class="col-sm-4 form-group">
-	                                             <label>Branch</label>
-	                                             <input class="form-control taxtbox" name="Branch" min="0" type="text" placeholder="Branch" value="<%=entryPaymentDetailsModel.getBranch() %>" required>
-	                                       </div>
-	                                       
-	                                       
-
-											
-
-										</div>
-
-										<div class="row">
-
-
-											<div class="col-sm-4 form-group">
-	                                            <label> Qty. Allowed</label> 
-	                                            <span class="text-danger">* </span>&nbsp; <span id="QtyAllowed " name="QtyAllowed " class="text-danger" type="double"> </span>
-												 <input class="form-control taxtbox" name="QtyAllowed" min="0" type="double" placeholder="Qty Allowed" value="<%=entryPaymentDetailsModel.getQtyAllowed() %>" required>
-	                                     </div>
-	                                     <div class="col-sm-4 form-group">
-	                                             <label>Supporting Document</label>
-	                                             <input class="form-control taxtbox" name="SupportingDocument" min="0" type="file" placeholder="Supporting Document" value="<%=entryPaymentDetailsModel.getSupportingDocument() %>" required>
-	                                       </div>
-										
-											<div class="col-sm-4 form-group">
-												<label>Payment Type</label> <span class="text-danger">*</span>
-												&nbsp; <span id="paymenttype" name="paymenttype"
-													class="text-danger"> </span> <select name="paymenttype"
-													id="paymenttype" class="form-control taxtbox" required>
-													<option value="" >-Select-</option>
-													<!-- <option value="neft">NEFT</option> -->
-
-													<option
-														<%if (entryPaymentDetailsModel.getPayment().equals("NEFT")) {out.print("selected");}%>
-														value="NEFT">NEFT</option>
-													<option
-														<%if (entryPaymentDetailsModel.getPayment().equals("RTGS")) {out.print("selected");}%>
-														value="RTGS">RTGS</option>
-													<option
-														<%if (entryPaymentDetailsModel.getPayment().equals("Cheque")) {out.print("selected");}%>
-														value="CHEQUE">CHEQUE</option>
-													<option
-														<%if (entryPaymentDetailsModel.getPayment().equals("Cash")) {out.print("selected");}%>
-														value="Cash">CASH</option>
-													<option
-														<%if (entryPaymentDetailsModel.getPayment().equals("Letter_of_Credit"))  {out.print("selected");}%>
-														value="Letter_of_Credit">letter of credit</option>
-												</select>
-											</div>
-											
-										</div>
-
-										<div class="row">
-
-											<div class="col-sm-4 form-group">
-												<label id="doexpiry">Date of Expiry</label> 
-												<input class="form-control" name="dateofexpiry" id="dateofexpiry" placeholder="Date of Expiry" type="date"  value="<%= date3 %>"required>
-										   </div>
-										   <div class="col-sm-4 form-group">
-												<label id="doshipment">Last Shipment date</label> 
-												<input class="form-control" name="dateofship" id="dateofship" placeholder="Date of Shipment" type="date" value="<%= date4 %>" required>
-										   </div>
-                                   
-                                            <div class="col-sm-4 form-group">
-	                                             <label id="autoamounta">Auto Revolving Amount</label>
-	                                             <input class="form-control taxtbox" name="autorevolvingamount" id="autorevolvingamount" min="0" type="number" placeholder="Auto Revolving Amount" 	value="<%=entryPaymentDetailsModel.getAutorevolvingamount()%>" required>
-	                                       </div>   	
-
-										</div>
-					
-										<div class="row">
-										<div class="col-sm-4 form-group">
-	                                            <label>Instrument Value </label> 
-	                                            <span class="text-danger">* </span>&nbsp; <span id="InstrumentValue " name="InstrumentValue " class="text-danger" type="double"> </span>
-												 <input class="form-control taxtbox" name="InstrumentValue" min="0" type="double" placeholder="Instrument Value" value="<%=entryPaymentDetailsModel.getInstrumentValue() %>" required>
-	                                     </div>
-	                                     </div>
-	                                     <div class="row">
-											<div class="col-sm-12 form-group">
-												<button type="submit" class="btn btn-primary">ADD</button>
-												<!-- <input type="submit" value="Submit" class="btn btn-primary"
-													id="submit"> -->
-											</div>
-										</div>
-									</div>
-								</form>
-	
->
-</html> --%>
-
-
 
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.mashape.unirest.http.options.Option"%>
@@ -241,395 +18,414 @@
 <!-- GLOBAL MAINLY STYLES-->
 
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <!-- PLUGINS STYLES-->
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <!-- PAGE LEVEL STYLES-->
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+       href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="assets/css/chosen.css">
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- CORE SCRIPTS-->
 
 <style>
 .required:after {
-	content: " *";
-	color: red;
+       content: " *";
+       color: red;
 }
 </style>
 </head>
 <body class="fixed-navbar">
-	<div class="page-wrapper">
-		<!-- START HEADER-->
-		<%@ include file="header.jsp"%>
-		<!-- END HEADER-->
-		<!-- START SIDEBAR-->
-		<%@ include file="sidebar.jsp"%>
-		<!-- END SIDEBAR-->
-		<div class="content-wrapper">
-			<!-- START PAGE CONTENT-->
-			<div class="page-heading">
-				<h1 class="page-title">Edit of Payment Details</h1>
+       <div class="page-wrapper">
+             <!-- START HEADER-->
+             <%@ include file="header.jsp"%>
+             <!-- END HEADER-->
+             <!-- START SIDEBAR-->
+             <%@ include file="sidebar.jsp"%>
+             <!-- END SIDEBAR-->
+             <div class="content-wrapper">
+                    <!-- START PAGE CONTENT-->
+                    <div class="page-heading">
+                           <h1 class="page-title">Edit of Payment Details</h1>
 
-				
+                           
 
-			<%
-			EntryPaymentDetailsModel entryPaymentDetailsModel  = (EntryPaymentDetailsModel) request.getAttribute("entryPaymentDetailsModel");
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		    //String date = (String) request.getAttribute("parsed");
-		    String date1 = (String) request.getAttribute("parsed");
-			String date3 = (String) request.getAttribute("parsed1");
-			String date4 = (String) request.getAttribute("parsed2"); 
-			int id = (int) request.getAttribute("id1"); 
-			List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
-			List<Object> getcontractList2 = (List<Object>) request.getAttribute("getcontractList2");
-			%>
-
-
-
-			<div class="page-content fade-in-up">
-				<div class="row">
-					<div class="col-md-11">
-						<div class="ibox">
-							<span id="flashMessage">${msg}</span>
-							<div class="ibox-body">
-								<form action="updatePaymentDetail.obj"
-									method="POST" name="myForm" enctype="multipart/form-data">
-									<div class="child-checkbox" id="disableform">
-										<div class="row">
-											<div class="col-sm-4 form-group">
-												<label>Mill name.</label> <span class="text-danger">*
-												</span>&nbsp; <span id="millname1" name="Millname"
-													class="text-danger"> </span> <select name="millname65"
-													id="millname12" class="form-control taxtbox" required>
-	                                                <%-- <option value="<%=entryPaymentDetailsModel.getMillname() %>"><%=entryPaymentDetailsModel.getMillname() %></option> --%>
-													<option value="select">-Select-</option>
-													
-													 <%
-													for (Object row : getcontractList2) {
-
-														String millname = (String) row;
-													%>
-													<option value="<%=millname%>"><%=millname%></option>
-													<%
-													}
-													%> 
-												</select>
-
-
-											</div>
-											<div class="col-sm-4 form-group" id="dpc_div"">
-												<label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
-												<span id="contractno" class="text-danger"></span> <select
-													name="fullcontractno" id="contractno12"
-													class="form-control taxtbox"
-													style="height: = 50; width: 350px;" required>
-													<option disabled selected value="<%=entryPaymentDetailsModel.getContractno() %>"><%=entryPaymentDetailsModel.getContractno() %></option>
-
-												</select>
-											</div>
-											
-											<div class="col-sm-4 form-group" id="instrument">
-												<label>Instrument Type</label> <span class="text-danger">*
-												</span>&nbsp; <span id="payment" name="payment" class="text-danger">
-												</span> <select name="paymenttype" id="paymenttype"
-													class="form-control taxtbox" required>
-													<option value="<%=entryPaymentDetailsModel.getPayment() %>"><%=entryPaymentDetailsModel.getPayment() %></option>
-													<option value="NEFT/RTGS">NEFT/RTGS</option>
-													<option value="Cheque/DD">Cheque/DD</option>
-													<option value="Letter_of_Credit">Letter of Credit</option>
-												</select>
-											</div>
-
- 
-			     </div>
-									
-
-										<div class="row">
-											
-
-											<div class="col-sm-4 form-group">
-												<label>Instrument No</label> <span class="text-danger">*
-												</span>&nbsp; <span id="instrument" name=Instrument
-													class="text-danger"> </span> <input class="form-control"
-													name="Instrument" id="Instrumentno"
-													oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
-													maxlength="16" type="text" pattern="[A-Za-z0-9/-]*"
-													title="Only alphanumeric characters, slashes, and hyphens are allowed" value="<%=entryPaymentDetailsModel.getInstrumentno() %>"
-													required>
-											</div>
+                    <%
+                    EntryPaymentDetailsModel entryPaymentDetailsModel  = (EntryPaymentDetailsModel) request.getAttribute("entryPaymentDetailsModel");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                 //String date = (String) request.getAttribute("parsed");
+                  String date1 = (String) request.getAttribute("parsed");
+                    String date3 = (String) request.getAttribute("parsed1");
+                    String date4 = (String) request.getAttribute("parsed2"); 
+                    String millname2 = (String) request.getAttribute("milname1"); 
+                    int id = (int) request.getAttribute("id1"); 
+                    List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
+                    List<Object[]> getcontractList2 = (List<Object[]>) request.getAttribute("getcontractList2");
+                    %>
 
 
 
-											<div class="col-sm-4 form-group">
-												<label id="differenceLabel">Instrument Value </label> <span
-													class="text-danger">* </span>&nbsp; <span
-													id="InstrumentValue " name="InstrumentValue "
-													class="text-danger" type="double"> </span>
-												<!--  <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required> -->
-												<input class="form-control taxtbox" name="InstrumentValue"
-													id="InstrumentValue12" min="0" step="0.0000000000001" pattern="\d+(\.\d{6,8})?"
-													type="number" placeholder="Instrument Value" value="<%=entryPaymentDetailsModel.getInstrumentValue() %>" required
-													oninput="validateAmount();">
-												<div id="errorMessage" style="color: red; display: none;">Amount
-													exceeds the allowed limit!</div>
-											</div>
+                    <div class="page-content fade-in-up">
+                           <div class="row">
+                                 <div class="col-md-11">
+                                        <div class="ibox">
+                                               <span id="flashMessage">${msg}</span>
+                                               <div class="ibox-body">
+                                                     <form action="updatePaymentDetail.obj"
+                                                            method="POST" name="myForm" enctype="multipart/form-data">
+                                                            <div class="child-checkbox" id="disableform">
+                                                                   <div class="row">
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>Mill name.</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="millname1" name="Millname"
+                                                                                      class="text-danger"> </span> <select name="millname65"
+                                                                                      id="millname12" class="form-control taxtbox" required>
+                                                        <option value="<%=entryPaymentDetailsModel.getMillcode() %>"><%=entryPaymentDetailsModel.getMillname() %></option> 
+                                                                   
+                                                                                </select>
 
-											<div class="col-sm-4 form-group">
-												<label>Instrument Date</label> <span class="text-danger">*
-												</span>&nbsp; <span id="instrumentdate" name="instrumentdate"
-													class="text-danger"> </span> <input class="form-control"
-													name="instdate" id="instdate" type="date" value="<%= date1 %>"  required>
-											</div>
+
+                                                                          </div>
+                                                                         <div class="col-sm-4 form-group" id="dpc_div"">
+                                                                                <label>Contract No.</label> <span class="text-danger">* <select
+                                                                                      name="contractupdate" id="contractno12"
+                                                                                      class="form-control taxtbox"
+                                                                                      style="height: = 50; width: 350px;" required>
+                                                                                      <option disabled selected value="<%=entryPaymentDetailsModel.getContractno() %>"><%=entryPaymentDetailsModel.getContractno() %></option>
+
+                                                                                </select>
+                                                                          </div>
+                                                                         
+                                                                         <div class="col-sm-4 form-group" id="instrument">
+                                                                                <label>Instrument Type</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="payment" name="payment" class="text-danger">
+                                                                                </span> <select name="paymenttype" id="paymenttype"
+                                                                                      class="form-control taxtbox" required>
+                                                                                      <option value="<%=entryPaymentDetailsModel.getPayment() %>"><%=entryPaymentDetailsModel.getPayment() %></option>
+                                                                                      <option value="NEFT/RTGS">NEFT/RTGS</option>
+                                                                                      <option value="Cheque/DD">Cheque/DD</option>
+                                                                                      <option value="Letter_of_Credit">Letter of Credit</option>
+                                                                                </select>
+                                                                          </div>
+
+
+                         </div>
+                                                            
+
+                                                                   <div class="row">
+                                                                         
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>Instrument No</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="instrument" name=Instrument
+                                                                                      class="text-danger"> </span> <input class="form-control"
+                                                                                      name="Instrument" id="Instrumentno"
+                                                                                      oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
+                                                                                      maxlength="16" type="text" pattern="[A-Za-z0-9/-]*"
+                                                                                      title="Only alphanumeric characters, slashes, and hyphens are allowed" value="<%=entryPaymentDetailsModel.getInstrumentno() %>"
+                                                                                      required>
+                                                                          </div>
+
+
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label id="differenceLabel">Instrument Value </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span
+                                                                                      id="InstrumentValue " name="InstrumentValue "
+                                                                                      class="text-danger" type="double"> </span>
+                                                                                <!--  <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required> -->
+                                                                                <input class="form-control taxtbox" name="InstrumentValue"
+                                                                                      id="InstrumentValue12" min="0" step="0.01" pattern="\d+(\.\d{6,8})?"
+                                                                                      type="number" placeholder="Instrument Value" value="<%=entryPaymentDetailsModel.getInstrumentValue() %>" required
+                                                                                      oninput="validateAmount();">
+                                                                                <div id="errorMessage" style="color: red; display: none;">Amount
+                                                                                      exceeds the allowed limit!</div>
+                                                                          </div>
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>Instrument Date</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="instrumentdate" name="instrumentdate"
+                                                                                      class="text-danger"> </span> <input class="form-control"
+                                                                                      name="instdate" id="instdate" type="date" value="<%= date1 %>"  required>
+                                                                          </div>
 
 
 
 
 
-										</div>
+                                                                   </div>
 
-										<div class="row">
+                                                                   <div class="row">
 
 
                                          <div class="col-sm-4 form-group" id="IFSC1">
-												<label id="IFSC1">IFSC </label> <input class="form-control"
-													oninput="this.value = this.value.toUpperCase()"
-													maxlength="11" name="IFSC" type="text"
-													placeholder="IFSC Code" id="IFSC" value="<%=entryPaymentDetailsModel.getIFSC() %>"
-													onchange="deleteErrorMsg()">
-											</div>
-												<div class="col-sm-4 form-group" id="BankName1">
-												<label id="BankName1">Bank Name</label> <input
-													class="form-control taxtbox" name="BankName" id="BankName"
-													min="0" type="text" placeholder="Bank Name" value="<%=entryPaymentDetailsModel.getBankName() %>"
-													onchange="deleteErrorMsg()">
-											</div>
+                                                                                <label id="IFSC1">IFSC </label> <input class="form-control"
+                                                                                      oninput="this.value = this.value.toUpperCase()"
+                                                                                      maxlength="11" name="IFSC" type="text"
+                                                                                      placeholder="IFSC Code" id="IFSC" value="<%=entryPaymentDetailsModel.getIFSC() %>"
+                                                                                      onchange="deleteErrorMsg()">
+                                                                          </div>
+                                                                                <div class="col-sm-4 form-group" id="BankName1">
+                                                                                <label id="BankName1">Bank Name</label> <input
+                                                                                      class="form-control taxtbox" name="BankName" id="BankName"
+                                                                                      min="0" type="text" placeholder="Bank Name" value="<%=entryPaymentDetailsModel.getBankName() %>"
+                                                                                      onchange="deleteErrorMsg()">
+                                                                          </div>
 
-											<div class="col-sm-4 form-group" id="Branch1">
-												<label id="Branch1">Branch</label> <input
-													class="form-control taxtbox" name="Branch" id="Branch"
-													min="0" type="text" placeholder="Branch" value ="<%=entryPaymentDetailsModel.getBranch() %>"
-													onchange="deleteErrorMsg()">
-											</div>
-											
-											
-
-
+                                                                         <div class="col-sm-4 form-group" id="Branch1">
+                                                                                <label id="Branch1">Branch</label> <input
+                                                                                      class="form-control taxtbox" name="Branch" id="Branch"
+                                                                                      min="0" type="text" placeholder="Branch" value ="<%=entryPaymentDetailsModel.getBranch() %>"
+                                                                                      onchange="deleteErrorMsg()">
+                                                                          </div>
+                                                                         
+                                                                         
 
 
 
-										</div>
 
-										<div class="row">
-										
-											<div class="col-sm-4 form-group">
-												<label class="required">Supporting Document
-													(330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
-													class="text-danger"> </span> <img id="imgPreview" /><input
-													class="form-control taxtbox" name="SupportingDocument"
-													type="file" accept=".jpg,.jpeg,.png.pdf"
-													oninput="validateREGFileType()"
-													placeholder="Supporting Document" id="SupportingDocument" value="<%=entryPaymentDetailsModel.getSupportingDocument() %>"
-													onkeypress="deleteErrorMsg()" required>
-											</div>
 
-											<div class="col-sm-4 form-group" id="doshipment">
-												<label id="doshipment">Last Shipment date</label> <input
-													class="form-control" name="dateofship" id="dateofship"  value="<%= date3 %>"
-													placeholder="Date of Shipment" type="date">
-											</div>
+                                                                  </div>
+
+                                                                   <div class="row">
+                                                                   
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label class="required">Supporting Document
+                                                                                      (330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
+                                                                                      class="text-danger"> </span> <img id="imgPreview" /><input
+                                                                                      class="form-control taxtbox" name="SupportingDocument"
+                                                                                      type="file" accept=".jpg,.jpeg,.png.pdf"
+                                                                                      oninput="validateREGFileType()"
+                                                                                      placeholder="Supporting Document" id="SupportingDocument" value="<%=entryPaymentDetailsModel.getSupportingDocument() %>"
+                                                                                      onkeypress="deleteErrorMsg()" required>
+                                                                          </div>
+
+                                                                         <div class="col-sm-4 form-group" id="doshipment">
+                                                                                <label id="doshipment">Last Shipment date</label> <input
+                                                                                      class="form-control" name="dateofship" id="dateofship"  value="<%= date3 %>"
+                                                                                      placeholder="Date of Shipment" type="date">
+                                                                          </div>
                                            <div class="col-sm-4 form-group" id="doexpiry">
-												<label id="doexpiry">Date of Expiry</label> <input
-													class="form-control" name="dateofexpiry" id="dateofexpiry" value="<%=date4 %>"
-													placeholder="Date of Expiry" type="date">
-											</div>
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label"display:none;">GradeComposition </label> <span
-													class="text-danger">* </span>&nbsp; <span
-													id="GradeComposition1" name="GradeComposition"
-													class="text-danger"> </span> <input type="hidden"
-													class="form-control" name="GradeComposition"
-													id="GradeComposition2" value="" readonly="readonly">
-											</div>
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label"display:none;">Contarctqty </label> <span
-													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
-													name="Contarctqty" class="text-danger"> </span> <input
-													type="hidden" class="form-control" name="Contarctqty"
-													id="Contarctqty2" value="" readonly="readonly">
-											</div>
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label"display:none;">PaymentId </label> <span
-													class="text-danger">* </span>&nbsp; <span id="PaymentId"
-													name="PaymentId" class="text-danger"> </span> <input
-													type="hidden" class="form-control" name="PaymentId1"
-													id="PaymentId" value="<%=id %>" readonly="readonly">
-											</div>
-												<div class="col-sm-2 form-group" style="display: none;">
-												    <label>Ratio</label>
-												    <span class="text-danger">*</span>
-												    &nbsp;
-												    <span id="Ratio" name="Ratio" class="text-danger"></span>
-												    <input type="hidden" id="ratiosInput" name="ratios" value="">
-												</div>
+                                                                                <label id="doexpiry">Date of Expiry</label> <input
+                                                                                      class="form-control" name="dateofexpiry" id="dateofexpiry" value="<%=date4 %>"
+                                                                                      placeholder="Date of Expiry" type="date">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label"display:none;">GradeComposition </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span
+                                                                                      id="GradeComposition1" name="GradeComposition"
+                                                                                      class="text-danger"> </span> <input type="hidden"
+                                                                                      class="form-control" name="GradeComposition"
+                                                                                      id="GradeComposition2" value="" readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label"display:none;">Contarctqty </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
+                                                                                      name="Contarctqty" class="text-danger"> </span> <input
+                                                                                      type="hidden" class="form-control" name="Contarctqty"
+                                                                                      id="Contarctqty2" value="" readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label"display:none;">PaymentId </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span id="PaymentId"
+                                                                                      name="PaymentId" class="text-danger"> </span> <input
+                                                                                      type="hidden" class="form-control" name="PaymentId1"
+                                                                                      id="PaymentId" value="<%=id %>" readonly="readonly">
+                                                                          </div>
+                                                                                <div class="col-sm-2 form-group" style="display: none;">
+                                                                                    <label>Ratio</label>
+                                                                                    <span class="text-danger">*</span>
+                                                                                    &nbsp;
+                                                                                    <span id="Ratio" name="Ratio" class="text-danger"></span>
+                                                                                    <input type="hidden" id="ratiosInput" name="ratios" value="">
+                                                                                </div>
 
 
 
 
-										</div>
+                                                                   </div>
 
 
 
-										<div class="row">
-											
+                                                                   <div class="row">
+                                                                         
 
 
-											<div class="col-sm-4 form-group" id="autoamounta">
-												<label id="autoamounta">Auto Revolving Amount</label> <input
-													class="form-control taxtbox" name="autorevolvingamount"
-													id="autorevolvingamount" min="0" type="number" value="<%=entryPaymentDetailsModel.getAutorevolvingamount() %>"
-													placeholder="Auto Revolving Amount">
-											</div>
+                                                                         <div class="col-sm-4 form-group" id="autoamounta">
+                                                                                <label id="autoamounta">Auto Revolving Amount</label> <input
+                                                                                      class="form-control taxtbox" name="autorevolvingamount"
+                                                                                      id="autorevolvingamount" min="0" type="number" value="<%=entryPaymentDetailsModel.getAutorevolvingamount() %>"
+                                                                                      placeholder="Auto Revolving Amount">
+                                                                          </div>
 
+                                           <div class="col-sm-2 form-group" style="display: none;">
+                                                                                
+                                                                                      <input
+                                                                                       type="hidden" class="form-control" name="Paaymentduedate"
+                                                                                      id="Paaymentduedate2" value="<%=entryPaymentDetailsModel.getPaymentDue_date() %>" readonly="readonly">
+                                                                          </div>
+                                                                           <div class="col-sm-2 form-group" style="display: none;">
+                                                                                
+                                                                                      <input
+                                                                                      type="hidden" class="form-control" name="contrcatdate"
+                                                                                      id="contrcatdate1" value="<%=entryPaymentDetailsModel.getContract_value() %>" readonly="readonly">
+                                                                          </div>
+                                                                            <div class="col-sm-2 form-group" style="display: none;">
+                                                                                
+                                                                                      <input
+                                                                                      type="hidden" class="form-control" name="millname234"
+                                                                                      id="millname23489" value="<%=entryPaymentDetailsModel.getMillname()%>" readonly="readonly">
+                                                                          </div>
+                                                                                  <div class="col-sm-2 form-group" style="display: none;">
+                                                                                
+                                                                                      <input
+                                                                                      type="hidden" class="form-control" name="contnoteupd"
+                                                                                      id="contnoteupd" value="<%=entryPaymentDetailsModel.getContractno()%>" readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                
+                                                                                      <input
+                                                                                      type="hidden" class="form-control" name="paymentid"
+                                                                                      id="paymentid" value="<%=entryPaymentDetailsModel.getPayment_id()%>" readonly="readonly">
+                                                                          </div>
 
-
-										</div>
-
-
-
-										<div class="row" id="gradesDiv">
-											<div class="col-sm-15">
-												<table class="table">
-													<thead>
-														<tr>
-															<th id="grade">Grade</th>
-															<th id="grade1">Jute combination</th>
-															<th id="grade2">Quantity</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td id="g111">Grade 1:</td>
-															<td><input type="text" id="g11" name="g11"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g12" name="g12"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-														</tr>
-
-														<tr>
-															<td id="g211">Grade 2:</td>
-															<td><input type="text" id="g21" name="g21"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g22" name="g22"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g311">Grade 3:</td>
-															<td><input type="text" id="g31" name="g31"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g32" name="g32"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g411">Grade 4:</td>
-															<td><input type="text" id="g41" name="g41"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g42" name="g42"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g511">Grade 5:</td>
-															<td><input type="text" id="g51" name="g51"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g52" name="g52"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g611">Grade 6:</td>
-															<td><input type="text" id="g61" name="g61"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="g62" name="g62"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-														</tr>
-														<tr>
-															<td id="g21"></td>
-															<td><input type="text" id="g71" name="g71"
-																readonly="readonly" value="Total"
-																style="width: 300px; height: 30px; text-align: right; font-weight: bold;"></td>
-															<!--  <td><strong style ="text-align:right">Total</strong></td> -->
-															<td><input type="text" id="g72" name="g72"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px; font-weight: bold;"></td>
-														</tr>
-													</tbody>
-
-												</table>
-											</div>
-										</div>
+                                                                   </div>
 
 
 
-										<div class="row">
-											<div class="col-sm-12 form-group">
-												<input type="submit" value="Add" class="btn btn-primary"
-													id="submit" onclick="">
-											</div>
-											<!--  <div class="clear">
- 
-												  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
-											   </div> -->
-										</div>
+                                                                   <div class="row" id="gradesDiv">
+                                                                         <div class="col-sm-15">
+                                                                                <table class="table">
+                                                                                      <thead>
+                                                                                             <tr>
+                                                                                                    <th id="grade">Grade</th>
+                                                                                                    <th id="grade1">Jute combination</th>
+                                                                                                    <th id="grade2">Quantity</th>
+                                                                                             </tr>
+                                                                                      </thead>
+                                                                                      <tbody>
+                                                                                             <tr>
+                                                                                                    <td id="g111">Grade 1:</td>
+                                                                                                    <td><input type="text" id="g11" name="g11"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="g12" name="g12"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                             </tr>
+
+                                                                                             <tr>
+                                                                                                    <td id="g211">Grade 2:</td>
+                                                                                                    <td><input type="text" id="g21" name="g21"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="g22" name="g22"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    <td id="g311">Grade 3:</td>
+                                                                                                    <td><input type="text" id="g31" name="g31"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="g32" name="g32"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    <td id="g411">Grade 4:</td>
+                                                                                                    <td><input type="text" id="g41" name="g41"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="g42" name="g42"
+                                                                                                          readonly="readonly" value=""
+                                                                                                           style="width: 200px; height: 30px;"></td>
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    <td id="g511">Grade 5:</td>
+                                                                                                    <td><input type="text" id="g51" name="g51"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="g52" name="g52"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    <td id="g611">Grade 6:</td>
+                                                                                                    <td><input type="text" id="g61" name="g61"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="g62" name="g62"
+                                                                                                           readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    <td id="g21"></td>
+                                                                                                    <td><input type="text" id="g71" name="g71"
+                                                                                                          readonly="readonly" value="Total"
+                                                                                                          style="width: 300px; height: 30px; text-align: right; font-weight: bold;"></td>
+                                                                                                    <!--  <td><strong style ="text-align:right">Total</strong></td> -->
+                                                                                                    <td><input type="text" id="g72" name="g72"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px; font-weight: bold;"></td>
+                                                                                             </tr>
+                                                                                      </tbody>
+
+                                                                                </table>
+                                                                          </div>
+                                                                   </div>
 
 
 
-										<!--   <div id="tableContainer"></div> -->
-										 <table id="contractTable" class="table table-bordered">
-											    <thead class="thead-light">
-											        <tr>
-											            <th>Contract No</th>
-											            <th>Contract Qty</th>
-											            <th>Contract value</th>
-											            <th>Contract Date</th>
-											            <th>Payment_due Date</th>
-											          
-											        </tr>
-											    </thead>
-											    <tbody>
-											        <!-- Rows will be dynamically added here -->
-											    </tbody>
-											</table>
-											<input type="hidden" id="contractValueInput" name="contractValue">
+                                                                   <div class="row">
+                                                                  <div class="col-sm-12 form-group">
+                                                                                <input type="submit" value="Submit" class="btn btn-primary"
+                                                                                      id="submit" onclick="">
+                                                                          </div>
+                                                                         <!--   <div class="clear">
+
+                                                                                  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
+                                                                            </div> --> 
+                                                                   </div>
+
+
+
+                                                                   <!--   <div id="tableContainer"></div> -->
+                                                                   <table id="contractTable" class="table table-bordered">
+                                                                             <thead class="thead-light">
+                                                                                 <tr>
+                                                                                     <th>Contract No</th>
+                                                                                     <th>Contract Qty</th>
+                                                                                     <th>Contract value</th>
+                                                                                     <th>Contract Date</th>
+                                                                                     <th>Payment_due Date</th>
+                                                                                   
+                                                                                 </tr>
+                                                                             </thead>
+                                                                             <tbody>
+                                                                                 <!-- Rows will be dynamically added here -->
+                                                                             </tbody>
+                                                                          </table>
+                                                                          <input type="hidden" id="contractValueInput" name="contractValue">
                                             <input type="hidden" id="paymentDueDateInput" name="paymentDueDate">
     
                                 
@@ -639,78 +435,78 @@
 
 
 
-										<div class="row" id="dataofHistory" style="display: none;">
-											<div class="col-sm-15">
-												<table class="table" id="dataTable">
-													<thead>
-														<tr>
-															<th id="Contarct-NO1">Contract_No</th>
-															<th id="Instrument-NO1">Instrument value</th>
-															<th id="Instrument-value1">Instrument date</th>
-															<!--   <th id="Paid"> Qty paid</th>
-												                    <th id="remaining"> Qty remaining</th> -->
-														</tr>
-													</thead>
-													<tbody id="tableBody">
-														<tr>
+                                                                   <div class="row" id="dataofHistory" style="display: none;">
+                                                                         <div class="col-sm-15">
+                                                                                <table class="table" id="dataTable">
+                                                                                      <thead>
+                                                                                             <tr>
+                                                                                                    <th id="Contarct-NO1">Contract_No</th>
+                                                                                                    <th id="Instrument-NO1">Instrument value</th>
+                                                                                                    <th id="Instrument-value1">Instrument date</th>
+                                                                                                    <!--   <th id="Paid"> Qty paid</th>
+                                                                                                    <th id="remaining"> Qty remaining</th> -->
+                                                                                             </tr>
+                                                                                      </thead>
+                                                                                      <tbody id="tableBody">
+                                                                                             <tr>
 
-															<td><input type="text" id="Contarct-NO" name="g11"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="Instrument-NO" name="g12"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="Instrument-value"
-																name="g12" readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<!--   <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
-																    <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td> -->
-														</tr>
-
-
-													</tbody>
-
-												</table>
-											</div>
-										</div>
+                                                                                                    <td><input type="text" id="Contarct-NO" name="g11"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="Instrument-NO" name="g12"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="Instrument-value"
+                                                                                                          name="g12" readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                                    <!--   <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+                                                                                                              <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td> -->
+                                                                                             </tr>
 
 
+                                                                                      </tbody>
 
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- END PAGE CONTENT-->
-			<%@ include file="footer.jsp"%>
-		</div>
-	</div>
-
-	<div class="sidenav-backdrop backdrop"></div>
+                                                                                </table>
+                                                                          </div>
+                                                                   </div>
 
 
-		<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-		<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
+
+                                                            </div>
+                                                     </form>
+                                               </div>
+                                        </div>
+                                 </div>
+                           </div>
+                    </div>
+                    <!-- END PAGE CONTENT-->
+                    <%@ include file="footer.jsp"%>
+             </div>
+       </div>
+
+       <div class="sidenav-backdrop backdrop"></div>
+
+
+             <script src="./assets/vendors/jquery/dist/jquery.min.js"
+             type="text/javascript"></script>
+             <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+       <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+             type="text/javascript"></script>
+       <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+             type="text/javascript"></script>
+       <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+             type="text/javascript"></script>
+       <script
+             src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+             type="text/javascript"></script>
+       <!-- PAGE LEVEL PLUGINS-->
+       <!-- CORE SCRIPTS-->
+       <script src="assets/js/app.min.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#contractTable').hide();
+       $('#contractTable').hide();
     // Define total contract value and ratios globally
     var totalContractValue = 0;
     var ratios = [];
@@ -778,7 +574,7 @@ $(document).ready(function() {
     function updateTableWithData(data) {
         var rowData = JSON.parse(data);
         if (Array.isArray(rowData) && rowData.length > 0) {
-        	$('#contractTable').show();
+             $('#contractTable').show();
             // Clear existing table rows
           
 
@@ -816,7 +612,7 @@ $(document).ready(function() {
 
     // Function to remove table entry
     function removeTableEntry(contractNo) {
-    	
+       
         $('#contractTable tbody tr').each(function() {
             var rowContractNo = $(this).find('td:first').text();
             if (rowContractNo === contractNo) {
@@ -859,10 +655,16 @@ $(document).ready(function() {
 
 </script>
 
-
 <script>
- $(document).ready(function() {
- 
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('#flashMessage').fadeOut('slow');
+        }, 3000);
+    });
+</script>
+<script>
+$(document).ready(function() {
+
     $('#InstrumentValue12').on('input', function() {
     
         var enteredValue = parseFloat($(this).val());
@@ -888,7 +690,7 @@ $(document).ready(function() {
 
 
 </script>
-	
+       
 
 <script type="text/javascript">
     //Through ajax call on paymenttype id  we can hide and visible the parameters.
@@ -1093,7 +895,7 @@ $(document).ready(function() {
                                                 $('#g32').val(g32);
                                                 $('#g41').val(g41);
                                                 $('#g42').val(g42);
-                                                $('#g51').val(g51);
+                                               $('#g51').val(g51);
                                                 $('#g52').val(g52);
                                                 $('#g61').val(g61);
                                                 $('#g62').val(g62);
@@ -1180,45 +982,45 @@ $(document).ready(function() {
 
 
 
-	<script>
-		function deleteErrorMsg() {
-			var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value;
-			if (F_BANK_IFSC.length > 1) {
-				$("#errIFSC").hide();
-			}
-			var F_REG_FORM = document.forms["myForm"]["F_REG_FORM"].value;
-			if (F_REG_FORM.length > 1) {
-				$("#errRegForm").hide();
-			}
+       <script>
+             function deleteErrorMsg() {
+                    var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value;
+                    if (F_BANK_IFSC.length > 1) {
+                           $("#errIFSC").hide();
+                    }
+                    var F_REG_FORM = document.forms["myForm"]["F_REG_FORM"].value;
+                    if (F_REG_FORM.length > 1) {
+                           $("#errRegForm").hide();
+                    }
 
-		}
-		function allow_alphabets(element) {
-			let textInput = element.value;
-			textInput = textInput.replace(/[^A-Za-z ]+$/gm, "");
-			element.value = textInput;
-		}
-	</script>
+             }
+             function allow_alphabets(element) {
+                    let textInput = element.value;
+                    textInput = textInput.replace(/[^A-Za-z ]+$/gm, "");
+                    element.value = textInput;
+             }
+       </script>
 
-	<script>
-		function myFunction() {
-			$("#doexpiry").hide();
-			$("#dateofexpiry").hide();
-			$("#doshipment").hide();
-			$("#dateofship").hide();
-			$("#autoamounta").hide();
-			$("#autorevolvingamount").hide();
+       <script>
+             function myFunction() {
+                    $("#doexpiry").hide();
+                    $("#dateofexpiry").hide();
+                    $("#doshipment").hide();
+                    $("#dateofship").hide();
+                    $("#autoamounta").hide();
+                    $("#autorevolvingamount").hide();
 
-			$("#IFSC").hide();
-			$("#BankName").hide();
-			$("#Branch").hide();
-			$("#IFSC1").hide();
-			$("#BankName1").hide();
-			$("#Branch1").hide();
+                    $("#IFSC").hide();
+                    $("#BankName").hide();
+                    $("#Branch").hide();
+                    $("#IFSC1").hide();
+                    $("#BankName1").hide();
+                    $("#Branch1").hide();
 
-			// Your code to be executed when the page loads goes here
+                    // Your code to be executed when the page loads goes here
 
-		}
-	</script>
+             }
+       </script>
 
 
 
@@ -1263,34 +1065,22 @@ $(document).ready(function() {
 
 
 
-	<script>
-		function validateREGFileType() {
-			var F_REG_FORM = document.getElementById("SupportingDocument").value;
-			var idxDot = F_REG_FORM.lastIndexOf(".") + 1;
-			var extFile = F_REG_FORM.substr(idxDot, F_REG_FORM.length)
-					.toLowerCase();
-			if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+       <script>
+             function validateREGFileType() {
+                    var F_REG_FORM = document.getElementById("SupportingDocument").value;
+                    var idxDot = F_REG_FORM.lastIndexOf(".") + 1;
+                    var extFile = F_REG_FORM.substr(idxDot, F_REG_FORM.length)
+                                 .toLowerCase();
+                    if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
 
-			} else {
-				alert("Only jpg/jpeg and png files are allowed!");
-			}
-		}
-	</script>
+                    } else {
+                           alert("Only jpg/jpeg and png files are allowed!");
+                    }
+             }
+       </script>
 
 
 
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-										

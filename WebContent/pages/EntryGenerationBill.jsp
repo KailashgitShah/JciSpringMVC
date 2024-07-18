@@ -808,7 +808,7 @@
                               
                                 if (dataArray && dataArray.length > 0) {
                                     var millcode = dataArray[0][0];
-                                    alert(millcode);
+                                    
                                     var cropyear = dataArray[0][1];
                                     /* $('#Financial_year1').val(cropyear); */
                                   
@@ -821,7 +821,7 @@
                                         data: { "contractno": millcode },
                                        
                                         success: function(thirdData) {
-                                           alert(thirdData);
+                                          
                                            
                                             try {
                                                 var dataArray = JSON.parse(thirdData);
@@ -854,7 +854,7 @@
                                                      var client_state = dataArray[0][8];
                                                     var client_name = dataArray[0][13];
                                                     
-                                                    alert(client_name);
+                                                 
                                                    
                                                     $('#Recipient_Name').val(unit_name);
                                                     $('#Recipient_GSTN').val(client_gstin);

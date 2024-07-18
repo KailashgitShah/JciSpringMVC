@@ -144,10 +144,11 @@ th {
 										<td >${item.getAmount()}</td> 
 										<%-- <td >${item.getBillOfSupplyNo()}</td> --%>
 										<td><a href="billOfSupplyDetails.obj?id=${item.getTopsheet_generated_id()}"><button class="btn btn-warning" type="button">BILL OF SUPPLY</button></a></td>    
-										 <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
-                                         <td><a href="downloadTopSheet.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
+		<%-- 								 <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
+                                         <td><a href="downloadTopSheet.obj?filename=${item.getTopsheet_generated_id()}" class="btn btn-primary" target="_blank"> View Document</a></button></td> --%>
                                         
-
+                                     <td><a href="downloadBillOfExchangeDocument.obj?filename=${item.getBoeNl()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
+                                         <td><a href="downloadTopSheet.obj?filename=${item.getTopSheetNl()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
 										</tr>
 										<%i++; %>
 									</c:forEach>
