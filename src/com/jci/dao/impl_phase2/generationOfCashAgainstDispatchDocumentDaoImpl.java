@@ -32,7 +32,7 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 		return sessionFactory.getCurrentSession();
 	}
 
-
+	
 	@Override
 	public List<TopSheetDto> getTopSheetDatacashAgainstDispatchDocument( String topSheetGeneratedId) {
       
@@ -47,16 +47,9 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 		            "    jcitopsheet.hodiNo, " +
 		            "    jcitopsheet.hodiDate, " +
 		            "    jcitopsheet.contract_no, " +
-		            "    CONCAT( " +
-		            "        SUBSTRING(CAST(d.Date_of_shipment AS VARCHAR), 9, 2), '-', " +
-		            "        SUBSTRING(CAST(d.Date_of_shipment AS VARCHAR), 6, 2), '-', " +
-		            "        SUBSTRING(CAST(d.Date_of_shipment AS VARCHAR), 1, 4) " +
-		            "    ) AS Formatted_Date_of_shipment, " +
 		            "    jb.Challan_No " +
 		            "FROM " +
 		            "    jcitopsheet " +
-		            "INNER JOIN " +
-		            "    jcidispatch_details d ON d.Contract_No = jcitopsheet.contract_no " +
 		            "INNER JOIN " +
 		            "    jcibos_generation jb ON jb.Bill_of_supply_no = jcitopsheet.billOfSupplyNo " +
 		            "WHERE " +
@@ -84,8 +77,8 @@ public class generationOfCashAgainstDispatchDocumentDaoImpl implements generatio
 			    	topSheet.setDi_No((String) eleObject[6]);
 			    	topSheet.setDi_Date((String) eleObject[7]);
 			    	topSheet.setFullContractNumber((String) eleObject[8]);
-			    	topSheet.setDateOfShipment((String) eleObject[9]);
-			    	topSheet.setChallan_no((String) eleObject[10]);
+//			    	topSheet.setDateOfShipment((String) eleObject[9]);
+			    	topSheet.setChallan_no((String) eleObject[9]);
 
 			        list1.add(topSheet);
 			    }
@@ -143,38 +136,7 @@ public List<boenonlcDTO> getBOENONLC(String contractno) {
 		}
 
 
-//@Override
-//public List<Object[]> listdetailsbillofsuppllycash(String st) {
-//	String sql = "SELECT DISTINCT " +
-//            "    g.Bill_of_supply_no, " +
-//            "    g.BOS_date, " +
-//            "    g.Invoice_value, " +
-//            "    g.Challan_No, " +
-//            "    g.millcode, " +
-//            "    m.unit_name, " +
-//            "    m.unit_address1, " +
-//            "    c.Contract_identification_no, " +
-//            "    c.Contract_no, " +
-//            "    c.Contract_date, " +
-//            "    c.CropYear, " +
-//            "    di.DI_no, "+
-//            "    di.DI_Date "+
-//            "FROM " +
-//            "    jcibos_generation g " +
-//            "    INNER JOIN jcicontract c ON c.Contract_no = '"+st+"'" +
-//            "    INNER JOIN jcimilldetailchild m ON m.client_unit_code = g.millcode " +
-//            "    INNER JOIN jciDI_ho di ON di.Contract_No = '"+st+"' "+
-//            "WHERE " +
-//            "    g.Contract_no = '"+st+"' AND NOT EXISTS (" +
-//            "        SELECT 1 " +
-//            "        FROM jcitopsheet t " +
-//            "        WHERE t.billOfSupplyNo = g.Bill_of_supply_no" +
-//            "    )";
-//
-//
-//    List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
-//	 return resultList1;
-//}
+
 
 @Override
 public List<Object[]> listdetailsbillofsuppllycash(String st) {
@@ -408,6 +370,42 @@ public List<Object[]> listdetailsbillofsuppllycash(String st) {
 			System.out.println(e.getLocalizedMessage());
 		}
 	}
+	@Override
+	public List<Object[]> getHODI(String challantopsheet, String contractNumber) {
+		// TODO Auto-generated method stub
+		 String sql = "  SELECT distinct dd.DI_NO, hd.DI_Date\n"
+		 		+ "FROM jcidispatch_details dd\n"
+		 		+ "INNER JOIN jciDI_ho hd ON hd.DI_no = dd.DI_NO\n"
+		 		+ "WHERE dd.Contract_No = '"+contractNumber+"' AND dd.Challan_no = '"+challantopsheet+"'";
+		List<Object[]> nominalwt = (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();		
+		
+		
+		 
+		
+		return nominalwt;
+	}
+
+
+
+	@Override
+	public String getdateOfShipment(String challantopsheet, String contractNumber) {
+		// TODO Auto-generated method stub
+		
+		 String sql = "	SELECT CONCAT(\n"
+		 		+ "				    SUBSTRING(CONVERT(VARCHAR, d.Date_of_shipment, 103), 1, 2), '-', \n"
+		 		+ "				    SUBSTRING(CONVERT(VARCHAR, d.Date_of_shipment, 103), 4, 2), '-', \n"
+		 		+ "				    SUBSTRING(CONVERT(VARCHAR, d.Date_of_shipment, 103), 7, 4)\n"
+		 		+ "				) AS Formatted_Date_of_shipment\n"
+		 		+ "				FROM jcidispatch_details d\n"
+		 		+ "				WHERE d.Contract_No = '"+contractNumber+"'\n"
+		 		+ "				  AND d.Challan_no = '"+challantopsheet+"'";
+		 String dateOfShipment = (String)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+					
+		 return dateOfShipment ;
+	
+	
+	}
+	
 	
 
 

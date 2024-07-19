@@ -23,5 +23,7 @@ public interface generationOfCashAgainstDispatchDocumentDao {
 	  public Date  getInstrumentDate(String ContractNo);
 	public List<Object[]> fetchMill_Name();
 	 public void update(String topSheetGeneratedId ,String fileNameboe ,String fileNameTopSheetNL);
+	  public List<Object[]> getHODI(String challantopsheet , String contractNumber);
+	  public String getdateOfShipment(String challantopsheet, String contractNumber);
 	  
 }

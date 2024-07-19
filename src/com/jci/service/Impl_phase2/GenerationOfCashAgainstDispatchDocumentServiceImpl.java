@@ -113,6 +113,17 @@ public class GenerationOfCashAgainstDispatchDocumentServiceImpl implements gener
 		 generationOfCashAgainstDispatchDocumentdao.update(topSheetGeneratedId , fileNameboe , fileNameTopSheetNL);
 		
 	}
+	@Override
+	public List<Object[]> getHODI(String challantopsheet, String contractNumber) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.getHODI( challantopsheet, contractNumber) ;
+	}
+
+	@Override
+	public String getdateOfShipment(String challantopsheet, String contractNumber) {
+		// TODO Auto-generated method stub
+		return generationOfCashAgainstDispatchDocumentdao.getdateOfShipment( challantopsheet,  contractNumber) ;
+	}
 
 
 }

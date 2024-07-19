@@ -8451,6 +8451,8 @@ public class Controller_V {
 	}
 
 	
+
+	
 	@Value("${upload.TopSheetNONLCJasperReport}")
 	String TopSheetNONLCJasperReport;
 	@Value("${upload.TopSheetNONLCDownload}")
@@ -8630,10 +8632,10 @@ public class Controller_V {
 		Double totalQty = 0.0;
 		for (TopSheetDto TopSheet2 : pdfTopSheet) {
 			String challantopsheet = TopSheet2.getChallan_no();
-			// System.err.println(challan + "challan");
+	
 			String nominal_qty = generationOfCashAgainstDispatchDocumentService.getNominalWt(challantopsheet);
 
-			// System.err.println(nominal_qty + "nominal_qty");
+		
 			totalQty += Double.valueOf(nominal_qty);
 
 			TopSheet2.setTotalQuantity(totalQty);
@@ -8649,8 +8651,39 @@ public class Controller_V {
 			// TopSheet2.setInstrument_Date(instrumentDate);
 
 		}
+		System.err.println("topsheet" +   pdfTopSheet  );
+		for (TopSheetDto TopSheet3 : pdfTopSheet) {
+			String challantopsheet = TopSheet3.getChallan_no();
+			
+			String contractNumber = TopSheet3.getFullContractNumber();
+			System.err.println(  challantopsheet  + " challantopsheet " + contractNumber);
+	
+			List<Object[]> HODI = generationOfCashAgainstDispatchDocumentService.getHODI(challantopsheet , contractNumber);
+			
+			//  System.err.println(HODI);
+                  String diNo = null;
+                  String diDate=null;
+                  for (Object[] row : HODI) {
+                	    // Extract data from each row
+                	    diNo = (String) row[0]; // Assuming the first column is a String
+                	   diDate = (String) row[1];   // Assuming the second column is a Date
+                	    
+                	    // Print data to verify
+                	   // System.out.println("DI_NO: " + diNo + ", DI_Date: " + diDate);
+                	    
+                	    // Alternatively, you can perform other operations with the extracted data
+                	}
+                  TopSheet3.setDi_No(diNo);
+                  TopSheet3.setDi_Date(diDate);
+                  String  dateOfShipment = generationOfCashAgainstDispatchDocumentService.getdateOfShipment(challantopsheet , contractNumber);    
+                String dos= String.valueOf(dateOfShipment);
+                TopSheet3.setDateOfShipment(dateOfShipment);
+                
+                //  System.err.println("DI_NO: " + diNo + ", DI_Date: " + diDate);
 
-		// System.err.println("r"+pdfTopSheet);
+		}
+
+		 System.err.println("r"+pdfTopSheet);
 		String fileNameTopSheetNL =  topSheetGeneratedId + "TopSheetNL" + ".pdf";
 		String filePathtop = TopSheetNONLCDownload +File.separator + fileNameTopSheetNL; 
 		try {
@@ -8676,6 +8709,7 @@ public class Controller_V {
 		// return viewtopSheet;
 
 	}
+	
 	
 
 	@RequestMapping("downloadTopSheet")
