@@ -9377,6 +9377,7 @@ public class Controller_V {
 		String[] consigneeDoc = request.getParameterValues("consigneeDoc[]");
 		String[] BosDoc = request.getParameterValues("BosDoc[]");
 		String[] creditNoteDoc = request.getParameterValues("creditNoteDoc[]");
+		String[] purpose = request.getParameterValues("purpose[]");
 
 		String total = creditNoteGenerationService.CountRecord();
 		int value1;
@@ -9468,6 +9469,7 @@ public class Controller_V {
 				settlemetCnDnModel.setCndnExcel_link(filenameSave);
 				settlemetCnDnModel.setRowNumber(value1);
 				settlemetCnDnModel.setIdentificationCnDn(UniqueIdentification);
+				settlemetCnDnModel.setPurpose(purpose[i]);
 				creditNoteGenerationService.saveSettlementOfCnDn(settlemetCnDnModel);
 
 				// Add data to the Excel sheet
@@ -9531,6 +9533,74 @@ public class Controller_V {
 		return mv;
 	}
 
+	@RequestMapping("creditNoteSettleDoc")
+	public void creditNoteSettleDoc(@RequestParam("filename") String filename,
+			HttpServletResponse response) {
+
+		String imagePath = creditNoteFilePath + File.separator + filename;
+		// imageDirectory + File.separator + idn + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+
+		if (imageFile.exists()) {
+
+			try {
+
+				// Set the content type based on the file type
+
+				String contentType = determineContentType(filename);
+
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+
+				response.setContentLength((int) imageFile.length());
+
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+
+				int bytesRead;
+
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+					responseOutputStream.write(buffer, 0, bytesRead);
+
+				}
+
+				fileInputStream.close();
+
+				responseOutputStream.close();
+
+			} catch (IOException e) {
+
+				// Handle IO exception
+
+				e.printStackTrace();
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
+
+		} else {
+
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		}
+
+	}
+	
 	@RequestMapping("downloadSupportingbosDoc")
 	public void downloadSupportingbosDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
 		// String imagePath = paymentDocumentDownload;

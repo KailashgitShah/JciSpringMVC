@@ -124,6 +124,7 @@ th {
 									<th>CN/DN Identification No</th>
 									<th>Contract No</th>
 									<th>CN/DN No</th>
+									<th>Purpose</th>
 									<th>Date Of Issue</th>
 									<th>HODI No</th>
 									<th>Consignment_Note	</th>
@@ -152,6 +153,7 @@ th {
 										<td>${item.getIdentificationCnDn()}</td>
                                             <td >${item.getContractNo()}</td>
                                            <td>${item.getCreditNoteNo()}</td>
+                                           <td>${item.getPurpose()}</td>
                                             <td>${item.getDateOfIssue()}</td>
 											<td>${item.getHodi()}</td>
 											 <td>${item.getConsigneeNoteText()}</td>

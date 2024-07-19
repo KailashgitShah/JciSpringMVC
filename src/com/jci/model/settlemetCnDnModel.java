@@ -71,8 +71,10 @@ public class settlemetCnDnModel {
 	
 	@Column(name = "RowNumber")
 	private Integer RowNumber;
-	
+	@Column(name = "IdentificationCnDn")
 	private String IdentificationCnDn;
+	@Column(name = "purpose")
+	private String purpose;
 	
 	
 	
@@ -376,11 +378,25 @@ public class settlemetCnDnModel {
 
 
 
+	public String getPurpose() {
+		return purpose;
+	}
+
+
+
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
+
+
+
 	public settlemetCnDnModel(int initiation_ref_no, String millCode, String contractNo, String creditNoteNo,
 			String dateOfIssue, String hodi, String consigneeNoteText, String bosNo, String dateOfShipment,
 			String dateOfInspection, String creditNoteAmount, String settlementId, String consigneeDoc, String bosDoc,
 			String creditNoteDoc, String create_date_cndn, Double amountDiffCnAndDn, String cndnExcel_link,
-			Integer rowNumber, String identificationCnDn) {
+			Integer rowNumber, String identificationCnDn, String purpose) {
 		super();
 		Initiation_ref_no = initiation_ref_no;
 		this.millCode = millCode;
@@ -402,6 +418,7 @@ public class settlemetCnDnModel {
 		this.cndnExcel_link = cndnExcel_link;
 		RowNumber = rowNumber;
 		IdentificationCnDn = identificationCnDn;
+		this.purpose = purpose;
 	}
 
 
@@ -416,9 +433,8 @@ public class settlemetCnDnModel {
 				+ ", settlementId=" + settlementId + ", consigneeDoc=" + consigneeDoc + ", BosDoc=" + BosDoc
 				+ ", creditNoteDoc=" + creditNoteDoc + ", create_date_cndn=" + create_date_cndn + ", AmountDiffCnAndDn="
 				+ AmountDiffCnAndDn + ", cndnExcel_link=" + cndnExcel_link + ", RowNumber=" + RowNumber
-				+ ", IdentificationCnDn=" + IdentificationCnDn + "]";
+				+ ", IdentificationCnDn=" + IdentificationCnDn + ", purpose=" + purpose + "]";
 	}
-
 
 
 

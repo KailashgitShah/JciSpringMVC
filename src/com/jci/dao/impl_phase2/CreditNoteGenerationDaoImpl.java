@@ -263,14 +263,22 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	
 
-	
 //	@Override
 //	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract) {
 //	    // Define the first SQL query
-//	     String sql = "SELECT DISTINCT a.Credit_note_no, a.Credit_note_amount, a.Credit_note_date, a.ChallanNo, "
-//	               + "c.Consignment_note_text, d.Bill_of_supply_no, c.Date_of_shipment, "
-//	               + "e.DateofInspection, e.Settlement_id_generated, d.Bos_file_path, c.DI_No, "
-//	               + "c.Consignment_note, a.document "
+//	     String sql =  "SELECT DISTINCT a.Credit_note_no, "
+//	               + "SUM(a.Credit_note_amount) AS Credit_note_amount, "
+//	               + "a.Credit_note_date, "
+//	               + "a.ChallanNo, "
+//	               + "c.Consignment_note_text, "
+//	               + "d.Bill_of_supply_no, "
+//	               + "c.Date_of_shipment, "
+//	               + "e.DateofInspection, "
+//	               + "e.Settlement_id_generated, "
+//	               + "d.Bos_file_path, "
+//	               + "c.DI_No, "
+//	               + "c.Consignment_note, "
+//	               + "a.document "
 //	               + "FROM jcicredit_note a "
 //	               + "LEFT JOIN jcicredit_note_settled b ON a.ChallanNo = b.Challan_No "
 //	               + "LEFT JOIN jcidispatch_details c ON c.Challan_no = a.ChallanNo "
@@ -281,16 +289,32 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 //	               + "  AND a.Credit_note_no NOT IN ("
 //	               + "      SELECT Credit_note_no "
 //	               + "      FROM jcisettlement_cndn"
-//	               + "  );";
+//	               + "  ) "
+//	               + "GROUP BY a.Credit_note_no, "
+//	               + "         a.Credit_note_date, "
+//	               + "         a.ChallanNo, "
+//	               + "         c.Consignment_note_text, "
+//	               + "         d.Bill_of_supply_no, "
+//	               + "         c.Date_of_shipment, "
+//	               + "         e.DateofInspection, "
+//	               + "         e.Settlement_id_generated, "
+//	               + "         d.Bos_file_path, "
+//	               + "         c.DI_No, "
+//	               + "         c.Consignment_note, "
+//	               + "         a.document";
 //
 //	    
-//	    String sql1 = "SELECT DISTINCT f.Demand_note_no, f.Carrying_cost, f.Demand_note_date, f.DocumentName "
+//	    String sql1 = "SELECT f.Demand_note_no, "
+//                + "       SUM(f.Carrying_cost) AS Total_Carrying_cost, "
+//                + "       f.Demand_note_date, "
+//                + "       f.DocumentName "
 //                + "FROM jcidemand_note f "
 //                + "WHERE f.Contract_no = '"+contract+"' "
 //                + "  AND f.Demand_note_no NOT IN ("
 //                + "      SELECT Credit_note_no "
-//                + "      FROM jcisettlement_cndn"
-//                + "  );";
+//                + "      FROM jcisettlement_cndn "
+//                + "  ) "
+//                + "GROUP BY f.Demand_note_no, f.Demand_note_date, f.DocumentName";
 //
 //
 //	    // Execute the first query
@@ -317,77 +341,107 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 //	}
 //
 //	
-
+	
+	
 	@Override
 	public List<Object[]> getFullDetailsOfCrnAndDebit(String contract) {
 	    // Define the first SQL query
-	     String sql =  "SELECT DISTINCT a.Credit_note_no, "
-	               + "SUM(a.Credit_note_amount) AS Credit_note_amount, "
-	               + "a.Credit_note_date, "
-	               + "a.ChallanNo, "
-	               + "c.Consignment_note_text, "
-	               + "d.Bill_of_supply_no, "
-	               + "c.Date_of_shipment, "
-	               + "e.DateofInspection, "
-	               + "e.Settlement_id_generated, "
-	               + "d.Bos_file_path, "
-	               + "c.DI_No, "
-	               + "c.Consignment_note, "
-	               + "a.document "
-	               + "FROM jcicredit_note a "
-	               + "LEFT JOIN jcicredit_note_settled b ON a.ChallanNo = b.Challan_No "
-	               + "LEFT JOIN jcidispatch_details c ON c.Challan_no = a.ChallanNo "
-	               + "LEFT JOIN jcibos_generation d ON d.Challan_No = a.ChallanNo "
-	               + "LEFT JOIN jciclaimNomination e ON e.Challans = a.ChallanNo "
-	               + "WHERE b.Challan_No IS NULL "
-	               + "  AND a.Contract_no = '"+contract+"' "
-	               + "  AND a.Credit_note_no NOT IN ("
-	               + "      SELECT Credit_note_no "
-	               + "      FROM jcisettlement_cndn"
-	               + "  ) "
-	               + "GROUP BY a.Credit_note_no, "
-	               + "         a.Credit_note_date, "
-	               + "         a.ChallanNo, "
-	               + "         c.Consignment_note_text, "
-	               + "         d.Bill_of_supply_no, "
-	               + "         c.Date_of_shipment, "
-	               + "         e.DateofInspection, "
-	               + "         e.Settlement_id_generated, "
-	               + "         d.Bos_file_path, "
-	               + "         c.DI_No, "
-	               + "         c.Consignment_note, "
-	               + "         a.document";
-
+		
+		//credit note
+	     String creditNote =  "SELECT DISTINCT " +
+	    	        "    a.Credit_note_no, " +
+	    	        "    a.Credit_note_amount, " +
+	    	        "    a.Credit_note_date, " +
+	    	        "    a.ChallanNo, " +
+	    	        "    c.Consignment_note_text, " +
+	    	        "    d.Bill_of_supply_no, " +
+	    	        "    CONVERT(VARCHAR(10), c.Date_of_shipment, 103) AS Date_of_Shipment, "+
+	    	        "    d.Bos_file_path, " +
+	    	        "    c.DI_No, " +
+	    	        "    c.Consignment_note, " +
+	    	        "    a.document " +
+	    	        "FROM " +
+	    	        "    jcicredit_note a " +
+	    	        "LEFT JOIN " +
+	    	        "    jcicredit_note_settled b ON a.ChallanNo = b.Challan_No " +
+	    	        "LEFT JOIN " +
+	    	        "    jcidispatch_details c ON c.Challan_no = a.ChallanNo " +
+	    	        "LEFT JOIN " +
+	    	        "    jcibos_generation d ON d.Challan_No = a.ChallanNo " +
+	    	      
+	    	        "WHERE " +
+	    	        "    b.Challan_No IS NULL " +
+	    	        "    AND a.Contract_no = '"+contract+"'" +
+	    	        "    AND a.Credit_note_no NOT IN ( " +
+	    	        "        SELECT Credit_note_no " +
+	    	        "        FROM jcisettlement_cndn " +
+	    	        "    )";
 	    
-	    String sql1 = "SELECT f.Demand_note_no, "
-                + "       SUM(f.Carrying_cost) AS Total_Carrying_cost, "
-                + "       f.Demand_note_date, "
-                + "       f.DocumentName "
-                + "FROM jcidemand_note f "
-                + "WHERE f.Contract_no = '"+contract+"' "
-                + "  AND f.Demand_note_no NOT IN ("
-                + "      SELECT Credit_note_no "
-                + "      FROM jcisettlement_cndn "
-                + "  ) "
-                + "GROUP BY f.Demand_note_no, f.Demand_note_date, f.DocumentName";
+	    String creditNoteSettle ="SELECT DISTINCT " +
+	            "    s.Credit_note_no, " +
+	            "    s.Credit_note_amt, " +
+	            "    s.Credit_note_date, " +
+	            "    s.Challan_No, " +
+	            "    d.Consignment_note_text, " +
+	            "    b.Bill_of_supply_no, " +
+	            "    CONVERT(VARCHAR(10), d.Date_of_shipment, 103) AS Date_of_Shipment, "+
+	            "    n.DateofInspection, " +
+	            "    s.SettlementId, " +
+	            "    b.Bos_file_path, " +
+	            "    s.HoDi_No, " +
+	            "    d.Consignment_note, " +
+	            "    s.doc " +
+	            "FROM " +
+	            "    jcicredit_note_settled s " +
+	            "INNER JOIN " +
+	            "    jcidispatch_details d ON d.Challan_no = s.Challan_No " +
+	            "INNER JOIN " +
+	            "    jcibos_generation b ON b.Challan_No = s.Challan_No " +
+	            "INNER JOIN " +
+	            "    jciclaimNomination n ON n.Settlement_id_generated = s.SettlementId " +
+	            "WHERE " +
+	            "    s.Contract_no = '"+contract+"' " +
+	            "    AND s.Credit_note_no NOT IN ( " +
+	            "        SELECT Credit_note_no " +
+	            "        FROM jcisettlement_cndn " +
+	            "    )";
+	    
+	    String demadNote =   "SELECT " +
+	            "    f.Demand_note_no, " +
+	            "    f.Carrying_cost, " +
+	            "    f.Demand_note_date, " +
+	            "    f.DocumentName " +
+	            "FROM " +
+	            "    jcidemand_note f " +
+	            "WHERE " +
+	            "    f.Contract_no = '"+contract+"' " +
+	            "    AND f.Demand_note_no NOT IN ( " +
+	            "        SELECT Credit_note_no " +
+	            "        FROM jcisettlement_cndn " +
+	            "    )";
 
 
 	    // Execute the first query
-	    List<Object[]> creditNoteDetails = (List<Object[]>) currentSession().createSQLQuery(sql).list();
+	    List<Object[]> creditNote1= (List<Object[]>) currentSession().createSQLQuery(creditNote).list();
 
 	    // Execute the second query
-	    List<Object[]> demandNoteDetails = (List<Object[]>) currentSession().createSQLQuery(sql1).list();
+	    List<Object[]> creditNoteSettle1 = (List<Object[]>) currentSession().createSQLQuery(creditNoteSettle).list();
 
+	 // Execute the third query
+	    List<Object[]> demandNote1 = (List<Object[]>) currentSession().createSQLQuery(demadNote).list();
 	    // Create a list to hold the combined results
 	    List<Object[]> combinedResults = new ArrayList<>();
 
 	    // Add results from the first query
-	    for (Object[] record : creditNoteDetails) {
+	    for (Object[] record : creditNote1) {
+	        combinedResults.add(record);
+	    }
+	    for (Object[] record : creditNoteSettle1) {
 	        combinedResults.add(record);
 	    }
 
 	    // Add results from the second query
-	    for (Object[] record : demandNoteDetails) {
+	    for (Object[] record : demandNote1) {
 	        combinedResults.add(record);
 	    }
 
@@ -404,7 +458,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 		
 		  String sqlQuery = "SELECT Contract_no, Credit_note_no, bosNo, "
 	            + "consigneeNoteText, creditNoteAmount,  dateOfInspection, "
-	            + "dateOfIssue, dateOfShipment, hodi, settlementId , cndnExcel_link, IdentificationCnDn ,AmountDiffCnAndDn FROM jcisettlement_cndn";
+	            + "dateOfIssue, dateOfShipment, hodi, settlementId , cndnExcel_link, IdentificationCnDn ,AmountDiffCnAndDn, purpose FROM jcisettlement_cndn";
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 		List<settlemetCnDnModel> list = new ArrayList<>();
@@ -425,6 +479,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	        settlementCnDn.setCndnExcel_link((String) result[10]);
 	        settlementCnDn.setIdentificationCnDn((String)result[11]);
 	        settlementCnDn.setBosDoc(difference);
+	        settlementCnDn.setPurpose((String)result[13]);
 			list.add(settlementCnDn);
 
 		}
