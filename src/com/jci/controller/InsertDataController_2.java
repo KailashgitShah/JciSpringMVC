@@ -2,14 +2,20 @@
 package com.jci.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import com.jci.model.FarmerRegModel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,10 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
@@ -30,21 +38,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.jci.model.PaymentInstrumentModel;
+import com.jci.model.PurchaseReportDTO;
+import com.jci.model.RoDetailsModel;
 import com.jci.model.UploadingReceiptModel;
 import com.jci.model.UserActionModel;
 import com.jci.model.UserPriviligeModel;
 import com.jci.model.UserRoleModel;
+import com.jci.model.ZoneModel;
 import com.jci.model.labelGenerationModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.EntryofsaleService;
 import com.jci.service.HoDispatchService;
 import com.jci.service.PaymentInstrumentService;
+import com.jci.service.PurchaseCenterService;
 import com.jci.service.PurchaseReportService;
 import com.jci.service.RawJuteProcurementAndPaymentService;
+import com.jci.service.RoDetailsService;
 import com.jci.service.UploadRecieptService;
 import com.jci.service.UserActionService;
 import com.jci.service.UserPriviligeService;
 import com.jci.service.UserRoleService;
+import com.jci.service.ZoneService;
 import com.jci.service.labelGenerationService;
 import com.lowagie.text.Element;
 import com.lowagie.text.pdf.PdfPCell;
@@ -61,6 +75,7 @@ import com.google.gson.Gson;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.layout.element.Paragraph;
+import com.jci.model.DailyReportDTO;
 import com.jci.model.EntryofSaleModel;
 import com.jci.model.FarmerRegistrationModel;
 import com.jci.model.HODispatchInstructionModel;
@@ -75,6 +90,18 @@ public class InsertDataController_2 {
 	
 	@Autowired
 	private HoDispatchService hodispatchservice;
+	
+	@Autowired
+	private HttpServletRequest request;
+	
+	@Autowired
+	RoDetailsService roService;
+	
+	@Autowired
+    PurchaseCenterService purchaseCenterService;
+	
+	@Autowired
+	ZoneService zoneService;
 	
 	@Autowired
 	EntryofsaleService entryofsaleservice;
@@ -878,7 +905,776 @@ public class InsertDataController_2 {
 		        return gson.toJson((Object) this.purchaseReportService.farmerdetail(request.getParameter("value")));
 
 		    }
+		 
+		 @RequestMapping(value = { "RegionReport" })
+		  public ModelAndView RegionReport(final HttpServletRequest request,RedirectAttributes red) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		        ModelAndView mv = new ModelAndView("RegionReport");
+		    	   if(username == null) {
+		    		    return mv = new ModelAndView("index");
+		               }
+		    	
+		    	   try {
+		    		   final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
+		    		   mv.addObject("regionList", (Object)regionList);
+		    	       final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+		               mv.addObject("zoneList", (Object)zoneList);
+		       		   }
+		    	   catch(Exception e) {
+		    		   e.printStackTrace();
+		    	   }
+		        return mv;
+		    }
+		 @ResponseBody
+		 @RequestMapping("RegionReportList")
+		    public String RegionReportList(@RequestParam("cropyear") String cropyear,@RequestParam("fromdate") String fromdate ,@RequestParam("todate") String todate , @RequestParam("basis") String basis, @RequestParam("juteVariety") String juteVariety) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	JSONObject objParent = new JSONObject();
+	            JSONArray arr = new JSONArray();
+		    	   
+		        try {
+		            final List<DailyReportDTO> allRegionReport = (List<DailyReportDTO>)this.purchasereportService.RegionReportList(cropyear, todate,basis,juteVariety,fromdate);
+		            System.err.println("allDailyReport===77"+allRegionReport.toString());
+		            List<DailyReportDTO> dailylist = new ArrayList<DailyReportDTO>();
+	                Set<String> uniqueCombos = new HashSet<>();
+	                List<DailyReportDTO> filteredList = new ArrayList<>();
+	                int s1=0, s2 =0, s3=0, s4=0, s5 = 0, s6=0, s7=0, s8=0,ded=0,Basis=0,gross=0,net=0,grasat=0,fiber=0;
+	                
+	                
+		            for(DailyReportDTO dalydto : allRegionReport) {
+	        	          JSONObject obj = new JSONObject();
 
+	        	          DailyReportDTO dailydto=new DailyReportDTO();
+	         	           
+	                                       s1 += dalydto.getGr1d();
+
+	                                       dailydto.setGr1d(s1);
+	                             
+	                          s2 += dalydto.getGr2d();
+
+	                          dailydto.setGr2d(s2);
+	                   
+	                          s3 += dalydto.getGr3d();
+
+	                          dailydto.setGr3d(s3);
+	                          
+	                     s4 += dalydto.getGr4d();
+
+	                          dailydto.setGr4d(s4);
+	                  
+	                          s5 += dalydto.getGr5d();
+
+	                          dailydto.setGr5d(s5);
+	                 
+	                          s6 += dalydto.getGr6d();
+
+	                          dailydto.setGr6d(s6);
+	                   
+	                          s7 += dalydto.getGr7d();
+
+	                          dailydto.setGr7d(s7);
+	                   
+	                          s8 += dalydto.getGr8d();
+
+	                          dailydto.setGr8d(s8);
+	                   
+	                    	  ded += dalydto.getDedQuand();
+
+	                          dailydto.setDedQuand(ded);
+	                  
+	                          Basis += dalydto.getBasisPriced();
+
+	                          dailydto.setBasisPriced(Basis);
+	                  
+	                          Basis += dalydto.getBasisPriced();
+
+	                          dailydto.setBasisPriced(Basis);
+	                 
+	                    	  gross += dalydto.getGrossQuand();
+
+	                          dailydto.setGrossQuand(gross);
+	                
+	                    	  net += dalydto.getNetQuand();
+
+	                          dailydto.setNetQuand(net);
+	                 
+	                    	  grasat += dalydto.getGarsatRd();
+
+	                          dailydto.setGarsatRd(grasat);
+	                   
+	                    	  fiber += dalydto.getFiberVald();
+
+	                          dailydto.setFiberVald(fiber);
+	                  
+	        	          
+	                      obj.put("Ded", dalydto.getDedQuand());
+	                      obj.put("Basis", dalydto.getBasisPriced());
+	                      obj.put("Gross", dalydto.getGrossQuand());
+	                      obj.put("Net", dalydto.getNetQuand());
+	                      obj.put("Grasat", dalydto.getGarsatRd());
+	                      obj.put("Fiber", dalydto.getFiberVald());
+	                      obj.put("Gr1", dalydto.getGr1d());
+	                      obj.put("Gr2", dalydto.getGr2d());
+	                      obj.put("Gr3", dalydto.getGr3d());
+	                      obj.put("Gr4", dalydto.getGr4d());
+	                      obj.put("Gr5", dalydto.getGr5d());
+	                      obj.put("Gr6", dalydto.getGr6d());
+	                      obj.put("Gr7", dalydto.getGr7d());
+	                      obj.put("Gr8", dalydto.getGr8d());
+	                      obj.put("Region", dalydto.getRegiond());
+	                      
+	                      dalydto.setDedQuand(dailydto.getDedQuand());
+	                      dalydto.setBasisPriced(dailydto.getBasisPriced());
+	                      dalydto.setGrossQuand(dailydto.getGrossQuand());
+	                      dalydto.setNetQuand(dailydto.getNetQuand());
+	                      dalydto.setGarsatRd(dailydto.getGarsatRd());
+	                      dalydto.setFiberVald(dailydto.getFiberVald());
+	                      dalydto.setGr1d(dailydto.getGr1d());
+	                      dalydto.setGr2d(dailydto.getGr2d());
+	                      dalydto.setGr3d(dailydto.getGr3d());
+	                      dalydto.setGr4d(dailydto.getGr4d());
+	                      dalydto.setGr5d(dailydto.getGr5d());
+	                      dalydto.setGr6d(dailydto.getGr6d());
+	                      dalydto.setGr7d(dailydto.getGr7d());
+	                      dalydto.setGr8d(dailydto.getGr8d());
+	                 
+
+			               	 arr.put(obj);
+
+		            }
+		       	 objParent.put("data", arr);
+	             System.err.println("objParent = "+objParent);
+	             return objParent.toString();
+		        }
+		        catch (Exception e) {
+		            System.out.println(e.getLocalizedMessage());
+	                return objParent.toString();
+
+		        }
+		         
+		    }
+		 @RequestMapping(value = { "RegionReportDownload" })
+		    public ModelAndView RegionReportDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpServletResponse response)  {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	System.err.println("dshfkjdhglsdjkgjdghsdkh");
+		    	//String Regionname=request.getParameter("region");
+	          //String Region = request.getParameter("rocode");
+		            String From_date = request.getParameter("fromdate");
+		            String To_date = request.getParameter("todate");
+		            String DPC=request.getParameter("dpcid");	    	   
+		             String Crop_Year = request.getParameter("crop_year");
+		    	    String Basis = request.getParameter("basis");
+		    	    String Jute_Variety = request.getParameter("jute_variety");
+			    	 String Date_of_Purchase = request.getParameter("dateofpurchase");
+			    	 
+			    	 String[] fromDateParts = From_date.split("-");
+			    	    String[] toDateParts = To_date.split("-");
+
+			    	    // Rebuild the dates in desired format (DD-MM-YYYY)
+			    	    String formattedFromDate = fromDateParts[2] + "-" + fromDateParts[1] + "-" + fromDateParts[0];
+			    	    String formattedToDate = toDateParts[2] + "-" + toDateParts[1] + "-" + toDateParts[0];
+
+			    	    // Combine the formatted dates with separator
+			    	    String fromtoDated = formattedFromDate + " to " + formattedToDate;
+
+			    	    System.out.println(fromtoDated);
+
+		    	    
+		    	   
+		    	 ModelAndView mv = new ModelAndView("RegionReport");
+		    	 if(username == null)
+		    	     {
+		         	   return new ModelAndView("index");
+		             }
+		        try {
+		            final List<DailyReportDTO> allRegionReport = (List<DailyReportDTO>)this.purchasereportService.RegionReportList(Crop_Year,To_date, Basis, Jute_Variety,From_date);
+		        System.out.println("my list" +allRegionReport);
+		            double gtotald = 0.0;                            
+		            double dtotald = 0.0;
+		            double ntotald = 0.0;
+		            double gatotald = 0.0;
+		            int ftotald = 0;
+		            double batotald =0.0;
+		            double gr1totd = 0.0;
+		            double gr2totd = 0.0;
+		            double gr3totd = 0.0;
+		            double gr4totd = 0.0;
+		            double gr5totd = 0.0;
+		            double gr6totd = 0.0;
+		            double gr7totd = 0.0;
+		            double gr8totd = 0.0;
+		            String placeopur = "";
+		            for(DailyReportDTO purchaselist : allRegionReport)
+		            {
+		            	gtotald += purchaselist.getGrossQuand();
+		            	BigDecimal total = new BigDecimal(gtotald).setScale(2, RoundingMode.HALF_UP);
+		            	gtotald = total.doubleValue();
+		            	
+		            	dtotald += purchaselist.getDedQuand();
+		            	BigDecimal total1 = new BigDecimal(dtotald).setScale(2, RoundingMode.HALF_UP);
+		            	dtotald = total1.doubleValue();
+		            	
+		            	ntotald += purchaselist.getNetQuand();
+		            	BigDecimal total2 = new BigDecimal(ntotald).setScale(2, RoundingMode.HALF_UP);
+		            	ntotald = total2.doubleValue();
+		            	
+		                gatotald += purchaselist.getGarsatRd();
+		                ftotald += purchaselist.getFiberVald();
+		                batotald += purchaselist.getBasisPriced();
+		                
+		                gr1totd += purchaselist.getGr1d();
+		            	BigDecimal total3 = new BigDecimal(gr1totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr1totd = total3.doubleValue();
+		            	
+		            	gr2totd += purchaselist.getGr2d();
+		            	BigDecimal total4 = new BigDecimal(gr2totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr2totd = total4.doubleValue();
+		            	
+		            	gr3totd += purchaselist.getGr3d();
+		            	BigDecimal total5 = new BigDecimal(gr3totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr3totd = total5.doubleValue();
+		            	
+		            	gr4totd += purchaselist.getGr4d();
+		            	BigDecimal total6 = new BigDecimal(gr4totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr4totd = total6.doubleValue();
+		            	
+		            	gr5totd += purchaselist.getGr5d();
+		            	BigDecimal total7 = new BigDecimal(gr5totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr5totd = total7.doubleValue();
+		            	
+		            	gr6totd += purchaselist.getGr6d();
+		            	BigDecimal total8 = new BigDecimal(gr6totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr6totd = total8.doubleValue();
+		            	
+		            	gr7totd += purchaselist.getGr7d();
+		            	BigDecimal total9 = new BigDecimal(gr7totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr7totd = total9.doubleValue();
+		            	
+		            	gr8totd += purchaselist.getGr8d();
+		            	BigDecimal total10 = new BigDecimal(gr8totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr8totd = total10.doubleValue();
+		            	
+		                placeopur = purchaselist.getPlacepurd();
+		                
+	                System.err.println(placeopur+"hhdjdjhjh");
+
+
+
+		                purchaselist.setGtotald(gtotald);
+		                purchaselist.setDtotald(dtotald);
+		                purchaselist.setNtotald(ntotald);
+		                purchaselist.setGatotald(gatotald);
+		                purchaselist.setFtotald(ftotald);
+		                purchaselist.setBatotald(batotald);
+		                purchaselist.setGr1totd(gr1totd);
+		                purchaselist.setGr2totd(gr2totd);
+		                purchaselist.setGr3totd(gr3totd);
+		                purchaselist.setGr4totd(gr4totd);
+		                purchaselist.setGr5totd(gr5totd);
+		                purchaselist.setGr6totd(gr6totd);
+		                purchaselist.setGr7totd(gr7totd);
+		                purchaselist.setGr8totd(gr8totd);
+
+		                purchaselist.setBasisd(Basis);
+		                purchaselist.setJutevard(Jute_Variety);
+		                purchaselist.setCropYeard(Crop_Year);
+		                //purchaselist.setRegiond(Regionname);
+		                purchaselist.setDatepurd(Date_of_Purchase);
+		                purchaselist.setFromtodated(fromtoDated);
+		                purchaselist.setPlacepurd(placeopur);
+		                
+		                
+		                
+		            }
+		            mv.addObject("allRegionReport", allRegionReport);
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pranjal.saxena\\JaspersoftWorkspace\\MyReports\\RegionPurchaseReport.jrxml");
+		        	
+	             Map<String, Object> parameters = new HashMap<String, Object>();
+	             // Prepare data sources
+	             JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allRegionReport);
+
+	             // Fill JasperPrints
+	             JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	          response.setContentType("application/pdf");
+	             response.setHeader("Content-Disposition", "attachment; filename=Region Report.pdf");
+	              try (ServletOutputStream out = response.getOutputStream()) {
+	              JRPdfExporter exporter = new JRPdfExporter();
+	              exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	           //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+	              exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	              exporter.exportReport();
+	          }
+	          catch (Exception e) {
+		            System.out.println(e.getLocalizedMessage());
+		        }
+	        
+	 }
+	 catch (Exception e) {
+	     System.out.println(e.getLocalizedMessage());
+	 }
+	 
+	  
+	 return mv;
+	}
+		 @RequestMapping(value = { "DailyReport" })
+		  public ModelAndView DailyReport(final HttpServletRequest request,RedirectAttributes red) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		        ModelAndView mv = new ModelAndView("DailyReport");
+		    	   if(username == null) {
+		    		    return mv = new ModelAndView("index");
+		               }
+		    
+		    	   try {
+		    		   final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
+		    		   mv.addObject("regionList", (Object)regionList);
+		    	       final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+		               mv.addObject("zoneList", (Object)zoneList);
+		       		   }
+		    	   catch(Exception e) {
+		    		   e.printStackTrace();
+		    	   }
+		        return mv;
+		    }
+
+		 @RequestMapping("DailyReportList")
+		 public ModelAndView DailyReportList(@RequestParam String cropyear ,@RequestParam String fromdate ,@RequestParam String todate , @RequestParam String juteVariety ,@RequestParam String region , @RequestParam String basis ,final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	 
+		    	
+		            String regions = this.roService.findregionbyname(region);
+		    	   ModelAndView mv = new ModelAndView("DailyReportList");
+
+		    	   
+		    	 if(username == null)
+		    	 {
+		         	return new ModelAndView("index");
+		          }
+				try {
+		            final List<DailyReportDTO> allDailyReport = (List<DailyReportDTO>)this.purchasereportService.DailyReportList( basis, juteVariety,cropyear,fromdate,todate,regions);
+		            System.err.println("allDailyReport===77"+allDailyReport);
+
+		            if(allDailyReport ==null)
+		            {
+		                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+		                return new ModelAndView((View)new RedirectView("DailyReportList.obj"));
+			    	}
+		            System.out.println("Region"+regions);
+		           // String roname = roService.findregionbyid(Region);
+		               mv.addObject("allDailyReport", (Object)allDailyReport);
+		               mv.addObject("basis", (Object)basis);
+		               mv.addObject("region", (Object)region);
+		             mv.addObject("roname", (Object)region);
+		              mv.addObject("jute_variety", (Object)juteVariety);
+		              mv.addObject("dateofpurchase", (Object)todate);
+		              mv.addObject("crop_year", (Object)cropyear);
+		              mv.addObject("fromdate", (Object)fromdate);
+		              mv.addObject("todate", (Object)todate);
+
+		            //  mv.addObject("dpcid", (Object)DPC);
+		              
+		           System.err.println("Volume 1");
+		        }
+		        catch (Exception e) {
+		            System.out.println(e.getLocalizedMessage());
+		        }
+		         
+		        return mv;
+		    }
+		 @RequestMapping(value = { "DailyReportDownload" })
+		    public ModelAndView DailyReportDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpServletResponse response)  {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	
+		    	String Regionname=request.getParameter("region");
+	             String Region = request.getParameter("rocode");
+		            String From_date = request.getParameter("fromdate");
+		            String To_date = request.getParameter("todate");
+		            String DPC=request.getParameter("dpcid");	    	   
+		             String Crop_Year = request.getParameter("crop_year");
+		    	    String Basis = request.getParameter("basis");
+		    	    String Jute_Variety = request.getParameter("jute_variety");
+			    	 String Date_of_Purchase = request.getParameter("dateofpurchase");
+			            String regions = this.roService.findregionbyname(Regionname);
+
+			    	 
+			    	 String[] fromDateParts = From_date.split("-");
+			    	    String[] toDateParts = To_date.split("-");
+
+			    	    // Rebuild the dates in desired format (DD-MM-YYYY)
+			    	    String formattedFromDate = fromDateParts[2] + "-" + fromDateParts[1] + "-" + fromDateParts[0];
+			    	    String formattedToDate = toDateParts[2] + "-" + toDateParts[1] + "-" + toDateParts[0];
+
+			    	    // Combine the formatted dates with separator
+			    	    String fromtoDated = formattedFromDate + " to " + formattedToDate;
+
+			    	    System.out.println(fromtoDated);
+
+		    	    
+		    	   
+		    	 ModelAndView mv = new ModelAndView("DailyReport");
+		    	 if(username == null)
+		    	     {
+		         	   return new ModelAndView("index");
+		             }
+		        try {
+		            final List<DailyReportDTO> allDailyReport = (List<DailyReportDTO>)this.purchasereportService.DailyReportList( Basis, Jute_Variety,Crop_Year,From_date,To_date,regions);
+		        System.out.println("my list" +allDailyReport);
+		            double gtotald = 0.0;
+		            double dtotald = 0.0;
+		            double ntotald = 0.0;
+		            double gatotald = 0.0;
+		            int ftotald = 0;
+		            double batotald =0.0;
+		            double gr1totd = 0.0;
+		            double gr2totd = 0.0;
+		            double gr3totd = 0.0;
+		            double gr4totd = 0.0;
+		            double gr5totd = 0.0;
+		            double gr6totd = 0.0;
+		            double gr7totd = 0.0;
+		            double gr8totd = 0.0;
+		            String placeopur = "";
+		            for(DailyReportDTO purchaselist : allDailyReport)
+		            {
+		            	gtotald += purchaselist.getGrossQuand();
+		            	BigDecimal total = new BigDecimal(gtotald).setScale(2, RoundingMode.HALF_UP);
+		            	gtotald = total.doubleValue();
+		            	
+		            	dtotald += purchaselist.getDedQuand();
+		            	BigDecimal total1 = new BigDecimal(dtotald).setScale(2, RoundingMode.HALF_UP);
+		            	dtotald = total1.doubleValue();
+		            	
+		            	ntotald += purchaselist.getNetQuand();
+		            	BigDecimal total2 = new BigDecimal(ntotald).setScale(2, RoundingMode.HALF_UP);
+		            	ntotald = total2.doubleValue();
+		        
+		                
+		                gr1totd += purchaselist.getGr1d();
+		            	BigDecimal total3 = new BigDecimal(gr1totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr1totd = total3.doubleValue();
+		            	
+		            	gr2totd += purchaselist.getGr2d();
+		            	BigDecimal total4 = new BigDecimal(gr2totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr2totd = total4.doubleValue();
+		            	
+		            	gr3totd += purchaselist.getGr3d();
+		            	BigDecimal total5 = new BigDecimal(gr3totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr3totd = total5.doubleValue();
+		            	
+		            	gr4totd += purchaselist.getGr4d();
+		            	BigDecimal total6 = new BigDecimal(gr4totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr4totd = total6.doubleValue();
+		            	
+		            	gr5totd += purchaselist.getGr5d();
+		            	BigDecimal total7 = new BigDecimal(gr5totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr5totd = total7.doubleValue();
+		            	
+		            	gr6totd += purchaselist.getGr6d();
+		            	BigDecimal total8 = new BigDecimal(gr6totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr6totd = total8.doubleValue();
+		            	
+		            	gr7totd += purchaselist.getGr7d();
+		            	BigDecimal total9 = new BigDecimal(gr7totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr7totd = total9.doubleValue();
+		            	
+		            	gr8totd += purchaselist.getGr8d();
+		            	BigDecimal total10 = new BigDecimal(gr8totd).setScale(2, RoundingMode.HALF_UP);
+		            	gr8totd = total10.doubleValue();
+
+		                gatotald += purchaselist.getGarsatRd();
+		                ftotald += purchaselist.getFiberVald();
+		                batotald += Double.valueOf(purchaselist.getBasisPriced());
+		                
+		                placeopur = purchaselist.getPlacepurd();
+		                
+		                
+		                
+	                   System.err.println(placeopur+"hhdjdjhjh");
+
+
+
+		                purchaselist.setGtotald(gtotald);
+		                purchaselist.setDtotald(dtotald);
+		                purchaselist.setNtotald(ntotald);
+		                purchaselist.setGr1totd(gr1totd);
+		                purchaselist.setGr2totd(gr2totd);
+		                purchaselist.setGr3totd(gr3totd);
+		                purchaselist.setGr4totd(gr4totd);
+		                purchaselist.setGr5totd(gr5totd);
+		                purchaselist.setGr6totd(gr6totd);
+		                purchaselist.setGr7totd(gr7totd);
+		                purchaselist.setGr8totd(gr8totd);
+		                purchaselist.setGatotald(gatotald);
+		                purchaselist.setFtotald(ftotald);
+		                purchaselist.setBatotald(batotald);
+		                
+		                purchaselist.setBasisd(Basis);
+		                purchaselist.setJutevard(Jute_Variety);
+		                purchaselist.setCropYeard(Crop_Year);
+		                purchaselist.setRegiond(Regionname);
+		                purchaselist.setDatepurd(Date_of_Purchase);
+		                purchaselist.setFromtodated(fromtoDated);
+		                purchaselist.setPlacepurd(placeopur);
+
+		                
+		                
+		                
+		            }
+		            mv.addObject("allDailyReport", allDailyReport);
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pranjal.saxena\\JaspersoftWorkspace\\MyReports\\Daily Purchase Report2.jrxml");
+		        	
+	                Map<String, Object> parameters = new HashMap<String, Object>();
+	                // Prepare data sources
+	                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allDailyReport);
+
+	                // Fill JasperPrints
+	                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	             response.setContentType("application/pdf");
+	                response.setHeader("Content-Disposition", "attachment; filename=Daily Report.pdf");
+	                 try (ServletOutputStream out = response.getOutputStream()) {
+	                 JRPdfExporter exporter = new JRPdfExporter();
+	                 exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	              //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+	                 exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	                 exporter.exportReport();
+	             }
+	             catch (Exception e) {
+	 	            System.out.println(e.getLocalizedMessage());
+	 	        }
+	           
+	    }
+	    catch (Exception e) {
+	        System.out.println(e.getLocalizedMessage());
+	    }
+	    
+	     
+	    return mv;
+	}
+		 @RequestMapping(value = { "PurchaseReport" })
+		  public ModelAndView PurchaseReport(final HttpServletRequest request,RedirectAttributes red) {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		        ModelAndView mv = new ModelAndView("PurchaseReport");
+		    	   if(username == null) {
+		    		    return mv = new ModelAndView("index");
+		               }
+		    
+		    	   try {
+		    		   final List<RoDetailsModel> regionList = (List<RoDetailsModel>)this.roService.getAll();
+		    		   mv.addObject("regionList", (Object)regionList);
+		    	       final List<ZoneModel> zoneList = (List<ZoneModel>)this.zoneService.getAll();
+		               mv.addObject("zoneList", (Object)zoneList);
+		       		   }
+		    	   catch(Exception e) {
+		    		   e.printStackTrace();
+		    	   }
+		        return mv;
+		    }
+		 
+		 @RequestMapping("PurchaseReportList")
+		    public ModelAndView PurchaseReportList(@RequestParam String basis, @RequestParam String CropYear ,@RequestParam String fromdate, @RequestParam String todate,@RequestParam String juteVariety ,@RequestParam String dpc ,final HttpServletRequest request, final RedirectAttributes redirectAttributes) throws Exception {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	 
+		            String dpcId = this.purchaseCenterService.findDpIdbyName(dpc);
+
+		    	ModelAndView mv = new ModelAndView("PurchaseReportList");
+		    	 if(username == null)
+		    	 {
+		         	return new ModelAndView("index");
+		          }
+		        try {
+		            final List<PurchaseReportDTO> allPurchaseReport = (List<PurchaseReportDTO>)this.purchasereportService.PurchaseReportList(dpcId, basis, juteVariety,CropYear, fromdate, todate);
+		           
+		            if(allPurchaseReport ==null)
+		            {
+		                redirectAttributes.addFlashAttribute("msg", (Object)"<div class=\"alert alert-danger\"><b> Data Not Found !!!!</b></div>\r\n");
+		                return new ModelAndView((View)new RedirectView("PurchaseReportList.obj"));
+			    	}
+		            System.out.println("jdgjkgfhdkghdkgksgh" +allPurchaseReport);
+		               mv.addObject("allPurchaseReport", (Object)allPurchaseReport);
+				
+				/*
+				 * List<String> dpcname = purchaseService.dpcbyId(DPC);
+				 * mv.addObject("dpcname",(Object)dpcname);
+				 */
+				     
+		               mv.addObject("dpcname",(Object)dpc);
+		               mv.addObject("DPCid",(Object)dpcId);
+		               mv.addObject("basis", (Object)basis);
+		              mv.addObject("jute_variety", (Object)juteVariety);
+		              mv.addObject("fromdate", (Object)fromdate);
+		              mv.addObject("todate", (Object)todate);
+		              mv.addObject("crop_year", (Object)CropYear);
+		           
+		        }
+		        catch (Exception e) {
+		            System.out.println(e.getLocalizedMessage());
+		        }
+		         
+		        return mv;
+		    }
+		 
+		 @RequestMapping(value = { "PurchaseReportDownload" })
+		    public ModelAndView MarketArrivalDownload(final HttpServletRequest request, final RedirectAttributes redirectAttributes,HttpServletResponse response) throws ParseException {
+		    	String username =(String)request.getSession().getAttribute("usrname");
+		    	    
+		            String From_date = request.getParameter("fromdate");
+		            String To_date = request.getParameter("todate");
+		    	    String DPC = request.getParameter("DPCid");
+		    	    String dpcname = request.getParameter("dpcname");
+		    	    String Crop_Year = request.getParameter("crop_year");
+		    	    String Basis = request.getParameter("basis");
+		    	    String Jute_Variety = request.getParameter("jute_variety");
+		    	    //String Region = request.getParameter("Region");
+			    	String Regionname=request.getParameter("Region");
+
+		    	    //String fromtoDate=From_date+ "-" +To_date;
+		    	    
+		    	    String[] fromDateParts = From_date.split("-");
+		    	    String[] toDateParts = To_date.split("-");
+
+		    	    // Rebuild the dates in desired format (DD-MM-YYYY)
+		    	    String formattedFromDate = fromDateParts[2] + "-" + fromDateParts[1] + "-" + fromDateParts[0];
+		    	    String formattedToDate = toDateParts[2] + "-" + toDateParts[1] + "-" + toDateParts[0];
+
+		    	    // Combine the formatted dates with separator
+		    	    String fromtoDate = formattedFromDate + " to " + formattedToDate;
+
+		    	    System.out.println(fromtoDate);
+		    	    
+		    	   //final String Region=request.getParameter("region");
+		    	   
+		    	 ModelAndView mv = new ModelAndView("PurchaseReport");
+		    	 if(username == null)
+		    	     {
+		         	   return new ModelAndView("index");
+		             }
+		        try {
+		        	final List<PurchaseReportDTO> allPurchaseReport = (List<PurchaseReportDTO>)this.purchasereportService.PurchaseReportList(DPC, Basis, Jute_Variety,Crop_Year, From_date, To_date);	            	            
+		            double gtotal = 0.0;
+		            double dtotal = 0.0;
+		            double ntotal = 0.0;
+		            double gatotal = 0.0;
+		            int ftotal = 0;
+		            double batotal =0.0;
+		            double gr1tot = 0.0;
+		            double gr2tot = 0.0;
+		            double gr3tot = 0.0;
+		            double gr4tot = 0.0;
+		            double gr5tot = 0.0;
+		            double gr6tot = 0.0;
+		            double gr7tot = 0.0;
+		            double gr8tot = 0.0;
+		            for(PurchaseReportDTO purchaselist : allPurchaseReport)
+		            {
+		            	gtotal += purchaselist.getGrossQuan();
+		            	BigDecimal total = new BigDecimal(gtotal).setScale(2, RoundingMode.HALF_UP);
+		            	gtotal = total.doubleValue();
+		            	
+		            	dtotal += purchaselist.getDedQuan();
+		            	BigDecimal total1 = new BigDecimal(dtotal).setScale(2, RoundingMode.HALF_UP);
+		            	dtotal = total1.doubleValue();
+		            	
+		            	ntotal += purchaselist.getNetQuan();
+		            	BigDecimal total2 = new BigDecimal(ntotal).setScale(2, RoundingMode.HALF_UP);
+		            	ntotal = total2.doubleValue();
+		        
+		                
+		                gr1tot += purchaselist.getGr1();
+		            	BigDecimal total3 = new BigDecimal(gr1tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr1tot = total3.doubleValue();
+		            	
+		            	gr2tot += purchaselist.getGr2();
+		            	BigDecimal total4 = new BigDecimal(gr2tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr2tot = total4.doubleValue();
+		            	
+		            	gr3tot += purchaselist.getGr3();
+		            	BigDecimal total5 = new BigDecimal(gr3tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr3tot = total5.doubleValue();
+		            	
+		            	gr4tot += purchaselist.getGr4();
+		            	BigDecimal total6 = new BigDecimal(gr4tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr4tot = total6.doubleValue();
+		            	
+		            	gr5tot += purchaselist.getGr5();
+		            	BigDecimal total7 = new BigDecimal(gr5tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr5tot = total7.doubleValue();
+		            	
+		            	gr6tot += purchaselist.getGr6();
+		            	BigDecimal total8 = new BigDecimal(gr6tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr6tot = total8.doubleValue();
+		            	
+		            	gr7tot += purchaselist.getGr7();
+		            	BigDecimal total9 = new BigDecimal(gr7tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr7tot = total9.doubleValue();
+		            	
+		            	gr8tot += purchaselist.getGr8();
+		            	BigDecimal total10 = new BigDecimal(gr8tot).setScale(2, RoundingMode.HALF_UP);
+		            	gr8tot = total10.doubleValue();
+		            	
+		            	
+		                gatotal += purchaselist.getGarsatR();
+		                ftotal += purchaselist.getFiberVal();
+		                batotal += Double.valueOf(purchaselist.getBasisPrice());
+		              
+		                
+		           
+		                
+
+		              BigDecimal formattedGtotal = new BigDecimal(gtotal).setScale(2, RoundingMode.HALF_UP);
+		             // Setting the rounded value to purchaselist
+		             purchaselist.setGtotal(formattedGtotal.doubleValue());	               
+		             purchaselist.setDtotal(dtotal);
+		                purchaselist.setNtotal(ntotal);
+		                purchaselist.setGatotal(gatotal);
+		                purchaselist.setFtotal(ftotal);
+		                purchaselist.setBatotal(batotal);
+		                purchaselist.setGr1tot(gr1tot);
+		                purchaselist.setGr2tot(gr2tot);
+		                purchaselist.setGr3tot(gr3tot);
+		                purchaselist.setGr4tot(gr4tot);
+		                purchaselist.setGr5tot(gr5tot);
+		                purchaselist.setGr6tot(gr6tot);
+		                purchaselist.setGr7tot(gr7tot);
+		                purchaselist.setGr8tot(gr8tot);
+		              
+		              
+		                purchaselist.setJutevar(Jute_Variety);
+		                purchaselist.setPlacepur(dpcname);
+		                purchaselist.setCropYear(Crop_Year);
+		                purchaselist.setBasis(Basis);
+		                purchaselist.setFromtoDate(fromtoDate);
+		                
+		                
+		            }
+		            mv.addObject("allPurchaseReport", allPurchaseReport);
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pranjal.saxena\\JaspersoftWorkspace\\MyReports\\DPC-WISE PURCHASE REPORT1.jrxml");
+		        	
+	                Map<String, Object> parameters = new HashMap<String, Object>();
+	                // Prepare data sources
+	                JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allPurchaseReport);
+
+	                // Fill JasperPrints
+	                JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+	             response.setContentType("application/pdf");
+	                response.setHeader("Content-Disposition", "attachment; filename=Purchase Report.pdf");
+	                 try (ServletOutputStream out = response.getOutputStream()) {
+	                 JRPdfExporter exporter = new JRPdfExporter();
+	                 exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+	              //   exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint.get(1));
+	                 exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+	                 exporter.exportReport();
+	             }
+	             catch (Exception e) {
+	 	            System.out.println(e.getLocalizedMessage());
+	 	        }
+	           
+	    }
+	    catch (Exception e) {
+	        System.out.println(e.getLocalizedMessage());
+	    }
+	    
+	     
+	    return mv;
+	}
 	
 	 
 }

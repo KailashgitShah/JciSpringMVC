@@ -175,7 +175,8 @@ body {
 					  				class="sidebar-item-icon fa fa-th-large"></i><b>All Bale Report</b></a></li>
 					  <li  data-pre="" id=""><a href="LedgerReport.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Ledger Report</b></a></li>		
 					  <li  data-pre="" id=""><a href="MarketArrivalRegions.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Market Report</b></a></li>		
-
+	                  <li  data-pre="" id=""><a href="RegionReport.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>All Purchase Report</b></a></li>					
+ 
 				  </ul> 
 				</li>
 				
