@@ -30,5 +30,11 @@ public class UserActionServiceImpl implements UserActionService {
 	public Integer getactionid(String useraction) {
 		return useractiondao.getactionid(useraction);
 	}
+
+	@Override
+	public void deleteAction(String actionname) {
+		// TODO Auto-generated method stub
+		 useractiondao.deleteAction(actionname);
+	}
 	
 }

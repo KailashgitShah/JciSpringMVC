@@ -1675,6 +1675,35 @@ public class InsertDataController_2 {
 	     
 	    return mv;
 	}
-	
+		 
+		 
+			@RequestMapping("viewAction")
+			public ModelAndView viewAction(HttpServletRequest request,RedirectAttributes red)
+			{	String username =(String)request.getSession().getAttribute("usrname");
+			    ModelAndView mv = new ModelAndView("viewAction");
+			     if(username == null) {
+			     	return mv = new ModelAndView("index");
+			         }
+				 final List<UserActionModel> alluseractionlist = (List<UserActionModel>)this.useractionservice.getAll();
+				 mv.addObject("useractionlist", (Object)alluseractionlist);
+				 return mv;
+			}
+			
+			@RequestMapping("deleteAction")
+			public ModelAndView deleterolename(HttpServletRequest request,RedirectAttributes redirectAttributes)
+			{	 
+				String username =(String)request.getSession().getAttribute("usrname");
+				if(username == null) {
+		     	return new ModelAndView("index");
+	        }
+				
+				ModelAndView mv = new ModelAndView("viewAction");
+				String actionname = request.getParameter("actionname");
+			    this.useractionservice.deleteAction(actionname);
+			    final List<UserActionModel> alluseractionlist = (List<UserActionModel>)this.useractionservice.getAll();
+				 mv.addObject("useractionlist", (Object)alluseractionlist);
+				
+				return mv;
+			}
 	 
 }

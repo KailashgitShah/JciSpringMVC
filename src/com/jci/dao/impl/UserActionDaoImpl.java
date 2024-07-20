@@ -51,4 +51,12 @@ public class UserActionDaoImpl implements UserActionDao {
 		return getId;
 	}
 
+
+	@Override
+	public void deleteAction(String actionname) {
+		// TODO Auto-generated method stub
+		String hql = "Delete from jciuseraction where action_name = '"+actionname+"' " ;
+		this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+	}
+
 }

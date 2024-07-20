@@ -77,6 +77,7 @@ body {
 				<ul class="nav-2-level ">
 					<li class="nav-label" data-pre="1" id="o1"><a href="userrole.obj" ><b><i class="sidebar-item-icon fa fa-th-large"></i>Add Role</b></a></li>
 					<li class="nav-label" data-pre="2" id="o2"><a href="useraction.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Add Action</b></a></li>
+					<li class="nav-label" data-pre="" id=""><a href="viewAction.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Action</b></a></li>
 					<li class="nav-label" data-pre="3" id="o3"><a href="userprivilige.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Add Privileges</b></a></li>
 					<!-- <li class="nav-label" data-pre="4" id="o4"><a href="viewuserrole.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Role</b></a></li>
 					 -->

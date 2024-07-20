@@ -16,5 +16,7 @@ public interface UserActionDao {
 	
 	public 	Integer getactionid(String useraction);
 
+	void deleteAction(String actionname);
+
 
 }

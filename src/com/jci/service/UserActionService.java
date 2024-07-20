@@ -14,5 +14,7 @@ public interface UserActionService {
 	
 	public 	Integer getactionid(String useraction);
 
+	void deleteAction(String actionname);
+
 
 }
