@@ -59,7 +59,7 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 	public List<LedgerReportDTO> LedgerReportList(String basis, String cropyr, String farmer) {
 		 List<Integer> result = new ArrayList<>();
 		    String querystr = "";
-		    querystr="SELECT \r\n" + 
+		    querystr="  SELECT \r\n" + 
 		    		"    p.cropyr,\r\n" + 
 		    		"    p.farmerregno,\r\n" + 
 		    		"    p.basis,\r\n" + 
@@ -69,7 +69,7 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 		    		"    SUM(p.grossquantity) / 100 AS [Gross Quantity (Qtls)],\r\n" + 
 		    		"    SUM(p.deductionquantity) / 100 AS [Deduction (Qtls)],\r\n" + 
 		    		"    SUM(p.netquantity) / 100 AS [Net Quantity (Qtls)],\r\n" + 
-		    		"    SUM(p.grasatrate) / 100 AS [Value (Qtls)],\r\n" + 
+		    		"    SUM(p.grasatrate) / 100 AS [grasatrate (Qtls)],\r\n" + 
 		    		"    SUM(SUM(p.grossquantity - p.deductionquantity)) OVER (PARTITION BY p.farmerregno ORDER BY p.datepurchase ROWS UNBOUNDED PRECEDING) / 100 AS [Communitative (Qtls)],\r\n" + 
 		    		"    rmt.F_NAME,\r\n" + 
 		    		"    rmt.F_AC_NO,\r\n" + 
@@ -78,8 +78,7 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 		    		"    rmt.F_ID_PROF_NO,\r\n" + 
 		    		"    rmt.F_BANK_NAME,\r\n" + 
 		    		"    rmt.F_BANK_IFSC,\r\n" + 
-		    		"    rmt.F_REG_NO,\r\n" + 
-		    		"    tsp.purchase_date AS PurchaseDate,\r\n" + 
+		    		"    tsp.date AS [Payment Date],\r\n" + 
 		    		"    pc.centername AS CentreName\r\n" + 
 		    		"FROM \r\n" + 
 		    		"    jciprocurement p\r\n" + 
@@ -108,7 +107,7 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 		    		"    rmt.F_BANK_NAME,\r\n" + 
 		    		"    rmt.F_BANK_IFSC,\r\n" + 
 		    		"    rmt.F_REG_NO,\r\n" + 
-		    		"    tsp.purchase_date,\r\n" + 
+		    		"    tsp.date,\r\n" + 
 		    		"    pc.centername\r\n" + 
 		    		"ORDER BY \r\n" + 
 		    		"    p.farmerregno";
@@ -140,9 +139,8 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 		    	ledgerReportDTO.setAadharNo((String) row[15]);
 		    	ledgerReportDTO.setBankName((String) row[16]);
 		    	ledgerReportDTO.setIfscCode((String) row[17]);
-		    	ledgerReportDTO.setFarmerRegNo((String) row[18]);
-		    	ledgerReportDTO.setPayDate((String) row[19]);
-		    	ledgerReportDTO.setDpc((String) row[20]);
+		    	ledgerReportDTO.setPayDate((String) row[18]);
+		    	ledgerReportDTO.setDpc((String) row[19]);
 		    	
 		        ll.add(ledgerReportDTO);
 		        System.err.println("ll===="+ll);
