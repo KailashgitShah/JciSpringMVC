@@ -139,7 +139,7 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 		    	ledgerReportDTO.setAadharNo((String) row[15]);
 		    	ledgerReportDTO.setBankName((String) row[16]);
 		    	ledgerReportDTO.setIfscCode((String) row[17]);
-		    	ledgerReportDTO.setPayDate((String) row[18]);
+		    	ledgerReportDTO.setPayDate(row[18] == null ? "" : (String) row[18]);
 		    	ledgerReportDTO.setDpc((String) row[19]);
 		    	
 		        ll.add(ledgerReportDTO);

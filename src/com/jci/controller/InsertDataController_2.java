@@ -858,9 +858,9 @@ public class InsertDataController_2 {
 		         System.out.println("my list" + allLedgerReport);
 
 		         for (LedgerReportDTO ledgerlist : allLedgerReport) {
-		             ledgerlist.setCropyear(Crop_Year);
+		             //ledgerlist.setCropyear(Crop_Year);
 		             ledgerlist.setFarmerRegNo(Farmer);
-		             ledgerlist.setBasis(Basis);
+		             //ledgerlist.setBasis(Basis);
 
 		             // Mask Aadhaar number
 		             String aadharNum = ledgerlist.getAadharNo();
@@ -873,7 +873,7 @@ public class InsertDataController_2 {
 
 		         mv.addObject("allLedgerReport", allLedgerReport);
 
-		         JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\Farmer_LEDGER.jrxml");
+		         JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\\\Program Files\\\\Apache Software Foundation\\\\Tomcat 8.5\\\\webapps\\\\PDF_Report\\Farmer_LEDGER.jrxml");
 
 		         Map<String, Object> parameters = new HashMap<>();
 		         JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(allLedgerReport);
@@ -897,6 +897,7 @@ public class InsertDataController_2 {
 
 		     return mv;
 		 }
+
 		 @ResponseBody
 		    @RequestMapping({ "getfarmerdetail" })
 		    public String findDpcByRegion(final HttpServletRequest request) {

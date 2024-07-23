@@ -137,7 +137,7 @@ th     { background:#eee; }
                             <td><%= list.getGrossQty() %></td>
                             <td><%= list.getDedQty() %></td>
                             <td><%= list.getNetQty() %></td>
-                            <td><%= list.getPayDate() %></td>
+                            <td><%= list.getPayDate() == null ? "" : list.getPayDate() %></td>
                             <td><%= list.getDpc() %></td>
                             <td><%= list.getCumQty() %></td>
                            
