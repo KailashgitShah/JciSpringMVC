@@ -1187,7 +1187,7 @@ public class InsertDataController_2 {
 		                
 		            }
 		            mv.addObject("allRegionReport", allRegionReport);
-		            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pranjal.saxena\\JaspersoftWorkspace\\MyReports\\RegionPurchaseReport.jrxml");
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\RegionPurchaseReport.jrxml");
 		        	
 	             Map<String, Object> parameters = new HashMap<String, Object>();
 	             // Prepare data sources
@@ -1420,7 +1420,7 @@ public class InsertDataController_2 {
 		                
 		            }
 		            mv.addObject("allDailyReport", allDailyReport);
-		            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pranjal.saxena\\JaspersoftWorkspace\\MyReports\\Daily Purchase Report2.jrxml");
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\Daily Purchase Report2.jrxml");
 		        	
 	                Map<String, Object> parameters = new HashMap<String, Object>();
 	                // Prepare data sources
@@ -1646,7 +1646,7 @@ public class InsertDataController_2 {
 		                
 		            }
 		            mv.addObject("allPurchaseReport", allPurchaseReport);
-		            JasperReport jasperReport1 = JasperCompileManager.compileReport("C:\\Users\\pranjal.saxena\\JaspersoftWorkspace\\MyReports\\DPC-WISE PURCHASE REPORT1.jrxml");
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport("E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\PDF_Report\\DPC-WISE PURCHASE REPORT1.jrxml");
 		        	
 	                Map<String, Object> parameters = new HashMap<String, Object>();
 	                // Prepare data sources
