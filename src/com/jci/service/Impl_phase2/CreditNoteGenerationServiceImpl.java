@@ -142,6 +142,12 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 		// TODO Auto-generated method stub
 		return creditNoteGenerationDao.CountRecord();
 	}
+
+	@Override
+	public List<Object[]> getMillDetails(String millcode) {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao.getMillDetails(millcode);
+	}
 	
 	
 

@@ -57,4 +57,5 @@ public interface CreditNoteGenerationService {
 	public List<settlemetCnDnModel> getAll();
 	
 	public String CountRecord();
+	public List<Object[]>getMillDetails(String millcode);
 }

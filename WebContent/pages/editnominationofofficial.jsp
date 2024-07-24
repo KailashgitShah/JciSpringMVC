@@ -101,7 +101,7 @@
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="updatesavenominalform.obj" method="POST">
+								<form id="myForm" action="updatesavenominalform.obj" method="POST">
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
@@ -164,7 +164,17 @@
 	
 </script> -->
 
+ <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 	<script type="text/javascript">

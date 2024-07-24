@@ -13,11 +13,12 @@ import javax.persistence.Table;
 public class JciEntryTdsModel {
 	
 	 @Id
+	 
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Column(name = "Declaration_id")
 	    private Long Declaration_id ; // Primary key, assumed to be BigInt
   
-	    @Column(name = "Mill", nullable = false) 
+	    @Column(name = "Mill", nullable = false ) 
 	    private String Mill; 
 	  
 	   

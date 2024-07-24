@@ -153,7 +153,7 @@ th {
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="savenominal.obj" method="POST">
+								<form id="myForm" action="savenominal.obj" method="POST">
 									<div class="row">
 										<div class="col-sm-4 form-group">
 											<label> Mill</label> <span class="text-danger">* </span> <select
@@ -254,7 +254,7 @@ th {
 					<div class="row">
                    <div class="col-sm-4 form-group">
                     <div style="flex-grow: 1;"></div> <!-- This creates space to push the button to the bottom -->
-                   <input type="submit" value="Submit" class="btn btn-primary" id="submit">
+                   <input type="submit" value="Submit" class="btn btn-primary" id="submit" onclick="disableSubmit(event)">
                    </div>
                    </div>
 
@@ -281,7 +281,17 @@ th {
       
 </script>  -->
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

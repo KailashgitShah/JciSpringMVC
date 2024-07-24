@@ -67,7 +67,7 @@
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="saveentryoftds.obj" method="POST"
+								<form id="myForm" action="saveentryoftds.obj" method="POST" 
 									enctype="multipart/form-data">
 									<div class="row">
 
@@ -137,7 +137,7 @@
 
 										<div class="col-sm-12 form-group">
 											<input type="submit" value="Submit" class="btn btn-primary"
-												id="submit" onclick="f()">
+												id="submit" onclick="disableSubmit(event)">
 										</div>
 									</div>
 								</form>
@@ -160,11 +160,25 @@
 	  <script src="assets/js/app.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
+
+ <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
  <script>
 	$( "#DateofIntimation" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 </script> 
+
 <script>
 function f(){
 	// alert(document.getElementsByName("SupportingDocument"))

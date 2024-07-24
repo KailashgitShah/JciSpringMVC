@@ -134,9 +134,9 @@ th {
 									<th>CN/DN Amount</th>
 									<th>CN/DN Amount Difference</th>
 									<th>Settlement_Id</th>
-									<th>DownLoad<th>
-									<!-- <th>Download</th> -->
-									
+									 <th>DownLoad</th> 
+									<th>Bank Mandate<th>
+									 <th></th> 
 									
 													
 									</tr>
@@ -165,7 +165,7 @@ th {
 											 	    <td>${item.getSettlementId()}</td>	
 											 	    <%-- <td>${item.getCndnExcel_link()}</td>	 --%>													
                                               <td><a href="downloadcndnXsl.obj?filename=${item.getCndnExcel_link()}" class="btn btn-success" target="_blank"> View Excel</a></button></td> 
-
+                                                 <td><a href="cbiPaymentMandate.obj?filename=${item.getCbiMandateDoc()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
 
 										</tr>
 										<%i++; %>

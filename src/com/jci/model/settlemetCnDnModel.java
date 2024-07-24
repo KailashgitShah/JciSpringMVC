@@ -75,6 +75,8 @@ public class settlemetCnDnModel {
 	private String IdentificationCnDn;
 	@Column(name = "purpose")
 	private String purpose;
+	@Column(name = "cbiMandateDoc")
+	private String cbiMandateDoc;
 	
 	
 	
@@ -389,6 +391,20 @@ public class settlemetCnDnModel {
 		this.purpose = purpose;
 	}
 
+    
+
+
+	public String getCbiMandateDoc() {
+		return cbiMandateDoc;
+	}
+
+
+
+
+	public void setCbiMandateDoc(String cbiMandateDoc) {
+		this.cbiMandateDoc = cbiMandateDoc;
+	}
+
 
 
 
@@ -396,7 +412,7 @@ public class settlemetCnDnModel {
 			String dateOfIssue, String hodi, String consigneeNoteText, String bosNo, String dateOfShipment,
 			String dateOfInspection, String creditNoteAmount, String settlementId, String consigneeDoc, String bosDoc,
 			String creditNoteDoc, String create_date_cndn, Double amountDiffCnAndDn, String cndnExcel_link,
-			Integer rowNumber, String identificationCnDn, String purpose) {
+			Integer rowNumber, String identificationCnDn, String purpose, String cbiMandateDoc) {
 		super();
 		Initiation_ref_no = initiation_ref_no;
 		this.millCode = millCode;
@@ -419,6 +435,7 @@ public class settlemetCnDnModel {
 		RowNumber = rowNumber;
 		IdentificationCnDn = identificationCnDn;
 		this.purpose = purpose;
+		this.cbiMandateDoc = cbiMandateDoc;
 	}
 
 
@@ -433,9 +450,9 @@ public class settlemetCnDnModel {
 				+ ", settlementId=" + settlementId + ", consigneeDoc=" + consigneeDoc + ", BosDoc=" + BosDoc
 				+ ", creditNoteDoc=" + creditNoteDoc + ", create_date_cndn=" + create_date_cndn + ", AmountDiffCnAndDn="
 				+ AmountDiffCnAndDn + ", cndnExcel_link=" + cndnExcel_link + ", RowNumber=" + RowNumber
-				+ ", IdentificationCnDn=" + IdentificationCnDn + ", purpose=" + purpose + "]";
+				+ ", IdentificationCnDn=" + IdentificationCnDn + ", purpose=" + purpose + ", cbiMandateDoc="
+				+ cbiMandateDoc + "]";
 	}
-
 
 
 	

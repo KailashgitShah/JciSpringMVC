@@ -141,7 +141,7 @@ import com.jci.model.UserRoleModel;
 import com.jci.model.ZoneModel;
 import com.jci.model.boenonlcDTO;
 import com.jci.model.jciWeighmentEntry;
-
+import com.jci.model.settlementCnDnDto;
 import com.jci.model.settlemetCnDnModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
@@ -9289,6 +9289,7 @@ public class Controller_V {
 		return resultString;
 	}
 
+	
 ///////////////////////////////////////////////// Settlement Of Credit and Debit notes //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ---------------------------------------------------------
 
@@ -9351,9 +9352,16 @@ public class Controller_V {
 		return mView;
 	}
 
+	
+
+	
 	@Value("${upload.cndnuploadxl}")
 	String cndnuploadxl;
-
+    @Value("${upload.cbiPaymentMandateCNDN}")
+    String cbiPaymentMandateCNDN ;
+    @Value("${upload.cbipaymentMandateJRXML}")
+    String  cbipaymentMandateJRXML;
+    
 	@RequestMapping("saveCnAndDn")
 	public ModelAndView finalSettlement(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -9378,8 +9386,10 @@ public class Controller_V {
 		String[] BosDoc = request.getParameterValues("BosDoc[]");
 		String[] creditNoteDoc = request.getParameterValues("creditNoteDoc[]");
 		String[] purpose = request.getParameterValues("purpose[]");
-
+		Double AmountDiffCNDN = Double.parseDouble(request.getParameter("AmountDifferenceCNDN"));
 		String total = creditNoteGenerationService.CountRecord();
+		
+		
 		int value1;
 		if (total != null) {
 
@@ -9391,61 +9401,151 @@ public class Controller_V {
 		// System.err.println(value1 + "rrrrrrrrrrrr");
 		String UniqueIdentification = contract + "/" + String.valueOf(value1);
 
-		Double creditNoteSum = 0.0;
-		Double debitNoteSum = 0.0;
 
-		// Calculate sums for credit and debit notes
-		for (int i = 0; i < rows; i++) {
-			String check = request.getParameter("rowCheckbox" + i);
-			if (check != null) {
-				String cnDnNo = creditNoteNo[i];
-				// Check if the first character of cnDnNo is 'C'
-				if (cnDnNo != null && !cnDnNo.isEmpty() && cnDnNo.charAt(0) == 'C') {
-					creditNoteSum += Double.valueOf(creditNoteAmount[i]);
-				} else {
-					debitNoteSum += Double.valueOf(creditNoteAmount[i]);
-				}
-			}
-		}
-
-		Double CnAndDnAmountDifference = creditNoteSum - debitNoteSum;
-		System.err.println("Credit Note Sum: " + creditNoteSum + " | Debit Note Sum: " + debitNoteSum);
 
 		// Get current date in dd-MM-yyyy format
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String formattedDate = today.format(formatter);
+		List<Object[]> millDetails = creditNoteGenerationService.getMillDetails(mill);
+	        System.err.println(millDetails);
+	
+		//jasper Report
+		
+			////////////////////////////////////////////CBI PAYMENT MANDATE Report////////////////////////////////////////////////
+			  
+	      String accountNo=null;
+	      String bankName =null; 
+	      String Address=null;
+	    
+	      for (Object[] row : millDetails) {
+	            // Extract data from each row
+	          
+	    	  accountNo = (String) row[1];
+	    	  Address = (String) row[3];
+	            bankName = (String) row[4];
+	  }
+	      
+	      System.err.println( accountNo + " "+ Address + " "+ bankName);
+	      
+	     String ans =  convertNumberToWords(AmountDiffCNDN);
+	    System.err.println(ans);
+	   
+	     String Content ="Please arrange to remit the total amounting to Rs " + AmountDiffCNDN + " "+ans+ " "+" to the 47 (Forty Seven) nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. "+accountNo +" through RTGS/NEFT/TRANSFER.";
 
-		// Create an Excel workbook and sheet
-		Workbook workbook = new XSSFWorkbook();
-		Sheet sheet = workbook.createSheet("Settlement Data");
-		Font headerFont = workbook.createFont();
-		headerFont.setBold(true);
-		headerFont.setFontHeightInPoints((short) 11);
-		headerFont.setColor(IndexedColors.BLACK.getIndex());
-		CellStyle headerCellStyle = workbook.createCellStyle();
-		headerCellStyle.setFont(headerFont);
+	        // Create the DTO object and set values
+	        settlementCnDnDto cndn = new settlementCnDnDto();
+	        cndn.setContent(Content);
+	        cndn.setTodayDate(formattedDate);
+	        cndn.setBankName(bankName);
+            cndn.setAddress(Address);
+	        String FilenameUnique = UniqueIdentification.replace("/", "_");;
+	        // Define the file name and path
+	        String filenamecndn = FilenameUnique +"cbipayment.pdf";
+	        String pathCNDN = cbiPaymentMandateCNDN + File.separator + filenamecndn;
 
-		String filepath = cndnuploadxl;
-		// String filepath = "C:\\Users\\Mansi.Gupta\\Documents\\CNDNExcelSave";
-		// "C:\\Users\\Mansi.Gupta\\Documents";
-		// String filename = filepath +File.separator + UniqueIdentification+"cndn"+
-		// ".xlsx"; // Change path as needed
+	        // Log the file name
+	        System.err.println("Generating report: " + filenamecndn);
+	        System.err.println("cndn " + cndn);
+	        try {
+	            // Compile the JasperReport
+	            JasperReport jasperReport1 = JasperCompileManager.compileReport(cbipaymentMandateJRXML);
 
-		String filename = filepath + File.separator + String.valueOf(value1) + "cndn" + ".xlsx";
-		String filenameSave = String.valueOf(value1) + "cndn" + ".xlsx";
-		// Define the columns for the Excel sheet
-		String[] columns = { "Mill Code", "Contract No", "Credit Note No", "Date Of Issue", "Hodi",
-				"Consignee Note Text", "BOS No", "Date Of Shipment", "Date Of Inspection", "Credit Note Amount",
-				"Settlement ID", "Consignee Doc", "BOS Doc", "Credit Note Doc", "Create Date", "Amount Difference" };
-		Row headerRow = sheet.createRow(0);
-		for (int j = 0; j < columns.length; j++) {
-			Cell cell = headerRow.createCell(j);
-			cell.setCellValue(columns[j]);
-			cell.setCellStyle(headerCellStyle);
-		}
+	            // Prepare parameters for the report
+	            Map<String, Object> parameters = new HashMap<>();
+	            // Add any parameters required by the report here
+	            // Example: parameters.put("SomeParameter", "SomeValue");
 
-		int rownum = 1;
+	            // Prepare the data source
+	            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(java.util.Collections.singletonList(cndn));
+
+	            // Fill the report with data
+	            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+
+	            // Export the report to a PDF file
+	            JasperExportManager.exportReportToPdfFile(jasperPrint1, pathCNDN);
+
+	            System.out.println("Report generated successfully at: " + pathCNDN);
+
+	        } catch (JRException e) {
+	            e.printStackTrace();
+	            System.err.println("Error generating the report.");
+	        }
+	        
+	        ////////////////////////////////// excel sheet ////////////////////////
+
+	        Workbook workbook = new XSSFWorkbook();
+	        Sheet sheet = workbook.createSheet("Settlement Data");
+
+	        Font headerFont = workbook.createFont();
+	        headerFont.setBold(true);
+	        headerFont.setFontHeightInPoints((short) 11);
+	        headerFont.setColor(IndexedColors.BLACK.getIndex());
+	        CellStyle headerCellStyle = workbook.createCellStyle();
+	        headerCellStyle.setFont(headerFont);
+
+	        String filepath = cndnuploadxl;
+	        String excelFilePath = filepath + File.separator + FilenameUnique + "cndn" + ".xlsx";
+	        String excelName = FilenameUnique+ "cndn" + ".xlsx";
+
+	        // Define the columns for the Excel sheet
+	        String[] columns = { "SI No", "IFSC", "Bank Account No", "Mill Name", "Bank Address", "Amount Rs", "Bank Name", "Branch Name" };
+	        Row headerRow = sheet.createRow(0);
+	        for (int j = 0; j < columns.length; j++) {
+	            Cell cell = headerRow.createCell(j);
+	            cell.setCellValue(columns[j]);
+	            cell.setCellStyle(headerCellStyle);
+	        }
+
+	     
+
+	        int serialNo = 1;
+	     //   Double AmountDiffCNDN1 = Double.parseDouble(request.getParameter("AmountDifferenceCNDN")); // Parse the amount difference
+
+	        for (Object[] row : millDetails) {
+	            // Extract data from each row
+	            String Ifsc = (String) row[0];
+	            String bankAccountNo = (String) row[1];
+	            String clientName = (String) row[2];
+	            String clientAddress = (String) row[3];
+	            String clientbank = (String) row[4];
+	            String clientlocation = (String) row[5];
+
+	            // Create a new row in the sheet
+	            Row dataRow = sheet.createRow(serialNo);
+
+	            // Set cell values for the current row
+	            dataRow.createCell(0).setCellValue(serialNo);
+	            dataRow.createCell(1).setCellValue(Ifsc);
+	            dataRow.createCell(2).setCellValue(bankAccountNo);
+	            dataRow.createCell(3).setCellValue(clientName);
+	            dataRow.createCell(4).setCellValue(clientAddress);
+	            dataRow.createCell(5).setCellValue(AmountDiffCNDN); // Use the parsed amount difference
+	            dataRow.createCell(6).setCellValue(clientbank);
+	            dataRow.createCell(7).setCellValue(clientlocation);
+
+	            serialNo++; // Increment serial number for next row
+	        }
+
+	        // Resize columns to fit the content
+	        for (int j = 0; j < columns.length; j++) {
+	            sheet.autoSizeColumn(j);
+	        }
+
+	        try (FileOutputStream fileOut = new FileOutputStream(excelFilePath)) {
+	            workbook.write(fileOut);
+	            System.out.println("Excel file has been generated successfully at " + excelFilePath);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                workbook.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+		
 		for (int i = 0; i < rows; i++) {
 			String check = request.getParameter("rowCheckbox" + i);
 			if (check != null) {
@@ -9465,57 +9565,24 @@ public class Controller_V {
 				settlemetCnDnModel.setBosDoc(BosDoc[i]);
 				settlemetCnDnModel.setCreditNoteDoc(creditNoteDoc[i]);
 				settlemetCnDnModel.setCreate_date_cndn(formattedDate);
-				settlemetCnDnModel.setAmountDiffCnAndDn(CnAndDnAmountDifference);
-				settlemetCnDnModel.setCndnExcel_link(filenameSave);
+				settlemetCnDnModel.setAmountDiffCnAndDn(AmountDiffCNDN);
+				settlemetCnDnModel.setCndnExcel_link(excelName);
 				settlemetCnDnModel.setRowNumber(value1);
 				settlemetCnDnModel.setIdentificationCnDn(UniqueIdentification);
 				settlemetCnDnModel.setPurpose(purpose[i]);
+				settlemetCnDnModel.setCbiMandateDoc(filenamecndn);
 				creditNoteGenerationService.saveSettlementOfCnDn(settlemetCnDnModel);
 
 				// Add data to the Excel sheet
-				Row row = sheet.createRow(rownum++);
-				row.createCell(0).setCellValue(mill);
-				row.createCell(1).setCellValue(contract);
-				row.createCell(2).setCellValue(creditNoteNo[i]);
-				row.createCell(3).setCellValue(DateOfIssue[i]);
-				row.createCell(4).setCellValue(Hodi[i]);
-				row.createCell(5).setCellValue(consigneeNoteText[i]);
-				row.createCell(6).setCellValue(bosNo[i]);
-				row.createCell(7).setCellValue(dateOfShipment[i]);
-				row.createCell(8).setCellValue(dateOfInspection[i]);
-				row.createCell(9).setCellValue(creditNoteAmount[i]);
-				row.createCell(10).setCellValue(settlementId[i]);
-				row.createCell(11).setCellValue(consigneeDoc[i]);
-				row.createCell(12).setCellValue(BosDoc[i]);
-				row.createCell(13).setCellValue(creditNoteDoc[i]);
-				row.createCell(14).setCellValue(formattedDate);
-				row.createCell(15).setCellValue(CnAndDnAmountDifference);
+			
 			}
 		}
 
-		// Resize columns to fit the content
-		for (int j = 0; j < columns.length; j++) {
-			sheet.autoSizeColumn(j);
-		}
-
-		// Save the Excel file
-		// String filename = "C:\\Users\\Mansi.Gupta\\Documents" + "cndn"+ formattedDate
-		// + ".xlsx"; // Change path as needed
-		try (FileOutputStream fileOut = new FileOutputStream(filename)) {
-			workbook.write(fileOut);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				workbook.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
+	
 		return new ModelAndView(new RedirectView("viewlistCnAndDn.obj"));
 	}
-
+	
+	
 	@RequestMapping("viewlistCnAndDn")
 	public ModelAndView ViewCnAndDn(Model model, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("viewCnAndDn");
@@ -10396,6 +10463,75 @@ public class Controller_V {
 		mv.addObject("serialno", serialno);
 
 		return mv;
+	}
+	
+
+	@RequestMapping("cbiPaymentMandate")
+	public void CBIPaymentMandate(@RequestParam("filename") String filename, HttpServletResponse response)
+			throws JRException {
+		String imagePath = cbiPaymentMandateCNDN + File.separator + filename;
+//		imageDirectory + File.separator + idn + File.separator + filename;
+
+				File imageFile = new File(imagePath);
+				
+				// Check if the file exists
+				
+				if (imageFile.exists()) {
+				
+				try {
+				
+				// Set the content type based on the file type
+				
+				String contentType = determineContentType(filename);
+				
+				response.setContentType(contentType);
+				
+				// Set the content length and attachment disposition
+				
+				response.setContentLength((int) imageFile.length());
+				
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				
+				response.setHeader("Content-Disposition", "");
+				
+				// Stream the file content to the response
+				
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				
+				OutputStream responseOutputStream = response.getOutputStream();
+				
+				byte[] buffer = new byte[1024];
+				
+				int bytesRead;
+				
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+				
+				responseOutputStream.write(buffer, 0, bytesRead);
+				
+				}
+				
+				fileInputStream.close();
+				
+				responseOutputStream.close();
+				
+				} catch (IOException e) {
+				
+				// Handle IO exception
+				
+				e.printStackTrace();
+				
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				
+				}
+				
+				} else {
+				
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				
+				}
+		
+
 	}
 
 }

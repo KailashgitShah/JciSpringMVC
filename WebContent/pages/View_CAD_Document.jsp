@@ -105,7 +105,7 @@
                     <div class="ibox-body">
                       <!-- <div class="scrollmenu"> -->
                         
-                         <form action="savecashAgainstDispatchDocument.obj" method="POST">
+                         <form id="myForm" action="savecashAgainstDispatchDocument.obj" method="POST">
                       
                                        <div  class ="row">
                                                         <div class="col-sm-3 form-group">
@@ -329,6 +329,17 @@
     <div class="sidenav-backdrop backdrop"></div>
     
     
+     <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
     
  
     
