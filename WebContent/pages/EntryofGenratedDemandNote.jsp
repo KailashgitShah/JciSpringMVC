@@ -77,7 +77,7 @@
 						<div class="ibox">
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
-								<form action="saveentryofGenrationDeamandNote.obj" method="POST">
+								<form action="saveentryofGenrationDeamandNote.obj" method="POST" id="myForm">
 									<!--  <div class="child-checkbox" id="disableform">  -->
 									   <div class="col-4">
 											   <div class="form-check mb-4">
@@ -551,7 +551,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	<!-- PAGE LEVEL PLUGINS-->
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+  <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>

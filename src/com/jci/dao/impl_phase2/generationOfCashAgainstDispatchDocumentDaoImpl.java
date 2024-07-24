@@ -294,7 +294,7 @@ public List<Object[]> listdetailsbillofsuppllycash(String st) {
 	     String sql1 = " SELECT Instrument_value from jcipayment_arrangement where Contract_No = '"+contractno+"'";
 		
 		 String balanceAmount = (String)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
-		 String balanceAmount1 = (String)this.sessionFactory.getCurrentSession().createSQLQuery(sql1).uniqueResult();		
+		 String balanceAmount1 = (int)this.sessionFactory.getCurrentSession().createSQLQuery(sql1).uniqueResult()+"";		
 		 String newBalance;
         if(balanceAmount ==null) {
         	newBalance =balanceAmount1;

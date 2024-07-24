@@ -162,7 +162,7 @@
                         <div class="ibox">
                           <span id="flashMessage">${msg}</span>
                             <div class="ibox-body">
-                       <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" >
+                       <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" id="myForm">
                            <div class="child-checkbox" id="disableform">
                                        
 			                                  <div class="row">
@@ -515,7 +515,17 @@
 </script>
 					 	 
 
-					    
+		<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>			    
 			  
 			    
 			  

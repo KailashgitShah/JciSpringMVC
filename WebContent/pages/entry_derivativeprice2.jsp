@@ -79,7 +79,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
-								<form action="saveEDPrice.obj" method="POST">
+								<form action="saveEDPrice.obj" id="myForm" method="POST">
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
@@ -380,6 +380,18 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
 		type="text/javascript"></script>
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	
+	  <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
 
 </body>
 </html>

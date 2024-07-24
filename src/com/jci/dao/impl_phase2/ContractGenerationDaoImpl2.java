@@ -103,7 +103,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 				.add("SUM(CASE WHEN pcso_date = " + date + " THEN Allocated_qty ELSE 0 END) AS " + date));
 
 		String querystr = "SELECT mill_name, mill_code, " + selectColumns.toString()
-				+ " , SUM(Allocated_qty) AS Total_Allocation FROM [XMWJCI].[dbo].[jcientryof_pcso] WHERE pcso_date IN (";
+				+ " , SUM(Allocated_qty) AS Total_Allocation FROM jcientryof_pcso WHERE pcso_date IN (";
 
 		StringJoiner dateJoiner = new StringJoiner(", ");
 		pcsoDates.forEach(date -> {

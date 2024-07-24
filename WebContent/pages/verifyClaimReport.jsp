@@ -86,6 +86,9 @@ div.scrollmenu a:hover {
 List<Object[]> getSettlementid = (List<Object[]>) request.getAttribute("getSettlementidlist");
 %>
 <body class="fixed-navbar">
+<div class="contractLoader">
+		<img src="assets/img/1488.gif">
+	</div>
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -454,7 +457,9 @@ $("#form2").append(confirmButtonHTML);
 	    // Your code to handle confirmation action goes here
 	    console.log('Confirmation action for settlement ID:', settleId);
 	    console.log('File:', file);
-	    alert();
+	   // alert();
+	  
+	   	 $(".contractLoader").show();
 	    var formData = new FormData();
 	    formData.append('settleId', settleId);
 	    formData.append('file', file);
@@ -468,6 +473,7 @@ $("#form2").append(confirmButtonHTML);
 	        success: function(response) {
 	            // Handle success response
 	        	  window.location.reload();
+	        	 	 $(".contractLoader").hide();
 	        },
 	        error: function(xhr, status, error) {
 	            // Handle error
@@ -499,6 +505,10 @@ $("#form2").append(confirmButtonHTML);
 	            }
 	        }); 
 	    } 
+	</script>
+	<script>
+	$(document).ready(function() {
+		 $(".contractLoader").hide();});
 	</script>
 	
 	

@@ -8,24 +8,24 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "jciDI_ro", schema = "dbo")
+@Table(name = "jciDI_ro")
 public class RoDispatchModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DI_RO_ID")
-    private BigInteger diRoId; // Big int PK, AI
+    private int diRoId; // Big int PK, AI
 
   
 
-	@Column(name = "RO_DI_No", unique = true , length = 255)
+	@Column(name = "RO_DI_No", length = 255)
     private String roDiNo; // RO DI No Varchar Unique
 	
     @Column(name = "HO_DI_No", nullable = false,length = 255)
     @NotNull
     private String hoDiNo; // HO DI No. Varchar NN
 	
-	@Column(name = "HO_DI_DATE", unique = true , length = 50)
+	@Column(name = "HO_DI_DATE",  length = 50)
 	private String HoDiDate; // HO DI No Varchar Unique
 
     @Column(name = "RO_DI_Date", nullable = false)
@@ -105,11 +105,11 @@ public class RoDispatchModel {
 		this.dpc = dpc;
 	}
 
-	public BigInteger getDiRoId() {
+	public int getDiRoId() {
   		return diRoId;
   	}
 
-  	public void setDiRoId(BigInteger diRoId) {
+  	public void setDiRoId(int diRoId) {
   		this.diRoId = diRoId;
   	}
 
