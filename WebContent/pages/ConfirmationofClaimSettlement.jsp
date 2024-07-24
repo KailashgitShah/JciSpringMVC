@@ -97,7 +97,7 @@ div.scrollmenu a:hover {
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveConfirmationOfClaimSettelment.obj"
-									method="POST" name="myForm" enctype="multipart/form-data" onsubmit="return myFunc()">
+									method="POST" name="myForm" enctype="multipart/form-data" onsubmit="return myFunc()"  id="myForm">
 									<div class="child-checkbox" id="disableform">
 									<div id='errorcontainer'
 								style='display: none; text-align: center;'></div>
@@ -242,8 +242,8 @@ div.scrollmenu a:hover {
 
 										<div class="row">
 											<div class="col-sm-12 form-group">
-												<input type="submit" value="Submit" id ="sub" class="btn btn-primary"
-													id="submit" onclick="">
+												<input type="submit" value="Submit"  class="btn btn-primary"
+													id="submit" >
 											</div>
 
 										</div>
@@ -699,7 +699,7 @@ function myFunc(){
 </script>
 
 	<script type="text/javascript">
-      
+     
 
 
 	
@@ -726,7 +726,17 @@ function myFunc(){
 	<!-- PAGE LEVEL PLUGINS-->
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>

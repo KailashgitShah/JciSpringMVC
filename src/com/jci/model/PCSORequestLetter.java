@@ -20,7 +20,7 @@ public class PCSORequestLetter {
 	@Column(name = "pcso_gen_id")
 	private int reqId;
 	
-	@Column(name = "jci_ref_no", length = 100)
+	@Column(name = "jci_ref_no", length = 100 , unique = true)
 	private String reference_no;
 	
 	@Column(name = "system_qty")

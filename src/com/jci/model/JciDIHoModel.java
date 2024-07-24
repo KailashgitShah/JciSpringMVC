@@ -24,7 +24,7 @@ public class JciDIHoModel {
                     @Column(name = "DI_HO_ID")
                     private Long DI_HO_ID ; // Primary key, assumed to be BigInt
    
-                    @Column(name = "DI_no", unique = true) 
+                    @Column(name = "DI_no") 
                     private String DI_no; 
                   
                    

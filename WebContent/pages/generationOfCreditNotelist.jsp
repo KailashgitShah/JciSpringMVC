@@ -353,18 +353,18 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 												htmlTable += '<td style="text-align:center" name="shortWt">'
 														+ shortQty + '</td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/JCIStuff/billofsupply/'
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.125:8080/JCIStuff/billofsupply/'
 														+ filterOption[i][11] + " " + "bos"
 														+ '>View</a></td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/WeightSlipment/'
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.125:8080/WeightSlipment/'
 														+ filterOption[i][12]
 														+ '>View</a></td>';
 /* 												htmlTable += '<td><a style="color : blue" target="_blank" href=downloadCreditNoteDocs.obj?imagePath='
 														+ filterOption[i][12] + " " + "weightment"
 														+ '>View</a></td>'; */
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/DispatchDetail/'
+												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.125:8080/DispatchDetail/'
 														+ filterOption[i][13] 														+ '>View</a></td>';
 /* 														+ filterOption[i][13] + " " + "consignment"
 														+ '>View</a></td>'; */

@@ -640,7 +640,7 @@ function updateOnChange(id){
 var prevQty = listOfTotalQty[id];
 var currDeleType = $("#deliveryType"+id).val();
 var prevDelType = currDeleType == "Ex-Godown" ? "Mill-Delivery" : "Ex-Godown";
-var cropyr = $("crop_year").val();
+var cropyr = $("#crop_year").val();
 //console.log(currDeleType , prevDelType);
 
 //console.log(contractedValueMillWise , listOfTotalQty ,prevQty, "inside change funtion");

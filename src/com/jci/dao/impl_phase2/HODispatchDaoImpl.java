@@ -274,7 +274,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
               @Override
               public List<String> juteVariety() {
                              // TODO Auto-generated method stub
-                             String sqlString = "select distinct jutevariety from jcijutevariety where basis='1';";
+                             String sqlString = "select distinct jutevariety from jcijutevarietyPhase2 where basis='1';";
                              List<String> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
                              return list;
               }
