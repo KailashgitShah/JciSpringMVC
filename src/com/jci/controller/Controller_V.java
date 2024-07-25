@@ -9408,69 +9408,12 @@ public class Controller_V {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String formattedDate = today.format(formatter);
 		List<Object[]> millDetails = creditNoteGenerationService.getMillDetails(mill);
-	        System.err.println(millDetails);
 	
-		//jasper Report
-		
-			////////////////////////////////////////////CBI PAYMENT MANDATE Report////////////////////////////////////////////////
-			  
-	      
-	      String bankName =null; 
-	      String Address=null;
-	    
-	      for (Object[] row : millDetails) {
-	            // Extract data from each row
-
-	            bankName = (String) row[3];
-	             
-	      }
-	      
-	    //  System.err.println( accountNo + " "+ Address + " "+ bankName);
-	      
-	     String ans =  convertNumberToWords(AmountDiffCNDN);
-	   // System.err.println(ans);
-	   
-	     String Content ="Please arrange to remit the total amounting to Rs " + AmountDiffCNDN + " "+ans+ " "+" to the 47 (Forty Seven) nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. 1039797752  through RTGS/NEFT/TRANSFER.";
-
-	        // Create the DTO object and set values
-	        settlementCnDnDto cndn = new settlementCnDnDto();
-	        cndn.setContent(Content);
-	        cndn.setTodayDate(formattedDate);
-	        cndn.setBankName(bankName);
-            cndn.setAddress(Address);
 	        String FilenameUnique = UniqueIdentification.replace("/", "_");;
-	        // Define the file name and path
-	        String filenamecndn = FilenameUnique +"cbipayment.pdf";
-	        String pathCNDN = cbiPaymentMandateCNDN + File.separator + filenamecndn;
-
-	        // Log the file name
-//	        System.err.println("Generating report: " + filenamecndn);
-//	        System.err.println("cndn " + cndn);
-	        try {
-	            // Compile the JasperReport
-	            JasperReport jasperReport1 = JasperCompileManager.compileReport(cbipaymentMandateJRXML);
-
-	            // Prepare parameters for the report
-	            Map<String, Object> parameters = new HashMap<>();
-	            // Add any parameters required by the report here
-	            // Example: parameters.put("SomeParameter", "SomeValue");
-
-	            // Prepare the data source
-	            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(java.util.Collections.singletonList(cndn));
-
-	            // Fill the report with data
-	            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-
-	            // Export the report to a PDF file
-	            JasperExportManager.exportReportToPdfFile(jasperPrint1, pathCNDN);
-
-	            System.out.println("Report generated successfully at: " + pathCNDN);
-
-	        } catch (JRException e) {
-	            e.printStackTrace();
-	            System.err.println("Error generating the report.");
-	        }
-	        
+		
+	        //jasper Report
+		
+		
 	        ////////////////////////////////// excel sheet ////////////////////////
 
 	        Workbook workbook = new XSSFWorkbook();
@@ -9499,8 +9442,7 @@ public class Controller_V {
 	     
 
 	        int serialNo = 1;
-	     //   Double AmountDiffCNDN1 = Double.parseDouble(request.getParameter("AmountDifferenceCNDN")); // Parse the amount difference
-               
+            int serialNoExcel =0;   
 	        for (Object[] row : millDetails) {
 	            // Extract data from each row
 	            String Ifsc = (String) row[0];
@@ -9524,6 +9466,7 @@ public class Controller_V {
 	            dataRow.createCell(7).setCellValue(branchName);
 
 	            serialNo++; // Increment serial number for next row
+	            serialNoExcel++;
 	        }
 
 	        // Resize columns to fit the content
@@ -9545,6 +9488,67 @@ public class Controller_V {
 	        }
 
 		
+	        
+	    	////////////////////////////////////////////CBI PAYMENT MANDATE Report////////////////////////////////////////////////
+			  
+		      
+		      String bankName =null; 
+		      String Address=null;
+		    
+		      for (Object[] row : millDetails) {
+		            // Extract data from each row
+
+		            bankName = (String) row[3];
+		             
+		      }
+		      
+		    //  System.err.println( accountNo + " "+ Address + " "+ bankName);
+		      
+		     String ans =  convertNumberToWords(AmountDiffCNDN);
+		    String serialNumberWord = convertNumberToWords(serialNoExcel);
+		     // System.err.println(ans);
+		   
+		     String Content ="Please arrange to remit the total amounting to Rs. " + AmountDiffCNDN +"/- ( "+ans+ ")"+" to the "+  serialNoExcel +"("+serialNumberWord+")" + " nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. 1039797752  through RTGS/NEFT/TRANSFER.";
+
+		        // Create the DTO object and set values
+		        settlementCnDnDto cndn = new settlementCnDnDto();
+		        cndn.setContent(Content);
+		        cndn.setTodayDate(formattedDate);
+		        cndn.setBankName(bankName);
+	            cndn.setAddress(Address);
+		       
+		        // Define the file name and path
+		        String filenamecndn = FilenameUnique +"cbipayment.pdf";
+		        String pathCNDN = cbiPaymentMandateCNDN + File.separator + filenamecndn;
+
+		        // Log the file name
+//		        System.err.println("Generating report: " + filenamecndn);
+//		        System.err.println("cndn " + cndn);
+		        try {
+		            // Compile the JasperReport
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport(cbipaymentMandateJRXML);
+
+		            // Prepare parameters for the report
+		            Map<String, Object> parameters = new HashMap<>();
+		            // Add any parameters required by the report here
+		            // Example: parameters.put("SomeParameter", "SomeValue");
+
+		            // Prepare the data source
+		            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(java.util.Collections.singletonList(cndn));
+
+		            // Fill the report with data
+		            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+
+		            // Export the report to a PDF file
+		            JasperExportManager.exportReportToPdfFile(jasperPrint1, pathCNDN);
+
+		            System.out.println("Report generated successfully at: " + pathCNDN);
+
+		        } catch (JRException e) {
+		            e.printStackTrace();
+		            System.err.println("Error generating the report.");
+		        }
+		        
 		for (int i = 0; i < rows; i++) {
 			String check = request.getParameter("rowCheckbox" + i);
 			if (check != null) {
@@ -9598,6 +9602,23 @@ public class Controller_V {
 		// String omofficial = request.getParameter("omofficial");
 		return mv;
 	}
+	
+
+	@RequestMapping(value = "creditDebitNotedetails", method = RequestMethod.GET)
+	public ModelAndView creditDebitNoteDetails(HttpServletRequest request, Model model) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("creditDebitDetails");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		String cndnIdentificationNumber= request.getParameter("id");
+		List<settlemetCnDnModel> AllList = (List<settlemetCnDnModel>) creditNoteGenerationService
+				.getAlldetails(cndnIdentificationNumber);
+		model.addAttribute("creditdebit", AllList);
+		return mv;
+	}
+
 
 	@RequestMapping("creditNoteSettleDoc")
 	public void creditNoteSettleDoc(@RequestParam("filename") String filename,
@@ -10532,6 +10553,8 @@ public class Controller_V {
 		
 
 	}
+	
+	
 
 }
 

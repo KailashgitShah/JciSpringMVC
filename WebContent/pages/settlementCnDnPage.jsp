@@ -164,12 +164,12 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                                                                                                 
                                                           
                                                            
-                                                           <div class= "row">
+                                                         <!--   <div class= "row">
                                                            <div class="col-sm-6 form-group">
                                                             <label>Amount Value.</label>
                                                            <input type="" id="AmountDifference" name="AmountDifferenceCNDN" ReadOnly>
                                                            </div>
-                                                           </div>
+                                                           </div> -->
                                                            
                                                           <div class="row">
 															    <div class="col-sm-12 text-center">
@@ -214,10 +214,15 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                                        <div class="row">
                                        <div class="col-sm-4 form-group">
                                        <input type="hidden" id="numRows" name="rows">
-                                       
                                        </div>
-                                 </div>   
-                                 
+                                        </div>   
+                                         
+                                                          <div class= "row">
+                                                           <div class="col-sm-6 form-group">
+                                                            <label>Amount Value.</label>
+                                                           <input type="" id="AmountDifference" name="AmountDifferenceCNDN" ReadOnly>
+                                                           </div>
+                                                           </div>
                                                            <div class="row">
 
                                                                   <div class="form-group col-sm-6">

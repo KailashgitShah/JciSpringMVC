@@ -540,31 +540,44 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<settlemetCnDnModel> getAll() {
 	
 		
-		  String sqlQuery = "SELECT Contract_no, Credit_note_no, bosNo, "
-	            + "consigneeNoteText, creditNoteAmount,  dateOfInspection, "
-	            + "dateOfIssue, dateOfShipment, hodi, settlementId , cndnExcel_link, IdentificationCnDn ,AmountDiffCnAndDn, purpose ,cbiMandateDoc FROM jcisettlement_cndn";
+//		  String sqlQuery = "SELECT Contract_no, Credit_note_no, bosNo, "
+//	            + "consigneeNoteText, creditNoteAmount,  dateOfInspection, "
+//	            + "dateOfIssue, dateOfShipment, hodi, settlementId , cndnExcel_link, IdentificationCnDn ,AmountDiffCnAndDn, purpose ,cbiMandateDoc FROM jcisettlement_cndn";
+	
+		 String sqlQuery = "SELECT distinct Contract_no, cndnExcel_link, IdentificationCnDn , cbiMandateDoc FROM jcisettlement_cndn";
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
 		List<settlemetCnDnModel> list = new ArrayList<>();
 
+//		for (Object[] result : contracts) {
+//			settlemetCnDnModel settlementCnDn = new settlemetCnDnModel();
+//			String difference = String.valueOf(result[12]);
+//			settlementCnDn.setContractNo((String) result[0]);
+//	        settlementCnDn.setCreditNoteNo((String) result[1]);
+//	        settlementCnDn.setBosNo((String) result[2]);
+//	        settlementCnDn.setConsigneeNoteText((String) result[3]);
+//	        settlementCnDn.setCreditNoteAmount((String) result[4]);
+//	        settlementCnDn.setDateOfInspection((String) result[5]);
+//	        settlementCnDn.setDateOfIssue((String) result[6]);
+//	        settlementCnDn.setDateOfShipment((String) result[7]);
+//	        settlementCnDn.setHodi((String) result[8]);
+//	        settlementCnDn.setSettlementId((String) result[9]);
+//	        settlementCnDn.setCndnExcel_link((String) result[10]);
+//	        settlementCnDn.setIdentificationCnDn((String)result[11]);
+//	        settlementCnDn.setBosDoc(difference);
+//	        settlementCnDn.setPurpose((String)result[13]);
+//	        settlementCnDn.setCbiMandateDoc((String)result[14]);
+//	        list.add(settlementCnDn);
+//
+//		}
+
 		for (Object[] result : contracts) {
 			settlemetCnDnModel settlementCnDn = new settlemetCnDnModel();
-			String difference = String.valueOf(result[12]);
+			
 			settlementCnDn.setContractNo((String) result[0]);
-	        settlementCnDn.setCreditNoteNo((String) result[1]);
-	        settlementCnDn.setBosNo((String) result[2]);
-	        settlementCnDn.setConsigneeNoteText((String) result[3]);
-	        settlementCnDn.setCreditNoteAmount((String) result[4]);
-	        settlementCnDn.setDateOfInspection((String) result[5]);
-	        settlementCnDn.setDateOfIssue((String) result[6]);
-	        settlementCnDn.setDateOfShipment((String) result[7]);
-	        settlementCnDn.setHodi((String) result[8]);
-	        settlementCnDn.setSettlementId((String) result[9]);
-	        settlementCnDn.setCndnExcel_link((String) result[10]);
-	        settlementCnDn.setIdentificationCnDn((String)result[11]);
-	        settlementCnDn.setBosDoc(difference);
-	        settlementCnDn.setPurpose((String)result[13]);
-	        settlementCnDn.setCbiMandateDoc((String)result[14]);
+			 settlementCnDn.setCndnExcel_link((String) result[1]);
+	        settlementCnDn.setIdentificationCnDn((String)result[2]);
+	        settlementCnDn.setCbiMandateDoc((String)result[3]);
 	        list.add(settlementCnDn);
 
 		}
@@ -608,6 +621,45 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	    }
 
 	    return combinedResults;
+	}
+
+	@Override
+	public List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber) {
+		// TODO Auto-generated method stub
+
+		String sqlQuery = "\r\n"
+				+ "SELECT distinct Credit_note_no,purpose, dateOfIssue,hodi,consigneeNoteText,bosNo,dateOfShipment,dateOfInspection,creditNoteAmount,AmountDiffCnAndDn,settlementId  from jcisettlement_cndn WHERE IdentificationCnDn='"+cndnIdentificationNumber+"'";
+
+		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
+
+		List<settlemetCnDnModel> list = new ArrayList<>();
+
+		for (Object[] object : contracts) {
+			settlemetCnDnModel cndn = new settlemetCnDnModel();
+            
+			String amountDiff = String.valueOf( object[9]);
+			
+			cndn.setCreditNoteNo((String) object[0]);
+			cndn.setPurpose((String) object[1]);
+		    cndn.setDateOfIssue((String) object[2]);
+		    cndn.setHodi((String) object[3]);
+		    cndn.setConsigneeNoteText((String) object[4]);
+		    cndn.setBosNo((String) object[5]);
+		    cndn.setDateOfShipment((String) object[6]);
+		    cndn.setDateOfInspection((String) object[7]);
+			cndn.setCreditNoteAmount((String)object[8]);
+			cndn.setAmountDiffCnAndDn(Double.parseDouble((String) object[9]));
+			cndn.setSettlementId((String) object[10]);
+			
+			
+			
+
+			list.add(cndn);
+
+		}
+
+		return list;
+
 	}
 
 }

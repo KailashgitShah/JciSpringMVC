@@ -148,6 +148,12 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 		// TODO Auto-generated method stub
 		return creditNoteGenerationDao.getMillDetails(millcode);
 	}
+
+	@Override
+	public List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber) {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao. getAlldetails(cndnIdentificationNumber);
+	}
 	
 	
 
