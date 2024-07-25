@@ -9414,24 +9414,23 @@ public class Controller_V {
 		
 			////////////////////////////////////////////CBI PAYMENT MANDATE Report////////////////////////////////////////////////
 			  
-	      String accountNo=null;
+	      
 	      String bankName =null; 
 	      String Address=null;
 	    
 	      for (Object[] row : millDetails) {
 	            // Extract data from each row
-	          
-	    	  accountNo = (String) row[1];
-	    	  Address = (String) row[3];
-	            bankName = (String) row[4];
-	  }
+
+	            bankName = (String) row[3];
+	             
+	      }
 	      
-	      System.err.println( accountNo + " "+ Address + " "+ bankName);
+	    //  System.err.println( accountNo + " "+ Address + " "+ bankName);
 	      
 	     String ans =  convertNumberToWords(AmountDiffCNDN);
-	    System.err.println(ans);
+	   // System.err.println(ans);
 	   
-	     String Content ="Please arrange to remit the total amounting to Rs " + AmountDiffCNDN + " "+ans+ " "+" to the 47 (Forty Seven) nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. "+accountNo +" through RTGS/NEFT/TRANSFER.";
+	     String Content ="Please arrange to remit the total amounting to Rs " + AmountDiffCNDN + " "+ans+ " "+" to the 47 (Forty Seven) nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. 1039797752  through RTGS/NEFT/TRANSFER.";
 
 	        // Create the DTO object and set values
 	        settlementCnDnDto cndn = new settlementCnDnDto();
@@ -9445,8 +9444,8 @@ public class Controller_V {
 	        String pathCNDN = cbiPaymentMandateCNDN + File.separator + filenamecndn;
 
 	        // Log the file name
-	        System.err.println("Generating report: " + filenamecndn);
-	        System.err.println("cndn " + cndn);
+//	        System.err.println("Generating report: " + filenamecndn);
+//	        System.err.println("cndn " + cndn);
 	        try {
 	            // Compile the JasperReport
 	            JasperReport jasperReport1 = JasperCompileManager.compileReport(cbipaymentMandateJRXML);
@@ -9501,15 +9500,15 @@ public class Controller_V {
 
 	        int serialNo = 1;
 	     //   Double AmountDiffCNDN1 = Double.parseDouble(request.getParameter("AmountDifferenceCNDN")); // Parse the amount difference
-
+               
 	        for (Object[] row : millDetails) {
 	            // Extract data from each row
 	            String Ifsc = (String) row[0];
 	            String bankAccountNo = (String) row[1];
 	            String clientName = (String) row[2];
-	            String clientAddress = (String) row[3];
-	            String clientbank = (String) row[4];
-	            String clientlocation = (String) row[5];
+	            String clientbank = (String) row[3];
+	            String bankAddress = null;
+	            String branchName=null;        
 
 	            // Create a new row in the sheet
 	            Row dataRow = sheet.createRow(serialNo);
@@ -9519,10 +9518,10 @@ public class Controller_V {
 	            dataRow.createCell(1).setCellValue(Ifsc);
 	            dataRow.createCell(2).setCellValue(bankAccountNo);
 	            dataRow.createCell(3).setCellValue(clientName);
-	            dataRow.createCell(4).setCellValue(clientAddress);
+	            dataRow.createCell(4).setCellValue(bankAddress);
 	            dataRow.createCell(5).setCellValue(AmountDiffCNDN); // Use the parsed amount difference
 	            dataRow.createCell(6).setCellValue(clientbank);
-	            dataRow.createCell(7).setCellValue(clientlocation);
+	            dataRow.createCell(7).setCellValue(branchName);
 
 	            serialNo++; // Increment serial number for next row
 	        }

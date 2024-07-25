@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CBI_PAYMENT_MANDATE" pageWidth="595" pageHeight="442" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7561fadf-2e0c-4655-a3df-0e92803e5dcd">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CBI_PAYMENT_MANDATE" pageWidth="595" pageHeight="342" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7561fadf-2e0c-4655-a3df-0e92803e5dcd">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -26,14 +35,14 @@
 				<text><![CDATA[Date : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="29" width="58" height="20" uuid="04194b1a-d445-4a53-8620-b46de2783381"/>
+				<reportElement x="3" y="26" width="58" height="20" uuid="04194b1a-d445-4a53-8620-b46de2783381"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[To]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="42" width="98" height="20" uuid="99e702eb-46bf-42d5-a5be-2963d886722b"/>
+				<reportElement x="2" y="38" width="98" height="19" uuid="99e702eb-46bf-42d5-a5be-2963d886722b"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -44,17 +53,21 @@
 				<textFieldExpression><![CDATA[$F{todayDate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="57" width="100" height="20" uuid="6970bdc1-58b7-4f28-b675-006de195536c"/>
+				<reportElement x="0" y="53" width="170" height="20" uuid="6970bdc1-58b7-4f28-b675-006de195536c"/>
 				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="73" width="100" height="20" uuid="fed5b26e-e069-4932-a73d-64ab3281eab0"/>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
-			</textField>
+			<staticText>
+				<reportElement x="0" y="71" width="109" height="28" uuid="32dbcca1-1fe0-4935-9009-b6eb8e065362"/>
+				<text><![CDATA[New Market Branch,
+Kolkata-700087
+New Market Branch,
+Kolkata-700087
+]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="124" splitType="Stretch">
+		<band height="106" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="1" width="70" height="18" uuid="c2f234c8-2ba4-4cc2-bb0b-758b112792ed"/>
 				<textElement>
@@ -67,7 +80,7 @@
 				<textFieldExpression><![CDATA[$F{content}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="88" width="98" height="20" uuid="8193969f-2adf-440e-aa77-5d7f5d0d4198"/>
+				<reportElement x="1" y="80" width="98" height="20" uuid="8193969f-2adf-440e-aa77-5d7f5d0d4198"/>
 				<text><![CDATA[Thank You]]></text>
 			</staticText>
 		</band>

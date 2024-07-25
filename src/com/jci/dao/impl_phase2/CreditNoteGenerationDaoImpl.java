@@ -591,7 +591,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public List<Object[]> getMillDetails(String millcode) {
 		  
 		
-	    String milldetails =  "SELECT  m.client_bank_ifsc ,m.client_bank_ac  ,m.client_name,m.client_address1 , m.client_bank , m.client_location from jcimilldetailchild c\r\n"
+	    String milldetails =  "SELECT  m.client_bank_ifsc ,m.client_bank_ac  ,m.client_name , m.client_bank  from jcimilldetailchild c\r\n"
 	    		+ "INNER JOIN jcimilldetailmaster m ON c.client_code=m.client_code\r\n"
 	    		+ " where c.client_unit_code='"+millcode+"'";
 	   
