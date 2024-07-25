@@ -416,6 +416,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	@Override
 	public List<VerifyTallySlip> getAllforRM(String status, String region_zone) {
 		// TODO Auto-generated method stub
+        String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 		List<VerifyTallySlip> r = new ArrayList<>();
 		List<Object[]> result = new ArrayList<>();
 		//HttpSession session1 = request.getSession(false);
@@ -423,7 +424,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 				+ "c.centername, d.F_NAME,a.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo "
 				+ "left join jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno "
 				+ "where a.status ='" + status
-				+ "' and a.amountpayable <= 500000 and payment_status = 0 and a.region_id ='" + region_zone + "'";
+				+ "' and a.amountpayable <= 500000 and payment_status = 0 and a.region_id ='" + region_zone + "' and b.cropyr = '"+currCropYear+"'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -470,8 +471,9 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 		List<VerifyTallySlip> r = new ArrayList<>();
 		List<Object[]> result = new ArrayList<>();
 		HttpSession session1 = request.getSession(false);
+        String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 		String querystr = "select a.tallyNo, a.farmerregno, a.puchasedate, a.netquantity, a.amountpayable, a.facheck_flag, b.basis, c.centername, d.F_NAME from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo left join jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='"
-				+ status + "' and a.amountpayable > 500000 and payment_status = 0 and a.zone_id ='" + region_zone + "'";
+				+ status + "' and a.amountpayable > 500000 and payment_status = 0 and a.zone_id ='" + region_zone + "'  and b.cropyr = '"+currCropYear+"'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
