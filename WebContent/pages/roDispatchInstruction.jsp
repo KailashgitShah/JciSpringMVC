@@ -77,6 +77,9 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 
 <body class="fixed-navbar">
+<div class="contractLoader">
+		<img src="assets/img/1488.gif">
+	</div>
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -553,6 +556,7 @@ $('#hoDiNo, #dpc').change(function() {
 
 	<script>
 $(document).ready(function() {
+	 $(".contractLoader").hide();
     // Define a function to gather data
     var c1="";
     function gatherData() {
@@ -622,6 +626,7 @@ $(document).ready(function() {
     $("#submit").on("click", function(event) {
         // Prevent default form submission behavior
         event.preventDefault();
+        
 
         // Call the gatherData function
    var gatheredData = gatherData();
@@ -722,7 +727,7 @@ var hoDiNo = $("#hoDiNo").val();
     
 }); */
 
-
+$(".contractLoader").show();
 
         //  AJAX request to save the data
         $.ajax({
@@ -740,8 +745,10 @@ var hoDiNo = $("#hoDiNo").val();
                  setTimeout(async function(){
                      // Hide the success message
                      successDiv.style.display = 'none';
+                   
                      // Redirect to the next page
                      window.location.href = "roDispatchInstruction.obj";
+                     $(".contractLoader").hide();
                      // Hide loader if needed
                      await loader("none");
 

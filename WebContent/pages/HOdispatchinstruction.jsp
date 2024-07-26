@@ -112,7 +112,7 @@ input[type="radio"] {
                                               <span>${msg}</span>
                                               <div class="ibox-body">
                                                     <form action="savehodispatchInst.obj" method="POST"
-                                                           onsubmit="return myFunc()">
+                                                           onsubmit="return myFunc()" id="myForm">
                                                            <div class="child-checkbox" id="disableform">
                                                                   <div id="container">
                                                                         <div id="l1">
@@ -858,6 +858,18 @@ $(document).ready(function() {
                     });
              });
        </script>
+       
+       <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
        <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
        <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
              type="text/javascript"></script>

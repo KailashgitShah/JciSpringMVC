@@ -24,7 +24,7 @@ public class Contractgeneration {
 	@Column(name = "Contract_identification_no", length = 255)
 	private String Contract_identification_no;
 
-	@Column(name = "Contract_no")
+	@Column(name = "Contract_no" , unique = true)
 	private String Contract_no;
 
 	@Column(name = "Contract_date", nullable = false)
@@ -51,7 +51,7 @@ public class Contractgeneration {
 	@Column(name = "Grade_composition", nullable = false)
 	private String  Grade_composition;
 
-	@Column(name = "Payment_duedate")
+	@Column(name = "Payment_duedate" , nullable = true)
 	private String Payment_duedate;
 
 	@Column(name = "Contract_cancellation_flag")

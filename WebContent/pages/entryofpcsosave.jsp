@@ -86,7 +86,7 @@
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
-								<form action="saveentryofpcsodata.obj" method="POST">
+								<form action="saveentryofpcsodata.obj" id="myForm" method="POST">
 
 									<div class="row">
 										<div class="col-sm-3 form-group">
@@ -241,6 +241,17 @@
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 
+     <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
 
 
 	<!-- PAGE LEVEL SCRIPTS-->

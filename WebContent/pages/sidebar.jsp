@@ -15,7 +15,6 @@
 /* .hidden{
 display:none;
 } */
-
 body {
 	zoom: 85%;
 }
@@ -68,7 +67,7 @@ body {
 		</div>
 
 		<ul class="side-menu metismenu">
-		<!-- 	<li><a href="dashboard.obj"><i
+			<!-- 	<li><a href="dashboard.obj"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">Dashboard</span> </a></li> -->
 
@@ -241,6 +240,25 @@ body {
 
 				</ul></li> -->
 
+			<li><a href="javascript:void(0);;"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label"> &nbsp;Mill Registration</span><i
+					class="fa fa-angle-left arrow"></i></a>
+				<ul class="nav-2-level">
+
+					<li data-pre="5" id="o5"><a href="millRegisteration.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Mill
+								Registration </b></a></li>
+					<li data-pre="5" id="o5"><a href="viewmillRegistration.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Mill
+								Registration List</b></a></li>
+
+					<li data-pre="5" id="o5"><a href="privacypolicy.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Privacy
+								policy </b></a></li>
+
+				</ul></li>
+
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Contract</span> <i
@@ -249,7 +267,8 @@ body {
 					<li data-pre="1107" id="o1107"><a href="pcsoRequestLetter.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Generation of
 								PCO Request Letter</b> </a></li>
-					<li data-pre="1108" id="o1108"><a href="pcsoRequestLetterList.obj"><i
+					<li data-pre="1108" id="o1108"><a
+						href="pcsoRequestLetterList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> PCO Request
 								Letter List</b> </a></li>
 					<li data-pre="1109" id="o1109"><a href="entryofpcso.obj"><i
@@ -257,10 +276,12 @@ body {
 					</a></li>
 					<li data-pre="1110" id="o1110"><a href="pcsolist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>PCO List</b></a></li>
-					<li data-pre="1111" id="o1111"><a href="entry_derivativeprice.obj"><i
+					<li data-pre="1111" id="o1111"><a
+						href="entry_derivativeprice.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Derivative Price</b></a></li>
-					<li data-pre="1112" id="o1112"><a href="entryderivativepricelist.obj"><i
+					<li data-pre="1112" id="o1112"><a
+						href="entryderivativepricelist.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Derivative
 								Price List</b></a></li>
 					<!-- 	<li data-pre="" id=""><a href="entry_gradecomposition.obj"><i
@@ -285,7 +306,7 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>Authorization</b></a></li>
 					<li data-pre="1139" id="o1139"><a href="viewmillAcc.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Mill
-								Acceptence List</b></a></li> 
+								Acceptence List</b></a></li>
 				</ul></li>
 
 
@@ -295,10 +316,12 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-					<li data-pre="1113" id="o1113"><a href="EntryofPaymentDetails.obj"><i
+					<li data-pre="1113" id="o1113"><a
+						href="EntryofPaymentDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment Details</b></a></li>
-					<li data-pre="1114" id="o1114"><a href="viewPaymentEntryDetails.obj"><i
+					<li data-pre="1114" id="o1114"><a
+						href="viewPaymentEntryDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
 								Payment list</b></a></li>
 
@@ -327,7 +350,7 @@ body {
 
 				</ul></li>
 
-		<li><a href="javascript:void(0);"><i
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">8.&nbsp;Issue financial concurrence</span> <i
 					class="fa fa-angle-left arrow"></i></a>
@@ -335,7 +358,8 @@ body {
 					<li data-pre="1115" id="o1115"><a href="viewPaymentForFC.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View FC
 								Payment list</b></a></li>
-					<li data-pre="1116" id="o1116"><a href="viewFinancialConcurence.obj"><i
+					<li data-pre="1116" id="o1116"><a
+						href="viewFinancialConcurence.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Financial Concuerence list</b></a></li>
 
@@ -363,12 +387,30 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-					<li data-pre="1101" id="o1101"><a href="roDispatchInstruction.obj"><i
+					<li data-pre="1101" id="o1101"><a
+						href="roDispatchInstruction.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Ro Dispatch
 								Instruction</b></a></li>
 					<li data-pre="1102" id="o1102"><a href="roDispatchList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Ro Dispatch
 								List</b></a></li>
+
+				</ul></li>
+
+			<li><a href="javascript:void(0);"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label">&nbsp;Dispatch Menu(BOS)</span> <i
+					class="fa fa-angle-left arrow"></i></a>
+				<ul class="nav-2-level ">
+					<li data-pre="1117" id="o1117"><a
+						href="viewDispatchChallan.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Listing Of
+								Dispatch Details</b></a></li>
+					<li data-pre="1118" id="o1118"><a
+						href="ViewofGenerationBillsupply.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View of
+
+								Generation Bill of supply</b></a></li>
 
 				</ul></li>
 			<li><a href="javascript:void(0);"><i
@@ -377,28 +419,16 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-					
-					<li data-pre="1103" id="o1103"><a href="WeightmentSlipList.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment Slip</b></a></li>
+
+					<li data-pre="1103" id="o1103"><a
+						href="WeightmentSlipList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment
+								Slip</b></a></li>
 				</ul></li>
 
-			<li><a href="javascript:void(0);"><i
-					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">&nbsp;Dispatch Menu(BOS)</span> <i
-					class="fa fa-angle-left arrow"></i></a>
-				<ul class="nav-2-level ">
 
-					<li data-pre="1117" id="o1117"><a href="viewDispatchChallan.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Listing Of
-								Dispatch Details</b></a></li>
-					<li data-pre="1118" id="o1118"><a href="ViewofGenerationBillsupply.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View of
 
-								Generation Bill of supply</b></a></li>
 
-				</ul></li>
-              
-			
 
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
@@ -406,7 +436,8 @@ body {
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
 
-					<li data-pre="1119" id="o1119"><a href="generationOfCreditNoteList.obj"><i
+					<li data-pre="1119" id="o1119"><a
+						href="generationOfCreditNoteList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Generation of
 								Credit Notes</b></a></li>
 
@@ -420,7 +451,8 @@ body {
 					class="nav-label">&nbsp;Mill Receipt</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-					<li data-pre="1121" id="o1121"><a href="EntryofMillreceipt.obj"><i
+					<li data-pre="1121" id="o1121"><a
+						href="EntryofMillreceipt.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of Mill
 								Receipt</b></a></li>
 					<li data-pre="1122" id="o1122"><a href="viewMillReciept.obj"><i
@@ -449,22 +481,25 @@ body {
 						href="entryofConfirmationSettelment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Confirmation of Claim Settlement Report </b></a></li>
-					<li data-pre="1105" id="o1105"><a href="ViewConfirmationsettelment.obj"><i
+					<li data-pre="1105" id="o1105"><a
+						href="ViewConfirmationsettelment.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View of
 								Confirmation of Claim Settlement Report </b></a></li>
-								
-								<li data-pre="1106" id="o1106"><a href="verifyClaimReport.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Verify Claim Report
-								 </b></a></li>
-								<li data-pre="o1141" id="1141"><a href="verifyMillClaim.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Mill Settlement Acceptance</b></a></li>
-								<li data-pre="" id=""><a href="creditNoteForClaimSettlement.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note For Claim Settlement 
-								 </b></a></li>
-								
-								<li data-pre="" id=""><a href="creditNoteSettlementList.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note Settlement List
-								 </b></a></li>
+
+					<li data-pre="1106" id="o1106"><a href="verifyClaimReport.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Verify Claim
+								Report </b></a></li>
+					<li data-pre="o1141" id="1141"><a href="verifyMillClaim.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Mill
+								Settlement Acceptance</b></a></li>
+					<li data-pre="" id=""><a
+						href="creditNoteForClaimSettlement.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note
+								For Claim Settlement </b></a></li>
+
+					<li data-pre="" id=""><a href="creditNoteSettlementList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Credit Note
+								Settlement List </b></a></li>
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i
@@ -476,22 +511,26 @@ body {
 						href="EntryofGenrationDeamandNote.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								Generation demand Note</b></a></li>
-					<li data-pre="1128" id="o1128"><a href="viewGenrationdemandNote.obj"><i
+					<li data-pre="1128" id="o1128"><a
+						href="viewGenrationdemandNote.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Generation demand Note list</b></a></li>
-								<li data-pre="1130" id="o1130"><a href="viewCash_against_Dispatch_document.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>
-								Cash Against Dispatch document</b></a></li>
-								<li data-pre="1130" id="o1130"><a href="viewtopSheet.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View
-								Cash Against Dispatch document</b></a></li>
-									<li data-pre="1131" id="o1131"><a href="viewCash_against_LCs.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View Against  LCs  list</b></a></li>
-							
-							<li data-pre="1131" id="o1131"><a href="documentListing.obj"><i
+					<li data-pre="1130" id="o1130"><a
+						href="viewCash_against_Dispatch_document.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b> Cash Against
+								Dispatch document</b></a></li>
+					<li data-pre="1130" id="o1130"><a href="viewtopSheet.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Cash
+								Against Dispatch document</b></a></li>
+					<li data-pre="1131" id="o1131"><a
+						href="viewCash_against_LCs.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Against
+								LCs list</b></a></li>
+
+					<li data-pre="1131" id="o1131"><a href="documentListing.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>DocumentListing</b></a></li>
-								
-								
+
+
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i
@@ -518,9 +557,9 @@ body {
 					<li data-pre="1134" id="o1134"><a href="settlementcndn.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b> Settlement
 								Of Credit And Debit Notes</b></a></li>
-								<li data-pre="1134" id="o1134"><a href="viewlistCnAndDn.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>View  Settlement
-								Of Credit And Debit Notes</b></a></li>
+					<li data-pre="1134" id="o1134"><a href="viewlistCnAndDn.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Settlement Of Credit And Debit Notes</b></a></li>
 
 					<li data-pre="1135" id="o1135"><a
 						href="uploadPaymentRealizationDisDetails.obj"><i

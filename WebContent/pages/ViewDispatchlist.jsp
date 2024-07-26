@@ -151,7 +151,7 @@
 										<td hidden><%= row[7] %></td>
 
 
-										 <td style="text-align: center;color:blue"><a href="http://49.50.118.112:8080/DispatchDetail/<%= row[9] %>" 
+										 <td style="text-align: center;color:blue"><a href="http://49.50.118.125:8080/DispatchDetail/<%= row[9] %>" 
 										  target="_blank" >Consignment Note</a></td>
     
 

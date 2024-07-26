@@ -163,7 +163,7 @@
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveentryofGenrationbill.obj" method="POST"
-									name="myForm" enctype="multipart/form-data">
+									name="myForm" id="myForm" enctype="multipart/form-data">
 									<div class="child-checkbox" id="disableform">
 										<div class="row">
 											<div class="col-sm-4 form-group">
@@ -1016,7 +1016,17 @@
 
 
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

@@ -140,7 +140,7 @@ input[type="file"] {
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
-								<form action="savemillregister.obj" method="POST">
+								<form id="myForm" action="savemillregister.obj" method="POST">
 									<input type="hidden" name="emailCheck" id="emailCheck">
 									<input type="hidden" name="dubName" id="dubName">
 									<div class="row">
@@ -268,7 +268,7 @@ input[type="file"] {
 									<div class="row">
 										<div class="col-sm-12 form-group">
 											<input type="submit" value="Submit" id="submit"
-												class="btn btn-primary">
+												class="btn btn-primary" onclick="disableSubmit(event)">
 											<!-- <input class="btn btn-primary" type="submit" id="enq_submit">Submit</button> -->
 										</div>
 									</div>
@@ -299,6 +299,18 @@ input[type="file"] {
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
 
 
 

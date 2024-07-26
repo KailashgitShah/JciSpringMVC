@@ -128,7 +128,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 
 							<div class="ibox-body">
 								<form action="generatePCSORequest.obj" method="POST"
-									name="myForm" onsubmit="return validate()">
+									name="myForm" id="myForm" onsubmit="return validate()">
 									<div class="row">
 
 
@@ -467,7 +467,17 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 
 
 
+  <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

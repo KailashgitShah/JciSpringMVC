@@ -153,7 +153,9 @@ th {
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
+
 								<form id="myForm" action="savenominal.obj" method="POST">
+
 									<div class="row">
 										<div class="col-sm-4 form-group">
 											<label> Mill</label> <span class="text-danger">* </span> <select
@@ -272,7 +274,17 @@ th {
 
 	<div class="sidenav-backdrop backdrop"></div>
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- <script>

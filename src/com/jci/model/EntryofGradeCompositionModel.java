@@ -1,8 +1,5 @@
 package com.jci.model;
-
-import java.math.BigInteger;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "jcigrade_composition", schema = "dbo")
+@Table(name = "jcigrade_composition")
 public class EntryofGradeCompositionModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "grade_id")
-	public BigInteger id;
+	public int id;
 	@Column(name = "Jute_combination")
 	public String Jute_combination;
 	@Column(name = "System_composition")
@@ -52,11 +49,11 @@ public class EntryofGradeCompositionModel {
 	}
  
 
-	public BigInteger getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

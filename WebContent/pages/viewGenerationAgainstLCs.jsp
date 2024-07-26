@@ -149,7 +149,7 @@
                           <span id="flashMessage">${msg}</span>
                             <div class="ibox-body">
                             <div class="scrollmenu">
-                       <form action="Generatebankdraftsheet.obj" method="POST">
+                       <form action="Generatebankdraftsheet.obj" method="POST" id="myForm">
                            <div class="child-checkbox" id="disableform">
                                  <div class="row">
                                 
@@ -303,7 +303,7 @@
 						            
 						            
 						             <div class="col-sm-4 form-group">
-							    <input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block" id="submit12" ">
+							    <input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block" id="submit12">
 							</div>
 
 						           
@@ -721,7 +721,17 @@ $(document).ready(function() {
 
 
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit12').prop('disabled', true);
+                $('#submit12').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

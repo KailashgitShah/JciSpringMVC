@@ -240,7 +240,7 @@ public class Controller_V {
 	NominalOfficialService nominalOfficialService;
 
 	@Autowired
-	MillRegistrationService millRegistrationService;
+	private MillRegistrationService millRegistrationService;
 
 	private final PdfGenerator_K pdfGenerator;
 
@@ -3516,7 +3516,7 @@ public class Controller_V {
 				parameters.put("Contractno", details[0]);
 				parameters.put("Instrument_No", details[1]);
 				parameters.put("Instrument_Date", details[2]);
-				parameters.put("Instrument_value", details[8]);
+				parameters.put("Instrument_value", details[8]+"");
 				parameters.put("Last_shipment_date", details[4]);
 				parameters.put("Expiry_date", details[5]);
 				parameters.put("Auto_revolving_amount", details[6]);
@@ -5306,21 +5306,21 @@ public class Controller_V {
 			}
 
 			List<Object> Non_lc = genrationCashDocumentService.Non_lc(Conract_no);
-			for (Object obj : Non_lc) {
-				String strValue = (String) obj;
-				if (!strValue.equals("Letter_of_Credit")) {
-					CashDocumentModel cashDocumentModel = new CashDocumentModel();
-					cashDocumentModel.setCAD_Date(date);
-					cashDocumentModel.setBOS_No(Bill_of_Supply);
-					cashDocumentModel.setBOS_Date(BOS_Date);
-					// cashDocumentModel.setbOEDOCpathnonlc(fileName4);
-					cashDocumentModel.setMillcode(millcode234);
-					cashDocumentModel.setContarctNo(Conract_no);
-					cashDocumentModel.setInvoicevalue(Invoice_Value);
-					this.genrationCashDocumentService.create(cashDocumentModel);
-
-				}
-			}
+//			for (Object obj : Non_lc) {
+//				String strValue = (String) obj;
+//				if (!strValue.equals("Letter_of_Credit")) {
+//					CashDocumentModel cashDocumentModel = new CashDocumentModel();
+//					cashDocumentModel.setCAD_Date(date);
+//					cashDocumentModel.setBOS_No(Bill_of_Supply);
+//					cashDocumentModel.setBOS_Date(BOS_Date);
+//					// cashDocumentModel.setbOEDOCpathnonlc(fileName4);
+//					cashDocumentModel.setMillcode(millcode234);
+//					cashDocumentModel.setContarctNo(Conract_no);
+//					cashDocumentModel.setInvoicevalue(Invoice_Value);
+//					this.genrationCashDocumentService.create(cashDocumentModel);
+//
+//				}
+//			}
 
 //		          cashDocumentModel.setBOS_Date(BOS_Date);
 //		          cashDocumentModel.setBOS_No(Bill_of_Supply);
