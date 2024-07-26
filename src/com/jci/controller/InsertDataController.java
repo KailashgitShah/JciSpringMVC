@@ -5128,10 +5128,18 @@ System.out.println();
 	    public String updatedpaymentstatus(final HttpServletRequest request, final RedirectAttributes redirectAttributes, HttpSession session) {
 	    	String a = "success";
 	    	String tallyno = "";
+	    	String dpcid = "";
+	    	 tallyno = request.getParameter("tallyno");
+		     dpcid = request.getParameter("dpcid");
+		     String roho = request.getParameter("roho");
+		     tallyno = tallyno.replaceAll("\\[","").replaceAll("\\]","").replaceAll("\"", "'");
+		     dpcid = dpcid.replaceAll("\\[","").replaceAll("\\]","").replaceAll("\"", "'");
+		     String[] tally = tallyno.split(",");
+		     String[] dpc = dpcid.split(",");
 	    try {
 	    	String username =(String)request.getSession().getAttribute("usrname");
 	    	String path1 ="E:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\TallySlipPayments\\";
-	    //	String path1 ="/Users/apple/Documents/Bob/";
+	    //	String path1 ="D:\\";
 	    //	String path1 ="C:\\Users\\vishal.vishwakarma\\Downloads\\";
 	    	//generating crop year
 	    	String cropyear = "";
@@ -5156,16 +5164,9 @@ System.out.println();
 	     usrname = cropyear +"-"+ random_no +".xlsx";
 	     String tno ="";
 	     String tnoemail="";
-	     tallyno = request.getParameter("tallyno");
-	    // System.err.println("all tallyno   ="+tallyno);
-	     String roho = request.getParameter("roho");
-	     tallyno = tallyno.replaceAll("\\[","").replaceAll("\\]","").replaceAll("\"", "'");
-	     System.err.println("tallyno array  ="+tallyno);
-	     this.verifyTallySlipService.updatestatustoPP(tallyno);
-	     
+	    
+	     this.verifyTallySlipService.updatestatustoPP(tally,dpc);
 	     System.err.println("Status Updated to table for tally = "+tallyno);
-	     
-	     String[] tally = tallyno.split(",");
 	     List<PaymentprocesstellyslipModel> list = new ArrayList();
 	     PaymentprocesstellyslipModel paymentlist = new PaymentprocesstellyslipModel();
 	     String filename = "";
@@ -5193,7 +5194,7 @@ System.out.println();
 	          for(int i=0;i<tally.length;i++)
 	            {
 	        	    tno = tally[i];
-	        	    paymentlist = this.verifyTallySlipService.getdataforExcelSheet(tno);
+	        	    paymentlist = this.verifyTallySlipService.getdataforExcelSheet(tno,dpc[i].replace("\"", ""));
 	        	    System.err.println("get data for exel for tally = "+tno);
 		            tnoemail = tno.replace("\'","");
 		            jciref = paymentlist.getDpc_name()+"-"+tnoemail+"-"+paymentlist.getFarmerreg_no();
@@ -5293,12 +5294,12 @@ System.out.println();
 		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
 		              System.err.println("Mail sent succesfully by ZMHO = "+toEmail);
 		          }
-	             
+	     
 	    }
 	            catch (Exception e)   
 		        {  
 	            //something wrong to send mail then set status to rmzm and payment status 0 	
-	            this.verifyTallySlipService.updatestatustoRMZM(tallyno);
+	            this.verifyTallySlipService.updatestatustoRMZM(tally,dpc);
 	            System.err.println("Payment process exception in last = "+ e.getLocalizedMessage());
 		              e.printStackTrace();  
 		              

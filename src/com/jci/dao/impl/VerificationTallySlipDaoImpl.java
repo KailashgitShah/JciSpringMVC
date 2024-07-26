@@ -274,19 +274,19 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	}
 
 	@Override
-	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno) {
+	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno,String dpcid) {
 		// TODO Auto-generated method stub
 		String Region_id = (String) request.getSession().getAttribute("region");
 		tno = tno.replace("\"", "");
-		System.out.println("verification dao tno = " + tno);
+		System.out.println("verification dao dpcid = " + dpcid);
 		List<Object[]> list = new ArrayList();
 		PaymentprocesstellyslipModel paymentdetails = new PaymentprocesstellyslipModel();
 		try {
 
 			String querystr = "select v.puchasedate,v.amountpayable,j.F_BANK_IFSC,j.F_AC_NO,j.bank_ac_type,j.F_NAME,j.F_BANK_BRANCH,j.F_BANK_NAME,"
 					+ " p.centername, v.farmerregno, ro.bankACno from verificationtallyslip v left join jcirmt j on j.F_REG_NO = v.farmerregno left join "
-					+ "jcipurchasecenter p on p.CENTER_CODE = v.placeOfPurchase left join jcirodetails ro on ro.rocode = v.region_id where v.region_id = '"+Region_id+"' and v.tallyNo ="
-					+ tno;
+					+ "jcipurchasecenter p on p.CENTER_CODE = v.placeOfPurchase left join jcirodetails ro on ro.rocode = v.region_id where v.region_id = '"+Region_id+"' and "
+							+ "v.tallyNo ="+ tno+" and v.placeOfPurchase = "+dpcid+"";
 
 			Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
@@ -424,7 +424,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 				+ "c.centername, d.F_NAME,a.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo "
 				+ "left join jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno "
 				+ "where a.status ='" + status
-				+ "' and a.amountpayable <= 500000 and payment_status = 0 and a.region_id ='" + region_zone + "' and b.cropyr = '"+currCropYear+"'";
+				+ "' and a.amountpayable <= 500000 and payment_status = 0 and a.region_id ='" + region_zone + "'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -455,8 +455,10 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 
 	@Override
 	public String getEmailby_tally(String tnoemail) {
+		String Region_id = (String) request.getSession().getAttribute("region");
+
 		// TODO Auto-generated method stub
-		String querystr = "select fa_approver_email	from verificationtallyslip where tallyNo ='" + tnoemail + "'";
+		String querystr = "select fa_approver_email	from verificationtallyslip where tallyNo ='" + tnoemail + "' and region_id = '"+Region_id+"'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -473,7 +475,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 		HttpSession session1 = request.getSession(false);
         String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 		String querystr = "select a.tallyNo, a.farmerregno, a.puchasedate, a.netquantity, a.amountpayable, a.facheck_flag, b.basis, c.centername, d.F_NAME from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo left join jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='"
-				+ status + "' and a.amountpayable > 500000 and payment_status = 0 and a.zone_id ='" + region_zone + "'  and b.cropyr = '"+currCropYear+"'";
+				+ status + "' and a.amountpayable > 500000 and payment_status = 0 and a.zone_id ='" + region_zone + "'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		SQLQuery query = session.createSQLQuery(querystr);
@@ -605,14 +607,27 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	}
 
 	@Override
-	public void updatestatustoPP(String tallyslipno) {
+	public void updatestatustoPP(String[] tallyslipno,String[] dpc) {
 		try {
 			String Region_id = (String) request.getSession().getAttribute("region");
-			String hql = "update verificationtallyslip set payment_status = 1, status ='PP' where region_id ='"+Region_id+"' and tallyNo in (" + tallyslipno+")";
-			System.err.println("hql = "+hql);
-			this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+			String sql ="update verificationtallyslip set payment_status = 1, status ='pp' WHERE ";
+			for (int i = 0; i < tallyslipno.length; i++) {
+			    if (i > 0) {
+			        sql = sql+" OR ";
+			    }
+			    sql = sql+"region_id = '"+Region_id+"' AND tallyNo = '"+tallyslipno[i].replace("\'","")+"' AND placeOfPurchase = '"+dpc[i].replace("\'","")+"'";
+			}
+			System.err.println("hql = "+sql);
+			this.sessionFactory.getCurrentSession().createSQLQuery(sql).executeUpdate();
 			
-			String hql1 = "update jciprocurement set status = 'PP' where regionId = '"+Region_id+"' and tallyslipno in (" + tallyslipno+")";
+			//String hql1 = "update jciprocurement set status = 'PP' where regionId = '"+Region_id+"' and tallyslipno in (" + tallyslipno+")";
+			String hql1 ="update jciprocurement set status ='pp' WHERE ";
+			for (int i = 0; i < tallyslipno.length; i++) {
+			    if (i > 0) {
+			    	hql1 = hql1+" OR ";
+			    }
+			    hql1 = hql1+"regionId = '"+Region_id+"' AND tallyslipno = '"+tallyslipno[i].replace("\'","")+"' AND placeofpurchase = '"+dpc[i].replace("\'","")+"'";
+			}
 			System.err.println("hql1 = "+hql1);
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
 		} catch (Exception e) {
@@ -621,21 +636,32 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	}
 
 	@Override
-	public void updatestatustoRMZM(String tallyno) {
-		// TODO Auto-generated method stub
+	public void updatestatustoRMZM(String[] tallyno,String[] dpc) {
 		try {
 			String Region_id = (String) request.getSession().getAttribute("region");
-			String hql = "update verificationtallyslip set payment_status = 0, status ='RMZM' where region_id ='"+Region_id+"' and tallyNo in (" + tallyno+")";
-			System.err.println("hql = "+hql);
-			this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
+			String sql ="update verificationtallyslip set payment_status = 0, status ='RMZM' WHERE ";
+			for (int i = 0; i < tallyno.length; i++) {
+			    if (i > 0) {
+			        sql = sql+" OR ";
+			    }
+			    sql = sql+"region_id = '"+Region_id+"' AND tallyNo = '"+tallyno[i].replace("\'","")+"' AND placeOfPurchase = '"+dpc[i].replace("\'","")+"'";
+			}
+			System.err.println("hql = "+sql);
+			this.sessionFactory.getCurrentSession().createSQLQuery(sql).executeUpdate();
 			
-			String hql1 = "update jciprocurement set status = 'RMZM' where regionId = '"+Region_id+"' and tallyslipno in (" + tallyno+")";
+			//String hql1 = "update jciprocurement set status = 'PP' where regionId = '"+Region_id+"' and tallyslipno in (" + tallyslipno+")";
+			String hql1 ="update jciprocurement set status ='RMZM' WHERE ";
+			for (int i = 0; i < tallyno.length; i++) {
+			    if (i > 0) {
+			    	hql1 = hql1+" OR ";
+			    }
+			    hql1 = hql1+"regionId = '"+Region_id+"' AND tallyslipno = '"+tallyno[i].replace("\'","")+"' AND placeofpurchase = '"+dpc[i].replace("\'","")+"'";
+			}
 			System.err.println("hql1 = "+hql1);
 			this.sessionFactory.getCurrentSession().createSQLQuery(hql1).executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 		}
-		
 	}
 
 	@Override

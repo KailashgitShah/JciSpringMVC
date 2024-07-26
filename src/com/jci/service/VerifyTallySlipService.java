@@ -18,7 +18,7 @@ public interface VerifyTallySlipService {
 	public String GettransectionDetails(String tallyNo, String region, String placeofp);
 //	public VerifyTallySlip findByTally(String tallyslipno);
 	public boolean updatebyTally(String status, int verified,String tallyno, String DPCpop, String dEOpop);
-	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno);
+	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno, String string);
 	public void savedata(PaymentprocesstellyslipModel createpayment);
 	public void updatefastatus(String tno);
 	public void statusrmzm();
@@ -30,8 +30,8 @@ public interface VerifyTallySlipService {
 	public void updatestatusPD(String tallyno);
 	public void setholdstatus(String tno, String status, String placeofp);
 	public List<VerifyTallySlip> getAllHold(String region, String role_type);
-	public void updatestatustoPP(String tallyslipno);
-	public void updatestatustoRMZM(String tallyno);
+	public void updatestatustoPP(String[] tallyslipno,String[] dpc);
+	public void updatestatustoRMZM(String[] tallyno,String[] dpc);
 	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis, String purchasesdate,String purchasesdateTo);
 	public List<String> getexcelpath(String regionId);
 }

@@ -73,9 +73,9 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 	}
 
 	@Override
-	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno) {
+	public PaymentprocesstellyslipModel getdataforExcelSheet(String tno,String dpcid) {
 		// TODO Auto-generated method stub
-		 return VerificationTallySlipDao.getdataforExcelSheet(tno);
+		 return VerificationTallySlipDao.getdataforExcelSheet(tno,dpcid);
 	}
 
 	@Override
@@ -145,15 +145,15 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 	}
 
 	@Override
-	public void updatestatustoPP(String tallyslipno) {
+	public void updatestatustoPP(String[] tallyslipno,String[] dpc) {
 		// TODO Auto-generated method stub
-		VerificationTallySlipDao.updatestatustoPP(tallyslipno);
+		VerificationTallySlipDao.updatestatustoPP(tallyslipno,dpc);
 	}
 
 	@Override
-	public void updatestatustoRMZM(String tallyno) {
+	public void updatestatustoRMZM(String[] tallyno,String[] dpc) {
 		// TODO Auto-generated method stub
-		VerificationTallySlipDao.updatestatustoRMZM(tallyno);
+		VerificationTallySlipDao.updatestatustoRMZM(tallyno,dpc);
 
 	}
 

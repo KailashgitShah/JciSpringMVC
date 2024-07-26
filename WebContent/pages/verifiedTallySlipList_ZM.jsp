@@ -78,28 +78,38 @@
 	});
 	function sendMail(roho)
 	{
-		var array = [];
-		
+
+		var tallyno = [];
+		var dpcid = [];
 		$("input[name='checkbox']:checked").each(function() {
-			array.push($(this).val());
+			 var value = $(this).val();
+			  var parts = value.split('-');
+			    if (parts.length === 2) {  // Ensure that splitting worked correctly
+			    	tallyno.push(parts[0]);
+			    	dpcid.push(parts[1]);
+			    }
 		});
-		if (Array.isArray(array) && array.length) {
-			$("#kycmodal").modal('show');
+		//alert(tallyno+"dpc"+dpcid);
+		if (Array.isArray(tallyno) && tallyno.length) {
+			 alert("Are you sure to process "+tallyno.length+" tally slip?");
 		} else {
 			alert("CheckBox Not Selected !..Please Select");
 			return false;
 		}
+       $(".loader").show();
 		 $.ajax({
-              type:'GET',
-              url:'update_paymentstatus.obj',
-              data:{"tallyno":JSON.stringify(array),"roho":roho},
-              success:function(result){
-					alert("hello"+result);
- 	 				 
-				}	
-       });
-       alert("Invoice Generated,Mail has been sent to your gmail account!!!");
-       location.reload();
+				type:"GET",
+				url:"update_paymentstatus.obj",
+				data:{"tallyno":JSON.stringify(tallyno),"dpcid":JSON.stringify(dpcid),"roho":roho},
+				//async: false,
+				success:function(result)
+				{
+					$(".loader").hide();
+					 alert("Payment Advice sheet Generated, Mail has been sent to you and your AFM Accounts!!!");
+				     location.reload();
+				}
+		 });
+		 
 		
 	}
 	</script>
@@ -156,7 +166,7 @@
 								 if(i<=200){  
 							%>
 									<tr>
-									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>" ></td>
+									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>-<%=verificationlists.getErrors()%>" ></td>
 										<td><%=i%></td>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
