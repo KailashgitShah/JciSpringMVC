@@ -9507,8 +9507,10 @@ public class Controller_V {
 		     String ans =  convertNumberToWords(AmountDiffCNDN);
 		    String serialNumberWord = convertNumberToWords(serialNoExcel);
 		     // System.err.println(ans);
+		    
+		    String accountNo = creditNoteGenerationService.getAccountNo();
 		   
-		     String Content ="Please arrange to remit the total amounting to Rs. " + AmountDiffCNDN +"/- ( "+ans+ ")"+" to the "+  serialNoExcel +"("+serialNumberWord+")" + " nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. 1039797752  through RTGS/NEFT/TRANSFER.";
+		     String Content ="Please arrange to remit the total amounting to Rs. " + AmountDiffCNDN +"/- ( "+ans+ ")"+" to the "+  serialNoExcel +"("+serialNumberWord+")" + " nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. "+accountNo+"  through RTGS/NEFT/TRANSFER.";
 
 		        // Create the DTO object and set values
 		        settlementCnDnDto cndn = new settlementCnDnDto();

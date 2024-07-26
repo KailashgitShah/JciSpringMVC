@@ -60,4 +60,6 @@ public interface CreditNoteGenerationService {
 	public List<Object[]>getMillDetails(String millcode);
 
 	public List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber);
+
+	public String getAccountNo();
 }

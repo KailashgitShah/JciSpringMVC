@@ -154,6 +154,12 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 		// TODO Auto-generated method stub
 		return creditNoteGenerationDao. getAlldetails(cndnIdentificationNumber);
 	}
+
+	@Override
+	public String getAccountNo() {
+		// TODO Auto-generated method stub
+		return creditNoteGenerationDao.getAccountNo();
+	}
 	
 	
 

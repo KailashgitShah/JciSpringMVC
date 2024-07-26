@@ -121,7 +121,7 @@ th {
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-									<th>CN/DN Identification No</th>
+									<th>Settlement Reference No</th>
 									<th>Contract No</th>
 									<th>Details</th>
 									 <th>DownLoad</th> 

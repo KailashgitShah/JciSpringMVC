@@ -35,4 +35,5 @@ public interface CreditNoteGenerationDao {
 	public String CountRecord();
 	public List<Object[]>getMillDetails(String millcode);
 	List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber);
+	public String getAccountNo();
 }

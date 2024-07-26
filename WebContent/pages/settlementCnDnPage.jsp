@@ -219,7 +219,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                                          
                                                           <div class= "row">
                                                            <div class="col-sm-6 form-group">
-                                                            <label>Amount Value.</label>
+                                                            <label>Payment Amount.</label>
                                                            <input type="" id="AmountDifference" name="AmountDifferenceCNDN" ReadOnly>
                                                            </div>
                                                            </div>

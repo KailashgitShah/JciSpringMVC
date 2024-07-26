@@ -662,4 +662,16 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	}
 
+	@Override
+	public String getAccountNo() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT bankACno from jcirodetails WHERE officetype ='H'";
+				
+
+		String  result = (String) currentSession().createSQLQuery(sql).uniqueResult();
+		return result;
+		
+		
+	}
+
 }
