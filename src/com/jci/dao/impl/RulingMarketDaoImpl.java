@@ -172,37 +172,38 @@ public class RulingMarketDaoImpl implements RulingMarketDao {
 	    List<Integer> result = new ArrayList<>();
 	    String querystr = "";
 	  querystr = 
-	    	    "SELECT " +
-	    	    "    p1.roname, " +
-	    	    "    r1.datearrival, " +
-	    	    "    SUM(CAST(r1.arrivedqty AS NUMERIC)) AS total_arrivedqty, " +
-	    	    "    AVG(CAST(r1.grade_rate1 AS NUMERIC)) AS avg_grade_rate1, " +
-	    	    "    AVG(CAST(r1.grade_rate2 AS NUMERIC)) AS avg_grade_rate2, " +
-	    	    "    AVG(CAST(r1.grade_rate3 AS NUMERIC)) AS avg_grade_rate3, " +
-	    	    "    AVG(CAST(r1.grade_rate4 AS NUMERIC)) AS avg_grade_rate4, " +
-	    	    "    AVG(CAST(r1.grade_rate5 AS NUMERIC)) AS avg_grade_rate5, " +
-	    	    "    AVG(CAST(r1.mixmois AS NUMERIC)) AS avg_mixmois, " +
-	    	    "    AVG(CAST(r1.maxmois AS NUMERIC)) AS avg_maxmois, " +
-	    	    "    ROUND(AVG(CAST(r1.grade2 AS DECIMAL)), 2) AS avg_grade2, " +
-	    	    "    ROUND(AVG(CAST(r1.grade3 AS DECIMAL)), 2) AS avg_grade3, " +
-	    	    "    ROUND(AVG(CAST(r1.grade4 AS DECIMAL)), 2) AS avg_grade4, " +
-	    	    "    ROUND(AVG(CAST(r1.grade5 AS DECIMAL)), 2) AS avg_grade5, " +
-	    	    "    r1.jutevariety, " +
-	    	    "    r1.cropyr " +
-	    	    "FROM " +
-	    	    "    jcimra r1 " +
-	    	    "LEFT JOIN " +
-	    	    "    jcirodetails p1 " +
-	    	    "ON " +
-	    	    "    r1.region_id = p1.rocode " +
-	    	    "WHERE " +
-	    	    "    r1.cropyr = '" + cropYear + "' " +
-	    	    "    AND r1.datearrival = '" + arrivaldate + "' " +
-	    	    "GROUP BY " +
-	    	    "    p1.roname, " +
-	    	    "    r1.datearrival, " +
-	    	    "    r1.jutevariety, " +
-	    	    "    r1.cropyr";
+			    "SELECT \r\n" + 
+			    	    "    p1.roname, \r\n" + 
+			    	    "    r1.datearrival, \r\n" + 
+			    	    "    SUM(CAST(r1.arrivedqty AS NUMERIC)) AS total_arrivedqty, \r\n" + 
+			    	    "    COALESCE(AVG(NULLIF(CAST(r1.grade_rate1 AS NUMERIC), 0)), 0) AS avg_grade_rate1, \r\n" + 
+			    	    "    COALESCE(AVG(NULLIF(CAST(r1.grade_rate2 AS NUMERIC), 0)), 0) AS avg_grade_rate2, \r\n" + 
+			    	    "    COALESCE(AVG(NULLIF(CAST(r1.grade_rate3 AS NUMERIC), 0)), 0) AS avg_grade_rate3, \r\n" + 
+			    	    "    COALESCE(AVG(NULLIF(CAST(r1.grade_rate4 AS NUMERIC), 0)), 0) AS avg_grade_rate4, \r\n" + 
+			    	    "    COALESCE(AVG(NULLIF(CAST(r1.grade_rate5 AS NUMERIC), 0)), 0) AS avg_grade_rate5, \r\n" + 
+			    	    "    COALESCE(AVG(CAST(r1.mixmois AS NUMERIC)), 0) AS avg_mixmois, \r\n" + 
+			    	    "    COALESCE(AVG(CAST(r1.maxmois AS NUMERIC)), 0) AS avg_maxmois, \r\n" + 
+			    	    "    COALESCE(ROUND(AVG(CAST(r1.grade2 AS DECIMAL)), 2), 0) AS avg_grade2, \r\n" + 
+			    	    "    COALESCE(ROUND(AVG(CAST(r1.grade3 AS DECIMAL)), 2), 0) AS avg_grade3, \r\n" + 
+			    	    "    COALESCE(ROUND(AVG(CAST(r1.grade4 AS DECIMAL)), 2), 0) AS avg_grade4, \r\n" + 
+			    	    "    COALESCE(ROUND(AVG(CAST(r1.grade5 AS DECIMAL)), 2), 0) AS avg_grade5, \r\n" + 
+			    	    "    r1.jutevariety, \r\n" + 
+			    	    "    r1.cropyr \r\n" + 
+			    	    "FROM \r\n" + 
+			    	    "    jcimra r1 \r\n" + 
+			    	    "LEFT JOIN \r\n" + 
+			    	    "    jcirodetails p1 \r\n" + 
+			    	    "ON \r\n" + 
+			    	    "    r1.region_id = p1.rocode \r\n" + 
+			    	    "WHERE \r\n" + 
+			    	    "    r1.cropyr = '" + cropYear + "' \r\n" + 
+			    	    "    AND r1.datearrival = '" +arrivaldate + "' \r\n" + 
+			    	    "GROUP BY \r\n" + 
+			    	    "    p1.roname, \r\n" + 
+			    	    "    r1.datearrival, \r\n" + 
+			    	    "    r1.jutevariety, \r\n" + 
+			    	    "    r1.cropyr\r\n" + 
+			    	    "";
 
 
 	    Session session = sessionFactory.getCurrentSession();

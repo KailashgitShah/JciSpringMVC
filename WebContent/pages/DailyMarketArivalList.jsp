@@ -73,7 +73,7 @@
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Packing Register</h1>
+                <h1 class="page-title">Daily Market Report</h1>
                  
             </div>
 				           <form action = "MarketArrivalRegionDownload.obj">
@@ -130,6 +130,7 @@
 									<th>Region Name</th>
 									<th>Date Arrival</th>
 									<th>Arrived Quantity</th>
+									<th>Jute Variety</th>
 									<th>Grade Rate 1</th>
 									<th>Grade Rate2 </th>
 									<th>Grade Rate 3</th>
@@ -137,7 +138,6 @@
 									<th>Grade Rate 5</th>
                                     <th>Minmois</th>
 									<th>Maxmois</th>
-									<th>Grade 1</th>
 									<th>Grade 2</th>
 									<th>Grade 3</th>
 									<th>Grade 4</th>
@@ -342,6 +342,10 @@ function handleChange() {
 									    	
 									  },
 									  {
+										   "data" : "JuteVariety",
+									    	
+									  },
+									  {
 										   "data" : "GradeRate1",
 									    	
 									  },
@@ -389,11 +393,8 @@ function handleChange() {
 										 {
 											   "data" : "Grade5",
 										    	
-										  },
-										  {
-											   "data" : "JuteVariety",
-										    	
-										  } 
+										  }
+										 
 										   
 										
 									
