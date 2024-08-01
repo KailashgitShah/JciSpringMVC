@@ -97,15 +97,39 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 						<div class="ibox">
 							    <span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
-								<form action="saveuploadPaymentRealizationDisDetails.obj" method="POST" enctype="multipart/form-data">
+								<form id="myForm" action="saveuploadPaymentRealizationDisDetails.obj" method="POST" enctype="multipart/form-data">
 									<div class="row">
-										<div class="col-6 form-group">
+									
+									<div class="col-4 form-group">
+								   	<label>Transaction Id</label> <input
+												class="form-control textbox" type="text" name="transactionId" placeholder="Enter Transaction ID"
+												 required >
+										</div>
+											
+									<div class="col-4 form-group">
+								   	<label>UTR Number</label> <input
+												class="form-control textbox" type="text" name="utrNumber" placeholder="Enter UTR Number"
+												 required >
+										</div>
+											
+									<div class="col-4 form-group">
+								   	<label>UTR Date</label> <input
+												class="form-control textbox" name="dateofUtr" placeholder="dd-mm-yyyy"
+												id="DateofUtr" required >
+										</div>
+																	
+									
+										
+									</div>
+									<div class="row">
+									<div class="col-4 form-group">
 											<label>Upload Excel File<span class="text-danger">*</span></label>
 											 <input type="file" class="form-control"
 												id="excelFile" name="excelFile" />
 								
 										</div>
 									</div>
+									
 
 									<div class="row">
 										<div class="col-sm-12 form-group">
@@ -126,6 +150,24 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 
 	<div class="sidenav-backdrop backdrop"></div>
 	
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+ <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
+ <script>
+	$( "#DateofUtr" ).datepicker({ dateFormat: 'dd-mm-yy'    });
+</script> 
 	<script type = "text/javascript">
 	
 	

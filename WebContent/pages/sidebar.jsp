@@ -561,12 +561,24 @@ body {
 							class="sidebar-item-icon fa fa-th-large"></i><b>View
 								Settlement Of Credit And Debit Notes</b></a></li>
 
+				</ul></li>
+				
+				<li><a href="javascript:void(0);"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label">&nbsp;Payment Realisation</span>
+					<i class="fa fa-angle-left arrow"></i></a>
+				<ul class="nav-2-level ">
+
 					<li data-pre="1135" id="o1135"><a
 						href="uploadPaymentRealizationDisDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Uploading of
 								Payment Realization / Disbursal Details</b></a></li>
 
-
+                           	<li data-pre="1135" id="o1135"><a
+						href="viewpaymentRealisation.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>
+								View Uploaded Payment Realization / Disbursal Details</b></a></li>
+                           
 
 				</ul></li>
 		</ul>

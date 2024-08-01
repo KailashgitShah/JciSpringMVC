@@ -143,6 +143,7 @@ import com.jci.model.boenonlcDTO;
 import com.jci.model.jciWeighmentEntry;
 import com.jci.model.settlementCnDnDto;
 import com.jci.model.settlemetCnDnModel;
+import com.jci.model.uploadPaymentRealisationModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
 import com.jci.service.PurchaseCenterService;
@@ -2872,7 +2873,6 @@ public class Controller_V {
 
 	@Value("${upload.PaymentRealizationDisDetails}")
 	String paymentRealDetailsPath;
-
 	@RequestMapping("saveuploadPaymentRealizationDisDetails")
 	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request,
 			@RequestParam("excelFile") MultipartFile excelFile, RedirectAttributes redirectAttributes)
@@ -2894,49 +2894,24 @@ public class Controller_V {
 
 			File serveFile = new File(filePathDir, originalFileNameString);
 			excelFile.transferTo(serveFile);
+           
+			String utrNumber = request.getParameter("utrNumber");
+            String utrDate = request.getParameter("dateofUtr");
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate currentDate = LocalDate.now();
+			String formattedDate = currentDate.format(formatter);
+			String transactionId =request.getParameter("transactionId");
+            
+//            
+            uploadPaymentRealisationModel uploadPaymentRealisation = new uploadPaymentRealisationModel();
+            uploadPaymentRealisation.setUtrNumber(utrNumber);
+            uploadPaymentRealisation.setUtrDate(utrDate);
+            uploadPaymentRealisation.setPaymentRealisationFile(originalFileNameString);
+            uploadPaymentRealisation.setCreatedDate(formattedDate);
+            uploadPaymentRealisation.setTransactionid(transactionId);
+            paymentRealizationService.create(uploadPaymentRealisation);
 
-//			try (Workbook workbook = WorkbookFactory.create(excelFile.getInputStream())) {
-//				Sheet sheet = workbook.getSheetAt(0);
-//				int i = 1;
-//				int rowCount = sheet.getLastRowNum();
-//				System.out.println("rowcount" + rowCount);
-//				// FormulaEvaluator formulaEvaluator =
-//				// workbook.getCreationHelper().createFormulaEvaluator();
-//				String[] tally;
-//				// String tallyno;
-//				for (i = 1; i < rowCount + 1; i++) {
-//					try {
-//						Row row = sheet.getRow(i);
-//						Cell cell = row.getCell(2);
-//						String jciref = cell.getStringCellValue();
-//						cell = row.getCell(10);
-//
-//						String dataDate = cell.getStringCellValue();
-//
-//						cell = row.getCell(5);
-//						String cell5 = cell.getStringCellValue();
-//
-//						System.err.println(" jciref = " + jciref + " date = " + dataDate + " cell5" + cell5);
-//
-//						tally = jciref.split("-");
-//						// tallyno = tally[1];
-//						// System.out.println("tallyno========="+tallyno);
-//
-//					} catch (Exception e) {
-//						System.out.println("error in catch field-________" + e);
-////						mv.addObject("msg",
-////								(Object) "<div class=\"alert alert-danger\"><b>OOps!</b> Date formate should be dd/mm/yyyy and UTR NO should be Number in excel file</div>\r\n");
-////						return mv;
-//					}
-//
-//				}
-//			}
-//
-//			catch (IOException e) {
-//				e.printStackTrace();
-//			}
 
-			paymentRealizationService.create(originalFileNameString);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b> File Saved successfully.</b></div>\r\n" + "");
 
@@ -2948,6 +2923,30 @@ public class Controller_V {
 
 		return new ModelAndView(new RedirectView("uploadPaymentRealizationDisDetails.obj"));
 	}
+	
+	@RequestMapping("viewpaymentRealisation")
+
+	public ModelAndView ViewUploadedPaymentRealisation(Model model, HttpServletRequest request) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("viewUploadPaymentRealisation");
+
+		if (username == null) {
+
+			mv = new ModelAndView("index");
+
+		}
+
+		//List<JciEntryTdsModel> AllList = (List<JciEntryTdsModel>) entryofTdsService.getAll();
+          List<uploadPaymentRealisationModel>AllList = (List<uploadPaymentRealisationModel>)paymentRealizationService.getAll();
+		Collections.reverse(AllList);
+		model.addAttribute("AllList", AllList);
+
+		return mv;
+
+	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
