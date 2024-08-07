@@ -89,6 +89,8 @@ th     { background:#eee; }
 								<thead>
 									<tr>
 									<th>Sl.No</th>
+									<th>Mill Name</th>
+									<th>Contract No</th>
 									<th>Transaction ID</th>
 									<th>UTR Number</th>
 										<th>UTR Date</th>
@@ -100,6 +102,8 @@ th     { background:#eee; }
 							      <c:forEach items="${AllList}" var="item">
 									<tr>
 									<td><%=i %></td>
+									<td>${item.getMillName()}</td>
+									<td>${item.getContractno()}</td>
 									<td>${item.getTransactionid()}</td>	
 							        <td>${item.getUtrNumber() }</td>
 						            <td>${item.getUtrDate() }</td>

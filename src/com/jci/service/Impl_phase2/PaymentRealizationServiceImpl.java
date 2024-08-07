@@ -27,4 +27,34 @@ public class PaymentRealizationServiceImpl implements PaymentRealizationService 
 		return paymentRealizationDao.getAll();
 	}
 
+	@Override
+	public List<Object[]> fetchMill_Name() {
+		// TODO Auto-generated method stub
+		return paymentRealizationDao.fetchMill_Name();
+	}
+
+	@Override
+	public List<Object[]> contractForMill(String millname) {
+		// TODO Auto-generated method stub
+		return paymentRealizationDao.contractForMill(millname);
+	}
+
+	@Override
+	public List<Object[]> TransactionForContract(String contractNo) {
+		// TODO Auto-generated method stub
+		return paymentRealizationDao.TransactionForContract(contractNo);
+	}
+
+	@Override
+	public void update(String contractNo) {
+		// TODO Auto-generated method stub
+		paymentRealizationDao.update( contractNo);
+	}
+
+	@Override
+	public List<String> cropYear() {
+		// TODO Auto-generated method stub
+		return paymentRealizationDao.cropYear();
+	}
+
 }

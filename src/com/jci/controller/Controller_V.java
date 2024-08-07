@@ -2860,41 +2860,60 @@ public class Controller_V {
 	// Uploading of Payment Realization / Disbursal Details
 	// ---------------------------------------------------------
 
+	
+	
+
 	@RequestMapping("uploadPaymentRealizationDisDetails")
 	public ModelAndView uploadPaymentRealizationDisDetails(HttpServletRequest request) {
+		ModelAndView mView = new ModelAndView("uploadPaymentRealizationDisDetails");
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
 
-		ModelAndView mView = new ModelAndView("uploadPaymentRealizationDisDetails");
+		List<Object[]> fetchMill_Name = this.paymentRealizationService.fetchMill_Name();
+		
+		mView.addObject("fetchMill_Name", fetchMill_Name);
+		
 		return mView;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "contrcatForPaymentRealisation", method = RequestMethod.GET)
+	public String millWiseContractPaymentRealisation(@RequestParam("millname") String millname) {
+		List<Object[]> contract = paymentRealizationService.contractForMill(millname);
+		// System.err.println("resultList++++++++++" + Mill_NameR);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contract);
+		return resultString;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "transactionidcontract", method = RequestMethod.GET)
+	public String contractWiseTransaction(@RequestParam("contractNo") String contractNo) {
+		List<Object[]> transactionid = paymentRealizationService.TransactionForContract(contractNo);
+		// System.err.println("resultList++++++++++" + Mill_NameR);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(transactionid );
+		return resultString;
+	}
 	@Value("${upload.PaymentRealizationDisDetails}")
 	String paymentRealDetailsPath;
 	@RequestMapping("saveuploadPaymentRealizationDisDetails")
-	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request,
-			@RequestParam("excelFile") MultipartFile excelFile, RedirectAttributes redirectAttributes)
+	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws IllegalStateException, IOException {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-
-		File filePathDir = new File(paymentRealDetailsPath);
-
-		if (!filePathDir.exists()) {
-			filePathDir.mkdir();
-		}
-
-		String originalFileNameString = excelFile.getOriginalFilename();
-
-		try {
-
-			File serveFile = new File(filePathDir, originalFileNameString);
-			excelFile.transferTo(serveFile);
-           
+		
+		     String millcodeANDName = request.getParameter("millcodeName");
+		     String millCode = millcodeANDName.split("-")[0];
+		     String millname= millcodeANDName.split("-")[1];
+		     
+			String millcodepayment = request.getParameter("millcodepayment");
+		    String contractNo=request.getParameter("fullcontractno");
+		    String TransactionId= request.getParameter("transactionid");
 			String utrNumber = request.getParameter("utrNumber");
             String utrDate = request.getParameter("dateofUtr");
         	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -2906,20 +2925,20 @@ public class Controller_V {
             uploadPaymentRealisationModel uploadPaymentRealisation = new uploadPaymentRealisationModel();
             uploadPaymentRealisation.setUtrNumber(utrNumber);
             uploadPaymentRealisation.setUtrDate(utrDate);
-            uploadPaymentRealisation.setPaymentRealisationFile(originalFileNameString);
+            //uploadPaymentRealisation.setPaymentRealisationFile(originalFileNameString);
             uploadPaymentRealisation.setCreatedDate(formattedDate);
-            uploadPaymentRealisation.setTransactionid(transactionId);
+            uploadPaymentRealisation.setTransactionid(TransactionId);
+            uploadPaymentRealisation.setMillcode( millCode);
+            uploadPaymentRealisation.setMillName(millname);
+            uploadPaymentRealisation.setContractno(contractNo);
             paymentRealizationService.create(uploadPaymentRealisation);
 
+            paymentRealizationService.update(contractNo);
 
 			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b> File Saved successfully.</b></div>\r\n" + "");
+					"<div class=\"alert alert-success\"><b> Payment Realisation Saved successfully.</b></div>\r\n" + "");
 
-		} catch (Exception e) {
-
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-danger\"><b>Something went wrong...</b></div>\r\n" + "");
-		}
+		
 
 		return new ModelAndView(new RedirectView("uploadPaymentRealizationDisDetails.obj"));
 	}
@@ -10556,6 +10575,33 @@ public class Controller_V {
 	}
 	
 	
+	@RequestMapping("viewconlidateReort")
+	public ModelAndView ViewConsolidateReport(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("consolidate");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+	   List<String> cropyear= this.paymentRealizationService.cropYear();
+	   System.err.print(cropyear +"cyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+		mv.addObject("cropyear", cropyear);
+	
+		
+		return mv;
+	}
+	 
+
+	@RequestMapping("saveconsolidate")
+	public ModelAndView saveconsolidate(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		String cropyear = request.getParameter("cropYear");
+		System.err.print(cropyear+ "kkkkkkkkkk");
+		return new ModelAndView(new RedirectView("viewconlidateReort.obj"));
+	}
+
+	
+	
+
 
 }
 

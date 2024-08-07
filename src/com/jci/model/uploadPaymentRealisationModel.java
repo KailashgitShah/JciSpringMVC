@@ -20,7 +20,13 @@ public class uploadPaymentRealisationModel {
 	private String paymentRealisationFile;
     private String createdDate;
 	private String transactionid;
-    public int getRef_id() {
+    private String millcode;
+    private String contractno;
+    private String millName;
+   
+   
+	
+	public int getRef_id() {
 		return ref_id;
 	}
 	public void setRef_id(int ref_id) {
@@ -58,11 +64,31 @@ public class uploadPaymentRealisationModel {
 	public void setTransactionid(String transactionid) {
 		this.transactionid = transactionid;
 	}
+	
+	public String getMillcode() {
+		return millcode;
+	}
+	public void setMillcode(String millcode) {
+		this.millcode = millcode;
+	}
+	public String getContractno() {
+		return contractno;
+	}
+	public void setContractno(String contractno) {
+		this.contractno = contractno;
+	}
+	
+	public String getMillName() {
+		return millName;
+	}
+	public void setMillName(String millName) {
+		this.millName = millName;
+	}
 	public uploadPaymentRealisationModel() {
 		super();
 	}
 	public uploadPaymentRealisationModel(int ref_id, String utrNumber, String utrDate, String paymentRealisationFile,
-			String createdDate, String transactionid) {
+			String createdDate, String transactionid, String millcode, String contractno, String millName) {
 		super();
 		this.ref_id = ref_id;
 		this.utrNumber = utrNumber;
@@ -70,13 +96,18 @@ public class uploadPaymentRealisationModel {
 		this.paymentRealisationFile = paymentRealisationFile;
 		this.createdDate = createdDate;
 		this.transactionid = transactionid;
+		this.millcode = millcode;
+		this.contractno = contractno;
+		this.millName = millName;
 	}
 	@Override
 	public String toString() {
 		return "uploadPaymentRealisationModel [ref_id=" + ref_id + ", utrNumber=" + utrNumber + ", utrDate=" + utrDate
 				+ ", paymentRealisationFile=" + paymentRealisationFile + ", createdDate=" + createdDate
-				+ ", transactionid=" + transactionid + "]";
+				+ ", transactionid=" + transactionid + ", millcode=" + millcode + ", contractno=" + contractno
+				+ ", millName=" + millName + "]";
 	}
+	
 
 	
 

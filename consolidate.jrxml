@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsolidatedReport" pageWidth="1000" pageHeight="1000" columnWidth="960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d17a68c-e702-4108-a931-dfb1b29e4a98">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="800" splitType="Stretch">
+			<line>
+				<reportElement x="45" y="30" width="861" height="1" uuid="3fa283c4-2964-4b88-9271-b82086667a22"/>
+			</line>
+			<line>
+				<reportElement x="46" y="30" width="1" height="397" uuid="16a7bb8f-53d5-46f6-acbb-2b9ee817c0ff"/>
+			</line>
+			<line>
+				<reportElement x="906" y="30" width="1" height="396" uuid="b5d99c3c-ee98-4853-8a7b-abd1587c500a"/>
+			</line>
+			<line>
+				<reportElement x="45" y="426" width="861" height="1" uuid="38398d76-b8bd-4698-a759-91e5423dfcba"/>
+			</line>
+			<line>
+				<reportElement x="126" y="76" width="780" height="1" uuid="769430ff-b0ae-4afb-ae98-e21f8ef25940"/>
+			</line>
+			<line>
+				<reportElement x="126" y="110" width="782" height="1" uuid="c93d7754-014b-4699-a4a3-ea5e3935b71b"/>
+			</line>
+			<line>
+				<reportElement x="126" y="141" width="782" height="1" uuid="0dbfa31a-6ead-4f5d-8580-6eb45eca48e0"/>
+			</line>
+			<line>
+				<reportElement x="125" y="170" width="782" height="1" uuid="8ebe7d90-a40a-4377-92ae-04ac75d3cd16"/>
+			</line>
+			<line>
+				<reportElement x="126" y="202" width="782" height="1" uuid="7477f626-4698-48b5-9180-4948395bed65"/>
+			</line>
+			<line>
+				<reportElement x="47" y="239" width="860" height="1" uuid="5538fd3e-2e30-4a8e-83c7-9a543676603e"/>
+			</line>
+			<line>
+				<reportElement x="125" y="30" width="1" height="396" uuid="65497baa-b2d9-4bc0-b669-b5d69ad8bc04"/>
+			</line>
+			<line>
+				<reportElement x="502" y="29" width="1" height="398" uuid="dcab72cf-191e-44da-89f8-8022524288be"/>
+			</line>
+			<staticText>
+				<reportElement x="55" y="94" width="61" height="101" uuid="2840a42a-9ed7-457b-99f7-655be88b010a"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Mill Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="241" y="32" width="110" height="20" uuid="9443750d-0252-4d55-b1fd-3641466792b3"/>
+				<text><![CDATA[Contract BT -(n) (FY)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="50" width="199" height="31" uuid="b16fc123-6cef-44af-9034-8bcf8442d1f3"/>
+				<text><![CDATA[Period(User will select period under that BT)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="660" y="33" width="110" height="20" uuid="b3add188-29d0-48cd-9dc2-8c2901d68e73"/>
+				<text><![CDATA[Contract BT -(n) (FY)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="633" y="51" width="199" height="31" uuid="862ae604-938c-445c-9933-7bf9cf4e411a"/>
+				<text><![CDATA[Period(User will select period under that BT)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="83" width="279" height="31" uuid="47ddc0e5-8097-45b0-9a9e-fa50d1d3d68b"/>
+				<text><![CDATA[PCO DT(Multiple PCO Dt can come under single BT-(n))]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="595" y="82" width="341" height="31" uuid="4482348a-bda3-440c-800f-448b0f473bf4"/>
+				<text><![CDATA[PCO DT(Multiple PCO Dt can come under single BT-(n))]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="115" width="203" height="31" uuid="1f3d582b-0d39-4686-b119-4164bade44df"/>
+				<text><![CDATA[Total Contract Qty(under that BT)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="615" y="116" width="291" height="21" uuid="4d3bdd26-5b4b-41d5-a1ed-7c0767dfa9a3"/>
+				<text><![CDATA[Total Contract Qty(under that BT)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="148" width="251" height="31" uuid="899c7ec9-4b17-447b-89d9-359774178d86"/>
+				<text><![CDATA[Total Contract Value ( in Rs)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="650" y="149" width="182" height="31" uuid="59a2f5c8-7020-4e53-8611-6f3fadd5bc6e"/>
+				<text><![CDATA[Total Contract Value ( in Rs)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="183" width="124" height="31" uuid="eabaeece-0080-4d0f-a816-f5cf0bd98671"/>
+				<text><![CDATA[Contract Open]]></text>
+			</staticText>
+			<line>
+				<reportElement x="343" y="170" width="1" height="255" uuid="4837aa6a-61c7-4934-84d9-f2fe7bb693e8"/>
+			</line>
+			<line>
+				<reportElement x="729" y="171" width="1" height="255" uuid="e885dc9f-b884-48b7-8f90-1b4b6b4a2b57"/>
+			</line>
+			<staticText>
+				<reportElement x="583" y="181" width="124" height="21" uuid="ad8c70fe-231a-47a8-85ff-800beb1b2292"/>
+				<text><![CDATA[Contract Open]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="183" width="132" height="19" uuid="5a2a2b8f-d832-44d5-95a3-eef647939a19"/>
+				<text><![CDATA[Contract Not Open]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="765" y="180" width="131" height="41" uuid="ae96f578-ae81-4833-9c04-5466bbc3d38e"/>
+				<text><![CDATA[Contract Not Open]]></text>
+			</staticText>
+			<line>
+				<reportElement x="196" y="202" width="1" height="225" uuid="7dd10336-4aa8-4497-9352-ac639a243125"/>
+			</line>
+			<line>
+				<reportElement x="267" y="202" width="1" height="225" uuid="3e287fb6-d54a-4f65-b012-0e63c7f40ae6"/>
+			</line>
+			<line>
+				<reportElement x="425" y="203" width="1" height="225" uuid="ad3b8635-0486-430c-996d-3b91e5513716"/>
+			</line>
+			<line>
+				<reportElement x="578" y="203" width="1" height="225" uuid="c78d0a9c-0254-47dc-8a2a-eb8eaf5889b5"/>
+			</line>
+			<line>
+				<reportElement x="652" y="203" width="1" height="225" uuid="015907ea-c1f0-4281-ad87-8fec5353a037"/>
+			</line>
+			<line>
+				<reportElement x="807" y="203" width="1" height="225" uuid="812c1f88-d4e3-4508-85e5-2cb460af9079"/>
+			</line>
+			<staticText>
+				<reportElement x="135" y="210" width="41" height="31" uuid="3a677b58-cde0-4d26-83cf-ae460c12141d"/>
+				<text><![CDATA[Qty(inQtls)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="205" width="67" height="39" uuid="9f899a9f-698b-4cd6-a155-3c06cb51ad7e"/>
+				<text><![CDATA[Amount Recieved(Rs)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="207" width="71" height="31" uuid="2943f2de-7803-40c0-93e7-156a90b40f6a"/>
+				<text><![CDATA[Amt Recieved     Dt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="208" width="41" height="31" uuid="e81ef770-09e5-4666-b2fb-d79cd4bc4f45"/>
+				<text><![CDATA[Qty(inQtls)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="591" y="201" width="51" height="47" uuid="0990e96f-2044-4289-a0b8-af55b894a1ac"/>
+				<text><![CDATA[Amount Recieved(Rs)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="659" y="207" width="76" height="41" uuid="939c936f-abb1-48aa-b4bf-ac747a5d5a67"/>
+				<text><![CDATA[Amt Recieved     Dt.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="210" width="81" height="31" uuid="6daf519e-5ce3-4116-81ff-50ac8bf10a78"/>
+				<text><![CDATA[Qty(inQtls)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="210" width="81" height="31" uuid="ab634131-80c8-425a-ac83-9b9ae6703787"/>
+				<text><![CDATA[Amt Recieved]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="815" y="210" width="81" height="31" uuid="d06a5626-db95-4ba1-801f-f675a96d9afa"/>
+				<text><![CDATA[Amt Recieved]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="736" y="210" width="81" height="31" uuid="98c47673-9062-4701-93b1-9819ec380cb6"/>
+				<text><![CDATA[Qty(inQtls)]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -177,20 +177,7 @@
 	$( "#DateofIntimation" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 </script> 
 
-<<<<<<< HEAD
-=======
-<script>
-        $(document).ready(function() {
-            $('#myForm').on('submit', function(event) {
-                // Disable the submit button
-                $('#submit').prop('disabled', true);
-                $('#submit').val('Please Wait Processing...');  
 
-              
-            });
-        });
-    </script>
->>>>>>> 09f85224a8d7417eacbc820c5c61559fc3c8fff4
 <script>
 function f(){
 	// alert(document.getElementsByName("SupportingDocument"))

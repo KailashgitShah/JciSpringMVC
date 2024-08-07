@@ -105,11 +105,9 @@
                     <div class="ibox-body">
                       <!-- <div class="scrollmenu"> -->
                         
-<<<<<<< HEAD
+
                          <form id="myForm" action="savecashAgainstDispatchDocument.obj" method="POST">
-=======
-                         <form  id = "myForm" action="savecashAgainstDispatchDocument.obj" method="POST">
->>>>>>> 09f85224a8d7417eacbc820c5c61559fc3c8fff4
+
                       
                                        <div  class ="row">
                                                         <div class="col-sm-3 form-group">

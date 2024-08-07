@@ -581,6 +581,21 @@ body {
                            
 
 				</ul></li>
+				
+					<li><a href="javascript:void(0);"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label">&nbsp;Report</span>
+					<i class="fa fa-angle-left arrow"></i></a>
+				<ul class="nav-2-level ">
+
+					<li data-pre="1135" id="o1135"><a
+						href="viewconlidateReort.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Consolidate Report
+								</b></a></li>
+
+                           
+
+				</ul></li>
 		</ul>
 
 	</div>
