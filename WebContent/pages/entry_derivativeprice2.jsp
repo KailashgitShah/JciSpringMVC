@@ -339,6 +339,11 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	<script>
 		$("#submit").click(function(){
  
+		  if( $("#centerordpc").val().length === 0){
+			  alert("Please choose district");
+			  return false;
+		  };
+		 
 			// grade validations...
  
 			let groupIDs = {
@@ -386,10 +391,17 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
             $('#myForm').on('submit', function(event) {
                 // Disable the submit button
                 $('#submit').prop('disabled', true);
-                $('#submit').val('Please Wait Processing...');  
-
-              
+                $('#submit').val('Please Wait Processing...');
+                sessionStorage.setItem('formSubmitted', 'true');
+                             
             });
+        });
+        
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('formSubmitted') === 'true') {
+                document.getElementById('myForm').reset();
+                sessionStorage.removeItem('formSubmitted');
+            }
         });
     </script>
 

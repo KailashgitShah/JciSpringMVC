@@ -527,9 +527,9 @@ var gradeArray = [];
  $(".submit")
 			.click(
 					async () => {
-					
-                         $(".contractLoader").show();
-										    
+						
+						
+						
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
 						var contractdate = $("#contactDate").val();
@@ -550,8 +550,8 @@ var gradeArray = [];
 						}
 						
 				
-						
-						if(pcsoDate.length == 0){
+						console.log(flag);
+						if(pcsoDate.length == 0 && flag==0){
 							alert("Please select PCSO Date");
 							return false;
 						}
@@ -587,6 +587,13 @@ var gradeArray = [];
 						  })
 
 						})
+						
+						
+						if(millDetails.length == 0){
+							return false;
+						}else{
+	                         $(".contractLoader").show();				    
+						}
 						
 						//console.log(millDetails,"millDetails");
 						

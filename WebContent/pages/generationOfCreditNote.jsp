@@ -278,7 +278,7 @@ input[type="radio"] {
 													sumActQty += actQty;
 													sumShrtQty += shtQty;
 													sumTtlCrnAmt += shortAmtPrice;
-													System.err.println("shtQty " + shtQty);
+									
 												%>
 												<tr>
 													<td><div class="table-cell"><%=(String) p[0]%></div></td>
