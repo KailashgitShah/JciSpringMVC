@@ -68,6 +68,12 @@ input[type="radio"] {
 }
 </style>
 
+  <style>
+        .text-danger {
+            color: red;
+        }
+    </style>
+
 </head>
 
 <%
@@ -162,11 +168,26 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
                                                                
 									
 											
-									<div class="col- form-group">
+									<!-- <div class="col- form-group">
 								   	<label>UTR Number</label> <span class="text-danger">*</span><input
 												class="form-control textbox" type="text" name="utrNumber" placeholder="Enter UTR Number"
 												 required >
-										</div>
+										</div> -->
+										
+										  <div class="col- form-group">
+									            <label for="utrNumber">UTR Number</label> <span class="text-danger">*</span>
+									            <input
+									                id="utrNumber"
+									                class="form-control textbox"
+									                type="text"
+									                name="utrNumber"
+									                placeholder="Enter UTR Number"
+									                required
+									                pattern="[A-Za-z0-9]{12,}"
+									                title="UTR Number must be at least 12 alphanumeric characters."
+									            >
+									            <div id="error-message" class="text-danger"></div>
+									        </div>
 										
 										<div class="col-3 form-group">
 								        	<label>UTR Date</label> <span class="text-danger">*</span><input
@@ -243,6 +264,21 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	})
 	
 	</script>
+	<script>
+        document.getElementById('utrForm').addEventListener('submit', function(event) {
+            var utrInput = document.getElementById('utrNumber');
+            var errorMessage = document.getElementById('error-message');
+            
+            // Clear any previous error messages
+            errorMessage.textContent = '';
+
+            // Validate the input
+            if (utrInput.value.length < 12) {
+                errorMessage.textContent = 'UTR Number must be at least 12 characters long.';
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
 	<script type="text/javascript">
 	  $(document).ready(function() {
 	        

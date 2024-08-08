@@ -93,7 +93,8 @@ th     { background:#eee; }
 									<th>Contract No</th>
 									<th>Transaction ID</th>
 									<th>UTR Number</th>
-										<th>UTR Date</th>
+									<th>UTR Date</th>
+									<th>Details</th>	
 						
 							</tr>
 								</thead>
@@ -107,6 +108,7 @@ th     { background:#eee; }
 									<td>${item.getTransactionid()}</td>	
 							        <td>${item.getUtrNumber() }</td>
 						            <td>${item.getUtrDate() }</td>
+						             <td><a href="creditDebitNotedetailsForPaymentRealisation.obj?id=${item.getTransactionid()}"><button class="btn btn-warning" type="button">Details</button></a></td> 
 						</tr>
 						<%i++; %>
 						</c:forEach>

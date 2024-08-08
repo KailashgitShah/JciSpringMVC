@@ -8468,7 +8468,6 @@ public class Controller_V {
 
 	}
 
-	
 
 	
 	@Value("${upload.TopSheetNONLCJasperReport}")
@@ -8481,8 +8480,7 @@ public class Controller_V {
 	String BOENONLCDownload;
 	@RequestMapping("savecashAgainstDispatchDocument")
 	public ModelAndView savecashAgainstDispatchDocument(final HttpServletRequest request, HttpServletResponse response)
-			throws JRException {
-		String username = (String) request.getSession().getAttribute("usrname");
+			throws JRException {		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
 		if (username == null) {
 			mv = new ModelAndView("index");
@@ -8539,19 +8537,25 @@ public class Controller_V {
 
 		Double amount = 0.0;
 		for (int i = 0; i < rows; i++) {
-
+		//	System.err.println(amount +"begin end");
 			String check = request.getParameter("rowCheckbox" + i);
 			if (check != null) {
 				amount += Double.valueOf(invoiceValue[i]);
 
 			}
 		}
+			//System.err.println(amount +"amount end");
+		
 		String totalamount = String.valueOf(amount);
-		Double balance1 = Double.valueOf(balance) - amount;
-		String totalBalance = String.valueOf(balance1);
-		System.err.println(totalBalance + " totalBalance");
-		System.err.println(amount + " amount");
-		System.err.println(totalamount + " totalamount");
+		
+		//System.err.print(amount + "aaaaaaaaaaaa");
+		BigDecimal amountnew= new BigDecimal(amount);
+		BigDecimal bcheck = new BigDecimal(balance);		System.err.print(balance + "balance");
+		BigDecimal totalbalance = bcheck.subtract(amountnew);
+		String totalBalanceStr = totalbalance.toString();
+		
+	
+	
 
 		for (int i = 0; i < rows; i++) {
 
@@ -8575,7 +8579,7 @@ public class Controller_V {
 				topsheetDetailsModel.setAmount(totalamount);
 				topsheetDetailsModel.setHodiNo(hodiNo[i]);
 				topsheetDetailsModel.setHodiDate(hodiDate[i]);
-				topsheetDetailsModel.setBalanceAmount(totalBalance);
+				topsheetDetailsModel.setBalanceAmount(totalBalanceStr);
 				;
 				generationOfCashAgainstDispatchDocumentService.create(topsheetDetailsModel);
 
@@ -8727,6 +8731,7 @@ public class Controller_V {
 		// return viewtopSheet;
 
 	}
+//	
 	
 	
 
@@ -9628,6 +9633,20 @@ public class Controller_V {
 	public ModelAndView creditDebitNoteDetails(HttpServletRequest request, Model model) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("creditDebitDetails");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		String cndnIdentificationNumber= request.getParameter("id");
+		List<settlemetCnDnModel> AllList = (List<settlemetCnDnModel>) creditNoteGenerationService
+				.getAlldetails(cndnIdentificationNumber);
+		model.addAttribute("creditdebit", AllList);
+		return mv;
+	}
+	@RequestMapping(value = "creditDebitNotedetailsForPaymentRealisation", method = RequestMethod.GET)
+	public ModelAndView creditDebitNoteDetailsForPaymentRealisation(HttpServletRequest request, Model model) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("paymentRealisationDetails");
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
