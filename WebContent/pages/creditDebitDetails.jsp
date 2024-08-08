@@ -103,7 +103,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Credit Note And Debit Note View</h1>
+				<h1 class="page-title">Credit Note And Debit Note Details</h1>
 
 			</div>
 
@@ -113,6 +113,7 @@ th {
 					<span>${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
+							<div text-center><a href="viewlistCnAndDn..obj"><button class="btn btn-primary" type="button">Back</button></a></div>
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
@@ -121,11 +122,17 @@ th {
 								<thead>
 									<tr>
 									<th>Sl.NO</th>
-									<th>Settlement Reference No</th>
-									<th>Contract No</th>
-									<th>Details</th>
-									 <th>DownLoad</th> 
-									<th>Bank Mandate<th>
+									<th>CN/DN No</th>
+									<th>Purpose</th>
+									<th>Date Of Issue</th>
+									<th>HODI No</th>
+									<th>Consignment_Note</th>
+									<th>Bos_No</th> 
+									<th>Date_Of_Shipment</th>
+									<th>Date_Of_Inspection</th>	
+									<th>CN/DN Amount</th>
+									<th>CN/DN Amount Difference</th>
+									<th>Settlement_Id</th>
 									 <th></th> 
 									
 													
@@ -134,18 +141,23 @@ th {
 								<tbody>
 								<%int i=1; %>
 
-									 <c:forEach items="${cnAndDnModel}" var="item">
+									 <c:forEach items="${creditdebit}" var="item">
 
 
 
 										<tr>
 										<td  class="sorting_1"><%=i%></td>
-										<td>${item.getIdentificationCnDn()}</td>
-                                         <td>${item.getContractNo()}</td>
-                                           <td><a href="creditDebitNotedetails.obj?id=${item.getIdentificationCnDn()}"><button class="btn btn-warning" type="button">Details</button></a></td> 
-                                              <td><a href="downloadcndnXsl.obj?filename=${item.getCndnExcel_link()}" class="btn btn-success" target="_blank"> View Excel</a></button></td> 
-                                                 <td><a href="cbiPaymentMandate.obj?filename=${item.getCbiMandateDoc()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>
-
+								            <td>${item.getCreditNoteNo()}</td>
+                                           <td>${item.getPurpose()}</td>
+                                            <td>${item.getDateOfIssue()}</td>
+											<td>${item.getHodi()}</td>
+											 <td>${item.getConsigneeNoteText()}</td>
+											 <td>${item.getBosNo()}</td>	
+											 	 <td>${item.getDateOfShipment()}</td>	
+											 	  <td>${item.getDateOfInspection()}</td>	
+											 	   <td>${item.getCreditNoteAmount()}</td>
+											 	   <td>${item.getAmountDiffCnAndDn()}
+											 	    <td>${item.getSettlementId()}</td>	
 										</tr>
 										<%i++; %>
 									</c:forEach>

@@ -1,33 +1,24 @@
 package com.jci.dao.impl_phase2;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+ 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import javax.persistence.criteria.From;
+import java.util.List;
+
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.TotalDigitsDocument.TotalDigits;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.sql.Insert;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.jci.dao_phase2.MillReceiptDao;
 //import com.jci.model.ConfirmationClaimSettlementModel;
-import com.jci.model.EntryPaymentDetailsModel;
 import com.jci.model.MillRecieptModel;
 @Repository
 @Transactional

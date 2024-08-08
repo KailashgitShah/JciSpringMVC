@@ -518,8 +518,7 @@ for (var i = 0; i < numberOfElements; i++) {
 }
 
 $(document).ready(function() {
-    var contractNo = "<%=contractNo%>
-		";
+    var contractNo = "<%=contractNo%>";
 					// Make sure contractNo is properly formatted
 					var Contract_No;
 					var actualqty;
@@ -624,6 +623,7 @@ $(document).ready(function() {
 						success : function(data) {
 
 							var dataArray = JSON.parse(data);
+
 							var currentMonth = new Date().getMonth() + 1;
 							dataArray
 									.forEach(function(row, index) {

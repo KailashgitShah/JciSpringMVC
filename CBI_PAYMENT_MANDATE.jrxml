@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CBI_PAYMENT_MANDATE" pageWidth="595" pageHeight="342" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7561fadf-2e0c-4655-a3df-0e92803e5dcd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="content" class="java.lang.String"/>
+	<field name="todayDate" class="java.lang.String"/>
+	<field name="bankName" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="112" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="3" width="206" height="18" uuid="96484028-dfc7-49e5-b457-57947d1ea9fa"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ref. No.  JCI/ Fund-Remittance/ 2024-25]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="4" width="36" height="16" uuid="c8772e63-d211-4fc7-838a-9740f848ecdc"/>
+				<text><![CDATA[Date : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="26" width="58" height="20" uuid="04194b1a-d445-4a53-8620-b46de2783381"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="38" width="98" height="19" uuid="99e702eb-46bf-42d5-a5be-2963d886722b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[The Sr. Manager]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="417" y="4" width="100" height="30" uuid="fa1cdc05-387f-420d-910d-467506a17b36"/>
+				<textFieldExpression><![CDATA[$F{todayDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="53" width="170" height="20" uuid="6970bdc1-58b7-4f28-b675-006de195536c"/>
+				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="71" width="109" height="28" uuid="32dbcca1-1fe0-4935-9009-b6eb8e065362"/>
+				<text><![CDATA[New Market Branch,
+Kolkata-700087
+New Market Branch,
+Kolkata-700087
+]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="106" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="70" height="18" uuid="c2f234c8-2ba4-4cc2-bb0b-758b112792ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dear Sir,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="15" width="542" height="45" uuid="feb9ec45-e260-435a-b315-7c9b445395d1"/>
+				<textFieldExpression><![CDATA[$F{content}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="80" width="98" height="20" uuid="8193969f-2adf-440e-aa77-5d7f5d0d4198"/>
+				<text><![CDATA[Thank You]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+</jasperReport>

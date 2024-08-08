@@ -154,6 +154,7 @@ th {
 							<span>${msg}</span>
 							<div class="ibox-body">
 								<form id ="myForm" action="savenominal.obj" method="POST">
+
 									<div class="row">
 										<div class="col-sm-4 form-group">
 											<label> Mill</label> <span class="text-danger">* </span> <select
@@ -291,7 +292,17 @@ th {
       
 </script>  -->
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

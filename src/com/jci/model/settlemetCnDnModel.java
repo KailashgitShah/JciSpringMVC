@@ -71,8 +71,12 @@ public class settlemetCnDnModel {
 	
 	@Column(name = "RowNumber")
 	private Integer RowNumber;
-	
+	@Column(name = "IdentificationCnDn")
 	private String IdentificationCnDn;
+	@Column(name = "purpose")
+	private String purpose;
+	@Column(name = "cbiMandateDoc")
+	private String cbiMandateDoc;
 	
 	
 	
@@ -376,11 +380,39 @@ public class settlemetCnDnModel {
 
 
 
+	public String getPurpose() {
+		return purpose;
+	}
+
+
+
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
+    
+
+
+	public String getCbiMandateDoc() {
+		return cbiMandateDoc;
+	}
+
+
+
+
+	public void setCbiMandateDoc(String cbiMandateDoc) {
+		this.cbiMandateDoc = cbiMandateDoc;
+	}
+
+
+
+
 	public settlemetCnDnModel(int initiation_ref_no, String millCode, String contractNo, String creditNoteNo,
 			String dateOfIssue, String hodi, String consigneeNoteText, String bosNo, String dateOfShipment,
 			String dateOfInspection, String creditNoteAmount, String settlementId, String consigneeDoc, String bosDoc,
 			String creditNoteDoc, String create_date_cndn, Double amountDiffCnAndDn, String cndnExcel_link,
-			Integer rowNumber, String identificationCnDn) {
+			Integer rowNumber, String identificationCnDn, String purpose, String cbiMandateDoc) {
 		super();
 		Initiation_ref_no = initiation_ref_no;
 		this.millCode = millCode;
@@ -402,6 +434,8 @@ public class settlemetCnDnModel {
 		this.cndnExcel_link = cndnExcel_link;
 		RowNumber = rowNumber;
 		IdentificationCnDn = identificationCnDn;
+		this.purpose = purpose;
+		this.cbiMandateDoc = cbiMandateDoc;
 	}
 
 
@@ -416,10 +450,9 @@ public class settlemetCnDnModel {
 				+ ", settlementId=" + settlementId + ", consigneeDoc=" + consigneeDoc + ", BosDoc=" + BosDoc
 				+ ", creditNoteDoc=" + creditNoteDoc + ", create_date_cndn=" + create_date_cndn + ", AmountDiffCnAndDn="
 				+ AmountDiffCnAndDn + ", cndnExcel_link=" + cndnExcel_link + ", RowNumber=" + RowNumber
-				+ ", IdentificationCnDn=" + IdentificationCnDn + "]";
+				+ ", IdentificationCnDn=" + IdentificationCnDn + ", purpose=" + purpose + ", cbiMandateDoc="
+				+ cbiMandateDoc + "]";
 	}
-
-
 
 
 	

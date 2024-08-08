@@ -141,8 +141,9 @@ import com.jci.model.UserRoleModel;
 import com.jci.model.ZoneModel;
 import com.jci.model.boenonlcDTO;
 import com.jci.model.jciWeighmentEntry;
-
+import com.jci.model.settlementCnDnDto;
 import com.jci.model.settlemetCnDnModel;
+import com.jci.model.uploadPaymentRealisationModel;
 import com.jci.service.DailyPurchaseModelConfService;
 import com.jci.service.DistrictService;
 import com.jci.service.PurchaseCenterService;
@@ -2859,95 +2860,112 @@ public class Controller_V {
 	// Uploading of Payment Realization / Disbursal Details
 	// ---------------------------------------------------------
 
+	
+	
+
 	@RequestMapping("uploadPaymentRealizationDisDetails")
 	public ModelAndView uploadPaymentRealizationDisDetails(HttpServletRequest request) {
+		ModelAndView mView = new ModelAndView("uploadPaymentRealizationDisDetails");
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
 
-		ModelAndView mView = new ModelAndView("uploadPaymentRealizationDisDetails");
+		List<Object[]> fetchMill_Name = this.paymentRealizationService.fetchMill_Name();
+		
+		mView.addObject("fetchMill_Name", fetchMill_Name);
+		
 		return mView;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "contrcatForPaymentRealisation", method = RequestMethod.GET)
+	public String millWiseContractPaymentRealisation(@RequestParam("millname") String millname) {
+		List<Object[]> contract = paymentRealizationService.contractForMill(millname);
+		// System.err.println("resultList++++++++++" + Mill_NameR);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contract);
+		return resultString;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "transactionidcontract", method = RequestMethod.GET)
+	public String contractWiseTransaction(@RequestParam("contractNo") String contractNo) {
+		List<Object[]> transactionid = paymentRealizationService.TransactionForContract(contractNo);
+		// System.err.println("resultList++++++++++" + Mill_NameR);
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(transactionid );
+		return resultString;
+	}
 	@Value("${upload.PaymentRealizationDisDetails}")
 	String paymentRealDetailsPath;
-
 	@RequestMapping("saveuploadPaymentRealizationDisDetails")
-	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request,
-			@RequestParam("excelFile") MultipartFile excelFile, RedirectAttributes redirectAttributes)
+	public ModelAndView saveuploadPaymentRealizationDisDetails(HttpServletRequest request, RedirectAttributes redirectAttributes)
 			throws IllegalStateException, IOException {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
+		
+		     String millcodeANDName = request.getParameter("millcodeName");
+		     String millCode = millcodeANDName.split("-")[0];
+		     String millname= millcodeANDName.split("-")[1];
+		     
+			String millcodepayment = request.getParameter("millcodepayment");
+		    String contractNo=request.getParameter("fullcontractno");
+		    String TransactionId= request.getParameter("transactionid");
+			String utrNumber = request.getParameter("utrNumber");
+            String utrDate = request.getParameter("dateofUtr");
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate currentDate = LocalDate.now();
+			String formattedDate = currentDate.format(formatter);
+			String transactionId =request.getParameter("transactionId");
+            
+//            
+            uploadPaymentRealisationModel uploadPaymentRealisation = new uploadPaymentRealisationModel();
+            uploadPaymentRealisation.setUtrNumber(utrNumber);
+            uploadPaymentRealisation.setUtrDate(utrDate);
+            //uploadPaymentRealisation.setPaymentRealisationFile(originalFileNameString);
+            uploadPaymentRealisation.setCreatedDate(formattedDate);
+            uploadPaymentRealisation.setTransactionid(TransactionId);
+            uploadPaymentRealisation.setMillcode( millCode);
+            uploadPaymentRealisation.setMillName(millname);
+            uploadPaymentRealisation.setContractno(contractNo);
+            paymentRealizationService.create(uploadPaymentRealisation);
 
-		File filePathDir = new File(paymentRealDetailsPath);
-
-		if (!filePathDir.exists()) {
-			filePathDir.mkdir();
-		}
-
-		String originalFileNameString = excelFile.getOriginalFilename();
-
-		try {
-
-			File serveFile = new File(filePathDir, originalFileNameString);
-			excelFile.transferTo(serveFile);
-
-//			try (Workbook workbook = WorkbookFactory.create(excelFile.getInputStream())) {
-//				Sheet sheet = workbook.getSheetAt(0);
-//				int i = 1;
-//				int rowCount = sheet.getLastRowNum();
-//				System.out.println("rowcount" + rowCount);
-//				// FormulaEvaluator formulaEvaluator =
-//				// workbook.getCreationHelper().createFormulaEvaluator();
-//				String[] tally;
-//				// String tallyno;
-//				for (i = 1; i < rowCount + 1; i++) {
-//					try {
-//						Row row = sheet.getRow(i);
-//						Cell cell = row.getCell(2);
-//						String jciref = cell.getStringCellValue();
-//						cell = row.getCell(10);
-//
-//						String dataDate = cell.getStringCellValue();
-//
-//						cell = row.getCell(5);
-//						String cell5 = cell.getStringCellValue();
-//
-//						System.err.println(" jciref = " + jciref + " date = " + dataDate + " cell5" + cell5);
-//
-//						tally = jciref.split("-");
-//						// tallyno = tally[1];
-//						// System.out.println("tallyno========="+tallyno);
-//
-//					} catch (Exception e) {
-//						System.out.println("error in catch field-________" + e);
-////						mv.addObject("msg",
-////								(Object) "<div class=\"alert alert-danger\"><b>OOps!</b> Date formate should be dd/mm/yyyy and UTR NO should be Number in excel file</div>\r\n");
-////						return mv;
-//					}
-//
-//				}
-//			}
-//
-//			catch (IOException e) {
-//				e.printStackTrace();
-//			}
-
-			paymentRealizationService.create(originalFileNameString);
-			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-success\"><b> File Saved successfully.</b></div>\r\n" + "");
-
-		} catch (Exception e) {
+            paymentRealizationService.update(contractNo);
 
 			redirectAttributes.addFlashAttribute("msg",
-					"<div class=\"alert alert-danger\"><b>Something went wrong...</b></div>\r\n" + "");
-		}
+					"<div class=\"alert alert-success\"><b> Payment Realisation Saved successfully.</b></div>\r\n" + "");
+
+		
 
 		return new ModelAndView(new RedirectView("uploadPaymentRealizationDisDetails.obj"));
 	}
+	
+	@RequestMapping("viewpaymentRealisation")
+
+	public ModelAndView ViewUploadedPaymentRealisation(Model model, HttpServletRequest request) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+
+		ModelAndView mv = new ModelAndView("viewUploadPaymentRealisation");
+
+		if (username == null) {
+
+			mv = new ModelAndView("index");
+
+		}
+
+		//List<JciEntryTdsModel> AllList = (List<JciEntryTdsModel>) entryofTdsService.getAll();
+          List<uploadPaymentRealisationModel>AllList = (List<uploadPaymentRealisationModel>)paymentRealizationService.getAll();
+		Collections.reverse(AllList);
+		model.addAttribute("AllList", AllList);
+
+		return mv;
+
+	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -8450,7 +8468,6 @@ public class Controller_V {
 
 	}
 
-	
 
 	
 	@Value("${upload.TopSheetNONLCJasperReport}")
@@ -8463,8 +8480,7 @@ public class Controller_V {
 	String BOENONLCDownload;
 	@RequestMapping("savecashAgainstDispatchDocument")
 	public ModelAndView savecashAgainstDispatchDocument(final HttpServletRequest request, HttpServletResponse response)
-			throws JRException {
-		String username = (String) request.getSession().getAttribute("usrname");
+			throws JRException {		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
 		if (username == null) {
 			mv = new ModelAndView("index");
@@ -8521,19 +8537,25 @@ public class Controller_V {
 
 		Double amount = 0.0;
 		for (int i = 0; i < rows; i++) {
-
+		//	System.err.println(amount +"begin end");
 			String check = request.getParameter("rowCheckbox" + i);
 			if (check != null) {
 				amount += Double.valueOf(invoiceValue[i]);
 
 			}
 		}
+			//System.err.println(amount +"amount end");
+		
 		String totalamount = String.valueOf(amount);
-		Double balance1 = Double.valueOf(balance) - amount;
-		String totalBalance = String.valueOf(balance1);
-		System.err.println(totalBalance + " totalBalance");
-		System.err.println(amount + " amount");
-		System.err.println(totalamount + " totalamount");
+		
+		//System.err.print(amount + "aaaaaaaaaaaa");
+		BigDecimal amountnew= new BigDecimal(amount);
+		BigDecimal bcheck = new BigDecimal(balance);		System.err.print(balance + "balance");
+		BigDecimal totalbalance = bcheck.subtract(amountnew);
+		String totalBalanceStr = totalbalance.toString();
+		
+	
+	
 
 		for (int i = 0; i < rows; i++) {
 
@@ -8557,7 +8579,7 @@ public class Controller_V {
 				topsheetDetailsModel.setAmount(totalamount);
 				topsheetDetailsModel.setHodiNo(hodiNo[i]);
 				topsheetDetailsModel.setHodiDate(hodiDate[i]);
-				topsheetDetailsModel.setBalanceAmount(totalBalance);
+				topsheetDetailsModel.setBalanceAmount(totalBalanceStr);
 				;
 				generationOfCashAgainstDispatchDocumentService.create(topsheetDetailsModel);
 
@@ -8709,6 +8731,7 @@ public class Controller_V {
 		// return viewtopSheet;
 
 	}
+//	
 	
 	
 
@@ -9289,6 +9312,7 @@ public class Controller_V {
 		return resultString;
 	}
 
+	
 ///////////////////////////////////////////////// Settlement Of Credit and Debit notes //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ---------------------------------------------------------
 
@@ -9351,9 +9375,16 @@ public class Controller_V {
 		return mView;
 	}
 
+	
+
+	
 	@Value("${upload.cndnuploadxl}")
 	String cndnuploadxl;
-
+    @Value("${upload.cbiPaymentMandateCNDN}")
+    String cbiPaymentMandateCNDN ;
+    @Value("${upload.cbipaymentMandateJRXML}")
+    String  cbipaymentMandateJRXML;
+    
 	@RequestMapping("saveCnAndDn")
 	public ModelAndView finalSettlement(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -9377,8 +9408,11 @@ public class Controller_V {
 		String[] consigneeDoc = request.getParameterValues("consigneeDoc[]");
 		String[] BosDoc = request.getParameterValues("BosDoc[]");
 		String[] creditNoteDoc = request.getParameterValues("creditNoteDoc[]");
-
+		String[] purpose = request.getParameterValues("purpose[]");
+		Double AmountDiffCNDN = Double.parseDouble(request.getParameter("AmountDifferenceCNDN"));
 		String total = creditNoteGenerationService.CountRecord();
+		
+		
 		int value1;
 		if (total != null) {
 
@@ -9390,61 +9424,156 @@ public class Controller_V {
 		// System.err.println(value1 + "rrrrrrrrrrrr");
 		String UniqueIdentification = contract + "/" + String.valueOf(value1);
 
-		Double creditNoteSum = 0.0;
-		Double debitNoteSum = 0.0;
 
-		// Calculate sums for credit and debit notes
-		for (int i = 0; i < rows; i++) {
-			String check = request.getParameter("rowCheckbox" + i);
-			if (check != null) {
-				String cnDnNo = creditNoteNo[i];
-				// Check if the first character of cnDnNo is 'C'
-				if (cnDnNo != null && !cnDnNo.isEmpty() && cnDnNo.charAt(0) == 'C') {
-					creditNoteSum += Double.valueOf(creditNoteAmount[i]);
-				} else {
-					debitNoteSum += Double.valueOf(creditNoteAmount[i]);
-				}
-			}
-		}
-
-		Double CnAndDnAmountDifference = creditNoteSum - debitNoteSum;
-		System.err.println("Credit Note Sum: " + creditNoteSum + " | Debit Note Sum: " + debitNoteSum);
 
 		// Get current date in dd-MM-yyyy format
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String formattedDate = today.format(formatter);
+		List<Object[]> millDetails = creditNoteGenerationService.getMillDetails(mill);
+	
+	        String FilenameUnique = UniqueIdentification.replace("/", "_");;
+		
+	        //jasper Report
+		
+		
+	        ////////////////////////////////// excel sheet ////////////////////////
 
-		// Create an Excel workbook and sheet
-		Workbook workbook = new XSSFWorkbook();
-		Sheet sheet = workbook.createSheet("Settlement Data");
-		Font headerFont = workbook.createFont();
-		headerFont.setBold(true);
-		headerFont.setFontHeightInPoints((short) 11);
-		headerFont.setColor(IndexedColors.BLACK.getIndex());
-		CellStyle headerCellStyle = workbook.createCellStyle();
-		headerCellStyle.setFont(headerFont);
+	        Workbook workbook = new XSSFWorkbook();
+	        Sheet sheet = workbook.createSheet("Settlement Data");
 
-		String filepath = cndnuploadxl;
-		// String filepath = "C:\\Users\\Mansi.Gupta\\Documents\\CNDNExcelSave";
-		// "C:\\Users\\Mansi.Gupta\\Documents";
-		// String filename = filepath +File.separator + UniqueIdentification+"cndn"+
-		// ".xlsx"; // Change path as needed
+	        Font headerFont = workbook.createFont();
+	        headerFont.setBold(true);
+	        headerFont.setFontHeightInPoints((short) 11);
+	        headerFont.setColor(IndexedColors.BLACK.getIndex());
+	        CellStyle headerCellStyle = workbook.createCellStyle();
+	        headerCellStyle.setFont(headerFont);
 
-		String filename = filepath + File.separator + String.valueOf(value1) + "cndn" + ".xlsx";
-		String filenameSave = String.valueOf(value1) + "cndn" + ".xlsx";
-		// Define the columns for the Excel sheet
-		String[] columns = { "Mill Code", "Contract No", "Credit Note No", "Date Of Issue", "Hodi",
-				"Consignee Note Text", "BOS No", "Date Of Shipment", "Date Of Inspection", "Credit Note Amount",
-				"Settlement ID", "Consignee Doc", "BOS Doc", "Credit Note Doc", "Create Date", "Amount Difference" };
-		Row headerRow = sheet.createRow(0);
-		for (int j = 0; j < columns.length; j++) {
-			Cell cell = headerRow.createCell(j);
-			cell.setCellValue(columns[j]);
-			cell.setCellStyle(headerCellStyle);
-		}
+	        String filepath = cndnuploadxl;
+	        String excelFilePath = filepath + File.separator + FilenameUnique + "cndn" + ".xlsx";
+	        String excelName = FilenameUnique+ "cndn" + ".xlsx";
 
-		int rownum = 1;
+	        // Define the columns for the Excel sheet
+	        String[] columns = { "SI No", "IFSC", "Bank Account No", "Mill Name", "Bank Address", "Amount Rs", "Bank Name", "Branch Name" };
+	        Row headerRow = sheet.createRow(0);
+	        for (int j = 0; j < columns.length; j++) {
+	            Cell cell = headerRow.createCell(j);
+	            cell.setCellValue(columns[j]);
+	            cell.setCellStyle(headerCellStyle);
+	        }
+
+	     
+
+	        int serialNo = 1;
+            int serialNoExcel =0;   
+	        for (Object[] row : millDetails) {
+	            // Extract data from each row
+	            String Ifsc = (String) row[0];
+	            String bankAccountNo = (String) row[1];
+	            String clientName = (String) row[2];
+	            String clientbank = (String) row[3];
+	            String bankAddress = null;
+	            String branchName=null;        
+
+	            // Create a new row in the sheet
+	            Row dataRow = sheet.createRow(serialNo);
+
+	            // Set cell values for the current row
+	            dataRow.createCell(0).setCellValue(serialNo);
+	            dataRow.createCell(1).setCellValue(Ifsc);
+	            dataRow.createCell(2).setCellValue(bankAccountNo);
+	            dataRow.createCell(3).setCellValue(clientName);
+	            dataRow.createCell(4).setCellValue(bankAddress);
+	            dataRow.createCell(5).setCellValue(AmountDiffCNDN); // Use the parsed amount difference
+	            dataRow.createCell(6).setCellValue(clientbank);
+	            dataRow.createCell(7).setCellValue(branchName);
+
+	            serialNo++; // Increment serial number for next row
+	            serialNoExcel++;
+	        }
+
+	        // Resize columns to fit the content
+	        for (int j = 0; j < columns.length; j++) {
+	            sheet.autoSizeColumn(j);
+	        }
+
+	        try (FileOutputStream fileOut = new FileOutputStream(excelFilePath)) {
+	            workbook.write(fileOut);
+	            System.out.println("Excel file has been generated successfully at " + excelFilePath);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                workbook.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+		
+	        
+	    	////////////////////////////////////////////CBI PAYMENT MANDATE Report////////////////////////////////////////////////
+			  
+		      
+		      String bankName =null; 
+		      String Address=null;
+		    
+		      for (Object[] row : millDetails) {
+		            // Extract data from each row
+
+		            bankName = (String) row[3];
+		             
+		      }
+		      
+		    //  System.err.println( accountNo + " "+ Address + " "+ bankName);
+		      
+		     String ans =  convertNumberToWords(AmountDiffCNDN);
+		    String serialNumberWord = convertNumberToWords(serialNoExcel);
+		     // System.err.println(ans);
+		    
+		    String accountNo = creditNoteGenerationService.getAccountNo();
+		   
+		     String Content ="Please arrange to remit the total amounting to Rs. " + AmountDiffCNDN +"/- ( "+ans+ ")"+" to the "+  serialNoExcel +"("+serialNumberWord+")" + " nos of Mills as per details mandate sheet attached herewith by debiting our Current A/c. No. "+accountNo+"  through RTGS/NEFT/TRANSFER.";
+
+		        // Create the DTO object and set values
+		        settlementCnDnDto cndn = new settlementCnDnDto();
+		        cndn.setContent(Content);
+		        cndn.setTodayDate(formattedDate);
+		        cndn.setBankName(bankName);
+	            cndn.setAddress(Address);
+		       
+		        // Define the file name and path
+		        String filenamecndn = FilenameUnique +"cbipayment.pdf";
+		        String pathCNDN = cbiPaymentMandateCNDN + File.separator + filenamecndn;
+
+		        // Log the file name
+//		        System.err.println("Generating report: " + filenamecndn);
+//		        System.err.println("cndn " + cndn);
+		        try {
+		            // Compile the JasperReport
+		            JasperReport jasperReport1 = JasperCompileManager.compileReport(cbipaymentMandateJRXML);
+
+		            // Prepare parameters for the report
+		            Map<String, Object> parameters = new HashMap<>();
+		            // Add any parameters required by the report here
+		            // Example: parameters.put("SomeParameter", "SomeValue");
+
+		            // Prepare the data source
+		            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(java.util.Collections.singletonList(cndn));
+
+		            // Fill the report with data
+		            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+
+		            // Export the report to a PDF file
+		            JasperExportManager.exportReportToPdfFile(jasperPrint1, pathCNDN);
+
+		            System.out.println("Report generated successfully at: " + pathCNDN);
+
+		        } catch (JRException e) {
+		            e.printStackTrace();
+		            System.err.println("Error generating the report.");
+		        }
+		        
 		for (int i = 0; i < rows; i++) {
 			String check = request.getParameter("rowCheckbox" + i);
 			if (check != null) {
@@ -9464,56 +9593,24 @@ public class Controller_V {
 				settlemetCnDnModel.setBosDoc(BosDoc[i]);
 				settlemetCnDnModel.setCreditNoteDoc(creditNoteDoc[i]);
 				settlemetCnDnModel.setCreate_date_cndn(formattedDate);
-				settlemetCnDnModel.setAmountDiffCnAndDn(CnAndDnAmountDifference);
-				settlemetCnDnModel.setCndnExcel_link(filenameSave);
+				settlemetCnDnModel.setAmountDiffCnAndDn(AmountDiffCNDN);
+				settlemetCnDnModel.setCndnExcel_link(excelName);
 				settlemetCnDnModel.setRowNumber(value1);
 				settlemetCnDnModel.setIdentificationCnDn(UniqueIdentification);
+				settlemetCnDnModel.setPurpose(purpose[i]);
+				settlemetCnDnModel.setCbiMandateDoc(filenamecndn);
 				creditNoteGenerationService.saveSettlementOfCnDn(settlemetCnDnModel);
 
 				// Add data to the Excel sheet
-				Row row = sheet.createRow(rownum++);
-				row.createCell(0).setCellValue(mill);
-				row.createCell(1).setCellValue(contract);
-				row.createCell(2).setCellValue(creditNoteNo[i]);
-				row.createCell(3).setCellValue(DateOfIssue[i]);
-				row.createCell(4).setCellValue(Hodi[i]);
-				row.createCell(5).setCellValue(consigneeNoteText[i]);
-				row.createCell(6).setCellValue(bosNo[i]);
-				row.createCell(7).setCellValue(dateOfShipment[i]);
-				row.createCell(8).setCellValue(dateOfInspection[i]);
-				row.createCell(9).setCellValue(creditNoteAmount[i]);
-				row.createCell(10).setCellValue(settlementId[i]);
-				row.createCell(11).setCellValue(consigneeDoc[i]);
-				row.createCell(12).setCellValue(BosDoc[i]);
-				row.createCell(13).setCellValue(creditNoteDoc[i]);
-				row.createCell(14).setCellValue(formattedDate);
-				row.createCell(15).setCellValue(CnAndDnAmountDifference);
+			
 			}
 		}
 
-		// Resize columns to fit the content
-		for (int j = 0; j < columns.length; j++) {
-			sheet.autoSizeColumn(j);
-		}
-
-		// Save the Excel file
-		// String filename = "C:\\Users\\Mansi.Gupta\\Documents" + "cndn"+ formattedDate
-		// + ".xlsx"; // Change path as needed
-		try (FileOutputStream fileOut = new FileOutputStream(filename)) {
-			workbook.write(fileOut);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				workbook.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
+	
 		return new ModelAndView(new RedirectView("viewlistCnAndDn.obj"));
 	}
-
+	
+	
 	@RequestMapping("viewlistCnAndDn")
 	public ModelAndView ViewCnAndDn(Model model, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("viewCnAndDn");
@@ -9530,7 +9627,106 @@ public class Controller_V {
 		// String omofficial = request.getParameter("omofficial");
 		return mv;
 	}
+	
 
+	@RequestMapping(value = "creditDebitNotedetails", method = RequestMethod.GET)
+	public ModelAndView creditDebitNoteDetails(HttpServletRequest request, Model model) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("creditDebitDetails");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		String cndnIdentificationNumber= request.getParameter("id");
+		List<settlemetCnDnModel> AllList = (List<settlemetCnDnModel>) creditNoteGenerationService
+				.getAlldetails(cndnIdentificationNumber);
+		model.addAttribute("creditdebit", AllList);
+		return mv;
+	}
+	@RequestMapping(value = "creditDebitNotedetailsForPaymentRealisation", method = RequestMethod.GET)
+	public ModelAndView creditDebitNoteDetailsForPaymentRealisation(HttpServletRequest request, Model model) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("paymentRealisationDetails");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+
+		String cndnIdentificationNumber= request.getParameter("id");
+		List<settlemetCnDnModel> AllList = (List<settlemetCnDnModel>) creditNoteGenerationService
+				.getAlldetails(cndnIdentificationNumber);
+		model.addAttribute("creditdebit", AllList);
+		return mv;
+	}
+
+
+	@RequestMapping("creditNoteSettleDoc")
+	public void creditNoteSettleDoc(@RequestParam("filename") String filename,
+			HttpServletResponse response) {
+
+		String imagePath = creditNoteFilePath + File.separator + filename;
+		// imageDirectory + File.separator + idn + File.separator + filename;
+
+		File imageFile = new File(imagePath);
+
+		// Check if the file exists
+
+		if (imageFile.exists()) {
+
+			try {
+
+				// Set the content type based on the file type
+
+				String contentType = determineContentType(filename);
+
+				response.setContentType(contentType);
+
+				// Set the content length and attachment disposition
+
+				response.setContentLength((int) imageFile.length());
+
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+
+				response.setHeader("Content-Disposition", "");
+
+				// Stream the file content to the response
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+
+				int bytesRead;
+
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+
+					responseOutputStream.write(buffer, 0, bytesRead);
+
+				}
+
+				fileInputStream.close();
+
+				responseOutputStream.close();
+
+			} catch (IOException e) {
+
+				// Handle IO exception
+
+				e.printStackTrace();
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
+
+		} else {
+
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		}
+
+	}
+	
 	@RequestMapping("downloadSupportingbosDoc")
 	public void downloadSupportingbosDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
 		// String imagePath = paymentDocumentDownload;
@@ -10327,6 +10523,104 @@ public class Controller_V {
 
 		return mv;
 	}
+	
+
+	@RequestMapping("cbiPaymentMandate")
+	public void CBIPaymentMandate(@RequestParam("filename") String filename, HttpServletResponse response)
+			throws JRException {
+		String imagePath = cbiPaymentMandateCNDN + File.separator + filename;
+//		imageDirectory + File.separator + idn + File.separator + filename;
+
+				File imageFile = new File(imagePath);
+				
+				// Check if the file exists
+				
+				if (imageFile.exists()) {
+				
+				try {
+				
+				// Set the content type based on the file type
+				
+				String contentType = determineContentType(filename);
+				
+				response.setContentType(contentType);
+				
+				// Set the content length and attachment disposition
+				
+				response.setContentLength((int) imageFile.length());
+				
+				// response.setHeader("Content-Disposition", "attachment; filename=" +
+				// filename);
+				
+				response.setHeader("Content-Disposition", "");
+				
+				// Stream the file content to the response
+				
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				
+				OutputStream responseOutputStream = response.getOutputStream();
+				
+				byte[] buffer = new byte[1024];
+				
+				int bytesRead;
+				
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+				
+				responseOutputStream.write(buffer, 0, bytesRead);
+				
+				}
+				
+				fileInputStream.close();
+				
+				responseOutputStream.close();
+				
+				} catch (IOException e) {
+				
+				// Handle IO exception
+				
+				e.printStackTrace();
+				
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				
+				}
+				
+				} else {
+				
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				
+				}
+		
+
+	}
+	
+	
+	@RequestMapping("viewconlidateReort")
+	public ModelAndView ViewConsolidateReport(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		ModelAndView mv = new ModelAndView("consolidate");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
+	   List<String> cropyear= this.paymentRealizationService.cropYear();
+	   System.err.print(cropyear +"cyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+		mv.addObject("cropyear", cropyear);
+	
+		
+		return mv;
+	}
+	 
+
+	@RequestMapping("saveconsolidate")
+	public ModelAndView saveconsolidate(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		String cropyear = request.getParameter("cropYear");
+		System.err.print(cropyear+ "kkkkkkkkkk");
+		return new ModelAndView(new RedirectView("viewconlidateReort.obj"));
+	}
+
+	
+	
+
 
 }
 

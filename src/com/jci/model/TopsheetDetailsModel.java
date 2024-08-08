@@ -1,5 +1,7 @@
 package com.jci.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,9 +31,10 @@ public class TopsheetDetailsModel {
 	    private String milladdress;
 	    private String hodiNo;
 	    private String hodiDate;
-	    private String balanceAmount;
+	   private String balanceAmount;
 	    private String topSheetNl;
 	    private String boeNl;
+	   
 	    
 		public Long getTopSheet_id() {
 			return topSheet_id;
@@ -135,12 +138,7 @@ public class TopsheetDetailsModel {
 			this.hodiDate = hodiDate;
 		}
 		
-		public String getBalanceAmount() {
-			return balanceAmount;
-		}
-		public void setBalanceAmount(String balanceAmount) {
-			this.balanceAmount = balanceAmount;
-		}
+
 		
 		public String getTopSheetNl() {
 			return topSheetNl;
@@ -154,8 +152,17 @@ public class TopsheetDetailsModel {
 		public void setBoeNl(String boeNl) {
 			this.boeNl = boeNl;
 		}
+		
+	
+		public String getBalanceAmount() {
+			return balanceAmount;
+		}
+		public void setBalanceAmount(String balanceAmount) {
+			this.balanceAmount = balanceAmount;
+		}
 		public TopsheetDetailsModel() {
 			super();
+			// TODO Auto-generated constructor stub
 		}
 		public TopsheetDetailsModel(Long topSheet_id, String bosDate, String billOfSupplyNo, String topSheetCreateDate,
 				String invoiceValue, String amount, String topsheet_generated_id, String contract_no,
@@ -194,6 +201,7 @@ public class TopsheetDetailsModel {
 					+ ", balanceAmount=" + balanceAmount + ", topSheetNl=" + topSheetNl + ", boeNl=" + boeNl + "]";
 		}
 		
-		
+	
+	
 
 }

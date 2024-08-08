@@ -403,6 +403,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                 sessionStorage.removeItem('formSubmitted');
             }
         });
+
     </script>
 
 </body>
