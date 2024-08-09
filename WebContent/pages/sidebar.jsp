@@ -583,21 +583,123 @@ body {
 
 				</ul></li>
 
-		<!-- 	<li><a href="javascript:void(0);"><i
+			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
-					class="nav-label">&nbsp;Report</span> <i
-					class="fa fa-angle-left arrow"></i></a>
-				<ul class="nav-2-level ">
+					class="nav-label">10.&nbsp;Free Sales</span> <i
+					class="fa fa-angle-left arrow"></i> </a>
+				<ul class="nav-2-level">
 
-					<li data-pre="1135" id="o1135"><a
-						href="viewconlidateReort.obj"><i
-							class="sidebar-item-icon fa fa-th-large"></i><b>Consolidate
-								Report </b></a></li>
+					<li data-pre="" id=""><a
+						href="transportationandoperationcostfreesales.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Transportation
+								& Operation Cost</b></a></li>
+					<li data-pre="" id=""><a href="viewTransportCostFS.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Transportation & Operation Cost</b></a></li>
+					<li data-pre="" id=""><a
+						href="Finalization_of_lot_sizes_and_Reserve_Sale_Price_Free_Sale.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Finalization
+								of lot sizes and Reserve Sale Price</b></a></li>
+					<li data-pre="" id=""><a href="ViewFinalizationOfLotFreeSale.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Finalization of lot sizes</b></a></li>
+
+					<li data-pre="" id=""><a
+						href="creationofbidofferingfreesales.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Creation of
+								Bid offering</b></a></li>
+					<li data-pre="" id=""><a href="ViewCreationBidList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Active
+								Bid Offering</b></a></li>
+					<li data-pre="" id=""><a href="ViewNonActiveBidList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Non-Active Bid Offering</b></a></li>
 
 
+					<!-- 	<li data-pre="" id=""><a
+						href="creationofbidofferingfreesales.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Creation of
+								Bid offering</b></a></li> -->
+					<!-- <li data-pre="" id=""><a href="ViewCreationBidList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Bid
+								Offering</b></a></li> -->
+					<li data-pre="" id=""><a href="h1bidderfreesales.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>H1 Bidder</b></a></li>
+					<li data-pre="" id=""><a href="bidresultupdate.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Bid Result</b></a></li>
+					<li data-pre="" id=""><a href="bidresultcontractswap.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Contrcat swap</b></a></li>
 
-				</ul></li> -->
+
+					<!-- 	<li data-pre="" id=""><a href="financialconcurrence.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Financial
+								Concurrence</b></a></li>
+					<li data-pre="" id=""><a href="administrativeapproval.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Administrative
+								approval</b></a></li> -->
+
+				</ul></li>
+
+			<li><a href="javascript:void(0);"><i
+					class="sidebar-item-icon fa fa-th-large"></i> <span
+					class="nav-label">11.&nbsp;Commercial Sales</span> <i
+					class="fa fa-angle-left arrow"></i> </a>
+				<ul class="nav-2-level">
+
+					<li data-pre="" id=""><a
+						href="transportationandoperationcostcommercial.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Transportation
+								& Operation Cost</b></a></li>
+
+					<li data-pre="" id=""><a href="viewTransportCostFS.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Transportation & Operation Cost</b></a></li>
+
+					<!-- <li data-pre="" id=""><a
+						href="entry_of_transportation_and_operation_cost.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								Transportation & Operation Cost</b></a></li>
+					<li data-pre="" id=""><a
+						href="view_transportation_and_operation_cost.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Transportation & Operation Cost</b></a></li> -->
+					<li data-pre="" id=""><a
+						href="Factors_involved_in_Commercial_Price.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
+								Factors involved in Commercial Price</b></a></li>
+					<li data-pre="" id=""><a
+						href="listofFactorsinvolvedinCommercialPrice.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Factors
+								involved commercial</b></a></li>
+									<li data-pre="" id=""><a
+						href="Finalization_of_lot_sizes_and_Reserve_Sale_Price_in_Commercial.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Finalization
+								of lot sizes and Reserve Sale Price</b></a></li>
+					<li data-pre="" id=""><a href="ViewFinalizationOfLotCommercialSale.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Finalization of lot sizes</b></a></li>
+								
+								
+					<li data-pre="" id=""><a
+						href="creationofbidofferingfreesales.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Creation of
+								Bid offering</b></a></li>
+					<li data-pre="" id=""><a href="ViewCreationBidList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View Active
+								Bid Offering</b></a></li>
+					<li data-pre="" id=""><a href="ViewNonActiveBidList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>View
+								Non-Active Bid Offering</b></a></li>
+
+					<!-- <li data-pre="" id=""><a href="Creation_of_Bid_Offering.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Creation of
+								Bid Offering</b></a></li> -->
+				</ul></li>
 		</ul>
+
+
+
+
 
 	</div>
 

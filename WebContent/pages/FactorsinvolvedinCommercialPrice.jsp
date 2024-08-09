@@ -81,8 +81,8 @@
 	                                            <label>Unit 1</label> 
 												<select name="unit1" id="unit1" class="form-control taxtbox" required>
 													<option value="">-Select-</option>
-													<option value="perqtls">Per Qtls</option>
-													<option value="perbale">Per Bale</option>
+													<option value="PerQtls">PerQtls</option>
+													<option value="PerBale">PerBale</option>
 												</select>
 	                                     </div>
                                       </div>
@@ -240,11 +240,11 @@
          url:'saveFactorCommercial.obj',
          data:{"Factor_Head":JSON.stringify(Factor_Head),"Unit":JSON.stringify(Unit),"Applicability":JSON.stringify(Applicability),"Status":JSON.stringify(Status),"identification":identification},
          success:function(result){
-				alert("hello"+result);
+				//alert("hello"+result);
  				 
 			}	
          });
-	   alert();
+	  // alert();
     });
     
   });
@@ -276,3 +276,6 @@
     <!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>
+
+
+

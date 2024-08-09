@@ -1,129 +1,160 @@
 package com.jci.service.Impl_phase2;
 
-
-
-
-
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 
-
 public class EmailSender {
 
-              public void sendEmail(InternetAddress[] toAddresses, String body, String subject, String filename, String username1)
-              {
+	public void sendEmail(InternetAddress[] toAddresses, String body, String subject, String filename,
+			String username1) {
 
-                   //    String smtpHost = "smtp.office365.com";
-               //      int smtpPort = 587; // Use 587 for TLS or 465 for SSL
-                  //    String username = "jci.erp.ops@jcimail.in"; // Office 365 email address
-                    //  String password = "Jute@1234";
-                      
+		// String smtpHost = "smtp.office365.com";
+		// int smtpPort = 587; // Use 587 for TLS or 465 for SSL
+		// String username = "jci.erp.ops@jcimail.in"; // Office 365 email address
+		// String password = "Jute@1234";
 
-
-            	 String smtpHost = "smtp.gmail.com";
-            	 //String smtpHost = "smtp.gmailllll.com";
-          		int smtpPort = 587; 
-          		// Use 587 for TLS or 465 for SSL
+		String smtpHost = "smtp.gmail.com";
+		// String smtpHost = "smtp.gmailllll.com";
+		int smtpPort = 587;
+		// Use 587 for TLS or 465 for SSL
 
 //          		String username = "guptamansi7867@gmail.com";
 //          		String password = "xhoaypvcvzsctmrm";
 //                      
-        	 String username = "shristicyfuture0902@gmail.com";
-          	 //  String username = "shristicyfuture090@gmail.com";
- 		      String password = "tvualzhmftylavuh";
-                      
-                      Properties props = new Properties();
-                      props.put("mail.smtp.auth", "true");
-                      props.put("mail.smtp.starttls.enable", "true");
-                      props.put("mail.smtp.host", smtpHost);
-                      props.put("mail.smtp.port", smtpPort);
-                      props.put("mail.smtp.ssl.protocols","TLSv1.2");
-                   
-                                Session session = Session.getInstance(props);
-                             
-                              try {
-                                           Message message = new MimeMessage(session);
-                                           message.setRecipients(Message.RecipientType.TO,toAddresses);
-                                           message.setFrom(new InternetAddress(username));
-                                           message.setSubject(subject);
-                                           
-                       BodyPart messageBodyPart = new MimeBodyPart();
-                       messageBodyPart.setText(body);
-                       
-                       Multipart multipart = new MimeMultipart();
-                       multipart.addBodyPart(messageBodyPart);
-                       
-                       messageBodyPart = new MimeBodyPart();
-                       
-                       DataSource source = new FileDataSource(filename);
-                       messageBodyPart.setDataHandler(new DataHandler(source));
-                       messageBodyPart.setFileName(username1);
-                       multipart.addBodyPart(messageBodyPart);
-                       message.setContent(multipart);
-                       Transport transport = session.getTransport("smtp");
-                       transport.connect(smtpHost, smtpPort, username, password);
-                       transport.sendMessage(message, message.getAllRecipients());
-                       transport.close();
+		String username = "shristicyfuture0902@gmail.com";
+		// String username = "shristicyfuture090@gmail.com";
+		String password = "tvualzhmftylavuh";
 
-                
-                                           
-                                            }catch(Exception e)
-                                           {
-                                                    
-                                                          e.printStackTrace();
-                                           }
-              
-               }
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", smtpHost);
+		props.put("mail.smtp.port", smtpPort);
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
-			public void sendEmailMill(InternetAddress[] toAddresses, String body, String subject, String username1) {
-				
-			       //    String smtpHost = "smtp.office365.com";
-	               //      int smtpPort = 587; // Use 587 for TLS or 465 for SSL
-	                  //    String username = "jci.erp.ops@jcimail.in"; // Office 365 email address
-	                    //  String password = "Jute@1234";
-	                      
-	            	  
-	                 String smtpHost = "smtp.gmail.com";
-	          		int smtpPort = 587; // Use 587 for TLS or 465 for SSL 
-	          	  String username = "shristicyfuture0902@gmail.com";
-     		      String password = "tvualzhmftylavuh";
-	                      
-	          		
-	          		 Properties props = new Properties();
-	          	    props.put("mail.smtp.auth", "true");
-	          	    props.put("mail.smtp.starttls.enable", "true");
-	          	    props.put("mail.smtp.host", smtpHost);
-	          	    props.put("mail.smtp.port", smtpPort);
-	          	    props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+		Session session = Session.getInstance(props);
 
-	          	    Session session = Session.getInstance(props);
+		try {
+			Message message = new MimeMessage(session);
+			message.setRecipients(Message.RecipientType.TO, toAddresses);
+			message.setFrom(new InternetAddress(username));
+			message.setSubject(subject);
 
-	          	    try {
-	          	        Message message = new MimeMessage(session);
-	          	        message.setRecipients(Message.RecipientType.TO, toAddresses);
-	          	        message.setFrom(new InternetAddress(username));
-	          	        message.setSubject(subject);
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(body);
 
-	          	        BodyPart messageBodyPart = new MimeBodyPart();
-	          	        messageBodyPart.setText(body);
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
 
-	          	        Multipart multipart = new MimeMultipart();
-	          	        multipart.addBodyPart(messageBodyPart);
+			messageBodyPart = new MimeBodyPart();
 
-	          	        message.setContent(multipart);
+			DataSource source = new FileDataSource(filename);
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName(username1);
+			multipart.addBodyPart(messageBodyPart);
+			message.setContent(multipart);
+			Transport transport = session.getTransport("smtp");
+			transport.connect(smtpHost, smtpPort, username, password);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
 
-	          	        Transport transport = session.getTransport("smtp");
-	          	        transport.connect(smtpHost, smtpPort, username, password);
-	          	        transport.sendMessage(message, message.getAllRecipients());
-	          	        transport.close();
-	          	    } catch (Exception e) {
-	          	        e.printStackTrace();
-	          	    }
-	                      
+		} catch (Exception e) {
 
-                  
+			e.printStackTrace();
+		}
+
+	}
+
+	public void sendEmailMill(InternetAddress[] toAddresses, String body, String subject, String username1) {
+
+		// String smtpHost = "smtp.office365.com";
+		// int smtpPort = 587; // Use 587 for TLS or 465 for SSL
+		// String username = "jci.erp.ops@jcimail.in"; // Office 365 email address
+		// String password = "Jute@1234";
+
+		String smtpHost = "smtp.gmail.com";
+		int smtpPort = 587; // Use 587 for TLS or 465 for SSL
+		String username = "shristicyfuture0902@gmail.com";
+		String password = "tvualzhmftylavuh";
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", smtpHost);
+		props.put("mail.smtp.port", smtpPort);
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+		Session session = Session.getInstance(props);
+
+		try {
+			Message message = new MimeMessage(session);
+			message.setRecipients(Message.RecipientType.TO, toAddresses);
+			message.setFrom(new InternetAddress(username));
+			message.setSubject(subject);
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(body);
+
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+
+			message.setContent(multipart);
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(smtpHost, smtpPort, username, password);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void sendEmailBid(InternetAddress[] toAddresses, String body, String subject, String username1) {
+
+		// String smtpHost = "smtp.office365.com";
+		// int smtpPort = 587; // Use 587 for TLS or 465 for SSL
+		// String username = "jci.erp.ops@jcimail.in"; // Office 365 email address
+		// String password = "Jute@1234";
+
+		String smtpHost = "smtp.gmail.com";
+		int smtpPort = 587; // Use 587 for TLS or 465 for SSL
+		String username = "shristicyfuture0902@gmail.com";
+		String password = "tvualzhmftylavuh";
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", smtpHost);
+		props.put("mail.smtp.port", smtpPort);
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+		Session session = Session.getInstance(props);
+
+		try {
+			Message message = new MimeMessage(session);
+			message.setRecipients(Message.RecipientType.TO, toAddresses);
+			message.setFrom(new InternetAddress(username));
+			message.setSubject(subject);
+
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(body);
+
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+
+			message.setContent(multipart);
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(smtpHost, smtpPort, username, password);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 }
-}
-
