@@ -10,6 +10,8 @@ public interface entryAndTransportationDao {
 	public void delete(int id) ;
 	public Double nominalWeight(String rocode);
 	List<OperationCostModel> getAll();
-	List<Object[]> getDetails();
+	List<Object[]> getDetailsFreeSale();
+	List<Object[]> getDetailsCommercial();
+	
 	List<FactorssInvolvedCommercial> getAllFactorHead();
 }

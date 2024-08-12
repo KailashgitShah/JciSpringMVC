@@ -13,7 +13,9 @@ public interface entryAndTransportationService {
 	public String findunitByFactoHead(String factorHead);
 	public void delete(int id) ;
 	public Double nominalWeight(String rocode);
-	List<Object[]> getDetails();
+	List<Object[]> getDetailsFreeSale();
+	List<Object[]> getDetailsCommercial();
+	
 	List<FactorssInvolvedCommercial> getAllFactorHead();
 	List<OperationCostModel> getAll();
 	

@@ -146,7 +146,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 													<th>GR6</th>
 												</tr>
 												<tr>
-													<td>Tossa (New)</td>
+													<td>Tossa</td>
 													<td><input type="number" name="tgr1" id="tgr1"
 														step="any" class="form-control validation"
 														data-decimal="2" min="0" /></td>
@@ -166,7 +166,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 												</tr>
 												<tr>
-													<td>White (New)</td>
+													<td>White</td>
 													<td><input type="number" name="wgr1" id="wgr1"
 														step="any" data-decimal="2" min="0"
 														class="form-control validation" /></td>

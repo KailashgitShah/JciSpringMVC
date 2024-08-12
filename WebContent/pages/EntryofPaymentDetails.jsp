@@ -235,14 +235,14 @@
 												<div class="col-sm-4 form-group" id="BankName1">
 												<label id="BankName1">Bank Name</label> <input
 													class="form-control taxtbox" name="BankName" id="BankName"
-													min="0" type="text" placeholder="Bank Name"
+													min="0" type="text" placeholder="Bank Name" readonly="true"
 													onchange="deleteErrorMsg()">
 											</div>
 
 											<div class="col-sm-4 form-group" id="Branch1">
 												<label id="Branch1">Branch</label> <input
 													class="form-control taxtbox" name="Branch" id="Branch"
-													min="0" type="text" placeholder="Branch"
+													min="0" type="text" placeholder="Branch" readonly="true"
 													onchange="deleteErrorMsg()">
 											</div>
 											
@@ -815,30 +815,48 @@ $(document).ready(function() {
     document.getElementById("IFSC1").style.setProperty("display", 'none');
 
     $(document).ready(function() {
-        //checking validation for different  ID for client side validation
-        $("#submit").click(function() {
+  
+        $("#submit").click(function(event) {
+         
+            var isValid = true;
+
             var contractdate = $("#contractdate").val();
             var instdate = $("#instdate").val();
             var paymenttype = $("#paymenttype").val();
+            var ifscCode = $("#IFSC").val();
 
             if (contractdate == "" || instdate == "") {
                 alert("Please select mandatory Fields!");
+                isValid = false; 
             }
+
+            
             if (paymenttype == "letterofcredit") {
                 var dateofship = $("#dateofship").val();
                 var dateofexpiry = $("#dateofexpiry").val();
                 if (dateofship == "" || dateofexpiry == "") {
                     alert("Please select mandatory Fields!");
+                    isValid = false; // Set the flag to false if validation fails
                 }
+            }
+
+            if (paymenttype == "Letter_of_Credit" || paymenttype == "Cheque/DD") {
+                if (ifscCode.length !== 11) {
+                    alert("Please enter a valid 11-character IFSC code!");
+                    isValid = false; // Set the flag to false if validation fails
+                }
+              }
+
+            // Prevent form submission if the form is not valid
+            if (!isValid) {
+                event.preventDefault(); // Prevents the default action (form submission)
             }
         });
     });
-</script>
-
-<script>
-
 
 </script>
+
+
 
  <script>
         function validateInstrumentNo(input) {
@@ -1077,36 +1095,55 @@ $(document).ready(function() {
 
 
 <script>
-    $(document).ready(function() {
-        // Define a function to fetch and update data of Razorpay API
-        function updateData(F_BANK_IFSC) {
-            var len = F_BANK_IFSC.length;
-            if (len == 11) {
-                $.ajax({
-                    type: "GET",
-                    url: "https://ifsc.razorpay.com/" + F_BANK_IFSC,
-                    dataType: "json",
-                    processData: false,
-                    success: function(data) {
-                        // Update the form fields with the fetched data
-                        $("#Branch").val(JSON.stringify(data.BRANCH).replace(/\"/g, ""));
-                        $("#BankName").val(JSON.stringify(data.BANK).replace(/\"/g, ""));
-                    },
-                    error: function(jqXHR, exception) {
-                        alert("Enter a valid IFSC code!!!");
-                    }
-                });
-            } else if (len > 11) {
+$(document).ready(function() {
+   
+    function updateData(F_BANK_IFSC) {
+        var len = F_BANK_IFSC.length;
+
+        if (len === 11) {
+            $.ajax({
+                type: "GET",
+                url: "https://ifsc.razorpay.com/" + F_BANK_IFSC,
+                dataType: "json",
+                processData: false,
+                success: function(data) {
+                 
+                    $("#Branch").val(data.BRANCH || '');
+                    $("#BankName").val(data.BANK || '');
+                    
+                    $("#submitBtn").prop('disabled', false);
+                },
+                error: function(jqXHR, exception) {
+                    alert("Enter a valid IFSC code!!!");
+              
+                    $("#Branch").val('');
+                    $("#BankName").val('');
+                   
+                    $("#submitBtn").prop('disabled', true);
+                }
+            });
+        } else {
+      
+            $("#Branch").val('');
+            $("#BankName").val('');
+  
+
+            if (len > 11) {
                 alert('IFSC Code cannot be more than 11 characters');
             }
+     
         }
+    }
 
-        // Bind the updateData function to the input event of #IFSC
-        $("#IFSC").on("input", function() {
-            var F_BANK_IFSC = $(this).val();
-            updateData(F_BANK_IFSC);
-        });
+    // Bind the updateData function to the input event of #IFSC
+    $("#IFSC").on("input", function() {
+        var F_BANK_IFSC = $(this).val();
+        updateData(F_BANK_IFSC);
     });
+
+   
+});
+
 </script>
 
 

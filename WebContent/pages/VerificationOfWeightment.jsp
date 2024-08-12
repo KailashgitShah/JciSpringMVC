@@ -72,6 +72,10 @@
     }
 </style>
 
+<%
+  String baseIp = (String) request.getSession().getAttribute("baseIp");
+%>
+
 <script>
     var rotation = 0;
     var scale = 1.0;
@@ -133,7 +137,7 @@
                             <div id="container" style="display: flex;">
                           <div id="l1" style="flex: 1; position: relative; overflow: hidden;">
     <div id="elementId" style="text-align: left; position: relative;">
-        <img name="uploadedImage" id="uploadedImage" src="http://49.50.118.125:8080/WeightSlipment/<%=Data.get(0)[5]%>" class="magnifier">
+        <img name="uploadedImage" id="uploadedImage" src="<%=baseIp%>/WeightSlipment/<%=Data.get(0)[5]%>" class="magnifier">
         <div id="controls" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
             <button type="button" onclick="zoomIn()">Zoom In</button>
             <button type="button" onclick="zoomOut()">Zoom Out</button>

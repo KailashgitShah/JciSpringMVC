@@ -400,31 +400,31 @@ $(document).ready(function() {
                         '<div class="table2-cell"><input type="hidden" name="cropYear[]" value="' + row[3] + '">' + row[3] + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade1[]" value="' + row[4] + '">' + row[4] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade1[]" value="' + row[4] + '">' + row[4].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade2[]" value="' + row[5] + '">' + row[5] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade2[]" value="' + row[5] + '">' + row[5].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade3[]" value="' + row[6] + '">' + row[6] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade3[]" value="' + row[6] + '">' + row[6].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade4[]" value="' + row[7] + '">' + row[7] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade4[]" value="' + row[7] + '">' + row[7].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade5[]" value="' + row[8] + '">' + row[8] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade5[]" value="' + row[8] + '">' + row[8].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade6[]" value="' + row[9] + '">' + row[9] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade6[]" value="' + row[9] + '">' + row[9].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade7[]" value="' + row[10] + '">' + row[10] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade7[]" value="' + row[10] + '">' + row[10].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="grade8[]" value="' + row[11] + '">' + row[11] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="grade8[]" value="' + row[11] + '">' + row[11].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
-                        '<div class="table2-cell"><input type="hidden" name="totalqty[]" value="' + row[12] + '">' + row[12] + '</div>' +
+                        '<div class="table2-cell"><input type="hidden" name="totalqty[]" value="' + row[12] + '">' + row[12].toFixed(2) + '</div>' +
                         '</td>' +
                         '<td>' +
                         '<div class="table2-cell">' +

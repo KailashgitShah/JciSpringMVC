@@ -53,9 +53,15 @@ public class entryAndTransportaionServiceImpl implements entryAndTransportationS
 	}
 
 	@Override
-	public List<Object[]> getDetails() {
+	public List<Object[]> getDetailsFreeSale() {
 		// TODO Auto-generated method stub
-		return entryAndtransportationDao.getDetails();
+		return entryAndtransportationDao.getDetailsFreeSale();
+	}
+	
+	@Override
+	public List<Object[]> getDetailsCommercial() {
+		// TODO Auto-generated method stub
+		return entryAndtransportationDao.getDetailsCommercial();
 	}
 
 	@Override

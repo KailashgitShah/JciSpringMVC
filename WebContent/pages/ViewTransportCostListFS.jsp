@@ -110,6 +110,7 @@ th {
 
 			<%
 			List<Object[]> Modulelist = (List<Object[]>) request.getAttribute("list");
+			String basis = (String) request.getAttribute("basis");
 			%>
 			<div class="page-content fade-in-up">
 				<div class="ibox">
@@ -149,8 +150,8 @@ th {
 										String s = "";
 										%>
 										<td class="sorting_1" style="text-align: center"><%=i%></td>
-										<td style="text-align: center"><%=row[7]%></td>
-										<td style="text-align: center"><%=row[0]%></td>
+										<%-- <td style="text-align: center"><%=row[7]%></td> --%>
+										<td><%=basis%></td>										<td style="text-align: center"><%=row[0]%></td>
 										<td style="text-align: center"><%=row[1]%></td>
 
 										<%

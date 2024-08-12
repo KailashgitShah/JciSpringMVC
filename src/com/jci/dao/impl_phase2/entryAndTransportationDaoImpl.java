@@ -33,14 +33,22 @@ public class entryAndTransportationDaoImpl implements entryAndTransportationDao{
 		return ll;
 	}
 
-	public List<Object[]> getDetails() {
+	public List<Object[]> getDetailsFreeSale() {
 		// TODO Auto-generated method stub
-		String sqlString ="Select a.crop_year,b.roname,a.dpc,a.operation_cost_head,a.rate,a.unit,a.valid_till,a.basis ,a.ofc_id from jcioperationfreesales_cost a inner join jcirodetails b on a.region = b.rocode;";
-		
+		//String sqlString ="Select a.crop_year,b.roname,a.dpc,a.operation_cost_head,a.rate,a.unit,a.valid_till,a.basis ,a.ofc_id from jcioperationfreesales_cost a inner join jcirodetails b on a.region = b.rocode;";
+		String sqlString  =         "  Select distinct a.crop_year,b.roname,a.dpc,a.operation_cost_head,a.rate,a.unit,a.valid_till,a.basis ,a.ofc_id from jcioperationfreesales_cost a  inner join jcirodetails b on a.region = b.rocode where basis = 'Free Sales'";
+		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+		return list1;
+	}
+	public List<Object[]> getDetailsCommercial() {
+		// TODO Auto-generated method stub
+		//String sqlString ="Select a.crop_year,b.roname,a.dpc,a.operation_cost_head,a.rate,a.unit,a.valid_till,a.basis ,a.ofc_id from jcioperationfreesales_cost a inner join jcirodetails b on a.region = b.rocode;";
+		String sqlString  =         "  Select distinct a.crop_year,b.roname,a.dpc,a.operation_cost_head,a.rate,a.unit,a.valid_till,a.basis ,a.ofc_id from jcioperationfreesales_cost a  inner join jcirodetails b on a.region = b.rocode where basis = 'Commercial'";
 		List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 		return list1;
 	}
 
+	
 	@Override
 	public void  saveDataInFreeOperationModelsaveDataInFreeOperationModel(OperationFreeSales operationcostmodel) {
 		System.out.println("saving  savetransportcostfreesales");

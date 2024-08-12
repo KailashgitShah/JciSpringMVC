@@ -108,6 +108,7 @@ input[type="radio"] {
 
 <%
 String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+String baseIp = (String) request.getSession().getAttribute("baseIp");
 %>
 
 <body class="fixed-navbar">
@@ -287,141 +288,6 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                                        })
        </script>
 
-
-
-       
-<!--        <script>
-             $("#contract")
-                          .on(
-                                       "change",
-                                       function() {
-                                              $
-                                                            .ajax({
-                                                                  type : "GET",
-                                                                  url : "getFullDetailsOfCrnAndDebit.obj",
-                                                                  data : {
-                                                                        "contractNo" : $(this).val()
-                                                                  },
-                                                                  success : function(result) {
-                                                                        $("#binDataBody").empty();
-                                                                        var result = JSON.parse(result);
-                                                                    // alert(result);
-                                                                       if (result.length === 0) {
-																	        alert("No Credit Note And Debit Note  Are Present On this Contract.");  // Show alert message
-																	        return;  // Exit function early
-																	    }
-                                                                       
-                                                                        
-
-                                                                  
-                                                                     for (var i = 0; i < result.length; i++) {
-                                                                    	
-                                                                    	 var num_of_rows = result.length;
-                                                                         
-                                                                         $('#numRows').val(num_of_rows);
-
-                                                                    	    var doi = result[i][2];
-                                                                    	    var dateOfIssue = moment(doi).format('DD-MM-YYYY');
-                                                                    	    
-                                                                    	    var newRow = "<tr>";
-                                                                    	    
-                                                                    	    newRow +=
-                                                                    	        '<td><input type="checkbox" onclick="myFunction(this)" id="checking' + i + '" class="row-checkbox" name="rowCheckbox' + i + '" value="0"></td>';
-                                                                              
-                                                                    	    
-                                                                    	    // Check the conditions and add the respective content to the newRow variable
-                                                                    	    if (result[i][0].charAt(0) == 'C' && result[i][0].charAt(1) != 'S') {
-                                                                    	        var dos = result[i][6];
-                                                                        	    var dateOfShipments = moment(dos).format('DD-MM-YYYY');
-                                                                    	    	var purpose = "Short Weight";
-
-                                                                    	        newRow +=
-                                                                    	        	'<td style="text-align:center"><input type="hidden" name="creditNoteNo[]" value="' + result[i][0] + '">' + result[i][0] + '</td>'
-                                                                    	            +'<td style="text-align:center"><input type="hidden" name="purpose[]" value="' + purpose + '">' + purpose + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="DateOfIssue[]" value="' + result[i][2] + '">' + result[i][2]+ '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="Hodi[]" value="' + result[i][8] + '">' + result[i][8] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="consigneeNoteText[]" value="' + result[i][4] + '">' + result[i][4] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="bosNo[]" value="' + result[i][5] + '">' + result[i][5] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="dateOfShipment[]" value="' + result[i][6] + '">' + result[i][6] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="dateOfInspection[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="creditNoteAmount[]" value="' + result[i][1] + '">' + result[i][1] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="settlementId[]" value=""></td>'
-                                                                    	            + '<td><a href="downloadSupportingCreditNoteDoc.obj?filename=' + result[i][10] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td><a href="http://49.50.118.112:8080/DispatchDetail/' + result[i][9] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td><a href="downloadSupportingbosDoc.obj?filename=' + result[i][7] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="consigneeDoc[]" value="' + result[i][9] + '"></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="BosDoc[]" value="' + result[i][7] + '"></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="creditNoteDoc[]" value="' + result[i][10] + '"></td>';
-                                                                    	    } else if (result[i][0].charAt(0) == 'C' && result[i][0].charAt(1) == 'S') {
-                                                                    	       
-                                                                    	       
-                                                                        	    var purpose = "Claim";
-                                                                                 alert(result[i][0])
-                                                                    	        newRow +=
-                                                                    	        	'<td style="text-align:center"><input type="hidden" name="creditNoteNo[]" value="' + result[i][12] + '">' + result[i][12] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="purpose[]" value="' + purpose + '">' + purpose + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="DateOfIssue[]" value="' + result[i][2] + '">' + result[i][2] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="Hodi[]" value="' + result[i][10] + '">' + result[i][10] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="consigneeNoteText[]" value="' + result[i][4] + '">' + result[i][4] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="bosNo[]" value="' + result[i][5] + '">' + result[i][5] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="dateOfShipment[]" value="' + result[i][6] + '">' + result[i][6] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="dateOfInspection[]" value="' + result[i][7] + '">' + result[i][7] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="creditNoteAmount[]" value="' + result[i][1] + '">' + result[i][1] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="settlementId[]" value="' + result[i][8] + '">' + result[i][8] + '</td>'
-                                                                    	            + '<td><a href="creditNoteSettleDoc.obj?filename=' + result[i][13] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td><a href="http://49.50.118.112:8080/DispatchDetail/' + result[i][11] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td><a href="downloadSupportingbosDoc.obj?filename=' + result[i][9] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="consigneeDoc[]" value="' + result[i][11] + '"></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="BosDoc[]" value="' + result[i][9] + '"></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="creditNoteDoc[]" value="' + result[i][13] + '"></td>';
-                                                                    	    } else {
-                                                                    	        var dateOfIssued = moment(result[i][2]).format('DD-MM-YYYY');
-
-                                                                    	        newRow +=
-                                                                    	        	+'<td style="text-align:center"><input type="hidden" name="creditNoteNo[]" value="' + result[i][0] + '">' + result[i][0] + '</td>'
-                                                                    	            '<td style="text-align:center"><input type="hidden" name="purpose[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="DateOfIssue[]" value="' + result[i][2] + '">' + result[i][2] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="Hodi[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="consigneeNoteText[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="bosNo[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="dateOfShipment[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="dateOfInspection[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="creditNoteAmount[]" value="' + result[i][1] + '">' + result[i][1] + '</td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="settlementId[]" value=""></td>'
-                                                                    	            + '<td><a href="downloadSupportingCreditNoteDocForDN.obj?filename=' + result[i][3] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="consigneeDoc[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="BosDoc[]" value=""></td>'
-                                                                    	            + '<td style="text-align:center"><input type="hidden" name="creditNoteDoc[]" value="' + result[i][3] + '"></td>';
-                                                                    	    }
-
-                                                                    	    newRow += "</tr>";
-                                                                    	    $("#binDataBody").append(newRow);        
-                                                                    	}
-
-                                                                        htmlTable += '</tbody></table>';
-
-                                                                        $("#list").html(htmlTable);
-                                                                        console.log(htmlTable);
-
-                                                                  }
-
-                                                           });
-
-                                       })
-                                       function myFunction(checking,i) {
-       
-    if (!checking.checked) {
-        $(checking).val(0);
-        //alert("no")
-      
-    } else {
-        $(checking).val(1);
-       // alert("yes")
-     
-    }
-}  
-       </script> -->
-       
 <script>
     var creditnotesum = 0.0;
     var debitnotesum = 0.0;
@@ -437,6 +303,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
             success: function(result) {
                 $("#binDataBody").empty();
                 var result = JSON.parse(result);
+                var baseIp = '<%=baseIp%>';
                 
                 if (result.length === 0) {
                     alert("No Credit Note And Debit Note Are Present On this Contract.");  // Show alert message
@@ -478,7 +345,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                             + '<td style="text-align:center"><input type="hidden" name="creditNoteAmount[]" value="' + result[i][1] + '">' + result[i][1] + '</td>'
                             + '<td style="text-align:center"><input type="hidden" name="settlementId[]" value=""></td>'
                             + '<td><a href="downloadSupportingCreditNoteDoc.obj?filename=' + result[i][10] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                            + '<td><a href="http://49.50.118.112:8080/DispatchDetail/' + result[i][9] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
+                            + '<td><a href="'+ baseIp + '/DispatchDetail/' + result[i][9] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
                             + '<td><a href="downloadSupportingbosDoc.obj?filename=' + result[i][7] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
                             + '<td style="text-align:center"><input type="hidden" name="consigneeDoc[]" value="' + result[i][9] + '"></td>'
                             + '<td style="text-align:center"><input type="hidden" name="BosDoc[]" value="' + result[i][7] + '"></td>'
@@ -497,7 +364,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
                             + '<td style="text-align:center"><input type="hidden" name="creditNoteAmount[]" value="' + result[i][1] + '">' + result[i][1] + '</td>'
                             + '<td style="text-align:center"><input type="hidden" name="settlementId[]" value="' + result[i][8] + '">' + result[i][8] + '</td>'
                             + '<td><a href="creditNoteSettleDoc.obj?filename=' + result[i][13] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
-                            + '<td><a href="http://49.50.118.112:8080/DispatchDetail/' + result[i][11] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
+                            + '<td><a href="'+ baseIp + '/DispatchDetail/' + result[i][11] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
                             + '<td><a href="downloadSupportingbosDoc.obj?filename=' + result[i][9] + '" class="btn btn-primary" target="_blank"> View Document</a></td>'
                             + '<td style="text-align:center"><input type="hidden" name="consigneeDoc[]" value="' + result[i][11] + '"></td>'
                             + '<td style="text-align:center"><input type="hidden" name="BosDoc[]" value="' + result[i][9] + '"></td>'

@@ -64,7 +64,13 @@ tr:nth-child(even) {
 	});
 </script>
 </head>
-<% List<Object[]> WeightmentList = (List<Object[]>) request.getAttribute("WeightmentList");%>
+<% 
+
+
+List<Object[]> WeightmentList = (List<Object[]>) request.getAttribute("WeightmentList");
+String baseIp = (String) request.getSession().getAttribute("baseIp");
+%>
+
 <body class="fixed-navbar">
 	<div class="page-wrapper">
 		<!-- START HEADER-->
@@ -127,12 +133,11 @@ tr:nth-child(even) {
         <td style="text-align: center"><%= (row[13] != null) ? row[13] : '-' %></td> 
        <td style="text-align: center"><%= (row[15] != null) ? row[15] : '-' %></td> 
         <td style="text-align: center"><%= (row[14] != null) ? row[14] : '-' %></td> 
-        <td>  <a href="http://49.50.118.125:8080/WeightSlipment/<%= row[5] %>" target="_blank">DPC Wt Document</a></td>
-
-        <td style="text-align: center"><a href="http://49.50.118.125:8080/WeightSlipment/<%= row[12] %>"  target="_blank">Mill Weight Document</a></td> 
-        <td style="text-align: center"><a href="http://49.50.118.125:8080/WeightSlipment/<%= row[11] %>"  target="_blank">Mill Receipt Document</a></td> 
-        <td style="text-align: center"><a href="http://49.50.118.125:8080/JCIStuff/billofsupply/<%= row[19] %>"  target="_blank">Bill Of Supply</a></td>
-        <td style="text-align: center"><a href="http://49.50.118.125:8080/DispatchDetail/<%= row[49] %>"  target="_blank">Challan Document</a></td>
+        <td>  <a href="<%=baseIp%>/WeightSlipment/<%= row[5] %>" target="_blank">DPC Wt Document</a></td>
+        <td style="text-align: center"><a href="<%=baseIp%>/WeightSlipment/<%=row[12] %>"  target="_blank">Mill Weight Document</a></td> 
+        <td style="text-align: center"><a href="<%=baseIp%>/WeightSlipment/<%=row[11] %>"  target="_blank">Mill Receipt Document</a></td> 
+        <td style="text-align: center"><a href="<%=baseIp%>/JCIStuff/billofsupply/<%= row[20] %>"  target="_blank">Bill Of Supply</a></td>
+        <td style="text-align: center"><a href="<%=baseIp%>/DispatchDetail/<%= row[52] %>"  target="_blank">Challan Document</a></td>
     </tr>
     <% i++; } %>
 </tbody>

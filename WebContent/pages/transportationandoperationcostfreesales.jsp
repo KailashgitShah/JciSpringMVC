@@ -136,7 +136,7 @@
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="savetransportcostfreesales.obj" method="POST">
+								<form id ="myForm" action="savetransportcostfreesales.obj" method="POST">
 									<div class="child-checkbox" id="disableform">
 
 										<div class="row">
@@ -276,6 +276,17 @@
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
 	<!-- PAGE LEVEL SCRIPTS-->
+	           <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script> 
 
 </body>
 <link rel="stylesheet"

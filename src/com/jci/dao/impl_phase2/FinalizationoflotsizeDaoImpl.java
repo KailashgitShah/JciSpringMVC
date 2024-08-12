@@ -130,9 +130,9 @@ public class FinalizationoflotsizeDaoImpl implements FinalizationoflotsizeDao {
 		ModelAndView mView = new ModelAndView();
 
 		List<Object[]> binDetails = new ArrayList<>();
-		System.err.println(binNos);
-		System.err.println(cropyr);
-		System.err.println(basis);
+//		System.err.println(binNos);
+//		System.err.println(cropyr);
+//		System.err.println(basis);
 
 		for (String str : binDeatisArray) {
 			String[] parts = str.split("#");
@@ -292,7 +292,7 @@ public class FinalizationoflotsizeDaoImpl implements FinalizationoflotsizeDao {
 	@Override
 	public List<Object[]> getLotData(String basis) {
 		// TODO Auto-generated method stub
-		String query = " select Crop_year ,Lot_Identification,Lot_Size,Purchase_Base_Price from jcicommercialsales_rsp where and basis = '"
+		String query = " select Crop_year ,Lot_Identification,Lot_Size,Purchase_Base_Price from jcicommercialsales_rsp where basis = '"
 				+ basis + "'";
 		List<Object[]> rows = currentSession().createSQLQuery(query).list();
 		return rows;

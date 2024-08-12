@@ -1737,7 +1737,7 @@ public class Controller_V {
 			String bgr6 = request.getParameter("bgr6") != "" ? request.getParameter("bgr6") : "0";
 			;
 
-			entryDerivativePriceTossa.setJute_variety("Tossa (New)");
+			entryDerivativePriceTossa.setJute_variety("Tossa");
 			entryDerivativePriceTossa.setGrade1(tgr1);
 			entryDerivativePriceTossa.setGrade2(tgr2);
 			entryDerivativePriceTossa.setGrade3(tgr3);
@@ -1745,7 +1745,7 @@ public class Controller_V {
 			entryDerivativePriceTossa.setGrade5(tgr5);
 			entryDerivativePriceTossa.setGrade6("0");
 
-			entryDerivativePriceWhite.setJute_variety("White (New)");
+			entryDerivativePriceWhite.setJute_variety("White");
 			entryDerivativePriceWhite.setGrade1(wgr1);
 			entryDerivativePriceWhite.setGrade2(wgr2);
 			entryDerivativePriceWhite.setGrade3(wgr3);
@@ -3528,6 +3528,9 @@ public class Controller_V {
 
 			double sum = 0.0;
 
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+
 			// Fetching details for report
 			List<Object[]> documentsreport = this.financialConcurenceservice.DetailsForReport(fullcontractno);
 			for (Object[] details : documentsreport) {
@@ -3536,9 +3539,22 @@ public class Controller_V {
 				parameters.put("Contractno", details[0]);
 				parameters.put("Instrument_No", details[1]);
 				parameters.put("Instrument_Date", details[2]);
-				parameters.put("Instrument_value", details[8] + "");
-				parameters.put("Last_shipment_date", details[4]);
-				parameters.put("Expiry_date", details[5]);
+				parameters.put("Instrument_value", details[8]);
+
+//				parameters.put("Last_shipment_date", details[4]);
+//				parameters.put("Expiry_date", details[5]);
+//				
+				Date lastShipmentDate = originalFormat.parse((String) details[4]);
+				Date expiryDate = originalFormat.parse((String) details[5]);
+
+				// Format the dates to the desired format
+				String formattedLastShipmentDate = targetFormat.format(lastShipmentDate);
+				String formattedExpiryDate = targetFormat.format(expiryDate);
+
+				// Set the formatted dates as parameters
+				parameters.put("Last_shipment_date", formattedLastShipmentDate);
+				parameters.put("Expiry_date", formattedExpiryDate);
+
 				parameters.put("Auto_revolving_amount", details[6]);
 				parameters.put("contarctdate", details[9]);
 
@@ -3554,11 +3570,17 @@ public class Controller_V {
 						String banknameString = jsonObject.optString("BANK");
 						String bankaddressString = jsonObject.optString("ADDRESS");
 
+						if (banknameString == null || banknameString.isEmpty()) {
+							banknameString = "";
+						}
+
+						// Check if bankaddressString is empty or null, if so, set it to a blank string
+						if (bankaddressString == null || bankaddressString.isEmpty()) {
+							bankaddressString = "";
+						}
 						parameters.put("banknameString", banknameString);
 						parameters.put("bankaddressString", bankaddressString);
 
-						System.err.println("Bank Name: " + banknameString);
-						System.err.println("Bank Address: " + bankaddressString);
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.err.println("Failed to retrieve or parse IFSC data");
@@ -10554,7 +10576,24 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 		ModelAndView mv = new ModelAndView("ViewTransportCostListFS");
-		List<Object[]> list = (List<Object[]>) entryAndtransportationService.getDetails();
+		List<Object[]> list = (List<Object[]>) entryAndtransportationService.getDetailsFreeSale();
+		mv.addObject("basis", "Free Sales");
+
+		mv.addObject("list", list);
+		return mv;
+	}
+
+	@RequestMapping("viewTransportCostCommercial")
+	public ModelAndView viewTransportCostCommercial(HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		String name = (String) request.getSession().getAttribute("loginName");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		ModelAndView mv = new ModelAndView("ViewTransportCostListFS");
+		List<Object[]> list = (List<Object[]>) entryAndtransportationService.getDetailsCommercial();
+		mv.addObject("basis", "Commercial");
+
 		mv.addObject("list", list);
 		return mv;
 	}
@@ -10566,6 +10605,10 @@ public class Controller_V {
 		if (username == null) {
 			return new ModelAndView("index");
 		}
+		String basis = request.getParameter("basis");
+		
+		System.err.println(basis);
+
 		try {
 			System.out.println("savetransportcostfreesales");
 			Date date = new Date();
@@ -10580,8 +10623,6 @@ public class Controller_V {
 			Double rate = Double.valueOf(request.getParameter("rate"));
 			String unit = request.getParameter("unit");
 			String validtilldate = request.getParameter("validtilldate");
-
-			String basis = request.getParameter("basis");
 
 			OperationFreeSales operationcostmodel = new OperationFreeSales();
 			if ("Freight".equals(operationcost)) {
@@ -10603,7 +10644,7 @@ public class Controller_V {
 			System.err.println("rocode" + rocode);
 			Double NominalWeight;
 			Double RateInQtls = null;
-			if (unit.equals("PerBale")) {
+			if (unit.equals("perbale")) {
 				NominalWeight = this.entryAndtransportationService.nominalWeight(rocode);
 				System.err.println(NominalWeight + " NominalWeightsssssssssssssssssssssss");
 				RateInQtls = NominalWeight * rate;
@@ -10637,7 +10678,16 @@ public class Controller_V {
 				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
 
 		System.out.println("Ended");
-		return new ModelAndView(new RedirectView("transportationandoperationcostfreesales.obj"));
+
+		if (basis.equals("Commercial")) {
+			return new ModelAndView(new RedirectView("transportationandoperationcostcommercial.obj"));
+		} else {
+			return new ModelAndView(new RedirectView("transportationandoperationcostfreesales.obj"));
+		}
+
+		// return new ModelAndView(new
+		// RedirectView("transportationandoperationcostcommercial.obj"));
+
 	}
 
 	@ResponseBody
@@ -11728,10 +11778,9 @@ public class Controller_V {
 	}
 
 	/// finalization of lot size////
-	
+
 	@Autowired
 	FinalizationoflotsizeService FinalizationoflotService;
-
 
 ////////////////////////////////////////////////////Finalization of lot sizes and Reserve Sale Price-START ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("Finalization_of_lot_sizes_and_Reserve_Sale_Price_in_Commercial") // same name as given on sidebar
@@ -11756,16 +11805,16 @@ public class Controller_V {
 
 		return mv;
 	}
-	
+
 	@RequestMapping("Finalization_of_lot_sizes_and_Reserve_Sale_Price_Free_Sale") // same name as given on sidebar
 	public ModelAndView finalizationoflotsizesandreservesalepricesFree_Sale(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("Finalizationoflotsize"); // name of jsp page
-		
+
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
-		
+
 		try {
 			final List<RoDetailsModel> regionList = (List<RoDetailsModel>) this.roDetailsservice.getAll();
 			final List<String> juteVeriList = (List<String>) this.FinalizationoflotService.getJuteVerity('2');
@@ -11774,9 +11823,9 @@ public class Controller_V {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		mv.addObject("basis", "Free Sale");
-		
+
 		return mv;
 	}
 
@@ -12028,12 +12077,11 @@ public class Controller_V {
 		redirectAttributes.addFlashAttribute("msg",
 				(Object) "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
 
-		if(basis.equals("Free Sale")) {
+		if (basis.equals("Free Sale")) {
 			return new ModelAndView(new RedirectView("Finalization_of_lot_sizes_and_Reserve_Sale_Price_Free_Sale.obj"));
 		}
-		
+
 		return new ModelAndView(new RedirectView("Finalization_of_lot_sizes_and_Reserve_Sale_Price_in_Commercial.obj"));
-		
 
 	}
 
@@ -12052,17 +12100,18 @@ public class Controller_V {
 
 		return mv;
 	}
+
 	@RequestMapping(value = { "ViewFinalizationOfLotCommercialSale.obj" }, method = RequestMethod.GET)
 	public ModelAndView ViewFinalizationofLotSizesCommercialSale(HttpServletRequest request) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-		
+
 		ModelAndView mv = new ModelAndView("ViewFinalizationofLotSizes");
 		List<Object[]> list = FinalizationoflotService.getLotData("Commercial");
 		mv.addObject("Data", list);
-		
+
 		return mv;
 	}
 
