@@ -3541,19 +3541,31 @@ public class Controller_V {
 				parameters.put("Instrument_Date", details[2]);
 				parameters.put("Instrument_value", details[8]);
 
-//				parameters.put("Last_shipment_date", details[4]);
-//				parameters.put("Expiry_date", details[5]);
-//				
-				Date lastShipmentDate = originalFormat.parse((String) details[4]);
-				Date expiryDate = originalFormat.parse((String) details[5]);
+			
+                
+//              parameters.put("Last_shipment_date", details[4]);
+//              parameters.put("Expiry_date", details[5]);
+                
+                Date lastShipmentDate = null;
+                Date expiryDate = null;
+                String formattedLastShipmentDate = "";
+                String formattedExpiryDate = "";
 
-				// Format the dates to the desired format
-				String formattedLastShipmentDate = targetFormat.format(lastShipmentDate);
-				String formattedExpiryDate = targetFormat.format(expiryDate);
+                if (details[4] != null && !((String) details[4]).trim().isEmpty()) {
+                    lastShipmentDate = originalFormat.parse((String) details[4]);
+                    formattedLastShipmentDate = targetFormat.format(lastShipmentDate);
+                }
 
-				// Set the formatted dates as parameters
-				parameters.put("Last_shipment_date", formattedLastShipmentDate);
-				parameters.put("Expiry_date", formattedExpiryDate);
+                if (details[5] != null && !((String) details[5]).trim().isEmpty()) {
+                    expiryDate = originalFormat.parse((String) details[5]);
+                    formattedExpiryDate = targetFormat.format(expiryDate);
+                }
+                    // Set the formatted dates as parameters
+                    parameters.put("Last_shipment_date", formattedLastShipmentDate);
+                    parameters.put("Expiry_date", formattedExpiryDate);
+                
+
+
 
 				parameters.put("Auto_revolving_amount", details[6]);
 				parameters.put("contarctdate", details[9]);
@@ -5360,7 +5372,6 @@ public class Controller_V {
 			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
 					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
 					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-
 					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,
 					Statename23, StaeCode23, PAN23, mastterSatename, mastterSatename2, ReciepentsStatecode, dateData,
 					Dpcname, millcode234, RegionAndCenterName1, consignment);
@@ -9488,7 +9499,7 @@ public class Controller_V {
 	@RequestMapping("creditNoteSettleDoc")
 	public void creditNoteSettleDoc(@RequestParam("filename") String filename, HttpServletResponse response) {
 
-		String imagePath = creditNoteFilePath + File.separator + filename;
+		String imagePath = creditNoteSettlementPath + File.separator + filename;
 		// imageDirectory + File.separator + idn + File.separator + filename;
 
 		File imageFile = new File(imagePath);
@@ -9622,7 +9633,6 @@ public class Controller_V {
 	@RequestMapping("downloadSupportingCreditNoteDoc")
 	public void downloadSupportingCreditNoteDoc(@RequestParam("filename") String filename,
 			HttpServletResponse response) {
-
 		String imagePath = creditNoteFilePath + File.separator + filename;
 		// imageDirectory + File.separator + idn + File.separator + filename;
 
@@ -9742,7 +9752,7 @@ public class Controller_V {
 	@RequestMapping("downloadSupportingCreditNoteDocForDN")
 	public void downloadSupportingDemandNoteDocForCNDN(@RequestParam("filename") String filename,
 			HttpServletResponse response) {
-		String imagePath = DemandNoteDoc + File.separator + filename;
+		String imagePath = DemandNoteSave + File.separator + filename;
 
 		// String imagePath = "C:\\Users\\Mansi.Gupta\\Documents\\CreditNoteDOc
 		// DownLoad" + File.separator + filename;
@@ -11045,8 +11055,7 @@ public class Controller_V {
 		}
 
 		try {
-			int id = Integer.parseInt(bidNo);
-			System.out.println("Bid ID: " + id);
+		
 
 			List<Object[]> bid = this.bidsubmissionService.getbidSubission(bidNo);
 			List<Object[]> bidereportdata = this.bidsubmissionService.biddatareport(bidNo);
@@ -11229,7 +11238,7 @@ public class Controller_V {
 		try {
 			String bidNo = request.getParameter("bidNo");
 
-			int id = Integer.parseInt(bidNo);
+			
 
 			List<Object[]> bidresultlist = this.bidsubmissionService.bid_data_result(bidNo);
 

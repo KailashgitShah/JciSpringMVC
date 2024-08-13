@@ -191,11 +191,11 @@ function parseDateString(dateString) {
          var specificDate = parseDateString(closingDateStr);
          var currentDate = new Date();
 
-         if (specificDate < currentDate) {
+       /*   if (specificDate < currentDate) {
              alert("Yes, the closing date is before the current date.");
          } else {
              alert("No, the closing date is not before the current date.");
-         }
+         } */
          
       // Define the decryption function outside the AJAX success callback
         function decrypt(encryptedValue, key) {
