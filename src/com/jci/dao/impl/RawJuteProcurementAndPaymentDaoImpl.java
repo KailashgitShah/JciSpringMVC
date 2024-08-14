@@ -262,8 +262,8 @@ public class RawJuteProcurementAndPaymentDaoImpl implements RawJuteProcurementAn
 	}
 
 	@Override
-	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId) {
-		String	queryStr="select farmerregno,datepurchase,basis,cropyr,placeofpurchase,rateslipno,binno,jutevariety, grossquantity,deductionquantity,grasatrate,amountpayable ,ptsid,tallyslipno,netquantity,slip_image from jciprocurement where tallyslipno ='"+tallyno+"' and regionId = "+regionId;
+	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId, String dpcid) {
+		String	queryStr="select farmerregno,datepurchase,basis,cropyr,placeofpurchase,rateslipno,binno,jutevariety, grossquantity,deductionquantity,grasatrate,amountpayable ,ptsid,tallyslipno,netquantity,slip_image from jciprocurement where tallyslipno ='"+tallyno+"' and placeofpurchase ='"+dpcid+"' and regionId = "+regionId;
 		List<RawJuteProcurementAndPayment> result = new ArrayList<>();
 		List<Object[]> res = new ArrayList<>();
 

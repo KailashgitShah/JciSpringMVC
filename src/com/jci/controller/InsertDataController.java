@@ -4557,7 +4557,7 @@ System.out.println();
         String region =(String)request.getSession().getAttribute("region"); 
         final VerifyTallySlip vrf = this.verifyTallySlipService.find(id);
         System.out.println("vrf_________________"+vrf);
-        final RawJuteProcurementAndPayment raw = this.rawJuteProcurAndPayService.findbyTally(vrf.getTallyNo(), Integer.parseInt(vrf.getRegion_id()));
+        final RawJuteProcurementAndPayment raw = this.rawJuteProcurAndPayService.findbyTally(vrf.getTallyNo(), Integer.parseInt(vrf.getRegion_id()),vrf.getPlaceOfPurchase());
         System.out.println("raw_________________"+raw);
         final List<VerifyTallySlip> verifyList = (List<VerifyTallySlip>)this.verifyTallySlipService.getAll("RMD", region, role_type);
         mv.addObject("verifyTallySliList", (Object)verifyList);

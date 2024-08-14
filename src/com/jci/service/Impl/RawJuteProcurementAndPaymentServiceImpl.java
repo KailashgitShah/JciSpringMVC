@@ -101,9 +101,9 @@ public class RawJuteProcurementAndPaymentServiceImpl implements RawJuteProcureme
 	}
 
 	@Override
-	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId) {
+	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId,String dpcid) {
 
-		return rawJuteProcurementAndPaymentDao.findbyTally(tallyno, regionId);
+		return rawJuteProcurementAndPaymentDao.findbyTally(tallyno, regionId, dpcid);
 	}
 
 	@Override

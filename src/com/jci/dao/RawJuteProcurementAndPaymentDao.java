@@ -27,7 +27,7 @@ public interface RawJuteProcurementAndPaymentDao {
 	public List <RawJuteProcurementAndPayment>farmerDetailsList();
 	public boolean updateProcurement(String status, int verified,String tallyno, String placeofp);
 	public boolean updateProcurementerror(String status, int verified,String tallyno,String error,String region, String placeofp);
-	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId);
+	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId,String dpcid);
  
 	public List<RawJuteProcurementAndPayment> jutelistbystatus(String status,HttpServletRequest request);
  

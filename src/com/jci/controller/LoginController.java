@@ -191,6 +191,8 @@ public class LoginController {
 								currentyear -= 1;
 							}
 							String currCropYear = currentyear + "-" + nextyear;
+							 nextyear =  nextyear-1;
+							String priviouscropyear = currentyear-1 + "-" + nextyear;
                     	        useremail1 = email;
                     	        String set0 = "0";
                                 userRegService.updateConcurrentlogin(email,set0);
@@ -227,10 +229,10 @@ public class LoginController {
                                 System.out.println("check");
                                 //session.setAttribute("Concurrentloginflag",flag);
                                 session.setAttribute("currCropYear", currCropYear);
-                                
-
+                                session.setAttribute("priviouscropyear", priviouscropyear);
+                                System.err.println("currCropYear"+currCropYear+"priviouscropyear"+priviouscropyear);
                                   mv= new ModelAndView( (View)new RedirectView("dashboardview.obj")); 
-                                 
+                                 System.out.println();
                          }
                          
                    }        

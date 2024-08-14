@@ -25,7 +25,7 @@ public interface RawJuteProcurementAndPaymentService {
 	public List<String> findGradePriceJuteVariety (String variety, int basis_no, String cropyr,String dpcid);
 	public List<String> getfarmerno( String dpc);
 	public List <RawJuteProcurementAndPayment>farmerDetailsList();
-	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId);
+	public RawJuteProcurementAndPayment findbyTally(String tallyno, int regionId,String dpcid);
 	public boolean updateProcurement(String status, int verified,String tallyno, String placeofp);
 	public boolean updateProcurementerror(String status, int verified,String tallyno,String error,String region, String placeofp);
  
