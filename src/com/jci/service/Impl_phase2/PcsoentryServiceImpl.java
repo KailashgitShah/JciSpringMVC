@@ -79,8 +79,8 @@ public class PcsoentryServiceImpl implements PcsoentryService {
 	}
 
 	@Override
-	public List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo) {
-	return this.pcsoentrydao.getAllMillDetailsOfRefNo(refNo);
+	public List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo , String date) {
+	return this.pcsoentrydao.getAllMillDetailsOfRefNo(refNo , date);
 	}
 
 	@Override
@@ -92,6 +92,7 @@ public class PcsoentryServiceImpl implements PcsoentryService {
 	public List<String> getMillCodeForPcoDate(String pcoDate) {
 		return this.pcsoentrydao.getMillCodeForPcoDate(pcoDate);
 	}
+
 
 
 }

@@ -30,7 +30,7 @@ public interface PcsoentryService {
 
 	List<String> getUniqueRefNos();
 
-	List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo);
+	List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo, String date);
 
 	int getCountOfTotalEntries();
 

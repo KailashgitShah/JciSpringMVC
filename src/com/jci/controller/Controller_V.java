@@ -971,7 +971,8 @@ public class Controller_V {
 	@RequestMapping(value = { "getAllMillDetails" }, method = { RequestMethod.GET })
 	public String getAllMillDetails(final HttpServletRequest request) {
 		String refNo = request.getParameter("refNo");
-		List<EntryofpcsoModel> allMills = this.pcsoentryservice.getAllMillDetailsOfRefNo(refNo);
+		String date = request.getParameter("date");
+		List<EntryofpcsoModel> allMills = this.pcsoentryservice.getAllMillDetailsOfRefNo(refNo,date);
 
 		Gson gson = new Gson();
 		return gson.toJson(allMills);

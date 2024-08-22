@@ -90,14 +90,14 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 		List<String> ll = new ArrayList<>();
 		String querystr = "select distinct(pcso_date),CONVERT(date , pcso_date , 105)  FROM jcientryof_pcso where Pcso_contract_flag = 0 ORDER by CONVERT(date , pcso_date , 105)  desc";
 		List<Object[]> pcsoDateList = currentSession().createSQLQuery(querystr).list();
-		List<String>dates=new ArrayList<>();
-		
-		for(Object[] row:pcsoDateList) {
-			dates.add((String)row[0]);
+		List<String> dates = new ArrayList<>();
+
+		for (Object[] row : pcsoDateList) {
+			dates.add((String) row[0]);
 		}
-		
+
 		return dates;
-		 
+
 	}
 
 	@Override
@@ -165,63 +165,67 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 
 	@Override
 	public List<String> getUniqueRefNos() {
-		String sql = "select distinct (Jc_reference_no),created_date from jcientryof_pcso order by created_date desc";
-		List<Object[]>  list = currentSession().createSQLQuery(sql).list();
-		List<String>Jc_reference_nos=new ArrayList<>();
-		
-		for(Object[] row:list) {
-			Jc_reference_nos.add((String)row[0]);
+		String sql = "SELECT DISTINCT \r\n" + "    Jc_reference_no, \r\n"
+				+ "     CONVERT(date, pcso_date, 103)  AS formatted_date\r\n" + "FROM \r\n" + "    jcientryof_pcso\r\n"
+				+ "ORDER BY \r\n" + "     CONVERT(date, pcso_date, 103)  DESC;";
+		// String sql = "select distinct (Jc_reference_no),created_date from
+		// jcientryof_pcso order by created_date desc";
+		List<Object[]> list = currentSession().createSQLQuery(sql).list();
+		List<String> Jc_reference_nos = new ArrayList<>();
+
+		for (Object[] row : list) {
+			String pcsoDate = new SimpleDateFormat("dd-MM-yyyy").format((Date) row[1]);
+			Jc_reference_nos.add((String) row[0] + "," + pcsoDate);
 		}
-		
+
 		return Jc_reference_nos;
 	}
 
 	@Override
-	public List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo) {
-		String sql = "select * from jcientryof_pcso where Jc_reference_no = '"+ refNo + "'";
-		
+	public List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo, String date) {
+		String sql = "select * from jcientryof_pcso where Jc_reference_no = '" + refNo + "' and pcso_date = '" + date
+				+ "'";
+
 		List<Object[]> list = currentSession().createSQLQuery(sql).list();
-		
+
 		List<EntryofpcsoModel> listOfPcso = new ArrayList<>();
-		
-		for(Object[] eleObjects : list) {
+
+		for (Object[] eleObjects : list) {
 			EntryofpcsoModel model = new EntryofpcsoModel();
-			
-			model.setReference_no((String)eleObjects[14]);
-			model.setPcso_req_date((String)eleObjects[13]);
-			model.setLetterRef((String)eleObjects[6]);
-			model.setPcso_date((String)eleObjects[12]);
-			model.setPcsoQty((double)eleObjects[10]);
-			model.setPcsoReqQty((double)eleObjects[11]);
-			model.setDispatch_period((String)eleObjects[3]);
-			model.setMill_code((String)eleObjects[7]);
-			model.setMill_name((String)eleObjects[8]);
-			model.setAllocatedQty((double)eleObjects[1]);
-			model.setPcsorefid((int)eleObjects[0]);
+
+			model.setReference_no((String) eleObjects[14]);
+			model.setPcso_req_date((String) eleObjects[13]);
+			model.setLetterRef((String) eleObjects[6]);
+			model.setPcso_date((String) eleObjects[12]);
+			model.setPcsoQty((double) eleObjects[10]);
+			model.setPcsoReqQty((double) eleObjects[11]);
+			model.setDispatch_period((String) eleObjects[3]);
+			model.setMill_code((String) eleObjects[7]);
+			model.setMill_name((String) eleObjects[8]);
+			model.setAllocatedQty((double) eleObjects[1]);
+			model.setPcsorefid((int) eleObjects[0]);
 			listOfPcso.add(model);
 		}
-		
+
 		return listOfPcso;
 	}
-
-
 
 	@Override
 	public int getCountOfTotalEntries() {
 		String sqString = "select COUNT( distinct Contract_identification_no ) from jcicontract";
-		return (int)currentSession().createSQLQuery(sqString).uniqueResult();
+		return (int) currentSession().createSQLQuery(sqString).uniqueResult();
 	}
 
 	@Override
 	public List<String> getMillCodeForPcoDate(String pcoDate) {
-		String sqString = "select mill_code from jcientryof_pcso where pcso_date = '"+pcoDate+"'";
+		String sqString = "select mill_code from jcientryof_pcso where pcso_date = '" + pcoDate + "'";
 		List<Object> pcodates = currentSession().createSQLQuery(sqString).list();
 		List<String> pcsoDateString = new ArrayList<>();
-		
-		for(Object eleObjects : pcodates) {
+
+		for (Object eleObjects : pcodates) {
 			pcsoDateString.add((String) eleObjects);
 		}
-		
+
 		return pcsoDateString;
 	}
 

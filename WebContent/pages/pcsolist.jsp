@@ -68,17 +68,18 @@
 					<%
 					int i = 1;
 					for (String refNo : refNos) {
+					  String refArr[] = refNo.split(",");
 					%>
 
 					<div class="card">
 						<div class="card-header" id="heading<%=i%>">
 							<h5 class="mb-0">
 								<button class="btn text-dark btn-link" type="button"
-									onclick="findDetails('<%=refNo%>','<%=i%>')"
+									onclick="findDetails('<%=refArr[0]%>','<%=i%>','<%=refArr[1]%>')"
 									data-toggle="collapse" data-target="#collapse<%=i%>"
 									aria-expanded="false" aria-controls="collapse<%=i%>">
 									JC Office Ref. No.&nbsp &nbsp
-									<%=refNo%></button>
+									<%=refArr[0]%> &nbsp &nbsp and &nbsp &nbsp Pcso Date &nbsp &nbsp <%=refArr[1]%></button>
 							</h5>
 						</div>
 
@@ -131,14 +132,14 @@
 			}, 1500);
 
 		
-			function findDetails(refNo, id) {
-
+			function findDetails(refNo, id , date) {
 				$
 						.ajax({
 							type : "GET",
 							url : "getAllMillDetails.obj",
 							data : {
-								"refNo" : refNo
+								"refNo" : refNo,
+								"date" : date
 							},
 							success : function(result) {
 								var data = jQuery.parseJSON(result);
