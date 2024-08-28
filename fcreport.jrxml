@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FC" pageWidth="595" pageHeight="902" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b85a960-73ca-4168-9e8f-d85d6d930387">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="Contractno" class="java.lang.String"/>
 	<parameter name="Instrument_No" class="java.lang.String"/>
 	<parameter name="Instrument_Date" class="java.lang.String"/>
-	<parameter name="Instrument_value" class="java.lang.String"/>
+	<parameter name="Instrument_value" class="java.lang.Integer"/>
 	<parameter name="Last_shipment_date" class="java.lang.String"/>
 	<parameter name="Expiry_date" class="java.lang.String"/>
 	<parameter name="Auto_revolving_amount" class="java.lang.String"/>
@@ -61,10 +61,10 @@
 				<reportElement x="0" y="113" width="554" height="1" uuid="d648c105-212b-4039-b80f-e44f06d630d4"/>
 			</line>
 			<line>
-				<reportElement x="2" y="137" width="555" height="1" uuid="ff5542dc-4338-4424-bb34-6183c2724a6f"/>
+				<reportElement x="2" y="131" width="555" height="1" uuid="ff5542dc-4338-4424-bb34-6183c2724a6f"/>
 			</line>
 			<line>
-				<reportElement x="2" y="159" width="554" height="1" uuid="00239868-b42c-49dc-9f7b-7ffe836a80c8"/>
+				<reportElement x="2" y="165" width="554" height="1" uuid="00239868-b42c-49dc-9f7b-7ffe836a80c8"/>
 			</line>
 			<line>
 				<reportElement x="0" y="179" width="554" height="1" uuid="b1229142-3582-481e-acce-c3b8ff82975f"/>
@@ -98,7 +98,7 @@
 				<text><![CDATA[Cheque No. & Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="120" width="72" height="19" uuid="32470de8-df86-4c93-9d12-097be8851c3a"/>
+				<reportElement x="3" y="115" width="72" height="19" uuid="32470de8-df86-4c93-9d12-097be8851c3a"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -106,7 +106,7 @@
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="145" width="85" height="20" uuid="45b2f82e-0937-4801-9931-4f2314d132e0"/>
+				<reportElement x="4" y="137" width="85" height="20" uuid="45b2f82e-0937-4801-9931-4f2314d132e0"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -228,11 +228,11 @@ favour of & mill siding
 				<textFieldExpression><![CDATA[$P{Instrument_Date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="283" y="118" width="139" height="19" uuid="83093f90-9f81-46eb-9e42-c58012d314b9"/>
+				<reportElement x="283" y="113" width="139" height="19" uuid="83093f90-9f81-46eb-9e42-c58012d314b9"/>
 				<textFieldExpression><![CDATA[$P{Instrument_value}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="283" y="138" width="271" height="29" uuid="df3b9315-66a0-4bbd-bc94-34dfab015050"/>
+				<reportElement x="283" y="131" width="271" height="34" uuid="df3b9315-66a0-4bbd-bc94-34dfab015050"/>
 				<textFieldExpression><![CDATA[$P{address}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -281,11 +281,11 @@ favour of & mill siding
 			</staticText>
 			<image>
 				<reportElement x="148" y="-10" width="295" height="48" uuid="69b90f20-f59a-4962-8350-de2931c7ea0d"/>
-				<imageExpression><![CDATA["C:/Users/kailash.shah/Desktop/vishal/title.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:/Users/pradeep.rathor/Desktop/JCIStuff/title.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="50" y="-10" width="80" height="47" uuid="03198456-765e-4596-9aee-491b4e26cb75"/>
-				<imageExpression><![CDATA["C:/Users/kailash.shah/Desktop/vishal/logoani.gif"]]></imageExpression>
+				<imageExpression><![CDATA["C:/Users/pradeep.rathor/Desktop/JCIStuff/logoani.gif"]]></imageExpression>
 			</image>
 		</band>
 	</title>

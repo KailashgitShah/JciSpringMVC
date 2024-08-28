@@ -3571,37 +3571,44 @@ public class Controller_V {
 				parameters.put("Auto_revolving_amount", details[6]);
 				parameters.put("contarctdate", details[9]);
 
-				if (details[3] != null) {
-					ifsc = details[3].toString();
-					String url = "https://ifsc.razorpay.com/" + ifsc;
+				if (details[3] != null && !details[3].toString().trim().isEmpty()) {
+				    ifsc = details[3].toString();
+				    String url = "https://ifsc.razorpay.com/" + ifsc;
 
-					try {
-						RestTemplate restTemplate = new RestTemplate();
-						String result = restTemplate.getForObject(url, String.class);
-						JSONObject jsonObject = new JSONObject(result);
+				    try {
+				        RestTemplate restTemplate = new RestTemplate();
+				        String result = restTemplate.getForObject(url, String.class);
+				        JSONObject jsonObject = new JSONObject(result);
 
-						String banknameString = jsonObject.optString("BANK");
-						String bankaddressString = jsonObject.optString("ADDRESS");
+				        String banknameString = jsonObject.optString("BANK");
+				        String bankaddressString = jsonObject.optString("ADDRESS");
 
-						if (banknameString == null || banknameString.isEmpty()) {
-							banknameString = "";
-						}
+				        if (banknameString == null || banknameString.isEmpty()) {
+				            banknameString = "";
+				        }
 
-						// Check if bankaddressString is empty or null, if so, set it to a blank string
-						if (bankaddressString == null || bankaddressString.isEmpty()) {
-							bankaddressString = "";
-						}
-						parameters.put("banknameString", banknameString);
-						parameters.put("bankaddressString", bankaddressString);
+				        // Check if bankaddressString is empty or null, if so, set it to a blank string
+				        if (bankaddressString == null || bankaddressString.isEmpty()) {
+				            bankaddressString = "";
+				        }
 
-					} catch (Exception e) {
-						e.printStackTrace();
-						System.err.println("Failed to retrieve or parse IFSC data");
-					}
+				        parameters.put("banknameString", banknameString);
+				        parameters.put("bankaddressString", bankaddressString);
+
+				    } catch (Exception e) {
+				        e.printStackTrace();
+				        System.err.println("Failed to retrieve or parse IFSC data");
+				        // Setting banknameString and bankaddressString as blank in case of exception
+				        parameters.put("banknameString", "");
+				        parameters.put("bankaddressString", "");
+				    }
+				} else {
+				    // Setting banknameString and bankaddressString as blank if details[3] is null or empty
+				    parameters.put("banknameString", "");
+				    parameters.put("bankaddressString", "");
 				}
 
 			}
-
 			// Fetching label name and delivery details
 			List<Object[]> documentlabel = this.financialConcurenceservice.LabelnameAndDelivery(fullcontractno);
 			for (Object[] row : documentlabel) {

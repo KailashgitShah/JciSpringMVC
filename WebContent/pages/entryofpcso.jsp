@@ -217,7 +217,7 @@
 												value="<%=entryofpcsolist[1]%>" readonly>
 										</div>
 										<div class="col-sm-4 form-group">
-											<input type="text" inputmode="numeric" step="any"
+											<input type="number" inputmode="numeric" step="any"
 												class="form-control tAll" min="0"
 												name="totalallocation<%=mill%>" value="0"
 												id="totalallocation<%=mill%>">
@@ -232,7 +232,7 @@
 											<span id="errMsg" class="text-danger"></span>
 										</div>
 										<input name="count" id="count" type="hidden" value="<%=mill%>">
-										<input name="cropyr" id="cropyr" type="hidden" >
+										<input name="cropyr" id="cropyr" type="hidden">
 									</div>
 									<div class="form-group col-sm-12">
 										<button class="btn btn-default" type="submit" id="submit">Next</button>
@@ -288,7 +288,7 @@
 		mybutton.addEventListener('click', () => { window.scroll(options) });
 				 
 	</script>
-	
+
 	<script>
 		$("#refNo").on("change", function() {
 			var val = $(this).val();
@@ -320,15 +320,15 @@
 			})
 		});
 	</script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 
 	<script>
 		$("#pcsoDate").on(
@@ -429,29 +429,43 @@
 							$("#submit")
 									.click(
 											function() {
+												var refNo = document
+														.getElementById("refNo").value;
+												
+												if (refNo == "") {
+													alert("Please Select Jci letter ref!!!");
+													return false;
+												}
+												
 												var pcsoDate = document
 														.getElementById("pcsoDate").value;
 												var pcsoReqdate = document
 														.getElementById("pcsoReqdate").value;
 
 												if (pcsoDate == "") {
-													alert("Please Select Reference Date!!!");
+													alert("Please Select PCO Date!!!");
 													return false;
 												}
-												if (pcsoReqdate == "") {
-													alert("Please Select pcsoReqdate Date!!!");
-													return false;
-												}
+												
 
 												var sz = $("#count").val();
 												
 												var pcoQty = parseFloat($("#pcsoQty").val());
+												
+												if(isNaN(pcoQty)){
+													alert("Pco Qty is invalid");
+													return false;
+												}
+											 
+												
 												var sum = 0;
 												for (var i = 0; i < sz; i++) {
 													var ele =  $("#totalallocation"+ i).val();
 													
-												    if (ele !== null && ele !== '' && !isNaN(parseFloat(ele))) {
+												    if (ele !== null && ele !== '')) {
 												        sum += parseFloat(ele);
+													}else if(isNaN(parseFloat(ele)){
+                                                        alert("Allocation is invalid !!")
 													}else{
 														 $("#totalallocation" + i).val(0);
 													}
