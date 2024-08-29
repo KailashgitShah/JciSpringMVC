@@ -5372,13 +5372,16 @@ System.out.println();
              }
                String key = LoginController.secretkey;
         	   String tallyNo = request.getParameter("tallyno");
+//        	   System.err.println(tallyNo + "tallyNo");
+//        	 
+        	    String dpcId = request.getParameter("dpcid");
                String farmerno = request.getParameter("farmerno");
                //String tallyNo = String.valueOf(Encry.decrypt(decryptedtallyNo, key));
                //String farmerno = String.valueOf(Encry.decrypt(decryptedfarmerno, key));
                
                session.setAttribute("farmerno", farmerno);
               // String farmerno1 =(String)request.getSession().getAttribute("farmerno");
-               final List<ImageVerificationModel> images= (List<ImageVerificationModel>)verifyTallySlipService.getImages(tallyNo);
+               final List<ImageVerificationModel> images= (List<ImageVerificationModel>)verifyTallySlipService.getImages(tallyNo, dpcId);
                mv.addObject("images",(Object) images);
                return mv;
          }

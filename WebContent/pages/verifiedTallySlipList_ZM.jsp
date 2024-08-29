@@ -168,7 +168,7 @@
 									<tr>
 									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>-<%=verificationlists.getErrors()%>" ></td>
 										<td><%=i%></td>
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&dpcid=<%= verificationlists.getErrors() %>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>

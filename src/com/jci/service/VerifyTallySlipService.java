@@ -22,7 +22,7 @@ public interface VerifyTallySlipService {
 	public void savedata(PaymentprocesstellyslipModel createpayment);
 	public void updatefastatus(String tno);
 	public void statusrmzm();
-	public List<ImageVerificationModel> getImages(String tallyNo);
+	public List<ImageVerificationModel> getImages(String tallyNo , String dpcId);
 	public List<VerifyTallySlip> getAllforRM(String status, String region_zone);
 	public String getEmailby_tally(String tnoemail);
 	public List<VerifyTallySlip> getAllforZM(String string, String region_zone);

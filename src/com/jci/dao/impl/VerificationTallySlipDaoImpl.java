@@ -363,14 +363,14 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 	}
 
 	@Override
-	public List<ImageVerificationModel> getImages(String tallyNo) {
+	public List<ImageVerificationModel> getImages(String tallyNo ,String dpcId) {
 		// TODO Auto-generated method stub
 		List<ImageVerificationModel> result = new ArrayList<>();
 		  String region =(String)request.getSession().getAttribute("regionId"); 
 		try {
 
 			List<Object[]> list = new ArrayList();
-			String querystr = "select a.F_DOC_Mandate, a.F_BANK_DOC, a.F_ID_PROF, a.F_REG_FORM, b.slip_image, b.tallyslipno,a.F_NAME,b.farmerregno,b.datepurchase,b.dateof_entry,b.basis,b.cropyr,pur.centername,b.rateslipno,b.jutevariety,b.grossquantity,b.deductionquantity,b.netquantity,b.amountpayable,b.grasatrate FROM jcirmt a left join jciprocurement b on b.farmerregno = a.F_REG_NO left join jcipurchasecenter pur on b.placeofpurchase = pur.CENTER_CODE where b.tallyslipno = '"+ tallyNo +"' and b.regionId = '"+region+"'"; 
+			String querystr = "select a.F_DOC_Mandate, a.F_BANK_DOC, a.F_ID_PROF, a.F_REG_FORM, b.slip_image, b.tallyslipno,a.F_NAME,b.farmerregno,b.datepurchase,b.dateof_entry,b.basis,b.cropyr,pur.centername,b.rateslipno,b.jutevariety,b.grossquantity,b.deductionquantity,b.netquantity,b.amountpayable,b.grasatrate FROM jcirmt a left join jciprocurement b on b.farmerregno = a.F_REG_NO left join jcipurchasecenter pur on b.placeofpurchase = pur.CENTER_CODE where b.tallyslipno = '"+ tallyNo +"' and b.regionId = '"+region+"' and b.placeofpurchase='"+dpcId+"'"; 
 					
 					
 			Session session = sessionFactory.getCurrentSession();
@@ -475,7 +475,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 		List<Object[]> result = new ArrayList<>();
 		HttpSession session1 = request.getSession(false);
         String currCropYear =(String)request.getSession().getAttribute("currCropYear");
-		String querystr = "select a.tallyNo, a.farmerregno, a.puchasedate, a.netquantity, a.amountpayable, a.facheck_flag, b.basis, c.centername, d.F_NAME from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo left join jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='"
+		String querystr = "select a.tallyNo, a.farmerregno, a.puchasedate, a.netquantity, a.amountpayable, a.facheck_flag, b.basis, c.centername, d.F_NAME , a.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo left join jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='"
 				+ status + "' and a.amountpayable > 500000 and payment_status = 0 and a.zone_id ='" + region_zone + "'";
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -496,6 +496,7 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 				verifyTallySlip.setBasis((String) row[6]);
 				verifyTallySlip.setCentername((String) row[7]);
 				verifyTallySlip.setFarmer_name((String) row[8]);
+				verifyTallySlip.setErrors((String)row[9]);
 				r.add(verifyTallySlip);
 			}
 			return r;

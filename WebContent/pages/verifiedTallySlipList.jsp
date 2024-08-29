@@ -181,9 +181,16 @@
 									}
 									%>
 									
+									<%-- <td><%=verificationlists.getErrors()%></td> --%>
 									  
 									
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+										<%-- <td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo(),verificationlists.getErrors()%>" target="_blank"><%=verificationlists.getTallyNo(),verificationlists.getErrors()%></a></td> --%>
+										<td>
+									    <a href="popupimage.obj?tallyno=<%= verificationlists.getTallyNo() %>&dpcid=<%= verificationlists.getErrors() %>" target="_blank">
+									        <%= verificationlists.getTallyNo()  %>
+									    </a>
+									</td>
+								
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>

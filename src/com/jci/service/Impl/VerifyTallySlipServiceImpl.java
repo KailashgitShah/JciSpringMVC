@@ -97,9 +97,9 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 	}
 
 	@Override
-	public List<ImageVerificationModel> getImages(String tallyNo) {
+	public List<ImageVerificationModel> getImages(String tallyNo , String dpcId) {
 		
-		return VerificationTallySlipDao.getImages(tallyNo);
+		return VerificationTallySlipDao.getImages(tallyNo , dpcId);
 	}
 
 	@Override
