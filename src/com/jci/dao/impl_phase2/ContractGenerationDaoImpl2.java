@@ -277,7 +277,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			for (int j = 0; j < gradeArray.size(); j++) {
 
 				updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100)
-						* (totalAllocatedToMill * 10 * pg.get(j));
+						* (totalAllocatedToMill * pg.get(j));
 //			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
 //			System.err.println("j = " + j + " " + "i = " + i);
 

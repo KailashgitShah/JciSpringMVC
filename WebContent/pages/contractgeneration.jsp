@@ -662,7 +662,7 @@ var cropyr = $("#crop_year").val();
 			"cropyr" : cropyr
 		},
 		success : function(result){
-			//console.log(result);
+			console.log(result);
 			   if(result == -1){
 				   alert("derivative price for the delivery type is not decided");
 				   $('#deliveryType' + id).val(prevDelType);

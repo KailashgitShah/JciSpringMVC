@@ -1165,10 +1165,13 @@ public class Controller_V {
 			entryofGradeCompositionService.create(entryofGradeCompositionModel);
 		}
 
-		List<Object[]> GradePriceList = contractGenerationService2.getListOfGradesPriceForMillDelivery(cropYear);
+	
+		
 
-		for (Map<String, String> millDetail : millDetails) {
+		for (Map<String, String> millDetail : millDetails)
+		{
 
+			List<Object[]> GradePriceList = new ArrayList<>();
 			Contractgeneration contractgeneration = new Contractgeneration();
 
 			int juteValue = Integer.parseInt(millDetail.get("juteValue"));
@@ -1190,6 +1193,13 @@ public class Controller_V {
 			Double millQty = Double.parseDouble(millDetail.get("Qty"));
 			String deliveryType = millDetail.get("delivery_type");
 			String finalGeneratedContractNo = "JCI/" + millCode + "/" + cropYear + "/" + contractIdn;
+			
+			if(deliveryType.equalsIgnoreCase("Mill-Delivery")) {
+				GradePriceList = contractGenerationService2.getListOfGradesPriceForMillDelivery(cropYear);
+			}else {
+				GradePriceList = contractGenerationService2.getListOfGradesPriceForExGodown(cropYear);
+			}
+		
 
 			String commaSeparatedPcsoDates = String.join(",", pcsoDateForMill);
 
@@ -1261,7 +1271,7 @@ public class Controller_V {
 //			String body = "Please find below attachment to get full details of contract grade wise..";
 //			String sub = "Contract Details";
 //			final String filePathDir = filePath;
-//			SendMail sendMail = new SendMail();
+//			SendMail sendMail = co SendMail();
 //			InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
 //					new InternetAddress("pradeepcyf24@gmail.com") };
 //
