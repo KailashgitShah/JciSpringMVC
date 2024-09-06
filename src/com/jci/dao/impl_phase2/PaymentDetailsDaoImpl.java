@@ -240,7 +240,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 				+ "    COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))), 0) AS Total_Instrument_Value,\r\n"
 				+ "    (a.Contract_value - COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))), 0)) AS Difference\r\n"
 				+ "    FROM jcicontract AS a  \r\n" + "    LEFT JOIN jcipayment_arrangement AS b \r\n"
-				+ "    ON  a.Contract_no = b.Contract_No\r\n" + "    WHERE a.Mill_code = '" + st + "' \r\n"
+				+ "    ON  a.Contract_no = b.Contract_No\r\n" + "    WHERE a.Mill_code = '" + st + "' and Contract_acceptance_flag=1  \r\n"
 				+ "    GROUP BY  a.Contract_no, a.Contract_value\r\n"
 				+ "    HAVING  a.Contract_value > COALESCE(SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))), 0) OR SUM(TRY_CAST(b.Instrument_value AS DECIMAL(10,2))) IS NULL\r\n"
 				+ ") AS d LEFT JOIN jcicontract AS c \r\n" + "ON c.Contract_no = d.Contract_no \r\n"

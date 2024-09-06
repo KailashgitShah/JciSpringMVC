@@ -78,7 +78,7 @@
 			<%
 			List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
 			List<Object[]> getcontractList2 = (List<Object[]>) request.getAttribute("getcontractList2");
-			 String millname="";
+			String millname = "";
 			%>
 
 
@@ -91,7 +91,8 @@
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveentryofpaymentinstrumentDetails.obj"
-									method="POST" name="myForm" id="myForm" enctype="multipart/form-data">
+									method="POST" name="myForm" id="myForm"
+									enctype="multipart/form-data">
 									<div class="child-checkbox" id="disableform">
 										<div class="row">
 											<div class="col-sm-4 form-group">
@@ -103,9 +104,8 @@
 													<option value="select">-Select-</option>
 													<%
 													for (Object[] row : getcontractList2) {
-														 millname = (String) row[0];  
-													    String millcode = (String) row[1]; 
-													    
+														millname = (String) row[0];
+														String millcode = (String) row[1];
 													%>
 													<option value="<%=millcode%>"><%=millname%></option>
 													<%
@@ -125,7 +125,7 @@
 
 												</select>
 											</div>
-											
+
 											<div class="col-sm-4 form-group" id="instrument">
 												<label>Instrument Type</label> <span class="text-danger">*
 												</span>&nbsp; <span id="payment" name="payment" class="text-danger">
@@ -138,8 +138,8 @@
 												</select>
 											</div>
 
- 
-										<!-- 	<div class="col-sm-4 form-group">
+
+											<!-- 	<div class="col-sm-4 form-group">
 												<label id="ContracQty2">Contract_Qty </label> <input
 													class="form-control" id="ContracQty1" value=""
 													readonly="readonly">
@@ -170,8 +170,8 @@
 										</div> -->
 
 										<div class="row">
-											
-<!-- 
+
+											<!-- 
 										<div class="col-sm-4 form-group">
 										    <label for="Instrumentno">Instrument No</label> <span class="text-danger">*</span>
 										    &nbsp; <span id="instrumentError" class="text-danger"></span>
@@ -179,19 +179,21 @@
 										           oninput="validateInstrumentNo(this);"
 										           maxlength="16" type="text" required>
 										</div> -->
-										
-                                         <div class="col-sm-4 form-group">
-										        <label>Instrumentno</label>
-										        <span class="text-danger">*</span>&nbsp;
-										        <span id="MR_N" name="MR_dante" class="text-danger"></span>
-										        <input class="form-control" name="Instrument" id="Instrumentno" type="text" maxlength="16"
-										            oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);" pattern="[A-Za-z0-9/-]*"
-										            title="Only alphanumeric characters, slashes, and hyphens are allowed" required>
-										    </div>
+
+											<div class="col-sm-4 form-group">
+												<label>Instrumentno</label> <span class="text-danger">*</span>&nbsp;
+												<span id="MR_N" name="MR_dante" class="text-danger"></span>
+												<input class="form-control" name="Instrument"
+													id="Instrumentno" type="text" maxlength="50"
+													oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
+													pattern="[A-Za-z0-9/-]*"
+													title="Only alphanumeric characters, slashes, and hyphens are allowed"
+													required>
+											</div>
 
 
 
-	<!-- oninput="validateAmount();"  -->         
+											<!-- oninput="validateAmount();"  -->
 
 											<div class="col-sm-4 form-group">
 												<label id="differenceLabel">Instrument Value </label> <span
@@ -202,9 +204,8 @@
 												<input class="form-control taxtbox" name="InstrumentValue"
 													id="InstrumentValue12" min="0" step="1" pattern="\d+"
 													type="text"
-													 oninput="this.value = this.value.replace(/\D/g, '')"
-													 placeholder="Instrument Value" required
-												>
+													oninput="this.value = this.value.replace(/\D/g, '')"
+													placeholder="Instrument Value" required>
 												<div id="errorMessage" style="color: red; display: none;">Amount
 													exceeds the allowed limit!</div>
 											</div>
@@ -225,14 +226,14 @@
 										<div class="row">
 
 
-                                         <div class="col-sm-4 form-group" id="IFSC1">
+											<div class="col-sm-4 form-group" id="IFSC1">
 												<label id="IFSC1">IFSC </label> <input class="form-control"
 													oninput="this.value = this.value.toUpperCase()"
 													maxlength="11" name="IFSC" type="text"
 													placeholder="IFSC Code" id="IFSC"
-													onchange="deleteErrorMsg()">
+													onchange="deleteErrorMsg()" required>
 											</div>
-												<div class="col-sm-4 form-group" id="BankName1">
+											<div class="col-sm-4 form-group" id="BankName1">
 												<label id="BankName1">Bank Name</label> <input
 													class="form-control taxtbox" name="BankName" id="BankName"
 													min="0" type="text" placeholder="Bank Name" readonly="true"
@@ -245,8 +246,8 @@
 													min="0" type="text" placeholder="Branch" readonly="true"
 													onchange="deleteErrorMsg()">
 											</div>
-											
-											
+
+
 
 
 
@@ -255,13 +256,14 @@
 										</div>
 
 										<div class="row">
-										
+
 											<div class="col-sm-4 form-group">
-												<label class="required">Supporting Document
-													((Only accepted .jpg,.jpeg,.png.pdf)330kb-1MB))</label>&nbsp; <span id="errRegForm" name="errRegForm"
-													class="text-danger"> </span> <img id="imgPreview" /><input
-													class="form-control taxtbox" name="SupportingDocument"
-													type="file" accept=".jpg,.jpeg,.png,.pdf" 
+												<label class="required">Supporting Document ((Only
+													accepted .jpg,.jpeg,.png.pdf)330kb-1MB))</label>&nbsp; <span
+													id="errRegForm" name="errRegForm" class="text-danger">
+												</span> <img id="imgPreview" /><input class="form-control taxtbox"
+													name="SupportingDocument" type="file"
+													accept=".jpg,.jpeg,.png,.pdf"
 													oninput="validateREGFileType()"
 													placeholder="Supporting Document" id="SupportingDocument"
 													onkeypress="deleteErrorMsg()" required>
@@ -272,7 +274,7 @@
 													class="form-control" name="dateofship" id="dateofship"
 													placeholder="Date of Shipment" type="date">
 											</div>
-                                           <div class="col-sm-4 form-group" id="doexpiry">
+											<div class="col-sm-4 form-group" id="doexpiry">
 												<label id="doexpiry">Date of Expiry</label> <input
 													class="form-control" name="dateofexpiry" id="dateofexpiry"
 													placeholder="Date of Expiry" type="date">
@@ -292,13 +294,11 @@
 													type="hidden" class="form-control" name="Contarctqty"
 													id="Contarctqty2" value="" readonly="readonly">
 											</div>
-												<div class="col-sm-2 form-group" style="display: none;">
-												    <label>Ratio</label>
-												    <span class="text-danger">*</span>
-												    &nbsp;
-												    <span id="Ratio" name="Ratio" class="text-danger"></span>
-												    <input type="hidden" id="ratiosInput" name="ratios" value="">
-												</div>
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label>Ratio</label> <span class="text-danger">*</span>
+												&nbsp; <span id="Ratio" name="Ratio" class="text-danger"></span>
+												<input type="hidden" id="ratiosInput" name="ratios" value="">
+											</div>
 
 
 
@@ -308,7 +308,7 @@
 
 
 										<div class="row">
-											
+
 
 
 											<div class="col-sm-4 form-group" id="autoamounta">
@@ -317,12 +317,12 @@
 													id="autorevolvingamount" min="0" type="number"
 													placeholder="Auto Revolving Amount">
 											</div>
-											
-											 <div class="col-sm-2 form-group"  style="display: none;">
-												    <label "display:none;" >millname234 </label> <span
-													class="text-danger">* </span>&nbsp;  <input
-													class="form-control" name="millname234"
-													id="millname23" value="<%=millname %>" readonly="readonly">
+
+											<div class="col-sm-2 form-group" style="display: none;">
+												<label"display:none;" >millname234 </label> <span
+													class="text-danger">* </span>&nbsp; <input
+													class="form-control" name="millname234" id="millname23"
+													value="<%=millname%>" readonly="readonly">
 											</div>
 
 
@@ -332,7 +332,7 @@
 
 
 										<div class="row" id="gradesDiv">
-										<!-- 	<div class="col-sm-15">
+											<!-- 	<div class="col-sm-15">
 												<table class="table">
 													<thead>
 														<tr>
@@ -392,28 +392,30 @@
 
 
 										<!--   <div id="tableContainer"></div> -->
-										 <table id="contractTable" class="table table-bordered">
-											    <thead class="thead-light">
-											        <tr>
-											            <th>Contract No</th>
-											            <th>Contracted Qty(Qtls)</th>
-											            <th>Contract value(105% of jute Value)</th>
-											            <th>Contract Date</th>
-											            <th>Payment_due Date</th>
-											            <th>Instrument value</th>
-											            <th>Instrument Date</th>
-											          
-											        </tr>
-											    </thead>
-											    <tbody>
-											        <!-- Rows will be dynamically added here -->
-											    </tbody>
-											</table>
-											<input type="hidden" id="contractValueInput" name="contractValue">
-                                            <input type="hidden" id="paymentDueDateInput" name="paymentDueDate">
-                                            <input type="hidden" id="totalcontractvalue1" name="totalcontractvalue">
-    
-                                
+										<table id="contractTable" class="table table-bordered">
+											<thead class="thead-light">
+												<tr>
+													<th>Contract No</th>
+													<th>Contracted Qty(Qtls)</th>
+													<th id="contractValueHeading">Contract value</th>
+													<th>Contract Date</th>
+													<th>Payment_due Date</th>
+													<th>Instrument value</th>
+													<th>Instrument Date</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<!-- Rows will be dynamically added here -->
+											</tbody>
+										</table>
+										<input type="hidden" id="contractValueInput"
+											name="contractValue"> <input type="hidden"
+											id="paymentDueDateInput" name="paymentDueDate"> <input
+											type="hidden" id="totalcontractvalue1"
+											name="totalcontractvalue">
+
+
 
 
 
@@ -472,9 +474,9 @@
 	<div class="sidenav-backdrop backdrop"></div>
 
 
-		<script src="./assets/vendors/jquery/dist/jquery.min.js"
+	<script src="./assets/vendors/jquery/dist/jquery.min.js"
 		type="text/javascript"></script>
-		<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
 		type="text/javascript"></script>
 	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
@@ -489,7 +491,11 @@
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 
-<script type="text/javascript">
+	<script type="text/javascript">
+var idcount=0;
+var convalue=0;
+var contract105 = 0;
+var contract110 = 0;
 $(document).ready(function() {
 	$('#contractTable').hide();
     // Define total contract value and ratios globally
@@ -607,11 +613,15 @@ $(document).ready(function() {
           
              
             // Calculate total contract value and update table rows
-            rowData.forEach(function(row) {
+            rowData.forEach(function(row,index) {
+            	idcount++;
+            	contract105 = Math.round(row[2]);
+            	contract110 =  Math.round((row[2])*(110/105));
                 var newRow = $('<tr>');
                 newRow.append('<td>' + row[0] + '</td>');
                 newRow.append('<td>' + row[1] + '</td>');
-                newRow.append('<td>' + row[2] + '</td>');
+              /*   newRow.append('<td>' + row[2] + '</td>'); */
+            newRow.append('<td id="uniqueId_' + index + '">' + row[2] + '</td>');
                 newRow.append('<td>' + row[3] + '</td>');
                 newRow.append('<td>' + row[4] + '</td>');
                 if(row[5]==null&& row[6]==null){
@@ -746,7 +756,7 @@ $(document).ready(function() {
 </script>
 
 
-<script>
+	<script>
  $(document).ready(function() {
  
     $('#InstrumentValue12').on('input', function() {
@@ -774,9 +784,9 @@ $(document).ready(function() {
 
 
 </script>
-	
 
-<script type="text/javascript">
+
+	<script type="text/javascript">
     //Through ajax call on paymenttype id  we can hide and visible the parameters.
     $("#paymenttype").on("change", function() {
         var paymenttype = $(this).val();
@@ -787,13 +797,49 @@ $(document).ready(function() {
             document.getElementById("doshipment").style.setProperty("display", 'block');
             document.getElementById("Branch1").style.setProperty("display", 'block');
             document.getElementById("IFSC1").style.setProperty("display", 'block');
+        
+            
+ 
+           /* for(var i=0;i<idcount;i++) {
+               var currentValue = document.getElementById("uniqueId_" + i).innerText; 
+               var numericValue = parseFloat(currentValue);
+               if (!isNaN(numericValue)) {
+                   var newValue = Math.round(numericValue * (110 / 105));
+                   document.getElementById("uniqueId_" + i).innerText = newValue; 
+                   document.getElementById("contractValueHeading").innerText = "Contract value (110% of jute value in RS)";
+                   
+                   
+               }
+           } */
+           
+            for(var i=0;i<idcount;i++) {     
+                document.getElementById("uniqueId_" + i).innerText = contract110; 
+                document.getElementById("contractValueHeading").innerText = "Contract value (110% of jute value in RS)";
+            }  
+
         } else if (paymenttype === "NEFT/RTGS") {
             document.getElementById("autoamounta").style.setProperty("display", 'none');
             document.getElementById("doexpiry").style.setProperty("display", 'none');
-            document.getElementById("BankName1").style.setProperty("display", 'none');
+            document.getElementById("BankName1").style.setProperty("display", 'block');
             document.getElementById("doshipment").style.setProperty("display", 'none');
-            document.getElementById("Branch1").style.setProperty("display", 'none');
-            document.getElementById("IFSC1").style.setProperty("display", 'none');
+            document.getElementById("Branch1").style.setProperty("display", 'block');
+            document.getElementById("IFSC1").style.setProperty("display", 'block');
+            
+            /* for(var i=0;i<idcount;i++) {
+                var currentValue = document.getElementById("uniqueId_" + i).innerText; 
+                var numericValue = parseFloat(currentValue);
+                if (!isNaN(numericValue)) {
+                    var newValue = Math.round(numericValue * (105 / 105));
+                    document.getElementById("uniqueId_" + i).innerText = newValue; 
+                    document.getElementById("contractValueHeading").innerText = "Contract value (105% of jute value in RS)";   
+                }
+            } */
+            
+            for(var i=0;i<idcount;i++) {     
+                document.getElementById("uniqueId_" + i).innerText = contract105; 
+                document.getElementById("contractValueHeading").innerText = "Contract value (105% of jute value in RS)";
+            }  
+
         } else if (paymenttype === "Cheque/DD") {
             document.getElementById("autoamounta").style.setProperty("display", 'none');
             document.getElementById("doexpiry").style.setProperty("display", 'none');
@@ -801,11 +847,27 @@ $(document).ready(function() {
             document.getElementById("BankName1").style.setProperty("display", 'block');
             document.getElementById("Branch1").style.setProperty("display", 'block');
             document.getElementById("IFSC1").style.setProperty("display", 'block');
+            document.getElementById("contractValueHeading").innerText = "Contract value (105% of jute value in RS)";
+       
+            /* for(var i=0;i<idcount;i++) {
+                var currentValue = document.getElementById("uniqueId_" + i).innerText; 
+                var numericValue = parseFloat(currentValue);
+                if (!isNaN(numericValue)) {
+                    var newValue = Math.round(numericValue * (105 / 105));
+                    document.getElementById("uniqueId_" + i).innerText = newValue; 
+                    document.getElementById("contractValueHeading").innerText = "Contract value (105% of jute value in RS)";
+                     }
+            } */
+            
+            for(var i=0;i<idcount;i++) {     
+                document.getElementById("uniqueId_" + i).innerText = contract105; 
+                document.getElementById("contractValueHeading").innerText = "Contract value (105% of jute value in RS)";
+            }  
         }
     });
 </script>
 
-<script type="text/javascript">
+	<script type="text/javascript">
     document.getElementById("gradesDiv").style.setProperty("display", 'none');
     document.getElementById("autoamounta").style.setProperty("display", 'none');
     document.getElementById("doexpiry").style.setProperty("display", 'none');
@@ -844,8 +906,8 @@ $(document).ready(function() {
                 if (ifscCode.length !== 11) {
                     alert("Please enter a valid 11-character IFSC code!");
                     isValid = false; // Set the flag to false if validation fails
-                }
-              }
+                }
+              }
 
             // Prevent form submission if the form is not valid
             if (!isValid) {
@@ -858,7 +920,7 @@ $(document).ready(function() {
 
 
 
- <script>
+	<script>
         function validateInstrumentNo(input) {
         	  var pattern = /^[A-Za-z0-9/-]*$/; // Pattern to allow alphanumeric characters, slashes, and hyphens
         	    var inputValue = input.value; // Get the input value
@@ -877,7 +939,7 @@ $(document).ready(function() {
 
 
 
-<script>
+	<script>
     $(document).ready(function() {
         setTimeout(function() {
             $('#flashMessage').fadeOut('slow');
@@ -885,7 +947,7 @@ $(document).ready(function() {
     });
 </script>
 
-<script>
+	<script>
     document.addEventListener('DOMContentLoaded', function() {
         // Get references to the date input fields
         var instDateInput = document.getElementById('instdate');
@@ -927,7 +989,7 @@ $(document).ready(function() {
 
 
 
-<script type="text/javascript">
+	<script type="text/javascript">
 $(document).ready(function() {
     $('#contractno12').on('change', function() {
         var field2Value = $(this).val();
@@ -1094,7 +1156,7 @@ $(document).ready(function() {
 
 
 
-<script>
+	<script>
 $(document).ready(function() {
    
     function updateData(F_BANK_IFSC) {
@@ -1168,7 +1230,7 @@ $(document).ready(function() {
 	</script>
 
 
-<script>
+	<script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {
                 // Disable the submit button
