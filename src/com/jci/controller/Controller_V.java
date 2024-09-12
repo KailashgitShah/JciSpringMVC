@@ -128,6 +128,7 @@ import com.jci.model.GenerationofDocumentLCsModel;
 import com.jci.model.GenrationDEmandDto;
 import com.jci.model.GenrationDemandNoteModel;
 import com.jci.model.HoDispatchDto;
+import com.jci.model.InventoryDTO;
 import com.jci.model.JciDIHoModel;
 import com.jci.model.JciEntryTdsModel;
 import com.jci.model.Jciclaim_NominationModel;
@@ -332,6 +333,9 @@ public class Controller_V {
 
 	@Autowired
 	GenerationAgaistLCsService generationAgaistLCsService;
+	
+	
+
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -3550,7 +3554,7 @@ public class Controller_V {
                         //parameters.put("Contractno", details[0]);
                         
                         String concatenatepayment = (String) details[1] + "  dt. " + (String) details[2];
-                        String concatenateContract = (String) details[0] + "   dt. " + (String) details[9];
+                        String concatenateContract = "Financial Concurrence against Contract No:  "+(String) details[0] + "   dt. " + (String) details[9];
 
                         parameters.put("Contractno", concatenateContract);
                         //parameters.put("Instrument_No", details[1]);
@@ -3564,7 +3568,7 @@ public class Controller_V {
                         paymentvalue = paymentvalue / 100000;
                         String formattedValue = String.format("%.2f", paymentvalue);
                         
-                        String strforlastpayString=" Accordingly DI may be issued to the extend of  "+ formattedValue +" lakhs as per terms of the contract  ";
+                        String strforlastpayString=" Accordingly DI may be issued to the extend of Rupees  "+ formattedValue +" lakhs as per terms of the contract  ";
                         parameters.put("StringInstrument_value", strforlastpayString);
 
                  
@@ -3574,7 +3578,7 @@ public class Controller_V {
              
              Date lastShipmentDate = null;
              Date expiryDate = null;
-             String formattedLastShipmentDate = "";
+             String formattedLastShipmentDate = "Immediately";
              String formattedExpiryDate = "";
 
              if (details[4] != null && !((String) details[4]).trim().isEmpty()) {
@@ -3643,7 +3647,7 @@ public class Controller_V {
                         String millname = (String) row[0];
                         parameters.put("millname", millname);
 
-                        String address = String.join(" ", (String) row[1], (String) row[2], (String) row[3], (String) row[4]);
+                        String address = String.join(" ", (String) row[0],(String) row[1], (String) row[2], (String) row[3], (String) row[4]);
                         parameters.put("address", address);
                  }
 
@@ -12177,8 +12181,245 @@ public class Controller_V {
 	}
 
 	/////////////
+	
+	 @RequestMapping(value = "inventory")
+	  public ModelAndView  firstLevel(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session)
+	  {
+		  String username =(String)request.getSession().getAttribute("usrname");
+		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+	    	
+		  ModelAndView mv = new ModelAndView("Inventory");
+		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp");
+		  List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp");
+		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(currCropYear, "msp");
+
+		  mv.addObject("jute" ,jute);
+		  mv.addObject("dispatched" , dispatched);
+		  mv.addObject("contractInHand" , contractInHand);
+		  return mv;
+	    	  }
+	  }
+	  
+	    	 @ResponseBody
+	   	  @RequestMapping(value = {"inventorybale"}, method = { RequestMethod.GET })
+	   	  public String  inventorybale(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	   		
+	   	    		  String cropyr =  request.getParameter("cropyr");
+	   	    		  String basis =  request.getParameter("basis");
+	   	 		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr,basis);
+	   	 		 List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis);
+	   		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(cropyr, basis);
+
+
+	   	 	// Create a map to hold both lists
+	   	 	    Map<String, Object> responseMap = new HashMap<>();
+	   	 	    responseMap.put("bale", jute);
+	   	 	    responseMap.put("dispatched", dispatched);
+	   	 	    responseMap.put("contractInHand", contractInHand);
+	   	 	    // Convert map to JSON using Gson
+	   	 	    final Gson gson = new Gson();
+	   	 	    return gson.toJson(responseMap);
+	   	 	    
+	   	  }	 
+		  
+		    @RequestMapping(value = "regionwiseAvailable")
+  	  public ModelAndView  regionwiseAvailable(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+  		  String username =(String)request.getSession().getAttribute("usrname");
+  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+  	    	 if(username == null) {
+  	             return new ModelAndView("index");
+  	             }
+  	    	  else {
+  	    	
+  		  ModelAndView mv = new ModelAndView("Available_regionwise");
+		  List<InventoryDTO> regionprocured = dailyPurchaseModelConfService.secondLeveljuteRegionwise(currCropYear, "msp");
+  		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(currCropYear, "msp");
+  		  mv.addObject("regionprocured" ,(Object)regionprocured);
+		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
+  		  return mv;
+  	    	  } 
+  	  }
+	  
+	  	  @RequestMapping(value = "available_dpcwise")
+  	  public ModelAndView  available_dpcwise(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+  		  String username =(String)request.getSession().getAttribute("usrname");
+  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+
+  	    	 if(username == null) {
+  	             return new ModelAndView("index");
+  	             }
+  	    	  else {
+  	      String Region =  request.getParameter("region");
+  		  ModelAndView mv = new ModelAndView("available_dpcwise");
+  		  List<InventoryDTO> dpc_procured = dailyPurchaseModelConfService.second_level_jute_DPCwise(currCropYear, "msp",Region);
+		  List<InventoryDTO> dpc_available = dailyPurchaseModelConfService.dpc_wise_available(currCropYear, "msp",Region);
+  		  mv.addObject("dpc_procured" ,(Object)dpc_procured);
+		  mv.addObject("dpc_available" ,(Object)dpc_available);
+		  mv.addObject("Region" ,(Object)Region);
+  		  return mv;
+  	    	  }
+  	  }
+	    @ResponseBody
+	  @RequestMapping(value = {"inventoryregionwisejute"}, method = { RequestMethod.GET })
+	  public String  inventoryregionwisejute1(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	    		  String cropyr =  request.getParameter("cropyr");
+	    		  String basis =  request.getParameter("basis");
+		
+	    		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
+	 	   		  //mv.addObject("regionjute" ,(Object)regionjute);
+	    		  
+			  //List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
+	   		 // List<InventoryDTO> regionbale = dailyPurchaseModelConfService.secondLevelbaleRegionwise(cropyr, basis);
+	
+		   		Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
+		   	    resultMap.put("regionjute", regionjute);
+		   	   // resultMap.put("regionbale", regionbale);
+			   final Gson gson = new Gson();  
+			  return gson.toJson((Object)(resultMap));
+
+	  }
+	  
+	    @ResponseBody
+	  @RequestMapping(value = {"DPC_wise_jute"}, method = { RequestMethod.GET })
+	  public String  DPC_wise_jute(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	    		  String cropyr =  request.getParameter("cropyr");
+	    		  String basis =  request.getParameter("basis");
+	    		  String roname =  request.getParameter("roname");
+		
+	       		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis,roname);
+
+	    		 // List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr,basis,roname);
+	     		//  List<InventoryDTO> regionbale = dailyPurchaseModelConfService.second_level_bale_DPCwise(cropyr,basis,roname);
+		   		  Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
+		   	    resultMap.put("regionjute", regionjute);
+		   	    //resultMap.put("regionbale", regionbale);
+			   final Gson gson = new Gson();  
+			  return gson.toJson((Object)(resultMap));
+
+	  }
+	  
+	  	  
+	  @RequestMapping(value = "inventory_dpcwise")
+  	  public ModelAndView  inventory_dpcwise(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+  		  String username =(String)request.getSession().getAttribute("usrname");
+  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+
+  	    	 if(username == null) {
+  	             return new ModelAndView("index");
+  	             }
+  	    	  else {
+  	      String Region =  request.getParameter("region");
+  		  ModelAndView mv = new ModelAndView("Inventory_DPCwise");
+  		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(currCropYear, "msp",Region);
+		 // List<InventoryDTO> regionbale = dailyPurchaseModelConfService.second_level_bale_DPCwise("2022-2023", "msp",Region);
+  		  mv.addObject("regionjute" ,(Object)regionjute);
+		  //mv.addObject("regionbale" ,(Object)regionbale);
+		  mv.addObject("Region" ,(Object)Region);
+  		  return mv;
+  	    	  }
+  	  }
+	  
+	    
+//	  @ResponseBody
+//	  @RequestMapping(value = {"inventoryregionwisejute"}, method = { RequestMethod.GET })
+//	  public String  inventoryregionwisejute(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+//	    		  String cropyr =  request.getParameter("cropyr");
+//	    		  String basis =  request.getParameter("basis");
+//		
+//	    		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
+//	 	   		  //mv.addObject("regionjute" ,(Object)regionjute);
+//	    		  
+//			  //List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
+//	   		 // List<InventoryDTO> regionbale = dailyPurchaseModelConfService.secondLevelbaleRegionwise(cropyr, basis);
+//	
+//		   		Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
+//		   	    resultMap.put("regionjute", regionjute);
+//		   	   // resultMap.put("regionbale", regionbale);
+//			   final Gson gson = new Gson();  
+//			  return gson.toJson((Object)(resultMap));
+//
+//	  }
+	  
+	   	  @RequestMapping(value = "regionwiseinventory")
+	   	  public ModelAndView  regionwiseinventory(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	   		  String username =(String)request.getSession().getAttribute("usrname");
+	   		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+	   	    	 if(username == null) {
+	   	             return new ModelAndView("index");
+	   	             }
+	   	    	  else {
+	   	    	
+	   		  ModelAndView mv = new ModelAndView("Inventory_regionwise");
+			  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(currCropYear, "msp");
+	   		  //List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.secondLevelbaleRegionwise("2022-2023", "msp");
+	   		  mv.addObject("regionjute" ,(Object)regionjute);
+			 // mv.addObject("regionbale" ,(Object)regionbale);
+	   		  return mv;
+	   	    	  }
+	   	  }
+	   	  
+		  
+		    @RequestMapping(value = "contractinhand")
+  	  public ModelAndView  contractinhand(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+  		  String username =(String)request.getSession().getAttribute("usrname");
+  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+  	    	 if(username == null) {
+  	             return new ModelAndView("index");
+  	             }
+  	    	  else {
+  		  ModelAndView mv = new ModelAndView("contract_in_hand");
+		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Mill Accepted");
+		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","DI Issued by RO");
+		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Payment not done");
+		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Bill of supply generated");
+		  mv.addObject("Contracted" ,(Object)Contracted);
+		  mv.addObject("Despatched" ,(Object)Despatched);
+		  mv.addObject("Payment_not_received" ,(Object)Payment_not_received);
+		  mv.addObject("DI_in_hand" ,(Object)DI_in_hand);
+  		  return mv;
+  	    	  }
+  	  }
+	  
+	    @RequestMapping(value = "contractnumber")
+  	  public ModelAndView  contractnumber(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+  		  String username =(String)request.getSession().getAttribute("usrname");
+  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+  	    	 if(username == null) {
+  	             return new ModelAndView("index");
+  	             }
+  	    	  else {
+  		  ModelAndView mv = new ModelAndView("Contract_3rdLevel");
+  		  List<InventoryDTO> Contract_3rdLevel = dailyPurchaseModelConfService.contract3rd_level(currCropYear, "msp");
+  		  System.err.println("Contract_3rdLevel"+Contract_3rdLevel);
+		  mv.addObject("Contract_3rdLevel" ,(Object)Contract_3rdLevel);
+  		  return mv;
+  	    	  } 
+  	  }
+	  
+	    @RequestMapping(value = "Contract4thLevel")
+  	  public ModelAndView  Contract4thLevel(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+  		  String username =(String)request.getSession().getAttribute("usrname");
+  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+  	    	 if(username == null) {
+  	             return new ModelAndView("index");
+  	             }
+  	    	  else {
+  	      String contractno =  request.getParameter("contractno");
+  		  ModelAndView mv = new ModelAndView("Contract_4thLevel");
+  		  List<InventoryDTO> Contract_4thLevel = dailyPurchaseModelConfService.contract4th_level(currCropYear, "msp",contractno);
+  		  System.err.println("Contract_4thLevel"+Contract_4thLevel);
+		  mv.addObject("Contract_4thLevel" ,(Object)Contract_4thLevel);
+  		  return mv;
+  	    	  } 
+  	  }
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 

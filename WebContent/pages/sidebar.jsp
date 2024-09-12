@@ -87,6 +87,17 @@ body {
 
 				</ul></li>
 
+
+                                                 <li><a href="javascript:void(0);"><i
+                                                                           class="sidebar-item-icon fa fa-th-large"></i> <span
+                                                                           class="nav-label">&nbsp;Inventory</span> <i class="fa fa-angle-left arrow"></i></a>
+                                                            <ul class="nav-2-level">
+
+                                                                           <li  data-pre="58" id="o58"><a href="inventory.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Inventory</b></a></li>                                                                 
+
+                                                            
+                                                            </ul></li>
+
 			<li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">&nbsp;Contract</span> <i

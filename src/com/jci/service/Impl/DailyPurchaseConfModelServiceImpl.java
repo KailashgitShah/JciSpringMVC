@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao.DailyPurchaseConfDao;
 import com.jci.model.DailyPurchaseConfModel;
+import com.jci.model.InventoryDTO;
 import com.jci.service.DailyPurchaseModelConfService;
 
 @Service
@@ -69,7 +69,7 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 		
 	}
 	@Override
-	public List<Integer> firstLevelbale(String cropyr, String basis) {
+	public List<Double> firstLevelbale(String cropyr, String basis) {
 		return dailyPurchaseConfDao.firstLevelbale(cropyr, basis);
 		
 	}
@@ -89,8 +89,68 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 	}
 
 	@Override
+	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.secondLeveljuteRegionwise(cropyear, basis);
+	}
+
+	@Override
+	public List<InventoryDTO> secondLevelbaleRegionwise(String cropyear, String basis) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.secondLevelbaleRegionwise(cropyear, basis);
+	}
+
+	@Override
+	public List<InventoryDTO> second_level_jute_DPCwise(String cropyear, String basis, String region) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.second_level_jute_DPCwise(cropyear, basis, region);
+
+	}
+
+	@Override
+	public List<InventoryDTO> second_level_bale_DPCwise(String cropyear, String basis, String region) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.second_level_bale_DPCwise(cropyear, basis, region);
+	}
+
+	@Override
+	public List<Double> contractInHand_firstlevel(String currCropYear, String basis) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.contractInHand_firstlevel(currCropYear, basis);
+	}
+
+	@Override
+	public List<InventoryDTO> regionAvailable(String currCropYear, String basis) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.regionAvailable(currCropYear, basis);	}
+
+	@Override
+	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.dpc_wise_available(currCropYear, basis, region);	}
+
+	@Override
+	public List<Double> contractInHand_2ndlevel(String currCropYear, String basis, String status) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.contractInHand_2ndlevel(currCropYear, basis, status);
+	}
+
+	@Override
+	public List<InventoryDTO> contract3rd_level(String currCropYear, String basis) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.contract3rd_level(currCropYear, basis);	
+	}
+
+	@Override
+	public List<InventoryDTO> contract4th_level(String currCropYear, String basis, String contractno) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.contract4th_level(currCropYear, basis, contractno);	
+	}
+
+	@Override
 	public List<String> getCropYear() {
-	    return dailyPurchaseConfDao.getCropYear();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
