@@ -49,7 +49,7 @@
                       %>     
                       <div class="col-sm-3 form-group">
                       </div>        
-						 <div class="col-sm-3 form-group">
+						<!--  <div class="col-sm-3 form-group">
                            <label>Basis</label>
                              <select name="regionbasis" id="regionbasis" class="form-control" >
                                 <option value="">-Select-</option>
@@ -62,7 +62,7 @@
 					        <select name="regioncropyr" id="regioncropyr" class="form-control">
 						      <option value="">-Select-</option>
 						   </select>
-                        </div>
+                        </div> -->
                       </div>
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">

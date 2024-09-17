@@ -52,7 +52,7 @@
                     <div class="col-sm-3 form-group">
                     </div>
                                    
-										<div class="col-sm-3 form-group">
+										<!-- <div class="col-sm-3 form-group">
                                              <label>Basis</label>
                                              <span class="text-danger">* </span>&nbsp; <span id="errbasis" name="errbasis"
 												class="text-danger"> </span>
@@ -70,7 +70,7 @@
 												<option value="">-Select-</option>
 												
 												</select>
-                                        </div>
+                                        </div> -->
                                         </div>
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
 							

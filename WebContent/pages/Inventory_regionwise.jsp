@@ -46,11 +46,14 @@
 				  <div class="row">
                       <%
                       List<InventoryDTO> regionjute  = (List<InventoryDTO>)request.getAttribute("regionjute");
-                     // List<InventoryDTO> regionbale  = (List<InventoryDTO>)request.getAttribute("regionbale");
+                      String cropyear  = (String)request.getAttribute("cropyear");
+                      String basis  = (String)request.getAttribute("basis");
+                      String baled  = (String)request.getAttribute("baled");
+
                       %>     
                       <div class="col-sm-3 form-group">
                       </div>        
-						 <div class="col-sm-3 form-group">
+						<!--  <div class="col-sm-3 form-group">
                            <label>Basis</label>
                              <select name="regionbasis" id="regionbasis" class="form-control" >
                                 <option value="">-Select-</option>
@@ -63,7 +66,7 @@
 					        <select name="regioncropyr" id="regioncropyr" class="form-control">
 						      <option value="">-Select-</option>
 						   </select>
-                        </div>
+                        </div> -->
                       </div>
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
@@ -89,6 +92,15 @@
 								</thead>
 								
 								<%
+								double sumGrade1 = 0;
+					            double sumGrade2 = 0;
+					            double sumGrade3 = 0;
+					            double sumGrade4 = 0;
+					            double sumGrade5 = 0;
+					            double sumGrade6 = 0;
+					            double sumGrade7 = 0;
+					            double sumGrade8 = 0;
+								
 								int i = 0;
 								for (InventoryDTO  regionwise :regionjute) {
 								
@@ -96,7 +108,7 @@
 								<tbody>	
 									<tr>
 										<td>(<%=i+1%>)</td>
-										<td id="<%=i%>regionname"><a href ="inventory_dpcwise.obj?region=<%=regionwise.getRoname()%>"><%=regionwise.getRoname()%></a></td>
+										<td id="<%=i%>regionname"><a href ="inventory_dpcwise.obj?region=<%=regionwise.getRoname()%>&cropyear=<%=cropyear%>&basis=<%=basis%>&baled=<%=baled%>"><%=regionwise.getRoname()%></a></td>
 										<td id="<%=i%>loosejute"><%=regionwise.getGrade8() %></td>
 										<td id="<%=i%>grade0"><%=regionwise.getGrade1()%></td>
 										<td id="<%=i%>grade1"><%=regionwise.getGrade2()%></td>
@@ -113,9 +125,33 @@
 							
 								</tbody>
 						   <%
+						    sumGrade1 += regionwise.getGrade1();
+			                sumGrade2 += regionwise.getGrade2();
+			                sumGrade3 += regionwise.getGrade3();
+			                sumGrade4 += regionwise.getGrade4();
+			                sumGrade5 += regionwise.getGrade5();
+			                sumGrade6 += regionwise.getGrade6();
+			                sumGrade7 += regionwise.getGrade7();
+			                sumGrade8 += regionwise.getGrade8();
 						   i++;
 								}
 						   %>
+						   <tfoot>
+						        <tr>
+						            <td><b>Total</b></td>
+						            <td></td> <!-- Empty cell for Region Name -->
+						            <td><%= String.format("%.2f",sumGrade8) %></td>
+						            <td><%= String.format("%.2f",sumGrade1) %></td>
+						            <td><%= String.format("%.2f",sumGrade2) %></td>
+						            <td><%= String.format("%.2f",sumGrade3) %></td>
+						            <td><%= String.format("%.2f",sumGrade4) %></td>
+						            <td><%= String.format("%.2f",sumGrade5) %></td>
+						            <td><%= String.format("%.2f",sumGrade6) %></td>
+						            <td>0.0</td>
+						            <td>0.0</td>
+						            <td><%= String.format("%.2f",sumGrade7) %></td> <!-- Empty cell for Total -->
+						        </tr>
+						    </tfoot>
                         </table>
                         
                              

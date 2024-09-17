@@ -45,13 +45,17 @@
                        <h2 style="text-align:center;">2nd Level Available (Region Wise)</h2><br>  
 				  <div class="row">
                       <%
-                      List<InventoryDTO> regionprocured  = (List<InventoryDTO>)request.getAttribute("regionprocured");
+                      List<InventoryDTO> regionprocured  = (List<InventoryDTO>)request.getAttribute("regionjute");
                       List<InventoryDTO> regionAvailable  = (List<InventoryDTO>)request.getAttribute("regionAvailable");
+                      String cropyr  = (String)request.getAttribute("cropyr");
+                      String Baled  = (String)request.getAttribute("Baled");
+                      String basis  = (String)request.getAttribute("basis");
+
                       int size = regionprocured.size();
                       %>     
                       <div class="col-sm-3 form-group">
                       </div>        
-						 <div class="col-sm-3 form-group">
+						<!--  <div class="col-sm-3 form-group">
                            <label>Basis</label>
                              <select name="regionbasis" id="regionbasis" class="form-control" >
                                 <option value="">-Select-</option>
@@ -64,7 +68,7 @@
 					        <select name="regioncropyr" id="regioncropyr" class="form-control">
 						      <option value="">-Select-</option>
 						   </select>
-                        </div>
+                        </div> -->
                       </div>
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
@@ -91,6 +95,13 @@
 								
 								<%
 								//int i = 0;
+								double sumGrade1 = 0;
+					            double sumGrade2 = 0;
+					            double sumGrade3 = 0;
+					            double sumGrade4 = 0;
+					            double sumGrade5 = 0;
+					            double sumGrade6 = 0;
+					            double sumGrade7 = 0;
 								for (int i = 0; i < size; i++) {
 								    InventoryDTO procuredDTO = regionprocured.get(i);
 								    InventoryDTO availableDTO = regionAvailable.get(i);
@@ -99,8 +110,8 @@
 								<tbody>	
 									<tr>
 										<td>(<%=i+1%>)</td>
-										<td id="<%=i%>regionname"><a href ="available_dpcwise.obj?region=<%=procuredDTO.getRoname()%>"><%=procuredDTO.getRoname()%></a></td>
-										<td id="<%=i%>loosejute">N/A</td>
+										<td id="<%=i%>regionname"><a href ="available_dpcwise.obj?region=<%=procuredDTO.getRoname()%>&cropyr=<%=cropyr%>&Baled=<%=Baled%>&basis=<%=basis%>"><%=procuredDTO.getRoname()%></a></td>
+										<td id="<%=i%>loosejute"><%=procuredDTO.getGrade8() - availableDTO.getGrade8()%></td>
 										<td id="<%=i%>grade0"><%=procuredDTO.getGrade1() - availableDTO.getGrade1()%></td>
 										<td id="<%=i%>grade1"><%=procuredDTO.getGrade2() - availableDTO.getGrade2()%></td>
 										<td id="<%=i%>grade2"><%=procuredDTO.getGrade3() - availableDTO.getGrade3()%></td>
@@ -116,9 +127,33 @@
 							
 								</tbody>
 						   <%
+						    sumGrade1 += procuredDTO.getGrade1() - availableDTO.getGrade1();
+			                sumGrade2 += procuredDTO.getGrade2() - availableDTO.getGrade2();
+			                sumGrade3 += procuredDTO.getGrade3() - availableDTO.getGrade3();
+			                sumGrade4 += procuredDTO.getGrade4() - availableDTO.getGrade4();
+			                sumGrade5 += procuredDTO.getGrade5() - availableDTO.getGrade5();
+			                sumGrade6 += procuredDTO.getGrade6() - availableDTO.getGrade6();
+			                sumGrade7 += procuredDTO.getGrade7() - availableDTO.getGrade7();
 						   //i++;
 								}
 						   %>
+						   <tfoot>
+						        <tr>
+						            <td><b>Total</b></td>
+						            <td></td> <!-- Empty cell for Region Name -->
+						            <td></td>
+						            <td><%= String.format("%.2f",sumGrade1) %></td>
+						            <td><%= String.format("%.2f",sumGrade2) %></td>
+						            <td><%= String.format("%.2f",sumGrade3) %></td>
+						            <td><%= String.format("%.2f",sumGrade4) %></td>
+						            <td><%= String.format("%.2f",sumGrade5) %></td>
+						            <td><%= String.format("%.2f",sumGrade6) %></td>
+						            <td>0.0</td>
+						            <td>0.0</td>
+						            <td><%= String.format("%.2f",sumGrade7) %></td> <!-- Empty cell for Total -->
+						        </tr>
+						    </tfoot>
+                        
                         </table>
                         
                              

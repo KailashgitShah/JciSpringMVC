@@ -499,7 +499,7 @@ public class Controller_V {
 
 		// get the inventory data
 		List<String> cropYearList = dailyPurchaseModelConfService.getCropYear();
-		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "msp");
+		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "msp","Baled");
 		// List<Integer> bale =
 		// dailyPurchaseModelConfService.firstLevelbale("2023-2024", "MSP");
 		mv.addObject("jute", jute);
@@ -12194,8 +12194,9 @@ public class Controller_V {
 	    	  else {
 	    	
 		  ModelAndView mv = new ModelAndView("Inventory");
-		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp");
-		  List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp");
+		  String Baled = "Baled";
+		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp",Baled);
+		  List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp",Baled);
 		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(currCropYear, "msp");
 
 		  mv.addObject("jute" ,jute);
@@ -12210,9 +12211,10 @@ public class Controller_V {
 	   	  public String  inventorybale(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
 	   		
 	   	    		  String cropyr =  request.getParameter("cropyr");
+	   	    		  String Baled =  request.getParameter("Baled");
 	   	    		  String basis =  request.getParameter("basis");
-	   	 		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr,basis);
-	   	 		 List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis);
+	   	 		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr,basis,Baled);
+	   	 		 List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis,Baled);
 	   		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(cropyr, basis);
 
 
@@ -12235,11 +12237,17 @@ public class Controller_V {
   	             return new ModelAndView("index");
   	             }
   	    	  else {
-  	    	
+  	    		  String cropyr =  request.getParameter("cropyear");
+ 	    		  String Baled =  request.getParameter("baled");
+ 	    		  String basis =  request.getParameter("basis");
   		  ModelAndView mv = new ModelAndView("Available_regionwise");
-		  List<InventoryDTO> regionprocured = dailyPurchaseModelConfService.secondLeveljuteRegionwise(currCropYear, "msp");
-  		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(currCropYear, "msp");
-  		  mv.addObject("regionprocured" ,(Object)regionprocured);
+  
+		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr,basis,Baled);
+  		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
+		  mv.addObject("cropyr" ,(Object)cropyr);
+		  mv.addObject("Baled" ,(Object)Baled);
+		  mv.addObject("basis" ,(Object)basis);
+		  mv.addObject("regionjute" ,(Object)regionjute);
 		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
   		  return mv;
   	    	  } 
@@ -12255,9 +12263,14 @@ public class Controller_V {
   	             }
   	    	  else {
   	      String Region =  request.getParameter("region");
+  	      String cropyr =  request.getParameter("cropyr");
+		  String Baled =  request.getParameter("Baled");
+		  String basis =  request.getParameter("basis");
   		  ModelAndView mv = new ModelAndView("available_dpcwise");
-  		  List<InventoryDTO> dpc_procured = dailyPurchaseModelConfService.second_level_jute_DPCwise(currCropYear, "msp",Region);
-		  List<InventoryDTO> dpc_available = dailyPurchaseModelConfService.dpc_wise_available(currCropYear, "msp",Region);
+  		  List<InventoryDTO> dpc_procured = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis,Region,Baled);
+		  List<InventoryDTO> dpc_available = dailyPurchaseModelConfService.dpc_wise_available(currCropYear, basis,Region, Baled);
+		  System.err.println("dpc_procured+"+dpc_procured);
+		  System.err.println("dpc_available+"+dpc_available);
   		  mv.addObject("dpc_procured" ,(Object)dpc_procured);
 		  mv.addObject("dpc_available" ,(Object)dpc_available);
 		  mv.addObject("Region" ,(Object)Region);
@@ -12270,7 +12283,7 @@ public class Controller_V {
 	    		  String cropyr =  request.getParameter("cropyr");
 	    		  String basis =  request.getParameter("basis");
 		
-	    		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
+	    		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis,"Baled");
 	 	   		  //mv.addObject("regionjute" ,(Object)regionjute);
 	    		  
 			  //List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
@@ -12291,7 +12304,7 @@ public class Controller_V {
 	    		  String basis =  request.getParameter("basis");
 	    		  String roname =  request.getParameter("roname");
 		
-	       		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis,roname);
+	       		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis,roname,"Baled");
 
 	    		 // List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr,basis,roname);
 	     		//  List<InventoryDTO> regionbale = dailyPurchaseModelConfService.second_level_bale_DPCwise(cropyr,basis,roname);
@@ -12314,8 +12327,11 @@ public class Controller_V {
   	             }
   	    	  else {
   	      String Region =  request.getParameter("region");
+  	      String cropyear =  request.getParameter("cropyear");
+  	      String basis =  request.getParameter("basis");
+  	      String baled =  request.getParameter("baled");
   		  ModelAndView mv = new ModelAndView("Inventory_DPCwise");
-  		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(currCropYear, "msp",Region);
+  		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyear, basis,Region,baled);
 		 // List<InventoryDTO> regionbale = dailyPurchaseModelConfService.second_level_bale_DPCwise("2022-2023", "msp",Region);
   		  mv.addObject("regionjute" ,(Object)regionjute);
 		  //mv.addObject("regionbale" ,(Object)regionbale);
@@ -12348,17 +12364,22 @@ public class Controller_V {
 	   	  @RequestMapping(value = "regionwiseinventory")
 	   	  public ModelAndView  regionwiseinventory(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
 	   		  String username =(String)request.getSession().getAttribute("usrname");
-	   		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+	   		  String cropyear = request.getParameter("cropyear");
+	   		  String basis = request.getParameter("basis");
+	   		  String baled = request.getParameter("baled");
 	   	    	 if(username == null) {
 	   	             return new ModelAndView("index");
 	   	             }
 	   	    	  else {
 	   	    	
 	   		  ModelAndView mv = new ModelAndView("Inventory_regionwise");
-			  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(currCropYear, "msp");
+			  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyear,basis,baled);
 	   		  //List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.secondLevelbaleRegionwise("2022-2023", "msp");
 	   		  mv.addObject("regionjute" ,(Object)regionjute);
-			 // mv.addObject("regionbale" ,(Object)regionbale);
+			  mv.addObject("cropyear" ,(Object)cropyear);
+			  mv.addObject("basis" ,(Object)basis);
+			  mv.addObject("baled" ,(Object)baled);
+
 	   		  return mv;
 	   	    	  }
 	   	  }
@@ -12417,6 +12438,7 @@ public class Controller_V {
   		  return mv;
   	    	  } 
   	  }
+			 
 }
 
 

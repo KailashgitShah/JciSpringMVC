@@ -52,7 +52,7 @@
                       %>     
                       <div class="col-sm-3 form-group">
                       </div>        
-						 <div class="col-sm-3 form-group">
+						<!--  <div class="col-sm-3 form-group">
                            <label>Basis</label>
                              <select name="regionbasis" id="regionbasis" class="form-control" >
                                 <option value="">-Select-</option>
@@ -65,7 +65,7 @@
 					        <select name="regioncropyr" id="regioncropyr" class="form-control">
 						      <option value="">-Select-</option>
 						   </select>
-                        </div>
+                        </div> -->
                       </div>
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
@@ -91,6 +91,14 @@
 								</thead>
 								
 								<%
+								double sumGrade1 = 0;
+					            double sumGrade2 = 0;
+					            double sumGrade3 = 0;
+					            double sumGrade4 = 0;
+					            double sumGrade5 = 0;
+					            double sumGrade6 = 0;
+					            double sumGrade7 = 0;
+					            double sumGrade8 = 0;
 								int i = 0;
 								// Using traditional for loop
 								for (InventoryDTO dpcwise : regionjute) {
@@ -115,9 +123,33 @@
 							
 								</tbody>
 						   <%
+						   sumGrade1 += dpcwise.getGrade1();
+			                sumGrade2 += dpcwise.getGrade2();
+			                sumGrade3 += dpcwise.getGrade3();
+			                sumGrade4 += dpcwise.getGrade4();
+			                sumGrade5 += dpcwise.getGrade5();
+			                sumGrade6 += dpcwise.getGrade6();
+			                sumGrade7 += dpcwise.getGrade7();
+			                sumGrade8 += dpcwise.getGrade8();
 						   i++;
 								}
 						   %>
+						   <tfoot>
+						        <tr>
+						            <td><b>Total</b></td>
+						            <td></td> <!-- Empty cell for Region Name -->
+						         <td><%= String.format("%.2f",sumGrade8) %></td>
+						            <td><%= String.format("%.2f",sumGrade1) %></td>
+						            <td><%= String.format("%.2f",sumGrade2) %></td>
+						            <td><%= String.format("%.2f",sumGrade3) %></td>
+						            <td><%= String.format("%.2f",sumGrade4) %></td>
+						            <td><%= String.format("%.2f",sumGrade5) %></td>
+						            <td><%= String.format("%.2f",sumGrade6) %></td>
+						            <td>0.0</td>
+						            <td>0.0</td>
+						            <td><%= String.format("%.2f",sumGrade7) %></td> <!-- Empty cell for Total -->
+						        </tr>
+						    </tfoot>
                         </table>
                         
                              
