@@ -51,7 +51,7 @@ public class PCSOReqLetterDaoImpl implements PCSOReqLetterDao {
 	@Override
 	public List<PCSORequestLetter> getTopThreeRecords(String cropString) {
 		String sqlString = "select Top 5 * from jcipcso_gen ORDER by convert(datetime,ReqGenDate,103) desc";
-		
+
 //		String sqlString = "select Top 5 * from jcipcso_gen where crop_year='" + cropString
 //				+ "' ORDER by ReqGenDate desc";
 		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
@@ -75,17 +75,19 @@ public class PCSOReqLetterDaoImpl implements PCSOReqLetterDao {
 
 	@Override
 	public void setEmailStatus(int id, int status) {
-		
+
 		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
 		String currDate = formater.format(new Date());
-		String sqlString = "update jcipcso_gen set emailStatus = " + status + ", emailSentOn = '"+currDate+"' where pcso_gen_id = " + id;
+		String sqlString = "update jcipcso_gen set emailStatus = " + status + ", emailSentOn = '" + currDate
+				+ "' where pcso_gen_id = " + id;
 		currentSession().createSQLQuery(sqlString).executeUpdate();
-		
+
 	}
 
 	@Override
 	public double getTotalContractedQty(String cropYear) {
-		String sqlString = "SELECT COALESCE(SUM(req_qty), 0) FROM jcipcso_gen WHERE emailStatus = 1";
+		String sqlString = "SELECT COALESCE(SUM(req_qty), 0) FROM jcipcso_gen WHERE emailStatus = 1 and crop_year = '"
+				+ cropYear + "'";
 		Object result = currentSession().createSQLQuery(sqlString).uniqueResult();
 
 		// Check for null and return a default value if needed

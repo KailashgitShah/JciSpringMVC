@@ -60,7 +60,6 @@ String pastCropYear2 = (startYear - 2) + "-" + (endYear - 2);
 List<PCSORequestLetter> topThreeRecords = (List<PCSORequestLetter>) request.getAttribute("topThreeRecords");
 List<String> cropYr = (List<String>) request.getAttribute("distinctCropYear");
 double totalContractedVal = (double) request.getAttribute("totalContract");
-
 List<Double> jute = (List<Double>) request.getAttribute("jute");
 %>
 
@@ -94,8 +93,8 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 										<th>Reference No.</th>
 										<th>Date</th>
 										<th>Crop Year</th>
-										<th>Requested Qty.</th>
-										<th>Uncontracted Qty.</th>
+										<th>Requested Qty. (Qtls)</th>
+										<th>Uncontracted Qty.(Qtls)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -276,7 +275,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 
 										</div>
 										<div class="col-sm-4 form-group">
-											<label>Total Contracted Qty. (Qtls.) </label> <input
+											<label>Total Requsted Qty. (Qtls.) </label> <input
 												class="form-control" name="totalContractedQty" type="text"
 												value="<%=totalContractedVal%>" readonly>
 										</div>
@@ -460,6 +459,26 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 																		});
 															}
 														});
+										
+											
+												$
+												.ajax({
+													type : "GET",
+													url : "totalReqQty.obj",
+													data : {
+														"cropyr" : cropyr,
+														"basis" : basis
+													},
+													success : function(
+															result) {
+														var jute = jQuery
+																.parseJSON(result);
+														
+														alert(jute);
+														
+													}
+											
+											
 											});
 						});
 	</script>

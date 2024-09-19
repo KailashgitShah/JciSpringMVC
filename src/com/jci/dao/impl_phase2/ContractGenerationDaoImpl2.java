@@ -412,4 +412,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		return ( List<String>) currentSession().createSQLQuery(sql).list();
 	}
 
+	@Override
+	public String findEmailByMillCode(String millCode) {
+		String sql = "select client_email from jcimilldetailmaster a INNER join jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '" + millCode + "'";
+		return (String) currentSession().createSQLQuery(sql).uniqueResult();
+	}
+
 }

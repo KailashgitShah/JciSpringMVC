@@ -25,6 +25,7 @@ public interface ContractGenerationDao2 {
 	List<String> findRefNos(String formatedPcsoDateWithQuotes);
 	String getMillname(String millCode);
 	List<String> getPscoDateByCropYr(String cropYr);
+	String findEmailByMillCode(String millCode);
 	
 
 

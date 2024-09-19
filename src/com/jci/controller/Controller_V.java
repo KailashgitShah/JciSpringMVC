@@ -638,8 +638,8 @@ public class Controller_V {
 		if (imageFile.exists()) {
 			try {
 				// Set the content type based on the file type
-				response.setContentType("application/pdf");
-
+				
+response.setContentType("application/pdf");
 				// download
 				// response.setHeader("Content-Disposition", "attachment; filename=" +
 				// fileName);
@@ -669,6 +669,25 @@ public class Controller_V {
 		}
 
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "totalReqQty", method = RequestMethod.GET)
+	public String getTotalContractedQty(HttpServletRequest request)
+			throws AddressException {
+		String cropyr = request.getParameter("cropyr");
+		String basis = request.getParameter("basis");
+		
+		double contractedQty = genReqLetterService.getTotalContractedQty(cropYearString);
+		
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractedQty);
+		return resultString;
+	}
+
+	
+	
+	
 
 	// get the contract letter path
 	@Value("${upload.contractLetterJava}")
@@ -1401,6 +1420,19 @@ public class Controller_V {
 			qutoedAns += "'" + no + "',";
 		return qutoedAns;
 	}
+	
+	private static InternetAddress[] convertToInternetAddresses(String[] emailAddresses) {
+        List<InternetAddress> addressList = new ArrayList<>();
+        for (String email : emailAddresses) {
+            try {
+                addressList.add(new InternetAddress(email));
+            } catch (Exception e) {
+                // Handle potential exceptions from invalid email formats
+                e.printStackTrace();
+            }
+        }
+        return addressList.toArray(new InternetAddress[0]);
+    }
 
 	// contract authorization
 	@ResponseBody
@@ -1424,8 +1456,13 @@ public class Controller_V {
 
 		for (String contract : contractNos) {
 			String[] contractNo = contract.split("/");
-
 			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
+			
+			String millCode = contractNo[1];
+			
+//		    String millEmails= contractGenerationService2.findEmailByMillCode(millCode);
+//		    
+//		    String[] emailArr = millEmails.split(", ");
 
 			String filePath = contractNo[3] + File.separator + fileName;
 
@@ -1454,26 +1491,27 @@ public class Controller_V {
 
 			// Close the PdfStamper
 			stamper.close();
-
-			try {
-				// send email
-				String body = "Please find below attachment to get full details of contract grade wise..";
-				String sub = "Contract Details";
-				final String filePathDir = contractLetterPath + File.separator + filePath;
-				SendMail sendMail = new SendMail();
-				InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
-
-				CompletableFuture.runAsync(() -> {
-					try {
-						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				});
-
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+			
+//			try {
+//				// send email
+//				String body = "Please find below attachment to get full details of contract grade wise..";
+//				String sub = "Contract Details";
+//				final String filePathDir = contractLetterPath + File.separator + filePath;
+//				SendMail sendMail = new SendMail();
+//				InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);
+//				//InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
+//		
+//				CompletableFuture.runAsync(() -> {
+//					try {
+//						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				});
+//
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//			}
 
 //			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
 //			String deString = "C:/Users/pradeep.rathor/Desktop/NewVisitor";
@@ -3136,8 +3174,7 @@ public class Controller_V {
 				String dateofship = request.getParameter("dateofship");
 				String Millnameletest = request.getParameter("millname234");
 
-				System.err.println(dateofship);
-				System.err.println(dateofexpiry);
+				
 
 				String Pyamentduedate = request.getParameter("payment_dueDate12");
 				String contrcat_value23 = request.getParameter("contrcat_value23");
@@ -3235,7 +3272,7 @@ public class Controller_V {
 
 					// String dateofship1 = formatter1.parse(dateofship);
 					entryPaymentDetailsModel.setDateofship(dateofship);
-					System.err.println(dateofship);
+					
 
 					// Date dateofexpiry1 = formatter1.parse(dateofexpiry);
 					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry);
@@ -3355,7 +3392,7 @@ public class Controller_V {
 	public void downloaFcdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 		String imagePath = fcDownoad + File.separator + filename;
 		File imageFile = new File(imagePath);
-		System.err.println(filename); // Check if the file exists
+		//System.err.println(filename); // Check if the file exists
 		if (imageFile.exists()) {
 
 			try {
@@ -3791,7 +3828,7 @@ public class Controller_V {
 	public ModelAndView entryOfMillReceiptChild(@RequestParam("challanno") String contractNo,
 			@RequestParam("millName") String millName, @RequestParam("cropyear") String hoDate,
 			HttpServletRequest request) {
-		System.err.println("EntryofMillreceiptChild");
+		//System.err.println("EntryofMillreceiptChild");
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv;
 
