@@ -144,16 +144,17 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 										<div class="col-sm-4 form-group">
 											<label>Crop Year</label> <span class="text-danger">* </span>&nbsp;
 											<span id="errcropyr" name="errcropyr" class="text-danger">
-											</span> <select name="cropyr" id="cropyr" class="form-control"
-												readonly>
+											</span> <select name="cropyr" id="cropyr" class="form-control" onchange="getTotalQty()"
+												>
 												<option value="">-Select-</option>
-												<option selected value="<%=currCropYear%>" ><%=currCropYear %></option>
+												<option  value="<%=currCropYear%>" ><%=currCropYear %></option>
 												<option value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
 												<option value="<%=pastCropYear2%>"><%=pastCropYear2%></option>
 													
 												 
 											</select>
 										</div>
+									</div>
 									</div>
 									<table class="table table-striped table-bordered table-hover"
 										id="example-table" cellspacing="0" width="100%">
@@ -274,10 +275,15 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 												autocomplete="off" type="date" min="" required>
 
 										</div>
+										<%-- <div class="col-sm-4 form-group">
+											<label>Total Requsted Qty. (Qtls.) </label> <input
+												class="form-control" name="totalContractedQty" type="text" id="totalContractedQty"
+												value="<%=totalContractedVal%>" readonly>
+										</div> --%>
 										<div class="col-sm-4 form-group">
 											<label>Total Requsted Qty. (Qtls.) </label> <input
-												class="form-control" name="totalContractedQty" type="text"
-												value="<%=totalContractedVal%>" readonly>
+												class="form-control" name="totalContractedQty" type="text" id="totalContractedQty"
+												 readonly>
 										</div>
 
 									</div>
@@ -380,7 +386,9 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 									.on(
 											'change',
 											function() {
+												//alert("kkkk")
 												var cropyr = $("#cropyr").val();
+											
 												var basis = "MSP";
 												//var basis = $("#basis").val();
 												var loosejute = 0.0;
@@ -460,28 +468,54 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 															}
 														});
 										
-											
-												$
-												.ajax({
-													type : "GET",
-													url : "totalReqQty.obj",
-													data : {
-														"cropyr" : cropyr,
-														"basis" : basis
-													},
-													success : function(
-															result) {
-														var jute = jQuery
-																.parseJSON(result);
-														
-														alert(jute);
-														
-													}
-											
-											
-											});
+											/* 
+												$.ajax({
+												    type: "GET",
+												    url: "totalReqQty.obj",
+												    data: {
+												        "cropyr": cropyr,
+												        "basis": basis
+												    },
+												    success: function(result) {
+												        alert("totalRequested");
+												        var jute = jQuery.parseJSON(result);
+												        alert(jute); // If you want to alert the parsed JSON
+												    },
+												    error: function(xhr, status, error) {
+												        alert("Error: " + error); // Improved error handling
+												    }
+												}); */
 						});
 	</script>
+	
+	<script>
+    var basis = "MSP";
+
+    function getTotalQty() {
+        var cropyr = document.getElementById("cropyr").value; // Get the value of the dropdown
+       
+        $.ajax({
+            type: "GET",
+            url: "totalReqQty.obj",
+            data: {
+                cropyr: cropyr, // Use the value of cropyr
+                basis: basis    // Basis is already defined
+            },
+            success: function(result) {
+             
+                    var jute = jQuery.parseJSON(result);
+                    document.getElementById("totalContractedQty").value = jute;
+                   // alert(jute)
+                 
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error); // Improved error handling
+            }
+        });
+    }
+</script>
+
+	
 
 
 

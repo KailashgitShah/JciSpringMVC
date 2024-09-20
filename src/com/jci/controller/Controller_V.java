@@ -678,7 +678,7 @@ response.setContentType("application/pdf");
 		String cropyr = request.getParameter("cropyr");
 		String basis = request.getParameter("basis");
 		
-		double contractedQty = genReqLetterService.getTotalContractedQty(cropYearString);
+		double contractedQty = genReqLetterService.getTotalContractedQty(cropyr);
 		
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(contractedQty);
