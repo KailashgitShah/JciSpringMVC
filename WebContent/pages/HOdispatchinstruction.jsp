@@ -266,9 +266,9 @@ input[type="radio"] {
 
 
                                                                                      <div class="col-sm-4 form-group">
-                                                                                            <label>Remarks</label><span class="text-danger">* </span>&nbsp;
+                                                                                            <label>Remarks</label>&nbsp;
                                                                                             <textarea class="form-control taxtbox" name="remarks"
-                                                                                                  placeholder="Remarks" required maxlength="250"></textarea>
+                                                                                                  placeholder="Remarks"  maxlength="250"></textarea>
                                                                                      </div>
 
                                                                                      <!-- <div class="col-sm-4 form-group">
