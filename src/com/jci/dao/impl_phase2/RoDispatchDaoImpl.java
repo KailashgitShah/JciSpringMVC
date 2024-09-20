@@ -125,7 +125,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 		String sqlString = "SELECT CENTER_CODE, centername "+
 				" FROM jcipurchasecenter "+
 				"WHERE rocode = '" + regionIdString + "'"+ 
-				 " AND (centertypecode = 'C' OR centertypecode='D');";
+				 " ";
 		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
 		List<String> newlList = new ArrayList<>();
 		for(Object[] ro: list) {
