@@ -60,7 +60,7 @@
                         <div class="ibox">
                           <span>${msg}</span>
                             <div class="ibox-body">
-                       <form >  <!-- action="saveentryofpaymentinstrument.obj" method="POST"> -->
+                       <form id ="myForm">  <!-- action="saveentryofpaymentinstrument.obj" method="POST"> -->
                            <div class="child-checkbox" id="disableform">
                                  <div class="row">
                                        <div class="col-sm-3 form-group">
@@ -81,8 +81,8 @@
 	                                            <label>Unit 1</label> 
 												<select name="unit1" id="unit1" class="form-control taxtbox" required>
 													<option value="">-Select-</option>
-													<option value="perqtls">Per Qtls</option>
-													<option value="perbale">Per Bale</option>
+													<option value="perqtls">PerQtls</option>
+													<option value="perbale">PerBale</option>
 												</select>
 	                                     </div>
                                       </div>
@@ -133,6 +133,20 @@
     </div>
     
     <div class="sidenav-backdrop backdrop"></div>
+    
+    
+    
+           <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
     <script type="text/javascript">
     $(document).ready(function(){
 
@@ -240,11 +254,11 @@
          url:'saveFactorCommercial.obj',
          data:{"Factor_Head":JSON.stringify(Factor_Head),"Unit":JSON.stringify(Unit),"Applicability":JSON.stringify(Applicability),"Status":JSON.stringify(Status),"identification":identification},
          success:function(result){
-				alert("hello"+result);
+				//alert("hello"+result);
  				 
 			}	
          });
-	   alert();
+	  // alert();
     });
     
   });
@@ -276,3 +290,6 @@
     <!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>
+
+
+

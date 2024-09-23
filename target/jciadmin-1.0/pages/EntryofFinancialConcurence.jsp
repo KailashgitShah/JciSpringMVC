@@ -67,12 +67,23 @@
 		    String issuedate = (String) request.getAttribute("parsed");
 		    String paymentDueDate = (String) request.getAttribute("paymentDueDate");
 		    Object instrumentvalue =request.getAttribute("instrumentvalue");
-		    Object instrumentDateObject = request.getAttribute("instrumentDate");
+		    Object  instrumentDateObject =request.getAttribute("instrumentDate");
+		    Object remainquantity = request.getAttribute("remainquantity");
 		    
-		    Date instrumentDate1 = (Date) instrumentDateObject;
+		    Date instrumentDate1 = (Date) instrumentDateObject; 
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy"); // Change the format as needed
-	        String formattedInstrumentDate = dateFormat.format(instrumentDate1);
-	        
+	        String formattedInstrumentDate = dateFormat.format(instrumentDateObject);
+	         
+	         
+	         
+	       /*   SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+	         SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+	             Date date = inputFormat.parse(instrumentDateObject);
+
+	             String formattedDate = outputFormat.format(date); */
+	             
+	             
 		    String ContractValue = (String) request.getAttribute("ContractValue");
 		    Double qtyallowed = (Double) request.getAttribute("qtyallowed");
 		    int Payment_id = (int) request.getAttribute("Payment_id");
@@ -86,6 +97,21 @@
            
 		    FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
 		    BigInteger charge =(BigInteger) (request.getAttribute("cost"));
+		  
+		    
+		    String contractValueStr = String.valueOf(ContractValue).trim();
+		    String instrumentValueStr = String.valueOf(instrumentvalue).trim();
+
+		    if (!contractValueStr.matches("-?\\d+(\\.\\d+)?") || !instrumentValueStr.matches("-?\\d+(\\.\\d+)?")) {
+		        throw new NumberFormatException("Invalid numeric format");
+		    }
+		    
+		    
+		    
+		    
+		    
+		    
+		    BigDecimal remainquantity1 = new BigDecimal(String.valueOf(remainquantity));
 		    
 		    
 		
@@ -93,11 +119,18 @@
 		    
 		   
 		  
-		     BigDecimal contractValueBigInt = new BigDecimal(String.valueOf(ContractValue));
-		    
-		     BigDecimal instrumentValueBigInt = new BigDecimal(String.valueOf(instrumentvalue)); 
-		    
+		    BigDecimal contractValueBigInt = new BigDecimal(contractValueStr);
+		    BigDecimal instrumentValueBigInt = new BigDecimal(instrumentValueStr);
 
+		     BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt, 2, RoundingMode.HALF_UP);
+
+		   /*   BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt);
+		     */
+		     if (ratio.compareTo(BigDecimal.ONE) > 0) {
+		            instrumentValueBigInt = instrumentValueBigInt;
+		        } else {
+		            instrumentValueBigInt = contractValueBigInt;
+		        }
 
 		    BigDecimal qtdsub = contractValueBigInt.subtract(instrumentValueBigInt);
 		 
@@ -114,6 +147,9 @@
 			  
 		    BigDecimal qtdivtotal1 = qtdiv.multiply(instrumentValueBigInt);
 		    
+		/*     BigDecimal qtdivtotal2 = qtdivtotal1.add(remainquantity1);
+ */
+		    
 		    BigDecimal qtdivtotal = qtdivtotal1.setScale(2, RoundingMode.HALF_UP);
 		    
 		    
@@ -126,7 +162,7 @@
                         <div class="ibox">
                           <span id="flashMessage">${msg}</span>
                             <div class="ibox-body">
-                       <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" >
+                       <form action="saveFinancialConcurence.obj" method="POST" name ="myForm" id="myForm">
                            <div class="child-checkbox" id="disableform">
                                        
 			                                  <div class="row">
@@ -142,7 +178,7 @@
 			                                         <div class="col-sm-4 form-group">
 															<label>FC Ref No. </label> 
 															<span class="text-danger">* </span>&nbsp; <span id="FC_Ref_No. " name=FC_Ref_No. class="text-danger"> </span>
-															<input class="form-control" name="FC_Ref_No." id="FC_Ref_No." value="<%=fcref_no2 %>" readonly ="readonly" required
+															<input class="form-control" name="FC_Ref_No123" id="FC_Ref_No." value="<%=fcref_no2 %>" readonly ="readonly" required
 													
 															>
 													</div> 
@@ -151,7 +187,7 @@
 				                                      <div class="col-sm-4 form-group">
 															<label>FC Issue Date</label> 
 															<span class="text-danger">* </span>&nbsp; <span id="FC_Issue_Date" name="FC_Issue_Date" class="text-danger"> </span>
-															<input class="form-control" name="FC_Issue_Date" id="FC_Issue_Date" type="date" value=<%= issuedate %> required>
+															<input class="form-control" name="FC_Issue_Date" id="FC_Issue_Date" type="date" value=<%= issuedate %> readonly="true" required>
 													   </div>
 			                                 </div>
 			                                    
@@ -176,12 +212,14 @@
 				                                            <label>Instrument Date </label> 
 				                                            <span class="text-danger">* </span>&nbsp; <span id="Instrument_Date" name="Instrument_Date " class="text-danger" > </span>
 															 <input class="form-control taxtbox" name="Instrument_Date" id ="Instrument_Date"  value=<%= formattedInstrumentDate %> placeholder="Instrument_Date"  readonly="true" >
-				                                     </div>  
-				                                       <div class="col-sm-4 form-group">
-					                                            <label>Remarks</label> 
-					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
-																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
-					                                     </div>
+				                                     </div>
+				                                     
+				                                      <div class="col-sm-4 form-group">
+					                                            <label>Contracted Qty(Qtls)</label> 
+					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
+																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0"  placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
+					                                     </div>  
+				                                      
 				                                     
 			
                                                 </div>
@@ -194,11 +232,7 @@
 															    <input class="form-control taxtbox" name="Days_Diffrence" id="DaysDiffrencetotal" value="<%= charge %>" placeholder="Days_Diffrence">
 															    <span id="error-message" class="text-danger"></span>
 															</div>
-				                                            <div class="col-sm-4 form-group">
-					                                            <label>Contracted Qty(Qtls)</label> 
-					                                            <span class="text-danger">* </span>&nbsp; <span id="Contracted_Qty. " name="Contracted_Qty. " class="text-danger" type="double"> </span>
-																 <input class="form-control taxtbox" name="Contracted_Qty." id ="Contracted_Qty." min="0"  placeholder="Qty Allowed" value=<%= Cont_qty %>  readonly="true" required>
-					                                     </div>
+				                                           
 					                       						<div class="col-sm-4 form-group">
 																	    <label>Qty. Allowed (Qtls) ( max Allowed =  <%=qtdivtotal %> )</label>
 																	    <span class="text-danger">*</span>
@@ -206,6 +240,11 @@
 																	    <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" type ="number" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
 																	    <div id="errorMessage" style="color: red; display: none;">Amount exceeds the allowed limit!</div>
 																	</div>
+																<div class="col-sm-4 form-group">
+					                                            <label>Remarks</label> 
+					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
+																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
+					                                     </div>
 																
 
 											
@@ -471,12 +510,22 @@
       
         setTimeout(function(){
             $('#flashMessage').fadeOut('slow');
-        }, 3000); ded
+        }, 3000); 
     });
 </script>
 					 	 
 
-					    
+		<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>			    
 			  
 			    
 			  

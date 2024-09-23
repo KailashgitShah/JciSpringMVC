@@ -17,7 +17,7 @@
     <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="./assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="./assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- PLUGINS STYLES-->
@@ -26,17 +26,17 @@
     <link href="assets/css/main.min.css" rel="stylesheet" />
     <!-- PAGE LEVEL STYLES-->
      <script type="text/javascript">
-	$(document).ready(function ()  
-	{  
-		 $("#farmerVerific").DataTable({         
-	         scrollX: true,
-	         "pageLength": 50
-	       }); 
-	});  
+       $(document).ready(function ()  
+       {  
+              $("#farmerVerific").DataTable({         
+                scrollX: true,
+                "pageLength": 50
+              }); 
+       });  
  </script>
 <style>
 .scrollmenu {
- 
+
   overflow: scroll;
   white-space: nowrap;
 }
@@ -71,12 +71,12 @@ th     { background:#eee; }
                 <h1 class="page-title">View Factors Involved in Commercial</h1>
                  
             </div>
-				
-				<%
-					List<FactorssInvolvedCommercial> alllist = (List<FactorssInvolvedCommercial>) request.getAttribute("allFIC");
-			
-				%>
-			 <div class="page-content fade-in-up">
+                          
+                          <%
+                                 List<FactorssInvolvedCommercial> alllist = (List<FactorssInvolvedCommercial>) request.getAttribute("allFIC");
+                    
+                          %>
+                    <div class="page-content fade-in-up">
                 <div class="ibox">
                     <span>${msg}</span>
                     <div class="ibox-body">
@@ -84,35 +84,35 @@ th     { background:#eee; }
                          <table class="table table-striped table-bordered table-hover tableFixHead" id="example-table" cellspacing="0" width="100%">
 
 
-								<thead>
-									<tr>
-										<th>Sl.No</th>
-										<th>Identification No</th>
-										 <th>Factor Head</th>
-										 <th>Unit</th>
-										 <th>Applicability </th> 										
-										<th>Status</th>
-							</tr>
-								</thead>
-								<tbody>
-									<% 
-									int i= 1;
-							for(FactorssInvolvedCommercial list : alllist){
-							%>
-									<tr>
-										<td><%=i%></td>
-										<td><%=list.getIdentification_no()%></td>
-										<td><%=list.getFactor_head()%></td>
-										<td><%=list.getUnit()%></td>
-										<td><%=list.getApplicability()%></td>
-										<td><%=list.getStatus()%></td>
-									</tr>
-									<% 
-								    
-							i++; }
-							
-							%>
-								</tbody>
+                                                    <thead>
+                                                           <tr>
+                                                                  <th>Sl.No</th>
+                                                                  <th>Identification No</th>
+                                                                  <th>Factor Head</th>
+                                                                  <th>Unit</th>
+                                                                  <th>Applicability </th>                                                             
+                                                                  <th>Status</th>
+                                              </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                           <% 
+                                                           int i= 1;
+                                              for(FactorssInvolvedCommercial list : alllist){
+                                              %>
+                                                           <tr>
+                                                                  <td><%=i%></td>
+                                                                  <td><%=list.getIdentification_no()%></td>
+                                                                  <td><%=list.getFactor_head()%></td>
+                                                                  <td><%=list.getUnit()%></td>
+                                                                  <td><%=list.getApplicability()%></td>
+                                                                  <td><%=list.getStatus()%></td>
+                                                           </tr>
+                                                           <% 
+                                                        
+                                              i++; }
+                                              
+                                              %>
+                                                    </tbody>
    
                         </table>
                         </div>
@@ -145,8 +145,8 @@ th     { background:#eee; }
     <script type="text/javascript">
         $(function() {
             $('#example-table').DataTable({
-            	
-            	    fixedHeader: true
+            
+                 fixedHeader: true
             
                 //"ajax": './assets/demo/data/table_data.json',
                 /*"columns": [
@@ -163,3 +163,4 @@ th     { background:#eee; }
 </body>
 
 </html>
+

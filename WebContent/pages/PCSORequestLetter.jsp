@@ -63,6 +63,14 @@ double totalContractedVal = (double) request.getAttribute("totalContract");
 List<Double> jute = (List<Double>) request.getAttribute("jute");
 %>
 
+	<%  /* 
+				List<Double> jute = (List<Double>)request.getAttribute("jute"); */
+				List<Double> dispatched = (List<Double>)request.getAttribute("dispatched");
+				List<Double> contractInHand = (List<Double>)request.getAttribute("contractInHand");
+		     /*    String currCropYear =(String)request.getSession().getAttribute("currCropYear"); */
+
+
+							  %>
 <body class="fixed-navbar">
 	<div class="page-wrapper">
 		<!-- START HEADER-->
@@ -147,7 +155,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 											</span> <select name="cropyr" id="cropyr" class="form-control" onchange="getTotalQty()"
 												>
 												<option value="">-Select-</option>
-												<option  value="<%=currCropYear%>" ><%=currCropYear %></option>
+												<option selected value="<%=currCropYear%>" ><%=currCropYear %></option>
 												<option value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
 												<option value="<%=pastCropYear2%>"><%=pastCropYear2%></option>
 													
@@ -179,7 +187,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 										</tr>
 
 										</thead>
-										<tbody>
+								 	<tbody>
 
 
 											<tr>
@@ -247,6 +255,8 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 											</tr>
 										</tbody>
 
+                                     
+                                 
 
 									</table>
 
@@ -378,7 +388,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 				});
 	</script>
 
-	<script>
+	<!-- <script>
 		$(document)
 				.ready(
 						function() {
@@ -487,8 +497,9 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 												}); */
 						});
 	</script>
+	 -->
 	
-	<script>
+<script>
     var basis = "MSP";
 
     function getTotalQty() {
@@ -502,23 +513,20 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
                 basis: basis    // Basis is already defined
             },
             success: function(result) {
-             
-                    var jute = jQuery.parseJSON(result);
-                    document.getElementById("totalContractedQty").value = jute;
-                   // alert(jute)
-                 
+                var jute = jQuery.parseJSON(result);
+                document.getElementById("totalContractedQty").value = jute;
             },
             error: function(xhr, status, error) {
                 alert("Error: " + error); // Improved error handling
             }
         });
     }
+
+    // Function to run when the document is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        getTotalQty(); // Call the function to fetch the total requested quantity
+    });
 </script>
-
-	
-
-
-
 
   <script>
         $(document).ready(function() {

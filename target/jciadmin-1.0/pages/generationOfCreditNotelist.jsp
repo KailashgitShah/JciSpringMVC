@@ -1,10 +1,8 @@
-\
 <%@page import="com.jci.model.EntryDerivativePrice"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
 
-<%@page import="com.jci.model.RawJuteProcurementAndPayment"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +77,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 			</div>
 			<%
 			List<Object[]> list = (List<Object[]>) request.getAttribute("list");
+			String baseIp = (String) request.getSession().getAttribute("baseIp");
 			%>
 			<div class="page-content fade-in-up">
 				<div class="ibox">
@@ -265,8 +264,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 
 	<script>
 		$("#filter")
-				.on(
-						"change",
+				.on("change",
 						function() {
 							var parameter = $("#decision").val();
 							$
@@ -281,7 +279,8 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 
 											var filterOption = jQuery
 													.parseJSON(result);
-
+											
+                                            var baseIp = '<%=baseIp%>';
 											var htmlTable = '';
 
 											for (var i = 0; i < filterOption.length; i++) {
@@ -291,32 +290,6 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 
 												htmlTable += '<tr border="2px"><td style="text-align:center">'
 														+ counter + '</td>';
-												/*  htmlTable += '<td><a onclick="saveCreditNote()"' + 
-													'class="btn btn-warning btn-sm">Generate credit Note </a></td>'; */
-												//234569081	
-												/* htmlTable += '<td><a onclick="saveCreditNote('
-														+ "'"
-														+ filterOption[i][2]
-														+ "','"
-														+ filterOption[i][3]
-														+ "','"
-														+ filterOption[i][4]
-														+ "','"
-														+ filterOption[i][5]
-														+ "','"
-														+ filterOption[i][6]
-														+ "','"
-														+ filterOption[i][9]
-														+ "','"
-														+ filterOption[i][0]
-														+ "','"
-														+ filterOption[i][8]
-														+ "','"
-														+ filterOption[i][1]
-														+ "','"
-														+ filterOption[i][10]
-														+ "')"
-														+ '" class="btn btn-warning btn-sm">Generate credit Note </a></td>'; */
 
 												htmlTable += '<td><a href="generateCrn.obj?challan='
 														+ filterOption[i][3]
@@ -355,21 +328,14 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 												htmlTable += '<td style="text-align:center" name="shortWt">'
 														+ shortQty + '</td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/JCIStuff/billofsupply/'
-														+ filterOption[i][11] + " " + "bos"
-														+ '>View</a></td>';
+												htmlTable += '<td><a style="color : blue" target="_blank" href="'+ baseIp + '/JCIStuff/billofsupply/'+ filterOption[i][11] 	
+												+ '">View</a></td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/WeightSlipment/'
-														+ filterOption[i][12]
-														+ '>View</a></td>';
-/* 												htmlTable += '<td><a style="color : blue" target="_blank" href=downloadCreditNoteDocs.obj?imagePath='
-														+ filterOption[i][12] + " " + "weightment"
-														+ '>View</a></td>'; */
+												htmlTable += '<td><a style="color : blue" target="_blank" href="' + baseIp + '/WeightSlipment/' + filterOption[i][12]
+														+ '">View</a></td>';
 
-												htmlTable += '<td><a style="color : blue" target="_blank" href=http://49.50.118.112:8080/DispatchDetail/'
-														+ filterOption[i][13] 														+ '>View</a></td>';
-/* 														+ filterOption[i][13] + " " + "consignment"
-														+ '>View</a></td>'; */
+												htmlTable += '<td><a style="color: blue;" target="_blank" href="' + baseIp + '/DispatchDetail/' + filterOption[i][13]
+											  + '">View</a></td>';
 
 												htmlTable += '<td style="text-align:center;display:none" name="millCode">'
 														+ filterOption[i][10]
@@ -383,7 +349,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 													'<div></div>');
 										}
 									})
-						})
+						});
 
 		function getShipmentDetails(challanNo) {
 			$.ajax({

@@ -8,6 +8,7 @@
 <%@page import="java.io.File"%>
 <%@page import="com.jci.model.RoleMasterModel"%>
 <%@page import="com.jci.model.ZoneModel"%>
+<%@page import="java.text.ParseException"%>
 <%@page isELIgnored="false"%>
 
 <!DOCTYPE html>
@@ -102,9 +103,26 @@
                            <tbody>
 									<%
 									int i = 1;
-									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-									for (EntryPaymentDetailsModel  entryPaymentDetailsModel : allUserRegistration) {
+									 SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
+							            SimpleDateFormat sdfOutput = new SimpleDateFormat("dd-MM-yyyy");
 
+									for (EntryPaymentDetailsModel  entryPaymentDetailsModel : allUserRegistration) {
+									    Date dateOfExpiry = null;
+						                Date dateOfShipment = null;
+						                try {
+						                    String dateOfExpiryStr = entryPaymentDetailsModel.getDateofexpiry();
+						                    String dateOfShipmentStr = entryPaymentDetailsModel.getDateofship();
+
+						                    if (dateOfExpiryStr != null && !dateOfExpiryStr.trim().isEmpty()) {
+						                        dateOfExpiry = sdfInput.parse(dateOfExpiryStr.trim());
+						                    }
+
+						                    if (dateOfShipmentStr != null && !dateOfShipmentStr.trim().isEmpty()) {
+						                        dateOfShipment = sdfInput.parse(dateOfShipmentStr.trim());
+						                    }
+						                } catch (ParseException e) {
+						                    e.printStackTrace();
+						                }
 										if (i <= 200) {
 											
 									%>
@@ -115,19 +133,18 @@
 									        <button class="btn btn-primary custom-button" type="button" style="display: inline-block; width: 100px; height: 15px; border-radius: 5px;">Issue FC</button>
 									    </a>
 									</td> 
-									
-										<td><%= entryPaymentDetailsModel.getContractno() %></td>
-										<td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
-										 <td><%= sdf.format(entryPaymentDetailsModel.getInstdate()) %></td>
-										<td><%= entryPaymentDetailsModel.getIFSC() %></td>
-										<td><%= entryPaymentDetailsModel.getBankName() %></td>
-										<td><%= entryPaymentDetailsModel.getBranch() %></td>
-										<td><%= entryPaymentDetailsModel.getPayment() %></td>
-										<td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
-											 <td><%= sdf.format(entryPaymentDetailsModel.getDateofexpiry()) %></td>
-										 <td><%= sdf.format(entryPaymentDetailsModel.getDateofship()) %></td>
-										<td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
-									 	
+									   <td><%= entryPaymentDetailsModel.getContractno() %></td>
+						                <td><%= entryPaymentDetailsModel.getInstrumentno() %></td>
+						                <td><%= sdfOutput.format(entryPaymentDetailsModel.getInstdate()) %></td>
+						                <td><%= entryPaymentDetailsModel.getIFSC() %></td>
+						                <td><%= entryPaymentDetailsModel.getBankName() %></td>
+						                <td><%= entryPaymentDetailsModel.getBranch() %></td>
+						                <td><%= entryPaymentDetailsModel.getPayment() %></td>
+						                <td><%= entryPaymentDetailsModel.getInstrumentValue() %></td>
+						                <td><%= dateOfExpiry != null ? sdfOutput.format(dateOfExpiry) : "" %></td>
+						                <td><%= dateOfShipment != null ? sdfOutput.format(dateOfShipment) : "" %></td>
+						                <td><%= entryPaymentDetailsModel.getAutorevolvingamount() %></td>
+						                
                                         <td>
 								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
 								              <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->

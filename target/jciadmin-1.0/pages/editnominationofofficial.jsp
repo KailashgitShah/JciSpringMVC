@@ -101,7 +101,7 @@
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="updatesavenominalform.obj" method="POST">
+								<form id="myForm" action="updatesavenominalform.obj" method="POST">
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
@@ -122,7 +122,7 @@
 			                                 Jciclaim_NominationModel nominationProfile = (Jciclaim_NominationModel)request.getAttribute("nomination");	
 										   
 		                                    %>
-                                        <input type ="" id ="DateofInpection"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
+                                        <input type ="hidden" id ="DateofInpection"  name="DateofInpection"           value="<%=nominationProfile.getDateofInspection()%>">                                   
 										<input type = "hidden"  name="Settlement_id_generated"   value="<%=nominationProfile.getSettlement_id_generated()%>">      
 										<input type = "hidden"  name="millname"                  value="<%=nominationProfile.getMill()%>">      
 										<input type =  "hidden" name="omoofficial"               value="<%=nominationProfile.getOMOfficial()%>">      
@@ -134,14 +134,16 @@
 
 										<div class="col-sm-4 form-group">
 												<a href="viewlistnominal.obj"><button class="btn btn-warning" type="button">Back</button></a>
-										        <input type="submit" value="Submit" class="btn btn-primary"id="submit">
+										         <input type="submit" value="Submit" class="btn btn-primary"id="submit"> 
 										</div>
 										
 									</div>
-
-
+								
+			                                    
 								</form>
 							</div>
+							
+							
 						</div>
 					</div>
 				</div>
@@ -153,7 +155,17 @@
 
 	<div class="sidenav-backdrop backdrop"></div>
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!--  <script>
@@ -162,7 +174,17 @@
 	
 </script> -->
 
+ <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 	<script type="text/javascript">
@@ -266,6 +288,7 @@
 			}); */
 		});
 	</script>
+
 
 
 	<!-- END PAGA BACKDROPS-->

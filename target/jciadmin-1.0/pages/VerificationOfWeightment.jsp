@@ -72,6 +72,10 @@
     }
 </style>
 
+<%
+  String baseIp = (String) request.getSession().getAttribute("baseIp");
+%>
+
 <script>
     var rotation = 0;
     var scale = 1.0;
@@ -128,12 +132,12 @@
                 <span>${msg}</span>
                 <div class="ibox-body">
                     <div id='errorcontainer' style='display: none; text-align: center;'></div>
-                    <form action="verifyWeightmentSlip.obj" method="POST" onsubmit="return myFunc()">
+                    <form action="verifyWeightmentSlip.obj" method="POST" onsubmit="return myFunc()" id="myForm">
                         <div class="child-checkbox" id="disableform">
                             <div id="container" style="display: flex;">
                           <div id="l1" style="flex: 1; position: relative; overflow: hidden;">
     <div id="elementId" style="text-align: left; position: relative;">
-        <img name="uploadedImage" id="uploadedImage" src="http://49.50.118.112:8080/WeightSlipment/<%=Data.get(0)[5]%>" class="magnifier">
+        <img name="uploadedImage" id="uploadedImage" src="<%=baseIp%>/WeightSlipment/<%=Data.get(0)[5]%>" class="magnifier">
         <div id="controls" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
             <button type="button" onclick="zoomIn()">Zoom In</button>
             <button type="button" onclick="zoomOut()">Zoom Out</button>
@@ -212,8 +216,8 @@
 function myFunc(){
 	var actual = $("#DpcEndWt").val();
 	var net = $("#DPCNetqty").val();
-	alert("Actual"+actual);
-	alert("Net"+net);
+	//alert("Actual"+actual);
+	//alert("Net"+net);
 	if(net === actual) {return true;}
 	 var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight" ;
      var errorDiv = $("<div>").text(errorMessage).css({
@@ -275,6 +279,8 @@ function calculateNetWeight() {
          }, 5000); */
     }
 }
+
+
 </script>
 	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
@@ -290,7 +296,17 @@ function calculateNetWeight() {
 
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 </body>
 
 

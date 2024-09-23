@@ -47,7 +47,51 @@ src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js">
 src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- CORE SCRIPTS-->
 
+<style>
+.scrollmenu {
+	overflow: scroll;
+	white-space: nowrap;
+}
 
+.scrollmenu a {
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 14px;
+	text-decoration: none;
+}
+
+.tableFixHead {
+	overflow: auto;
+	height: 100px;
+	width: 240px;
+}
+
+.tableFixHead thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.tableFixHead tbody th {
+	position: sticky;
+	left: 0;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	padding: 8px 16px;
+	white-space: nowrap;
+}
+
+th {
+	background: #eee;
+}
+</style>
 <style>
 .required:after {
       content: " *";
@@ -109,7 +153,8 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="savenominal.obj" method="POST">
+								<form id ="myForm" action="savenominal.obj" method="POST">
+
 									<div class="row">
 										<div class="col-sm-4 form-group">
 											<label> Mill</label> <span class="text-danger">* </span> <select
@@ -179,7 +224,8 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 						 <input type="hidden" id="numRows" name="rows">
 						 
 						</div>
-					</div>   
+					</div>  
+					<div class="scrollmenu"> 
                       <div class="row ">
 						      <div class="col-sm-4 form-group">
 						
@@ -203,13 +249,13 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 		
 						 </div>		
 						 </div>    
-						        		
+						  </div>      		
 					
 					
 					<div class="row">
                    <div class="col-sm-4 form-group">
                     <div style="flex-grow: 1;"></div> <!-- This creates space to push the button to the bottom -->
-                   <input type="submit" value="Submit" class="btn btn-primary" id="submit">
+                   <input type="submit" value="Submit" class="btn btn-primary" id="submit" onclick="disableSubmit(event)">
                    </div>
                    </div>
 
@@ -227,7 +273,17 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
 	<div class="sidenav-backdrop backdrop"></div>
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- <script>
@@ -236,7 +292,17 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
       
 </script>  -->
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

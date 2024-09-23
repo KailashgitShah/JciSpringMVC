@@ -113,7 +113,8 @@
             
             String date = (String) request.getAttribute("parsed");
             
-            String millname="";
+            String millnameMR="";
+            String field1="";
 		%>
           <div class="page-content fade-in-up">
                 <div class="row">
@@ -134,8 +135,8 @@
 													   <option value="">-Select-</option>
 													    <%
 													    for (Object[] row : fetchMill_NameR) {
-													        String field1 = (String) row[0];
-													        millname = (String) row[0];
+													        field1 = (String) row[0];
+													        millnameMR = (String) row[0];
 													        String field2 = (String) row[1];
 													        
 													    
@@ -248,10 +249,10 @@
 											</div>
 											
 											 <div class="col-sm-2 form-group"  style="display: none;">
-												    <label "display:none;" >millname234 </label> <span
+												    <label "display:none;"  >millname234 </label> <span
 													class="text-danger">* </span>&nbsp;  <input
 													class="form-control" name="rowindex2"
-													id="millname234" value="<%=millname %>" readonly="readonly">
+													id="millname234" value="" readonly="readonly">
 											</div>
 											
 										
@@ -328,6 +329,7 @@ $(document).ready(function() {
             url: 'millreceiptbased.obj', 
             data: { "millname": field2Value },
             success: function(data) {
+            	
              
 
                 var dataArray = JSON.parse(data);
@@ -416,7 +418,7 @@ $(document).ready(function() {
             url: 'findmillreceiptNO.obj',
             data: { "hodino": field1Value },
             success: function(data) {
-                
+            
                 var jsonResponse = JSON.parse(data);
                 var dataFoundValue = jsonResponse.dataFound;
 
@@ -488,14 +490,14 @@ $(document).ready(function() {
         var id = $(this).data('id');
         var millNameValue = $('#Mill_name1').val(); // Get the value from #Mill_name1
         var millNameValue1 = $('#millname234').val(); // Get the value from #Mill_name1
-        var hoDateValue = $('#HODate').find(':selected').attr('data-value1'); // Get the data-value2 attribute
+        var cropyear = $('#HODate').find(':selected').attr('data-value1'); // Get the data-value2 attribute
       // Get the data-value2 attribute
 
         // Construct the URL with the parameters
         var url = 'EntryofMillreceiptChild.obj';
-        url += '?contarctno=' + encodeURIComponent(id);
+        url += '?challanno=' + encodeURIComponent(id);
         url += '&millName=' + encodeURIComponent(millNameValue1); 
-        url += '&hoDate=' + encodeURIComponent(hoDateValue);
+        url += '&cropyear=' + encodeURIComponent(cropyear);
         
 
         window.open(url, '_blank');
@@ -505,7 +507,19 @@ $(document).ready(function() {
 
 
 
-
+<script>
+$(document).ready(function() {
+   
+    $('#Mill_name1').on('change', function() {
+    
+        var selectedText = $("#Mill_name1 option:selected").text();
+        
+       
+        $('#millname234').val(selectedText);
+        
+    });
+});
+</script>
 
 
 

@@ -79,7 +79,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
-								<form action="saveEDPrice.obj" method="POST">
+								<form action="saveEDPrice.obj" id="myForm" method="POST">
 									<div class="row">
 
 										<div class="col-sm-4 form-group">
@@ -146,7 +146,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 													<th>GR6</th>
 												</tr>
 												<tr>
-													<td>Tossa (New)</td>
+													<td>Tossa</td>
 													<td><input type="number" name="tgr1" id="tgr1"
 														step="any" class="form-control validation"
 														data-decimal="2" min="0" /></td>
@@ -166,7 +166,7 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 
 												</tr>
 												<tr>
-													<td>White (New)</td>
+													<td>White</td>
 													<td><input type="number" name="wgr1" id="wgr1"
 														step="any" data-decimal="2" min="0"
 														class="form-control validation" /></td>
@@ -339,6 +339,11 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	<script>
 		$("#submit").click(function(){
  
+		  if( $("#centerordpc").val().length === 0){
+			  alert("Please choose district");
+			  return false;
+		  };
+		 
 			// grade validations...
  
 			let groupIDs = {
@@ -380,6 +385,26 @@ String currCropYear = (String) request.getSession().getAttribute("currCropYear")
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
 		type="text/javascript"></script>
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	
+	  <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');
+                sessionStorage.setItem('formSubmitted', 'true');
+                             
+            });
+        });
+        
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('formSubmitted') === 'true') {
+                document.getElementById('myForm').reset();
+                sessionStorage.removeItem('formSubmitted');
+            }
+        });
+
+    </script>
 
 </body>
 </html>
