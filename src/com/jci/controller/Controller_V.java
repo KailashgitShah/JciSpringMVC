@@ -12231,10 +12231,24 @@ response.setContentType("application/pdf");
 		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp",Baled);
 		  List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp",Baled);
 		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(currCropYear, "msp");
+		  
+		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Mill Accepted");
+		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","DI Issued by RO");
+		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Payment not done");
+		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Bill of supply generated");
+		  
+		  List<Double> contractinhand = new ArrayList<Double>();
+		  contractinhand.add((Payment_not_received.get(0) + DI_in_hand.get(0)) + ((Contracted.get(0)-Payment_not_received.get(0)) - (Despatched.get(0)+DI_in_hand.get(0))));
+		  contractinhand.add((Payment_not_received.get(1) + DI_in_hand.get(1)) + ((Contracted.get(1)-Payment_not_received.get(1)) - (Despatched.get(1)+DI_in_hand.get(1))));	
+		  contractinhand.add((Payment_not_received.get(2) + DI_in_hand.get(2)) + ((Contracted.get(2)-Payment_not_received.get(2)) - (Despatched.get(2)+DI_in_hand.get(2))));	
+		  contractinhand.add((Payment_not_received.get(3) + DI_in_hand.get(3)) + ((Contracted.get(3)-Payment_not_received.get(3)) - (Despatched.get(3)+DI_in_hand.get(3))));	
+		  contractinhand.add((Payment_not_received.get(4) + DI_in_hand.get(4)) + ((Contracted.get(4)-Payment_not_received.get(4)) - (Despatched.get(4)+DI_in_hand.get(4))));	
+		  contractinhand.add((Payment_not_received.get(5) + DI_in_hand.get(5)) + ((Contracted.get(5)-Payment_not_received.get(5)) - (Despatched.get(5)+DI_in_hand.get(5))));	
+		  contractinhand.add((Payment_not_received.get(6) + DI_in_hand.get(6)) + ((Contracted.get(6)-Payment_not_received.get(6)) - (Despatched.get(6)+DI_in_hand.get(6))));	
 
+		  mv.addObject("contractinhand" ,(Object)contractinhand);
 		  mv.addObject("jute" ,jute);
 		  mv.addObject("dispatched" , dispatched);
-		  mv.addObject("contractInHand" , contractInHand);
 		  return mv;
 	    	  }
 	  }
@@ -12248,14 +12262,28 @@ response.setContentType("application/pdf");
 	   	    		  String basis =  request.getParameter("basis");
 	   	 		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(cropyr,basis,Baled);
 	   	 		 List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(cropyr, basis,Baled);
-	   		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(cropyr, basis);
+	   		 // List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(cropyr, basis);
+	   		  
+	   	 	  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyr, basis,"Mill Accepted");
+	  		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyr, basis,"DI Issued by RO");
+	   		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyr, basis,"Payment not done");
+			  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyr, basis,"Bill of supply generated");
+
+			  List<Double> contractinhand = new ArrayList<Double>();
+			  contractinhand.add((Payment_not_received.get(0) + DI_in_hand.get(0)) + ((Contracted.get(0)-Payment_not_received.get(0)) - (Despatched.get(0)+DI_in_hand.get(0))));
+			  contractinhand.add((Payment_not_received.get(1) + DI_in_hand.get(1)) + ((Contracted.get(1)-Payment_not_received.get(1)) - (Despatched.get(1)+DI_in_hand.get(1))));	
+			  contractinhand.add((Payment_not_received.get(2) + DI_in_hand.get(2)) + ((Contracted.get(2)-Payment_not_received.get(2)) - (Despatched.get(2)+DI_in_hand.get(2))));	
+			  contractinhand.add((Payment_not_received.get(3) + DI_in_hand.get(3)) + ((Contracted.get(3)-Payment_not_received.get(3)) - (Despatched.get(3)+DI_in_hand.get(3))));	
+			  contractinhand.add((Payment_not_received.get(4) + DI_in_hand.get(4)) + ((Contracted.get(4)-Payment_not_received.get(4)) - (Despatched.get(4)+DI_in_hand.get(4))));	
+			  contractinhand.add((Payment_not_received.get(5) + DI_in_hand.get(5)) + ((Contracted.get(5)-Payment_not_received.get(5)) - (Despatched.get(5)+DI_in_hand.get(5))));	
+			  contractinhand.add((Payment_not_received.get(6) + DI_in_hand.get(6)) + ((Contracted.get(6)-Payment_not_received.get(6)) - (Despatched.get(6)+DI_in_hand.get(6))));	
 
 
 	   	 	// Create a map to hold both lists
 	   	 	    Map<String, Object> responseMap = new HashMap<>();
 	   	 	    responseMap.put("bale", jute);
 	   	 	    responseMap.put("dispatched", dispatched);
-	   	 	    responseMap.put("contractInHand", contractInHand);
+	   	 	    responseMap.put("contractinhand", contractinhand);
 	   	 	    // Convert map to JSON using Gson
 	   	 	    final Gson gson = new Gson();
 	   	 	    return gson.toJson(responseMap);
@@ -12307,6 +12335,9 @@ response.setContentType("application/pdf");
   		  mv.addObject("dpc_procured" ,(Object)dpc_procured);
 		  mv.addObject("dpc_available" ,(Object)dpc_available);
 		  mv.addObject("Region" ,(Object)Region);
+		  mv.addObject("cropyr" ,(Object)cropyr);
+		  mv.addObject("Baled" ,(Object)Baled);
+		  mv.addObject("basis" ,(Object)basis);
   		  return mv;
   	    	  }
   	  }
@@ -12369,6 +12400,9 @@ response.setContentType("application/pdf");
   		  mv.addObject("regionjute" ,(Object)regionjute);
 		  //mv.addObject("regionbale" ,(Object)regionbale);
 		  mv.addObject("Region" ,(Object)Region);
+		  mv.addObject("cropyr" ,(Object)cropyear);
+		  mv.addObject("Baled" ,(Object)baled);
+		  mv.addObject("basis" ,(Object)basis);
   		  return mv;
   	    	  }
   	  }
@@ -12421,20 +12455,25 @@ response.setContentType("application/pdf");
 		    @RequestMapping(value = "contractinhand")
   	  public ModelAndView  contractinhand(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
   		  String username =(String)request.getSession().getAttribute("usrname");
-  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+  		 String cropyear = request.getParameter("cropyear");
+  		  String basis = request.getParameter("basis");
+  		  String baled = request.getParameter("baled");
   	    	 if(username == null) {
   	             return new ModelAndView("index");
   	             }
   	    	  else {
   		  ModelAndView mv = new ModelAndView("contract_in_hand");
-		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Mill Accepted");
-		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","DI Issued by RO");
-		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Payment not done");
-		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Bill of supply generated");
+		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"Mill Accepted");
+		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"DI Issued by RO");
+		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"Payment not done");
+		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"Bill of supply generated");
 		  mv.addObject("Contracted" ,(Object)Contracted);
 		  mv.addObject("Despatched" ,(Object)Despatched);
 		  mv.addObject("Payment_not_received" ,(Object)Payment_not_received);
 		  mv.addObject("DI_in_hand" ,(Object)DI_in_hand);
+		  mv.addObject("cropyear" ,(Object)cropyear);
+		  mv.addObject("basis" ,(Object)basis);
+		  mv.addObject("baled" ,(Object)baled);
   		  return mv;
   	    	  }
   	  }

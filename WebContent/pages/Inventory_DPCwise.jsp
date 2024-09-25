@@ -48,10 +48,22 @@
                       List<InventoryDTO> regionjute  = (List<InventoryDTO>)request.getAttribute("regionjute");
                      // List<InventoryDTO> regionbale  = (List<InventoryDTO>)request.getAttribute("regionbale");
                       String roname  = (String)request.getAttribute("Region");
-
+                      String cropyear  = (String)request.getAttribute("cropyr");
+                      String basis  = (String)request.getAttribute("basis");
+                      String baled  = (String)request.getAttribute("Baled");
                       %>     
                       <div class="col-sm-3 form-group">
-                      </div>        
+	                    <label>Basis</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=basis%>" readonly>
+                    </div>
+                     <div class="col-sm-3 form-group">
+	                    <label>CropYear</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=cropyear%>" readonly>
+                    </div>
+                     <div class="col-sm-3 form-group">
+	                    <label>In Bales / In Qtls</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=baled%>" readonly>
+                    </div>       
 						<!--  <div class="col-sm-3 form-group">
                            <label>Basis</label>
                              <select name="regionbasis" id="regionbasis" class="form-control" >

@@ -48,24 +48,23 @@
                       List<InventoryDTO> dpc_procured  = (List<InventoryDTO>)request.getAttribute("dpc_procured");
                       List<InventoryDTO> dpc_available  = (List<InventoryDTO>)request.getAttribute("dpc_available");
                       String roname  = (String)request.getAttribute("Region");
+                      String cropyr  = (String)request.getAttribute("cropyr");
+                      String Baled  = (String)request.getAttribute("Baled");
+                      String basis  = (String)request.getAttribute("basis");
 
-                      %>     
-                      <div class="col-sm-3 form-group">
-                      </div>        
-						<!--  <div class="col-sm-3 form-group">
-                           <label>Basis</label>
-                             <select name="regionbasis" id="regionbasis" class="form-control" >
-                                <option value="">-Select-</option>
-                                <option value="msp">MSP</option>
-                                <option value="commercial">Commercial</option>
-                             </select>
-                         </div> 
+                      %>    
+                        <div class="col-sm-3 form-group">
+	                    <label>Basis</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=basis%>" readonly>
+                    </div>
                      <div class="col-sm-3 form-group">
-                      <label>Crop Year</label> 
-					        <select name="regioncropyr" id="regioncropyr" class="form-control">
-						      <option value="">-Select-</option>
-						   </select>
-                        </div> -->
+	                    <label>CropYear</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=cropyr%>" readonly>
+                    </div>
+                     <div class="col-sm-3 form-group">
+	                    <label>In Bales / In Qtls</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=Baled%>" readonly>
+                    </div>  
                       </div>
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">

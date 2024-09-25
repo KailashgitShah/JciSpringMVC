@@ -51,8 +51,18 @@
                       String baled  = (String)request.getAttribute("baled");
 
                       %>     
-                      <div class="col-sm-3 form-group">
-                      </div>        
+                       <div class="col-sm-3 form-group">
+	                    <label>Basis</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=basis%>" readonly>
+                    </div>
+                     <div class="col-sm-3 form-group">
+	                    <label>CropYear</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=cropyear%>" readonly>
+                    </div>
+                     <div class="col-sm-3 form-group">
+	                    <label>In Bales / In Qtls</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=baled%>" readonly>
+                    </div>       
 						<!--  <div class="col-sm-3 form-group">
                            <label>Basis</label>
                              <select name="regionbasis" id="regionbasis" class="form-control" >

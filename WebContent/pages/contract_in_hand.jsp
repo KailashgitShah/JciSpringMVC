@@ -41,6 +41,10 @@
 				List<Double> Despatched = (List<Double>)request.getAttribute("Despatched");
 				List<Double> Payment_not_received = (List<Double>)request.getAttribute("Payment_not_received");
 				List<Double> DI_in_hand = (List<Double>)request.getAttribute("DI_in_hand");
+				
+				String cropyear = (String)request.getAttribute("cropyear");
+				String basis = (String)request.getAttribute("basis");
+				String baled = (String)request.getAttribute("baled");
 
 							  %>
 			  <div class="page-content fade-in-up">
@@ -50,33 +54,25 @@
                     <h2 style="text-align:center;">2nd Level Contract In Hand</h2><br>
                     <div class="row">
                     <div class="col-sm-3 form-group">
+	                    <label>Basis</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=basis%>" readonly>
                     </div>
-                                   
-										<!-- <div class="col-sm-3 form-group">
-                                             <label>Basis</label>
-                                             <span class="text-danger">* </span>&nbsp; <span id="errbasis" name="errbasis"
-												class="text-danger"> </span>
-                                        	 <select name="basis" id="basis" class="form-control" >
-                                        		<option value="">-Select-</option>
-                                        		<option value="msp">MSP</option>
-                                        		<option value="commercial">Commercial</option>
-                                        	</select>
-                                        	</div> 
                      <div class="col-sm-3 form-group">
-                                            <label>Crop Year</label> 
-                                            <span class="text-danger">* </span>&nbsp; <span id="errcropyr" name="errcropyr"
-												class="text-danger"> </span>
-											<select name="cropyr" id="cropyr" class="form-control">
-												<option value="">-Select-</option>
-												
-												</select>
-                                        </div> -->
+	                    <label>CropYear</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=cropyear%>" readonly>
+                    </div>
+                     <div class="col-sm-3 form-group">
+	                    <label>In Bales / In Qtls</label>
+	                    <input type="text" class="form-control" id="fname" name="fname" value="<%=baled%>" readonly>
+                    </div>
+                    
+                                   
                                         </div>
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
 							
 
 								<thead>
-								<caption>1st Level view of Procured Jute</caption>
+								<caption>2nd Level view of Contract in hand</caption>
 									<tr>
 										<th>Sl.no</th>
 								<th></th>
@@ -113,23 +109,21 @@
 										<td id="Ctotal"><%=Contracted.get(6) %></td>
 										</tr>
 								</tbody>
+								
 								<tbody>
 									<tr>
-									<%
-									//Procured - Despatched = available quantity 
-									%>
 									    <td>(2)</td>
-										<td>Despatched</td>
-										<td id="Aloosejute">N/A</td>
-										<td id="Cgrade0"><%=Despatched.get(0) %></td>
-										<td id="Cgrade1"><%=Despatched.get(1) %></td>
-										<td id="Cgrade2"><%=Despatched.get(2) %></td>
-										<td id="Cgrade3"><%=Despatched.get(3) %></td>
-										<td id="Cgrade4"><%=Despatched.get(4) %></td>
-										<td id="Cgrade5"><%=Despatched.get(5) %></td>
+										<td>Payment received</td>
+										<td id="#">N/A</td>
+										<td id="Cgrade0"><%=Contracted.get(0) - Payment_not_received.get(0)%></td>
+										<td id="Cgrade1"><%=Contracted.get(1) - Payment_not_received.get(1) %></td>
+										<td id="Cgrade2"><%=Contracted.get(2) - Payment_not_received.get(2) %></td>
+										<td id="Cgrade3"><%=Contracted.get(3) - Payment_not_received.get(3) %></td>
+										<td id="Cgrade4"><%=Contracted.get(4) - Payment_not_received.get(4) %></td>
+										<td id="Cgrade5"><%=Contracted.get(5) - Payment_not_received.get(5) %></td>
 										<td id="Cgrade6">0.0</td>
 										<td id="Cgrade7">0.0</td>
-										<td id="Ctotal"><%=Despatched.get(6) %></td>
+										<td id="Ctotal"><%=Contracted.get(6) - Payment_not_received.get(6) %></td>
 									</tr>
 								</tbody>
 								<tbody>
@@ -151,6 +145,41 @@
 								<tbody>
 									<tr>
 									    <td>(4)</td>
+										<td>DI Issued</td>
+										<td id="#">N/A</td>
+										<td id="Cgrade0"><%=Despatched.get(0) + DI_in_hand.get(0) %></td>
+										<td id="Cgrade1"><%=Despatched.get(1) + DI_in_hand.get(1) %></td>
+										<td id="Cgrade2"><%=Despatched.get(2) + DI_in_hand.get(2) %></td>
+										<td id="Cgrade3"><%=Despatched.get(3) + DI_in_hand.get(3) %></td>
+										<td id="Cgrade4"><%=Despatched.get(4) + DI_in_hand.get(4) %></td>
+										<td id="Cgrade5"><%=Despatched.get(5) + DI_in_hand.get(5) %></td>
+										<td id="Cgrade6">0.0</td>
+										<td id="Cgrade7">0.0</td>
+										<td id="Ctotal"><%=Despatched.get(6) + DI_in_hand.get(6) %></td>
+									</tr>
+								</tbody>
+								<tbody>
+									<tr>
+									<%
+									//Procured - Despatched = available quantity 
+									%>
+									    <td>(5)</td>
+										<td>Despatched</td>
+										<td id="Aloosejute">N/A</td>
+										<td id="Cgrade0"><%=Despatched.get(0) %></td>
+										<td id="Cgrade1"><%=Despatched.get(1) %></td>
+										<td id="Cgrade2"><%=Despatched.get(2) %></td>
+										<td id="Cgrade3"><%=Despatched.get(3) %></td>
+										<td id="Cgrade4"><%=Despatched.get(4) %></td>
+										<td id="Cgrade5"><%=Despatched.get(5) %></td>
+										<td id="Cgrade6">0.0</td>
+										<td id="Cgrade7">0.0</td>
+										<td id="Ctotal"><%=Despatched.get(6) %></td>
+									</tr>
+								</tbody>
+								<tbody>
+									<tr>
+									    <td>(6)</td>
 										<td>DI in-hand</td>
 										<td id="#">N/A</td>
 										<td id="Cgrade0"><%=DI_in_hand.get(0) %></td>
@@ -164,6 +193,7 @@
 										<td id="Ctotal"><%=DI_in_hand.get(6) %></td>
 									</tr>
 								</tbody>
+								
    
                         </table>
                     </div>
