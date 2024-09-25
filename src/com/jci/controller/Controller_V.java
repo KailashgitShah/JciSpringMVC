@@ -1464,9 +1464,9 @@ response.setContentType("application/pdf");
 			
 			String millCode = contractNo[1];
 			
-//		    String millEmails= contractGenerationService2.findEmailByMillCode(millCode);
-//		    
-//		    String[] emailArr = millEmails.split(", ");
+		    String millEmails= contractGenerationService2.findEmailByMillCode(millCode);
+		    
+		    String[] emailArr = millEmails.split(", ");
 
 			String filePath = contractNo[3] + File.separator + fileName;
 
@@ -1496,26 +1496,26 @@ response.setContentType("application/pdf");
 			// Close the PdfStamper
 			stamper.close();
 			
-//			try {
-//				// send email
-//				String body = "Please find below attachment to get full details of contract grade wise..";
-//				String sub = "Contract Details";
-//				final String filePathDir = contractLetterPath + File.separator + filePath;
-//				SendMail sendMail = new SendMail();
-//				InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);
-//				//InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
-//		
-//				CompletableFuture.runAsync(() -> {
-//					try {
-//						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				});
-//
-//			} catch (Exception e) {
-//				// TODO: handle exception
-//			}
+			try {
+				// send email
+				String body = "Please find below attachment to get full details of contract grade wise..";
+				String sub = "Contract Details";
+				final String filePathDir = contractLetterPath + File.separator + filePath;
+				SendMail sendMail = new SendMail();
+				InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);
+				//InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
+		
+				CompletableFuture.runAsync(() -> {
+					try {
+						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 
 //			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
 //			String deString = "C:/Users/pradeep.rathor/Desktop/NewVisitor";
@@ -5103,12 +5103,9 @@ response.setContentType("application/pdf");
 		String status = String.format("%06d", Integer.parseInt(this.generationofBillService.billofsupplyno()));
 
 		String status1 = String.format("%05d", Integer.parseInt(this.generationofBillService.statecount(statecode)));
-		System.err.println(status1);
 
 //		String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
 		String laString = prefix + yearCode + status + statecode + status1;
-		System.err.print(laString);
-		System.err.print(laString);
 		return laString;
 
 	}
@@ -10505,7 +10502,6 @@ response.setContentType("application/pdf");
 			mv = new ModelAndView("index");
 		}
 		List<String> cropyear = this.paymentRealizationService.cropYear();
-		System.err.print(cropyear + "cyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 		mv.addObject("cropyear", cropyear);
 
 		return mv;

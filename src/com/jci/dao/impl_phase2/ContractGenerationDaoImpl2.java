@@ -351,8 +351,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		List<Contractgeneration> listOfContract = new ArrayList<>();
 
-		System.err.println(list);
-
 		for (Object[] eleObjects : list) {
 			Contractgeneration model = new Contractgeneration();
 			model.setContract_acceptance_doc((String) eleObjects[2]);
