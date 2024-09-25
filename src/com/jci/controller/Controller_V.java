@@ -7038,7 +7038,7 @@ response.setContentType("application/pdf");
 			return new ModelAndView("index");
 		}
 
-		List<RoDispatchModel> allDi = roDispatchService.getAllRoDi();
+		List<Object[]> allDi = roDispatchService.getAllRoDi();
 
 		ModelAndView mv = new ModelAndView("diRoList");
 		mv.addObject("roDiList", allDi);

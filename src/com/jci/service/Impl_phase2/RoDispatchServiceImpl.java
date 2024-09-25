@@ -46,8 +46,8 @@ public class RoDispatchServiceImpl implements RoDispatchService{
 	}
 
 	@Override
-	public List<RoDispatchModel> getAllRoDi() {
-		List<RoDispatchModel> list = (List<RoDispatchModel>) this.roDispatchDao.getAllRoDi();
+	public List<Object[]> getAllRoDi() {
+		List<Object[]> list = (List<Object[]>) this.roDispatchDao.getAllRoDi();
 		return list;
 	}
 	@Override
