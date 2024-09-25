@@ -39,7 +39,7 @@
 				<%  
 				List<Double> jute = (List<Double>)request.getAttribute("jute");
 				List<Double> dispatched = (List<Double>)request.getAttribute("dispatched");
-				List<Double> contractInHand = (List<Double>)request.getAttribute("contractInHand");
+				List<Double> contractInHand = (List<Double>)request.getAttribute("contractinhand");
 		        String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 
 
@@ -78,6 +78,12 @@
 												<option value="<%=currCropYear %>"><%=currCropYear %></option>
 												</select>
                                         </div>	
+                                        <div class="col-sm-3 form-group">
+                                        <label>.</label> <br>
+                                          <input type="submit" value="Find" class="btn btn-primary"
+													id="submit" onclick="">
+                                        </div>
+                                        
                                         </div>
                         <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
 							
@@ -142,17 +148,17 @@
 								<tbody>
 									<tr>
 									    <td>(3)</td>
-										<td><a href = "contractinhand.obj" >Contract In Hand</a></td>
+										<td><a id ="contracthref" href = "contractinhand.obj" >Contract In Hand</a></td>
 										<td id="#">N/A</td>
-										<td id="Cgrade0"><%=String.format("%.2f",contractInHand.get(0)/ 1.5) %></td>
-										<td id="Cgrade1"><%=String.format("%.2f",contractInHand.get(1)/ 1.5) %></td>
-										<td id="Cgrade2"><%=String.format("%.2f",contractInHand.get(2)/ 1.5) %></td>
-										<td id="Cgrade3"><%=String.format("%.2f",contractInHand.get(3)/ 1.5) %></td>
-										<td id="Cgrade4"><%=String.format("%.2f",contractInHand.get(4)/ 1.5) %></td>
-										<td id="Cgrade5"><%=String.format("%.2f",contractInHand.get(5)/ 1.5) %></td>
+										<td id="Cgrade0"><%=String.format("%.2f",(contractInHand.get(0)/ 1.5)) %></td>
+										<td id="Cgrade1"><%=String.format("%.2f",(contractInHand.get(1)/ 1.5)) %></td>
+										<td id="Cgrade2"><%=String.format("%.2f",(contractInHand.get(2)/ 1.5)) %></td>
+										<td id="Cgrade3"><%=String.format("%.2f",(contractInHand.get(3)/ 1.5)) %></td>
+										<td id="Cgrade4"><%=String.format("%.2f",(contractInHand.get(4)/ 1.5)) %></td>
+										<td id="Cgrade5"><%=String.format("%.2f",(contractInHand.get(5)/ 1.5)) %></td>
 										<td id="Cgrade6">0.0</td>
 										<td id="Cgrade7">0.0</td>
-										<td id="Ctotal"><%=String.format("%.2f",contractInHand.get(6)/ 1.5) %></td> 
+										<td id="Ctotal"><%=String.format("%.2f",(contractInHand.get(6)/ 1.5)) %></td> 
 									</tr>
 								</tbody>
 								<tbody>
@@ -160,15 +166,15 @@
 									    <td>(4)</td>
 										<td><a href = "#" >Contract Un-covered</a></td>
 										<td id="CUloosejute"><%=jute.get(7) %></td>
-										<td id="CUgrade0"><%=String.format("%.2f",(jute.get(0) - dispatched.get(0)) - (contractInHand.get(0)/1.5))%></td>
-										<td id="CUgrade1"><%=String.format("%.2f",(jute.get(1) - dispatched.get(1)) - (contractInHand.get(1)/1.5))%></td>
-										<td id="CUgrade2"><%=String.format("%.2f",(jute.get(2) - dispatched.get(2)) - (contractInHand.get(2)/1.5))%></td>
-										<td id="CUgrade3"><%=String.format("%.2f",(jute.get(3) - dispatched.get(3)) - (contractInHand.get(3)/1.5))%></td>
-										<td id="CUgrade4"><%=String.format("%.2f",(jute.get(4) - dispatched.get(4)) - (contractInHand.get(4)/1.5))%></td>
-										<td id="CUgrade5"><%=String.format("%.2f",(jute.get(5) - dispatched.get(5)) - (contractInHand.get(5)/1.5))%></td>
+										<td id="CUgrade0"><%=String.format("%.2f",(jute.get(0) - dispatched.get(0)) - (contractInHand.get(0)/ 1.5))%></td>
+										<td id="CUgrade1"><%=String.format("%.2f",(jute.get(1) - dispatched.get(1)) - (contractInHand.get(1)/ 1.5))%></td>
+										<td id="CUgrade2"><%=String.format("%.2f",(jute.get(2) - dispatched.get(2)) - (contractInHand.get(2)/ 1.5))%></td>
+										<td id="CUgrade3"><%=String.format("%.2f",(jute.get(3) - dispatched.get(3)) - (contractInHand.get(3)/ 1.5))%></td>
+										<td id="CUgrade4"><%=String.format("%.2f",(jute.get(4) - dispatched.get(4)) - (contractInHand.get(4)/ 1.5))%></td>
+										<td id="CUgrade5"><%=String.format("%.2f",(jute.get(5) - dispatched.get(5)) - (contractInHand.get(5)/ 1.5))%></td>
 										<td id="CUgrade6">0.0</td>
 										<td id="CUgrade7">0.0</td>
-										<td id="CUtotal"><%=String.format("%.2f",(jute.get(6) - dispatched.get(6)) - (contractInHand.get(6)/1.5))%></td>
+										<td id="CUtotal"><%=String.format("%.2f",(jute.get(6) - dispatched.get(6)) - (contractInHand.get(6)/ 1.5))%></td>
 									</tr>
 								</tbody>
    
@@ -216,23 +222,12 @@
     </script>
     
     
-      	<script type="text/javascript">
-	$(document).ready(function(){
-		 $("#submit").click(function(){
-			alert();
-			
-			
-			return false;
-		     });
-		  });
-	
-	 </script>
     <script>
     $(document).ready(function(){
-    	$("#cropyr").on('change', function(){
-    		var cropyr = $("#cropyr").val();
-    		var basis = $("#basis").val();
-    		var Baled = $("#Baled").val();
+    	 $("#submit").click(function(){
+    		var cropyr = document.getElementById("cropyr").value;
+    		var basis = document.getElementById("basis").value;
+    		var Baled = document.getElementById("Baled").value;
     		if(basis == "")
     		{
     			alert("Please select Basis");
@@ -248,7 +243,7 @@
     			        // Assuming 'bale' and 'jute' are the keys in your JSON response
     			        var bale = response.bale;
     			        var dispatched = response.dispatched;
-    			        var contractInHand = response.contractInHand;
+    			        var contractinhand = response.contractinhand;
     			        //alert("procured"+bale+"contractInHand"+contractInHand)
     			       // alert(bale[2] - contractInHand[2]);
     			        
@@ -275,42 +270,42 @@
     	 	if(Baled == "Baled")
     	 		{
 	    	 	//Contract in hand
-	    	 	document.getElementById("Cgrade0").innerHTML = (contractInHand[0]/1.5).toFixed(1);
-	    	 	document.getElementById("Cgrade1").innerHTML = (contractInHand[1]/1.5).toFixed(1);
-	    	 	document.getElementById("Cgrade2").innerHTML = (contractInHand[2]/1.5).toFixed(1);
-	    	 	document.getElementById("Cgrade3").innerHTML = (contractInHand[3]/1.5).toFixed(1);
-	    	 	document.getElementById("Cgrade4").innerHTML = (contractInHand[4]/1.5).toFixed(1);
-	    	 	document.getElementById("Cgrade5").innerHTML = (contractInHand[5]/1.5).toFixed(1);
-	    	 	document.getElementById("Ctotal").innerHTML = (contractInHand[6]/1.5).toFixed(1);
+	    	 	document.getElementById("Cgrade0").innerHTML = (contractinhand[0]/1.5).toFixed(1);
+	    	 	document.getElementById("Cgrade1").innerHTML = (contractinhand[1]/1.5).toFixed(1);
+	    	 	document.getElementById("Cgrade2").innerHTML = (contractinhand[2]/1.5).toFixed(1);
+	    	 	document.getElementById("Cgrade3").innerHTML = (contractinhand[3]/1.5).toFixed(1);
+	    	 	document.getElementById("Cgrade4").innerHTML = (contractinhand[4]/1.5).toFixed(1);
+	    	 	document.getElementById("Cgrade5").innerHTML = (contractinhand[5]/1.5).toFixed(1);
+	    	 	document.getElementById("Ctotal").innerHTML = (contractinhand[6]/1.5).toFixed(1);
 	    	 	
 	    	 	//Contract Un-covered
 	    	 	document.getElementById("CUloosejute").innerHTML = bale[7].toFixed(1);
-	    	 	document.getElementById("CUgrade0").innerHTML = ((bale[0] - dispatched[0]) - (contractInHand[0]/1.5)).toFixed(1);
-	    	 	document.getElementById("CUgrade1").innerHTML = ((bale[1] - dispatched[1]) - (contractInHand[1]/1.5)).toFixed(1);
-	    	 	document.getElementById("CUgrade2").innerHTML = ((bale[2] - dispatched[2]) - (contractInHand[2]/1.5)).toFixed(1);
-	    	 	document.getElementById("CUgrade3").innerHTML = ((bale[3] - dispatched[3]) - (contractInHand[3]/1.5)).toFixed(1);
-	    	 	document.getElementById("CUgrade4").innerHTML = ((bale[4] - dispatched[4]) - (contractInHand[4]/1.5)).toFixed(1);
-	    	 	document.getElementById("CUgrade5").innerHTML = (b(ale[5] - dispatched[5]) - (contractInHand[5]/1.5)).toFixed(1);
-	    	 	document.getElementById("CUtotal").innerHTML = ((bale[6] - dispatched[6]) - (contractInHand[6]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUgrade0").innerHTML = ((bale[0] - dispatched[0]) - (contractinhand[0]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUgrade1").innerHTML = ((bale[1] - dispatched[1]) - (contractinhand[1]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUgrade2").innerHTML = ((bale[2] - dispatched[2]) - (contractinhand[2]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUgrade3").innerHTML = ((bale[3] - dispatched[3]) - (contractinhand[3]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUgrade4").innerHTML = ((bale[4] - dispatched[4]) - (contractinhand[4]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUgrade5").innerHTML = ((bale[5] - dispatched[5]) - (contractinhand[5]/1.5)).toFixed(1);
+	    	 	document.getElementById("CUtotal").innerHTML = ((bale[6] - dispatched[6]) - (contractinhand[6]/1.5)).toFixed(1);
     	 		}else{
     	 			//Contract in hand
-    	    	 	document.getElementById("Cgrade0").innerHTML = contractInHand[0].toFixed(1);
-    	    	 	document.getElementById("Cgrade1").innerHTML = contractInHand[1].toFixed(1);
-    	    	 	document.getElementById("Cgrade2").innerHTML = contractInHand[2].toFixed(1);
-    	    	 	document.getElementById("Cgrade3").innerHTML = contractInHand[3].toFixed(1);
-    	    	 	document.getElementById("Cgrade4").innerHTML = contractInHand[4].toFixed(1);
-    	    	 	document.getElementById("Cgrade5").innerHTML = contractInHand[5].toFixed(1);
-    	    	 	document.getElementById("Ctotal").innerHTML = contractInHand[6].toFixed(1);
+    	    	document.getElementById("Cgrade0").innerHTML = (contractinhand[0]).toFixed(1);
+	    	 	document.getElementById("Cgrade1").innerHTML = (contractinhand[1]).toFixed(1);
+	    	 	document.getElementById("Cgrade2").innerHTML = (contractinhand[2]).toFixed(1);
+	    	 	document.getElementById("Cgrade3").innerHTML = (contractinhand[3]).toFixed(1);
+	    	 	document.getElementById("Cgrade4").innerHTML = (contractinhand[4]).toFixed(1);
+	    	 	document.getElementById("Cgrade5").innerHTML = (contractinhand[5]).toFixed(1);
+	    	 	document.getElementById("Ctotal").innerHTML = (contractinhand[6]).toFixed(1);
     	    	 	
     	    	 	//Contract Un-covered
     	    	 	document.getElementById("CUloosejute").innerHTML = bale[7].toFixed(1);
-    	    	 	document.getElementById("CUgrade0").innerHTML = ((bale[0] - dispatched[0]) - contractInHand[0]).toFixed(1);
-    	    	 	document.getElementById("CUgrade1").innerHTML = ((bale[1] - dispatched[1]) - contractInHand[1]).toFixed(1);
-    	    	 	document.getElementById("CUgrade2").innerHTML = ((bale[2] - dispatched[2]) - contractInHand[2]).toFixed(1);
-    	    	 	document.getElementById("CUgrade3").innerHTML = ((bale[3] - dispatched[3]) - contractInHand[3]).toFixed(1);
-    	    	 	document.getElementById("CUgrade4").innerHTML = ((bale[4] - dispatched[4]) - contractInHand[4]).toFixed(1);
-    	    	 	document.getElementById("CUgrade5").innerHTML = (b(ale[5] - dispatched[5]) - contractInHand[5]).toFixed(1);
-    	    	 	document.getElementById("CUtotal").innerHTML = ((bale[6] - dispatched[6]) - contractInHand[6]).toFixed(1);
+    	    	 	document.getElementById("CUgrade0").innerHTML = ((bale[0] - dispatched[0]) - (contractinhand[0])).toFixed(1);
+    	    	 	document.getElementById("CUgrade1").innerHTML = ((bale[1] - dispatched[1]) - (contractinhand[1])).toFixed(1);
+    	    	 	document.getElementById("CUgrade2").innerHTML = ((bale[2] - dispatched[2]) - (contractinhand[2])).toFixed(1);
+    	    	 	document.getElementById("CUgrade3").innerHTML = ((bale[3] - dispatched[3]) - (contractinhand[3])).toFixed(1);
+    	    	 	document.getElementById("CUgrade4").innerHTML = ((bale[4] - dispatched[4]) - (contractinhand[4])).toFixed(1);
+    	    	 	document.getElementById("CUgrade5").innerHTML = ((bale[5] - dispatched[5]) - (contractinhand[5])).toFixed(1);
+    	    	 	document.getElementById("CUtotal").innerHTML = ((bale[6] - dispatched[6]) - (contractinhand[6])).toFixed(1);
     	 			
     	 		}
     		
@@ -357,9 +352,15 @@
             var availableHref = "regionwiseAvailable.obj?basis=" + encodeURIComponent(basis) +
             "&cropyear=" + encodeURIComponent(cropyear) +
             "&baled=" + encodeURIComponent(baled);
+            
+            var contrathref =  "contractinhand.obj?basis=" + encodeURIComponent(basis) +
+            "&cropyear=" + encodeURIComponent(cropyear) +
+            "&baled=" + encodeURIComponent(baled);
             // Update the href attribute of the <a> tag
             document.getElementById("procuredBaledLink").href = newHref;
             document.getElementById("availableHref").href = availableHref;
+            document.getElementById("contracthref").href = contrathref;
+
 
         }
 
