@@ -153,4 +153,10 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 		return null;
 	}
 
+	@Override
+	public List<InventoryDTO> juteVarityAvailable(String cropyr, String basis, String baled) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.juteVarityAvailable(cropyr, basis, baled);	
+	}
+
 }

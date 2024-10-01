@@ -12290,30 +12290,51 @@ response.setContentType("application/pdf");
 	   	 	    
 	   	  }	 
 		  
-		    @RequestMapping(value = "regionwiseAvailable")
-  	  public ModelAndView  regionwiseAvailable(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
-  		  String username =(String)request.getSession().getAttribute("usrname");
-  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
-  	    	 if(username == null) {
-  	             return new ModelAndView("index");
-  	             }
-  	    	  else {
-  	    		  String cropyr =  request.getParameter("cropyear");
- 	    		  String Baled =  request.getParameter("baled");
- 	    		  String basis =  request.getParameter("basis");
-  		  ModelAndView mv = new ModelAndView("Available_regionwise");
-  
-		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr,basis,Baled);
-  		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
-		  mv.addObject("cropyr" ,(Object)cropyr);
-		  mv.addObject("Baled" ,(Object)Baled);
-		  mv.addObject("basis" ,(Object)basis);
-		  mv.addObject("regionjute" ,(Object)regionjute);
-		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
-  		  return mv;
-  	    	  } 
-  	  }
-	  
+	    	  @RequestMapping(value = "regionwiseAvailable")
+	      	  public ModelAndView  regionwiseAvailable(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	      		  String username =(String)request.getSession().getAttribute("usrname");
+	      		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+	      	    	 if(username == null) {
+	      	             return new ModelAndView("index");
+	      	             }
+	      	    	  else {
+	      	    		  String cropyr =  request.getParameter("cropyear");
+	     	    		  String Baled =  request.getParameter("baled");
+	     	    		  String basis =  request.getParameter("basis");
+	      		  ModelAndView mv = new ModelAndView("Available_regionwise");
+	      
+	    		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr,basis,Baled);
+	      		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
+	    		  mv.addObject("cropyr" ,(Object)cropyr);
+	    		  mv.addObject("Baled" ,(Object)Baled);
+	    		  mv.addObject("basis" ,(Object)basis);
+	    		  mv.addObject("regionjute" ,(Object)regionjute);
+	    		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
+	      		  return mv;
+	      	    	  } 
+	      	  }
+	    	  
+	    		    @RequestMapping(value = "jute_Variety_Available")
+	    		  	  public ModelAndView  jute_Variety_Available(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	    		  		  String username =(String)request.getSession().getAttribute("usrname");
+	    		  	    	 if(username == null) {
+	    		  	             return new ModelAndView("index");
+	    		  	             }
+	    		  	    	  else {
+	    		  	    		  String cropyr =  request.getParameter("cropyear");
+	    		 	    		  String Baled =  request.getParameter("baled");
+	    		 	    		  String basis =  request.getParameter("basis");
+	    		  		  ModelAndView mv = new ModelAndView("Jute_varity_available");
+	    		  
+	    				  List<InventoryDTO> jutevarietyavailable = dailyPurchaseModelConfService.juteVarityAvailable(cropyr,basis,Baled);
+	    		  		  //List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
+	    				  mv.addObject("cropyr" ,(Object)cropyr);
+	    				  mv.addObject("Baled" ,(Object)Baled);
+	    				  mv.addObject("basis" ,(Object)basis);
+	    				  mv.addObject("jutevarietyavailable" ,(Object)jutevarietyavailable);
+	    		  		  return mv;
+	    		  	    	  } 
+	    		  	  }
 	  	  @RequestMapping(value = "available_dpcwise")
   	  public ModelAndView  available_dpcwise(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
   		  String username =(String)request.getSession().getAttribute("usrname");

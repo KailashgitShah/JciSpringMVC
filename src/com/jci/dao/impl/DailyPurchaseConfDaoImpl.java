@@ -1556,4 +1556,367 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 		}
 		
 	}
+
+	@Override
+	public List<InventoryDTO> juteVarityAvailable(String cropyr, String basis, String baled) {
+		
+		List<InventoryDTO> inventoryDTOJuteVariety = new ArrayList<>();
+		try {
+			int basiss = 2;
+			if("msp".equals(basis)) 
+			{
+				basiss = 1;
+			}
+		// TODO Auto-generated method stub
+		String querystr = "SELECT DISTINCT jutevariety FROM jcijutevariety where basis = '"+basiss+"'";
+		Session session = null;
+		session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<String> rows = query.list(); // Assuming jutevariety is a String
+		for (String variety : rows) {
+			List<Double> result2 = new ArrayList<Double>();
+
+			 String querystr1="";
+			 if("Baled".equals(baled))  
+			 {
+			 querystr1 = "SELECT \r\n" + 
+			 		"    SUM(GRADE1) AS Total_GRADE1,\r\n" + 
+			 		"    SUM(GRADE2) AS Total_GRADE2,\r\n" + 
+			 		"    SUM(GRADE3) AS Total_GRADE3,\r\n" + 
+			 		"    SUM(GRADE4) AS Total_GRADE4,\r\n" + 
+			 		"    SUM(GRADE5) AS Total_GRADE5,\r\n" + 
+			 		"    SUM(GRADE6) AS Total_GRADE6,\r\n" + 
+			 		"    SUM(TOTAL) AS Total_Bales,\r\n" + 
+			 		"    SUM(LOOSE) AS Total_Loose\r\n" + 
+			 		"FROM (\r\n" + 
+			 		"SELECT DISTINCT\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\r\n" + 
+			 		"(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\r\n" + 
+			 		"FROM jcibalepreparation j1\r\n" + 
+			 		"WHERE\r\n" + 
+			 		"j1.crop_year='"+cropyr+"' and j1.basis = '"+basis+"' and j1.jute_variety ='"+variety+"'\r\n" + 
+			 		")as results;";
+			 }
+			 else {
+				 querystr1 ="SELECT \n"
+				 		+ "    SUM(GRADE1) AS Total_GRADE1,\n"
+				 		+ "    SUM(GRADE2) AS Total_GRADE2,\n"
+				 		+ "    SUM(GRADE3) AS Total_GRADE3,\n"
+				 		+ "    SUM(GRADE4) AS Total_GRADE4,\n"
+				 		+ "    SUM(GRADE5) AS Total_GRADE5,\n"
+				 		+ "    SUM(GRADE6) AS Total_GRADE6,\n"
+				 		+ "    SUM(TOTAL) AS Total_Bales,\n"
+				 		+ "    SUM(LOOSE) AS Total_Loose\n"
+				 		+ "FROM (\n"
+				 		+ "SELECT DISTINCT\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE  WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\n"
+				 		+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
+				 		+ "FROM jcibalepreparation j1\n"
+				 		+ "WHERE\n"
+				 		+ "j1.crop_year='"+cropyr+"' and j1.basis = '"+basis+"' and j1.jute_variety ='"+variety+"'\n"
+				 		+ ")as results;";
+			 }
+			//Session session1 = sessionFactory.getCurrentSession();
+			Transaction tx1 = session.beginTransaction();
+			SQLQuery query1 = session.createSQLQuery(querystr1);
+			List<Object[]> result1 = query1.list();
+			if(result1 != null) {
+			 for(Object[] p :result1) {
+				 if(p[0] != null) {
+					 if (p[0] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[0]).doubleValue());
+					 } 
+					 else if (p[0] instanceof Double)
+					 {
+						result2.add(((Double) p[0]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 
+				 if(p[1] != null) {
+					 if (p[1] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[1]).doubleValue());
+					 } 
+					 else if (p[1] instanceof Double)
+					 {
+						result2.add(((Double) p[1]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[2] != null) {
+					 if (p[2] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[2]).doubleValue());
+					 } 
+					 else if (p[2] instanceof Double)
+					 {
+						result2.add(((Double) p[2]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 
+				 if(p[3] != null) {
+					 if (p[3] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[3]).doubleValue());
+					 } 
+					 else if (p[3] instanceof Double)
+					 {
+						result2.add(((Double) p[3]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[4] != null) {
+					 if (p[4] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[4]).doubleValue());
+					 } 
+					 else if (p[4] instanceof Double)
+					 {
+						result2.add(((Double) p[4]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[5] != null) {
+					 if (p[5] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[5]).doubleValue());
+					 } 
+					 else if (p[5] instanceof Double)
+					 {
+						result2.add(((Double) p[5]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[6] != null) {
+					 if (p[6] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[6]).doubleValue());
+					 } 
+					 else if (p[6] instanceof Double)
+					 {
+						result2.add(((Double) p[6]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+	             if(p[7] != null) 
+	            	 result2.add(((BigDecimal) p[7]).doubleValue());
+	             else
+	    			 result2.add(0.0); 
+	              
+	             
+			 }
+			}
+			
+		    
+			//find dispatched jute variety wise
+			
+
+			String query2="";
+			if("msp".equals(basis))
+			{
+				if("Baled".equals(baled))
+				{
+					query2 = "SELECT \n"
+					+ "    SUM(GRADE1) AS Total_GRADE1,\n"
+					+ "    SUM(GRADE2) AS Total_GRADE2,\n"
+					+ "    SUM(GRADE3) AS Total_GRADE3,\n"
+					+ "    SUM(GRADE4) AS Total_GRADE4,\n"
+					+ "    SUM(GRADE5) AS Total_GRADE5,\n"
+					+ "    SUM(GRADE6) AS Total_GRADE6,\n"
+					+ "    SUM(TOTAL) AS Total_Bales,\n"
+					+ "    SUM(LOOSE) AS Total_Loose\n"
+					+ "FROM (\n"
+					+ "SELECT DISTINCT\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J WHERE J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J  WHERE J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J  WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J  WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\n"
+					+ "(SELECT SUM(J.No_of_bales) FROM jcidispatch_details_child J WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\n"
+					+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
+					+ "FROM jcidispatch_details_child j1\n"
+					+ "WHERE\n"
+					+ "j1.crop_year='"+cropyr+"' and j1.Jute_variety = '"+variety+"' \n"
+					+ ")as results;";
+				}
+				else {
+					query2 ="SELECT \n"
+							+ "    SUM(GRADE1) AS Total_GRADE1,\n"
+							+ "    SUM(GRADE2) AS Total_GRADE2,\n"
+							+ "    SUM(GRADE3) AS Total_GRADE3,\n"
+							+ "    SUM(GRADE4) AS Total_GRADE4,\n"
+							+ "    SUM(GRADE5) AS Total_GRADE5,\n"
+							+ "    SUM(GRADE6) AS Total_GRADE6,\n"
+							+ "    SUM(TOTAL) AS Total_Bales,\n"
+							+ "    SUM(LOOSE) AS Total_Loose\n"
+							+ "FROM (\n"
+							+ "SELECT DISTINCT\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J WHERE J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J  WHERE J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J  WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J  WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\n"
+							+ "(SELECT SUM(J.No_of_bales * j.nominal_wt) FROM jcidispatch_details_child J WHERE  J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\n"
+							+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
+							+ "FROM jcidispatch_details_child j1\n"
+							+ "WHERE\n"
+							+ "j1.crop_year='"+cropyr+"' and j1.Jute_variety = '"+variety+"' \n"
+							+ ")as results;";
+				}
+			}else
+			{
+				return null;
+				//for commercial write query here
+			}
+			//Session newsession1 = sessionFactory.getCurrentSession();
+			Transaction newtx1 = session.beginTransaction();
+			SQLQuery newquery1 = session.createSQLQuery(query2);
+			List<Double> newresult2 = new ArrayList<Double>();
+			List<Object[]> newresult1 = newquery1.list();
+			 
+			if(newresult1 != null) {
+			 for(Object[] p :newresult1) {
+				 if(p[0] != null) {
+					 if (p[0] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[0]).doubleValue());
+					 } 
+					 else if (p[0] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[0]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+				 
+				 if(p[1] != null) {
+					 if (p[1] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[1]).doubleValue());
+					 } 
+					 else if (p[1] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[1]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+				 if(p[2] != null) {
+					 if (p[2] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[2]).doubleValue());
+					 } 
+					 else if (p[2] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[2]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+				 
+				 if(p[3] != null) {
+					 if (p[3] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[3]).doubleValue());
+					 } 
+					 else if (p[3] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[3]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+				 if(p[4] != null) {
+					 if (p[4] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[4]).doubleValue());
+					 } 
+					 else if (p[4] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[4]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+				 if(p[5] != null) {
+					 if (p[5] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[5]).doubleValue());
+					 } 
+					 else if (p[5] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[5]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+				 if(p[6] != null) {
+					 if (p[6] instanceof Integer)
+					 {
+						 newresult2.add(((Integer) p[6]).doubleValue());
+					 } 
+					 else if (p[6] instanceof Double)
+					 {
+						 newresult2.add(((Double) p[6]).doubleValue());
+					 }
+				 }else {
+					 newresult2.add(0.0); 
+				 }
+	             if(p[7] != null) 
+	            	 newresult2.add(((BigDecimal) p[7]).doubleValue());
+	             else
+	            	 newresult2.add(0.0); 
+	              
+	             
+			 }
+			}
+			InventoryDTO JuteVarietyavailable = new InventoryDTO();
+			JuteVarietyavailable.setGrade1(result2.get(0) - newresult2.get(0));
+			JuteVarietyavailable.setGrade2(result2.get(1) - newresult2.get(1));
+			JuteVarietyavailable.setGrade3(result2.get(2) - newresult2.get(2));
+			JuteVarietyavailable.setGrade4(result2.get(3) - newresult2.get(3));
+			JuteVarietyavailable.setGrade5(result2.get(4) - newresult2.get(4));
+			JuteVarietyavailable.setGrade6(result2.get(5) - newresult2.get(5));
+			JuteVarietyavailable.setGrade7(result2.get(6) - newresult2.get(6));
+			JuteVarietyavailable.setGrade8(result2.get(7) - newresult2.get(7));
+			JuteVarietyavailable.setRoname(variety);
+			inventoryDTOJuteVariety.add(JuteVarietyavailable);
+			
+		}
+		System.err.println("inventoryDTOJuteVariety"+inventoryDTOJuteVariety);
+		return inventoryDTOJuteVariety;
+	}catch(Exception e)
+		{
+		throw new RuntimeException("Failed to retrieve Jute variety", e);
+		  
+		}
+		
+		
+		
+	}
 }

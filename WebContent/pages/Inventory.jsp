@@ -132,7 +132,7 @@
 									//Procured - Despatched = available quantity 
 									%>
 									    <td>(2)</td>
-										<td><a id ="availableHref" href ="regionwiseAvailable.obj" >Available</a></td>
+										<td><a id ="availableHref" href ="jute_Variety_Available.obj" >Available</a></td>
 										<td id="Aloosejute"><%=jute.get(7) - dispatched.get(7)%></td>
 										<td id="Agrade0"><%=jute.get(0) - dispatched.get(0)%></td>
 										<td id="Agrade1"><%=jute.get(1) - dispatched.get(1)%></td>
@@ -349,7 +349,7 @@
                           "&cropyear=" + encodeURIComponent(cropyear) +
                           "&baled=" + encodeURIComponent(baled);
 
-            var availableHref = "regionwiseAvailable.obj?basis=" + encodeURIComponent(basis) +
+            var availableHref = "jute_Variety_Available.obj?basis=" + encodeURIComponent(basis) +
             "&cropyear=" + encodeURIComponent(cropyear) +
             "&baled=" + encodeURIComponent(baled);
             

@@ -31,4 +31,5 @@ public interface DailyPurchaseModelConfService {
 	public List<InventoryDTO> contract3rd_level(String currCropYear, String basis);
 	public List<InventoryDTO> contract4th_level(String currCropYear, String basis, String contractno);
 	public List<String> getCropYear();
+	public List<InventoryDTO> juteVarityAvailable(String cropyr, String basis, String baled);
 }
