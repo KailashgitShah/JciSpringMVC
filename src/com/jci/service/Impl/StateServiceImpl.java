@@ -54,8 +54,14 @@ public class StateServiceImpl implements StateService {
 	}
 
 	@Override
+
 	public String getStateCode(String id) {
 		return stateListDao.getStateCode(id);
+
+//	public String statebyid(String state_name) {
+//		// TODO Auto-generated method stub
+//		return stateListDao.statebyid(state_name);
+
 	}
 
 }
