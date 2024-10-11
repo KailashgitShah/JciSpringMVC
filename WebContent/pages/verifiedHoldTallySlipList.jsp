@@ -113,6 +113,7 @@
 									    <th>Purchase Date</th>
 									    <th>Net Quntity</th>
 										<th>Amount Payable</th>
+										<th></th>
 							</tr>
 								</thead>
 								<tbody>
@@ -122,7 +123,8 @@
 							%>
 									<tr>
 										<td><%=i%></td>
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+											<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&dpcid=<%= verificationlists.getErrors() %>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+									<%-- 	<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td> --%>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>
@@ -130,18 +132,8 @@
 										<td><%=verificationlists.getDop()%></td> 
 										<td><%=verificationlists.getNetquantity()%></td> 
 						                <td><%=verificationlists.getAmountpayable()%></td>
+<td><button type="button" class="btn btn-danger btn-sm" onclick="paymentonhold('<%=verificationlists.getTallyNo()%>#<%=verificationlists.getErrors()%>')">send for verification</button></td>
 						                
-						              <!-- <td><a href="update_paymentstatus.obj?tallyno=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">Payment</a></td>
-						                 <td><a href="edittallyslip.obj?id=verificationlists.getTallyslipno()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>-->
-										<%-- <td><a onclick="return confirm('Are you sure you want to delete this item?');" href="deletetallyslip.obj?id=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-						
-										
-										
-										<%-- <td><%=bnaList.getEnable()==1?"Active":"Inactive"%></td>
-	<td><a href="bnaDelete.obj?id=<%=bnaList.getId()%>" class="btn btn-danger btn-sm btn-block" onclick="return confirm('Are you sure you want to delete this BNA')">Delete</a></td> --%>
- 						 
-
-									</tr>
 									<% 
 									 i++; 
 								  }  
@@ -180,5 +172,24 @@
     <script src="assets/js/app.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS-->
 </body>
-
+<script>
+	function paymentonhold(tallynoandplaceofp) {
+		//alert(tallyno);
+		var status = "FA";
+		  var splitValues = tallynoandplaceofp.split('#');
+		    var tallyno = splitValues[0];
+		    var placeofp = splitValues[1];
+		$.ajax({
+			type:"GET",
+			url:"setholdstatus.obj",
+			data:{"tallyno":tallyno,"status":status,"placeofp":placeofp},
+			success:function(result){
+				 window.location.reload();
+ 				   var data= jQuery.parseJSON(result);
+			}			
+		});
+		
+	
+	}
+	</script>
 </html>

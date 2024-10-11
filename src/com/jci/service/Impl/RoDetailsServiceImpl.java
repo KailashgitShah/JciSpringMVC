@@ -62,6 +62,7 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 	}
 
 	@Override
+
 	public String findregionbyid(String region) {
 		// TODO Auto-generated method stub
 		return roDao.findregionbyid(region);
@@ -71,5 +72,22 @@ public class RoDetailsServiceImpl implements RoDetailsService{
 	public String dpcCheck(String dpc) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getRoname(String region_id) {
+		// TODO Auto-generated method stub
+		return roDao.getRoname(region_id);
+	}
+	
+	public String findregionbyname(String region) {
+		// TODO Auto-generated method stub
+		return roDao.findregionbyname(region);
+	}
+	
+	@Override
+	public String getregionIdbyName(String region) {
+		// TODO Auto-generated method stub
+		return roDao.getregionIdbyName(region);
+
 	}
 }

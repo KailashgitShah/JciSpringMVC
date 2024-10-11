@@ -50,7 +50,7 @@
 }
 </style>
  
- <script type="text/javascript">
+<!--  <script type="text/javascript">
 	$(document).ready(function ()  
 	{  
 		 $("#verifiedlist").DataTable({         
@@ -58,7 +58,7 @@
 	         "pageLength": 50
 	       }); 
 	});  
- </script>  
+ </script>  --> 
  
  <script src="https://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>  
  <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js" type="text/javascript"></script>  
@@ -78,6 +78,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
+		$(".loader").hide();
+		
 		$('body').on('click', '#selectAll', function() {
 			//alert("ani");
 			if ($(this).hasClass('allChecked')) {
@@ -88,58 +90,43 @@
 			$(this).toggleClass('allChecked');
 		});
 
-
-	/* 	$('#submit').click(function() {
-			
-			$("input[name='checkbox']:checked").each(function() {
-				array.push($(this).val());
-			});
-			if (Array.isArray(array) && array.length) {
-				$("#kycmodal").modal('show');
-			} else {
-				alert("CheckBox Not Selected !..Please Select");
-				return false;
-			}
-		       $.ajax({
-		              type:'POST',
-		              url:'update_paymentstatus.obj',
-		              data:{"tallyno":JSON.stringify(array)},
-		              success:function(result){
-							alert("hello"+result);
-		 	 				 
-						}	
-		       });
-		       alert("Invoice Generated,Mail has been sent to your gmail account!!!");
-		       location.reload();
-		}); */
 		
 	
 	});
 	function sendMail(roho)
 	{
-		var array = [];
-		
+		var tallyno = [];
+		var dpcid = [];
 		$("input[name='checkbox']:checked").each(function() {
-			array.push($(this).val());
+			 var value = $(this).val();
+			  var parts = value.split('-');
+			    if (parts.length === 2) {  // Ensure that splitting worked correctly
+			    	tallyno.push(parts[0]);
+			    	dpcid.push(parts[1]);
+			    }
 		});
-		if (Array.isArray(array) && array.length) {
-			$("#kycmodal").modal('show');
+		//alert(tallyno+"dpc"+dpcid);
+		if (Array.isArray(tallyno) && tallyno.length) {
+			 alert("Are you sure to process "+tallyno.length+" tally slip?");
 		} else {
 			alert("CheckBox Not Selected !..Please Select");
 			return false;
 		}
+       $(".loader").show();
 		 $.ajax({
-              type:'GET',
-              url:'update_paymentstatus.obj',
-              data:{"tallyno":JSON.stringify(array),"roho":roho},
-              success:function(result){
-					alert("hello"+result);
- 	 				 
-				}	
-       });
-       alert("Payment Advice sheet Generated, Mail has been sent to your and your AFM Accounts!!!");
-       location.reload();
-		
+				type:"GET",
+				url:"update_paymentstatus.obj",
+				data:{"tallyno":JSON.stringify(tallyno),"dpcid":JSON.stringify(dpcid),"roho":roho},
+				//async: false,
+				success:function(result)
+				{
+					$(".loader").hide();
+					 alert("Payment Advice sheet Generated, Mail has been sent to you and your AFM Accounts!!!");
+				     location.reload();
+				}
+		 });
+		 
+      // window.location.href = "viewVerifiedTallySlipList_RM.obj";
 	}
 	</script>
 	
@@ -148,6 +135,9 @@
 </head>
 
 <body class="fixed-navbar">
+ <div class="loader">
+	<img src="assets/img/1488.gif">
+</div>
     <div class="page-wrapper">
         <!-- START HEADER-->
          <%@ include file="header.jsp"%>
@@ -192,36 +182,28 @@
 									int i= 1;
 							for(VerifyTallySlip verificationlists : verificationList){
 								
-								 if(i<=200){  
+								  
 							%>
 									<tr>
-									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>" ></td>
+									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>-<%=verificationlists.getErrors()%>" ></td>
 										<td><%=i%></td>
 										<%
 		        						String encryptedtally = Encry.encrypt(String.valueOf(verificationlists.getTallyNo()),key);
 		        						String encryptedfarmerno = Encry.encrypt(String.valueOf(verificationlists.getFarmerRegNo()),key);
 										%>
-										<td><a href="popupimage.obj?tallyno=<%=encryptedtally%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
-										<td><a href="popupimage.obj?tallyno=<%=encryptedtally%>&farmerno=<%=encryptedfarmerno%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
+											<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&dpcid=<%= verificationlists.getErrors() %>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+									<%-- 	<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td> --%>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>
 				                    	<td><%=verificationlists.getBasis()%></td>
 										<td><%=verificationlists.getDop()%></td> 
 										<td><%=verificationlists.getNetquantity()%></td> 
 						                <td><%=verificationlists.getAmountpayable()%></td>
-						              <!-- <td><a href="update_paymentstatus.obj?tallyno=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">Payment</a></td>
-						                 <td><a href="edittallyslip.obj?id=verificationlists.getTallyslipno()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>-->
-										<%-- <td><a onclick="return confirm('Are you sure you want to delete this item?');" href="deletetallyslip.obj?id=<%=verificationlists.getTallyNo()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-trash" aria-hidden="true" style="font-size: 15px;"></i></a></td> --%>
-						
-										
-										
-										<%-- <td><%=bnaList.getEnable()==1?"Active":"Inactive"%></td>
-	<td><a href="bnaDelete.obj?id=<%=bnaList.getId()%>" class="btn btn-danger btn-sm btn-block" onclick="return confirm('Are you sure you want to delete this BNA')">Delete</a></td> --%>
- 						 
 
 									</tr>
 									<% 
-								  }  
+								    
 							i++; }
 							
 							%>

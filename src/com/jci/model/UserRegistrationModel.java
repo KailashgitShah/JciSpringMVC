@@ -89,6 +89,12 @@ public class UserRegistrationModel {
 	
 	@Column(name="role_type")
 	private String role_type;
+	
+	@Column(name = "failedLoginAttempts")
+	private int failedLoginAttempts;
+	
+	@Column(name="userStatus")
+	private String userStatus;
 
 	public UserRegistrationModel() {
 
@@ -300,7 +306,26 @@ public class UserRegistrationModel {
 	public void setRoles_name(String roles_name) {
 		this.roles_name = roles_name;
 	}
+	
 
+	public int getFailedLoginAttempts() {
+		return failedLoginAttempts;
+	}
+
+	public void setFailedLoginAttempts(int failedLoginAttempts) {
+		this.failedLoginAttempts = failedLoginAttempts;
+	}
+
+	public String getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+
+
+	
 	@Override
 	public String toString() {
 		return "UserRegistrationModel [refid=" + refid + ", username=" + username + ", password=" + password
@@ -309,15 +334,16 @@ public class UserRegistrationModel {
 				+ ", registrationdate=" + registrationdate + ", lockedchances=" + lockedchances + ", is_active="
 				+ is_active + ", ipaddress=" + ipaddress + ", ho=" + ho + ", zone=" + zone + ", region=" + region
 				+ ", dpcId=" + dpcId + ", employeeid=" + employeeid + ", employeename=" + employeename + ", email="
-				+ email + ", mobileno=" + mobileno + ", usertype=" + usertype + ", roleId=" + roleId + ", roles_name=" + roles_name
-				+ ", role_type=" + role_type + "]";
+				+ email + ", mobileno=" + mobileno + ", usertype=" + usertype + ", roleId=" + roleId + ", roles_name="
+				+ roles_name + ", role_type=" + role_type + ", failedLoginAttempts=" + failedLoginAttempts
+				+ ", userStatus=" + userStatus + "]";
 	}
 
 	public UserRegistrationModel(int refid, String username, String password, String centername, String roname,
 			String zonename, Date datelastchangepassword, Date updatedat, Date registrationdate, int lockedchances,
 			int is_active, String ipaddress, int ho, String zone, String region, String dpcId, String employeeid,
-			String employeename, String email, String mobileno, String usertype, int roleId, String role,
-			String role_type) {
+			String employeename, String email, String mobileno, String usertype, int roleId, String roles_name,
+			String role_type, int failedLoginAttempts, String userStatus) {
 		super();
 		this.refid = refid;
 		this.username = username;
@@ -343,8 +369,11 @@ public class UserRegistrationModel {
 		this.roleId = roleId;
 		this.roles_name = roles_name;
 		this.role_type = role_type;
+		this.failedLoginAttempts = failedLoginAttempts;
+		this.userStatus = userStatus;
 	}
 
+	
 
 
 }

@@ -62,7 +62,7 @@
 <input class="form-control"  type="text" placeholder="Place of Purchase" value="<%=dpcCenter%>" onkeyup="deleteErrorMsg()" oninput="javascript: if (this.value.length > 4) this.value = this.value.slice(0, 4);" readonly>
       <input class="form-control" name="dpcid" id="dpcid" type="hidden" value="<%=dpcid%>" >
       <input class="form-control" name="region_id" id="region_id" type="hidden" value="<%=region_id%>" >
-            <input class="form-control" name="refid" id="refid" type="hidden" value="<%=refid%>" >
+            <input class="form-control" name="refid" id="refid" type="hidden" value="<%=refid2%>" >
             <input class="form-control" name="id" id="id" type="hidden" value="<%=ropeMakingModel.getRpmrefid()%>" >
             
      </div>

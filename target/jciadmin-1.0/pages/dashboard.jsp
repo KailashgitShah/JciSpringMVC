@@ -24,6 +24,7 @@
 <body class="fixed-navbar">
     <div class="page-wrapper">
         <!-- START HEADER-->
+<<<<<<< HEAD:target/jciadmin-1.0/pages/dashboard.jsp
         <header class="header">
             <div class="page-brand">
                 <a class="link" href="index.html">
@@ -67,6 +68,11 @@
                 <!-- END TOP-RIGHT TOOLBAR-->
             </div>
         </header>
+=======
+       <!-- START HEADER-->
+		<%@ include file="header.jsp"%>
+		<!-- END HEADER-->
+>>>>>>> prod_ph1:target/jciadmin-1/pages/dashboard.jsp
         <!-- END HEADER-->
         
         <!-- START SIDEBAR-->
@@ -129,13 +135,13 @@
                                 <li>
                                     <a href="#">
                                         <span><img src="assets/img/farm-icon6.png"></span>
-                                       <p>Despatch Instruction</p>
+                                       <p>Dispatch Instruction</p>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
                                         <span><img src="assets/img/farm-icon7.png"></span>
-                                        <p>Despatch of Raw Jute</p>
+                                        <p>Dispatch of Raw Jute</p>
                                     </a>
                                 </li>
                             </ul>
@@ -190,9 +196,6 @@
     </div>
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
-    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
     <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL PLUGINS-->

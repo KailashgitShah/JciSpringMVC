@@ -3,9 +3,14 @@ package com.jci.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+
 import org.hibernate.Query;
+
+import org.hibernate.SQLQuery;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +76,7 @@ public class StateDaoImpl implements StateDao {
 		return false;
 	}
 
+
 	@Override
 	public String getStateCode(String id) {
 		String hqlString = "select state_code from tbl_states_new where id=" + id + "";
@@ -81,5 +87,24 @@ public class StateDaoImpl implements StateDao {
 
 	}
 	
+
+
+
+	@Override
+	public String statebyid(String state_name) {
+		// TODO Auto-generated method stub
+		String State = "";
+		String querystr = "select state_name from tbl_states where state_code='"+state_name+"'";
+    	   Session session = sessionFactory.getCurrentSession();
+    	   Transaction tx = session.beginTransaction();
+    	   SQLQuery query = session.createSQLQuery(querystr);
+    	   List<String> stateid= query.list();
+    	   System.err.println("stateid+stateid"+stateid);
+    	   if (!stateid.isEmpty()) {
+    		   State = stateid.get(0);
+           } 
+		return State;
+	}
+
 
 }

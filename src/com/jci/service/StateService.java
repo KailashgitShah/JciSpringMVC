@@ -12,5 +12,9 @@ public interface StateService {
 	public StateList find(int id);
 	public List <StateList> getAll();
 	public boolean submitform(StateList off);
+
 	public String getStateCode(String id);
+
+	public String statebyid(String state_name);
+
 }

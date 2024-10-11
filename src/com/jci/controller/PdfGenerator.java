@@ -10,22 +10,32 @@ import java.time.Month;
 import java.util.Date;
 import java.util.List;
 
-import javax.print.attribute.standard.DialogOwner;
+ 
 import org.springframework.beans.factory.annotation.Value;
 
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.color.Color;
-import com.itextpdf.kernel.color.DeviceGray;
+import com.itextpdf.layout.element.Cell;            
+import com.itextpdf.layout.property.TextAlignment;    
+import com.itextpdf.layout.element.Table;  
+
+
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.DeviceGray;
+import com.itextpdf.layout.Document;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.border.Border;
-import com.itextpdf.layout.border.SolidBorder;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Image;

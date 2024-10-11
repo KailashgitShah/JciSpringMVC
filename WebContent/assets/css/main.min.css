@@ -3429,6 +3429,17 @@ body.fullscreen-mode {
 	animation: fadeInUp .5s
 }
 .page-content .ibox .ibox-body .col-sm-6.form-group{padding:0 50px;}
+.loader{    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.9);
+    z-index: 999999;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;}
 @media screen and (max-width:980px) {
 	.video embed,
 	.video iframe,

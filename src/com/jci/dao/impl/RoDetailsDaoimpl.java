@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jci.dao.RoDetailsDao;
 import com.jci.model.GenerationOfBillSupplyModel;
 import com.jci.model.RoDetailsModel;
+import com.jci.model.ZoneModel;
 
 @Transactional
 @Repository
@@ -60,8 +61,12 @@ public class RoDetailsDaoimpl implements RoDetailsDao {
 	@Override
 	public List<RoDetailsModel> getAll() {
 		// TODO Auto-generated method stub
-		 Criteria criteria = currentSession().createCriteria(RoDetailsModel.class);
-	        return criteria.list();
+
+
+		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(RoDetailsModel.class);
+		List<RoDetailsModel> ll=c.list();
+		return ll;
+
 	}
 
 	@Override
@@ -85,6 +90,7 @@ public class RoDetailsDaoimpl implements RoDetailsDao {
 	}
 
 	@Override
+
 	public String findregionbyid(String id) {
 				String querystr = "select roname from jcirodetails where rocode ='" + id + "'";
 				Session session = sessionFactory.getCurrentSession();
@@ -93,4 +99,37 @@ public class RoDetailsDaoimpl implements RoDetailsDao {
 				String region = query.list().get(0).toString();
 				return region;
 	}
+
+	public String getRoname(String region_id) {
+		// TODO Auto-generated method stub
+
+		String querystr = "select roname from jcirodetails where rocode ='" + region_id + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		String region = query.list().get(0).toString();
+		return region;
+
+	}
+	
+	public String findregionbyname(String region) {
+		String querystr = "select rocode from jcirodetails where roname ='" + region + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		String regions = query.list().get(0).toString();
+		return regions;
+	}
+	
+	@Override
+	public String getregionIdbyName(String region) {
+		String querystr = "select rocode from jcirodetails where roname ='" + region + "'";
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		String regions = query.list().get(0).toString();
+		return regions;
+
+}
+
 }

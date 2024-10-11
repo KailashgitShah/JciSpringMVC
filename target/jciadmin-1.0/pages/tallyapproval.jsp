@@ -122,7 +122,7 @@
 										<td><%=verificationlists.getGrossquantity()%></td> 
 										<td><%=verificationlists.getGrasatrate()%></td>
 						              <%--  <td><%=verificationlists.getAmountpayable()%></td> --%>
-						               <td><a href="verificationTallyslip2.obj?tally=<%=encryptedid%>" class="btn btn-danger btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Verify</a></td> 
+						               <td><a href="verificationTallyslip2.obj?tally=<%=verificationlists.getTallyslipno()%>&placeofp=<%=verificationlists.getCreatedfrom()%>" class="btn btn-danger btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Verify</a></td> 
 
 									</tr>
 									<% 
@@ -157,7 +157,15 @@
     <!-- CORE SCRIPTS-->
     <script src="assets/js/app.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
   
+  <script>
+      $(document).ready(function() {
+          $('body').bind('cut copy', function(e) {
+              e.preventDefault();
+            });
+        });
+    </script>
 </body>
 
 </html>

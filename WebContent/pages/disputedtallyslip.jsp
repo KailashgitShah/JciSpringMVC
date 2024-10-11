@@ -125,7 +125,7 @@
 						                <%-- <td><%=verificationlists.getErrors()%></td> --%>
 						               <!--  <td><a href="edittallyslip.obj?id=verificationlists.getTallyslipno()%>" class="btn btn-warning btn-sm btn-block">  <i class="fa fa-pencil" aria-hidden="true" style="font-size: 15px;"></i></a></td>-->
  
-										 <td><a href="decissionmaking.obj?id=<%=encryptedid%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-folder-open" aria-hidden="true" style="font-size: 15px;"></i>View</a></td> 
+										 <td><a href="decissionmaking.obj?id=<%=verificationlists.getTallyid()%>&placeofp=<%=verificationlists.getErrors()%>" class="btn btn-danger btn-sm btn-block">  <i class="fa fa-folder-open" aria-hidden="true" style="font-size: 15px;"></i>View</a></td> 
 						 
  
 										

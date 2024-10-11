@@ -161,8 +161,14 @@ public class UserRegistrationServiceImpl implements UserRegistrationService{
 	}
 
 	@Override
+
 	public String getUsername(String email) {
 		return userRegistrationDao.getUsername(email);
+	}
+	public String getName(String username) {
+		// TODO Auto-generated method stub
+		return userRegistrationDao.getName(username);
+
 	}
 
 	

@@ -85,7 +85,7 @@
 											class="form-control" name="region_id" id="region_id"
 											type="hidden" value="<%=region_id%>"> <input
 											class="form-control" name="refid" id="refid" type="hidden"
-											value="<%=refid%>" >
+											value="<%=refid2%>" >
 
 
 

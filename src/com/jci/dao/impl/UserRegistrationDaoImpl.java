@@ -483,10 +483,24 @@ public class UserRegistrationDaoImpl implements UserRegistrationDao {
 				System.out.println(e.getLocalizedMessage());
 			}
 	}
+
 	
 	@Override
 	public String getUsername(String email) {
 		String sqlString = "select employeename from jciumt where email='"+email + "'";
 		return (String)currentSession().createSQLQuery(sqlString).uniqueResult();
+}
+
+	@Override
+	public String getName(String username) {
+		String name = "";
+		String querystr = "select username from jciumt where email ='" + username + "'";
+		Session session = sessionFactory.getCurrentSession();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<String> userList = query.list();
+		// System.out.println("userList==== "+userList);
+		name = userList.get(0);
+		return name;
+
 	}
 }

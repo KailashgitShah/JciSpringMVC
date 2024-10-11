@@ -258,12 +258,7 @@ public class Controller_V {
 	@Autowired
 	private MillRegistrationService millRegistrationService;
 
-	private final PdfGenerator_K pdfGenerator;
-
-	@Autowired
-	public Controller_V(PdfGenerator_K pdfGenerator) {
-		this.pdfGenerator = pdfGenerator;
-	}
+	
 
 	@Autowired
 	private PaymentDetailService paymentDetailService;
@@ -5405,14 +5400,14 @@ public class Controller_V {
 //		          cashDocumentModel.setBOS_Date(BOS_Date);
 //		          cashDocumentModel.setBOS_No(Bill_of_Supply);
 
-			PdfGenerator_K pdfgenereatorK = new PdfGenerator_K();
+		
 
-			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
-					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
-					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,
-					Statename23, StaeCode23, PAN23, mastterSatename, mastterSatename2, ReciepentsStatecode, dateData,
-					Dpcname, millcode234, RegionAndCenterName1, consignment);
+//			String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
+//					Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
+//					Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
+//					TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,
+//					Statename23, StaeCode23, PAN23, mastterSatename, mastterSatename2, ReciepentsStatecode, dateData,
+//					Dpcname, millcode234, RegionAndCenterName1, consignment);
 			// generationOfBillSupplyModel.setBos_file_path(filePath);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
@@ -5674,12 +5669,12 @@ public class Controller_V {
 
 //	             
 			// String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
-			String filePathDir = Genrationofbill + File.separator + filePath;
+			String filePathDir = Genrationofbill + File.separator + fileName;
 			String username1 = "";
 			try {
 				// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
 				// InternetAddress("animesh.anand@cyfuture.com")};
-				toAddresses = new InternetAddress[] { new InternetAddress("kailashshahsha81@gmail.com") };
+				toAddresses = new InternetAddress[] { new InternetAddress("kailashshahsha8187@gmail.com") };
 			} catch (AddressException e) {
 
 				e.printStackTrace();
@@ -6466,19 +6461,19 @@ public class Controller_V {
 	}
 
 //DPC finding for Region
-	@ResponseBody
-	@RequestMapping({ "findDpc" })
-	public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
-
-		String username = (String) request.getSession().getAttribute("usrname");
-		final Gson gson = new Gson();
-		/*
-		 * System.err.println((Object)
-		 * this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
-		 */
-		return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
-
-	}
+//	@ResponseBody
+//	@RequestMapping({ "findDpc" })
+//	public String findDpcByRegion(@RequestParam("id") String id, HttpServletRequest request) {
+//
+//		String username = (String) request.getSession().getAttribute("usrname");
+//		final Gson gson = new Gson();
+//		/*
+//		 * System.err.println((Object)
+//		 * this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
+//		 */
+//		return gson.toJson((Object) this.purchaseCenterService.purchaseCenter(request.getParameter("id")));
+//
+//	}
 
 //To get count previous HO count dor DI no. for particular Region
 	@ResponseBody

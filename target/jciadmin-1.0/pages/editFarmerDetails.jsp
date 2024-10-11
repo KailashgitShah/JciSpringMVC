@@ -130,6 +130,22 @@
 										middlename = "";
 									lastname = editFarmer.getF_NAME().split(" ")[2];
 									}
+								
+								else if(farmerName.length > 3){
+									firstname = editFarmer.getF_NAME().split(" ")[0];
+									middlename = editFarmer.getF_NAME().split(" ")[1];
+									int j = 1;
+									for(int i = 0; i<farmerName.length; i++)	
+									{
+										if(j>2)
+										{
+											lastname += editFarmer.getF_NAME().split(" ")[i]+" ";
+										}
+										j++;
+									}
+									//if (middlename.equalsIgnoreCase("NA"))
+									//	middlename = "";
+									}
 								%>
 									<div class="row">
 									

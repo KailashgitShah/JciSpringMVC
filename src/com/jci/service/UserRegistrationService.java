@@ -31,5 +31,9 @@ public interface UserRegistrationService {
 	public String checkConcurrentlogin(String email);
 	public void updateFlagInDatabase(String flag, String email);
 	public void updateConcurrentlogin(String email, String set);
+
 	public String getUsername(String email);
+
+	public String getName(String username);
+
 }

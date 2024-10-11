@@ -115,7 +115,7 @@
 							%>
 									<tr>
 										<td><%=i%></td>
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyslipno()%>" target="_blank"><%=verificationlists.getTallyslipno()%></a></td>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyslipno()%>&dpcid=<%= verificationlists.getCreatedfrom() %>" target="_blank"><%=verificationlists.getTallyslipno()%></a></td>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyslipno()%>&farmerno=<%=verificationlists.getFarmerregno()%>" target="_blank"><%=verificationlists.getFarmerregno()%></a></td>
 										<%-- <td><%=verificationlists.getTallyslipno()%></td>
 				                    	<td><%=verificationlists.getFarmerregno()%> </td> --%>
@@ -128,8 +128,8 @@
 										<td><%=verificationlists.getGrossquantity()%></td> 
 										<td><%=verificationlists.getGrasatrate()%></td> --%>
 						                <td><%=verificationlists.getAmountpayable()%></td> 
-						               <td><a href="approvalTallyslip.obj?tally=<%=verificationlists.getTallyslipno()%>" class="btn btn-warning btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Approve</a></td> 
-						               <td><a href="rejectTallyslip.obj?tally=<%=verificationlists.getTallyslipno()%>" class="btn btn-danger btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Reject</a></td> 
+						               <td><a href="approvalTallyslip.obj?tally=<%=verificationlists.getTallyslipno()%>&placeofp=<%=verificationlists.getCreatedfrom()%>" class="btn btn-warning btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Approve</a></td> 
+						               <td><a href="rejectTallyslip.obj?tally=<%=verificationlists.getTallyslipno()%>&placeofp=<%=verificationlists.getCreatedfrom()%>" class="btn btn-danger btn-sm btn-block">  <i  aria-hidden="true" style="font-size: 15px;"></i>Reject</a></td> 
 									</tr>
 									<% 
 								  }  

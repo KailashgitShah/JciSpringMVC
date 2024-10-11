@@ -174,7 +174,7 @@
             </div>
             <!-- END PAGE CONTENT-->
             <footer class="page-footer">
-                <div class="font-13">2022 Â© <b>JCI CMS</b> - All rights reserved.</div>
+                <div class="font-13">2022 © <b>JCI CMS</b> - All rights reserved.</div>
                
                 <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
             </footer>

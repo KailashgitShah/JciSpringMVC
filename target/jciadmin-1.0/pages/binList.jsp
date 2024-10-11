@@ -119,21 +119,6 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     <script src="assets/js/app.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS-->
     <script type="text/javascript">
-        /* $(function() {
-            $('#example-table').DataTable({
-                pageLength: 10,
-                "scrollX": true
-                //"ajax": './assets/demo/data/table_data.json',
-                /*"columns": [
-                    { "S": "name" },
-                    { "data": "office" },
-                    { "data": "extn" },
-                    { "data": "start_date" },
-                    { "data": "salary" }
-                ]
-            });
-        }) */
-        
         $(document).ready(function () {
             $("#farmerVerific").DataTable({         
               scrollX: true
