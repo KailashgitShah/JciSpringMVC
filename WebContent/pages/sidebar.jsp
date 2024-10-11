@@ -547,8 +547,7 @@ body {
  
 		$(document).ready(function() {
 
-			var passuser = '<%=userpass%>
-			';
+			var passuser = '<%=userpass%>';
 							//alert(passuser);
 							$.ajax({
 								url : "checksessionpass.obj",

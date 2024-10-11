@@ -601,11 +601,16 @@ public class Controller_V {
 
 		String filePath = requestLetterpath + File.separator + refNo + ".pdf";
 
-		String sub = "Expressing Gratitude for Contract Approval";
-		String body = "Dear Jute Commissioner Officer ,\n " + "Hope This email finds you well ,\n"
-				+ "Thank you for accepting the pco request of reference no : " + refNo + "\n " + "contract Date : "
-				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
-				+ "Thanks & Regards \n " + "Jute Corporation Of India";
+//		String sub = "Expressing Gratitude for Contract Approval";
+//		String body = "Dear Jute Commissioner Officer ,\n " + "Hope This email finds you well ,\n"
+//				+ "Thank you for accepting the pco request of reference no : " + refNo + "\n " + "contract Date : "
+//				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
+//				+ "Thanks & Regards \n " + "Jute Corporation Of India";
+
+		
+		String sub = "Expressing Gratitude for Contract Approval Testing Email";
+		String body = "This is a test message from The Jute Corporation of India Limited.\n" +
+		              "Please ignore it. However, any suggestions for improving the proposed system would be appreciated.";
 
 		InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
 
@@ -1498,8 +1503,14 @@ response.setContentType("application/pdf");
 			
 			try {
 				// send email
-				String body = "Please find below attachment to get full details of contract grade wise..";
-				String sub = "Contract Details";
+//				String body = "Please find below attachment to get full details of contract grade wise..";
+//				String sub = "Contract Details";
+//				
+				String sub = "Expressing Gratitude for Contract Approval Testing Email";
+				String body = "This is a test message from The Jute Corporation of India Limited.\n" +
+				              "Please ignore it. However, any suggestions for improving the proposed system would be appreciated.";
+
+				
 				final String filePathDir = contractLetterPath + File.separator + filePath;
 				SendMail sendMail = new SendMail();
 				InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);

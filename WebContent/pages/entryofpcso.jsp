@@ -422,13 +422,14 @@
 				});
 	</script>
 
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		$(document)
 				.ready(
 						function() {
 							$("#submit")
 									.click(
 											function() {
+alert("called1");
 												var refNo = document
 														.getElementById("refNo").value;
 												
@@ -447,6 +448,8 @@
 													return false;
 												}
 												
+												alert("called2");
+												
 
 												var sz = $("#count").val();
 												
@@ -457,12 +460,12 @@
 													return false;
 												}
 											 
-												
+												alert("called3");
 												var sum = 0;
 												for (var i = 0; i < sz; i++) {
 													var ele =  $("#totalallocation"+ i).val();
 													
-												    if (ele !== null && ele !== '')) {
+												    if (ele !== null && ele !== ''){
 												        sum += parseFloat(ele);
 													}else if(isNaN(parseFloat(ele)){
                                                         alert("Allocation is invalid !!")
@@ -473,8 +476,10 @@
 												
 												sum = sum.toFixed(2);
 												pcoQty = pcoQty.toFixed(2);
-												 
 												
+												console.log(sum , pcoQty);
+												alert("called4");
+											     return false;
 												if (sum != pcoQty) {
 													document.getElementById("errMsg").innerHTML = "Current sum = "
 															+ sum
@@ -487,7 +492,72 @@
 
 											});
 						});
-	</script>
+	</script> -->
+	
+	<script type="text/javascript">
+    $(document).ready(function() {
+        $("#submit").click(function() {
+
+            // Validation for refNo
+            var refNo = $("#refNo").val();
+            if (refNo === "") {
+                alert("Please Select Jci letter ref!!!");
+                return false;
+            }
+
+            // Validation for pcsoDate
+            var pcsoDate = $("#pcsoDate").val();
+            if (pcsoDate === "") {
+                alert("Please Select PCO Date!!!");
+                return false;
+            }
+
+  
+
+            // Validation for pcoQty
+            var pcoQty = parseFloat($("#pcsoQty").val());
+            if (isNaN(pcoQty)) {
+                alert("PCO Qty is invalid");
+                return false;
+            }
+
+         
+
+            // Sum calculation and validation for allocations
+            var sz = parseInt($("#count").val()); // Ensure sz is an integer
+            var sum = 0;
+            for (var i = 0; i < sz; i++) {
+                var ele = $("#totalallocation" + i).val();
+
+                if (ele !== null && ele !== '') {
+                    var allocation = parseFloat(ele);
+                    if (isNaN(allocation)) {
+                        alert("Allocation is invalid!");
+                        return false;
+                    } else {
+                        sum += allocation;
+                    }
+                } else {
+                    $("#totalallocation" + i).val(0);
+                }
+            }
+
+            sum = sum.toFixed(2);
+            pcoQty = pcoQty.toFixed(2);
+
+
+            // Comparison of sum and pcoQty
+            if (sum != pcoQty) {
+                $("#errMsg").text("Current sum = " + sum + " not equal to PCO Qty.");
+                return false;
+            } else {
+                $("#errMsg").text("");
+                return true;
+            }
+        });
+    });
+</script>
+	
 
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
