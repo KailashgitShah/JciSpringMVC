@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                                            
+                                                                
+    
     
     
     
@@ -14,7 +15,8 @@
     
     
     <wb-module deploy-name="jciadmin-1.0">
-                                                                                                                        
+                                                                                                                                
+        
         
         
         
@@ -29,7 +31,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                                                                                                                        
+                                                                                                                                
+        
         
         
         
@@ -44,7 +47,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                                                                                                                        
+                                                                                                                                
+        
         
         
         
@@ -59,7 +63,8 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-                                                                                                                
+                                                                                                                        
+        
         
         
         
@@ -73,10 +78,10 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
-                        
-        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
-                                                                                                                        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-test-sources/test-annotations"/>
+                                                                                                                                
+        
         
         
         
@@ -91,7 +96,8 @@
         
         
         <property name="context-root" value="jciadmin"/>
-                                                                                                                        
+                                                                                                                                
+        
         
         
         
@@ -106,7 +112,8 @@
         
         
         <property name="java-output-path" value="/JCI-CMS/target/classes"/>
-                                                                                                                    
+                                                                                                                            
+    
     
     
     
@@ -121,7 +128,8 @@
     
     
     </wb-module>
-                                                        
+                                                            
+
 
 
 

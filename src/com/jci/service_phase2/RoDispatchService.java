@@ -14,7 +14,7 @@ public interface RoDispatchService {
  public List<Object> loadFullContractDetails(String diNo);
  public int getCountOfAvailableEntries(String hoNo);
  public void create(RoDispatchModel roDispatchModel);
- public List<RoDispatchModel> getAllRoDi();
+ public List<Object[]> getAllRoDi();
 public List<String> getCooperative(String regionIdString);
 public List<String> getDetails(String hOno);
 public List<String> getprevious(String diNo);

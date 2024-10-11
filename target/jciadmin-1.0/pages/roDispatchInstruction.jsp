@@ -77,6 +77,9 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 
 <body class="fixed-navbar">
+<div class="contractLoader">
+		<img src="assets/img/1488.gif">
+	</div>
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -438,7 +441,7 @@ $('#hoDiNo, #dpc').change(function() {
 	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='total_bal" + k + "' style='width: 70px;' value='0' readonly></td></tr>";
 
 	                contentToDisplay += "<tr>";
-	                contentToDisplay += "<td style='text-align: center; border: 1px solid black;'>DI Issue</td>";
+	                contentToDisplay += "<td style='text-align: center; border: 1px solid black; color: blue;'><strong>DI Issue</strong></td>";
 
 	                for (var i = 1; i <= 8; i++) {
 	                    if (data.contractDetails[k][20] == "Mesta" || data.contractDetails[k][20] == "Bimli") {
@@ -447,7 +450,7 @@ $('#hoDiNo, #dpc').change(function() {
 	                        } else {
 	                            contentToDisplay += "<td style='text-align: center; border: 1px solid black;'><input type='number' id='GR" + k+i + "_QTY' style='width: 70px;' value=0 min='0'></td>";
 	                        }
-	                    }else if(data.contractDetails[k][20] == "White (New)" || data.contractDetails[k][20] == "Tossa (New)"){
+	                    }else if(data.contractDetails[k][20] == "White" || data.contractDetails[k][20] == "Tossa"){
 	                    	 if (i > 5) {
 		                        	contentToDisplay += "<td style='text-align: center; border: 1px solid black;' value='0'><input type='number' id='GR" + i + "_QTY' style='width: 70px;' value='0' disabled min='0'></td>";
 		                        } else {
@@ -553,6 +556,7 @@ $('#hoDiNo, #dpc').change(function() {
 
 	<script>
 $(document).ready(function() {
+	 $(".contractLoader").hide();
     // Define a function to gather data
     var c1="";
     function gatherData() {
@@ -561,7 +565,7 @@ $(document).ready(function() {
          var juteVarietyName = "";
         $('#table_r tbody tr').each(function(index, row) {
             var juteVar = $(row).find('td:first').text().trim();
-            if( juteVar =='Bimli' || juteVar == 'Mesta' || juteVar == 'White (New)' || juteVar =='Tossa (New)') juteVarietyName = juteVar;
+            if( juteVar =='Bimli' || juteVar == 'Mesta' || juteVar == 'White' || juteVar =='Tossa') juteVarietyName = juteVar;
             
             var values = [];
        	 	console.log(juteVar);
@@ -622,6 +626,7 @@ $(document).ready(function() {
     $("#submit").on("click", function(event) {
         // Prevent default form submission behavior
         event.preventDefault();
+        
 
         // Call the gatherData function
    var gatheredData = gatherData();
@@ -665,7 +670,7 @@ for (var i = 0; i < size.length; i++) {
     
     console.log("Jute variety:", size[i].juteVar);
     // Check if the jute variety is "DI Issue"
-    if (size[i].juteVar == "Mesta"||(size[i].juteVar == "Bimli")||(size[i].juteVar == "Tossa (New)")||(size[i].juteVar == "White (New)")) {
+    if (size[i].juteVar == "Mesta"||(size[i].juteVar == "Bimli")||(size[i].juteVar == "Tossa")||(size[i].juteVar == "White")) {
         
    		
         // Loop through the values in the row
@@ -722,7 +727,7 @@ var hoDiNo = $("#hoDiNo").val();
     
 }); */
 
-
+$(".contractLoader").show();
 
         //  AJAX request to save the data
         $.ajax({
@@ -740,8 +745,10 @@ var hoDiNo = $("#hoDiNo").val();
                  setTimeout(async function(){
                      // Hide the success message
                      successDiv.style.display = 'none';
+                   
                      // Redirect to the next page
                      window.location.href = "roDispatchInstruction.obj";
+                     $(".contractLoader").hide();
                      // Hide loader if needed
                      await loader("none");
 

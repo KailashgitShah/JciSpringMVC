@@ -67,7 +67,7 @@
 						<div class="ibox">
 							<span>${msg}</span>
 							<div class="ibox-body">
-								<form action="saveentryoftds.obj" method="POST"
+								<form id="myForm" action="saveentryoftds.obj" method="POST"
 									enctype="multipart/form-data">
 									<div class="row">
 
@@ -93,10 +93,7 @@
 												class="form-control textbox" name="DateofIntimation" placeholder="dd-mm-yyyy"
 												id="Task_Start_date" required readonly>
 										</div>
-										<!-- <label for="due_date">Task Start Date<span
-									class="text-danger">*</span></label> <input type="text"
-									class="form-control" id="Task_Start_date"
-									placeholder="dd-mm-yyyy" name="Task_Start_date" readonly> -->
+										
 										
 
 
@@ -108,7 +105,6 @@
 
 											<label>Financial year</label>
 
-											<!-- <input class="form-control textbox" id= "Financialyear" name="Financialyear" type="text" placeholder="Financial year" required readonly="readonly"> -->
 
 											<input class="form-control textbox" id="Financialyear"
 												name="Financialyear"
@@ -137,7 +133,8 @@
 
 										<div class="col-sm-12 form-group">
 											<input type="submit" value="Submit" class="btn btn-primary"
-												id="submit" onclick="f()">
+												id="submit" onclick="f()  onclick="disableSubmit(event)">
+
 										</div>
 									</div>
 								</form>
@@ -160,11 +157,38 @@
 	  <script src="assets/js/app.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
+
+ <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
  <script>
 	$( "#DateofIntimation" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 </script> 
+
+<<<<<<< HEAD
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
+
 <script>
 function f(){
 	// alert(document.getElementsByName("SupportingDocument"))
@@ -199,14 +223,6 @@ function f(){
 		document.getElementById('Task_Start_date').value = formattedDate;
 	}
 </script>
- 
-
-
-
-
-
-
-
 
 	<script type="text/javascript">
 	function getCurrentFinancialYear() {

@@ -596,11 +596,16 @@ public class Controller_V {
 
 		String filePath = requestLetterpath + File.separator + refNo + ".pdf";
 
-		String sub = "Expressing Gratitude for Contract Approval";
-		String body = "Dear Jute Commissioner Officer ,\n " + "Hope This email finds you well ,\n"
-				+ "Thank you for accepting the pco request of reference no : " + refNo + "\n " + "contract Date : "
-				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
-				+ "Thanks & Regards \n " + "Jute Corporation Of India";
+//		String sub = "Expressing Gratitude for Contract Approval";
+//		String body = "Dear Jute Commissioner Officer ,\n " + "Hope This email finds you well ,\n"
+//				+ "Thank you for accepting the pco request of reference no : " + refNo + "\n " + "contract Date : "
+//				+ date + "\n " + "Under this crop year " + cropYear + "\n" + " requested qty " + qty + "\n "
+//				+ "Thanks & Regards \n " + "Jute Corporation Of India";
+
+		
+		String sub = "Expressing Gratitude for Contract Approval Testing Email";
+		String body = "This is a test message from The Jute Corporation of India Limited.\n" +
+		              "Please ignore it. However, any suggestions for improving the proposed system would be appreciated.";
 
 		InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
 
@@ -637,8 +642,8 @@ public class Controller_V {
 		if (imageFile.exists()) {
 			try {
 				// Set the content type based on the file type
-				response.setContentType("application/pdf");
-
+				
+response.setContentType("application/pdf");
 				// download
 				// response.setHeader("Content-Disposition", "attachment; filename=" +
 				// fileName);
@@ -668,6 +673,25 @@ public class Controller_V {
 		}
 
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "totalReqQty", method = RequestMethod.GET)
+	public String getTotalContractedQty(HttpServletRequest request)
+			throws AddressException {
+		String cropyr = request.getParameter("cropyr");
+		String basis = request.getParameter("basis");
+		
+		double contractedQty = genReqLetterService.getTotalContractedQty(cropyr);
+		
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(contractedQty);
+		return resultString;
+	}
+
+	
+	
+	
 
 	// get the contract letter path
 	@Value("${upload.contractLetterJava}")
@@ -1400,6 +1424,19 @@ public class Controller_V {
 			qutoedAns += "'" + no + "',";
 		return qutoedAns;
 	}
+	
+	private static InternetAddress[] convertToInternetAddresses(String[] emailAddresses) {
+        List<InternetAddress> addressList = new ArrayList<>();
+        for (String email : emailAddresses) {
+            try {
+                addressList.add(new InternetAddress(email));
+            } catch (Exception e) {
+                // Handle potential exceptions from invalid email formats
+                e.printStackTrace();
+            }
+        }
+        return addressList.toArray(new InternetAddress[0]);
+    }
 
 	// contract authorization
 	@ResponseBody
@@ -1423,8 +1460,13 @@ public class Controller_V {
 
 		for (String contract : contractNos) {
 			String[] contractNo = contract.split("/");
-
 			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
+			
+			String millCode = contractNo[1];
+			
+		    String millEmails= contractGenerationService2.findEmailByMillCode(millCode);
+		    
+		    String[] emailArr = millEmails.split(", ");
 
 			String filePath = contractNo[3] + File.separator + fileName;
 
@@ -1453,15 +1495,22 @@ public class Controller_V {
 
 			// Close the PdfStamper
 			stamper.close();
-
+			
 			try {
 				// send email
-				String body = "Please find below attachment to get full details of contract grade wise..";
-				String sub = "Contract Details";
+//				String body = "Please find below attachment to get full details of contract grade wise..";
+//				String sub = "Contract Details";
+//				
+				String sub = "Expressing Gratitude for Contract Approval Testing Email";
+				String body = "This is a test message from The Jute Corporation of India Limited.\n" +
+				              "Please ignore it. However, any suggestions for improving the proposed system would be appreciated.";
+
+				
 				final String filePathDir = contractLetterPath + File.separator + filePath;
 				SendMail sendMail = new SendMail();
-				InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
-
+				InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);
+				//InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
+		
 				CompletableFuture.runAsync(() -> {
 					try {
 						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
@@ -3135,8 +3184,7 @@ public class Controller_V {
 				String dateofship = request.getParameter("dateofship");
 				String Millnameletest = request.getParameter("millname234");
 
-				System.err.println(dateofship);
-				System.err.println(dateofexpiry);
+				
 
 				String Pyamentduedate = request.getParameter("payment_dueDate12");
 				String contrcat_value23 = request.getParameter("contrcat_value23");
@@ -3234,7 +3282,7 @@ public class Controller_V {
 
 					// String dateofship1 = formatter1.parse(dateofship);
 					entryPaymentDetailsModel.setDateofship(dateofship);
-					System.err.println(dateofship);
+					
 
 					// Date dateofexpiry1 = formatter1.parse(dateofexpiry);
 					entryPaymentDetailsModel.setDateofexpiry(dateofexpiry);
@@ -3354,7 +3402,7 @@ public class Controller_V {
 	public void downloaFcdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 		String imagePath = fcDownoad + File.separator + filename;
 		File imageFile = new File(imagePath);
-		System.err.println(filename); // Check if the file exists
+		//System.err.println(filename); // Check if the file exists
 		if (imageFile.exists()) {
 
 			try {
@@ -3790,7 +3838,7 @@ public class Controller_V {
 	public ModelAndView entryOfMillReceiptChild(@RequestParam("challanno") String contractNo,
 			@RequestParam("millName") String millName, @RequestParam("cropyear") String hoDate,
 			HttpServletRequest request) {
-		System.err.println("EntryofMillreceiptChild");
+		//System.err.println("EntryofMillreceiptChild");
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv;
 
@@ -5061,12 +5109,9 @@ public class Controller_V {
 		String status = String.format("%06d", Integer.parseInt(this.generationofBillService.billofsupplyno()));
 
 		String status1 = String.format("%05d", Integer.parseInt(this.generationofBillService.statecount(statecode)));
-		System.err.println(status1);
 
 //		String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
 		String laString = prefix + yearCode + status + statecode + status1;
-		System.err.print(laString);
-		System.err.print(laString);
 		return laString;
 
 	}
@@ -6999,7 +7044,7 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		List<RoDispatchModel> allDi = roDispatchService.getAllRoDi();
+		List<Object[]> allDi = roDispatchService.getAllRoDi();
 
 		ModelAndView mv = new ModelAndView("diRoList");
 		mv.addObject("roDiList", allDi);
@@ -10463,7 +10508,6 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 		List<String> cropyear = this.paymentRealizationService.cropYear();
-		System.err.print(cropyear + "cyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 		mv.addObject("cropyear", cropyear);
 
 		return mv;
@@ -12252,30 +12296,51 @@ public class Controller_V {
 	   	 	    
 	   	  }	 
 		  
-		    @RequestMapping(value = "regionwiseAvailable")
-  	  public ModelAndView  regionwiseAvailable(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
-  		  String username =(String)request.getSession().getAttribute("usrname");
-  		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
-  	    	 if(username == null) {
-  	             return new ModelAndView("index");
-  	             }
-  	    	  else {
-  	    		  String cropyr =  request.getParameter("cropyear");
- 	    		  String Baled =  request.getParameter("baled");
- 	    		  String basis =  request.getParameter("basis");
-  		  ModelAndView mv = new ModelAndView("Available_regionwise");
-  
-		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr,basis,Baled);
-  		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
-		  mv.addObject("cropyr" ,(Object)cropyr);
-		  mv.addObject("Baled" ,(Object)Baled);
-		  mv.addObject("basis" ,(Object)basis);
-		  mv.addObject("regionjute" ,(Object)regionjute);
-		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
-  		  return mv;
-  	    	  } 
-  	  }
-	  
+	    	  @RequestMapping(value = "regionwiseAvailable")
+	      	  public ModelAndView  regionwiseAvailable(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	      		  String username =(String)request.getSession().getAttribute("usrname");
+	      		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+	      	    	 if(username == null) {
+	      	             return new ModelAndView("index");
+	      	             }
+	      	    	  else {
+	      	    		  String cropyr =  request.getParameter("cropyear");
+	     	    		  String Baled =  request.getParameter("baled");
+	     	    		  String basis =  request.getParameter("basis");
+	      		  ModelAndView mv = new ModelAndView("Available_regionwise");
+	      
+	    		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr,basis,Baled);
+	      		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
+	    		  mv.addObject("cropyr" ,(Object)cropyr);
+	    		  mv.addObject("Baled" ,(Object)Baled);
+	    		  mv.addObject("basis" ,(Object)basis);
+	    		  mv.addObject("regionjute" ,(Object)regionjute);
+	    		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
+	      		  return mv;
+	      	    	  } 
+	      	  }
+	    	  
+	    		    @RequestMapping(value = "jute_Variety_Available")
+	    		  	  public ModelAndView  jute_Variety_Available(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	    		  		  String username =(String)request.getSession().getAttribute("usrname");
+	    		  	    	 if(username == null) {
+	    		  	             return new ModelAndView("index");
+	    		  	             }
+	    		  	    	  else {
+	    		  	    		  String cropyr =  request.getParameter("cropyear");
+	    		 	    		  String Baled =  request.getParameter("baled");
+	    		 	    		  String basis =  request.getParameter("basis");
+	    		  		  ModelAndView mv = new ModelAndView("Jute_varity_available");
+	    		  
+	    				  List<InventoryDTO> jutevarietyavailable = dailyPurchaseModelConfService.juteVarityAvailable(cropyr,basis,Baled);
+	    		  		  //List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
+	    				  mv.addObject("cropyr" ,(Object)cropyr);
+	    				  mv.addObject("Baled" ,(Object)Baled);
+	    				  mv.addObject("basis" ,(Object)basis);
+	    				  mv.addObject("jutevarietyavailable" ,(Object)jutevarietyavailable);
+	    		  		  return mv;
+	    		  	    	  } 
+	    		  	  }
 	  	  @RequestMapping(value = "available_dpcwise")
   	  public ModelAndView  available_dpcwise(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
   		  String username =(String)request.getSession().getAttribute("usrname");

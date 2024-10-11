@@ -7,7 +7,7 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.jci.model.StateList"%>
 <%@page import="java.util.List"%>
-<%@ page import="java.util.Calendar" %>
+<%@ page import="java.util.Calendar"%>
 <html lang="en">
 <%@ page import="javax.servlet.http.HttpServletRequest"%>
 <head>
@@ -59,7 +59,6 @@ input[type="radio"] {
 </head>
 
 <body class="fixed-navbar">
-
 	<%
 	// String id = (String) request.getAttribute("id");
 
@@ -86,7 +85,7 @@ input[type="radio"] {
 	/*
 
 	  for (Object p : gradeRatio) {
-	         System.err.println("gradeRatio => " + (Double) p);
+	 System.err.println("gradeRatio => " + (Double) p);
 	  } */
 
 	int sumOfBale = 0;
@@ -157,7 +156,7 @@ input[type="radio"] {
 								<span>${msg}</span>
 							</div>
 							<div class="ibox-body">
-								<form action="saveCreditNote.obj" method="POST"
+								<form id="myForm" action="saveCreditNote.obj" method="POST"
 									enctype="multipart/form-data">
 									<div class="row">
 
@@ -237,8 +236,8 @@ input[type="radio"] {
 											value="<%=roId%>" readonly><input
 											class="form-control " name="dpc" id="dpc" type="hidden"
 											value="<%=dpc%>" readonly><input
-											class="form-control " name="gstCode" id="gstCode" type="hidden"
-											value="<%=gstCode%>" readonly>
+											class="form-control " name="gstCode" id="gstCode"
+											type="hidden" value="<%=gstCode%>" readonly>
 
 									</div>
 									<br>
@@ -279,7 +278,7 @@ input[type="radio"] {
 													sumActQty += actQty;
 													sumShrtQty += shtQty;
 													sumTtlCrnAmt += shortAmtPrice;
-													System.err.println("shtQty " + shtQty);
+									
 												%>
 												<tr>
 													<td><div class="table-cell"><%=(String) p[0]%></div></td>
@@ -359,10 +358,14 @@ input[type="radio"] {
 
 	<script>
 	$(document).ready(function(){
-	<%-- 	alert('<%=finalAmount%>'); --%>
 		document.getElementById('creditAmt').value='<%=finalAmount%>';
+			$('#myForm').on('submit', function(event) {
+				// Disable the submit button
+				$('#submit').prop('disabled', true);
+				$('#submit').val('Please Wait Processing...');
+
+			});
 		});
 	</script>
-
 </body>
 </html>

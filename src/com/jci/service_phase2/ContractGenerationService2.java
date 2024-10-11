@@ -24,5 +24,6 @@ public interface ContractGenerationService2 {
 	public List<String> findRefNos(String formatedPcsoDateWithQuotes);
 	public String millFullName(String millCode);
 	public List<String> getPscoDateByCropYr(String cropYr);
+	public String findEmailByMillCode(String millCode);
 
 }

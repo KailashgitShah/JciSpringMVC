@@ -31,4 +31,5 @@ public interface DailyPurchaseConfDao {
 	public List<Double> contractInHand_2ndlevel(String currCropYear, String basis, String status);
 	public List<InventoryDTO> contract3rd_level(String currCropYear, String basis);
 	public List<InventoryDTO> contract4th_level(String currCropYear, String basis, String contractno);
+	public List<InventoryDTO> juteVarityAvailable(String cropyr, String basis, String baled);
 }

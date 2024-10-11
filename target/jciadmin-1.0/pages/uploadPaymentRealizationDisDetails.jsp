@@ -68,6 +68,12 @@ input[type="radio"] {
 }
 </style>
 
+  <style>
+        .text-danger {
+            color: red;
+        }
+    </style>
+
 </head>
 
 <%
@@ -90,22 +96,116 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 			<div class="page-heading">
 				<h1 class="page-title">Uploading of Payment Realization / Disbursal Details</h1>
 			</div>
-
+               <%
+                   
+                    List<Object[]> fetchMill_Name =     (List<Object[]>) request.getAttribute("fetchMill_Name");  
+                    String millname="";
+                    String millcode="";
+                    String millCodeAndName="";
+       
+             %>
 			<div class="page-content fade-in-up">
 				<div class="row">
 					<div class="col-md-11">
 						<div class="ibox">
 							    <span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
-								<form action="saveuploadPaymentRealizationDisDetails.obj" method="POST" enctype="multipart/form-data">
+								<form id="myForm" action="saveuploadPaymentRealizationDisDetails.obj" method="POST" enctype="multipart/form-data">
 									<div class="row">
-										<div class="col-6 form-group">
+									
+                                                                             <div class="col-sm-6 form-group">
+                                                                               <label>Mill name.</label> <span class="text-danger">*
+                                                                               </span>&nbsp; <span id="millname1" name="Millname"
+                                                                                     class="text-danger"> </span> <select name="millcodeName"
+                                                                                     id="millname12"  class="form-control taxtbox" required>
+
+                                                                                     <option value="select">-Select-</option>
+                                                                                     <%
+                                                                                    
+                                                                                     for (Object[] row : fetchMill_Name) {
+                                                                                            millname = (String) row[0];  
+                                                                                          millcode = (String) row[1]; 
+                                                                                          millCodeAndName =  millcode +"-"+millname;
+                                                                                         
+                                                                                     %>
+                                                                                     <option value="<%=millCodeAndName%>"><%=millname%></option>
+                                                                                     <%
+                                                                                     }
+                                                                                     %> 
+                                                                               </select>
+
+
+                                                                        </div>
+                                                                        
+                                                                        
+                                                                          <div class="col-sm-5 form-group" id="dpc_div">
+                                                                               <label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
+                                                                               <span id="contractno" class="text-danger"></span> <select
+                                                                                     name="fullcontractno" id="contractno12" 
+                                                                                     class="form-control taxtbox"
+                                                                                     style="height: = 50; width: 350px;" required>
+                                                                                     <option disabled selected value="">-Select</option>
+
+                                                                               </select>
+                                                                        </div>
+                                                                        
+                                                            
+									</div>
+									
+									<div class="row">
+										
+									
+                                                                        <div class="col-sm-6 form-group" >
+																	    <label>Transaction No.</label> <span class="text-danger">*</span>&nbsp;
+																	    <select
+																	        name="transactionid" id="transactionid" 
+																	        class="form-control taxtbox"
+																	        required>
+																	        <option disabled selected value="">-Select-</option>
+																	    </select>
+																	</div>   
+                                                                        
+                                                               
+									
+											
+									<!-- <div class="col- form-group">
+								   	<label>UTR Number</label> <span class="text-danger">*</span><input
+												class="form-control textbox" type="text" name="utrNumber" placeholder="Enter UTR Number"
+												 required >
+										</div> -->
+										
+										  <div class="col- form-group">
+									            <label for="utrNumber">UTR Number</label> <span class="text-danger">*</span>
+									            <input
+									                id="utrNumber"
+									                class="form-control textbox"
+									                type="text"
+									                name="utrNumber"
+									                placeholder="Enter UTR Number"
+									                required
+									                pattern="[A-Za-z0-9]{12,}"
+									                title="UTR Number must be at least 12 alphanumeric characters."
+									            >
+									            <div id="error-message" class="text-danger"></div>
+									        </div>
+										
+										<div class="col-3 form-group">
+								        	<label>UTR Date</label> <span class="text-danger">*</span><input
+												class="form-control textbox" name="dateofUtr" placeholder="dd-mm-yyyy"
+												id="DateofUtr" required >
+										</div>
+										</div>
+								
+									
+									<!-- <div class="row">
+									<div class="col-4 form-group">
 											<label>Upload Excel File<span class="text-danger">*</span></label>
 											 <input type="file" class="form-control"
 												id="excelFile" name="excelFile" />
 								
 										</div>
-									</div>
+									</div> -->
+									
 
 									<div class="row">
 										<div class="col-sm-12 form-group">
@@ -126,6 +226,24 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 
 	<div class="sidenav-backdrop backdrop"></div>
 	
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+ <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
+
+              
+            });
+        });
+    </script>
+ <script>
+	$( "#DateofUtr" ).datepicker({ dateFormat: 'dd-mm-yy'    });
+</script> 
 	<script type = "text/javascript">
 	
 	
@@ -146,7 +264,117 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	})
 	
 	</script>
+	<script>
+        document.getElementById('utrForm').addEventListener('submit', function(event) {
+            var utrInput = document.getElementById('utrNumber');
+            var errorMessage = document.getElementById('error-message');
+            
+            // Clear any previous error messages
+            errorMessage.textContent = '';
+
+            // Validate the input
+            if (utrInput.value.length < 12) {
+                errorMessage.textContent = 'UTR Number must be at least 12 characters long.';
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
+	<script type="text/javascript">
+	  $(document).ready(function() {
+	        
+	      // Millname change event handler
+	      $('#millname12').on('change', function() {
+	    	  
+	          const field2Value = $(this).val();
+	          const millcode = field2Value.split('-')[0]; 
+	         // alert(millcode)
+              //alert(field2Value)
+	            $.ajax({
+	              type: 'GET',
+	              url: 'contrcatForPaymentRealisation.obj',
+	              data: { "millname": millcode },
+	              success: function(data) {
+	              
+	                  const dataArray = JSON.parse(data);
+	                  //alert(dataArray)
+	                  const dropdownElement = document.getElementById('contractno12');
+
+	                  // Clear previous options
+	                  dropdownElement.innerHTML = '';
+
+	                  // Add the default option
+	                  const selectOption = document.createElement('option');
+	                  selectOption.value = ''; 
+	                  selectOption.textContent = '-Select-';
+	                  dropdownElement.appendChild(selectOption);
+
+	                  // Populate new options
+	                  dataArray.forEach(function(innerArray) {
+	                      const option = document.createElement('option');
+	                      option.textContent = innerArray;
+	                      option.value = innerArray;
+	                      option.setAttribute('data-value1', innerArray); // Value for backend
+	                   
+	                      dropdownElement.appendChild(option);
+	                  });
+	              },
+	              error: function(xhr, status, error) {
+	                  console.error('AJAX request failed:', status, error);
+	                  // Handle the error as needed
+	              }
+	          }); 
+	          
+	      });
+	      });
+	</script>
 	
+	<script type="text/javascript">
+    $(document).ready(function() {
+        $("#contractno12").on('change', function() {
+            const fieldValue = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: 'transactionidcontract.obj',
+                data: { "contractNo": fieldValue },
+                success: function(data) {
+                    let dropdownElement = document.getElementById('transactionid');
+                    const dataArray = JSON.parse(data);
+
+                    if (dataArray === null || dataArray.length === 0) {
+                        dropdownElement.innerHTML = '';
+                        alert("No Transaction No Is Available On this Contract");
+                        
+                        return; // Exit the function if no transactions are available
+                    } else {
+                        dropdownElement.innerHTML = '';
+
+                        // Add the default option
+                        const selectOption = document.createElement('option');
+                        selectOption.value = ''; 
+                        selectOption.textContent = '-Select-';
+                        dropdownElement.appendChild(selectOption);
+
+                        // Populate new options
+                        dataArray.forEach(function(innerArray) {
+                            const option = document.createElement('option');
+                            option.textContent = innerArray;
+                            option.value = innerArray;
+                            option.setAttribute('data-value1', innerArray); // Value for backend
+                            
+                            dropdownElement.appendChild(option);
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX request failed:', status, error);
+                    alert('An error occurred while processing your request.');
+                }
+            });
+        });
+    });
+</script>
+
 	    <script>
 	    //for hide the displayed message
             setTimeout(function() {

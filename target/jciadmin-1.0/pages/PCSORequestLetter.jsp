@@ -49,13 +49,18 @@
 </head>
 <%
 String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+ String[] years = currCropYear.split("-");
+int startYear = Integer.parseInt(years[0]);
+int endYear = Integer.parseInt(years[1]);
+
+// Calculate the past crop years
+String pastCropYear1 = (startYear - 1) + "-" + (endYear - 1);
+String pastCropYear2 = (startYear - 2) + "-" + (endYear - 2); 
+
 List<PCSORequestLetter> topThreeRecords = (List<PCSORequestLetter>) request.getAttribute("topThreeRecords");
 List<String> cropYr = (List<String>) request.getAttribute("distinctCropYear");
 double totalContractedVal = (double) request.getAttribute("totalContract");
-
-
-List<Double> jute = (List<Double>)request.getAttribute("jute");
-			  
+List<Double> jute = (List<Double>) request.getAttribute("jute");
 %>
 
 <body class="fixed-navbar">
@@ -88,8 +93,8 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 										<th>Reference No.</th>
 										<th>Date</th>
 										<th>Crop Year</th>
-										<th>Requested Qty.</th>
-										<th>Uncontracted Qty.</th>
+										<th>Requested Qty. (Qtls)</th>
+										<th>Uncontracted Qty.(Qtls)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -122,7 +127,7 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 
 							<div class="ibox-body">
 								<form action="generatePCSORequest.obj" method="POST"
-									name="myForm" onsubmit="return validate()">
+									name="myForm" id="myForm" onsubmit="return validate()">
 									<div class="row">
 
 
@@ -139,19 +144,17 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 										<div class="col-sm-4 form-group">
 											<label>Crop Year</label> <span class="text-danger">* </span>&nbsp;
 											<span id="errcropyr" name="errcropyr" class="text-danger">
-											</span> <select name="cropyr" id="cropyr" class="form-control" readonly>
+											</span> <select name="cropyr" id="cropyr" class="form-control" onchange="getTotalQty()"
+												>
 												<option value="">-Select-</option>
-												<%
-												for (String crpyr : cropYr) {
-												%>
-												<option value="<%=crpyr%>"
-													<%if (crpyr.equals("2023-2024"))
-	out.print("selected");%>><%=crpyr%></option>
-												<%
-												}
-												%>
+												<option  value="<%=currCropYear%>" ><%=currCropYear %></option>
+												<option value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
+												<option value="<%=pastCropYear2%>"><%=pastCropYear2%></option>
+													
+												 
 											</select>
 										</div>
+									</div>
 									</div>
 									<table class="table table-striped table-bordered table-hover"
 										id="example-table" cellspacing="0" width="100%">
@@ -179,20 +182,20 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 										<tbody>
 
 
-												<tr>
-										<td>(1)</td>
-										<td><a href = "regionwiseinventory.obj" >Procured/Baled</a></td>
-										<td id="loosejute"><%=jute.get(7) %></td>
-										<td id="grade0"><%=jute.get(0) %></td>
-										<td id="grade1"><%=jute.get(1) %></td>
-										<td id="grade2"><%=jute.get(2) %></td>
-										<td id="grade3"><%=jute.get(3) %></td>
-										<td id="grade4"><%=jute.get(4) %></td>
-										<td id="grade5"><%=jute.get(5) %></td>
-										<td id="grade6">0</td>
-										<td id="grade7">0</td>
-										<td id="total"><%=jute.get(6)%></td>
-										</tr>
+											<tr>
+												<td>(1)</td>
+												<td><a href="regionwiseinventory.obj">Procured/Baled</a></td>
+												<td id="loosejute"><%=jute.get(7)%></td>
+												<td id="grade0"><%=jute.get(0)%></td>
+												<td id="grade1"><%=jute.get(1)%></td>
+												<td id="grade2"><%=jute.get(2)%></td>
+												<td id="grade3"><%=jute.get(3)%></td>
+												<td id="grade4"><%=jute.get(4)%></td>
+												<td id="grade5"><%=jute.get(5)%></td>
+												<td id="grade6">0</td>
+												<td id="grade7">0</td>
+												<td id="total"><%=jute.get(6)%></td>
+											</tr>
 
 										</tbody>
 										<tbody>
@@ -272,17 +275,22 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 												autocomplete="off" type="date" min="" required>
 
 										</div>
-										<div class="col-sm-4 form-group">
-											<label>Total Contracted Qty. (Qtls.) </label> <input
-												class="form-control" name="totalContractedQty" type="text"
+										<%-- <div class="col-sm-4 form-group">
+											<label>Total Requsted Qty. (Qtls.) </label> <input
+												class="form-control" name="totalContractedQty" type="text" id="totalContractedQty"
 												value="<%=totalContractedVal%>" readonly>
+										</div> --%>
+										<div class="col-sm-4 form-group">
+											<label>Total Requsted Qty. (Qtls.) </label> <input
+												class="form-control" name="totalContractedQty" type="text" id="totalContractedQty"
+												 readonly>
 										</div>
 
 									</div>
 									<div class="row">
-										 	<input class="form-control" name="uncontractedQty"
-											id="uncontractedQty" type="hidden"
-											value="<%=jute.get(6)%>" readonly>
+										<input class="form-control" name="uncontractedQty"
+											id="uncontractedQty" type="hidden" value="<%=jute.get(6)%>"
+											readonly>
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty. (Qtls.)</label> <input
@@ -378,7 +386,9 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 									.on(
 											'change',
 											function() {
+												//alert("kkkk")
 												var cropyr = $("#cropyr").val();
+											
 												var basis = "MSP";
 												//var basis = $("#basis").val();
 												var loosejute = 0.0;
@@ -457,14 +467,70 @@ List<Double> jute = (List<Double>)request.getAttribute("jute");
 																		});
 															}
 														});
-											});
+										
+											/* 
+												$.ajax({
+												    type: "GET",
+												    url: "totalReqQty.obj",
+												    data: {
+												        "cropyr": cropyr,
+												        "basis": basis
+												    },
+												    success: function(result) {
+												        alert("totalRequested");
+												        var jute = jQuery.parseJSON(result);
+												        alert(jute); // If you want to alert the parsed JSON
+												    },
+												    error: function(xhr, status, error) {
+												        alert("Error: " + error); // Improved error handling
+												    }
+												}); */
 						});
 	</script>
+	
+	<script>
+    var basis = "MSP";
+
+    function getTotalQty() {
+        var cropyr = document.getElementById("cropyr").value; // Get the value of the dropdown
+       
+        $.ajax({
+            type: "GET",
+            url: "totalReqQty.obj",
+            data: {
+                cropyr: cropyr, // Use the value of cropyr
+                basis: basis    // Basis is already defined
+            },
+            success: function(result) {
+             
+                    var jute = jQuery.parseJSON(result);
+                    document.getElementById("totalContractedQty").value = jute;
+                   // alert(jute)
+                 
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error); // Improved error handling
+            }
+        });
+    }
+</script>
+
+	
 
 
 
 
+  <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

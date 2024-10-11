@@ -123,7 +123,7 @@ String contactIdnNo = "BT-" + count;
 															Composition(%)</th>
 														<th class="col-sm-2" scope="col">Proposed
 															Composition(%)</th>
-														<th class="col-sm-2 required" scope="col">Remarks</th>
+														<th class="col-sm-2 " scope="col">Remarks</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -325,17 +325,17 @@ $("#toggle").on("click" ,async () => {
 	return true;  */
 	
 	var avaQty =$('#available_qty').val();
-	var remark = $('#remark').val();
+	/* var remark = $('#remark').val(); */
 	if(avaQty.length == 0){
 		alert("Please fill Available Qty");
 		return false;
 	}
 	
-	if(remark.length == 0){
+	/* if(remark.length == 0){
 		alert("Please add Remarks..");
 		return false;
 	}
-	
+	 */
 	
 	//grade composition validations
 	var totel = 0.0;

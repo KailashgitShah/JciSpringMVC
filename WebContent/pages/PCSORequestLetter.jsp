@@ -60,10 +60,17 @@ String pastCropYear2 = (startYear - 2) + "-" + (endYear - 2);
 List<PCSORequestLetter> topThreeRecords = (List<PCSORequestLetter>) request.getAttribute("topThreeRecords");
 List<String> cropYr = (List<String>) request.getAttribute("distinctCropYear");
 double totalContractedVal = (double) request.getAttribute("totalContract");
-
 List<Double> jute = (List<Double>) request.getAttribute("jute");
 %>
 
+	<%  /* 
+				List<Double> jute = (List<Double>)request.getAttribute("jute"); */
+				List<Double> dispatched = (List<Double>)request.getAttribute("dispatched");
+				List<Double> contractInHand = (List<Double>)request.getAttribute("contractInHand");
+		     /*    String currCropYear =(String)request.getSession().getAttribute("currCropYear"); */
+
+
+							  %>
 <body class="fixed-navbar">
 	<div class="page-wrapper">
 		<!-- START HEADER-->
@@ -94,8 +101,8 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 										<th>Reference No.</th>
 										<th>Date</th>
 										<th>Crop Year</th>
-										<th>Requested Qty.</th>
-										<th>Uncontracted Qty.</th>
+										<th>Requested Qty. (Qtls)</th>
+										<th>Uncontracted Qty.(Qtls)</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -145,8 +152,8 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 										<div class="col-sm-4 form-group">
 											<label>Crop Year</label> <span class="text-danger">* </span>&nbsp;
 											<span id="errcropyr" name="errcropyr" class="text-danger">
-											</span> <select name="cropyr" id="cropyr" class="form-control"
-												readonly>
+											</span> <select name="cropyr" id="cropyr" class="form-control" onchange="getTotalQty()"
+												>
 												<option value="">-Select-</option>
 												<option selected value="<%=currCropYear%>" ><%=currCropYear %></option>
 												<option value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
@@ -155,6 +162,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 												 
 											</select>
 										</div>
+									</div>
 									</div>
 									<table class="table table-striped table-bordered table-hover"
 										id="example-table" cellspacing="0" width="100%">
@@ -179,7 +187,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 										</tr>
 
 										</thead>
-										<tbody>
+								 	<tbody>
 
 
 											<tr>
@@ -247,6 +255,8 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 											</tr>
 										</tbody>
 
+                                     
+                                 
 
 									</table>
 
@@ -275,10 +285,15 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 												autocomplete="off" type="date" min="" required>
 
 										</div>
-										<div class="col-sm-4 form-group">
-											<label>Total Contracted Qty. (Qtls.) </label> <input
-												class="form-control" name="totalContractedQty" type="text"
+										<%-- <div class="col-sm-4 form-group">
+											<label>Total Requsted Qty. (Qtls.) </label> <input
+												class="form-control" name="totalContractedQty" type="text" id="totalContractedQty"
 												value="<%=totalContractedVal%>" readonly>
+										</div> --%>
+										<div class="col-sm-4 form-group">
+											<label>Total Requsted Qty. (Qtls.) </label> <input
+												class="form-control" name="totalContractedQty" type="text" id="totalContractedQty"
+												 readonly>
 										</div>
 
 									</div>
@@ -373,7 +388,7 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 				});
 	</script>
 
-	<script>
+	<!-- <script>
 		$(document)
 				.ready(
 						function() {
@@ -381,7 +396,9 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 									.on(
 											'change',
 											function() {
+												//alert("kkkk")
 												var cropyr = $("#cropyr").val();
+											
 												var basis = "MSP";
 												//var basis = $("#basis").val();
 												var loosejute = 0.0;
@@ -460,12 +477,56 @@ List<Double> jute = (List<Double>) request.getAttribute("jute");
 																		});
 															}
 														});
-											});
+										
+											/* 
+												$.ajax({
+												    type: "GET",
+												    url: "totalReqQty.obj",
+												    data: {
+												        "cropyr": cropyr,
+												        "basis": basis
+												    },
+												    success: function(result) {
+												        alert("totalRequested");
+												        var jute = jQuery.parseJSON(result);
+												        alert(jute); // If you want to alert the parsed JSON
+												    },
+												    error: function(xhr, status, error) {
+												        alert("Error: " + error); // Improved error handling
+												    }
+												}); */
 						});
 	</script>
+	 -->
+	
+<script>
+    var basis = "MSP";
 
+    function getTotalQty() {
+        var cropyr = document.getElementById("cropyr").value; // Get the value of the dropdown
+       
+        $.ajax({
+            type: "GET",
+            url: "totalReqQty.obj",
+            data: {
+                cropyr: cropyr, // Use the value of cropyr
+                basis: basis    // Basis is already defined
+            },
+            success: function(result) {
+                var jute = jQuery.parseJSON(result);
+                document.getElementById("totalContractedQty").value = jute;
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + error); // Improved error handling
+            }
+        });
+    }
 
-
+    // Function to run when the document is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        getTotalQty(); // Call the function to fetch the total requested quantity
+    });
+</script>
 
   <script>
         $(document).ready(function() {

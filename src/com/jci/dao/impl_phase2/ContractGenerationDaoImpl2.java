@@ -351,8 +351,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		List<Contractgeneration> listOfContract = new ArrayList<>();
 
-		System.err.println(list);
-
 		for (Object[] eleObjects : list) {
 			Contractgeneration model = new Contractgeneration();
 			model.setContract_acceptance_doc((String) eleObjects[2]);
@@ -410,6 +408,12 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	public List<String> getPscoDateByCropYr(String cropYr) {
 		String sql = "select distinct pcso_date from jcientryof_pcso where cropYear ='" + cropYr + "' and Pcso_contract_flag = 0";
 		return ( List<String>) currentSession().createSQLQuery(sql).list();
+	}
+
+	@Override
+	public String findEmailByMillCode(String millCode) {
+		String sql = "select client_email from jcimilldetailmaster a INNER join jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '" + millCode + "'";
+		return (String) currentSession().createSQLQuery(sql).uniqueResult();
 	}
 
 }

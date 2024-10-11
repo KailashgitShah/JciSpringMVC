@@ -6,6 +6,7 @@
 <%@ page import="java.util.Calendar"%>
 <%@ page import="java.util.Locale"%>
 <%@page import="java.util.Date"%>
+<%@page import="java.math.BigDecimal"%> 
 <%@ page import="java.util.*" %>
 
 <%@ page import="java.text.ParseException"%>
@@ -162,7 +163,7 @@
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveentryofGenrationbill.obj" method="POST"
-									name="myForm" enctype="multipart/form-data">
+									name="myForm" id="myForm" enctype="multipart/form-data">
 									<div class="child-checkbox" id="disableform">
 										<div class="row">
 											<div class="col-sm-4 form-group">
@@ -560,31 +561,53 @@
 											            <th>Crop year </th>
 											            <th> Bale Mark</th>
 											            <th>Variety/Grade</th>
-											            <th> No of bales</th>
-											            <th>Nominal wt/bale</th>
+											             <th>Rate(RS/UNIT)</th>
+											           <th>Nominal wt/bale</th>
 											            <th>Nominal Qty</th>
-											            <th>Rate(RS/UNIT)</th>
+											           <th> No of bales</th>
+											            <th>Amount</th>
 											          
 											        </tr>
 											    </thead>
 											    <tbody>
 											     <% 
+											        int totalBales = 0;
+										            BigDecimal totalQty = BigDecimal.ZERO;
+										            BigDecimal totalAmount = BigDecimal.ZERO;
 											        	
 											        	for (Object[] row : Perticulargoods) {
+											        		
+											        		   BigDecimal value5 = new BigDecimal(String.valueOf(row[5]));
+											        		    BigDecimal value6 = new BigDecimal(String.valueOf(row[6]));
+											        		    BigDecimal product = value5.multiply(value6);
+											        		    
+											        		     totalBales += Integer.parseInt(String.valueOf(row[3]));
+											                     totalQty = totalQty.add(value5);
+											                     totalAmount = totalAmount.add(product);
 															%>
 															<tr>
 															<td><%= row[0] %></td>
 															<td><%= row[1] %></td>
 															<td><%= row[2] %></td>
-															<td><%= row[3] %></td>
+															<td><%= row[6] %></td>
 															<td><%= row[4] %></td>
 															<td><%= row[5] %></td>
-															<td><%= row[6] %></td>
+															<td><%= row[3] %></td>
+															<td><%= product%></td>
 															
 															<% 
 															}
 											        	%>
 											    </tbody>
+											     <tfoot>
+											        <tr>
+											   <td colspan="4"><strong>Total</strong></td>
+											            <td></td>
+											            <td><strong><%= totalQty %></strong></td>
+											            <td><strong><%= totalBales %></strong></td>
+											            <td><strong><%= totalAmount %></strong></td>
+											        </tr>
+											    </tfoot>
 											</table>
 										
 								
@@ -785,7 +808,7 @@
                               
                                 if (dataArray && dataArray.length > 0) {
                                     var millcode = dataArray[0][0];
-                                    alert(millcode);
+                                    
                                     var cropyear = dataArray[0][1];
                                     /* $('#Financial_year1').val(cropyear); */
                                   
@@ -798,7 +821,7 @@
                                         data: { "contractno": millcode },
                                        
                                         success: function(thirdData) {
-                                           alert(thirdData);
+                                          
                                            
                                             try {
                                                 var dataArray = JSON.parse(thirdData);
@@ -831,7 +854,7 @@
                                                      var client_state = dataArray[0][8];
                                                     var client_name = dataArray[0][13];
                                                     
-                                                    alert(client_name);
+                                                 
                                                    
                                                     $('#Recipient_Name').val(unit_name);
                                                     $('#Recipient_GSTN').val(client_gstin);
@@ -895,12 +918,12 @@
          
          
          <script>
-		function calculateGST() {
+		function calculateGST(tcs) {
 			// Retrieve the shipment value entered by the user
 		/* 	var shipmentValue = parseFloat(document
 					.getElementsByName("Shipment_Value1")[0].value);
  */
- 
+          var tcs;
           var shipmentValue =<%=total%>;
 			// Check if the entered value is a valid number
 			if (!isNaN(shipmentValue)) {
@@ -909,7 +932,7 @@
 				var sgstAmt = (gstRate / 2) * shipmentValue;
 				var cgstAmt = (gstRate / 2) * shipmentValue;
 				var totalGstAmt = sgstAmt + cgstAmt;
-				var invoiceValue = shipmentValue + totalGstAmt;
+				var invoiceValue = shipmentValue + totalGstAmt+tcs;
 
 				// Set the calculated amounts to the respective input fields
 				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
@@ -941,14 +964,37 @@
                   
                     console.log("Mill data:", milldata);
                     
-                    var tsccount = (milldata === 'true') ? 0.0 : 0.01;
+                   /*  var tsccount = (milldata === 'true') ? 0.0 : 0.01;
+ */
+                    if (milldata === 'true') {
+                         tsccount = 0.00; // Update tsccount without re-declaring
+                        
+                    }
+                    else{
+                    	 if (shipmentValue > 5000000) {
+                             shipmentValue = shipmentValue - 5000000;
+
+                             if(shipmentValue<0){tsccount=0.0;}
+                             else {tsccount = 0.01;}
+                              // Update tsccount without re-declaring
+
+                         } else {
+                             tsccount = 0.00; // Update tsccount without re-declaring
+                         }
+                    }
+                    
                     var Tcsammount = (tsccount / 100) * shipmentValue;
                     
                    
                     var Tcsammount = (tsccount / 100) * shipmentValue;
+                  
                     
+                    var tcs = Math.round(Tcsammount); // Round to the nearest whole number
+
                  
-                    document.getElementById("TCS_Amt").value = Tcsammount.toFixed(2);
+                    document.getElementById("TCS_Amt").value = tcs;
+                    calculateGST(tcs);
+                    
                 },
                 error: function(error) {
                    
@@ -970,7 +1016,17 @@
 
 
 
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 
 
 

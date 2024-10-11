@@ -81,8 +81,8 @@ div.scrollmenu a:hover {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">Entry of Confirmation of Claim
-					Settlement Report</h1>
+				<h1 class="page-title">Entry  of Claim
+					Settlement Report(O/M Official)</h1>
 			</div>
 
 			<%
@@ -97,7 +97,7 @@ div.scrollmenu a:hover {
 							<span id="flashMessage">${msg}</span>
 							<div class="ibox-body">
 								<form action="saveConfirmationOfClaimSettelment.obj"
-									method="POST" name="myForm" enctype="multipart/form-data" onsubmit="return myFunc()">
+									method="POST" name="myForm" enctype="multipart/form-data" onsubmit="return myFunc()"  id="myForm">
 									<div class="child-checkbox" id="disableform">
 									<div id='errorcontainer'
 								style='display: none; text-align: center;'></div>
@@ -122,7 +122,7 @@ div.scrollmenu a:hover {
 
 												</select>
 											</div>
-										
+					<!-- 					
 <div class="col-sm-4 form-group">
 												<label class="required">Supporting Document
 													(330kb-1MB)</label>&nbsp; <span id="errRegForm" name="errRegForm"
@@ -131,7 +131,7 @@ div.scrollmenu a:hover {
 													type="file" oninput="validateREGFileType()"
 													placeholder="Supporting Document" id="SupportingDocument"
 													onkeypress="deleteErrorMsg()" required>
-											</div>
+											</div> -->
 											<div class="col-sm-4 form-group">
 												<label>Mill name</label> <span class="text-danger">*
 												</span>&nbsp; <span id="mill1" name="mil1 "
@@ -141,19 +141,6 @@ div.scrollmenu a:hover {
 													placeholder="Mill name" required>
 											</div>
 											
-											
-
-
-
-										</div>
-
-
-									
-
-										<div class="row">
-
-
-											
 											<div class="col-sm-4 form-group">
 												<label>Crop Year</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Crop_Year" name="Crop_Year "
@@ -162,6 +149,19 @@ div.scrollmenu a:hover {
 													id="CropYear1" value="" placeholder="Crop Year" readonly
 													required>
 											</div>
+
+
+
+										</div>
+
+
+									
+
+									
+
+
+											
+											
 											<!-- <div class="col-sm-4 form-group">
 												<label>Inspection by</label> <span class="text-danger">*
 												</span>&nbsp; <span id="Inspection_by" name="Inspection_by "
@@ -182,7 +182,7 @@ div.scrollmenu a:hover {
 													id="mrNo" value="" placeholder="MR No."
 													readonly required>
 											</div>  -->
-										</div>
+										
 										<!-- <div class="row">
 										 <div class="col-sm-4 form-group">
 												<label>MR Date </label> <span class="text-danger">*
@@ -242,8 +242,8 @@ div.scrollmenu a:hover {
 
 										<div class="row">
 											<div class="col-sm-12 form-group">
-												<input type="submit" value="Submit" id ="sub" class="btn btn-primary"
-													id="submit" onclick="">
+												<input type="submit" value="Submit"  class="btn btn-primary"
+													id="submit" >
 											</div>
 
 										</div>
@@ -428,7 +428,7 @@ $(document).ready(function(){
 
                     var tableHTML = "<table border='1'>";
                     tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Variety/Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
-                        "<th style='font-weight: bold;'>Moisture Content Claim Percentage</th><th style='font-weight: bold;'>Moisture Content Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th><th style='font-weight: bold;'>Claim Amount</th></tr>";
+                        "<th style='font-weight: bold;'>Moisture Content Claim Percentage</th><th style='font-weight: bold;'>Moisture Content Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th><th style='font-weight: bold;'>Settlement Amount</th></tr>";
                     //alert(data);
                         for (var i = 0; i < data.length; i++) {
                         var grade = data[i][3];
@@ -610,9 +610,9 @@ $(document).ready(function(){
                                 	    const AmountSet1 = amtiFixed * (100-rem)/100 * (price - fetchedData1);
                                 	    const AmountSet2 = amtiFixed * (rem)/100 * (price - fetchedData2);
                                 	    //alert(AmountSet1 +"------------"+AmountSet2);
-                                
+                                		  $("#cl"+index).val(Math.ceil(parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2)));
                                 	    totalSettlementAmount += parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2);
-                                	    alert("AmountSet1+++"+parseFloat(AmountSet1)+"AmountSet2---"+parseFloat(AmountSet2)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
+                                	   // alert("AmountSet1+++"+parseFloat(AmountSet1)+"AmountSet2---"+parseFloat(AmountSet2)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
                                 	    //alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
                                 	}
 
@@ -634,7 +634,7 @@ $(document).ready(function(){
                                     
                                     $("#cl"+index).val(Math.ceil(parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice)));
                                     totalSettlementAmount += parseFloat(AmountSet) + parseFloat(msAmount) +parseFloat(dnsPrice);
-                                    alert("AmountSet+++"+parseFloat(AmountSet)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
+                                   // alert("AmountSet+++"+parseFloat(AmountSet)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
     	                           // alert("Amt"+AmountSet+"msAmount"+msAmount+"dnsPrice"+dnsPrice);
                                 	}
 
@@ -649,7 +649,7 @@ $(document).ready(function(){
                             }
                         }
                        /*  $('#Settlement_Amount').text(totalSettlementAmount); */
-                      alert(totalSettlementAmount)
+                    //  alert(totalSettlementAmount)
 	                $("#SettlementAmount1").val(Math.ceil(totalSettlementAmount));
 
                         $("#sub").prop("disabled", false);
@@ -699,7 +699,7 @@ function myFunc(){
 </script>
 
 	<script type="text/javascript">
-      
+     
 
 
 	
@@ -726,7 +726,17 @@ function myFunc(){
 	<!-- PAGE LEVEL PLUGINS-->
 	<!-- CORE SCRIPTS-->
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
+<script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(event) {
+                // Disable the submit button
+                $('#submit').prop('disabled', true);
+                $('#submit').val('Please Wait Processing...');  
 
+              
+            });
+        });
+    </script>
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>
