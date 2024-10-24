@@ -203,7 +203,8 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 
 										<label>Remarks </label> <span class="text-danger"> </span>
 										<textarea class="form-control taxtbox" name="Remarks"
-											placeholder="Remarks"  maxlength="250" id="remarks"></textarea>
+											placeholder="Remarks"  maxlength="250" id="remarks"
+											 oninput="restrictInput(event)"></textarea>
 
 
 									</div>
@@ -248,6 +249,13 @@ List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooper
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+	<script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 <script>
 //Bind change event handler to #hoDiNo and #dpc
 $('#hoDiNo, #dpc').change(function() {

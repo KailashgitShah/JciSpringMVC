@@ -243,7 +243,7 @@
 																<div class="col-sm-4 form-group">
 					                                            <label>Remarks</label> 
 					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
-																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
+																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  oninput="restrictInput(event)"  required>
 					                                     </div>
 																
 
@@ -307,7 +307,13 @@
 			    
 			    <div class="sidenav-backdrop backdrop"></div>
 			    
-			    
+			     <script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 			  
 			     <script type="text/javascript">
 					$(document).ready(function(){

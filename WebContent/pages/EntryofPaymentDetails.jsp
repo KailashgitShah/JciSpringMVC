@@ -188,7 +188,7 @@
 													oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
 													pattern="[A-Za-z0-9/-]*"
 													title="Only alphanumeric characters, slashes, and hyphens are allowed"
-													required>
+													required >
 											</div>
 
 

@@ -479,13 +479,18 @@
 											</div>
 											
 												<div class="col-sm-4 form-group">
-												<label>Transit policy No</label> <span class="text-danger">*
-												</span>&nbsp; <input class="form-control"
-												oninput="this.value = this.value.toUpperCase();"
-													maxlength="16" type="text" pattern="[A-Za-z0-9/-]*"
-													name="TrnasitPolicyNo" id="TrnasitPolicyno" required 
-													>
-											</div>
+    <label for="TrnasitPolicyno">Transit policy No</label>
+    <span class="text-danger">*</span>&nbsp; 
+    <input class="form-control"
+           oninput="handleInput(event)"
+           maxlength="16"
+           type="text"
+           pattern="[A-Z0-9/-]*"
+           name="TrnasitPolicyNo"
+           id="TrnasitPolicyno"
+           required>
+</div>
+
 											
 											<div class="col-sm-2 form-group" style="display: none;">
 												<label"display:none;">Contarctqty </label> <span

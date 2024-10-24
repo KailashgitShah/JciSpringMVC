@@ -252,7 +252,7 @@ input[type="radio"] {
                                                                                             <label>Jute Variety</label> <span class="text-danger">*
                                                                                             </span> <select name="jutevariety" id="jutevariety"
                                                                                                   class="form-control" required style="width: 200px;"
-                                                                                                  multiple>
+                                                                                                  multiple >
                                                                                                   <!-- <option value="0" disabled selected>Select</option> -->
                                                                                                   <%
                                                                                                   for (String ro : juteVariety) {
@@ -268,7 +268,8 @@ input[type="radio"] {
                                                                                      <div class="col-sm-4 form-group">
                                                                                             <label>Remarks</label>&nbsp;
                                                                                             <textarea class="form-control taxtbox" name="remarks"
-                                                                                                  placeholder="Remarks"  maxlength="250"></textarea>
+                                                                                                  placeholder="Remarks"  maxlength="250" 
+                                                                                                   oninput="restrictInput(event)"></textarea>
                                                                                      </div>
 
                                                                                      <!-- <div class="col-sm-4 form-group">
@@ -306,6 +307,13 @@ input[type="radio"] {
        </div>
 
        <div class="sidenav-backdrop backdrop"></div>
+       <script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
        <script>
              $(document).ready(function() {
 
