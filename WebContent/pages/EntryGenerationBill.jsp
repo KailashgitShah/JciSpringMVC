@@ -481,14 +481,14 @@
 												<div class="col-sm-4 form-group">
     <label for="TrnasitPolicyno">Transit policy No</label>
     <span class="text-danger">*</span>&nbsp; 
-    <input class="form-control"
-           oninput="handleInput(event)"
-           maxlength="16"
-           type="text"
-           pattern="[A-Z0-9/-]*"
-           name="TrnasitPolicyNo"
-           id="TrnasitPolicyno"
-           required>
+   <input class="form-control"
+       oninput="handleInput(event)"
+       maxlength="16"
+       type="text"
+       pattern="[A-Z0-9/-]*"
+       name="TransitPolicyNo"
+       id="TransitPolicyNo"
+       required>
 </div>
 
 											
@@ -682,7 +682,18 @@
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+<script>
+    function handleInput(event) {
+        // Get the current value of the input
+        const value = event.target.value;
 
+        // Use regex to allow only alphanumeric characters, slashes, and hyphens
+        const sanitizedValue = value.replace(/[^A-Z0-9/-]/g, '');
+
+        // Set the sanitized value back to the input
+        event.target.value = sanitizedValue;
+    }
+</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#submit").click(function() {

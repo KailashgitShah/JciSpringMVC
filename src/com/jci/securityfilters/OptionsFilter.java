@@ -36,6 +36,13 @@ public class OptionsFilter implements Filter {
 
         // Set Cache-Control header to control caching behavior
         httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        httpResponse.setHeader("Content-Security-Policy", 
+                "default-src 'self'; " +
+                "img-src 'self' https://www.gstatic.com https://www.google.com; " +
+                "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; " + // Allow unsafe inline styles
+                "font-src 'self' https://fonts.gstatic.com; " +
+                "script-src 'self' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha/api.js https://ajax.googleapis.com 'unsafe-inline'; " +
+                "frame-src 'self' https://www.google.com;");
 
         // Add other headers as needed, such as Expires or Pragma
         httpResponse.setHeader("Expires", "0");

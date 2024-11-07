@@ -6799,44 +6799,58 @@ response.setContentType("application/pdf");
 	}
 
 	@RequestMapping("downloadSupportDocHO")
-	public void downloadHODoc(@RequestParam("filename") String filename, HttpServletResponse response) {
-		String imagePath = HoDiDoc + "\\" + filename;
-		File imageFile = new File(imagePath);
+	public ModelAndView downloadHODoc(@RequestParam("filename") String filename, HttpServletResponse response, HttpServletRequest request) {
+	    String username = (String) request.getSession().getAttribute("usrname");
+	    
+	    // Check if the user is logged in
+	    if (username == null) {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        return new ModelAndView("redirect:/index"); 
+	    }
 
-		// Check if the file exists
-		if (imageFile.exists()) {
+	    String imagePath = HoDiDoc + "\\" + filename;
+	    File imageFile = new File(imagePath);
 
-			try {
-				// Set the content type based on the file type
-				String contentType = determineContentType(filename);
-				response.setContentType(contentType);
+	    // Check if the file exists
+	    if (imageFile.exists()) {
+	        try {
+	            // Set the content type based on the file type
+	            String contentType = determineContentType(filename);
+	            response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
-				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
-				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
-						OutputStream responseOutputStream = response.getOutputStream()) {
-					byte[] buffer = new byte[1024];
-					int bytesRead;
-					while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-						responseOutputStream.write(buffer, 0, bytesRead);
-					}
-				}
-			} catch (IOException e) {
-				// Handle IO exception
-				e.printStackTrace();
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			}
-		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
+	            // Set the content length and attachment disposition
+	            response.setContentLength((int) imageFile.length());
+	            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+
+	            // Stream the file content to the response
+	            try (FileInputStream fileInputStream = new FileInputStream(imageFile);
+	                 OutputStream responseOutputStream = response.getOutputStream()) {
+	                byte[] buffer = new byte[1024];
+	                int bytesRead;
+	                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+	                    responseOutputStream.write(buffer, 0, bytesRead);
+	                }
+	            }
+	        } catch (IOException e) {
+	            // Handle IO exception
+	            e.printStackTrace();
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        }
+	    } else {
+	        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	    }
+
+	    return null; // Return null as the response has already been written
 	}
 
+
 	@RequestMapping("downloadSupportDocDemandNote")
-	public void downloadDemandNote(@RequestParam("filename") String filename, HttpServletResponse response) {
+	public void downloadDemandNote(@RequestParam("filename") String filename, HttpServletResponse response,HttpServletRequest request) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			 new ModelAndView("index");
+			 return;
+		}
 		String imagePath = DemandNoteSave + "\\" + filename;
 		File imageFile = new File(imagePath);
 

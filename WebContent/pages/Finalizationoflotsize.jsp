@@ -338,35 +338,35 @@ input[type="radio"] {
 										<div class="row no-gutters">
 											<div class="col no-padding">
 												<label> Grade 1</label> <input type="text" readonly
-													id="rsp_grd1" name="rsp_grd1" class="input-box-d">
+													id="rsp_grd1" name="rsp_grd1" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 2</label> <input type="text" readonly
-													id="rsp_grd2" name="rsp_grd2" class="input-box-d">
+													id="rsp_grd2" name="rsp_grd2" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 3</label> <input type="text" readonly
-													id="rsp_grd3" name="rsp_grd3" class="input-box-d">
+													id="rsp_grd3" name="rsp_grd3" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 4</label> <input type="text" readonly
-													id="rsp_grd4" name="rsp_grd4" class="input-box-d">
+													id="rsp_grd4" name="rsp_grd4" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 5</label> <input type="text" readonly
-													id="rsp_grd5" name="rsp_grd5" class="input-box-d">
+													id="rsp_grd5" name="rsp_grd5" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 6</label> <input type="text" readonly
-													id="rsp_grd6" name="rsp_grd6" class="input-box-d">
+													id="rsp_grd6" name="rsp_grd6" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 7</label> <input type="text" readonly
-													id="rsp_grd7" name="rsp_grd7" class="input-box-d">
+													id="rsp_grd7" name="rsp_grd7" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 											<div class="col no-padding">
 												<label> Grade 8</label> <input type="text" readonly
-													id="rsp_grd8" name="rsp_grd8" class="input-box-d">
+													id="rsp_grd8" name="rsp_grd8" class="input-box-d"  oninput="restrictInput(event)">
 											</div>
 										</div>
 
@@ -534,7 +534,13 @@ input[type="radio"] {
 
 		});
 	</script>
-
+<script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 	<script>
 		// Event listener for when the bin selection changes
 		$("#region , #variety ,#cropyr")

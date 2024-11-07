@@ -230,7 +230,7 @@
 															    <label>Days Difference</label>
 															    <span class="text-danger">*</span>&nbsp;<span class="text-danger"></span>
 															    <input class="form-control taxtbox" name="Days_Diffrence" id="DaysDiffrencetotal" value="<%= charge %>" placeholder="Days_Diffrence">
-															    <span id="error-message" class="text-danger"></span>
+															    <span id="error-message" class="text-danger" oninput="restrictInput(event)"></span>
 															</div>
 				                                           
 					                       						<div class="col-sm-4 form-group">

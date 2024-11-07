@@ -185,6 +185,8 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 									                required
 									                pattern="[A-Za-z0-9]{12,}"
 									                title="UTR Number must be at least 12 alphanumeric characters."
+									                oninput="restrictInput(event)"
+									                
 									            >
 									            <div id="error-message" class="text-danger"></div>
 									        </div>
@@ -192,7 +194,7 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 										<div class="col-3 form-group">
 								        	<label>UTR Date</label> <span class="text-danger">*</span><input
 												class="form-control textbox" name="dateofUtr" placeholder="dd-mm-yyyy"
-												id="DateofUtr" required >
+												id="DateofUtr" required oninput="restrictInput(event)" >
 										</div>
 										</div>
 								
@@ -229,7 +231,13 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
+<script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
  <script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {
@@ -279,6 +287,13 @@ List<String> allHoDiNo = (List<String>) request.getAttribute("loadAllDiNo");
             }
         });
     </script>
+    <script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 	<script type="text/javascript">
 	  $(document).ready(function() {
 	        

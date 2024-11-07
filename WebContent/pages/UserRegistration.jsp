@@ -124,13 +124,13 @@ var hasError2 = false;
 										</div> -->
 										<div class="col-sm-4 form-group">
 											<label class="required">EMP ID</label>  &nbsp;&nbsp;&nbsp; <span id="errID" name="errID" class="text-danger"> </span><span id="errID1" name="errID1" class="text-danger"> </span>
-											<input class="form-control" name="employeeid" type="text" placeholder="Employee Id" id="employeeid">
+											<input class="form-control" name="employeeid" type="text" placeholder="Employee Id" id="employeeid"  oninput="restrictInput(event)">
 										</div>
 										</div>
 										<div class="row">
 										<div class="col-sm-4 form-group">
 											<label class="required">EMP Name</label>  &nbsp;&nbsp;&nbsp; <span id="errEMP" name="errEMP" class="text-danger"> </span>
-											<input class="form-control" name="employeename" type="text" placeholder="Employee Name" id="employeename" oninput="allow_alphabets(this)">
+											<input class="form-control" name="employeename" type="text" placeholder="Employee Name" id="employeename" oninput="allow_alphabets(this)"  oninput="restrictInput(event)">
 															
 										</div>
 										<div class="col-sm-4 form-group">
@@ -378,7 +378,13 @@ var hasError2 = false;
      });
        
        </script>
-       
+       <script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 	
 	<script>
 	 $("#ho").change(function () {

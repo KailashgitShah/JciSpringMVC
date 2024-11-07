@@ -136,7 +136,7 @@ $(document).ready(function () {
                                         	
 										</div> -->
 										
-										<div class="col-sm-4 form-group">
+								<%-- 		<div class="col-sm-4 form-group">
 											<label class="required">Area Code</label> &nbsp;&nbsp; <span
 												id="errPin" name="errPin" class="text-danger"> </span>
 											<%
@@ -154,7 +154,7 @@ $(document).ready(function () {
 														}}
 												%>
 											</select>
-										</div>
+										</div> --%>
 										  
 								                              
 										

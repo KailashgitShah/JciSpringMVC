@@ -152,7 +152,7 @@ String contactIdnNo = "BT-" + count;
 														if (i == 1) {
 														%>
 														<td class="col-sm-2"><textarea name="remark"
-																id="remark" class="form-control"></textarea></td>
+																id="remark" class="form-control" oninput="restrictInput(event)"></textarea></td>
 														<%
 														}
 														%>
@@ -255,6 +255,13 @@ String contactIdnNo = "BT-" + count;
 	<div class="sidenav-backdrop backdrop"></div>
 	<!-- PAGE LEVEL SCRIPTS-->
 </body>
+<script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
 <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
 	type="text/javascript"></script>
