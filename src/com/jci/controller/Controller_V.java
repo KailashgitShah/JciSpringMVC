@@ -487,17 +487,16 @@ public class Controller_V {
 	@RequestMapping("pcsoRequestLetter")
 
 	public ModelAndView pcsoRequestLetter(HttpServletRequest request) {
+		
+		
 		String username = (String) request.getSession().getAttribute("usrname");
-		String cropYearString = (String) request.getSession().getAttribute("currCropYear");
-		double contractedQty = genReqLetterService.getTotalContractedQty(cropYearString);
+		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+		double contractedQty = genReqLetterService.getTotalContractedQty(currCropYear);
 		ModelAndView mv = new ModelAndView("PCSORequestLetter");
-
 		// get the inventory data
 		List<String> cropYearList = dailyPurchaseModelConfService.getCropYear();
-		List<Double> jute = dailyPurchaseModelConfService.firstLeveljute("2023-2024", "msp","Baled");
 		// List<Integer> bale =
 		// dailyPurchaseModelConfService.firstLevelbale("2023-2024", "MSP");
-		mv.addObject("jute", jute);
 		// mv.addObject("bale", bale);
 
 		mv.addObject("totalContract", contractedQty);
@@ -505,9 +504,35 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 
-		List<PCSORequestLetter> topThreeRecords = genReqLetterService.getTopThreeRecords(cropYearString);
+		List<PCSORequestLetter> topThreeRecords = genReqLetterService.getTopThreeRecords(currCropYear);
 		mv.addObject("topThreeRecords", topThreeRecords);
 		mv.addObject("distinctCropYear", cropYearList);
+		
+	 
+		
+		  String Baled = "Baled";
+		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp",Baled);
+		  List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp",Baled);
+		 // List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(currCropYear, "msp");
+		  
+		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Mill Accepted");
+		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","DI Issued by RO");
+		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Payment not done");
+		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Bill of supply generated");
+		  
+		  List<Double> contractinhand = new ArrayList<Double>();
+		  contractinhand.add((Payment_not_received.get(0) + DI_in_hand.get(0)) + ((Contracted.get(0)-Payment_not_received.get(0)) - (Despatched.get(0)+DI_in_hand.get(0))));
+		  contractinhand.add((Payment_not_received.get(1) + DI_in_hand.get(1)) + ((Contracted.get(1)-Payment_not_received.get(1)) - (Despatched.get(1)+DI_in_hand.get(1))));	
+		  contractinhand.add((Payment_not_received.get(2) + DI_in_hand.get(2)) + ((Contracted.get(2)-Payment_not_received.get(2)) - (Despatched.get(2)+DI_in_hand.get(2))));	
+		  contractinhand.add((Payment_not_received.get(3) + DI_in_hand.get(3)) + ((Contracted.get(3)-Payment_not_received.get(3)) - (Despatched.get(3)+DI_in_hand.get(3))));	
+		  contractinhand.add((Payment_not_received.get(4) + DI_in_hand.get(4)) + ((Contracted.get(4)-Payment_not_received.get(4)) - (Despatched.get(4)+DI_in_hand.get(4))));	
+		  contractinhand.add((Payment_not_received.get(5) + DI_in_hand.get(5)) + ((Contracted.get(5)-Payment_not_received.get(5)) - (Despatched.get(5)+DI_in_hand.get(5))));	
+		  contractinhand.add((Payment_not_received.get(6) + DI_in_hand.get(6)) + ((Contracted.get(6)-Payment_not_received.get(6)) - (Despatched.get(6)+DI_in_hand.get(6))));	
+
+		  mv.addObject("contractinhand" ,(Object)contractinhand);
+		  mv.addObject("jute" ,jute);
+		  mv.addObject("dispatched" , dispatched);
+		
 
 		return mv;
 	}
