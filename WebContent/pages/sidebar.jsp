@@ -737,7 +737,7 @@ body {
 				//	alert("userAction >>>>> "+ userAction);
 					
 
-<<<<<<< HEAD
+/* <<<<<<< HEAD
 $.ajax({
 			url : "userpriviligeajaxallData.obj",
 			type : "GET",
@@ -752,7 +752,7 @@ $.ajax({
 					values=value.split(":")[1].replace('"]',"").replace('"',"");
 				//	console.log("keys"+ keys);
 				//	console.log("values "+values);
-=======
+======= */
 			var passuser = '<%=userpass%>';
 							//alert(passuser);
 							$.ajax({
@@ -768,8 +768,6 @@ $.ajax({
 							});
 							for (var i = 1; i <= 100; i++) {
 								$("#o" + i).hide();
->>>>>>> 8d18cac28d2d316bbcf7768a43d8d15bcda137d5
-
 
 					for(var j=0;j<userAction.length;j++)
 					{

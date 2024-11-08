@@ -214,8 +214,8 @@
 	<div class="sidenav-backdrop backdrop"></div>
 <script>
 function myFunc(){
-	var actual = $("#DpcEndWt").val();
-	var net = $("#DPCNetqty").val();
+	var actual = $("#DpcEndWt").val().toFixed(2);
+	var net = $("#DPCNetqty").val().toFixed(2);
 	//alert("Actual"+actual);
 	//alert("Net"+net);
 	if(net === actual) {return true;}

@@ -33,7 +33,7 @@
 <script
 src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet"
-href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -205,7 +205,7 @@ th {
 								  
 								    <div class="col-sm-4 form-group">
                                        <label>Date of Inspection</label>
-                                       <input class="form-control taxtbox" id="DateofInpection" id1="newdate" name="DateofInpection" placeholder="dd-mm-yyyy" required >                                   
+                                       <input class="form-control taxtbox" id="DateofInpection" name="DateofInpection" placeholder="dd-mm-yyyy" required >                                   
 								 </div>  
 								 										
 									</div>

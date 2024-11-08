@@ -36,13 +36,45 @@ public class OptionsFilter implements Filter {
 
         // Set Cache-Control header to control caching behavior
         httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-        httpResponse.setHeader("Content-Security-Policy", 
-                "default-src 'self'; " +
-                "img-src 'self' https://www.gstatic.com https://www.google.com; " +
-                "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; " + // Allow unsafe inline styles
-                "font-src 'self' https://fonts.gstatic.com; " +
-                "script-src 'self' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha/api.js https://ajax.googleapis.com 'unsafe-inline'; " +
-                "frame-src 'self' https://www.google.com;");
+//        httpResponse.setHeader("Content-Security-Policy", 
+//        	    "default-src 'self'; " +
+//        	    "img-src 'self' https://www.gstatic.com https://www.google.com; " +
+//        	    "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; " + // Allow unsafe inline styles
+//        	    "font-src 'self' https://fonts.gstatic.com; " +
+//        	    "script-src 'self' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha/api.js 'unsafe-inline'; " +
+//        	    "frame-src 'self' https://www.google.com; " +
+//        	    "connect-src 'self' https://ifsc.razorpay.com/;"); // Allow fetching from Razorpay IFSC
+
+//        
+//        httpResponse.setHeader("Content-Security-Policy", 
+//        		"default-src 'self'; "
+//        		+ "img-src 'self' https://www.gstatic.com https://www.google.com;"
+//        		+ " style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com;"
+//        		+ " script-src 'self' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha/api.js https://ajax.googleapis.com 'unsafe-inline'; "
+//        		+ "frame-src 'self' https://www.google.com;");
+////        
+//        httpResponse.setHeader("Content-Security-Policy", 
+//        	    "default-src 'self'; " +
+//        	    "img-src 'self' https://www.gstatic.com https://www.google.com; " +
+//        	    "style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://code.jquery.com; " + // Allow styles from jQuery UI
+//        	    "style-src-elem 'self' https://fonts.googleapis.com https://code.jquery.com; " + // Allow styles from jQuery UI in <link> tags
+//        	    "font-src 'self' https://fonts.gstatic.com; " +
+//        	    "script-src 'self' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha/api.js https://code.jquery.com 'unsafe-inline'; " +
+//        	    "frame-src 'self' https://www.google.com; " +
+//        	    "connect-src 'self' https://ifsc.razorpay.com/;");
+        
+        
+//        httpResponse.setHeader("Content-Security-Policy", 
+//        	    "default-src 'self'; " +
+//        	    "img-src 'self' https://www.gstatic.com https://www.google.com; " +  // Allow images from self, Google, and Google static
+//        	    "style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://code.jquery.com; " +  // Allow styles from self, Google Fonts, inline, and jQuery UI
+//        	    "style-src-elem 'self' https://fonts.googleapis.com https://code.jquery.com; " +  // Allow styles from self and jQuery UI in <link> tags
+//        	    "font-src 'self' https://fonts.gstatic.com; " +  // Allow fonts from self and Google Fonts
+//        	    "script-src 'self' https://www.google.com https://www.gstatic.com https://www.google.com/recaptcha/api.js https://code.jquery.com https://ajax.googleapis.com 'unsafe-inline'; " +  // Allow scripts from various sources
+//        	    "frame-src 'self' https://www.google.com; " +  // Allow frames from self and Google
+//        	    "connect-src 'self' https://ifsc.razorpay.com/;");  // Allow connections to self and Razorpay IFSC API
+
+
 
         // Add other headers as needed, such as Expires or Pragma
         httpResponse.setHeader("Expires", "0");
