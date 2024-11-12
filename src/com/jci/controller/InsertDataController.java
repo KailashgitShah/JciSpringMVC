@@ -5269,7 +5269,7 @@ System.out.println();
 		              //String subject = "Invoice Generated";
 		        	  SendMail sendMail = new SendMail();
 		              String body = "PFA This is your payment details . ";
-		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              sendMail.sendEmailforPayment(toAddresses, body, subject, filename, usrname);
 		              System.err.println("Mail sent succesfully by RO = "+toEmail);
 		          }
 		          else if(roho.equalsIgnoreCase("HO"))
@@ -5281,7 +5281,7 @@ System.out.println();
 		        	  SendMail sendMail = new SendMail();
 		             // String subject = "Invoice Generated";
 		              String body = "PFA This is your payment details . ";
-		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              sendMail.sendEmailforPayment(toAddresses, body, subject, filename, usrname);
 		              System.err.println("Mail sent succesfully by HO = "+toEmail);
 		          }
 		          else if(roho.equalsIgnoreCase("ZMHO"))
@@ -5292,7 +5292,7 @@ System.out.println();
 		        	  SendMail sendMail = new SendMail();
 		              //String subject = "Invoice Generated";
 		              String body = "PFA This is your payment details . ";
-		              sendMail.sendEmail(toAddresses, body, subject, filename, usrname);
+		              sendMail.sendEmailforPayment(toAddresses, body, subject, filename, usrname);
 		              System.err.println("Mail sent succesfully by ZMHO = "+toEmail);
 		          }
 	     
