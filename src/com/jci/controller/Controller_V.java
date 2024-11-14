@@ -4030,9 +4030,9 @@ response.setContentType("application/pdf");
 			String[] Nomination = request.getParameterValues("Nomination[]");
 			String[] NCVamt = request.getParameterValues("NCVamt[]");
 			String[] ncvdust = request.getParameterValues("ncvdust[]");
-
-			String[] dustAmt = request.getParameterValues("DustAMt_[]");
-			String[] dustQty = request.getParameterValues("DustQty_[]");
+			
+			String[] dustAmt = request.getParameterValues("DustAMt[]");
+			String[] dustQty = request.getParameterValues("DustQty[]");
 			String[] claimAmmount = request.getParameterValues("claimAmmount[]");
 
 			String HO_DINO = request.getParameter("HO_DINO");
@@ -5087,6 +5087,10 @@ response.setContentType("application/pdf");
 //			
 		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
 		List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
+		System.err.println(Suplierdetails);
+		System.err.println(Suplierdetails);
+		System.err.println(Suplierdetails);
+		System.err.println(Suplierdetails.toString());
 		List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
 		mv.addObject("ShipmentDetails", ShipmentDetails);
 		mv.addObject("Perticulargoods", Perticulargoods);

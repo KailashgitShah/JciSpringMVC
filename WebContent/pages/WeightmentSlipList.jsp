@@ -137,7 +137,7 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
         <td style="text-align: center"><a href="<%=baseIp%>/WeightSlipment/<%=row[12] %>"  target="_blank">Mill Weight Document</a></td> 
         <td style="text-align: center"><a href="<%=baseIp%>/WeightSlipment/<%=row[11] %>"  target="_blank">Mill Receipt Document</a></td> 
         <td style="text-align: center"><a href="<%=baseIp%>/JCIStuff/billofsupply/<%= row[20] %>"  target="_blank">Bill Of Supply</a></td>
-        <td style="text-align: center"><a href="<%=baseIp%>/DispatchDetail/<%= row[52] %>"  target="_blank">Challan Document</a></td>
+        <td style="text-align: center"><a href="<%=baseIp%>/DispatchDetail/<%= row[50] %>"  target="_blank">Challan Document</a></td>
     </tr>
     <% i++; } %>
 </tbody>

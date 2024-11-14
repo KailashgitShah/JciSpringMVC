@@ -191,6 +191,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 			
 		
 		List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
+		System.err.println("DaoIMPL"+resultList1.toString());
 		    return resultList1;
 	}
 

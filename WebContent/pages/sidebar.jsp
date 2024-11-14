@@ -70,7 +70,7 @@ body {
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label">Dashboard</span> </a></li>
 
-			 <li><a href="javascript:void(0);"><i
+			<!--  <li><a href="javascript:void(0);"><i
 					class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label"> &nbsp;Privileges</span> <i
 					class="fa fa-angle-left arrow"></i></a> 
@@ -79,8 +79,8 @@ body {
 					<li class="nav-label" data-pre="2" id="o2"><a href="useraction.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Add Action</b></a></li>
 					<li class="nav-label" data-pre="" id=""><a href="viewAction.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Action</b></a></li>
 					<li class="nav-label" data-pre="3" id="o3"><a href="userprivilige.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Add Privileges</b></a></li>
-					<!-- <li class="nav-label" data-pre="4" id="o4"><a href="viewuserrole.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Role</b></a></li>
-					 -->
+					<li class="nav-label" data-pre="4" id="o4"><a href="viewuserrole.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Role</b></a></li>
+					
 				</ul> </li> 
 				
 			 <li><a href="javascript:void(0);;"><i class="sidebar-item-icon fa fa-th-large"></i> <span
@@ -95,7 +95,7 @@ body {
 					class="nav-label"> &nbsp;Farmer Registration</span><i 
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level">
-					<!-- <li  data-pre="7" id="o7"><a  href="FarmerRegistration.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Registration</b></a></li> -->
+					<li  data-pre="7" id="o7"><a  href="FarmerRegistration.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Farmer Registration</b></a></li>
 					<li  data-pre="8" id="o8"><a  href="ViewFarmerRegistration.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Farmer List Reg</b></a></li>
 				</ul> </li> 
 				
@@ -104,7 +104,7 @@ body {
 					class="nav-label"> &nbsp;Market Arrival</span> <i
 					class="fa fa-angle-left arrow"></i></a>
 				<ul class="nav-2-level ">
-<!-- 					<li  data-pre="9" id="o9"><a href="rulingMarketForm.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Ruling Market Rate at DPC</b></a></li> -->
+					<li  data-pre="9" id="o9"><a href="rulingMarketForm.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Ruling Market Rate at DPC</b></a></li>
 					<li  data-pre="10" id="o10"><a href="viewmarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Ruling Market List</b></a></li>				 
 					<li  data-pre="11" id="o11"><a href="jbaRate.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>JBA Rate</b></a></li>
 					<li  data-pre="12" id="o12"><a href="JbaPriceList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>JBA List</b></a></li>
@@ -117,8 +117,8 @@ body {
 				<ul class="nav-2-level ">
 					<li data-pre="13" id="o13"><a href="mspPriceCalculation.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Enter Minimum Support Price </b></a></li>
 					<li data-pre="14" id="o14"><a href="commercialPriceCalculation.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Commercial Ceiling Price Intimation </b></a></li>
-<!-- 					<li data-pre="15" id="o15"><a href="rawJutePaymentAndProcurement.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Raw Jute Procurement & Payment</b></a></li>	 -->			
-<!-- 					<li data-pre="16" id="o16"><a href="dailyPurchaseConf.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase Confirmation</b></a></li> -->
+					<li data-pre="15" id="o15"><a href="rawJutePaymentAndProcurement.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Raw Jute Procurement & Payment</b></a></li>				
+					<li data-pre="16" id="o16"><a href="dailyPurchaseConf.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Purchase Confirmation</b></a></li>
 					<li data-pre="17" id="o15"><a href="Distributionoftallyslips.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Distribution of tally Slip</b></a></li>
 				  	<li data-pre="18" id="o18"><a href="mspGradesPriceList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View MSP </b></a></li>
 					<li data-pre="19" id="o19"><a href="viewCommercialCeilingPrice.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Commercial Ceiling Price Intimation</b></a></li>
@@ -141,8 +141,8 @@ body {
 					class="fa fa-angle-left arrow"></i></a> 
 				<ul class="nav-2-level ">
   					<li  data-pre="25" id="o25"><a href="balePreparation.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Bale Preparation</b></a></li>  
-<!-- 					<li  data-pre="26" id="o26"><a href="viewbalePreparation.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale Preparation</b></a></li>
-					<li  data-pre="27" id="o27"><a href="addRopeMaking.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Rope Making</b></a></li> -->
+					<li  data-pre="26" id="o26"><a href="viewbalePreparation.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>View Bale Preparation</b></a></li>
+					<li  data-pre="27" id="o27"><a href="addRopeMaking.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Rope Making</b></a></li>
 					<li  data-pre="28" id="o28"><a href="ropeMakingListing.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View Rope Making</b></a></li>
 				
 				</ul> </li>
@@ -169,7 +169,7 @@ body {
 				<i class="fa fa-angle-left arrow"></i></a> 
 					<ul class="nav-2-level ">
 				    <li  data-pre="" id=""><a href="PurchaseRegisterlist.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Purchase Register Report</b></a></li>				
-					   <!--  <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Market Report</b></a></li> -->				 
+					    <li  data-pre="" id=""><a href="MarketArrival.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Daily Market Report</b></a></li>				 
 					  <li  data-pre="" id=""><a href="downloadexcelregionwise.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>Download Excel Region wise</b></a></li>				 
 					  <li  data-pre="26" id="o26"><a href="viewbalePreparationList.obj"><i class="sidebar-item-icon fa fa-th-large"></i> <b>Bin Wise Packing Register</b></a></li>
 					  <li data-pre="" id=""><a href="balePreparationOverallList.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>All Bale Report</b></a></li>
@@ -178,7 +178,7 @@ body {
 	                  <li  data-pre="" id=""><a href="RegionReport.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>All Purchase Report</b></a></li>					
  
 				  </ul> 
-				</li>
+				</li> -->
 				
 				<ul class="side-menu metismenu">
 

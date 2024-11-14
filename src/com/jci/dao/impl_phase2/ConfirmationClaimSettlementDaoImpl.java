@@ -73,7 +73,7 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 				+ "jcimill_receipt.MoistureContent,jcimill_receipt.NCV_percentage,jcidispatch_details_child.No_of_bales,\r\n"
 				+ "jcidispatch_details_child.Rate,jcimill_receipt.Crop_year,jcimill_receipt.NCV_qty,jcimill_receipt.Challan_no,\r\n"
 				+ "jciclaimNomination.ContractNo,jciclaimNomination.DateofInspection,jciclaimNomination.Mill,\r\n"
-				+ "jciclaimNomination.Mr_number,jciclaimNomination.Mr_Date from jcimill_receipt\r\n"
+				+ "jciclaimNomination.Mr_number,jciclaimNomination.Mr_Date,jcimill_receipt.MR_qty  from jcimill_receipt\r\n"
 				+ "left  join jcidispatch_details_child on jcimill_receipt.Jute_Grade = jcidispatch_details_child.Jute_grade\r\n"
 				+ "AND jcidispatch_details_child.Challan_no = jcimill_receipt.Challan_no\r\n"
 				+ "inner join jciclaimNomination on jciclaimNomination.Challans = jcimill_receipt.Challan_no   \r\n"

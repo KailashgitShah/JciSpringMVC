@@ -187,7 +187,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
                @Override
                public List<Object[]> childdata(String st) {
                               
-                              String sql ="    SELECT distinct d.Challan_No,d.Bale_mark,  d.Jute_variety,d.Jute_grade,  d.Crop_year,d.Nominal_qty,d.No_of_bales,d.Nominal_qty*100  FROM \r\n"
+                              String sql ="    SELECT distinct d.Challan_No,d.Bale_mark,  d.Jute_variety,d.Jute_grade,  d.Crop_year,d.Nominal_qty,d.No_of_bales,d.Nominal_qty  FROM \r\n"
                                                            + "                                        jcidispatch_details_child AS d  Inner join jcibos_generation as s on s.Challan_No = d.Challan_no   WHERE d.Challan_no = '" +st+"'   and d.Jute_grade=d.Jute_grade \r\n"
                                                            + "                                                       ";
                                                                           
