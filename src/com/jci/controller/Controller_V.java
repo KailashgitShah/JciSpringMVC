@@ -2376,7 +2376,7 @@ response.setContentType("application/pdf");
 				System.out.println(e.getLocalizedMessage());
 			}
 
-			return new ModelAndView(new RedirectView("creditNoteList.obj"));
+			return new ModelAndView("closeWindowPage");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
@@ -2391,7 +2391,7 @@ response.setContentType("application/pdf");
 //				supplier_Address, unit_name, unit_GSTN, unit_address, client_name, client_GSTN, client_address1, bosNo,
 //				contractNo, client_state, client_code, bosDate, client_pan, finalList, diNo, bosNo, creditNoteFilePath);
 
-		return new ModelAndView(new RedirectView("creditNoteList.obj"));
+		return  new ModelAndView("closeWindowPage");
 	}
 
 	// status update of credit note
@@ -5596,6 +5596,11 @@ response.setContentType("application/pdf");
 			parameters.put("driverlicno", Driver_Lic_no);
 			parameters.put("vehicleno", Vehicle_no);
 			parameters.put("drivernme", Driver_name);
+			System.err.println(Driver_name);
+			System.err.println(Driver_name);
+			System.err.println(Driver_name);
+			System.err.println(Driver_name);
+			System.err.println(Driver_name);
 			String str = Vehicle_no + "  " + Driver_name;
 			parameters.put("licenceno", str);
 			parameters.put("dpcname", Dpcname);
@@ -7517,15 +7522,28 @@ response.setContentType("application/pdf");
 		}
 		List<String> millid = nominalOfficialService.millid_MillReceipt();
 		List<UserRegistrationModel> OM_official = nominalOfficialService.getom_official();
-		List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
-		List<String> contractno = nominalOfficialService.contractno_ContractTable();
-		List<String> DI_no = nominalOfficialService.gethodi();
+		//List<UserRegistrationModel> FA_official = nominalOfficialService.getfa_official();
+		//List<String> contractno = nominalOfficialService.contractno_ContractTable();
+		//List<String> DI_no = nominalOfficialService.gethodi();
 		mv.addObject("OM_official", OM_official);
-		mv.addObject("FA_official", FA_official);
+		//mv.addObject("FA_official", FA_official);
 		mv.addObject("millid", millid);
-		mv.addObject("DI_no", DI_no);
+		//mv.addObject("DI_no", DI_no);
 		return mv;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "fetchAllHoDiByContractNo", method = RequestMethod.GET)
+	public String fetchAllHoDiByContractNo(@RequestParam("contractNo") String contractNo) {
+
+		List<Object[]> hodi = nominalOfficialService.getAllHoDiByContract(contractNo);
+		// Convert the a JSON in string
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(hodi);
+		return jsonResponse;
+	}
+
 
 	@ResponseBody
 	@RequestMapping(value = "findByHoDi", method = RequestMethod.GET)

@@ -201,4 +201,9 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 		return nominalOfficialDao.getNominationReportData(settlement_id);
 	}
 
+	@Override
+	public List<Object[]> getAllHoDiByContract(String Contract) {
+		return nominalOfficialDao.getAllHoDiByContract(Contract);
+	}
+
 }

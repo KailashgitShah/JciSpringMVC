@@ -53,4 +53,5 @@ public interface NominalOfficialDao {
 	     public List<Jciclaim_NominationModel>getAlldetails(String settlement_id);
 	     public List<Jciclaim_NominationModel>findnominationdetails(String id) ;
 	     public List<ClaimSettlementReport> getNominationReportData(String settlement_id);
+		public List<Object[]> getAllHoDiByContract(String contract);
 }

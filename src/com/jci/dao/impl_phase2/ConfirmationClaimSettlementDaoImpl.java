@@ -44,10 +44,14 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 
 	@Override
 	public List<Object[]> SettlementId(String username) {
-		String sql = "SELECT DISTINCT nom.Settlement_id_generated \r\n"
+		
+		
+		String sql ="SELECT DISTINCT nom.Settlement_id_generated\r\n"
 				+ "FROM jciclaimNomination nom\r\n"
 				+ "LEFT JOIN jciclaim_report_mill rep ON nom.Settlement_id_generated = rep.Settlement_id\r\n"
-				+ "WHERE nom.OMOfficial ='"+username+"'AND (rep.Settlement_id IS NULL OR rep.Dispute_flag=1);";
+				+ "INNER JOIN jciumt umt ON umt.employeename = nom.OMOfficial\r\n"
+				+ "WHERE umt.email ='"+username+"'\r\n"
+				+ "  AND (rep.Settlement_id IS NULL OR rep.Dispute_flag = 1);";
 
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		return resultList1;
@@ -145,7 +149,11 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	public List<Object[]> getSettlementData(String username) {
 		// TODO Auto-generated method stub
 		
-		 String resultString= "Select DISTINCT jciclaim_report_mill.Settlement_id,jciclaim_report_mill.Dispute_flag From jciclaim_report_mill JOIN jciclaimNomination on jciclaimNomination.Settlement_id_generated = jciclaim_report_mill.Settlement_id where jciclaimNomination.FAOfficial='"+username+"' and jciclaim_report_mill.Active='1' AND jciclaim_report_mill.Dispute_flag = 0;";
+		 String resultString= "\r\n"
+		 		+ "Select DISTINCT jciclaim_report_mill.Settlement_id,jciclaim_report_mill.Dispute_flag From \r\n"
+		 		+ "jciclaim_report_mill JOIN jciclaimNomination on jciclaimNomination.Settlement_id_generated = jciclaim_report_mill.Settlement_id  \r\n"
+		 		+ "inner join jciumt umt on umt.employeename=jciclaimNomination.FAOfficial where umt.email='"+username+"' and jciclaim_report_mill.Active='1' \r\n"
+		 		+ "AND jciclaim_report_mill.Dispute_flag = 0;";
 		 List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(resultString)
 					.list();
 			System.err.println(resultList1);

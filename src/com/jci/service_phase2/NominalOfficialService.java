@@ -46,6 +46,7 @@ public interface NominalOfficialService {
 
 	public List<Object> gradecomposition(String contractno);
 	public List<Object[]> dateofInspection(String dateOfInspection);
+	public List<Object[]> getAllHoDiByContract(String Contract);
 	
 	public List<Object[]> getchallan(String hodi);
 	public String getcontractidentification(String ContractNo);

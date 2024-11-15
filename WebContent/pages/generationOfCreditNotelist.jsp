@@ -287,7 +287,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 
 												htmlTable += '<td><a href="generateCrn.obj?challan='
 														+ filterOption[i][3]
-														+ '" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
+														+ '" target="_blank" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
 
 												htmlTable += '<td style="text-align:center" name="bosNo">'
 														+ filterOption[i][0]

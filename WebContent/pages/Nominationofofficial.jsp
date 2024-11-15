@@ -175,13 +175,13 @@ th {
 										 <div class="col-sm-4 form-group">
 	                                           <label>HO DI </label>
 	                                            <span class="text-danger">* </span>&nbsp; <span id="HO_DI_&_Date" name="HO_DI_&_Date" class="text-danger"> </span>
-	                                        	 <select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
-													   <option value="">-Select-</option>
-													   <c:forEach items="${DI_no}" var="item">
-												          <option value="${item}">${item}</option> 
-												       </c:forEach> 
-												 </select>
+	                                        		<select name="HO_DI_&_Date" id="HODate" class="form-control taxtbox" required>
+										             <option disabled selected value="-Select-">-Select-</option>
+												</select>
 										 </div>
+										 
+										
+										 
 									</div>
 										              
 								 <div class="row">										        
@@ -453,6 +453,9 @@ $(document).ready(function() {
         
         var selectedOption = $(this).val();
         
+        //alert(selectedOption);
+        
+        
         // Make an AJAX request to fetch data based on the selected HO DI
         $.ajax({
             type: 'GET',
@@ -547,6 +550,45 @@ $(document).ready(function() {
         });
     });
 </script>
+
+    
+       <script type="text/javascript">
+    $(document).ready(function() {
+        $('#ContractNo').on('change', function() {
+            var selectedOption = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: 'fetchAllHoDiByContractNo.obj',
+                data: {
+                    contractNo: selectedOption
+                },
+                success: function(data) {
+                    var response = JSON.parse(data);
+                    var html = "<option disabled selected value='-Select-'>-Select-</option>";
+
+                    for (var i = 0; i < response.length; i++) {
+                        html += "<option value='" + response[i] + "'>" + response[i] + "</option>";
+                    }
+
+                    $("#HODate").html(html);
+                  // Show contract number container
+                },
+                error: function(err) {
+                    console.error('AJAX request failed: ' + err);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
 
       <!--   For Hinding and Showing the  Grade Wise Alloction-->
 
