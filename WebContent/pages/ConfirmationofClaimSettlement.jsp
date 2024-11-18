@@ -547,7 +547,7 @@ $(document).ready(function(){
                         for (var index = 0; index < len; index++) {
                         	  var nsValue = parseFloat($('#ns' + index).val()).toFixed(2);
       	                    var dsValue = parseFloat($('#ds' + index).val()).toFixed(2);
-      	                    var amtValue = parseFloat($('#mr' + index).val()).toFixed(2);
+      	                    var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
       	                    var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
       	                    var price = parseFloat($('#pr'+index).val()).toFixed(2);
       	                   // alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
