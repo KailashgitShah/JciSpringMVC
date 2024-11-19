@@ -24,6 +24,8 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 	SessionFactory sessionFactory;
 	@Autowired
 	HttpSession session;
+	 @Autowired
+     HttpSession session1;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -37,6 +39,12 @@ public class ConfirmationClaimSettlementDaoImpl implements ConfirmationClaimSett
 
 	@Override
 	public List<ConfirmationClaimSettlementModel> getAll() {
+		 String regionString=(String)session1.getAttribute("regionId");
+         Integer roleId = (Integer)session1.getAttribute("roleId");
+         String dpcId = (String)session1.getAttribute("dpcId");
+         System.err.println("roleID String"+roleId);
+         System.err.println("region String"+regionString);
+         System.err.println("region String"+regionString);
 		Criteria criteria = currentSession().createCriteria(ConfirmationClaimSettlementModel.class);
 		criteria.addOrder(Order.desc("Created_on"));
 		return criteria.list();

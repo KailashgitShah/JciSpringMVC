@@ -198,7 +198,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
               @Override
               public List<Object[]> getRoname() {
 
-                             String sqlString = "Select roname,rocode from jcirodetails";
+                             String sqlString = "  Select roname,rocode from jcirodetails where officetype='R'";
                              List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
 
                              return list;
@@ -229,13 +229,28 @@ public class HODispatchDaoImpl implements DispatchHODao {
               // For Listing
               @Override
               public List<Object[]> getAll() {
-                             String regionString=(String)session1.getAttribute("regionId");
-                             System.err.println(regionString);
-                             System.err.println(regionString);
-                             System.err.println(regionString);
-                             String sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode ;";
-                             List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
-                             return list1;
+            	  String regionString=(String)session1.getAttribute("regionId");
+                  Integer roleId = (Integer)session1.getAttribute("roleId");
+              String sqlString="";
+                  if(roleId ==6||roleId == 7 || roleId ==8) {
+                	  sqlString  = "SELECT ro.roname, diho.*\r\n"
+                	  		+ "                   	   		FROM jciDI_ho diho\r\n"
+                	  		+ "                   	   		LEFT JOIN jcirodetails ro \r\n"
+                	  		+ "                   	   		   ON diho.Regional_office = ro.rocode\r\n"
+                	  		+ "                   	   		WHERE diho.Regional_office ='"+regionString+"';\r\n"
+                	  		+ "                   	   		;";
+                 	
+                  }
+                  else if(roleId == 51 || roleId ==1103||roleId==3|| roleId ==4 ||roleId == 1104){
+                	 
+                	  sqlString  = "Select ro.roname, diho.*  from jciDI_ho diho left join jcirodetails ro on diho.Regional_office = ro.rocode ;";
+                      
+                  }
+                  else {
+                	  return null;
+                  }
+                  List<Object[]> list1 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).list();
+                  return list1;
               }
 
               // Delete query

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +23,8 @@ import com.jci.model.jciWeighmentEntry;
 public class WeightmentDaoImpl implements WeightmentDao{
 	@Autowired
 	private HttpServletRequest request;
-
+	 @Autowired
+     HttpSession session1;
 	@Autowired
 	SessionFactory sessionFactory;
 
@@ -32,16 +34,33 @@ public class WeightmentDaoImpl implements WeightmentDao{
 	@Override
 	public List<Object[]> WeightmentSlipList(String ro_id) {
 		// TODO Auto-generated method stub
-		String listString ="  SELECT * \r\n"
+		 String regionString=(String)session1.getAttribute("regionId");
+         Integer roleId = (Integer)session1.getAttribute("roleId");
+         String dpcId = (String)session1.getAttribute("dpcId");
+         String listString ="";
+          if(roleId == 52|| roleId==53|| roleId == 54) {//DPC roles
+        	  listString ="  SELECT * \r\n"
+        	  		+ "      				FROM jciweighment_entry \r\n"
+        	  		+ "      				JOIN jcibos_generation ON jciweighment_entry.Bos_no = jcibos_generation.Bill_of_supply_no\r\n"
+        	  		+ "      				JOIN jcidispatch_details ON jcibos_generation.Challan_No = jcidispatch_details.Challan_no \r\n"
+        	  		+ "                    join jcipurchasecenter on jcipurchasecenter.CENTER_CODE= jcibos_generation.DPCID\r\n"
+        	  		+ "      				WHERE jcibos_generation.DPCID='"+dpcId+"' \r\n"
+        	  		+ "      				ORDER BY jciweighment_entry.Weighment_id DESC;";
+		 }
+          else {
+        	  
+         
+		listString ="  SELECT * \r\n"
 				+ "FROM jciweighment_entry \r\n"
 				+ "JOIN jcibos_generation ON jciweighment_entry.Bos_no = jcibos_generation.Bill_of_supply_no\r\n"
 				+ "JOIN jcidispatch_details ON jcibos_generation.Challan_No = jcidispatch_details.Challan_no \r\n"
-				+ "WHERE jciweighment_entry.Ro_id = '"+ro_id+"' \r\n"
+				//+ "WHERE jciweighment_entry.Ro_id = '"+ro_id+"' \r\n"
 				+ "ORDER BY jciweighment_entry.Weighment_id DESC;";
+          }
 		List<Object[]> list = currentSession().createSQLQuery(listString).list();
 		
 		System.err.println(list.toString());
-		return list;
+		return list;	
 		
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.digester.ObjectParamRule;
 import org.hibernate.Criteria;
@@ -29,6 +30,8 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 
 	@Autowired
 	SessionFactory sessionFactory;
+	 @Autowired
+     HttpSession session1;
 
 	protected Session currentSession() {
 		return sessionFactory.getCurrentSession();
@@ -99,8 +102,27 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	@Override
 	public List<Object[]> getAllRoDi() {
 	
-		String sqlString = "Select jciDI_ro.Contract_No,jciDI_ro.Last_Date_Of_Shipment,jciDI_ro.RO_DI_No,jcipurchasecenter.centername,jciDI_ro.RO_DI_Date,jciDI_ro.Jute_Variety,jciDI_ro.Gr1_qty,jciDI_ro.Gr2_qty,jciDI_ro.Gr3_qty,jciDI_ro.Gr4_qty,jciDI_ro.Gr5_qty,jciDI_ro.Gr6_qty,jciDI_ro.Gr7_qty,jciDI_ro.Gr8_qty from jciDI_ro inner \r\n"
-				+ "join jcipurchasecenter on jciDI_ro.DPC=jcipurchasecenter.CENTER_CODE order by jciDI_ro.Creation_date";
+		 String regionString=(String)session1.getAttribute("regionId");
+         Integer roleId = (Integer)session1.getAttribute("roleId");
+         String dpcId = (String)session1.getAttribute("dpcId");
+         System.err.println("roleID String"+roleId);
+         System.err.println("region String"+regionString);
+         System.err.println("region String"+regionString);
+     String sqlString="";
+		 if(roleId ==6||roleId == 7 || roleId ==8) {//Ro roles
+			sqlString = "  Select jciDI_ro.Contract_No,jciDI_ro.Last_Date_Of_Shipment,jciDI_ro.RO_DI_No,jcipurchasecenter.centername,jciDI_ro.RO_DI_Date,jciDI_ro.Jute_Variety,jciDI_ro.Gr1_qty,jciDI_ro.Gr2_qty,jciDI_ro.Gr3_qty,jciDI_ro.Gr4_qty,jciDI_ro.Gr5_qty,jciDI_ro.Gr6_qty,jciDI_ro.Gr7_qty,jciDI_ro.Gr8_qty from jciDI_ro inner\r\n"
+					+ "				join jcipurchasecenter on jciDI_ro.DPC=jcipurchasecenter.CENTER_CODE  and jcipurchasecenter.rocode='"+regionString+"' order by jciDI_ro.Creation_date;";
+         }
+		 else if(roleId == 52|| roleId==53) {//DPC roles
+			 sqlString = "Select jciDI_ro.Contract_No,jciDI_ro.Last_Date_Of_Shipment,jciDI_ro.RO_DI_No,jcipurchasecenter.centername,jciDI_ro.RO_DI_Date,jciDI_ro.Jute_Variety,jciDI_ro.Gr1_qty,jciDI_ro.Gr2_qty,jciDI_ro.Gr3_qty,jciDI_ro.Gr4_qty,jciDI_ro.Gr5_qty,jciDI_ro.Gr6_qty,jciDI_ro.Gr7_qty,jciDI_ro.Gr8_qty from jciDI_ro inner\r\n"
+			 		+ "		join jcipurchasecenter on jciDI_ro.DPC=jcipurchasecenter.CENTER_CODE  and jcipurchasecenter.CENTER_CODE='"+dpcId+"' order by jciDI_ro.Creation_date;\r\n";
+			 		
+		 }
+         else if(roleId == 1103|| roleId ==3 || roleId==4||roleId == 51||roleId == 1104){//Head office roles
+        	 sqlString = "Select jciDI_ro.Contract_No,jciDI_ro.Last_Date_Of_Shipment,jciDI_ro.RO_DI_No,jcipurchasecenter.centername,jciDI_ro.RO_DI_Date,jciDI_ro.Jute_Variety,jciDI_ro.Gr1_qty,jciDI_ro.Gr2_qty,jciDI_ro.Gr3_qty,jciDI_ro.Gr4_qty,jciDI_ro.Gr5_qty,jciDI_ro.Gr6_qty,jciDI_ro.Gr7_qty,jciDI_ro.Gr8_qty from jciDI_ro inner \r\n"
+     				+ "join jcipurchasecenter on jciDI_ro.DPC=jcipurchasecenter.CENTER_CODE order by jciDI_ro.Creation_date";  
+         }
+		 
 		List<Object[]> list = currentSession().createSQLQuery(sqlString).list();
 		return list;
 
@@ -150,7 +172,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	public void update(String contractNoString) {
 		// TODO Auto-generated method stub
 		String sqlString = "Update jcicontract set Contract_status ='DI Issued by RO' where Contract_no ='"
-				+ contractNoString + "'";
+				+ contractNoString + "'";	
 		currentSession().createSQLQuery(sqlString).executeUpdate();// for setting values only
 		return;
 

@@ -1077,12 +1077,12 @@ $(document).ready(function() {
 			var Qualitypercentage = document
 					.getElementById(QualitypercentageId).value; 
 			
-		 	var actualvalue = $("#Mill_receiptQty123").val(); 
+		 /* 	var actualvalue = $("#Mill_receiptQty123").val(); 
 			
 			  if (!actualvalue || isNaN(actualvalue)) {
 			        alert("Please enter a valid Mill Receipt Qty value.");
 			        return;  
-			    }
+			    } */
 
 			var Nomination = document.getElementById(NominationId).value;
 			var NCVamt = document.getElementById(NCVamtId).value;
