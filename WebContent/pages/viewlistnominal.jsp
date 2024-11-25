@@ -143,7 +143,7 @@ th {
                                             <td >${item.getSettlement_id_generated()}</td>
                                            <td>${item.getCreated_on()}</td>
                                             <td>${item.getDateofInspection()}</td>
-											<td >${item.getMill()}</td>
+											<td >${item.getMill().split('---')[0]}</td>
 											 <td>${item.getContractNo()}</td>
 											 <td>${item.getHoDi()}</td>
 											 <td>${item.getOMOfficial()}</td>																

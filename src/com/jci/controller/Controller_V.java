@@ -7920,12 +7920,12 @@ public class Controller_V {
 	public ModelAndView NominationDetails(HttpServletRequest request, Model model,RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("nominationdetails");
-		String pagename = "nominationdetails";
-		int i = checkprivileges(pagename);
-		if (i != 1) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-			return mv = new ModelAndView("Home");
-		}
+//		String pagename = "nominationdetails";
+//		int i = checkprivileges(pagename);
+//		if (i != 1) {
+//			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
+//			return mv = new ModelAndView("Home");
+//		}
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
