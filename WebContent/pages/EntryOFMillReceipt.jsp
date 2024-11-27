@@ -281,10 +281,10 @@
 													type="date" required>
 											</div>
 											<div class="col-sm-4 form-group">
-											    <label>Mill Receipt Qty</label> 
-											    <span class="text-danger">*</span>&nbsp; 
-											    <span id="Mill_receiptQty_display" class="text-danger"> </span> 
-											    <input class="form-control" name="Mill_receiptQty1" id="Mill_receiptQty123" type="number" step="any" required>
+												<label>Mill Receipt Qty</label> <span class="text-danger">*</span>&nbsp;
+												<span id="Mill_receiptQty_display" class="text-danger">
+												</span> <input class="form-control" name="Mill_receiptQty1"
+													id="Mill_receiptQty123" type="number" step="any" required>
 											</div>
 
 										</div>
@@ -311,9 +311,9 @@
 														<th>Jute_grade</th>
 														<th>Crop_year</th>
 														<th>Invoice qty(Qtls)</th>
-
-														<!-- <th>Actual Qty(Qtls)</th> -->
-														<th>No of Bales</th>
+                                                        <th>No of Bales</th>
+														<th>Actual Qty(Qtls)</th>
+														
 														<!--  <th>claim </th>
                                                                                        <th>Claim Type </th>
                                                                                        <th> </th> -->
@@ -452,6 +452,7 @@
         }
     </script>
 
+
 	<!--    <script>
   $(document).ready(function() {
     const checkbox = $('#enableQualityClaim');
@@ -504,6 +505,8 @@ var grade6 = [];
 var some = [];
 var claimAmount=[];
 var numberOfElements = 10; 
+var actQtyList = [];
+var sumOfActQty = 0;
 
 
 for (var i = 0; i < numberOfElements; i++) {
@@ -623,9 +626,13 @@ $(document).ready(function() {
 						},
 						success : function(data) {
 
+							 actQtyList = [];
+							  sumOfActQty = 0;
+
 							var dataArray = JSON.parse(data);
 
 							var currentMonth = new Date().getMonth() + 1;
+							
 							dataArray
 									.forEach(function(row, index) {
 										var str = row[3];
@@ -647,7 +654,10 @@ $(document).ready(function() {
 											initialNomination = Math.max(0,
 													intValue - 18);
 										}
-
+									
+										actQtyList.push(+row[7]);
+										sumOfActQty += +row[7];
+										
 										var rowHtml = '<tr>'
 										    + '<td>'
 										    + '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> '
@@ -679,17 +689,19 @@ $(document).ready(function() {
 										    + '</div>'
 										    + '</td>'
 
-										    + '<td style="display:none;">'
-										    + '<div class="table2-cell"><input type="hidden" id="actualQty_" name="actualQty[]" value="' + row[7] + '">'
-										    + row[7]
-										    + '</div>'
-										    + '</td>'
-
 										    + '<td>'
 										    + '<div class="table2-cell"><input type="hidden" name="No_of_bales[]" value="' + row[6] + '">'
 										    + row[6]
 										    + '</div>'
 										    + '</td>'
+										    
+										    + '<td>'
+										    + '<div class="table2-cell"><input readonly id="actualQty_' + index + '" name="actualQty[]" value="' + row[7] + '">'
+										 
+										    + '</div>'
+										    + '</td>'
+
+				
 
 										    + '<td>'
 										    + '<div class="table2-cell">'
@@ -783,7 +795,11 @@ $(document).ready(function() {
 										// Increment the index
 										index++;
 										document.getElementById("rowindex2").value = index;
-									});
+									}									
+									);
+
+							
+							//console.log(actQtyList , sumOfActQty);
 
 						},
 						error : function(xhr, status, error) {
@@ -795,6 +811,27 @@ $(document).ready(function() {
 			    $('#childTable').hide();
 			}); */
 		}
+		
+		
+	    
+		$("#Mill_receiptQty123").on("input", function() {
+			var mrQty = $("#Mill_receiptQty123").val();
+		 
+		/* 	actQtyList.push(+row[7]);
+			sumOfActQty += +row[7]; */
+			
+			for(var i=0 ; i < actQtyList.length ; i++){
+                var portion = actQtyList[i]/sumOfActQty;
+                var actQtyForRow = +mrQty*portion.toFixed(2);
+                console.log(actQtyForRow , "#actualQty_"+i);
+                $("#actualQty_"+i).val(actQtyForRow.toFixed(2));
+               
+			}
+			
+		});
+		
+		
+		
 
 		function handleNominationChange(selectElement, intValue, actualvalue1) {
 
