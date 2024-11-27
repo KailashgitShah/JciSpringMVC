@@ -42,17 +42,14 @@
                    
                     <div class="ibox-body">
                    
-                       <h2 style="text-align:center;">2nd Level Available (Region Wise)</h2><br>  
+                       <h2 style="text-align:center;">Procured/Baled Jute Variety Wise</h2><br>  
 				  <div class="row">
                       <%
-                      List<InventoryDTO> regionprocured  = (List<InventoryDTO>)request.getAttribute("regionjute");
-                      List<InventoryDTO> regionAvailable  = (List<InventoryDTO>)request.getAttribute("regionAvailable");
+                      List<InventoryDTO> jutevarietyProcured  = (List<InventoryDTO>)request.getAttribute("jutevarietyProcured");
                       String cropyr  = (String)request.getAttribute("cropyr");
                       String Baled  = (String)request.getAttribute("Baled");
                       String basis  = (String)request.getAttribute("basis");
-                      String variety  = (String)request.getAttribute("variety");
 
-                      int size = regionprocured.size();
                       %>     
                        <div class="col-sm-3 form-group">
 	                    <label>Basis</label>
@@ -68,15 +65,16 @@
                     </div>       
 						
                       </div>
+                      
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
 							
 
 								<thead>
-								<caption>2nd Level view of Procured Jute Region Wise</caption>
+								<caption>Availabel Jute Variety Wise</caption>
 									<tr>
 										<th>Sl.no</th>
-								        <th>Region Name</th>
+								        <th>Jute Variety</th>
 										<th>Loose</th>
 										<th>Gr1</th>
 										<th>Gr2</th>
@@ -100,46 +98,47 @@
 					            double sumGrade5 = 0;
 					            double sumGrade6 = 0;
 					            double sumGrade7 = 0;
-								for (int i = 0; i < size; i++) {
-								    InventoryDTO procuredDTO = regionprocured.get(i);
-								    InventoryDTO availableDTO = regionAvailable.get(i);
+					            double sumGrade8 = 0;
+					            int i = 0;
+					            for (InventoryDTO  jutevarity :jutevarietyProcured) {
 								
 								%>
 								<tbody>	
 									<tr>
 										<td>(<%=i+1%>)</td>
-										<td id="<%=i%>regionname"><a href ="available_dpcwise.obj?region=<%=procuredDTO.getRoname()%>&cropyr=<%=cropyr%>&Baled=<%=Baled%>&basis=<%=basis%>&variety=<%=variety%>"><%=procuredDTO.getRoname()%></a></td>
-										<td id="<%=i%>loosejute"><%=procuredDTO.getGrade8() - availableDTO.getGrade8()%></td>
-										<td id="<%=i%>grade0"><%=procuredDTO.getGrade1() - availableDTO.getGrade1()%></td>
-										<td id="<%=i%>grade1"><%=procuredDTO.getGrade2() - availableDTO.getGrade2()%></td>
-										<td id="<%=i%>grade2"><%=procuredDTO.getGrade3() - availableDTO.getGrade3()%></td>
-										<td id="<%=i%>grade3"><%=procuredDTO.getGrade4() - availableDTO.getGrade4()%></td>
-										<td id="<%=i%>grade4"><%=procuredDTO.getGrade5() - availableDTO.getGrade5()%></td>
-										<td id="<%=i%>grade5"><%=procuredDTO.getGrade6() - availableDTO.getGrade6()%></td>
+										<td id="<%=i%>regionname"><a href ="regionwiseinventory.obj?cropyear=<%=cropyr%>&baled=<%=Baled%>&basis=<%=basis%>&variety=<%=jutevarity.getRoname()%>"><%=jutevarity.getRoname()%></a></td>
+										<td id="<%=i%>loosejute"><%=jutevarity.getGrade8()%></td>
+										<td id="<%=i%>grade0"><%=jutevarity.getGrade1()%></td>
+										<td id="<%=i%>grade1"><%=jutevarity.getGrade2()%></td>
+										<td id="<%=i%>grade2"><%=jutevarity.getGrade3()%></td>
+										<td id="<%=i%>grade3"><%=jutevarity.getGrade4()%></td>
+										<td id="<%=i%>grade4"><%=jutevarity.getGrade5()%></td>
+										<td id="<%=i%>grade5"><%=jutevarity.getGrade6()%></td>
 										<td id="<%=i%>grade6">0.0</td>
 										<td id="<%=i%>grade7">0.0</td>
-										<td id="<%=i%>total"><%=procuredDTO.getGrade7() - availableDTO.getGrade7()%></td>
+										<td id="<%=i%>total"><%=jutevarity.getGrade7()%></td>
 									 
 										</tr>
 										
 							
 								</tbody>
 						   <%
-						    sumGrade1 += procuredDTO.getGrade1() - availableDTO.getGrade1();
-			                sumGrade2 += procuredDTO.getGrade2() - availableDTO.getGrade2();
-			                sumGrade3 += procuredDTO.getGrade3() - availableDTO.getGrade3();
-			                sumGrade4 += procuredDTO.getGrade4() - availableDTO.getGrade4();
-			                sumGrade5 += procuredDTO.getGrade5() - availableDTO.getGrade5();
-			                sumGrade6 += procuredDTO.getGrade6() - availableDTO.getGrade6();
-			                sumGrade7 += procuredDTO.getGrade7() - availableDTO.getGrade7();
-						   //i++;
+						    sumGrade1 += jutevarity.getGrade1();
+			                sumGrade2 += jutevarity.getGrade2();
+			                sumGrade3 += jutevarity.getGrade3();
+			                sumGrade4 += jutevarity.getGrade4();
+			                sumGrade5 += jutevarity.getGrade5();
+			                sumGrade6 += jutevarity.getGrade6();
+			                sumGrade7 += jutevarity.getGrade7();
+			                sumGrade8 += jutevarity.getGrade8();
+						   i++;
 								}
 						   %>
 						   <tfoot>
 						        <tr>
 						            <td><b>Total</b></td>
 						            <td></td> <!-- Empty cell for Region Name -->
-						            <td></td>
+						            <td><%= String.format("%.2f",sumGrade8) %></td>
 						            <td><%= String.format("%.2f",sumGrade1) %></td>
 						            <td><%= String.format("%.2f",sumGrade2) %></td>
 						            <td><%= String.format("%.2f",sumGrade3) %></td>

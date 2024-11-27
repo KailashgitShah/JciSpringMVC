@@ -113,7 +113,7 @@
 									<tr>
 									
 										<td>(1)</td>
-										<td><a id="procuredBaledLink" href = "regionwiseinventory.obj" >Procured/Baled</a></td>
+										<td><a id="procuredBaledLink" href = "jute_Variety_Procured.obj" >Procured/Baled</a></td>
 										<td id="loosejute"><%=jute.get(7) %></td>
 										<td id="grade0"><%=jute.get(0) %></td>
 										<td id="grade1"><%=jute.get(1) %></td>
@@ -129,6 +129,7 @@
 								<tbody>
 									<tr>
 									<%
+									//<td><a id="procuredBaledLink" href = "regionwiseinventory.obj" >Procured/Baled</a></td>
 									//Procured - Despatched = available quantity 
 									%>
 									    <td>(2)</td>
@@ -345,7 +346,7 @@
             var baled = document.getElementById("Baled").value;
 
             // Construct the new href value with query parameters
-            var newHref = "regionwiseinventory.obj?basis=" + encodeURIComponent(basis) +
+            var newHref = "jute_Variety_Procured.obj?basis=" + encodeURIComponent(basis) +
                           "&cropyear=" + encodeURIComponent(cropyear) +
                           "&baled=" + encodeURIComponent(baled);
 

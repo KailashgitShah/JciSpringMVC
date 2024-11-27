@@ -20,16 +20,17 @@ public interface DailyPurchaseModelConfService {
 	public List<Object[]> firstLeveljutedpcwise(String cropyr, String basis, String region);
 	public List<Object[]> firstLeveljuteRegionwise(String cropyr, String basis);
 	public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis);
-	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis, String baled);
+	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis, String baled, String variety);
 	public List<InventoryDTO> secondLevelbaleRegionwise(String cropyear, String basis);
-	public List<InventoryDTO> second_level_jute_DPCwise(String string, String string2, String region, String baled);
+	public List<InventoryDTO> second_level_jute_DPCwise(String string, String string2, String region, String baled,String variety);
 	public List<InventoryDTO> second_level_bale_DPCwise(String string, String string2, String region);
 	public List<Double> contractInHand_firstlevel(String currCropYear, String basis);
-	public List<InventoryDTO> regionAvailable(String currCropYear, String basis, String baled);
-	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region, String baled);
+	public List<InventoryDTO> regionAvailable(String currCropYear, String basis, String baled,String variety);
+	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region, String baled,String variety);
 	public List<Double> contractInHand_2ndlevel(String currCropYear, String basis, String status);
 	public List<InventoryDTO> contract3rd_level(String currCropYear, String basis);
 	public List<InventoryDTO> contract4th_level(String currCropYear, String basis, String contractno);
 	public List<String> getCropYear();
 	public List<InventoryDTO> juteVarityAvailable(String cropyr, String basis, String baled);
+	public List<InventoryDTO> juteVarityProcured(String cropyr, String basis, String baled);
 }

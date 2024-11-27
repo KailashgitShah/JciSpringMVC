@@ -66,8 +66,6 @@
 						
                       </div>
                       
-      <a href ="regionwiseAvailable.obj?cropyear=<%=cropyr%>&baled=<%=Baled%>&basis=<%=basis%>">Region wise available</a> <br><br>
-                      
 				 
 				 <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
 							
@@ -108,7 +106,7 @@
 								<tbody>	
 									<tr>
 										<td>(<%=i+1%>)</td>
-										<td id="<%=i%>regionname"><%=jutevarity.getRoname()%></td>
+										<td id="<%=i%>regionname"><a href ="regionwiseAvailable.obj?cropyear=<%=cropyr%>&baled=<%=Baled%>&basis=<%=basis%>&variety=<%=jutevarity.getRoname()%>"><%=jutevarity.getRoname()%></a></td>
 										<td id="<%=i%>loosejute"><%=jutevarity.getGrade8()%></td>
 										<td id="<%=i%>grade0"><%=jutevarity.getGrade1()%></td>
 										<td id="<%=i%>grade1"><%=jutevarity.getGrade2()%></td>

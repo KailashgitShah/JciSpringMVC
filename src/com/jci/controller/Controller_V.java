@@ -12821,56 +12821,40 @@ public class Controller_V {
 	@RequestMapping(value = "inventory")
 	public ModelAndView firstLevel(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+		  String username =(String)request.getSession().getAttribute("usrname");
+		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+	    	
+		  ModelAndView mv = new ModelAndView("Inventory");
+		  String Baled = "Baled";
+		  List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp",Baled);
+		  List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp",Baled);
+		  List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(currCropYear, "msp");
+		  
+		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Mill Accepted");
+		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","DI Issued by RO");
+		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Payment not done");
+		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp","Bill of supply generated");
+		  
+		  List<Double> contractinhand = new ArrayList<Double>();
+		  contractinhand.add((Payment_not_received.get(0) + DI_in_hand.get(0)) + ((Contracted.get(0)-Payment_not_received.get(0)) - (Despatched.get(0)+DI_in_hand.get(0))));
+		  contractinhand.add((Payment_not_received.get(1) + DI_in_hand.get(1)) + ((Contracted.get(1)-Payment_not_received.get(1)) - (Despatched.get(1)+DI_in_hand.get(1))));	
+		  contractinhand.add((Payment_not_received.get(2) + DI_in_hand.get(2)) + ((Contracted.get(2)-Payment_not_received.get(2)) - (Despatched.get(2)+DI_in_hand.get(2))));	
+		  contractinhand.add((Payment_not_received.get(3) + DI_in_hand.get(3)) + ((Contracted.get(3)-Payment_not_received.get(3)) - (Despatched.get(3)+DI_in_hand.get(3))));	
+		  contractinhand.add((Payment_not_received.get(4) + DI_in_hand.get(4)) + ((Contracted.get(4)-Payment_not_received.get(4)) - (Despatched.get(4)+DI_in_hand.get(4))));	
+		  contractinhand.add((Payment_not_received.get(5) + DI_in_hand.get(5)) + ((Contracted.get(5)-Payment_not_received.get(5)) - (Despatched.get(5)+DI_in_hand.get(5))));	
+		  contractinhand.add((Payment_not_received.get(6) + DI_in_hand.get(6)) + ((Contracted.get(6)-Payment_not_received.get(6)) - (Despatched.get(6)+DI_in_hand.get(6))));	
 
-			ModelAndView mv = new ModelAndView("Inventory");
-			String pagename = "Inventory";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			String Baled = "Baled";
-			List<Double> jute = dailyPurchaseModelConfService.firstLeveljute(currCropYear, "msp", Baled);
-			List<Double> dispatched = dailyPurchaseModelConfService.firstLevelbale(currCropYear, "msp", Baled);
-			List<Double> contractInHand = dailyPurchaseModelConfService.contractInHand_firstlevel(currCropYear, "msp");
-
-			List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp",
-					"Mill Accepted");
-			List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp",
-					"DI Issued by RO");
-			List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear,
-					"msp", "Payment not done");
-			List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(currCropYear, "msp",
-					"Bill of supply generated");
-
-			List<Double> contractinhand = new ArrayList<Double>();
-			contractinhand.add((Payment_not_received.get(0) + DI_in_hand.get(0))
-					+ ((Contracted.get(0) - Payment_not_received.get(0)) - (Despatched.get(0) + DI_in_hand.get(0))));
-			contractinhand.add((Payment_not_received.get(1) + DI_in_hand.get(1))
-					+ ((Contracted.get(1) - Payment_not_received.get(1)) - (Despatched.get(1) + DI_in_hand.get(1))));
-			contractinhand.add((Payment_not_received.get(2) + DI_in_hand.get(2))
-					+ ((Contracted.get(2) - Payment_not_received.get(2)) - (Despatched.get(2) + DI_in_hand.get(2))));
-			contractinhand.add((Payment_not_received.get(3) + DI_in_hand.get(3))
-					+ ((Contracted.get(3) - Payment_not_received.get(3)) - (Despatched.get(3) + DI_in_hand.get(3))));
-			contractinhand.add((Payment_not_received.get(4) + DI_in_hand.get(4))
-					+ ((Contracted.get(4) - Payment_not_received.get(4)) - (Despatched.get(4) + DI_in_hand.get(4))));
-			contractinhand.add((Payment_not_received.get(5) + DI_in_hand.get(5))
-					+ ((Contracted.get(5) - Payment_not_received.get(5)) - (Despatched.get(5) + DI_in_hand.get(5))));
-			contractinhand.add((Payment_not_received.get(6) + DI_in_hand.get(6))
-					+ ((Contracted.get(6) - Payment_not_received.get(6)) - (Despatched.get(6) + DI_in_hand.get(6))));
-
-			mv.addObject("contractinhand", (Object) contractinhand);
-			mv.addObject("jute", jute);
-			mv.addObject("dispatched", dispatched);
-			return mv;
-		}
-	}
+		  mv.addObject("contractinhand" ,(Object)contractinhand);
+		  mv.addObject("jute" ,jute);
+		  mv.addObject("dispatched" , dispatched);
+		  return mv;
+	    	  }
+	  }
 
 	@ResponseBody
 	@RequestMapping(value = { "inventorybale" }, method = { RequestMethod.GET })
@@ -12923,32 +12907,29 @@ public class Controller_V {
 	@RequestMapping(value = "regionwiseAvailable")
 	public ModelAndView regionwiseAvailable(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
-			String cropyr = request.getParameter("cropyear");
-			String Baled = request.getParameter("baled");
-			String basis = request.getParameter("basis");
-			ModelAndView mv = new ModelAndView("Available_regionwise");
-			String pagename = "Available_regionwise";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis,
-					Baled);
-			List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis, Baled);
-			mv.addObject("cropyr", (Object) cropyr);
-			mv.addObject("Baled", (Object) Baled);
-			mv.addObject("basis", (Object) basis);
-			mv.addObject("regionjute", (Object) regionjute);
-			mv.addObject("regionAvailable", (Object) regionAvailable);
-			return mv;
-		}
-	}
+		  String username =(String)request.getSession().getAttribute("usrname");
+		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+	    		  String cropyr =  request.getParameter("cropyear");
+	    		  String Baled =  request.getParameter("baled");
+	    		  String basis =  request.getParameter("basis");
+	    		 String variety =  request.getParameter("variety");
+		  ModelAndView mv = new ModelAndView("Available_regionwise");
+
+		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr,basis,Baled,variety);
+		  List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled,variety);
+		  mv.addObject("cropyr" ,(Object)cropyr);
+		  mv.addObject("Baled" ,(Object)Baled);
+		  mv.addObject("basis" ,(Object)basis);
+		  mv.addObject("variety" ,(Object)variety);
+		  mv.addObject("regionjute" ,(Object)regionjute);
+		  mv.addObject("regionAvailable" ,(Object)regionAvailable);
+		  return mv;
+	    	  } 
+	  }
 
 	@RequestMapping(value = "jute_Variety_Available")
 	public ModelAndView jute_Variety_Available(HttpServletRequest request, RedirectAttributes redirectAttributes,
@@ -12977,119 +12958,107 @@ public class Controller_V {
 	@RequestMapping(value = "available_dpcwise")
 	public ModelAndView available_dpcwise(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+		  String username =(String)request.getSession().getAttribute("usrname");
+		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
-			String Region = request.getParameter("region");
-			String cropyr = request.getParameter("cropyr");
-			String Baled = request.getParameter("Baled");
-			String basis = request.getParameter("basis");
-			ModelAndView mv = new ModelAndView("available_dpcwise");
-			String pagename = "available_dpcwise";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			List<InventoryDTO> dpc_procured = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis,
-					Region, Baled);
-			List<InventoryDTO> dpc_available = dailyPurchaseModelConfService.dpc_wise_available(currCropYear, basis,
-					Region, Baled);
-			System.err.println("dpc_procured+" + dpc_procured);
-			System.err.println("dpc_available+" + dpc_available);
-			mv.addObject("dpc_procured", (Object) dpc_procured);
-			mv.addObject("dpc_available", (Object) dpc_available);
-			mv.addObject("Region", (Object) Region);
-			mv.addObject("cropyr", (Object) cropyr);
-			mv.addObject("Baled", (Object) Baled);
-			mv.addObject("basis", (Object) basis);
-			return mv;
-		}
-	}
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+	      String Region =  request.getParameter("region");
+	      String cropyr =  request.getParameter("cropyr");
+		  String Baled =  request.getParameter("Baled");
+		  String basis =  request.getParameter("basis");
+		  String variety =  request.getParameter("variety");
+		  ModelAndView mv = new ModelAndView("available_dpcwise");
+		  List<InventoryDTO> dpc_procured = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis,Region,Baled,variety);
+		  List<InventoryDTO> dpc_available = dailyPurchaseModelConfService.dpc_wise_available(currCropYear, basis,Region, Baled,variety);
+		  System.err.println("dpc_procured+"+dpc_procured);
+		  System.err.println("dpc_available+"+dpc_available);
+		  mv.addObject("dpc_procured" ,(Object)dpc_procured);
+		  mv.addObject("dpc_available" ,(Object)dpc_available);
+		  mv.addObject("Region" ,(Object)Region);
+		  mv.addObject("cropyr" ,(Object)cropyr);
+		  mv.addObject("Baled" ,(Object)Baled);
+		  mv.addObject("basis" ,(Object)basis);
+		  return mv;
+	    	  }
+	  }
+//
+//	@ResponseBody
+//	@RequestMapping(value = { "inventoryregionwisejute" }, method = { RequestMethod.GET })
+//	public String inventoryregionwisejute1(HttpServletRequest request, RedirectAttributes redirectAttributes,
+//			HttpSession session) {
+//		String cropyr = request.getParameter("cropyr");
+//		String basis = request.getParameter("basis");
+//
+//		List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis, "Baled");
+//		// mv.addObject("regionjute" ,(Object)regionjute);
+//
+//		// List<InventoryDTO> regionjute =
+//		// dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
+//		// List<InventoryDTO> regionbale =
+//		// dailyPurchaseModelConfService.secondLevelbaleRegionwise(cropyr, basis);
+//
+//		Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
+//		resultMap.put("regionjute", regionjute);
+//		// resultMap.put("regionbale", regionbale);
+//		final Gson gson = new Gson();
+//		return gson.toJson((Object) (resultMap));
+//
+//	}
 
-	@ResponseBody
-	@RequestMapping(value = { "inventoryregionwisejute" }, method = { RequestMethod.GET })
-	public String inventoryregionwisejute1(HttpServletRequest request, RedirectAttributes redirectAttributes,
-			HttpSession session) {
-		String cropyr = request.getParameter("cropyr");
-		String basis = request.getParameter("basis");
-
-		List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis, "Baled");
-		// mv.addObject("regionjute" ,(Object)regionjute);
-
-		// List<InventoryDTO> regionjute =
-		// dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyr, basis);
-		// List<InventoryDTO> regionbale =
-		// dailyPurchaseModelConfService.secondLevelbaleRegionwise(cropyr, basis);
-
-		Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
-		resultMap.put("regionjute", regionjute);
-		// resultMap.put("regionbale", regionbale);
-		final Gson gson = new Gson();
-		return gson.toJson((Object) (resultMap));
-
-	}
-
-	@ResponseBody
-	@RequestMapping(value = { "DPC_wise_jute" }, method = { RequestMethod.GET })
-	public String DPC_wise_jute(HttpServletRequest request, RedirectAttributes redirectAttributes,
-			HttpSession session) {
-		String cropyr = request.getParameter("cropyr");
-		String basis = request.getParameter("basis");
-		String roname = request.getParameter("roname");
-
-		List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis, roname,
-				"Baled");
-
-		// List<InventoryDTO> regionjute =
-		// dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr,basis,roname);
-		// List<InventoryDTO> regionbale =
-		// dailyPurchaseModelConfService.second_level_bale_DPCwise(cropyr,basis,roname);
-		Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
-		resultMap.put("regionjute", regionjute);
-		// resultMap.put("regionbale", regionbale);
-		final Gson gson = new Gson();
-		return gson.toJson((Object) (resultMap));
-
-	}
+//	@ResponseBody
+//	@RequestMapping(value = { "DPC_wise_jute" }, method = { RequestMethod.GET })
+//	public String DPC_wise_jute(HttpServletRequest request, RedirectAttributes redirectAttributes,
+//			HttpSession session) {
+//		String cropyr = request.getParameter("cropyr");
+//		String basis = request.getParameter("basis");
+//		String roname = request.getParameter("roname");
+//
+//		List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr, basis, roname,
+//				"Baled");
+//
+//		// List<InventoryDTO> regionjute =
+//		// dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyr,basis,roname);
+//		// List<InventoryDTO> regionbale =
+//		// dailyPurchaseModelConfService.second_level_bale_DPCwise(cropyr,basis,roname);
+//		Map<String, List<InventoryDTO>> resultMap = new HashMap<>();
+//		resultMap.put("regionjute", regionjute);
+//		// resultMap.put("regionbale", regionbale);
+//		final Gson gson = new Gson();
+//		return gson.toJson((Object) (resultMap));
+//
+//	}
 
 	@RequestMapping(value = "inventory_dpcwise")
 	public ModelAndView inventory_dpcwise(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
+		  String username =(String)request.getSession().getAttribute("usrname");
+		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
 
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
-			String Region = request.getParameter("region");
-			String cropyear = request.getParameter("cropyear");
-			String basis = request.getParameter("basis");
-			String baled = request.getParameter("baled");
-			ModelAndView mv = new ModelAndView("Inventory_DPCwise");
-			String pagename = "Inventory_DPCwise";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyear, basis,
-					Region, baled);
-			// List<InventoryDTO> regionbale =
-			// dailyPurchaseModelConfService.second_level_bale_DPCwise("2022-2023",
-			// "msp",Region);
-			mv.addObject("regionjute", (Object) regionjute);
-			// mv.addObject("regionbale" ,(Object)regionbale);
-			mv.addObject("Region", (Object) Region);
-			mv.addObject("cropyr", (Object) cropyear);
-			mv.addObject("Baled", (Object) baled);
-			mv.addObject("basis", (Object) basis);
-			return mv;
-		}
-	}
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+	      String Region =  request.getParameter("region");
+	      String cropyear =  request.getParameter("cropyear");
+	      String basis =  request.getParameter("basis");
+	      String baled =  request.getParameter("baled");
+	      String variety =  request.getParameter("variety");
+		  ModelAndView mv = new ModelAndView("Inventory_DPCwise");
+		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.second_level_jute_DPCwise(cropyear, basis,Region,baled,variety);
+		 // List<InventoryDTO> regionbale = dailyPurchaseModelConfService.second_level_bale_DPCwise("2022-2023", "msp",Region);
+		  mv.addObject("regionjute" ,(Object)regionjute);
+		  //mv.addObject("regionbale" ,(Object)regionbale);
+		  mv.addObject("Region" ,(Object)Region);
+		  mv.addObject("cropyr" ,(Object)cropyear);
+		  mv.addObject("Baled" ,(Object)baled);
+		  mv.addObject("basis" ,(Object)basis);
+		  System.out.println();
+		  return mv;
+	    	  }
+	  }
 
 //             @ResponseBody
 //             @RequestMapping(value = {"inventoryregionwisejute"}, method = { RequestMethod.GET })
@@ -13111,94 +13080,74 @@ public class Controller_V {
 //
 //             }
 
-	@RequestMapping(value = "regionwiseinventory")
-	public ModelAndView regionwiseinventory(HttpServletRequest request, RedirectAttributes redirectAttributes,
-			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String cropyear = request.getParameter("cropyear");
-		String basis = request.getParameter("basis");
-		String baled = request.getParameter("baled");
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
+	  @RequestMapping(value = "regionwiseinventory")
+   	  public ModelAndView  regionwiseinventory(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+   		  String username =(String)request.getSession().getAttribute("usrname");
+   		  String cropyear = request.getParameter("cropyear");
+   		  String basis = request.getParameter("basis");
+   		  String baled = request.getParameter("baled");
+   		String variety = request.getParameter("variety");
+   	    	 if(username == null) {
+   	             return new ModelAndView("index");
+   	             }
+   	    	  else {
+   	    	
+   		  ModelAndView mv = new ModelAndView("Inventory_regionwise");
+		  List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyear,basis,baled,variety);
+   		  //List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.secondLevelbaleRegionwise("2022-2023", "msp");
+   		  mv.addObject("regionjute" ,(Object)regionjute);
+		  mv.addObject("cropyear" ,(Object)cropyear);
+		  mv.addObject("basis" ,(Object)basis);
+		  mv.addObject("baled" ,(Object)baled);
+		  mv.addObject("variety" ,(Object)variety);
 
-			ModelAndView mv = new ModelAndView("Inventory_regionwise");
-			String pagename = "Inventory_regionwise";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			List<InventoryDTO> regionjute = dailyPurchaseModelConfService.secondLeveljuteRegionwise(cropyear, basis,
-					baled);
-			// List<InventoryDTO> regionAvailable =
-			// dailyPurchaseModelConfService.secondLevelbaleRegionwise("2022-2023", "msp");
-			mv.addObject("regionjute", (Object) regionjute);
-			mv.addObject("cropyear", (Object) cropyear);
-			mv.addObject("basis", (Object) basis);
-			mv.addObject("baled", (Object) baled);
-
-			return mv;
-		}
-	}
+   		  return mv;
+   	    	  }
+   	  }
 
 	@RequestMapping(value = "contractinhand")
 	public ModelAndView contractinhand(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String cropyear = request.getParameter("cropyear");
-		String basis = request.getParameter("basis");
-		String baled = request.getParameter("baled");
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
-			ModelAndView mv = new ModelAndView("contract_in_hand");
-			String pagename = "contract_in_hand";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,
-					"Mill Accepted");
-			List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,
-					"DI Issued by RO");
-			List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,
-					"Payment not done");
-			List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,
-					"Bill of supply generated");
-			mv.addObject("Contracted", (Object) Contracted);
-			mv.addObject("Despatched", (Object) Despatched);
-			mv.addObject("Payment_not_received", (Object) Payment_not_received);
-			mv.addObject("DI_in_hand", (Object) DI_in_hand);
-			mv.addObject("cropyear", (Object) cropyear);
-			mv.addObject("basis", (Object) basis);
-			mv.addObject("baled", (Object) baled);
-			return mv;
-		}
-	}
+		  String username =(String)request.getSession().getAttribute("usrname");
+		 String cropyear = request.getParameter("cropyear");
+		  String basis = request.getParameter("basis");
+		  String baled = request.getParameter("baled");
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+		  ModelAndView mv = new ModelAndView("contract_in_hand");
+		  List<Double> Contracted = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"Mill Accepted");
+		  List<Double> Despatched = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"DI Issued by RO");
+		  List<Double> Payment_not_received = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"Payment not done");
+		  List<Double> DI_in_hand = dailyPurchaseModelConfService.contractInHand_2ndlevel(cropyear, basis,"Bill of supply generated");
+		  mv.addObject("Contracted" ,(Object)Contracted);
+		  mv.addObject("Despatched" ,(Object)Despatched);
+		  mv.addObject("Payment_not_received" ,(Object)Payment_not_received);
+		  mv.addObject("DI_in_hand" ,(Object)DI_in_hand);
+		  mv.addObject("cropyear" ,(Object)cropyear);
+		  mv.addObject("basis" ,(Object)basis);
+		  mv.addObject("baled" ,(Object)baled);
+		  return mv;
+	    	  }
+	  }
 
 	@RequestMapping(value = "contractnumber")
 	public ModelAndView contractnumber(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		String username = (String) request.getSession().getAttribute("usrname");
-		String currCropYear = (String) request.getSession().getAttribute("currCropYear");
-		if (username == null) {
-			return new ModelAndView("index");
-		} else {
-			ModelAndView mv = new ModelAndView("Contract_3rdLevel");
-			String pagename = "Contract_3rdLevel";
-			int i = checkprivileges(pagename);
-			if (i != 1) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-				return mv = new ModelAndView("Home");
-			}
-			List<InventoryDTO> Contract_3rdLevel = dailyPurchaseModelConfService.contract3rd_level(currCropYear, "msp");
-			System.err.println("Contract_3rdLevel" + Contract_3rdLevel);
-			mv.addObject("Contract_3rdLevel", (Object) Contract_3rdLevel);
-			return mv;
-		}
-	}
+		  String username =(String)request.getSession().getAttribute("usrname");
+		  String currCropYear =(String)request.getSession().getAttribute("currCropYear");
+	    	 if(username == null) {
+	             return new ModelAndView("index");
+	             }
+	    	  else {
+		  ModelAndView mv = new ModelAndView("Contract_3rdLevel");
+		  List<InventoryDTO> Contract_3rdLevel = dailyPurchaseModelConfService.contract3rd_level(currCropYear, "msp");
+		  System.err.println("Contract_3rdLevel"+Contract_3rdLevel);
+		  mv.addObject("Contract_3rdLevel" ,(Object)Contract_3rdLevel);
+		  return mv;
+	    	  } 
+	  }
 
 	@RequestMapping(value = "Contract4thLevel")
 	public ModelAndView Contract4thLevel(HttpServletRequest request, RedirectAttributes redirectAttributes,
@@ -13224,7 +13173,27 @@ public class Controller_V {
 		}
 	}
 
-	
+	   @RequestMapping(value = "jute_Variety_Procured")
+	  	  public ModelAndView  jute_Variety_Procured(HttpServletRequest request, RedirectAttributes redirectAttributes,HttpSession session) {
+	  		  String username =(String)request.getSession().getAttribute("usrname");
+	  	    	 if(username == null) {
+	  	             return new ModelAndView("index");
+	  	             }
+	  	    	  else {
+	  	    		  String cropyr =  request.getParameter("cropyear");
+	 	    		  String Baled =  request.getParameter("baled");
+	 	    		  String basis =  request.getParameter("basis");
+	  		  ModelAndView mv = new ModelAndView("Jute_varitywise_Procured");
+	  
+			  List<InventoryDTO> jutevarietyProcured = dailyPurchaseModelConfService.juteVarityProcured(cropyr,basis,Baled);
+	  		  //List<InventoryDTO> regionAvailable = dailyPurchaseModelConfService.regionAvailable(cropyr, basis,Baled);
+			  mv.addObject("cropyr" ,(Object)cropyr);
+			  mv.addObject("Baled" ,(Object)Baled);
+			  mv.addObject("basis" ,(Object)basis);
+			  mv.addObject("jutevarietyProcured" ,(Object)jutevarietyProcured);
+	  		  return mv;
+	  	    	  } 
+	  	  }
 
 }
 
