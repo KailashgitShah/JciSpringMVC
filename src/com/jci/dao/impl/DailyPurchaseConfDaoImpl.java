@@ -880,7 +880,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 	}
 	
 	@Override
-	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis,String baled) {
+	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis,String baled,String variety) {
 		// TODO Auto-generated method stub
 		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(RoDetailsModel.class);
 		List<RoDetailsModel> Regionlists=c.list();
@@ -911,7 +911,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 			 		"(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\r\n" + 
 			 		"FROM jcibalepreparation j1\r\n" + 
 			 		"WHERE\r\n" + 
-			 		"j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.region = '"+region.getRocode()+"'\r\n" + 
+			 		"j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.region = '"+region.getRocode()+"' and j1.jute_variety = '"+variety+"'\r\n" + 
 			 		")as results;";
 			 }
 			 else
@@ -937,7 +937,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 				 		+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
 				 		+ "FROM jcibalepreparation j1\n"
 				 		+ "WHERE\n"
-				 		+ "j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.region = '"+region.getRocode()+"'\n"
+				 		+ "j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.region = '"+region.getRocode()+"' and j1.jute_variety = '"+variety+"'\n"
 				 		+ ")as results;\n"
 				 		+ "\n"
 				 		+ "";
@@ -1022,7 +1022,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
   }
 
 	@Override
-	public List<InventoryDTO> second_level_jute_DPCwise(String cropyear, String basis, String region,String baled) {
+	public List<InventoryDTO> second_level_jute_DPCwise(String cropyear, String basis, String region,String baled,String variety) {
 		// TODO Auto-generated method stub
 		String querystr = "SELECT jc.CENTER_CODE,jc.centername FROM jcipurchasecenter jc JOIN jcirodetails rn ON jc.rocode = rn.rocode WHERE rn.roname ='"+region+"'";
 		Session session = sessionFactory.getCurrentSession();
@@ -1056,7 +1056,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 			 		"(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\r\n" + 
 			 		"FROM jcibalepreparation j1\r\n" + 
 			 		"WHERE\r\n" + 
-			 		"j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.place_of_packing = '"+row[0].toString()+"'\r\n" + 
+			 		"j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.place_of_packing = '"+row[0].toString()+"' and j1.jute_variety = '"+variety+"'\r\n" + 
 			 		")as results";
 			 }
 			 else
@@ -1082,7 +1082,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 				 		+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
 				 		+ "FROM jcibalepreparation j1\n"
 				 		+ "WHERE\n"
-				 		+ "j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.place_of_packing = '"+row[0].toString()+"'\n"
+				 		+ "j1.crop_year='"+cropyear+"' and j1.basis = '"+basis+"' and j1.place_of_packing = '"+row[0].toString()+"'and j1.jute_variety = '"+variety+"'\n"
 				 		+ ")as results;\n"
 				 		+ "\n"
 				 		+ "";
@@ -1214,7 +1214,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 	}
 
 	@Override
-	public List<InventoryDTO> regionAvailable(String cropyr, String basis,String baled) {
+	public List<InventoryDTO> regionAvailable(String cropyr, String basis,String baled,String variety) {
 		Criteria c = this.sessionFactory.getCurrentSession().createCriteria(RoDetailsModel.class);
 		List<RoDetailsModel> Regionlists=c.list();
 		List<InventoryDTO> inventoryDTOAvailable = new ArrayList<>();
@@ -1246,7 +1246,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 		           		+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
 		           		+ "FROM jcidispatch_details_child j1\n"
 		           		+ "WHERE\n"
-		           		+ "j1.crop_year='"+cropyr+"' \n"
+		           		+ "j1.crop_year='"+cropyr+"' and j1.Jute_variety = '"+variety+"' \n"
 		           		+ ")as results;\n"
 		           		+ "";
 				 }
@@ -1272,7 +1272,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 					 		+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
 					 		+ "FROM jcidispatch_details_child j1\n"
 					 		+ "WHERE\n"
-					 		+ "j1.crop_year='"+cropyr+"' \n"
+					 		+ "j1.crop_year='"+cropyr+"' and j1.Jute_variety = '"+variety+"' \n"
 					 		+ ")as results;\n"
 					 		+ "";
 				 }
@@ -1309,7 +1309,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 	}
 
 	@Override
-	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region,String baled) {
+	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region,String baled,String variety) {
 		// TODO Auto-generated method stub
 		String querystr = "SELECT jc.CENTER_CODE,jc.centername FROM jcipurchasecenter jc JOIN jcirodetails rn ON jc.rocode = rn.rocode WHERE rn.roname ='"+region+"'";
 		Session session = sessionFactory.getCurrentSession();
@@ -1343,7 +1343,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 					+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
 					+ "FROM jcidispatch_details_child j1\n"
 					+ "WHERE\n"
-					+ "j1.crop_year='"+currCropYear+"' \n"
+					+ "j1.crop_year='"+currCropYear+"' and j1.Jute_variety = '"+variety+"' \n"
 					+ ")as results;";
 			 }
 			else {
@@ -1368,7 +1368,7 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 						+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
 						+ "FROM jcidispatch_details_child j1\n"
 						+ "WHERE\n"
-						+ "j1.crop_year='"+currCropYear+"' \n"
+						+ "j1.crop_year='"+currCropYear+"'and j1.Jute_variety = '"+variety+"' \n"
 						+ ")as results;\n"
 						+ "";
 			}
@@ -1404,21 +1404,119 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 		String querystr1 = "";
 		if("msp".equals(basis))
 		{
-		 querystr1="SELECT \r\n" + 
-				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%1%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE1,\r\n" + 
-				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%2%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE2,\r\n" + 
-				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%3%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE3,\r\n" + 
-				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%4%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE4,\r\n" + 
-				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%5%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE5,\r\n" + 
-				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%6%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE6,\r\n" + 
-				"    COALESCE(SUM(g.Proposed_composition), 0.0) AS Total_All_Grades\r\n" + 
-				"FROM \r\n" + 
-				"    jcicontract c\r\n" + 
-				"LEFT JOIN \r\n" + 
-				"    jcigrade_composition g ON c.Grade_composition = g.Label_name\r\n" + 
-				"WHERE \r\n" + 
-				"    c.Contract_status = '"+status+"' \r\n" + 
-				"    AND c.CropYear = '"+currCropYear+"'";
+			
+//		 querystr1="SELECT \r\n" + 
+//				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%1%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE1,\r\n" + 
+//				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%2%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE2,\r\n" + 
+//				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%3%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE3,\r\n" + 
+//				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%4%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE4,\r\n" + 
+//				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%5%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE5,\r\n" + 
+//				"    COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%6%' THEN g.Proposed_composition ELSE 0 END), 0.0) AS Total_GRADE6,\r\n" + 
+//				"    COALESCE(SUM(g.Proposed_composition), 0.0) AS Total_All_Grades\r\n" + 
+//				"FROM \r\n" + 
+//				"    jcicontract c\r\n" + 
+//				"LEFT JOIN \r\n" + 
+//				"    jcigrade_composition g ON c.Grade_composition = g.Label_name\r\n" + 
+//				"WHERE \r\n" + 
+//				"    c.Contract_status = '"+status+"' \r\n" + 
+//				"    AND c.CropYear = '"+currCropYear+"'";
+			if("Mill Accepted".equals(status))
+			{
+				querystr1 = "SELECT \r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%1%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE1,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%2%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE2,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%3%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE3,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%4%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE4,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%5%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE5,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%6%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE6,\r\n"
+						+ "    Round(\r\n"
+						+ "        COALESCE(\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%1%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%2%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%3%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%4%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%5%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%6%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END), \r\n"
+						+ "        0.0), 2) AS Total_All_Grades\r\n"
+						+ "FROM \r\n"
+						+ "    jcicontract c\r\n"
+						+ "LEFT JOIN \r\n"
+						+ "    jcigrade_composition g ON c.Grade_composition = g.Label_name\r\n"
+						+ "WHERE \r\n"
+						+ "    c.Contract_status IN (\r\n"
+						+ "        'Approved by Finance',\r\n"
+						+ "        'DI Issued by HO',\r\n"
+						+ "        'DI Issued by RO',\r\n"
+						+ "        'Mill Accepted',\r\n"
+						+ "        'Mill Raised Claim',\r\n"
+						+ "        'Official Nomination done',\r\n"
+						+ "        'Payment Done',\r\n"
+						+ "        'Verification of Weighment Slip done',\r\n"
+						+ "		'Demand note generated',\r\n"
+						+ "		'credit note generated',\r\n"
+						+ "		'Entry of weighment slip done',\r\n"
+						+ "		'Bill of Supply Generated',\r\n"
+						+ "		'Dispatch Details Entered'\r\n"
+						+ "    )\r\n"
+						+ "    AND c.CropYear = '"+currCropYear+"'";
+			}else if("DI Issued by RO".equals(status))
+			{
+				querystr1 = "SELECT \r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%1%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE1,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%2%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE2,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%3%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE3,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%4%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE4,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%5%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE5,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%6%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE6,\r\n"
+						+ "    COALESCE(SUM(g.No_of_bales), 0.0) AS Total_All_Grades\r\n"
+						+ "FROM \r\n"
+						+ "    jcidispatch_details_child g \r\n"
+						+ "    where g.Crop_year = '"+currCropYear+"'";
+			}
+			else if("Payment not done".equals(status))
+			{
+				querystr1 = "SELECT \r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%1%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE1,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%2%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE2,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%3%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE3,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%4%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE4,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%5%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE5,\r\n"
+						+ "    Round(COALESCE(SUM(CASE WHEN g.Jute_combination LIKE '%6%' THEN g.Proposed_composition/100 * c.Mill_qty ELSE 0 END), 0.0), 2) AS Total_GRADE6,\r\n"
+						+ "    Round(\r\n"
+						+ "        COALESCE(\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%1%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%2%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%3%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%4%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%5%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END) +\r\n"
+						+ "            SUM(CASE WHEN g.Jute_combination LIKE '%6%' THEN g.Proposed_composition / 100 * c.Mill_qty ELSE 0 END), \r\n"
+						+ "        0.0), 2) AS Total_All_Grades\r\n"
+						+ "FROM \r\n"
+						+ "    jcicontract c\r\n"
+						+ "LEFT JOIN \r\n"
+						+ "    jcigrade_composition g ON c.Grade_composition = g.Label_name\r\n"
+						+ "WHERE \r\n"
+						+ "    c.Contract_status IN (\r\n"
+						+ "        'Mill Accepted'\r\n"
+						+ "    )\r\n"
+						+ "    AND c.CropYear = '"+currCropYear+"'";
+			}
+			else if("Bill of supply generated".equals(status))
+			{
+				querystr1 = "SELECT \r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%1%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE1,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%2%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE2,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%3%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE3,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%4%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE4,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%5%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE5,\r\n"
+						+ "    COALESCE(SUM(CASE WHEN g.Jute_grade LIKE '%6%' THEN g.No_of_bales ELSE 0 END), 0.0) AS Total_GRADE6,\r\n"
+						+ "    COALESCE(SUM(g.No_of_bales), 0.0) AS Total_All_Grades\r\n"
+						+ "FROM \r\n"
+						+ "    jcidispatch_details_child g \r\n"
+						+ "    INNER join jcibos_generation c on g.Challan_no = c.Challan_no\r\n"
+						+ "    where g.Crop_year = '"+currCropYear+"'";
+			}
+
 		}else
 		{
 			//write quary for commercial
@@ -1433,13 +1531,15 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 		
 		if(result1 != null) {
 		 for(Object[] p :result1) {
-				 result2.add((Double)p[0]);
-				 result2.add((Double)p[1]);
-				 result2.add((Double)p[2]);
-				 result2.add((Double)p[3]);
-				 result2.add((Double)p[4]);
-				 result2.add((Double)p[5]);
-				 result2.add((Double)p[6]);
+			 for (int i = 0; i <= 6; i++) {
+				    if (p[i] instanceof Double) {
+				        result2.add((Double) p[i]); // Directly add if it's already a Double
+				    } else if (p[i] instanceof BigDecimal) {
+				        result2.add(((BigDecimal) p[i]).doubleValue()); // Convert BigDecimal to Double
+				    } else {
+				        result2.add(0.0); // Handle unexpected or null values
+				    }
+				}
 		 }
 		}
 		System.out.println("result2"+result2.toString());
@@ -1902,6 +2002,207 @@ public List<Object[]> firstLevelbaleRegionwise(String cropyr, String basis) {
 			JuteVarietyavailable.setGrade6(result2.get(5) - newresult2.get(5));
 			JuteVarietyavailable.setGrade7(result2.get(6) - newresult2.get(6));
 			JuteVarietyavailable.setGrade8(result2.get(7) - newresult2.get(7));
+			JuteVarietyavailable.setRoname(variety);
+			inventoryDTOJuteVariety.add(JuteVarietyavailable);
+			
+		}
+		System.err.println("inventoryDTOJuteVariety"+inventoryDTOJuteVariety);
+		return inventoryDTOJuteVariety;
+	}catch(Exception e)
+		{
+		throw new RuntimeException("Failed to retrieve Jute variety", e);
+		  
+		}
+		
+		
+		
+	}
+
+	@Override
+	public List<InventoryDTO> juteVarityProcured(String cropyr, String basis, String baled) {
+		
+		List<InventoryDTO> inventoryDTOJuteVariety = new ArrayList<>();
+		try {
+			int basiss = 2;
+			if("msp".equals(basis)) 
+			{
+				basiss = 1;
+			}
+		// TODO Auto-generated method stub
+		String querystr = "SELECT DISTINCT jutevariety FROM jcijutevariety where basis = '"+basiss+"'";
+		Session session = null;
+		session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		SQLQuery query = session.createSQLQuery(querystr);
+		List<String> rows = query.list(); // Assuming jutevariety is a String
+		for (String variety : rows) {
+			List<Double> result2 = new ArrayList<Double>();
+
+			 String querystr1="";
+			 if("Baled".equals(baled))  
+			 {
+			 querystr1 = "SELECT \r\n" + 
+			 		"    SUM(GRADE1) AS Total_GRADE1,\r\n" + 
+			 		"    SUM(GRADE2) AS Total_GRADE2,\r\n" + 
+			 		"    SUM(GRADE3) AS Total_GRADE3,\r\n" + 
+			 		"    SUM(GRADE4) AS Total_GRADE4,\r\n" + 
+			 		"    SUM(GRADE5) AS Total_GRADE5,\r\n" + 
+			 		"    SUM(GRADE6) AS Total_GRADE6,\r\n" + 
+			 		"    SUM(TOTAL) AS Total_Bales,\r\n" + 
+			 		"    SUM(LOOSE) AS Total_Loose\r\n" + 
+			 		"FROM (\r\n" + 
+			 		"SELECT DISTINCT\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\r\n" + 
+			 		"(SELECT SUM(J.bale_no) FROM jcibalepreparation J WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\r\n" + 
+			 		"(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\r\n" + 
+			 		"FROM jcibalepreparation j1\r\n" + 
+			 		"WHERE\r\n" + 
+			 		"j1.crop_year='"+cropyr+"' and j1.basis = '"+basis+"' and j1.jute_variety ='"+variety+"'\r\n" + 
+			 		")as results;";
+			 }
+			 else {
+				 querystr1 ="SELECT \n"
+				 		+ "    SUM(GRADE1) AS Total_GRADE1,\n"
+				 		+ "    SUM(GRADE2) AS Total_GRADE2,\n"
+				 		+ "    SUM(GRADE3) AS Total_GRADE3,\n"
+				 		+ "    SUM(GRADE4) AS Total_GRADE4,\n"
+				 		+ "    SUM(GRADE5) AS Total_GRADE5,\n"
+				 		+ "    SUM(GRADE6) AS Total_GRADE6,\n"
+				 		+ "    SUM(TOTAL) AS Total_Bales,\n"
+				 		+ "    SUM(LOOSE) AS Total_Loose\n"
+				 		+ "FROM (\n"
+				 		+ "SELECT DISTINCT\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%1%') AS GRADE1,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%2%') AS GRADE2,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%3%') AS GRADE3,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%4%') AS GRADE4,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%5%') AS GRADE5,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR AND J.jute_grade LIKE '%6%') AS GRADE6,\n"
+				 		+ "(SELECT SUM(J.bale_no * pur.nominal_wt) FROM jcibalepreparation J left join jcipurchasecenter pur on j.place_of_packing = pur.CENTER_CODE  WHERE J.place_of_packing=j1.place_of_packing AND J.basis=j1.basis AND J.jute_variety=j1.jute_variety AND J.crop_year=j1.CROP_YEAR) AS TOTAL,\n"
+				 		+ "(SELECT SUM(J.netquantity) FROM jcidpc J WHERE J.placeofpurchase=J1.place_of_packing AND J.basis=j1.basis AND J.jutevariety=J1.jute_variety AND J.cropyr=j1.crop_year) AS LOOSE\n"
+				 		+ "FROM jcibalepreparation j1\n"
+				 		+ "WHERE\n"
+				 		+ "j1.crop_year='"+cropyr+"' and j1.basis = '"+basis+"' and j1.jute_variety ='"+variety+"'\n"
+				 		+ ")as results;";
+			 }
+			//Session session1 = sessionFactory.getCurrentSession();
+			Transaction tx1 = session.beginTransaction();
+			SQLQuery query1 = session.createSQLQuery(querystr1);
+			List<Object[]> result1 = query1.list();
+			if(result1 != null) {
+			 for(Object[] p :result1) {
+				 if(p[0] != null) {
+					 if (p[0] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[0]).doubleValue());
+					 } 
+					 else if (p[0] instanceof Double)
+					 {
+						result2.add(((Double) p[0]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 
+				 if(p[1] != null) {
+					 if (p[1] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[1]).doubleValue());
+					 } 
+					 else if (p[1] instanceof Double)
+					 {
+						result2.add(((Double) p[1]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[2] != null) {
+					 if (p[2] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[2]).doubleValue());
+					 } 
+					 else if (p[2] instanceof Double)
+					 {
+						result2.add(((Double) p[2]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 
+				 if(p[3] != null) {
+					 if (p[3] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[3]).doubleValue());
+					 } 
+					 else if (p[3] instanceof Double)
+					 {
+						result2.add(((Double) p[3]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[4] != null) {
+					 if (p[4] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[4]).doubleValue());
+					 } 
+					 else if (p[4] instanceof Double)
+					 {
+						result2.add(((Double) p[4]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[5] != null) {
+					 if (p[5] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[5]).doubleValue());
+					 } 
+					 else if (p[5] instanceof Double)
+					 {
+						result2.add(((Double) p[5]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+				 if(p[6] != null) {
+					 if (p[6] instanceof Integer)
+					 {
+						 result2.add(((Integer) p[6]).doubleValue());
+					 } 
+					 else if (p[6] instanceof Double)
+					 {
+						result2.add(((Double) p[6]).doubleValue());
+					 }
+				 }else {
+					 result2.add(0.0); 
+				 }
+	             if(p[7] != null) 
+	            	 result2.add(((BigDecimal) p[7]).doubleValue());
+	             else
+	    			 result2.add(0.0); 
+	              
+	             
+			 }
+			}
+			
+		    
+			//find dispatched jute variety wise
+			
+			InventoryDTO JuteVarietyavailable = new InventoryDTO();
+			JuteVarietyavailable.setGrade1(result2.get(0));
+			JuteVarietyavailable.setGrade2(result2.get(1));
+			JuteVarietyavailable.setGrade3(result2.get(2));
+			JuteVarietyavailable.setGrade4(result2.get(3));
+			JuteVarietyavailable.setGrade5(result2.get(4));
+			JuteVarietyavailable.setGrade6(result2.get(5));
+			JuteVarietyavailable.setGrade7(result2.get(6));
+			JuteVarietyavailable.setGrade8(result2.get(7));
 			JuteVarietyavailable.setRoname(variety);
 			inventoryDTOJuteVariety.add(JuteVarietyavailable);
 			

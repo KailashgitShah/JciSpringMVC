@@ -49,6 +49,7 @@
                       String cropyear  = (String)request.getAttribute("cropyear");
                       String basis  = (String)request.getAttribute("basis");
                       String baled  = (String)request.getAttribute("baled");
+                      String variety  = (String)request.getAttribute("variety");
 
                       %>     
                        <div class="col-sm-3 form-group">
@@ -118,7 +119,7 @@
 								<tbody>	
 									<tr>
 										<td>(<%=i+1%>)</td>
-										<td id="<%=i%>regionname"><a href ="inventory_dpcwise.obj?region=<%=regionwise.getRoname()%>&cropyear=<%=cropyear%>&basis=<%=basis%>&baled=<%=baled%>"><%=regionwise.getRoname()%></a></td>
+										<td id="<%=i%>regionname"><a href ="inventory_dpcwise.obj?region=<%=regionwise.getRoname()%>&cropyear=<%=cropyear%>&basis=<%=basis%>&baled=<%=baled%>&variety=<%=variety%>"><%=regionwise.getRoname()%></a></td>
 										<td id="<%=i%>loosejute"><%=regionwise.getGrade8() %></td>
 										<td id="<%=i%>grade0"><%=regionwise.getGrade1()%></td>
 										<td id="<%=i%>grade1"><%=regionwise.getGrade2()%></td>

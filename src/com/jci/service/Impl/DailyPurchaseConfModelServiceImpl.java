@@ -89,9 +89,9 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 	}
 
 	@Override
-	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis,String baled) {
+	public List<InventoryDTO> secondLeveljuteRegionwise(String cropyear, String basis,String baled,String variety) {
 		// TODO Auto-generated method stub
-		return dailyPurchaseConfDao.secondLeveljuteRegionwise(cropyear, basis, baled);
+		return dailyPurchaseConfDao.secondLeveljuteRegionwise(cropyear, basis, baled, variety);
 	}
 
 	@Override
@@ -101,9 +101,9 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 	}
 
 	@Override
-	public List<InventoryDTO> second_level_jute_DPCwise(String cropyear, String basis, String region,String baled) {
+	public List<InventoryDTO> second_level_jute_DPCwise(String cropyear, String basis, String region,String baled,String variety) {
 		// TODO Auto-generated method stub
-		return dailyPurchaseConfDao.second_level_jute_DPCwise(cropyear, basis, region,baled);
+		return dailyPurchaseConfDao.second_level_jute_DPCwise(cropyear, basis, region,baled,variety);
 
 	}
 
@@ -120,14 +120,14 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 	}
 
 	@Override
-	public List<InventoryDTO> regionAvailable(String currCropYear, String basis,String baled) {
+	public List<InventoryDTO> regionAvailable(String currCropYear, String basis,String baled,String variety) {
 		// TODO Auto-generated method stub
-		return dailyPurchaseConfDao.regionAvailable(currCropYear, basis,baled);	}
+		return dailyPurchaseConfDao.regionAvailable(currCropYear, basis,baled,variety);	}
 
 	@Override
-	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region,String baled) {
+	public List<InventoryDTO> dpc_wise_available(String currCropYear, String basis, String region,String baled,String variety) {
 		// TODO Auto-generated method stub
-		return dailyPurchaseConfDao.dpc_wise_available(currCropYear, basis, region, baled);	}
+		return dailyPurchaseConfDao.dpc_wise_available(currCropYear, basis, region, baled, variety);	}
 
 	@Override
 	public List<Double> contractInHand_2ndlevel(String currCropYear, String basis, String status) {
@@ -157,6 +157,12 @@ public class DailyPurchaseConfModelServiceImpl  implements DailyPurchaseModelCon
 	public List<InventoryDTO> juteVarityAvailable(String cropyr, String basis, String baled) {
 		// TODO Auto-generated method stub
 		return dailyPurchaseConfDao.juteVarityAvailable(cropyr, basis, baled);	
+	}
+
+	@Override
+	public List<InventoryDTO> juteVarityProcured(String cropyr, String basis, String baled) {
+		// TODO Auto-generated method stub
+		return dailyPurchaseConfDao.juteVarityProcured(cropyr, basis, baled);	
 	}
 
 }

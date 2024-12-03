@@ -115,15 +115,16 @@
 									    <td>(2)</td>
 										<td>Payment received</td>
 										<td id="#">N/A</td>
-										<td id="Cgrade0"><%=Contracted.get(0) - Payment_not_received.get(0)%></td>
-										<td id="Cgrade1"><%=Contracted.get(1) - Payment_not_received.get(1) %></td>
-										<td id="Cgrade2"><%=Contracted.get(2) - Payment_not_received.get(2) %></td>
-										<td id="Cgrade3"><%=Contracted.get(3) - Payment_not_received.get(3) %></td>
-										<td id="Cgrade4"><%=Contracted.get(4) - Payment_not_received.get(4) %></td>
-										<td id="Cgrade5"><%=Contracted.get(5) - Payment_not_received.get(5) %></td>
-										<td id="Cgrade6">0.0</td>
-										<td id="Cgrade7">0.0</td>
-										<td id="Ctotal"><%=Contracted.get(6) - Payment_not_received.get(6) %></td>
+										<td id="Cgrade0"><%= String.format("%.2f", Contracted.get(0) - Payment_not_received.get(0)) %></td>
+										<td id="Cgrade1"><%= String.format("%.2f", Contracted.get(1) - Payment_not_received.get(1)) %></td>
+										<td id="Cgrade2"><%= String.format("%.2f", Contracted.get(2) - Payment_not_received.get(2)) %></td>
+										<td id="Cgrade3"><%= String.format("%.2f", Contracted.get(3) - Payment_not_received.get(3)) %></td>
+										<td id="Cgrade4"><%= String.format("%.2f", Contracted.get(4) - Payment_not_received.get(4)) %></td>
+										<td id="Cgrade5"><%= String.format("%.2f", Contracted.get(5) - Payment_not_received.get(5)) %></td>
+										<td id="Cgrade6">0.00</td>
+										<td id="Cgrade7">0.00</td>
+										<td id="Ctotal"><%= String.format("%.2f", Contracted.get(6) - Payment_not_received.get(6)) %></td>
+
 									</tr>
 								</tbody>
 								<tbody>
