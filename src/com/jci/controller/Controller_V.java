@@ -8749,12 +8749,7 @@ public class Controller_V {
 			throws JRException {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("viewGenerationAgainstLCs");
-		String pagename = "viewGenerationAgainstLCs";
-		int k = checkprivileges(pagename);
-		if (k != 1) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-			return mv = new ModelAndView("Home");
-		}
+	
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
@@ -9096,12 +9091,7 @@ public class Controller_V {
 	public ModelAndView billOfSupplyDetails(HttpServletRequest request, Model model,RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("cadDetails");
-		String pagename = "cadDetails";
-		int i = checkprivileges(pagename);
-		if (i != 1) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-			return mv = new ModelAndView("Home");
-		}
+		
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}
@@ -9368,16 +9358,9 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 		String id = request.getParameter("id");
-		System.err.println(id);
-		System.err.println(id);
-		System.err.println(id);
+	
 		ModelAndView mv = new ModelAndView("VerificationOfWeightment");
-		String pagename = "VerificationOfWeightment";
-		int i = checkprivileges(pagename);
-		if (i != 1) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-			return mv = new ModelAndView("Home");
-		}
+		
 		List<Object[]> list = weighmentEntryService.getSlipDetails(id);
 		mv.addObject("Data", list);
 		/*
@@ -9957,13 +9940,7 @@ public class Controller_V {
 	public ModelAndView creditDebitNoteDetailsForPaymentRealisation(HttpServletRequest request, Model model,RedirectAttributes redirectAttributes) {
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv = new ModelAndView("paymentRealisationDetails");
-		String pagename = "paymentRealisationDetails";
-		int i = checkprivileges(pagename);
-		if (i != 1) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-			return mv = new ModelAndView("Home");
-		}
-
+	
 		if (username == null) {
 			mv = new ModelAndView("index");
 		}

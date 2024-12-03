@@ -89,7 +89,7 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 		  		+ "    Instrument_No,\r\n"
 		  		+ "    Instrument_value,\r\n"
 		  		+ "    Supporting_document,\r\n"
-		  		+ "    Auto_revolving_amount,\r\n"
+		  		+ "    coalesce(Instrument_value , 0) as Instrument_value,\r\n"
 		  		+ "    CONVERT(varchar, Expiry_date, 103) AS Expiry_date,\r\n"
 		  		+ "    CONVERT(varchar, Last_shipment_date, 103) AS Last_shipment_date,\r\n"
 		  		+ "    Payment_type,\r\n"
