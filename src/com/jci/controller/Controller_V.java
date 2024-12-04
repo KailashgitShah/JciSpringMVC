@@ -1197,221 +1197,225 @@ public class Controller_V {
 
 	// saving the grade composition and also generation of the contract letter of
 	// the mill, its also having func of pdg generation and sending email
-	@ResponseBody
-	@RequestMapping(value = "contractgenerationPcsoWiseSave", method = { RequestMethod.POST })
-	public String saveContractGenerationPcsoWise(HttpServletRequest request,
-			@RequestBody Map<String, Object> requestBody, RedirectAttributes redirectAttributes)
-			throws IOException, ParseException, DocumentException, AddressException {
+//	 @ResponseBody
+    @RequestMapping(value = "contractgenerationPcsoWiseSave", method = { RequestMethod.POST })
+    public String saveContractGenerationPcsoWise(HttpServletRequest request,
+                 @RequestBody Map<String, Object> requestBody)
+                 throws IOException, ParseException, DocumentException, AddressException {
 
-		String cropYear = (String) request.getSession().getAttribute("currCropYear");
-		ModelAndView mv = new ModelAndView("contractgeneration");
-		String pagename = "contractgeneration";
-		int k = checkprivileges(pagename);
-		if (k != 1) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
-			new ModelAndView("Home");
-			return "";
-		}
+          String cropYear = (String) request.getSession().getAttribute("currCropYear");
+          ModelAndView mv = new ModelAndView("contractgeneration");
 
-		List<Map<String, String>> millDetails = (List<Map<String, String>>) requestBody.get("millDetails");
+          List<Map<String, String>> millDetails = (List<Map<String, String>>) requestBody.get("millDetails");
 
-		int refId = (Integer) request.getSession().getAttribute("userId");
+          int refId = (Integer) request.getSession().getAttribute("userId");
 
-		String contractIdn = (String) requestBody.get("contractIdn");
-		int SortingId = Integer.parseInt((String) requestBody.get("SortingId"));
-		String contractQty = (String) requestBody.get("contractQty");
-		String contractdate = (String) requestBody.get("contractdate");
+          String contractIdn = (String) requestBody.get("contractIdn");
+          int SortingId = Integer.parseInt((String) requestBody.get("SortingId"));
+          String contractQty = (String) requestBody.get("contractQty");
+          String contractdate = (String) requestBody.get("contractdate");
 
-		// ArrayList<String> pcsoDate = (ArrayList<String>) requestBody.get("pcsoDate");
-		// String commaSeparatedPcsoDates = String.join(",", pcsoDate);
+          // ArrayList<String> pcsoDate = (ArrayList<String>) requestBody.get("pcsoDate");
+          // String commaSeparatedPcsoDates = String.join(",", pcsoDate);
 
-		ArrayList<String> juteVariety = (ArrayList<String>) requestBody.get("juteGradesArray");
-		ArrayList<String> systemComp = (ArrayList<String>) requestBody.get("systemComp");
-		String gradeComp = (String) requestBody.get("gradeComp");
-//                         String sysComArray = (String) requestBody.get("systemComp");
+          ArrayList<String> juteVariety = (ArrayList<String>) requestBody.get("juteGradesArray");
+          ArrayList<String> systemComp = (ArrayList<String>) requestBody.get("systemComp");
+          String gradeComp = (String) requestBody.get("gradeComp");
+//        String sysComArray = (String) requestBody.get("systemComp");
 
-//                         pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
-		gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
-		// sysComArray = sysComArray.replaceAll("\\[", "").replaceAll("\\]",
-		// "").replaceAll("\"", "'");
+//        pcsoDate = pcsoDate.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+          gradeComp = gradeComp.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "'");
+          // sysComArray = sysComArray.replaceAll("\\[", "").replaceAll("\\]",
+          // "").replaceAll("\"", "'");
 
-		final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
-		// final List<String> sysCompList = Arrays.asList(sysComArray.split(","));
+          final List<String> gradeArray = Arrays.asList(gradeComp.split(","));
+          // final List<String> sysCompList = Arrays.asList(sysComArray.split(","));
 
-//                         for (String jutString : juteVariety)
-//                                        System.err.println(jutString);
+//        for (String jutString : juteVariety)
+//               System.err.println(jutString);
 //
-//                         for (String date : pcsoDate)
-//                                        System.err.println(date);
+//        for (String date : pcsoDate)
+//               System.err.println(date);
 //
-//                         for (String s : systemComp)
-//                                        System.err.println(s);
-//                         
-//                         for (String s : gradeArray)
-//                                        System.err.println(s);
+//        for (String s : systemComp)
+//               System.err.println(s);
+//         
+//        for (String s : gradeArray)
+//               System.err.println(s);
 
-		// return null;
+          // return null;
 
-		// entry of grade composition....
+          // entry of grade composition....
 //
-		String lableName = (String) requestBody.get("labelName");
-		String remarks = (String) requestBody.get("remarks");
-		Double availableQty = Double.parseDouble((String) requestBody.get("availableQty"));
+          String lableName = (String) requestBody.get("labelName");
+          String remarks = (String) requestBody.get("remarks");
+          Double availableQty = Double.parseDouble((String) requestBody.get("availableQty"));
 
-		Date date = new Date();
-		SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String dateFormater = simpleDateTimeFormat.format(date);
-		Date created_Date = null;
+          Date date = new Date();
+          SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          String dateFormater = simpleDateTimeFormat.format(date);
+          Date created_Date = null;
 
-		try {
-			created_Date = simpleDateTimeFormat.parse(dateFormater);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+          try {
+                 created_Date = simpleDateTimeFormat.parse(dateFormater);
+          } catch (Exception e) {
+                 // TODO: handle exception
+          }
 
-		// entry in the grade composition table
-		for (int i = 0; i < juteVariety.size(); i++) {
-			EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
-			Double ProposedValue = Double.parseDouble(gradeArray.get(i));
-			Double systemValue = Double.parseDouble(systemComp.get(i));
-			entryofGradeCompositionModel.setJute_combination(juteVariety.get(i));
-			entryofGradeCompositionModel.setSystem_composition(systemValue);
-			entryofGradeCompositionModel.setProposed_composition(ProposedValue);
-			entryofGradeCompositionModel.setRemark(remarks);
-			entryofGradeCompositionModel.setCrop_year(cropYear);
-			entryofGradeCompositionModel.setAvailable_qty(availableQty);
-			entryofGradeCompositionModel.setLabel_name(lableName);
-			entryofGradeCompositionModel.setCreated_by(refId);
-			entryofGradeCompositionModel.setCreated_date(created_Date);
-			entryofGradeCompositionService.create(entryofGradeCompositionModel);
-		}
+          // entry in the grade composition table
+          for (int i = 0; i < juteVariety.size(); i++) {
+                 EntryofGradeCompositionModel entryofGradeCompositionModel = new EntryofGradeCompositionModel();
+                 Double ProposedValue = Double.parseDouble(gradeArray.get(i));
+                 Double systemValue = Double.parseDouble(systemComp.get(i));
+          entryofGradeCompositionModel.setJute_combination(juteVariety.get(i));
+          entryofGradeCompositionModel.setSystem_composition(systemValue);
+          entryofGradeCompositionModel.setProposed_composition(ProposedValue);
+                 entryofGradeCompositionModel.setRemark(remarks);
+                 entryofGradeCompositionModel.setCrop_year(cropYear);
+              entryofGradeCompositionModel.setAvailable_qty(availableQty);
+                 entryofGradeCompositionModel.setLabel_name(lableName);
+                 entryofGradeCompositionModel.setCreated_by(refId);
+               entryofGradeCompositionModel.setCreated_date(created_Date);
+          entryofGradeCompositionService.create(entryofGradeCompositionModel);
+          }
 
-		for (Map<String, String> millDetail : millDetails) {
+    
+          
 
-			List<Object[]> GradePriceList = new ArrayList<>();
-			Contractgeneration contractgeneration = new Contractgeneration();
+          for (Map<String, String> millDetail : millDetails)
+          {
 
-			int juteValue = Integer.parseInt(millDetail.get("juteValue"));
-			String millCode = millDetail.get("millCode");
-			String millNameString = millDetail.get("millName");
+                 List<Object[]> GradePriceList = new ArrayList<>();
+                 Contractgeneration contractgeneration = new Contractgeneration();
 
-			ArrayList<String> pcsoDateForMill = new ArrayList<>();
+                 int juteValue = Integer.parseInt(millDetail.get("juteValue"));
+                 String millCode = millDetail.get("millCode");
+                 String millNameString = millDetail.get("millName");
 
-			Object pcsoDateForMillObj = millDetail.get("pcsoDateForMill");
-			if (pcsoDateForMillObj instanceof ArrayList) {
-				pcsoDateForMill = (ArrayList<String>) pcsoDateForMillObj;
+                 ArrayList<String> pcsoDateForMill = new ArrayList<>();
 
-			} else {
-				System.err.println("pcsoDateForMill is not an ArrayList<String>");
-			}
+                 Object pcsoDateForMillObj = millDetail.get("pcsoDateForMill");
+                 if (pcsoDateForMillObj instanceof ArrayList) {
+                       pcsoDateForMill = (ArrayList<String>) pcsoDateForMillObj;
 
-			List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
+                 } else {
+                       System.err.println("pcsoDateForMill is not an ArrayList<String>");
+                 }
 
-			Double millQty = Double.parseDouble(millDetail.get("Qty"));
-			String deliveryType = millDetail.get("delivery_type");
-			String finalGeneratedContractNo = "JCI/" + millCode + "/" + cropYear + "/" + contractIdn;
+                 List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
 
-			if (deliveryType.equalsIgnoreCase("Mill-Delivery")) {
-				GradePriceList = contractGenerationService2.getListOfGradesPriceForMillDelivery(cropYear);
-			} else {
-				GradePriceList = contractGenerationService2.getListOfGradesPriceForExGodown(cropYear);
-			}
+                 Double millQty = Double.parseDouble(millDetail.get("Qty"));
+                 String deliveryType = millDetail.get("delivery_type");
+                 String finalGeneratedContractNo = "JCI/" + millCode + "/" + cropYear + "/" + contractIdn;
+                 
+                 if(deliveryType.equalsIgnoreCase("Mill-Delivery")) {
+                       GradePriceList = contractGenerationService2.getListOfGradesPriceForMillDelivery(cropYear);
+                 }else {
+                       GradePriceList = contractGenerationService2.getListOfGradesPriceForExGodown(cropYear);
+                 }
+          
 
-			String commaSeparatedPcsoDates = String.join(",", pcsoDateForMill);
+                 String commaSeparatedPcsoDates = String.join(",", pcsoDateForMill);
 
-			String[] dateStrings = commaSeparatedPcsoDates.split(",");
+                 String[] dateStrings = commaSeparatedPcsoDates.split(",");
 
-			String formatedPcsoDateWithQuotes = "";
-			for (String dates : dateStrings) {
-				formatedPcsoDateWithQuotes += "'" + dates + "',";
-			}
+                 String formatedPcsoDateWithQuotes = "";
+                 for (String dates : dateStrings) {
+                       formatedPcsoDateWithQuotes += "'" + dates + "',";
+                 }
 
-			formatedPcsoDateWithQuotes = formatedPcsoDateWithQuotes.substring(0,
-					formatedPcsoDateWithQuotes.length() - 1);
+                 formatedPcsoDateWithQuotes = formatedPcsoDateWithQuotes.substring(0,
+                               formatedPcsoDateWithQuotes.length() - 1);
 
-			contractGenerationService2.setPcsoFlag1(formatedPcsoDateWithQuotes);
-			List<String> refNos = contractGenerationService2.findRefNos(formatedPcsoDateWithQuotes);
+          contractGenerationService2.setPcsoFlag1(formatedPcsoDateWithQuotes);
+                 List<String> refNos = contractGenerationService2.findRefNos(formatedPcsoDateWithQuotes);
 
-			String refNosString = String.join(",", refNos);
+                 String refNosString = String.join(",", refNos);
 
-			contractgeneration.setPcso_date(commaSeparatedPcsoDates);
-			contractgeneration.setContract_identification_no(contractIdn);
-			contractgeneration.setContract_qty(contractQty);
-			contractgeneration.setContract_date(contractdate);
-			contractgeneration.setDelivery_type(deliveryType);
-			contractgeneration.setContract_no(finalGeneratedContractNo);
+                 contractgeneration.setPcso_date(commaSeparatedPcsoDates);
+            contractgeneration.setContract_identification_no(contractIdn);
+                 contractgeneration.setContract_qty(contractQty);
+                 contractgeneration.setContract_date(contractdate);
+                 contractgeneration.setDelivery_type(deliveryType);
+              contractgeneration.setContract_no(finalGeneratedContractNo);
 
-			String millFullName = contractGenerationService2.millFullName(millCode);
+                 String millFullName = contractGenerationService2.millFullName(millCode);
 
-			// contract value = 105% of jute value or fiberValue
-			contractgeneration.setContract_value((int) (juteValue * 1.05));
-			// contract value LC = 110% of jute value or fiberValue
+                 // contract value = 105% of jute value or fiberValue
+                 contractgeneration.setContract_value((int) (juteValue * 1.05));
+                 // contract value LC = 110% of jute value or fiberValue
 
-			contractgeneration.setContractValueLc((int) (juteValue * 1.1));
+                 contractgeneration.setContractValueLc((int) (juteValue * 1.1));
 
-			contractgeneration.setCreated_date(new Date());
-			contractgeneration.setCreated_by(refId);
-			contractgeneration.setGrade_composition(lableName);
-			contractgeneration.setMill_code(millCode);
-			contractgeneration.setCropYear(cropYear);
-			contractgeneration.setMill_name(millFullName);
-			contractgeneration.setJute_value(juteValue);
-			contractgeneration.setMill_qty(millQty);
-			contractgeneration.setSortingId(SortingId);
+                 contractgeneration.setCreated_date(new Date());
+                 contractgeneration.setCreated_by(refId);
+                 contractgeneration.setGrade_composition(lableName);
+                 contractgeneration.setMill_code(millCode);
+                 contractgeneration.setCropYear(cropYear);
+                 contractgeneration.setMill_name(millFullName);
+                 contractgeneration.setJute_value(juteValue);
+                 contractgeneration.setMill_qty(millQty);
+                 contractgeneration.setSortingId(SortingId);
 
-			String fileName = contractIdn + "Contract" + millCode + ".pdf";
-			contractgeneration.setContract_acceptance_doc(fileName);
+                 //String fileName = contractIdn + "Contract" + millCode + ".pdf";
+                 String updatedFileNameString = finalGeneratedContractNo.replace('/', '_');
+                 String fileName = updatedFileNameString + ".pdf";
+                 contractgeneration.setContract_acceptance_doc(fileName);
 
-//                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//                                        LocalDate currentDate = LocalDate.now();
-//                                        LocalDate tenDaysAfter = currentDate.plusDays(14); // Add 10 days
-//                               contractgeneration.setPayment_duedate(tenDaysAfter.format(formatter));
+//               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//               LocalDate currentDate = LocalDate.now();
+//               LocalDate tenDaysAfter = currentDate.plusDays(14); // Add 10 days
+//        contractgeneration.setPayment_duedate(tenDaysAfter.format(formatter));
 
-			// System.err.println(contractgeneration.toString());
+                 // System.err.println(contractgeneration.toString());
 
-			PdfGenerator pdfGenerator = new PdfGenerator();
-			String filePath = contractLetterPath + File.separator + contractIdn;
+                 PdfGenerator pdfGenerator = new PdfGenerator();
+                 String filePath = contractLetterPath + File.separator + contractIdn;
 
-			File parentDir = new File(filePath);
-			if (!parentDir.exists()) {
-				parentDir.mkdirs();
-			}
+                 File parentDir = new File(filePath);
+                 if (!parentDir.exists()) {
+                       parentDir.mkdirs();
+                 }
 
-			filePath += File.separator + contractIdn + "Contract" + millCode + ".pdf";
+                 filePath += File.separator + fileName;
 
-			pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo, millFullName, millCode, millQty,
-					cropYear, GradePriceList, gradeArray, juteVariety, fileName, deliveryType, contractdate, filePath,
-					letterHeadPath, fullAddress, commaSeparatedPcsoDates, refNosString);
+          pdfGenerator.generatePdfOfContractLetter(finalGeneratedContractNo , millFullName, millCode, millQty,
+                              cropYear, GradePriceList, gradeArray, juteVariety, deliveryType, contractdate, filePath,
+                              letterHeadPath, fullAddress, commaSeparatedPcsoDates, refNosString);
 
-//                                        // send email
-//                                        String body = "Please find below attachment to get full details of contract grade wise..";
-//                                        String sub = "Contract Details";
-//                                        final String filePathDir = filePath;
-//                                        SendMail sendMail = co SendMail();
-//                                        InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
-//                                                                    new InternetAddress("pradeepcyf24@gmail.com") };
+//               // send email
+//               String body = "Please find below attachment to get full details of contract grade wise..";
+//               String sub = "Contract Details";
+//               final String filePathDir = filePath;
+//               SendMail sendMail = co SendMail();
+//               InternetAddress[] toAddresses = {  new InternetAddress("cyfuturetest@gmail.com"),
+//                            new InternetAddress("pradeepcyf24@gmail.com") };
 //
-//                                        CompletableFuture.runAsync(() -> {
-//                                                      try {
-//                                                                    sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
-//                                                      } catch (Exception e) {
-//                                                                    e.printStackTrace();
-//                                                      }
-//                                        });
+//               CompletableFuture.runAsync(() -> {
+//                     try {
+//                            sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+//                     } catch (Exception e) {
+//                            e.printStackTrace();
+//                     }
+//               });
 
-			// Authorization allotment
+                 // Authorization allotment
 
-			if (juteValue > 40000000) {
-				contractgeneration.setAuthorizedBy("HO Operation");
-			} else {
-				contractgeneration.setAuthorizedBy("HO Manager");
-			}
+                 if (juteValue > 40000000) {
+                       contractgeneration.setAuthorizedBy("HO Operation");
+                 } else {
+                       contractgeneration.setAuthorizedBy("HO Manager");
+                 }
 
-			contractGenerationService2.create(contractgeneration);
-		}
+                 contractGenerationService2.create(contractgeneration);
+          }
 
-		return "Saved";
-	}
+          return "Saved";
+    }
+
+
+
+
 
 	// listing of the contract list
 	@RequestMapping("viewcontractgeneration")
@@ -1543,110 +1547,113 @@ public class Controller_V {
 		return addressList.toArray(new InternetAddress[0]);
 	}
 
+
 	// contract authorization
-	@ResponseBody
-	@RequestMapping(value = "contractAuthorizationByIdnNo", method = RequestMethod.GET)
-	public void Authorize(HttpServletRequest request, RedirectAttributes redirectAttributes)
-			throws AddressException, IOException, com.itextpdf.text.DocumentException {
+	       @ResponseBody
+	       @RequestMapping(value = "contractAuthorizationByIdnNo", method = RequestMethod.GET)
+	       public void Authorize(HttpServletRequest request, RedirectAttributes redirectAttributes)
+	                    throws AddressException, IOException, com.itextpdf.text.DocumentException {
 
-		String contractNOString = request.getParameter("contractNo");
-		String[] contractNos = contractNOString.split(",");
+	             String contractNOString = request.getParameter("contractNo");
+	             String[] contractNos = contractNOString.split(",");
 
-		try {
-			String quotedContractString = quoteContractNo(contractNOString);
-			quotedContractString = quotedContractString.substring(0, quotedContractString.length() - 1);
+	             try {
+	                    String quotedContractString = quoteContractNo(contractNOString);
+	                    quotedContractString = quotedContractString.substring(0, quotedContractString.length() - 1);
 
-			contractGenerationService2.setContractAuthrizeStatus(quotedContractString);
+	                   contractGenerationService2.setContractAuthrizeStatus(quotedContractString);
 
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+	             } catch (Exception e) {
+	                    // TODO: handle exception
+	             }
+	             String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
-		for (String contract : contractNos) {
-			String[] contractNo = contract.split("/");
-			String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
+	             for (String contract : contractNos) {
+	                    String[] contractNo = contract.split("/");
+	                    //String fileName = contractNo[3] + "Contract" + contractNo[1] + ".pdf";
+	                    String fileName = contract.replace('/', '_');
+	                    
+	                    String millCode = contractNo[1];
+	                    
+	                 String millEmails= contractGenerationService2.findEmailByMillCode(millCode);
+	                 
+	                 String[] emailArr = millEmails.split(", ");
 
-			String millCode = contractNo[1];
+	                    String filePath = contractNo[3] + File.separator + fileName + ".pdf";
+	                    //System.err.println(filePath);
 
-			String millEmails = contractGenerationService2.findEmailByMillCode(millCode);
+	                    String loginName = (String) request.getSession().getAttribute("loginName");
+	                    String completeFilePathForOutput = authorizedContracts + File.separator + filePath;
 
-			String[] emailArr = millEmails.split(", ");
+	                    File newOutputFile = new File(completeFilePathForOutput);
+	                    if (!newOutputFile.getParentFile().exists()) {
+	                           newOutputFile.getParentFile().mkdirs(); // Create parent directories if they don't exist
+	                    }
 
-			String filePath = contractNo[3] + File.separator + fileName;
+	                    OutputStream outputStream = new FileOutputStream(completeFilePathForOutput);
 
-			String loginName = (String) request.getSession().getAttribute("loginName");
-			String completeFilePathForOutput = authorizedContracts + File.separator + filePath;
+	                    PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
+	                    System.err.println(contractLetterPath + File.separator + filePath);
+	                    PdfStamper stamper = new PdfStamper(reader, outputStream);
 
-			File newOutputFile = new File(completeFilePathForOutput);
-			if (!newOutputFile.getParentFile().exists()) {
-				newOutputFile.getParentFile().mkdirs(); // Create parent directories if they don't exist
-			}
+	                    // Add your new content
+	                    PdfContentByte content = stamper.getOverContent(1); // Page number where the new content needs to be added
+	                    // ColumnText.showTextAligned(content, Element.ALIGN_CENTER, new Phrase("This is
+	                    // a sample text line for pdf generation."), 300, 400, 0);
 
-			OutputStream outputStream = new FileOutputStream(completeFilePathForOutput);
+	                    // Add "Authorized By" content at the bottom
+	                    ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase("Authorized By: " + loginName), 545, 50,
+	                                 0);
+	                    ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase(date), 540, 666, 0);
 
-			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
-			PdfStamper stamper = new PdfStamper(reader, outputStream);
+	                    // Close the PdfStamper
+	                    stamper.close();
+	                    
+	                    try {
+	                          // send email
+//	                        String body = "Please find below attachment to get full details of contract grade wise..";
+//	                        String sub = "Contract Details";
+//	                        
+	                          String sub = "Expressing Gratitude for Contract Approval Testing Email";
+	                          String body = "This is a test message from The Jute Corporation of India Limited.\n" +
+	                                        "Please ignore it. However, any suggestions for improving the proposed system would be appreciated.";
 
-			// Add your new content
-			PdfContentByte content = stamper.getOverContent(1); // Page number where the new content needs to be added
-			// ColumnText.showTextAligned(content, Element.ALIGN_CENTER, new Phrase("This is
-			// a sample text line for pdf generation."), 300, 400, 0);
+	                          
+	                          final String filePathDir = contractLetterPath + File.separator + filePath;
+	                          SendMail sendMail = new SendMail();
+	                          InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);
+	                          //InternetAddress[] toAddresses = { new InternetAddress("pradeepcyf24@gmail.com") };
+	             
+	                          CompletableFuture.runAsync(() -> {
+	                                 try {
+	                                        sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
+	                                 } catch (Exception e) {
+	                                       e.printStackTrace();
+	                                 }
+	                          });
 
-			// Add "Authorized By" content at the bottom
-			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase("Authorized By: " + loginName), 545, 50,
-					0);
-			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase(date), 540, 666, 0);
+	                    } catch (Exception e) {
+	                          // TODO: handle exception
+	                    }
+	             }
 
-			// Close the PdfStamper
-			stamper.close();
+//	                  PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
+//	                  String deString = "C:/Users/pradeep.rathor/Desktop/NewVisitor";
+//	                  PdfWriter writer = new PdfWriter(contractLetterPath + File.separator + filePath);
+//	                  PdfDocument pdfDoc = new PdfDocument(reader, writer);
+//	                  
+//	                    PdfPTable table = new PdfPTable(2);
+//	                      table.getDefaultCell().setPadding(5f); // Code 1
+//	                      table.setHorizontalAlignment(Element.ALIGN_LEFT);
+//	                      PdfPCell cell; 
+//	                     table.addCell("Age");
+//	                  
+//	                  pdfDoc.close();
 
-			try {
-				// send email
-//                                                      String body = "Please find below attachment to get full details of contract grade wise..";
-//                                                      String sub = "Contract Details";
-//                                                      
-				String sub = "Expressing Gratitude for Contract Approval Testing Email";
-				String body = "This is a test message from The Jute Corporation of India Limited.\n"
-						+ "Please ignore it. However, any suggestions for improving the proposed system would be appreciated.";
+	             }
 
-				final String filePathDir = contractLetterPath + File.separator + filePath;
-				SendMail sendMail = new SendMail();
-				InternetAddress[] toAddresses = convertToInternetAddresses(emailArr);
-				// InternetAddress[] toAddresses = { new
-				// InternetAddress("pradeepcyf24@gmail.com") };
 
-				CompletableFuture.runAsync(() -> {
-					try {
-						sendMail.sendEmail(toAddresses, body, sub, filePathDir, fileName);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				});
 
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-
-//                                        PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
-//                                        String deString = "C:/Users/pradeep.rathor/Desktop/NewVisitor";
-//                                        PdfWriter writer = new PdfWriter(contractLetterPath + File.separator + filePath);
-//                                        PdfDocument pdfDoc = new PdfDocument(reader, writer);
-//                                        
-//                                          PdfPTable table = new PdfPTable(2);
-//                                            table.getDefaultCell().setPadding(5f); // Code 1
-//                                            table.setHorizontalAlignment(Element.ALIGN_LEFT);
-//                                            PdfPCell cell; 
-//                                           table.addCell("Age");
-//                                        
-//                                        pdfDoc.close();
-
-		}
-
-//                         return new ResponseEntity<>("{\"redirect\": \"pcsoRequestLetterList.obj\"}", HttpStatus.OK);
-		// return new ModelAndView("pcsoRequestLetterList.obj");
-
-	}
 
 	// ---------------------------------------------------------
 	// Entry Of Derivative Price
@@ -7347,7 +7354,7 @@ public class Controller_V {
 			mv = new ModelAndView("index");
 		}
 		List<Object[]> getSettlementidlist = this.confirmationofClaimSettlementService.SettlementId(username);
-		System.err.println(getSettlementidlist);
+		//System.err.println(getSettlementidlist);
 		mv.addObject("getSettlementidlist", getSettlementidlist);
 		return mv;
 	}
@@ -7356,7 +7363,7 @@ public class Controller_V {
 	@RequestMapping(value = "fetchSettlementData", method = RequestMethod.GET)
 	public String fetchingdatatocontractnoji(@RequestParam("id") String id) {
 		List<Object[]> getcontractddownlist = confirmationofClaimSettlementService.fetchdataofclaim(id);
-		System.err.println("resultList++++++++++" + getcontractddownlist);
+		//System.err.println("resultList++++++++++" + getcontractddownlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(getcontractddownlist);
 		return resultString;
@@ -7366,7 +7373,7 @@ public class Controller_V {
 	@RequestMapping(value = "fetchingdatanominactionclaim", method = RequestMethod.GET)
 	public String fetchingdatanominactionclaim(@RequestParam("contractno") String contractno) {
 		List<Object[]> getsettlementlist = confirmationofClaimSettlementService.fetchdatasttlement(contractno);
-		System.err.println("resultList++++++++++" + getsettlementlist);
+		//System.err.println("resultList++++++++++" + getsettlementlist);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(getsettlementlist);
 		return resultString;
@@ -7376,7 +7383,7 @@ public class Controller_V {
 	@RequestMapping(value = "fetchContractNo", method = RequestMethod.GET)
 	public String contractNo(@RequestParam("id") String settlementId) {
 		List<String> contractList = confirmationofClaimSettlementService.fetchContract(settlementId);
-		System.err.println("resultList++++++++++" + contractList);
+		//System.err.println("resultList++++++++++" + contractList);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(contractList);
 		return resultString;
@@ -7394,10 +7401,7 @@ public class Controller_V {
 		try {
 			String count = request.getParameter("q");
 			int cnt = Integer.parseInt(count);
-			System.err.println(count);
-			System.err.println(count);
-			System.err.println(count);
-			System.err.println(count);
+			
 			/* String CAD_Doc_No = request.getParameter("CAD_Doc_No"); */
 
 			String Settlement_Id1 = request.getParameter("Settlement_Id1");
@@ -7415,11 +7419,11 @@ public class Controller_V {
 				String juteVar = request.getParameter("jv" + i);
 				String juteGrade = request.getParameter("jg" + i);
 				String fullcontractno = request.getParameter("cont" + i);
-				System.err.println(fullcontractno);
+				//System.err.println(fullcontractno);
 				String Challan_No1 = request.getParameter("ch" + i);
-				System.err.println(Challan_No1);
+				//System.err.println(Challan_No1);
 				String Date_of_inspection1 = request.getParameter("di" + i);
-				System.err.println(Date_of_inspection1);
+				//System.err.println(Date_of_inspection1);
 				String claim_Amt1 = request.getParameter("cl" + i);
 				if (Settlement_Amount1 != null) {
 
@@ -7438,11 +7442,11 @@ public class Controller_V {
 					confirmationClaimSettlementModel.setClaim_Amount(claim_Amt12);
 				}
 				String Quality_Settlement1 = request.getParameter("qs" + i);
-				System.err.println("Quality_Settlement1:" + Quality_Settlement1);
+				//System.err.println("Quality_Settlement1:" + Quality_Settlement1);
 				if (Quality_Settlement1 != null) {
 
 					double Quality_Settlement12 = Double.parseDouble(Quality_Settlement1);
-					System.err.println("Quality_Settlement12:" + Quality_Settlement12);
+					//System.err.println("Quality_Settlement12:" + Quality_Settlement12);
 					confirmationClaimSettlementModel.setQuality_settlement(Quality_Settlement12);
 				} else {
 					double Quality_Settlement12 = defaultValue;
@@ -7452,7 +7456,7 @@ public class Controller_V {
 				if (Dust_settlement1 != null) {
 
 					double Dust_Settlement12 = Double.parseDouble(Dust_settlement1);
-					System.err.println("Dust_Settlement12:" + Dust_Settlement12);
+					//System.err.println("Dust_Settlement12:" + Dust_Settlement12);
 					confirmationClaimSettlementModel.setDust_settlement(Dust_Settlement12);
 				} else {
 					double Dust_Settlement12 = defaultValue;
@@ -7460,11 +7464,11 @@ public class Controller_V {
 				}
 
 				String Moisture_Settlement1 = request.getParameter("ms" + i);
-				System.err.println("Moisture_Settlement1:" + Moisture_Settlement1);
+				//System.err.println("Moisture_Settlement1:" + Moisture_Settlement1);
 				if (Moisture_Settlement1 != null) {
 
 					double Moisture_Settlement12 = Double.parseDouble(Moisture_Settlement1);
-					System.err.println("Moisture_Settlement12:" + Moisture_Settlement12);
+				//	System.err.println("Moisture_Settlement12:" + Moisture_Settlement12);
 					confirmationClaimSettlementModel.setMoisture_settlement(Moisture_Settlement12);
 				} else {
 					double Moisture_Settlement12 = defaultValue;
@@ -7472,11 +7476,11 @@ public class Controller_V {
 				}
 
 				String NCV_Settlement1 = request.getParameter("ns" + i);
-				System.err.println("NCV_Settlement1:" + NCV_Settlement1);
+				//System.err.println("NCV_Settlement1:" + NCV_Settlement1);
 				if (NCV_Settlement1 != null) {
 
 					double NCV_Settlement12 = Double.parseDouble(NCV_Settlement1);
-					System.err.println("NCV_Settlement12:" + NCV_Settlement12);
+				//	System.err.println("NCV_Settlement12:" + NCV_Settlement12);
 					confirmationClaimSettlementModel.setNcv_settlement(NCV_Settlement12);
 				} else {
 					double NCV_Settlement12 = defaultValue;
@@ -7642,9 +7646,10 @@ public class Controller_V {
 	public void downloadDocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 
 		String imageDirectory = millAcceptDownolad; // directory path
-		String idn = filename.split("C")[0];
+		//System.err.println(filename);
+		String idn = filename.split("_")[3].split("\\.")[0];
 		String imagePath = imageDirectory + File.separator + idn + File.separator + filename;
-
+       //  System.err.println("imagePath => " + imagePath);
 		File imageFile = new File(imagePath);
 
 		// Check if the file exists

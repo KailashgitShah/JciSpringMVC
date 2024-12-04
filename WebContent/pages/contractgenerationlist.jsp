@@ -14,242 +14,243 @@
 <title>JCI | CMS</title>
 <!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <!-- PLUGINS STYLES-->
 <link href="./assets/vendors/DataTables/datatables.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- PAGE LEVEL STYLES-->
 <style>
 .scrollmenu {
-	overflow: auto;
-	white-space: nowrap;
+       overflow: auto;
+       white-space: nowrap;
 }
 
 .scrollmenu a {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 14px;
-	text-decoration: none;
+       display: inline-block;
+       color: white;
+       text-align: center;
+       padding: 14px;
+       text-decoration: none;
 }
 
 .hover {
-	color: blue;
+       color: blue;
 }
 </style>
 <script>
-	$(document).ready(function() {
-		var table = $('#example-table').DataTable({
-			scrollY : "300px",
-			scrollX : true,
-			scrollCollapse : true,
-			paging : false,
-			fixedColumns : {
-				left : 1,
-				right : 1
-			}
-		});
-	});
+       $(document).ready(function() {
+             var table = $('#example-table').DataTable({
+                    scrollY : "300px",
+                    scrollX : true,
+                    scrollCollapse : true,
+                    paging : false,
+                    fixedColumns : {
+                          left : 1,
+                          right : 1
+                    }
+             });
+       });
 </script>
 </head>
 
 <body class="fixed-navbar">
-	<div class="page-wrapper">
-		<!-- START HEADER-->
-		<%@ include file="header.jsp"%>
-		<!-- END HEADER-->
-		<!-- START SIDEBAR-->
-		<%@ include file="sidebar.jsp"%>
-		<!-- END SIDEBAR-->
-		<div class="content-wrapper">
-			<!-- START PAGE CONTENT-->
-			<div class="page-heading">
-				<h1 class="page-title">All Contracts</h1>
-			</div>
-			<%
-			List<Contractgeneration> contracts = (List<Contractgeneration>) request.getAttribute("contracts");
-			%>
-			<div class="page-content fade-in-up">
-				<table class="w-100 text-center">
-					<thead>
-						<tr class="row p-3">
-							<th class="col-sm-1 text-center">S.N.</th>
-							<th class="col-sm-2 text-center">Contract Identification No</th>
-							<th class="col-sm-7 text-center">Pco Date</th>
-							<!-- <th class="col-sm-2 text-center">Contract Date</th> -->
-							<th class="col-sm-2 text-center">Contracted Qty</th>
-						</tr>
-					</thead>
-				</table>
-				<!--drill down listing -->
-				<div class="accordion" id="accordionExample">
-					<%
-					int i = 1;
-					for (Contractgeneration contract : contracts) {
-					%>
+       <div class="page-wrapper">
+             <!-- START HEADER-->
+             <%@ include file="header.jsp"%>
+             <!-- END HEADER-->
+             <!-- START SIDEBAR-->
+             <%@ include file="sidebar.jsp"%>
+             <!-- END SIDEBAR-->
+             <div class="content-wrapper">
+                    <!-- START PAGE CONTENT-->
+                    <div class="page-heading">
+                          <h1 class="page-title">All Contracts</h1>
+                    </div>
+                    <%
+                    List<Contractgeneration> contracts = (List<Contractgeneration>) request.getAttribute("contracts");
+                    %>
+                    <div class="page-content fade-in-up">
+                          <table class="w-100 text-center">
+                                 <thead>
+                                       <tr class="row p-3">
+                                              <th class="col-sm-1 text-center">S.N.</th>
+                                              <th class="col-sm-2 text-center">Contract Identification No</th>
+                                              <th class="col-sm-7 text-center">Pco Date</th>
+                                              <!-- <th class="col-sm-2 text-center">Contract Date</th> -->
+                                              <th class="col-sm-2 text-center">Contracted Qty</th>
+                                       </tr>
+                                 </thead>
+                          </table>
+                          <!--drill down listing -->
+                          <div class="accordion" id="accordionExample">
+                                 <%
+                                 int i = 1;
+                                 for (Contractgeneration contract : contracts) {
+                                 %>
 
-					<div class="card">
-						<div class="card-header" id="heading<%=i%>">
-							<h5 class="mb-0">
-								<button class="btn text-dark btn-link w-100" type="button"
-									onclick="findDetails('<%=contract.getContract_identification_no()%>' ,'<%=contract.getPcso_date()%>','<%=i%>')"
-									data-toggle="collapse" data-target="#collapse<%=i%>"
-									aria-expanded="false" aria-controls="collapse<%=i%>">
+                                 <div class="card">
+                                       <div class="card-header" id="heading<%=i%>">
+                                              <h5 class="mb-0">
+                                                    <button class="btn text-dark btn-link w-100" type="button"
+                                                           onclick="findDetails('<%=contract.getContract_identification_no()%>' ,'<%=contract.getPcso_date()%>','<%=i%>')"
+                                                           data-toggle="collapse" data-target="#collapse<%=i%>"
+                                                           aria-expanded="false" aria-controls="collapse<%=i%>">
 
-									<div class="row hover">
-										<div class="col-sm-1"><%=i%></div>
-										<div class="col-sm-2"><%=contract.getContract_identification_no()%></div>
-										<div class="col-sm-7"><%=contract.getPcso_date()%></div>
-										<%-- <div class="col-sm-2"><%=contract.getContract_date()%></div> --%>
-										<div class="col-sm-2"><%=contract.getContract_qty()%></div>
-									</div>
-								</button>
-							</h5>
-						</div>
+                                                           <div class="row hover">
+                                                                  <div class="col-sm-1"><%=i%></div>
+                                                                  <div class="col-sm-2"><%=contract.getContract_identification_no()%></div>
+                                                                  <div class="col-sm-7"><%=contract.getPcso_date()%></div>
+                                                                  <%-- <div class="col-sm-2"><%=contract.getContract_date()%></div> --%>
+                                                                  <div class="col-sm-2"><%=contract.getContract_qty()%></div>
+                                                           </div>
+                                                    </button>
+                                              </h5>
+                                       </div>
 
-						<div id="collapse<%=i%>" class="collapse"
-							aria-labelledby="heading<%=i%>" data-parent="#accordionExample">
-							<div id="table<%=i%>"></div>
-						</div>
+                                       <div id="collapse<%=i%>" class="collapse"
+                                              aria-labelledby="heading<%=i%>" data-parent="#accordionExample">
+                                              <div id="table<%=i%>"></div>
+                                       </div>
 
-					</div>
-					<%
-					i++;
-					}
-					%>
-				</div>
-			</div>
-			<!-- END PAGE CONTENT-->
-			<%@ include file="footer.jsp"%>
-		</div>
-		<!-- BEGIN THEME CONFIG PANEL-->
+                                 </div>
+                                 <%
+                                 i++;
+                                 }
+                                 %>
+                          </div>
+                    </div>
+                    <!-- END PAGE CONTENT-->
+                    <%@ include file="footer.jsp"%>
+             </div>
+             <!-- BEGIN THEME CONFIG PANEL-->
 
-		<!-- END THEME CONFIG PANEL-->
-		<!-- BEGIN PAGA BACKDROPS-->
-		<div class="sidenav-backdrop backdrop"></div>
+             <!-- END THEME CONFIG PANEL-->
+             <!-- BEGIN PAGA BACKDROPS-->
+             <div class="sidenav-backdrop backdrop"></div>
 
-		<!-- END PAGA BACKDROPS-->
-		<!-- CORE PLUGINS-->
-		<script src="./assets/vendors/jquery/dist/jquery.min.js"
-			type="text/javascript"></script>
-		<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-			type="text/javascript"></script>
-		<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-			type="text/javascript"></script>
-		<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-			type="text/javascript"></script>
-		<script
-			src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-			type="text/javascript"></script>
-		<!-- PAGE LEVEL PLUGINS-->
-		<script src="./assets/vendors/DataTables/datatables.min.js"
-			type="text/javascript"></script>
-		<!-- CORE SCRIPTS-->
-		<script src="assets/js/app.min.js" type="text/javascript"></script>
-		<!-- PAGE LEVEL SCRIPTS-->
-		<script type="text/javascript">
-			$(function() {
-				$('#example-table').DataTable({
-					pageLength : 10,
-				//"ajax": './assets/demo/data/table_data.json',
-				/*"columns": [
-				    { "S": "name" },
-				    { "data": "office" },
-				    { "data": "extn" },
-				    { "data": "start_date" },
-				    { "data": "salary" }
-				]*/
-				});
-			})
-		</script>
+             <!-- END PAGA BACKDROPS-->
+             <!-- CORE PLUGINS-->
+             <script src="./assets/vendors/jquery/dist/jquery.min.js"
+                    type="text/javascript"></script>
+             <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+                    type="text/javascript"></script>
+             <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+                    type="text/javascript"></script>
+             <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+                    type="text/javascript"></script>
+             <script
+                    src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+                    type="text/javascript"></script>
+             <!-- PAGE LEVEL PLUGINS-->
+             <script src="./assets/vendors/DataTables/datatables.min.js"
+                    type="text/javascript"></script>
+             <!-- CORE SCRIPTS-->
+             <script src="assets/js/app.min.js" type="text/javascript"></script>
+             <!-- PAGE LEVEL SCRIPTS-->
+             <script type="text/javascript">
+                    $(function() {
+                          $('#example-table').DataTable({
+                                 pageLength : 10,
+                          //"ajax": './assets/demo/data/table_data.json',
+                          /*"columns": [
+                              { "S": "name" },
+                              { "data": "office" },
+                              { "data": "extn" },
+                              { "data": "start_date" },
+                              { "data": "salary" }
+                          ]*/
+                          });
+                    })
+             </script>
 
-		<script type="text/javascript">
-			//get conract details on the basis of the contractno
-			function findDetails(contractId,pcsodates,  id) {
+             <script type="text/javascript">
+                    //get conract details on the basis of the contractno
+                    function findDetails(contractId,pcsodates,  id) {
 
-				$
-						.ajax({
-							type : "GET",
-							url : "getAllContractDetails.obj",
-							data : {
-								"contract" : contractId,
-								"pcsoDates" : pcsodates
-							},
-							success : function(result) {
-								var data = jQuery.parseJSON(result);
-			
-								var path = contractId + "\\";
+                          $
+                                       .ajax({
+                                              type : "GET",
+                                              url : "getAllContractDetails.obj",
+                                              data : {
+                                                    "contract" : contractId,
+                                                    "pcsoDates" : pcsodates
+                                              },
+                                              success : function(result) {
+                                                    var data = jQuery.parseJSON(result);
+                    
+                                                    var path = contractId + "\\";
 
-								var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";
+                                                    var tableData = "<table class='table table-striped table-bordered table-hover id='example-table' cellspacing='0' width='100%'>";
 
-								tableData += "<thead><tr>" + "<th>S.N.</th>"
-										+ "<th>Mill Code</th>"
-										+ "<th>Mill Name</th>"
-										+ "<th>Contracted Date</th>"
-										+ "<th>Contracted Qty(Qtls.)</th>"
-										+ "<th>Delivery Type</th>"
-										+ "<th>Payment Due Date</th>"
-										+ "<th>Payment Status</th>"
-										+ "</tr></thead>";
+                                                    tableData += "<thead><tr>" + "<th>S.N.</th>"
+                                                                  + "<th>Mill Code</th>"
+                                                                  + "<th>Mill Name</th>"
+                                                                  + "<th>Contracted Date</th>"
+                                                                  + "<th>Contracted Qty(Qtls.)</th>"
+                                                                  + "<th>Delivery Type</th>"
+                                                                  + "<th>Payment Due Date</th>"
+                                                                  + "<th>Payment Status</th>"
+                                                                  + "</tr></thead>";
 
-								tableData += "<tbody id='tbody'>";
+                                                    tableData += "<tbody id='tbody'>";
 
-								for (var i = 0; i < data.length; i++) {
-									var count = i + 1;
-									var fileName = path
-											+ data[i].Contract_acceptance_doc;
+                                                    for (var i = 0; i < data.length; i++) {
+                                                           var count = i + 1;
+                                                           var fileName = path
+                                                                        + data[i].Contract_acceptance_doc;
 
-									tableData += "<tr><td>" + count + "</td>";
+                                                           tableData += "<tr><td>" + count + "</td>";
 
-									tableData += "<td>" + data[i].Mill_code
-											+ "</td>";
-									tableData += "<td>" + data[i].Mill_name
-											+ "</td>";
-									tableData += "<td>" + data[i].Contract_date
-											+ "</td>";
-									tableData += "<td>" + data[i].Mill_qty
-											+ "</td>";
+                                                           tableData += "<td>" + data[i].Mill_code
+                                                                        + "</td>";
+                                                           tableData += "<td>" + data[i].Mill_name
+                                                                        + "</td>";
+                                                           tableData += "<td>" + data[i].Contract_date
+                                                                        + "</td>";
+                                                           tableData += "<td>" + data[i].Mill_qty
+                                                                        + "</td>";
 
-									tableData += "<td>" + data[i].Delivery_type
-											+ "</td>";
+                                                           tableData += "<td>" + data[i].Delivery_type
+                                                                        + "</td>";
 
-									tableData += "<td>"
-											+ data[i].Payment_duedate + "</td>";
+                                                           tableData += "<td>"
+                                                                        + data[i].Payment_duedate + "</td>";
 
-									tableData += "<td>"
-											+ data[i].Intial_Payment_flag
-											+ "</td>";
+                                                           tableData += "<td>"
+                                                                        + data[i].Intial_Payment_flag
+                                                                        + "</td>";
 
-									tableData += "<td><a target='_blank' href='downloadContractLetter.obj?imagePath="
-											+ encodeURIComponent(fileName)
-											+ "' class='btn btn-success'><i class='fa fa-download' aria-hidden='true';'></i></a></td>";
+                                                           tableData += "<td><a target='_blank' href='downloadContractLetter.obj?imagePath="
+                                                                        + encodeURIComponent(fileName)
+                                                                        + "' class='btn btn-success'><i class='fa fa-download' aria-hidden='true';'></i></a></td>";
 
-									tableData += "</tr>";
-								}
+                                                           tableData += "</tr>";
+                                                    }
 
-								tableData += "</tbody></table>";
-								$("#table" + id).html(tableData);
+                                                    tableData += "</tbody></table>";
+                                                    $("#table" + id).html(tableData);
 
-							}
-						})
+                                              }
+                                       })
 
-			}
-		</script>
+                    }
+             </script>
 </body>
 
 </html>
+
