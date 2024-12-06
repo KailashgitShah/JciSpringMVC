@@ -281,12 +281,12 @@
 													type="date" required>
 											</div>
 											<div class="col-sm-4 form-group">
-												<label>Mill Receipt Qty</label> <span class="text-danger">*
-												</span>&nbsp; <span id="Mill_receiptQty" name="Mill_receiptQty"
-													class="text-danger"> </span> <input class="form-control"
-													name="Mill_receiptQty1" id="Mill_receiptQty" type="number"
-													required>
+												<label>Mill Receipt Qty</label> <span class="text-danger">*</span>&nbsp;
+												<span id="Mill_receiptQty_display" class="text-danger">
+												</span> <input class="form-control" name="Mill_receiptQty1"
+													id="Mill_receiptQty123" type="number" step="any" required>
 											</div>
+
 										</div>
 
 										<div class="row">
@@ -310,10 +310,10 @@
 														<th>Jute_variety</th>
 														<th>Jute_grade</th>
 														<th>Crop_year</th>
-														<th>Invoice qty</th>
-
-														<th>Actual Qty</th>
-														<th>No of Bales</th>
+														<th>Invoice qty(Qtls)</th>
+                                                        <th>No of Bales</th>
+														<th>Actual Qty(Qtls)</th>
+														
 														<!--  <th>claim </th>
                                                                                        <th>Claim Type </th>
                                                                                        <th> </th> -->
@@ -452,6 +452,7 @@
         }
     </script>
 
+
 	<!--    <script>
   $(document).ready(function() {
     const checkbox = $('#enableQualityClaim');
@@ -504,6 +505,8 @@ var grade6 = [];
 var some = [];
 var claimAmount=[];
 var numberOfElements = 10; 
+var actQtyList = [];
+var sumOfActQty = 0;
 
 
 for (var i = 0; i < numberOfElements; i++) {
@@ -572,8 +575,9 @@ $(document).ready(function() {
 										"cropyear" : cropyear,
 										"jutevariety" : jutevariety,
 									},
+									
 									success : function(data) {
-
+									
 										var dataArray = JSON.parse(data);
 										if (dataArray.length > 0) {
 
@@ -622,13 +626,18 @@ $(document).ready(function() {
 						},
 						success : function(data) {
 
+							 actQtyList = [];
+							  sumOfActQty = 0;
+
 							var dataArray = JSON.parse(data);
 
 							var currentMonth = new Date().getMonth() + 1;
+							
 							dataArray
 									.forEach(function(row, index) {
 										var str = row[3];
-										var actualvalue1 = row[7];
+										var actualvalue1 = row[7]; 
+										
 										var actualvalue = parseFloat(actualvalue1);
 										var match = str.match(/\d+/);
 										var numericPartStr = match ? match[0]
@@ -645,219 +654,153 @@ $(document).ready(function() {
 											initialNomination = Math.max(0,
 													intValue - 18);
 										}
-
+									
+										actQtyList.push(+row[7]);
+										sumOfActQty += +row[7];
+										
 										var rowHtml = '<tr>'
-												+ '<td>'
-												+ '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> '
-												+ row[1]
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell"><input type="hidden" name="baleMark[]" value="' + row[1] + '"> '
+										    + row[1]
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> '
-												+ row[2]
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell"><input type="hidden" name="juteVariety[]" value="' + row[2] + '"> '
+										    + row[2]
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">'
+										    + intValue
+										    + '</div>'
+										    + '</td>'
 
-												'<div class="table2-cell"><input type="hidden" name="jutegrade[]" value="' + row[3] + '">'
-												+ intValue
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell"><input type="hidden" name="cropYear[]" value="' + row[4] + '">'
+										    + row[4]
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table2-cell"><input type="hidden" name="cropYear[]" value="' + row[4] + '">'
-												+ row[4]
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell"><input type="hidden" name="challanQty[]" value="' + row[5] + '">'
+										    + row[5]
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table2-cell"><input type="hidden" name="challanQty[]" value="' + row[5] + '">'
-												+ row[5]
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell"><input type="hidden" name="No_of_bales[]" value="' + row[6] + '">'
+										    + row[6]
+										    + '</div>'
+										    + '</td>'
+										    
+										    + '<td>'
+										    + '<div class="table2-cell"><input readonly id="actualQty_' + index + '" name="actualQty[]" value="' + row[7] + '">'
+										 
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table2-cell"><input type="hidden" id="actualQty_" name="actualQty[]" value="' + row[7] + '">'
-												+ row[7]
-												+ '</div>'
-												+ '</td>'
-												+
+				
 
-												'<td>'
-												+ '<div class="table2-cell"><input type="hidden" name="No_of_bales[]" value="' + row[6] + '">'
-												+ row[6]
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table2-cell">'
+										    + '<label for="Qualitypercentage_' + index + '"></label>'
+										    + '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0" max="299" step="any" value="0" oninput="if (this.value > 299) this.value = 299;">'
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table2-cell">'
-												+ '<label for="Qualitypercentage_' + index + '"></label>'
-												+ '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0" max="299"  step="any" value="0" oninput="if (this.value > 299) this.value = 299;">'
-												+ '</div>'
-												+ '</td>'
-												+
-												/*  '<td>' +
-												 '<div class="table2-cell">' +
-												 '<label for="Qualitypercentage_' + index + '"></label>' +
-												 '<input type="double" id="QualityValue_' + index + '" name="QualityValue_[]"  value="0"  readonly>' +
-												 '</div>' +
-												 '</td>' + */
+										    + '<td>'
+										    + '<div class="table2-cell">'
+										    + '<select id="Nomination_' + index + '" name="Nomination[]" required onchange="handleNominationChange(this, ' + intValue + ', ' + actualvalue1 + ')">'
+										    + '<option value="0">0</option>'
+										    + '<option value="18">18</option>'
+										    + '<option value="19">19</option>'
+										    + '<option value="20">20</option>'
+										    + '<option value="21">21</option>'
+										    + '<option value="22">22</option>'
+										    + '<option value="23">23</option>'
+										    + '<option value="24">24</option>'
+										    + '<option value="25">25</option>'
+										    + '<option value="26">26</option>'
+										    + '<option value="27">27</option>'
+										    + '<option value="28">28</option>'
+										    + '<option value="29">29</option>'
+										    + '<option value="30">30</option>'
+										    + '<option value="31">31</option>'
+										    + '<option value="32">32</option>'
+										    + '<option value="33">33</option>'
+										    + '<option value="34">34</option>'
+										    + '<option value="35">35</option>'
+										    + '<option value="36">36</option>'
+										    + '<option value="37">37</option>'
+										    + '<option value="38">38</option>'
+										    + '<option value="39">39</option>'
+										    + '<option value="40">40</option>'
+										    + '</select>'
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table2-cell">'
-												+ '<select id="Nomination_'
-												+ index
-												+ '" name="Nomination[]" required  onchange="handleNominationChange(this, '
-												+ intValue
-												+ ', '
-												+ actualvalue1
-												+ ')">'
-												+ '<option value="0">0</option>'
-												+ '<option value="18">18</option>'
-												+ '<option value="19">19</option>'
-												+ '<option value="20">20</option>'
-												+ '<option value="21">21</option>'
-												+ '<option value="22">22</option>'
-												+ '<option value="23">23</option>'
-												+ '<option value="24">24</option>'
-												+ '<option value="25">25</option>'
-												+ '<option value="26">26</option>'
-												+ '<option value="27">27</option>'
-												+ '<option value="28">28</option>'
-												+ '<option value="29">29</option>'
-												+ '<option value="30">30</option>'
-												+ '<option value="31">31</option>'
-												+ '<option value="32">32</option>'
-												+ '<option value="33">33</option>'
-												+ '<option value="34">34</option>'
-												+ '<option value="35">35</option>'
-												+ '<option value="36">36</option>'
-												+ '<option value="37">37</option>'
-												+ '<option value="38">38</option>'
-												+ '<option value="39">39</option>'
-												+ '<option value="40">40</option>'
-												+ '</select>'
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table3-cell">'
+										    + '<label for="NCVamt_' + index + '"></label>'
+										    + '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="0">'
+										    + '</div>'
+										    + '</td>'
 
-												/*   '<td>' +
-												  '<div class="table3-cell">' +
-												  '<label for="MoistureValue' + index + '"></label>' +
-												  '<input type="double" id="MoistureValue' + index + '" name="MoistureValue[]"  value="0"  readonly>' +
-												  '</div>' +
-												  '</td>' + */
+										    + '<td>'
+										    + '<div class="table3-cell">'
+										    + '<label for="ncvdust_' + index + '"></label>'
+										    + '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="0">'
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table3-cell">'
-												+ '<label for="NCVamt_' + index + '"></label>'
-												+
-												/*    '<input class="form-check-input" type="checkbox" id="checkNcvPercentage' + index + '">' +
-												
-												 */'<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="" >'
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table3-cell">'
+										    + '<label for="DustAMt_' + index + '"></label>'
+										    + '<input type="number" id="DustAMt_' + index + '" name="DustAMt[]" min="0" max="10" step="any" value="0">'
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table3-cell">'
-												+ '<label for="ncvdust_' + index + '"></label>'
-												+
-												/*   '<input class="form-check-input" type="checkbox" id="checkNcvQty' + index + '">' +
-												 */
-												'<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="" >'
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table3-cell">'
+										    + '<label for="DustQty_' + index + '"></label>'
+										    + '<input type="number" id="DustQty_' + index + '" name="DustQty[]" step="any" value="0">'
+										    + '</div>'
+										    + '</td>'
 
-												/*   '<td>' +
-												  '<div class="table3-cell">' +
-												  '<label for="Qualitypercentage_' + index + '"></label>' +
-												  '<input type="double" id="NCV_Value' + index + '" name="NCV_Value[]" value="0" readonly >' +
-												  '</div>' +
-												  '</td>' + */
+										    + '<td>'
+										    + '<div class="table4-cell">'
+										    + '<button type="button" class="btn btn-primary" id="DustValue1_' + index + '" name="calculate" '
+										    + 'onclick="calculateQtyfrompercent(\'Qualitypercentage_' + index + '\', \'Nomination_' + index + '\', \'NCVamt_' + index + '\', \'DustAMt_' + index + '\', \'ncvdust_' + index + '\', \'DustQty_' + index + '\', \'' + actualvalue + '\', ' + intValue + ', ' + index + ')">Calculate</button>'
+										    + '</div>'
+										    + '</td>'
 
-												'<td>'
-												+ '<div class="table3-cell">'
-												+ '<label for="DustAMt_' + index + '"></label>'
-												+
-												/*   '<input class="form-check-input" type="checkbox" id="checkDustAMt_Percentage' + index + '">' +
-												 */
-												'<input type="number" id="DustAMt_' + index + '" name="DustAMt_[]" min="0" max="10" step="any" value="" >'
-												+ '</div>'
-												+ '</td>'
-												+
+										    + '<td>'
+										    + '<div class="table3-cell">'
+										    + '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]" value="0" readonly>'
+										    + '</div>'
+										    + '</td>'
+										+ '</tr>';
 
-												'<td>'
-												+ '<div class="table3-cell">'
-												+ '<label for="DustQty_' + index + '"></label>'
-												+
-												/*   '<input class="form-check-input" type="checkbox" id="checkDustQty_' + index + '">' +
-												 */
-												'<input type="number" id="DustQty_' + index + '" name="DustQty_[]" step="any" value="" >'
-												+ '</div>'
-												+ '</td>'
-												+
+										// Append rowHtml to your table or container
+										$('#childTable1 tbody').append(rowHtml);
 
-												/*   '<td>' +
-												  '<div class="table3-cell">' +
-												  '<input type="double" id="DustValue' + index + '" name="DustValue[]"  value="0" readonly>' +
-												  '</div>' +
-												  '</td>' + */
-
-												'<td>'
-												+ '<div class="table4-cell">'
-												+ '<button type="button" class="btn btn-primary" id="DustValue1_'
-												+ index
-												+ '" name="calculate" '
-												+ 'onclick="calculateQtyfrompercent(\'Qualitypercentage_'
-												+ index
-												+ '\', \'Nomination_'
-												+ index
-												+ '\', \'NCVamt_'
-												+ index
-												+ '\', \'DustAMt_'
-												+ index
-												+ '\', \'ncvdust_'
-												+ index
-												+ '\', \'DustQty_'
-												+ index
-												+ '\', \''
-												+ actualvalue
-												+ '\', '
-												+ intValue
-												+ ', '
-												+ index
-												+ ')">Calculate</button>'
-												+ '</div>'
-												+ '</td>'
-												+ '<td>'
-												+ '<div class="table3-cell">'
-												+ '<input type="double" id="claimAmmount' + index + '" name="claimAmmount[]" value="0" readonly>'
-												+ '</div>' + '</td>';
-
-										'</tr>';
-
-										$('#childTable1 tbody').append(rowHtml); // Append rowHtml to your table or container
-
+										// Initialize fields with default values
 										$('#NCVamt_' + index).val('0');
 										$('#ncvdust_' + index).val('0');
 										$('#DustAMt_' + index).val('0');
 										$('#DustQty_' + index).val('0');
 
+										// Increment the index
 										index++;
 										document.getElementById("rowindex2").value = index;
+									}									
+									);
 
-									});
+							
+							//console.log(actQtyList , sumOfActQty);
+
 						},
 						error : function(xhr, status, error) {
 							console.error('AJAX error:', error);
@@ -868,6 +811,27 @@ $(document).ready(function() {
 			    $('#childTable').hide();
 			}); */
 		}
+		
+		
+	    
+		$("#Mill_receiptQty123").on("input", function() {
+			var mrQty = $("#Mill_receiptQty123").val();
+		 
+		/* 	actQtyList.push(+row[7]);
+			sumOfActQty += +row[7]; */
+			
+			for(var i=0 ; i < actQtyList.length ; i++){
+                var portion = actQtyList[i]/sumOfActQty;
+                var actQtyForRow = +mrQty*portion.toFixed(2);
+                console.log(actQtyForRow , "#actualQty_"+i);
+                $("#actualQty_"+i).val(actQtyForRow.toFixed(2));
+               
+			}
+			
+		});
+		
+		
+		
 
 		function handleNominationChange(selectElement, intValue, actualvalue1) {
 
@@ -1145,9 +1109,18 @@ $(document).ready(function() {
 				NCVamtId, DustAmtId, NCVQty, DUSTQty, actualvalue, intvalue,
 				index) {
 			// Retrieve the actual input values using the IDs
-
+          
+			//alert(Qualitypercentage1);
 			var Qualitypercentage = document
-					.getElementById(QualitypercentageId).value;
+					.getElementById(QualitypercentageId).value; 
+			
+		 /* 	var actualvalue = $("#Mill_receiptQty123").val(); 
+			
+			  if (!actualvalue || isNaN(actualvalue)) {
+			        alert("Please enter a valid Mill Receipt Qty value.");
+			        return;  
+			    } */
+
 			var Nomination = document.getElementById(NominationId).value;
 			var NCVamt = document.getElementById(NCVamtId).value;
 			var NCVQty = document.getElementById(NCVQty).value;
@@ -1257,7 +1230,8 @@ $(document).ready(function() {
 
 					gradeprice = gradeprice6 - gradeprice;
 
-					let qty24 = 100.0 - qty;
+					/* let qty24 = 100.0 - qty; */
+					 let qty24 = actualvalue - qty; 
 					valueinprice1 = (parseFloat(valueinprice1) + gradeprice
 							* qty24).toFixed(2);
 
@@ -1301,9 +1275,9 @@ $(document).ready(function() {
 
 					let inputValue = parseFloat(rem) || 0;
 					let qty = (newactualqty * inputValue) / 100;
-
+					
 					valueinprice1 = (gradeprice * qty).toFixed(2);
-
+                    
 					intvalue--;
 					if (intvalue - 1 < resultsArray.length) {
 						gradeprice = resultsArray[intvalue - 1];
@@ -1312,11 +1286,13 @@ $(document).ready(function() {
 					}
 					gradeprice = grade - gradeprice;
 
-					let qty23 = 100.0 - qty;
+					/* let qty23 = 100.0 - qty; */
+					 let qty23 = actualvalue - qty; 
 					let qty7 = ((newactualqty * qty23) / 100);
 					valueinprice1 = (parseFloat(valueinprice1) + gradeprice
 							* qty7).toFixed(2);
 					valueinprice = valueinprice1;
+					
 
 					totalvalue += parseFloat(valueinprice);
 					totalvalue = Math.round(totalvalue);

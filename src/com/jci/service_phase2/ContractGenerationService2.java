@@ -25,5 +25,6 @@ public interface ContractGenerationService2 {
 	public String millFullName(String millCode);
 	public List<String> getPscoDateByCropYr(String cropYr);
 	public String findEmailByMillCode(String millCode);
+	public int getContractCount(String cropyr);
 
 }

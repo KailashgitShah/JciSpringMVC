@@ -171,7 +171,7 @@ input[type="file"] {
 												class="form-control" name="official_name" type="text"
 												value=""
 												<%-- value="<%=session.getAttribute("usrname")%>" --%>
-												placeholder="Enter Mill official Name">
+												placeholder="Enter Mill official Name" oninput="restrictInput(event)">
 										</div>
 
 
@@ -250,7 +250,7 @@ input[type="file"] {
 										<div class="col-sm-4 form-group">
 											<label class="required">Designation</label> <input
 												class="form-control" type="text" name="official_designation"
-												value="" placeholder="Enter Designation"<%-- 	value="<%=session.getAttribute("rolename")%>" --%>
+												value="" placeholder="Enter Designation" oninput="restrictInput(event)"<%-- 	value="<%=session.getAttribute("rolename")%>" --%>
 												<%-- placeholder="<%=session.getAttribute("rolename")%>" readonly --%>
 												>
 										</div>
@@ -299,7 +299,13 @@ input[type="file"] {
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
-
+<script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 <script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {

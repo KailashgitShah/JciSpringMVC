@@ -1,6 +1,3 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page
-	import="net.sf.jasperreports.engine.util.Java14BigDecimalHandler"%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
@@ -13,8 +10,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-	
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+       
 </script>
 <head>
 <meta charset="UTF-8">
@@ -23,17 +20,17 @@
 <title>JCI | CMS</title>
 <!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/docsupport/style.css">
 <link rel="stylesheet" href="assets/css/docsupport/prism.css">
 <link rel="stylesheet" href="assets/css/chosen.css">
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
-	type="text/javascript"></script>
+       type="text/javascript"></script>
 
 
 
@@ -41,17 +38,17 @@
 </head>
 <style>
 .img-magnifier-container {
-	position: relative;
+       position: relative;
 }
 
 .img-magnifier-glass {
-	position: absolute;
-	border: 3px solid #000;
-	border-radius: 50%;
-	cursor: none;
-	/*Set the size of the magnifier glass:*/
-	width: 100px;
-	height: 100px;
+       position: absolute;
+       border: 3px solid #000;
+       border-radius: 50%;
+       cursor: none;
+       /*Set the size of the magnifier glass:*/
+       width: 100px;
+       height: 100px;
 }
 .ibox {
     padding: 0 5px;
@@ -107,25 +104,25 @@
 </script>
 
 <body class="fixed-navbar">
-	<div class="page-wrapper">
-		<!-- START HEADER-->
-		<%@ include file="header.jsp"%>
-		<!-- END HEADER-->
-		<!-- START SIDEBAR-->
-		<%@ include file="sidebar.jsp"%>
-		<!-- END SIDEBAR-->
-		<div class="content-wrapper">
-			<!-- START PAGE CONTENT-->
-			<div class="page-heading">
-				<h1 class="page-title">Verification of Weighment Slip</h1>
-			</div>
+       <div class="page-wrapper">
+             <!-- START HEADER-->
+             <%@ include file="header.jsp"%>
+             <!-- END HEADER-->
+             <!-- START SIDEBAR-->
+             <%@ include file="sidebar.jsp"%>
+             <!-- END SIDEBAR-->
+             <div class="content-wrapper">
+                    <!-- START PAGE CONTENT-->
+                    <div class="page-heading">
+                          <h1 class="page-title">Verification of Weighment Slip</h1>
+                    </div>
 
 
 
-			<%
-			List<Object[]> Data = (List<Object[]>) request.getAttribute("Data");
-			%>
-			<div class="page-content fade-in-up">
+                    <%
+                    List<Object[]> Data = (List<Object[]>) request.getAttribute("Data");
+                    %>
+                    <div class="page-content fade-in-up">
     <div class="row">
         <div class="col-md-11">
             <div class="ibox" id="ibox">
@@ -211,39 +208,61 @@
 </div>
 
 
-	<div class="sidenav-backdrop backdrop"></div>
+       <div class="sidenav-backdrop backdrop"></div>
 <script>
-function myFunc(){
-	var actual = $("#DpcEndWt").val().toFixed(2);
-	var net = $("#DPCNetqty").val().toFixed(2);
-	//alert("Actual"+actual);
-	//alert("Net"+net);
-	if(net === actual) {return true;}
-	 var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight" ;
-     var errorDiv = $("<div>").text(errorMessage).css({
-         "color": "red",
-         "font-weight": "bold"
-     });
-	 $("#errorcontainer").append(errorDiv).show(); // Show the error container
-     window.scrollTo(0, 0);
-     setTimeout(function() {
-         $("#errorcontainer").empty().hide(); // Clear and hide the error message after 5 seconds
-     }, 5000);
-	return false;
+function myFunc() {
+    // Get values and convert them to numbers, rounded to 2 decimal places
+    var actual = parseFloat($("#DpcEndWt").val()).toFixed(2);
+    var net = parseFloat($("#DPCNetqty").val()).toFixed(2);
+
+    // Show alerts to check the values (you can remove these in production)
+    //alert("Actual: " + actual);
+   // alert("Net: " + net);
+
+    // Check if the two values are the same
+    if (net === actual) {
+        return true; // Values match, no further action needed
+    }
+
+    // Error message if values do not match
+    var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight";
+
+    // Clear any previous error messages
+    $("#errorcontainer").empty().hide();
+
+    // Display the error message
+    var errorDiv = $("<div>").text(errorMessage).css({
+        "color": "red",
+        "font-weight": "bold"
+    });
+
+    // Append the error message and show the error container
+    $("#errorcontainer").append(errorDiv).show();
+
+    // Scroll to the top of the page to show the error
+    window.scrollTo(0, 0);
+
+    // Clear and hide the error message after 5 seconds
+    setTimeout(function() {
+        $("#errorcontainer").empty().hide(); 
+    }, 5000);
+
+    return false; // Prevent form submission or further action
 }
+
 </script>
 <script>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#turn').on('click', function() {
-		var angle = ($('#uploadedImage').data('angle') + 90) || 90;
-		$('#uploadedImage').css({
-			'transform' : 'rotate(' + angle + 'deg)'
-		});
-		$('#uploadedImage').data('angle', angle);
-	});
-	
-	// $('.zoom').magnify();
+       $('#turn').on('click', function() {
+             var angle = ($('#uploadedImage').data('angle') + 90) || 90;
+             $('#uploadedImage').css({
+                    'transform' : 'rotate(' + angle + 'deg)'
+             });
+             $('#uploadedImage').data('angle', angle);
+       });
+       
+       // $('.zoom').magnify();
 });
 </script>
 <script>
@@ -258,6 +277,8 @@ function calculateNetWeight() {
     var grossWeight = parseFloat(document.getElementById('DPCGrossWt').value).toFixed(2);
     var tareWeight = parseFloat(document.getElementById('DPCqty').value).toFixed(2);
     
+   // alert("Tare"+tareWeight)
+   // alert("grossWt"+grossWeight)
     // Check if both values are valid numbers
     if (!isNaN(grossWeight) && !isNaN(tareWeight)) {
         // Calculate net weight
@@ -267,12 +288,12 @@ function calculateNetWeight() {
         document.getElementById('DPCNetqty').value = netWeight.toFixed(2);
     } else {
         // Handle invalid input (optional)
-    	/*  var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight" ;
+       /*  var errorMessage = "DPC-end Truck Net Weight must be matched with the DPC-end Actual Weight" ;
          var errorDiv = $("<div>").text(errorMessage).css({
              "color": "red",
              "font-weight": "bold"
          });
-    	 $("#errorcontainer").append(errorDiv).show(); // Show the error container
+        $("#errorcontainer").append(errorDiv).show(); // Show the error container
          window.scrollTo(0, 0);
          setTimeout(function() {
              $("#errorcontainer").empty().hide(); // Clear and hide the error message after 5 seconds
@@ -282,20 +303,20 @@ function calculateNetWeight() {
 
 
 </script>
-	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
+       <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+       <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+             type="text/javascript"></script>
+       <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+             type="text/javascript"></script>
+       <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+             type="text/javascript"></script>
+       <script
+             src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+             type="text/javascript"></script>
+       <!-- PAGE LEVEL PLUGINS-->
 
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
+       <!-- CORE SCRIPTS-->
+       <script src="assets/js/app.min.js" type="text/javascript"></script>
 <script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {

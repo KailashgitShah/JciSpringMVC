@@ -135,11 +135,6 @@
 			 String billofsupplynoString = String.join(",", billofsupplyno);
 		
 			float sumofInvoiceValue = 0;
-			
-			  System.out.println("challanno: " + challanno);
-			    System.out.println("sumofInvoiceValue: " + sumofInvoiceValue);
-			    System.out.println("billofsupplynoString: " + billofsupplynoString);
-			    System.out.println("bosdate: " + bosdate);
 		
 		%>
           <div class="page-content fade-in-up">
@@ -217,9 +212,10 @@
 								                        <th>Bank ifsc</th>
 								                        <th>Instrument date</th>
 								                        <th>Instrument No</th>
-								                        <th>Instrument value</th>
+								                       <!--  <th>Instrument value</th> -->
 								                        <th>supporting document</th>
-								                        <th>Auto Revolving ammount</th>
+								                        <th>Instrument value</th>
+								                      <!--   <th>Auto Revolving ammount</th> -->
 								                        <th>Expiry Date</th>
 								                         <th>last Shipment Date</th>
 								                        <th>payment type</th>
@@ -456,7 +452,7 @@ $(document).ready(function() {
                         '<td><div class="table-cell"><input type="hidden" name="ifsc[]" value="' + rowData[2] + '">' + rowData[2] + '</div></td>' +
                         '<td><div class="table-cell"><input type="hidden" name="instrumentdate[]" value="' + rowData[3] + '">' + rowData[3] + '</div></td>' +
                         '<td><div class="table-cell"><input type="hidden" name="instrumentnNO[]" value="' + rowData[4] + '">' + rowData[4] + '</div></td>' +
-                        '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
+                        /* '<td><div class="table-cell"><input type="hidden" name="instrumentnValue[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' + */
                         '<td>' +
                             '<a href="downloadSupportingDocument.obj?filename=' + rowData[6] + '">' +
                                 '<button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>' +
@@ -644,6 +640,7 @@ $(document).ready(function() {
                 let checkbox = closestRow.find('.invoice-checkbox');
                 checkbox.prop('checked', false);
                 checkedTotal -= invoiceValue; // Adjust checkedTotal
+                alert("Balance Amount is less then total invoice value");
             } else {
                 
                 selectedRowIndices.push(rowIndex);
@@ -701,26 +698,7 @@ $(document).ready(function() {
 });
 </script>
 
-
-
-
-
-
-
-
-
-
-
  
-
-
-
-
-
-
-
-
-
 <script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {

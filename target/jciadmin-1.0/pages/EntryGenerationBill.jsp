@@ -7,6 +7,9 @@
 <%@ page import="java.util.Locale"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.math.BigDecimal"%> 
+<%@page import="java.math.RoundingMode"%>
+
+ 
 <%@ page import="java.util.*" %>
 
 <%@ page import="java.text.ParseException"%>
@@ -126,7 +129,7 @@
 				
 					 
 					 concatenatedString = Address1 + " " + Address2 + " " + Address3 + " " + Address4;
-					
+					System.err.print(concatenatedString);
 				
 				      
 			    }
@@ -479,13 +482,17 @@
 											</div>
 											
 												<div class="col-sm-4 form-group">
-												<label>Transit policy No</label> <span class="text-danger">*
-												</span>&nbsp; <input class="form-control"
-												oninput="this.value = this.value.toUpperCase();"
-													maxlength="16" type="text" pattern="[A-Za-z0-9/-]*"
-													name="TrnasitPolicyNo" id="TrnasitPolicyno" required 
-													>
-											</div>
+												    <label for="TrnasitPolicyno">Transit policy No</label>
+												    <span class="text-danger">*</span>&nbsp; 
+												   <input class="form-control"
+												       oninput="handleInput(event)"
+												       maxlength="30"
+												       type="text"
+												       name="TrnasitPolicyNo"
+												       id="TransitPolicyNo"
+												       required>
+												</div>
+
 											
 											<div class="col-sm-2 form-group" style="display: none;">
 												<label"display:none;">Contarctqty </label> <span
@@ -581,9 +588,21 @@
 											        		    BigDecimal value6 = new BigDecimal(String.valueOf(row[6]));
 											        		    BigDecimal product = value5.multiply(value6);
 											        		    
-											        		     totalBales += Integer.parseInt(String.valueOf(row[3]));
+											        		 /*     totalBales += Integer.parseInt(String.valueOf(row[3]));
 											                     totalQty = totalQty.add(value5);
-											                     totalAmount = totalAmount.add(product);
+											                     totalAmount = totalAmount.add(product); */
+											                     
+											                     
+											                     
+											                  
+											                     totalBales += (int) Math.ceil(Integer.parseInt(String.valueOf(row[3])));
+
+											                    
+											                     totalQty = totalQty.setScale(0, RoundingMode.CEILING).add(value5.setScale(0, RoundingMode.CEILING));
+
+											              
+											                     totalAmount = totalAmount.setScale(0, RoundingMode.CEILING).add(product.setScale(0, RoundingMode.CEILING));
+
 															%>
 															<tr>
 															<td><%= row[0] %></td>
@@ -677,7 +696,18 @@
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+<script>
+    function handleInput(event) {
+        // Get the current value of the input
+        const value = event.target.value;
 
+        // Use regex to allow only alphanumeric characters, slashes, and hyphens
+        const sanitizedValue = value.replace(/[^A-Za-z0-9/-]/g, '');
+
+        // Set the sanitized value back to the input
+        event.target.value = sanitizedValue;
+    }
+</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#submit").click(function() {

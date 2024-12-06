@@ -42,12 +42,13 @@ public class UserActionDaoImpl implements UserActionDao {
 	@Override
 	public Integer getactionid(String useraction) {
 		Integer getId = 0;
-		String querystr = "select action_id from jciuseraction where action_name='"+useraction+"' ";
+		String querystr = "select action_id from jciuseraction where action_name='1103' ";
     	   Session session = sessionFactory.getCurrentSession();
     	   Transaction tx = session.beginTransaction();
     	   SQLQuery query = session.createSQLQuery(querystr);
     	   List<Integer> actionId= query.list();
     	   getId = actionId.get(0);
+    	 
 		return getId;
 	}
 

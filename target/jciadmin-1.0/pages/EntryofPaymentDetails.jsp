@@ -416,12 +416,6 @@
 											name="totalcontractvalue">
 
 
-
-
-
-
-
-
 										<div class="row" id="dataofHistory" style="display: none;">
 											<div class="col-sm-15">
 												<table class="table" id="dataTable">

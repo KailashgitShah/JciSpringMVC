@@ -1,4 +1,3 @@
-
 <%@page import="com.mashape.unirest.http.options.Option"%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
@@ -17,481 +16,487 @@
 <!-- GLOBAL MAINLY STYLES-->
 
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
-	rel="stylesheet" />
+       rel="stylesheet" />
 <!-- PLUGINS STYLES-->
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <!-- PAGE LEVEL STYLES-->
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+       href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="assets/css/chosen.css">
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <!-- CORE SCRIPTS-->
 
 <style>
 .required:after {
-	content: " *";
-	color: red;
+       content: " *";
+       color: red;
 }
 </style>
 </head>
 <body class="fixed-navbar">
-	<div class="page-wrapper">
-		<!-- START HEADER-->
-		<%@ include file="header.jsp"%>
-		<!-- END HEADER-->
-		<!-- START SIDEBAR-->
-		<%@ include file="sidebar.jsp"%>
-		<!-- END SIDEBAR-->
-		<div class="content-wrapper">
-			<!-- START PAGE CONTENT-->
-			<div class="page-heading">
-				<h1 class="page-title">Entry of Payment Details</h1>
-
-				<%--  for (Object row : getcontractList1) {
-													       String field1 = (String)row;
-													    %>
-													    <option value="<%= field1 %>"><%= field1 %></option>
-													    <%
-													    }
-													    %> --%>
-			</div>
-
-			<%
-			List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
-			List<Object[]> getcontractList2 = (List<Object[]>) request.getAttribute("getcontractList2");
-			String millname = "";
-			%>
-
-
-
-
-			<div class="page-content fade-in-up">
-				<div class="row">
-					<div class="col-md-11">
-						<div class="ibox">
-							<span id="flashMessage">${msg}</span>
-							<div class="ibox-body">
-								<form action="saveentryofpaymentinstrumentDetails.obj"
-									method="POST" name="myForm" id="myForm"
-									enctype="multipart/form-data">
-									<div class="child-checkbox" id="disableform">
-										<div class="row">
-											<div class="col-sm-4 form-group">
-												<label>Mill name.</label> <span class="text-danger">*
-												</span>&nbsp; <span id="millname1" name="Millname"
-													class="text-danger"> </span> <select name="millname65"
-													id="millname12" class="form-control taxtbox" required>
-
-													<option value="select">-Select-</option>
-													<%
-													for (Object[] row : getcontractList2) {
-														millname = (String) row[0];
-														String millcode = (String) row[1];
-													%>
-													<option value="<%=millcode%>"><%=millname%></option>
-													<%
-													}
-													%>
-												</select>
-
-
-											</div>
-											<div class="col-sm-4 form-group" id="dpc_div"">
-												<label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
-												<span id="contractno" class="text-danger"></span> <select
-													name="fullcontractno" id="contractno12"
-													class="form-control taxtbox"
-													style="height: = 50; width: 350px;" required>
-													<option disabled selected value="">-Select</option>
-
-												</select>
-											</div>
-
-											<div class="col-sm-4 form-group" id="instrument">
-												<label>Instrument Type</label> <span class="text-danger">*
-												</span>&nbsp; <span id="payment" name="payment" class="text-danger">
-												</span> <select name="paymenttype" id="paymenttype"
-													class="form-control taxtbox" required>
-													<option value="">-Select-</option>
-													<option value="NEFT/RTGS">NEFT/RTGS</option>
-													<option value="Cheque/DD">Cheque/DD</option>
-													<option value="Letter_of_Credit">Letter of Credit</option>
-												</select>
-											</div>
-
-
-											<!-- 	<div class="col-sm-4 form-group">
-												<label id="ContracQty2">Contract_Qty </label> <input
-													class="form-control" id="ContracQty1" value=""
-													readonly="readonly">
-											</div>
- -->
-
-
-
-
-										</div>
-										<!-- <div class="row">
-
-											<div class="col-sm-4 form-group">
-												<label id="Contract_date2">Contract_date</label> <input
-													class="form-control taxtbox" id="Contract_date1" value=""
-													readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label id="payment_dueDate2">Payment_dueDate</label> <input
-													class="form-control" name="payment_dueDate12"
-													id="payment_dueDate1" value="" readonly="readonly">
-											</div>
-											<div class="col-sm-4 form-group">
-												<label id="contract_Value2">Contract_Value</label> <input
-													class="form-control taxtbox" id="contract_Value1"
-													name="contrcat_value23" value="" readonly="readonly">
-											</div>
-										</div> -->
-
-										<div class="row">
-
-											<!-- 
-										<div class="col-sm-4 form-group">
-										    <label for="Instrumentno">Instrument No</label> <span class="text-danger">*</span>
-										    &nbsp; <span id="instrumentError" class="text-danger"></span>
-										    <input class="form-control" name="Instrument" id="Instrumentno"
-										           oninput="validateInstrumentNo(this);"
-										           maxlength="16" type="text" required>
-										</div> -->
-
-											<div class="col-sm-4 form-group">
-												<label>Instrumentno</label> <span class="text-danger">*</span>&nbsp;
-												<span id="MR_N" name="MR_dante" class="text-danger"></span>
-												<input class="form-control" name="Instrument"
-													id="Instrumentno" type="text" maxlength="50"
-													oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
-													pattern="[A-Za-z0-9/-]*"
-													title="Only alphanumeric characters, slashes, and hyphens are allowed"
-													required>
-											</div>
-
-
-
-											<!-- oninput="validateAmount();"  -->
-
-											<div class="col-sm-4 form-group">
-												<label id="differenceLabel">Instrument Value </label> <span
-													class="text-danger">* </span>&nbsp; <span
-													id="InstrumentValue " name="InstrumentValue "
-													class="text-danger" type="double"> </span>
-												<!--  <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required> -->
-												<input class="form-control taxtbox" name="InstrumentValue"
-													id="InstrumentValue12" min="0" step="1" pattern="\d+"
-													type="text"
-													oninput="this.value = this.value.replace(/\D/g, '')"
-													placeholder="Instrument Value" required>
-												<div id="errorMessage" style="color: red; display: none;">Amount
-													exceeds the allowed limit!</div>
-											</div>
-
-											<div class="col-sm-4 form-group">
-												<label>Instrument Date</label> <span class="text-danger">*
-												</span>&nbsp; <span id="instrumentdate" name="instrumentdate"
-													class="text-danger"> </span> <input class="form-control"
-													name="instdate" id="instdate" type="date" required>
-											</div>
-
-
-
-
-
-										</div>
-
-										<div class="row">
-
-
-											<div class="col-sm-4 form-group" id="IFSC1">
-												<label id="IFSC1">IFSC </label> <input class="form-control"
-													oninput="this.value = this.value.toUpperCase()"
-													maxlength="11" name="IFSC" type="text"
-													placeholder="IFSC Code" id="IFSC"
-													onchange="deleteErrorMsg()" required>
-											</div>
-											<div class="col-sm-4 form-group" id="BankName1">
-												<label id="BankName1">Bank Name</label> <input
-													class="form-control taxtbox" name="BankName" id="BankName"
-													min="0" type="text" placeholder="Bank Name" readonly="true"
-													onchange="deleteErrorMsg()">
-											</div>
-
-											<div class="col-sm-4 form-group" id="Branch1">
-												<label id="Branch1">Branch</label> <input
-													class="form-control taxtbox" name="Branch" id="Branch"
-													min="0" type="text" placeholder="Branch" readonly="true"
-													onchange="deleteErrorMsg()">
-											</div>
-
-
-
-
-
-
-
-										</div>
-
-										<div class="row">
-
-											<div class="col-sm-4 form-group">
-												<label class="required">Supporting Document ((Only
-													accepted .jpg,.jpeg,.png.pdf)330kb-1MB))</label>&nbsp; <span
-													id="errRegForm" name="errRegForm" class="text-danger">
-												</span> <img id="imgPreview" /><input class="form-control taxtbox"
-													name="SupportingDocument" type="file"
-													accept=".jpg,.jpeg,.png,.pdf"
-													oninput="validateREGFileType()"
-													placeholder="Supporting Document" id="SupportingDocument"
-													onkeypress="deleteErrorMsg()" required>
-											</div>
-
-											<div class="col-sm-4 form-group" id="doshipment">
-												<label id="doshipment">Last Shipment date</label> <input
-													class="form-control" name="dateofship" id="dateofship"
-													placeholder="Date of Shipment" type="date">
-											</div>
-											<div class="col-sm-4 form-group" id="doexpiry">
-												<label id="doexpiry">Date of Expiry</label> <input
-													class="form-control" name="dateofexpiry" id="dateofexpiry"
-													placeholder="Date of Expiry" type="date">
-											</div>
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label"display:none;">GradeComposition </label> <span
-													class="text-danger">* </span>&nbsp; <span
-													id="GradeComposition1" name="GradeComposition"
-													class="text-danger"> </span> <input type="hidden"
-													class="form-control" name="GradeComposition"
-													id="GradeComposition2" value="" readonly="readonly">
-											</div>
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label"display:none;">Contarctqty </label> <span
-													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
-													name="Contarctqty" class="text-danger"> </span> <input
-													type="hidden" class="form-control" name="Contarctqty"
-													id="Contarctqty2" value="" readonly="readonly">
-											</div>
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label>Ratio</label> <span class="text-danger">*</span>
-												&nbsp; <span id="Ratio" name="Ratio" class="text-danger"></span>
-												<input type="hidden" id="ratiosInput" name="ratios" value="">
-											</div>
-
-
-
-
-										</div>
-
-
-
-										<div class="row">
-
-
-
-											<div class="col-sm-4 form-group" id="autoamounta">
-												<label id="autoamounta">Auto Revolving Amount</label> <input
-													class="form-control taxtbox" name="autorevolvingamount"
-													id="autorevolvingamount" min="0" type="number"
-													placeholder="Auto Revolving Amount">
-											</div>
-
-											<div class="col-sm-2 form-group" style="display: none;">
-												<label"display:none;" >millname234 </label> <span
-													class="text-danger">* </span>&nbsp; <input
-													class="form-control" name="millname234" id="millname23"
-													value="<%=millname%>" readonly="readonly">
-											</div>
-
-
-
-										</div>
-
-
-
-										<div class="row" id="gradesDiv">
-											<!-- 	<div class="col-sm-15">
-												<table class="table">
-													<thead>
-														<tr>
-														
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															
-														
-														</tr>
-
-														<tr>
-														
-															
-														</tr>
-														<tr>
-														
-															
-														
-														</tr>
-														<tr>
-															
-															
-														</tr>
-														<tr>
-															
-															
-														</tr>
-														<tr>
-															
-														
-														</tr>
-														<tr>
-															
-														
-														</tr>
-													</tbody>
-
-												</table>
-											</div> -->
-										</div>
-
-
-
-										<div class="row">
-											<div class="col-sm-12 form-group">
-												<input type="submit" value="Submit" class="btn btn-primary"
-													id="submit" onclick="">
-											</div>
-											<!--  <div class="clear">
- 
-												  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
-											   </div> -->
-										</div>
-
-
-
-										<!--   <div id="tableContainer"></div> -->
-										<table id="contractTable" class="table table-bordered">
-											<thead class="thead-light">
-												<tr>
-													<th>Contract No</th>
-													<th>Contracted Qty(Qtls)</th>
-													<th id="contractValueHeading">Contract value</th>
-													<th>Contract Date</th>
-													<th>Payment_due Date</th>
-													<th>Instrument value</th>
-													<th>Instrument Date</th>
-
-												</tr>
-											</thead>
-											<tbody>
-												<!-- Rows will be dynamically added here -->
-											</tbody>
-										</table>
-										<input type="hidden" id="contractValueInput"
-											name="contractValue"> <input type="hidden"
-											id="paymentDueDateInput" name="paymentDueDate"> <input
-											type="hidden" id="totalcontractvalue1"
-											name="totalcontractvalue">
-
-
-										<div class="row" id="dataofHistory" style="display: none;">
-											<div class="col-sm-15">
-												<table class="table" id="dataTable">
-													<thead>
-														<tr>
-															<th id="Contarct-NO1">Contract_No</th>
-															<th id="Instrument-NO1">Instrument value</th>
-															<th id="Instrument-value1">Instrument date</th>
-															<!--   <th id="Paid"> Qty paid</th>
-												                    <th id="remaining"> Qty remaining</th> -->
-														</tr>
-													</thead>
-													<tbody id="tableBody">
-														<tr>
-
-															<td><input type="text" id="Contarct-NO" name="g11"
-																readonly="readonly" value=""
-																style="width: 300px; height: 30px;"></td>
-															<td><input type="text" id="Instrument-NO" name="g12"
-																readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<td><input type="text" id="Instrument-value"
-																name="g12" readonly="readonly" value=""
-																style="width: 200px; height: 30px;"></td>
-															<!--   <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
-																    <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td> -->
-														</tr>
-
-
-													</tbody>
-
-												</table>
-											</div>
-										</div>
-
-
-
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- END PAGE CONTENT-->
-			<%@ include file="footer.jsp"%>
-		</div>
-	</div>
-
-	<div class="sidenav-backdrop backdrop"></div>
-
-
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
-
-
-	<script type="text/javascript">
+       <div class="page-wrapper">
+             <!-- START HEADER-->
+             <%@ include file="header.jsp"%>
+             <!-- END HEADER-->
+             <!-- START SIDEBAR-->
+             <%@ include file="sidebar.jsp"%>
+             <!-- END SIDEBAR-->
+             <div class="content-wrapper">
+                    <!-- START PAGE CONTENT-->
+                    <div class="page-heading">
+                           <h1 class="page-title">Entry of Payment Details</h1>
+
+                           <%--  for (Object row : getcontractList1) {
+                                                                                             String field1 = (String)row;
+                                                                                          %>
+                                                                                          <option value="<%= field1 %>"><%= field1 %></option>
+                                                                                          <%
+                                                                                          }
+                                                                                          %> --%>
+                    </div>
+
+                    <%
+                    List<Object> getcontractList1 = (List<Object>) request.getAttribute("getcontractList1");
+                    List<Object[]> getcontractList2 = (List<Object[]>) request.getAttribute("getcontractList2");
+                    String millname = "";
+                    %>
+
+
+
+
+                    <div class="page-content fade-in-up">
+                           <div class="row">
+                                 <div class="col-md-11">
+                                        <div class="ibox">
+                                               <span id="flashMessage">${msg}</span>
+                                               <div class="ibox-body">
+                                                     <form action="saveentryofpaymentinstrumentDetails.obj"
+                                                            method="POST" name="myForm" id="myForm"
+                                                            enctype="multipart/form-data">
+                                                            <div class="child-checkbox" id="disableform">
+                                                                   <div class="row">
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>Mill name.</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="millname1" name="Millname"
+                                                                                      class="text-danger"> </span> <select name="millname65"
+                                                                                      id="millname12" class="form-control taxtbox" required>
+
+                                                                                      <option value="select">-Select-</option>
+                                                                                      <%
+                                                                                      for (Object[] row : getcontractList2) {
+                                                                                             millname = (String) row[0];
+                                                                                      
+                                                                                             String millcode = (String) row[1];
+                                                                                      %>
+                                                                                      <%-- <option value="<%=millcode%>"><%=millname%></option> --%>
+                                                                                      
+                                                                                      <option value="<%=millcode%>" data-millname="<%=millname%>"><%=millname%></option>
+   
+                                                                                      <%
+                                                                                      }
+                                                                                      %>
+                                                                                </select>
+
+
+                                                                          </div>
+                                                                         <div class="col-sm-4 form-group" id="dpc_div"">
+                                                                                <label>Contract No.</label> <span class="text-danger">*</span>&nbsp;
+                                                                                <span id="contractno" class="text-danger"></span> <select
+                                                                                      name="fullcontractno" id="contractno12"
+                                                                                      class="form-control taxtbox"
+                                                                                      style="height: = 50; width: 350px;" required>
+                                                                                      <option disabled selected value="">-Select</option>
+
+                                                                                </select>
+                                                                          </div>
+
+                                                                         <div class="col-sm-4 form-group" id="instrument">
+                                                                                <label>Instrument Type</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="payment" name="payment" class="text-danger">
+                                                                                </span> <select name="paymenttype" id="paymenttype"
+                                                                                      class="form-control taxtbox" required>
+                                                                                      <option value="">-Select-</option>
+                                                                                      <option value="NEFT/RTGS">NEFT/RTGS</option>
+                                                                                      <option value="Cheque/DD">Cheque/DD</option>
+                                                                                      <option value="Letter_of_Credit">Letter of Credit</option>
+                                                                                </select>
+                                                                          </div>
+
+
+                                                                         <!--        <div class="col-sm-4 form-group">
+                                                                                <label id="ContracQty2">Contract_Qty </label> <input
+                                                                                      class="form-control" id="ContracQty1" value=""
+                                                                                      readonly="readonly">
+                                                                          </div>
+-->
+
+
+
+
+                                                                   </div>
+                                                                   <!-- <div class="row">
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label id="Contract_date2">Contract_date</label> <input
+                                                                                      class="form-control taxtbox" id="Contract_date1" value=""
+                                                                                      readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label id="payment_dueDate2">Payment_dueDate</label> <input
+                                                                                      class="form-control" name="payment_dueDate12"
+                                                                                      id="payment_dueDate1" value="" readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label id="contract_Value2">Contract_Value</label> <input
+                                                                                      class="form-control taxtbox" id="contract_Value1"
+                                                                                      name="contrcat_value23" value="" readonly="readonly">
+                                                                          </div>
+                                                                   </div> -->
+
+                                                                   <div class="row">
+
+                                                                         <!-- 
+                                                                   <div class="col-sm-4 form-group">
+                                                                       <label for="Instrumentno">Instrument No</label> <span class="text-danger">*</span>
+                                                                       &nbsp; <span id="instrumentError" class="text-danger"></span>
+                                                                       <input class="form-control" name="Instrument" id="Instrumentno"
+                                                                              oninput="validateInstrumentNo(this);"
+                                                                              maxlength="16" type="text" required>
+                                                                   </div> -->
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>Instrumentno</label> <span class="text-danger">*</span>&nbsp;
+                                                                                <span id="MR_N" name="MR_dante" class="text-danger"></span>
+                                                                                <input class="form-control" name="Instrument"
+                                                                                      id="Instrumentno" type="text" maxlength="50"
+                                                                                      oninput="this.value = this.value.toUpperCase();validateInstrumentNo(this);"
+                                                                                      pattern="[A-Za-z0-9/-]*"
+                                                                                      title="Only alphanumeric characters, slashes, and hyphens are allowed"
+                                                                                      required>
+                                                                         </div>
+
+
+
+                                                                         <!-- oninput="validateAmount();"  -->
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label id="differenceLabel">Instrument Value </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span
+                                                                                      id="InstrumentValue " name="InstrumentValue "
+                                                                                      class="text-danger" type="double"> </span>
+                                                                                <!--  <input class="form-control taxtbox" name="InstrumentValue" min="0" type="number" placeholder="Instrument Value" required> -->
+                                                                                 <input class="form-control taxtbox" name="InstrumentValue"
+                                                                                      id="InstrumentValue12" min="0" step="1" pattern="\d+"
+                                                                                      type="text"
+                                                                                      oninput="this.value = this.value.replace(/\D/g, '')"
+                                                                                      placeholder="Instrument Value" required>
+                                                                                <div id="errorMessage" style="color: red; display: none;">Amount
+                                                                                      exceeds the allowed limit!</div>
+                                                                          </div>
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label>Instrument Date</label> <span class="text-danger">*
+                                                                                </span>&nbsp; <span id="instrumentdate" name="instrumentdate"
+                                                                                      class="text-danger"> </span> <input class="form-control"
+                                                                                      name="instdate" id="instdate" type="date" required>
+                                                                          </div>
+
+
+
+
+
+                                                                   </div>
+
+                                                                   <div class="row">
+
+
+                                                                         <div class="col-sm-4 form-group" id="IFSC1">
+                                                                                <label id="IFSC1">IFSC </label> <input class="form-control"
+                                                                                      oninput="this.value = this.value.toUpperCase()"
+                                                                                       maxlength="11" name="IFSC" type="text"
+                                                                                      placeholder="IFSC Code" id="IFSC"
+                                                                                      onchange="deleteErrorMsg()" required>
+                                                                          </div>
+                                                                         <div class="col-sm-4 form-group" id="BankName1">
+                                                                                <label id="BankName1">Bank Name</label> <input
+                                                                                      class="form-control taxtbox" name="BankName" id="BankName"
+                                                                                      min="0" type="text" placeholder="Bank Name" readonly="true"
+                                                                                      onchange="deleteErrorMsg()">
+                                                                          </div>
+
+                                                                         <div class="col-sm-4 form-group" id="Branch1">
+                                                                                <label id="Branch1">Branch</label> <input
+                                                                                      class="form-control taxtbox" name="Branch" id="Branch"
+                                                                                      min="0" type="text" placeholder="Branch" readonly="true"
+                                                                                      onchange="deleteErrorMsg()">
+                                                                          </div>
+
+
+
+
+
+
+
+                                                                   </div>
+
+                                                                   <div class="row">
+
+                                                                         <div class="col-sm-4 form-group">
+                                                                                <label class="required">Supporting Document ((Only
+                                                                                      accepted .jpg,.jpeg,.png.pdf)330kb-1MB))</label>&nbsp; <span
+                                                                                      id="errRegForm" name="errRegForm" class="text-danger">
+                                                                                </span> <img id="imgPreview" /><input class="form-control taxtbox"
+                                                                                      name="SupportingDocument" type="file"
+                                                                                      accept=".jpg,.jpeg,.png,.pdf"
+                                                                                      oninput="validateREGFileType()"
+                                                                                      placeholder="Supporting Document" id="SupportingDocument"
+                                                                                      onkeypress="deleteErrorMsg()" required>
+                                                                          </div>
+
+                                                                         <div class="col-sm-4 form-group" id="doshipment">
+                                                                                <label id="doshipment">Last Shipment date</label> <input
+                                                                                      class="form-control" name="dateofship" id="dateofship"
+                                                                                      placeholder="Date of Shipment" type="date">
+                                                                          </div>
+                                                                         <div class="col-sm-4 form-group" id="doexpiry">
+                                                                                <label id="doexpiry">Date of Expiry</label> <input
+                                                                                      class="form-control" name="dateofexpiry" id="dateofexpiry"
+                                                                                      placeholder="Date of Expiry" type="date">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label"display:none;">GradeComposition </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span
+                                                                                      id="GradeComposition1" name="GradeComposition"
+                                                                                      class="text-danger"> </span> <input type="hidden"
+                                                                                      class="form-control" name="GradeComposition"
+                                                                                      id="GradeComposition2" value="" readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label"display:none;">Contarctqty </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
+                                                                                      name="Contarctqty" class="text-danger"> </span> <input
+                                                                                      type="hidden" class="form-control" name="Contarctqty"
+                                                                                      id="Contarctqty2" value="" readonly="readonly">
+                                                                          </div>
+                                                                         <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label>Ratio</label> <span class="text-danger">*</span>
+                                                                                &nbsp; <span id="Ratio" name="Ratio" class="text-danger"></span>
+                                                                                <input type="hidden" id="ratiosInput" name="ratios" value="">
+                                                                          </div>
+
+
+
+
+                                                                   </div>
+
+
+
+                                                                   <div class="row">
+
+
+
+                                                                         <div class="col-sm-4 form-group" id="autoamounta">
+                                                                                <label id="autoamounta">Auto Revolving Amount</label> <input
+                                                                                      class="form-control taxtbox" name="autorevolvingamount"
+                                                                                      id="autorevolvingamount" min="0" type="number"
+                                                                                      placeholder="Auto Revolving Amount">
+                                                                          </div>
+
+                                                            
+                                                                         
+                                                                                <div class="col-sm-2 form-group" style="display: none;">
+                                                                                <label "display:none;">millname234 </label> <span
+                                                                                      class="text-danger">* </span>&nbsp; <input
+                                                                                      class="form-control" name="millname234" id="millname23445"
+                                                                                      value="" readonly="readonly">
+                                                                          </div>
+
+
+
+                                                                   </div>
+
+
+
+                                                                   <div class="row" id="gradesDiv">
+                                                                         <!--        <div class="col-sm-15">
+                                                                                <table class="table">
+                                                                                      <thead>
+                                                                                             <tr>
+                                                                                             
+                                                                                             </tr>
+                                                                                      </thead>
+                                                                                      <tbody>
+                                                                                             <tr>
+                                                                                                    
+                                                                                             
+                                                                                             </tr>
+
+                                                                                             <tr>
+                                                                                             
+                                                                                                    
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                             
+                                                                                                    
+                                                                                             
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    
+                                                                                                    
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    
+                                                                                                    
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    
+                                                                                             
+                                                                                             </tr>
+                                                                                             <tr>
+                                                                                                    
+                                                                                             
+                                                                                             </tr>
+                                                                                      </tbody>
+
+                                                                                </table>
+                                                                          </div> -->
+                                                                   </div>
+
+
+
+                                                                   <div class="row">
+                                                                         <div class="col-sm-12 form-group">
+                                                                                <input type="submit" value="Submit" class="btn btn-primary"
+                                                                                      id="submit" onclick="">
+                                                                          </div>
+                                                                         <!--  <div class="clear">
+
+                                                                                  <button type="submit" value="submit" name="subscribe" id="mc-embedded-subscribe" class="submit- btn btn-default" onclick="window.open('https://login.mailchimp.com/signup'), window.location = 'https://google.com'">Submit</button>
+                                                                            </div> -->
+                                                                   </div>
+
+
+
+                                                                   <!--   <div id="tableContainer"></div> -->
+                                                                   <table id="contractTable" class="table table-bordered">
+                                                                          <thead class="thead-light">
+                                                                                <tr>
+                                                                                      <th>Contract No</th>
+                                                                                      <th>Contracted Qty(Qtls)</th>
+                                                                                      <th id="contractValueHeading">Contract value</th>
+                                                                                      <th>Contract Date</th>
+                                                                                      <th>Payment_due Date</th>
+                                                                                      <th>Instrument value</th>
+                                                                                      <th>Instrument Date</th>
+
+                                                                                </tr>
+                                                                          </thead>
+                                                                          <tbody>
+                                                                                <!-- Rows will be dynamically added here -->
+                                                                          </tbody>
+                                                                   </table>
+                                                                   <input type="hidden" id="contractValueInput"
+                                                                          name="contractValue"> <input type="hidden"
+                                                                          id="paymentDueDateInput" name="paymentDueDate"> <input
+                                                                          type="hidden" id="totalcontractvalue1"
+                                                                          name="totalcontractvalue">
+
+
+                                                                   <div class="row" id="dataofHistory" style="display: none;">
+                                                                         <div class="col-sm-15">
+                                                                                <table class="table" id="dataTable">
+                                                                                      <thead>
+                                                                                             <tr>
+                                                                                                    <th id="Contarct-NO1">Contract_No</th>
+                                                                                                    <th id="Instrument-NO1">Instrument value</th>
+                                                                                                    <th id="Instrument-value1">Instrument date</th>
+                                                                                                     <!--   <th id="Paid"> Qty paid</th>
+                                                                                                    <th id="remaining"> Qty remaining</th> -->
+                                                                                             </tr>
+                                                                                      </thead>
+                                                                                      <tbody id="tableBody">
+                                                                                             <tr>
+
+                                                                                                    <td><input type="text" id="Contarct-NO" name="g11"
+                                                                                                          readonly="readonly" value=""
+                                                                                                          style="width: 300px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="Instrument-NO" name="g12"
+                                                                                                          readonly="readonly" value=""
+                                                                                                           style="width: 200px; height: 30px;"></td>
+                                                                                                    <td><input type="text" id="Instrument-value"
+                                                                                                          name="g12" readonly="readonly" value=""
+                                                                                                          style="width: 200px; height: 30px;"></td>
+                                                                                                    <!--   <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td>
+                                                                                                              <td><input type="text" id="g12" name="g12" readonly="readonly" value="" style="width: 200px; height: 30px;"></td> -->
+                                                                                             </tr>
+
+
+                                                                                      </tbody>
+
+                                                                                </table>
+                                                                          </div>
+                                                                   </div>
+
+
+
+                                                            </div>
+                                                     </form>
+                                               </div>
+                                        </div>
+                                 </div>
+                           </div>
+                    </div>
+                    <!-- END PAGE CONTENT-->
+                    <%@ include file="footer.jsp"%>
+             </div>
+       </div>
+
+       <div class="sidenav-backdrop backdrop"></div>
+
+
+       <script src="./assets/vendors/jquery/dist/jquery.min.js"
+             type="text/javascript"></script>
+       <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+       <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+             type="text/javascript"></script>
+       <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+             type="text/javascript"></script>
+       <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+             type="text/javascript"></script>
+       <script
+             src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+             type="text/javascript"></script>
+       <!-- PAGE LEVEL PLUGINS-->
+       <!-- CORE SCRIPTS-->
+       <script src="assets/js/app.min.js" type="text/javascript"></script>
+
+
+       <script type="text/javascript">
 var idcount=0;
 var convalue=0;
 var contract105 = 0;
 var contract110 = 0;
 $(document).ready(function() {
-	$('#contractTable').hide();
+       $('#contractTable').hide();
     // Define total contract value and ratios globally
     var totalContractValue = 0;
     var ratios = [];
@@ -503,6 +508,9 @@ $(document).ready(function() {
     $('#millname12').on('change', function() {
         $('#contractTable tbody').empty();
         var field2Value = $(this).val();
+        var millName = $('option:selected', this).data('millname');
+        console.log(millName);
+        $('#millname23445').val(millName);
         
         console.log(field2Value);
         $.ajax({
@@ -602,15 +610,15 @@ $(document).ready(function() {
     function updateTableWithData(data,lastColumnData) {
         var rowData = JSON.parse(data);
         if (Array.isArray(rowData) && rowData.length > 0) {
-        	$('#contractTable').show();
+             $('#contractTable').show();
             // Clear existing table rows
           
              
             // Calculate total contract value and update table rows
             rowData.forEach(function(row,index) {
-            	idcount++;
-            	contract105 = Math.round(row[2]);
-            	contract110 =  Math.round((row[2])*(110/105));
+            idcount++;
+            contract105 = Math.round(row[2]);
+            contract110 =  Math.round((row[2])*(110/105));
                 var newRow = $('<tr>');
                 newRow.append('<td>' + row[0] + '</td>');
                 newRow.append('<td>' + row[1] + '</td>');
@@ -619,15 +627,15 @@ $(document).ready(function() {
                 newRow.append('<td>' + row[3] + '</td>');
                 newRow.append('<td>' + row[4] + '</td>');
                 if(row[5]==null&& row[6]==null){
-                	newRow.append('<td>0</td>');
-                    newRow.append('<td></td>');	
+                    newRow.append('<td>0</td>');
+                    newRow.append('<td></td>');     
                 }
                 else {
-                	
-                	  var instrumentValue = row[5] || 0;
-                	    var instrumentDate = row[6] || '';
-                	    newRow.append('<td>' + instrumentValue + '</td>');
-                	    newRow.append('<td>' + instrumentDate + '</td>');
+                    
+                      var instrumentValue = row[5] || 0;
+                        var instrumentDate = row[6] || '';
+                        newRow.append('<td>' + instrumentValue + '</td>');
+                        newRow.append('<td>' + instrumentDate + '</td>');
                 }
                 newRow.append('<td style="display: none;">' + row[7] + '</td>');
                 
@@ -719,8 +727,8 @@ $(document).ready(function() {
         ratios = [];
         var processedContracts = [];// Clear existing ratios
         $('#contractTable tbody tr').each(function() {
-        	
-        	 var contractNo = $(this).find('td:first').text(); // Assuming the contract number is in the first column
+             
+              var contractNo = $(this).find('td:first').text(); // Assuming the contract number is in the first column
 
              // Check if the contract number has already been processed
              if (processedContracts.includes(contractNo)) {
@@ -750,9 +758,9 @@ $(document).ready(function() {
 </script>
 
 
-	<script>
- $(document).ready(function() {
- 
+       <script>
+$(document).ready(function() {
+
     $('#InstrumentValue12').on('input', function() {
     
         var enteredValue = parseFloat($(this).val());
@@ -780,7 +788,7 @@ $(document).ready(function() {
 </script>
 
 
-	<script type="text/javascript">
+       <script type="text/javascript">
     //Through ajax call on paymenttype id  we can hide and visible the parameters.
     $("#paymenttype").on("change", function() {
         var paymenttype = $(this).val();
@@ -861,7 +869,7 @@ $(document).ready(function() {
     });
 </script>
 
-	<script type="text/javascript">
+       <script type="text/javascript">
     document.getElementById("gradesDiv").style.setProperty("display", 'none');
     document.getElementById("autoamounta").style.setProperty("display", 'none');
     document.getElementById("doexpiry").style.setProperty("display", 'none');
@@ -914,26 +922,26 @@ $(document).ready(function() {
 
 
 
-	<script>
+       <script>
         function validateInstrumentNo(input) {
-        	  var pattern = /^[A-Za-z0-9/-]*$/; // Pattern to allow alphanumeric characters, slashes, and hyphens
-        	    var inputValue = input.value; // Get the input value
+               var pattern = /^[A-Za-z0-9/-]*$/; // Pattern to allow alphanumeric characters, slashes, and hyphens
+                 var inputValue = input.value; // Get the input value
 
-        	    if (!pattern.test(inputValue)) {
-        	        input.setCustomValidity("Only alphanumeric characters, slashes (/), and hyphens (-) are allowed.");
-        	        document.getElementById("MR_N").textContent = "Only alphanumeric characters, slashes, and hyphens are allowed"; 
-        	        input.value = inputValue.slice(0, -1);// Display error message near the input
-        	    } else {
-        	        input.setCustomValidity("");
-        	        document.getElementById("MR_N").textContent = ""; // Clear error message if input is valid
-        	    } // Update input value to uppercase
+                 if (!pattern.test(inputValue)) {
+                     input.setCustomValidity("Only alphanumeric characters, slashes (/), and hyphens (-) are allowed.");
+                     document.getElementById("MR_N").textContent = "Only alphanumeric characters, slashes, and hyphens are allowed"; 
+                     input.value = inputValue.slice(0, -1);// Display error message near the input
+                 } else {
+                     input.setCustomValidity("");
+                     document.getElementById("MR_N").textContent = ""; // Clear error message if input is valid
+                 } // Update input value to uppercase
         }
     </script>
 
 
 
 
-	<script>
+       <script>
     $(document).ready(function() {
         setTimeout(function() {
             $('#flashMessage').fadeOut('slow');
@@ -941,7 +949,7 @@ $(document).ready(function() {
     });
 </script>
 
-	<script>
+       <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Get references to the date input fields
         var instDateInput = document.getElementById('instdate');
@@ -967,7 +975,7 @@ $(document).ready(function() {
             minShipmentDate.setDate(selectedInstrumentDate.getDate() + 1);
             var minShipmentDateString = minShipmentDate.toISOString().split('T')[0];
             shipDateInput.setAttribute('min', minShipmentDateString);
-            shipDateInput.disabled = false;
+           shipDateInput.disabled = false;
         }
 
         function updateExpiryMinDate() {
@@ -983,7 +991,7 @@ $(document).ready(function() {
 
 
 
-	<script type="text/javascript">
+       <script type="text/javascript">
 $(document).ready(function() {
     $('#contractno12').on('change', function() {
         var field2Value = $(this).val();
@@ -1033,7 +1041,7 @@ $(document).ready(function() {
                                 success: function(data) {
                                 
                                 
-                                	 console.log("data"+data)
+                                  console.log("data"+data)
                                     try {
                                         var data1 = JSON.parse(data);
                                         if (data1 && data1.length > 0) {
@@ -1085,7 +1093,7 @@ $(document).ready(function() {
                                     }
                                 },
                                 error: function(xhr, status, error) {
-                                    console.error("AJAX error in PreviousEntry: " + status + " - " + error);
+                                   console.error("AJAX error in PreviousEntry: " + status + " - " + error);
                                 }
                             });
                         }
@@ -1107,50 +1115,50 @@ $(document).ready(function() {
 
 
 
-	<script>
-		function deleteErrorMsg() {
-			var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value;
-			if (F_BANK_IFSC.length > 1) {
-				$("#errIFSC").hide();
-			}
-			var F_REG_FORM = document.forms["myForm"]["F_REG_FORM"].value;
-			if (F_REG_FORM.length > 1) {
-				$("#errRegForm").hide();
-			}
+       <script>
+             function deleteErrorMsg() {
+                    var F_BANK_IFSC = document.forms["myForm"]["F_BANK_IFSC"].value;
+                    if (F_BANK_IFSC.length > 1) {
+                           $("#errIFSC").hide();
+                    }
+                    var F_REG_FORM = document.forms["myForm"]["F_REG_FORM"].value;
+                    if (F_REG_FORM.length > 1) {
+                           $("#errRegForm").hide();
+                    }
 
-		}
-		function allow_alphabets(element) {
-			let textInput = element.value;
-			textInput = textInput.replace(/[^A-Za-z ]+$/gm, "");
-			element.value = textInput;
-		}
-	</script>
+             }
+             function allow_alphabets(element) {
+                    let textInput = element.value;
+                    textInput = textInput.replace(/[^A-Za-z ]+$/gm, "");
+                    element.value = textInput;
+             }
+       </script>
 
-	<script>
-		function myFunction() {
-			$("#doexpiry").hide();
-			$("#dateofexpiry").hide();
-			$("#doshipment").hide();
-			$("#dateofship").hide();
-			$("#autoamounta").hide();
-			$("#autorevolvingamount").hide();
+       <script>
+             function myFunction() {
+                    $("#doexpiry").hide();
+                    $("#dateofexpiry").hide();
+                    $("#doshipment").hide();
+                    $("#dateofship").hide();
+                    $("#autoamounta").hide();
+                    $("#autorevolvingamount").hide();
 
-			$("#IFSC").hide();
-			$("#BankName").hide();
-			$("#Branch").hide();
-			$("#IFSC1").hide();
-			$("#BankName1").hide();
-			$("#Branch1").hide();
+                    $("#IFSC").hide();
+                    $("#BankName").hide();
+                    $("#Branch").hide();
+                    $("#IFSC1").hide();
+                    $("#BankName1").hide();
+                    $("#Branch1").hide();
 
-			// Your code to be executed when the page loads goes here
+                    // Your code to be executed when the page loads goes here
 
-		}
-	</script>
-
-
+             }
+       </script>
 
 
-	<script>
+
+
+       <script>
 $(document).ready(function() {
    
     function updateData(F_BANK_IFSC) {
@@ -1209,22 +1217,22 @@ $(document).ready(function() {
 
 
 
-	<script>
-		function validateREGFileType() {
-			var F_REG_FORM = document.getElementById("SupportingDocument").value;
-			var idxDot = F_REG_FORM.lastIndexOf(".") + 1;
-			var extFile = F_REG_FORM.substr(idxDot, F_REG_FORM.length)
-					.toLowerCase();
-			if (extFile == "jpg" || extFile == "jpeg" || extFile == "png" || extFile == "pdf") {
+       <script>
+             function validateREGFileType() {
+                    var F_REG_FORM = document.getElementById("SupportingDocument").value;
+                    var idxDot = F_REG_FORM.lastIndexOf(".") + 1;
+                    var extFile = F_REG_FORM.substr(idxDot, F_REG_FORM.length)
+                                 .toLowerCase();
+                    if (extFile == "jpg" || extFile == "jpeg" || extFile == "png" || extFile == "pdf") {
 
-			} else {
-				alert("Only jpg/jpeg and png files are allowed!");
-			}
-		}
-	</script>
+                    } else {
+                           alert("Only jpg/jpeg and png files are allowed!");
+                    }
+             }
+       </script>
 
 
-	<script>
+       <script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {
                 // Disable the submit button
@@ -1239,13 +1247,3 @@ $(document).ready(function() {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

@@ -89,12 +89,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	@Override
-	public ModelAndView pcso_details(List<String> pcsoDates, List<String> gradeComp,String cropyr) {
+	public ModelAndView pcso_details(List<String> pcsoDates, List<String> gradeComp, String cropyr) {
 
 		pg.clear();
 		// gc.clear();
-
-		 
 
 		List<Object[]> rows = new ArrayList<>();
 
@@ -123,10 +121,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 //		}
 
 		List<Object[]> listOfGradesPrice = getListOfGradesPriceForMillDelivery(cropyr);
-         String isPrice = "1"; 
-	    if(listOfGradesPrice.size() == 0) {
-	    	isPrice = "0";
-	    }
+		String isPrice = "1";
+		if (listOfGradesPrice.size() == 0) {
+			isPrice = "0";
+		}
 
 		for (Object[] gradeP : listOfGradesPrice) {
 			// pg.add(gradeP.);
@@ -160,11 +158,10 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			int sizeOfComponents = pg.size();
 			int contractedValueForPerticularMill = 0;
 			for (int j = 0; j < sizeOfComponents; j++) {
-				System.out.println(
-						Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
+				//System.out.println(Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
 				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
 						* (totalAllocatedToMill * pg.get(j));
-				System.err.println((Double.parseDouble(gradeComp.get(j)) / 100) * (totalAllocatedToMill * pg.get(j)));
+				//System.err.println((Double.parseDouble(gradeComp.get(j)) / 100) * (totalAllocatedToMill * pg.get(j)));
 			}
 //			System.out.println("-------------------------------------------");
 //			System.out.println(contractedValueForPerticularMill);
@@ -176,7 +173,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			totalContractedValue += contractedValueForPerticularMill;
 		}
 		// totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
-		System.err.println(totalContractedValue);
+		//System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
@@ -209,7 +206,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	public List<Contractgeneration> getAllContract() {
 
 //		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_date, Contract_qty, SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
-		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_qty, SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
+		String sqlQuery = "select distinct Contract_identification_no , Pcso_date , Contract_qty , cropyear , SortingId  from jcicontract where Authorize_Status = 1 order by SortingId ASC";
 
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -220,6 +217,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 			contractgeneration.setContract_identification_no((String) eleObject[0]);
 			contractgeneration.setPcso_date((String) eleObject[1]);
+			contractgeneration.setCropYear((String) eleObject[3]);
 			/* contractgeneration.setContract_date((String) eleObject[2]); */
 			contractgeneration.setContract_qty((String) eleObject[2]);
 
@@ -232,7 +230,8 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	}
 
 	@Override
-	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray,String cropyr) {
+	public int updateContractedValue(String deliveryType, String totalQtyOfMill, List<String> gradeArray,
+			String cropyr) {
 		pg.clear();
 		List<Object[]> listOfGradesPrice = new ArrayList<>();
 		if (deliveryType.equals("Ex-Godown")) {
@@ -399,21 +398,47 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public String getMillname(String millCode) {
-		String sql = "select unit_name from jcimilldetailchild where client_unit_code = '" + millCode + "'";
+		// String sql = "select unit_name from jcimilldetailchild where client_unit_code
+		// = '" + millCode + "'";
+		String sql = "select concat( b.client_name , '#P#' ,  a.unit_name , '#P#',  b.client_address1 , '#P#', Concat(b.client_location ,'-' , b.client_pin)) from jcimilldetailchild a inner join jcimilldetailmaster b on a.client_code = b.client_code where client_unit_code = '"
+				+ millCode + "'";
 
 		return (String) currentSession().createSQLQuery(sql).uniqueResult();
 	}
 
 	@Override
 	public List<String> getPscoDateByCropYr(String cropYr) {
-		String sql = "select distinct pcso_date from jcientryof_pcso where cropYear ='" + cropYr + "' and Pcso_contract_flag = 0";
-		return ( List<String>) currentSession().createSQLQuery(sql).list();
+		String sql = "select distinct pcso_date from jcientryof_pcso where cropYear ='" + cropYr
+				+ "' and Pcso_contract_flag = 0";
+		
+//		SELECT DISTINCT 
+//	    pcso_date ,
+//	    CONVERT(DATETIME, pcso_date, 105)
+//	FROM 
+//	    jcientryof_pcso 
+//	WHERE 
+//	    cropYear = '2024-2025' 
+//	    AND Pcso_contract_flag = 0 
+//	ORDER BY 
+//	    CONVERT(DATETIME, pcso_date, 105) DESC;
+
+		
+		return (List<String>) currentSession().createSQLQuery(sql).list();
 	}
 
 	@Override
 	public String findEmailByMillCode(String millCode) {
-		String sql = "select client_email from jcimilldetailmaster a INNER join jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '" + millCode + "'";
+		String sql = "select client_email from jcimilldetailmaster a INNER join jcimilldetailchild b on a.client_code = b.client_code and b.client_unit_code = '"
+				+ millCode + "'";
 		return (String) currentSession().createSQLQuery(sql).uniqueResult();
+	}
+
+	@Override
+	public int getContractCount(String cropyr) {
+		String sqString = "select "
+				+ "COALESCE(MAX(CAST(SUBSTRING(Contract_identification_no, CHARINDEX('-', Contract_identification_no) + 1, LEN(Contract_identification_no)) AS INT)),0) + 1 "
+				+ "from jcicontract where CropYear ='" + cropyr + "'";
+		return (int) currentSession().createSQLQuery(sqString).uniqueResult();
 	}
 
 }

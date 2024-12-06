@@ -136,8 +136,8 @@ th {
 										<th>Challan No</th>
 										<th>Date of Shipment</th>
 										<th>Vehicle No</th>
-										<th>Challan Qty</th>
-										<th>Actual Qty</th>
+										<th>Invoice Qty</th>
+									<!-- 	<th>Actual Qty</th> -->
 										<th>Bale Mark</th>
 										<th>Crop Year</th>
 									<!-- 	<th>Quality Claim</th> -->
@@ -171,7 +171,7 @@ th {
 										<td><%= millRecieptModel.getDate_shipment() %></td>
 										<td><%= millRecieptModel.getVehicle_no() %></td>
 										<td><%= millRecieptModel.getChallan_qty() %></td>
-										<td><%= millRecieptModel.getActual_qty() %></td>
+										<%-- <td><%= millRecieptModel.getActual_qty() %></td> --%>
 										<td><%= millRecieptModel.getBale_mark() %></td>
 										<td><%= millRecieptModel.getCrop_year() %></td>
 										<%-- <td><%= millRecieptModel.getQuality_claim() %></td> --%>

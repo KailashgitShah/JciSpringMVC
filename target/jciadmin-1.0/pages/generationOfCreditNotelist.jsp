@@ -12,18 +12,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
-<!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
 	rel="stylesheet" />
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 <!-- PLUGINS STYLES-->
 <link href="./assets/vendors/DataTables/datatables.min.css"
 	rel="stylesheet" />
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/chosen.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -163,24 +166,15 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
 
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
-	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	<!-- PAGE LEVEL PLUGINS-->
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		śtype="text/javascript"></script>
-	<!-- CORE SCRIPTS-->
-	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	 <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
+    <!-- CORE SCRIPTS-->
+    <script src="assets/js/app.min.js" type="text/javascript"></script>
 	<!-- PAGE LEVEL SCRIPTS-->
 	<script type="text/javascript">
 		$(function() {
@@ -293,7 +287,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 
 												htmlTable += '<td><a href="generateCrn.obj?challan='
 														+ filterOption[i][3]
-														+ '" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
+														+ '" target="_blank" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
 
 												htmlTable += '<td style="text-align:center" name="bosNo">'
 														+ filterOption[i][0]

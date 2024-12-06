@@ -113,7 +113,7 @@ tr:nth-child(even) {
 							<th>Grade-8</th>
 							<th>Total</th>
 							<th>HO Document</th>
-							<th>Delete</th>
+						<!-- 	<th>Delete</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -149,11 +149,11 @@ tr:nth-child(even) {
     %>
 </td>
 <td><a href='downloadSupportDocHO.obj?filename=<%= row[25] %>' class='btn btn-primary btn-sm' target='_blank'>View Supporting doc</a></td>
-	<td><a href="deleteHO.obj?id=<%= s1 %>"
+	<%-- <td><a href="deleteHO.obj?id=<%= s1 %>"
 									onclick="return confirm('Are you sure you want to delete this item?');"><i
 										class="btn btn-danger btn-sm btn-block"><i
 											class="fa fa-trash" aria-hidden="true"
-											style="font-size: 15px;"></i></i></a></td>
+											style="font-size: 15px;"></i></i></a></td> --%>
 							</tr>
 							<%
 							i++;}

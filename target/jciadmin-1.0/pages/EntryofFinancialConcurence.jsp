@@ -230,7 +230,7 @@
 															    <label>Days Difference</label>
 															    <span class="text-danger">*</span>&nbsp;<span class="text-danger"></span>
 															    <input class="form-control taxtbox" name="Days_Diffrence" id="DaysDiffrencetotal" value="<%= charge %>" placeholder="Days_Diffrence">
-															    <span id="error-message" class="text-danger"></span>
+															    <span id="error-message" class="text-danger" oninput="restrictInput(event)"></span>
 															</div>
 				                                           
 					                       						<div class="col-sm-4 form-group">
@@ -243,7 +243,7 @@
 																<div class="col-sm-4 form-group">
 					                                            <label>Remarks</label> 
 					                                            <span class="text-danger">* </span>&nbsp; <span id="Remarks" name="Remarks" class="text-danger" type="varchar"> </span>
-																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  required>
+																 <input class="form-control taxtbox" name="Remarks1" id ="Remarks"  type="Remarks" placeholder="Remarks"  oninput="restrictInput(event)"  required>
 					                                     </div>
 																
 
@@ -307,7 +307,13 @@
 			    
 			    <div class="sidenav-backdrop backdrop"></div>
 			    
-			    
+			     <script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
 			  
 			     <script type="text/javascript">
 					$(document).ready(function(){

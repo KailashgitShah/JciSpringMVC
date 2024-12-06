@@ -31,8 +31,5 @@ public interface PcsoentryDao {
 	List<String> getUniqueRefNos();
 
 	List<EntryofpcsoModel> getAllMillDetailsOfRefNo(String refNo, String date);
-
-	int getCountOfTotalEntries();
-
 	List<String> getMillCodeForPcoDate(String pcoDate);
 }

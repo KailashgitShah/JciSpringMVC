@@ -95,13 +95,19 @@
 	});
 	function sendMail(roho)
 	{
-		var array = [];
-		
+		var tallyno = [];
+		var dpcid = [];
 		$("input[name='checkbox']:checked").each(function() {
-			array.push($(this).val());
+			 var value = $(this).val();
+			  var parts = value.split('-');
+			    if (parts.length === 2) {  // Ensure that splitting worked correctly
+			    	tallyno.push(parts[0]);
+			    	dpcid.push(parts[1]);
+			    }
 		});
-		if (Array.isArray(array) && array.length) {
-			 alert("Are you sure to process "+array.length+" tally slip?");
+		//alert(tallyno+"dpc"+dpcid);
+		if (Array.isArray(tallyno) && tallyno.length) {
+			 alert("Are you sure to process "+tallyno.length+" tally slip?");
 		} else {
 			alert("CheckBox Not Selected !..Please Select");
 			return false;
@@ -110,7 +116,7 @@
 		 $.ajax({
 				type:"GET",
 				url:"update_paymentstatus.obj",
-				data:{"tallyno":JSON.stringify(array),"roho":roho},
+				data:{"tallyno":JSON.stringify(tallyno),"dpcid":JSON.stringify(dpcid),"roho":roho},
 				//async: false,
 				success:function(result)
 				{
@@ -179,19 +185,15 @@
 								  
 							%>
 									<tr>
-									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>" ></td>
+									<td class="text-center"><input type="checkbox" id="checkbox" name="checkbox" value="<%=verificationlists.getTallyNo()%>-<%=verificationlists.getErrors()%>" ></td>
 										<td><%=i%></td>
 										<%
 		        						String encryptedtally = Encry.encrypt(String.valueOf(verificationlists.getTallyNo()),key);
 		        						String encryptedfarmerno = Encry.encrypt(String.valueOf(verificationlists.getFarmerRegNo()),key);
 										%>
-<<<<<<< HEAD:target/jciadmin-1.0/pages/verifiedTallySlipList_RM.jsp
-										<td><a href="popupimage.obj?tallyno=<%=encryptedtally%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
-										<td><a href="popupimage.obj?tallyno=<%=encryptedtally%>&farmerno=<%=encryptedfarmerno%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
-=======
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+											<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&dpcid=<%= verificationlists.getErrors() %>" target="_blank"><%=verificationlists.getTallyNo()%></a></td>
+									<%-- 	<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>" target="_blank"><%=verificationlists.getTallyNo()%></a></td> --%>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
->>>>>>> prod_ph1:target/jciadmin-1/pages/verifiedTallySlipList_RM.jsp
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>
 				                    	<td><%=verificationlists.getBasis()%></td>

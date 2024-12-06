@@ -174,31 +174,21 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 											 if(middlename.equalsIgnoreCase("NA"))
 												 middlename = "";
 											 fname = firstname +" "+middlename+" "+lastname;
-<<<<<<< HEAD:target/jciadmin-1.0/pages/ViewFarmerRegistration.jsp
-											}
-     						           String encryptedid = Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()),key);
-
-=======
 											} */
      						           //String encryptedid = Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()),key);
      						          String encryptedid = URLEncoder.encode(Encry.encrypt(String.valueOf(farmerRegModelList.getF_ID()), key), "UTF-8");
->>>>>>> prod_ph1:target/jciadmin-1/pages/ViewFarmerRegistration.jsp
 								%>
 									<tr role="row" class="odd">
 									<td class="sorting_1"><%=i%></td>
 									<td><a href = "viewFarmerReg.obj?id=<%=encryptedid%>" ><u><%=farmerRegModelList.getRegno() %></u></a></td>
-<<<<<<< HEAD:target/jciadmin-1.0/pages/ViewFarmerRegistration.jsp
-									<td><%=fname %></td> 
-=======
 									<td><%=farmerRegModelList.getF_NAME() %></td> 
->>>>>>> prod_ph1:target/jciadmin-1/pages/ViewFarmerRegistration.jsp
 									<td><%=farmerRegModelList.getF_MOBILE() %></td>
 									<td><%=farmerRegModelList.getState() %></td>
 									<td><%=farmerRegModelList.getDistrict() %></td>
 									<td><%=farmerRegModelList.getBlock() %></td>
 									<td>
 								<%
-										if(farmerRegModelList.getIS_VERIFIED()==0){d
+										if(farmerRegModelList.getIS_VERIFIED()==0){
 											out.print("Not Verified");
 										}else{
 											out.print("Verified");

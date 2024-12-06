@@ -82,7 +82,7 @@ body {
 					<li class="nav-label" data-pre="4" id="o4"><a href="viewuserrole.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>View User Role</b></a></li>
 					
 				</ul> </li> 
-				<!-- 
+				 
 			 <li><a href="javascript:void(0);;"><i class="sidebar-item-icon fa fa-th-large"></i> <span
 					class="nav-label"> &nbsp;User Management</span><i 
 					class="fa fa-angle-left arrow"></i></a>
@@ -178,7 +178,7 @@ body {
 	                  <li  data-pre="" id=""><a href="RegionReport.obj"><i class="sidebar-item-icon fa fa-th-large"></i><b>All Purchase Report</b></a></li>					
  
 				  </ul> 
-				</li> -->
+				</li> 
 				
 				<ul class="side-menu metismenu">
 

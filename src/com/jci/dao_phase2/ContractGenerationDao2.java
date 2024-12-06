@@ -26,6 +26,7 @@ public interface ContractGenerationDao2 {
 	String getMillname(String millCode);
 	List<String> getPscoDateByCropYr(String cropYr);
 	String findEmailByMillCode(String millCode);
+	int getContractCount(String cropyr);
 	
 
 

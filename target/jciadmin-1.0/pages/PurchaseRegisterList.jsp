@@ -55,6 +55,8 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                 <h1 class="page-title">Purchase Register Report</h1>
             </div>
 			<%
+		    String currCropYear = (String) session.getAttribute("currCropYear");
+		    String priviouscropyear = (String) session.getAttribute("priviouscropyear");
 				 //List <PurchaseRegisterDTO>  batch = null; //= (List <PurchaseRegisterDTO>) request.getAttribute("purchaselist");
 			%>
 <div class="page-content fade-in-up">
@@ -68,8 +70,8 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 					<label class="required">Crop Year</label>
 					<select class="form-control" name="cropyear" id="cropyear">
 					    <option disabled selected value>-Select-</option>
-					      <option value="2023-2024">2023-2024</option>
-					      <option value="2022-2023">2022-2023</option>
+					      <option value="<%=currCropYear%>"><%=currCropYear %></option>
+					      <option value="<%=priviouscropyear%>"><%=priviouscropyear%></option>
 					       
 					</select>
 				</div>

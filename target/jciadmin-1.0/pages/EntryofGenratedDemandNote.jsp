@@ -189,7 +189,7 @@
 											<div class="col-sm-4 form-group">
 												<label>Demand note no</label> <input
 													class="form-control taxtbox" name="Demand_note_no" 
-													 placeholder="Demand_note_no" value="<%= demandNoteNo %>"required>
+													 placeholder="Demand_note_no" value="<%= demandNoteNo %>"required readonly>
 											</div>
 											
 											
@@ -201,10 +201,18 @@
 											</div>
 											
 
-											<div class="col-sm-4 form-group">
-												<label>Remarks </label> <input class="form-control taxtbox"
-													name="Remarks" id="Remarks" type="text" placeholder="Remarks" >
-											</div>
+											 <div class="col-sm-4 form-group">
+            <label for="Remarks">Remarks</label>
+            <input class="form-control taxtbox"
+                   name="Remarks"
+                   id="Remarks"
+                   type="text"
+                   placeholder="Remarks"
+                   oninput="restrictInput(event)"
+                   required
+                   title="Characters < and > are not allowed">
+           
+        </div>
 
 											
 										</div>
@@ -269,6 +277,14 @@
 	</div>
 
 	<div class="sidenav-backdrop backdrop"></div>
+	<script>
+	
+     function restrictInput(event) {
+         // Replace < and > with an empty string
+         event.target.value = event.target.value.replace(/[<>]/g, '');
+     }
+ </script>
+	
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var waiverCheckbox = document.getElementById('waiverflag');

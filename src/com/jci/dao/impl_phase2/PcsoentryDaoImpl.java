@@ -210,11 +210,6 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 		return listOfPcso;
 	}
 
-	@Override
-	public int getCountOfTotalEntries() {
-		String sqString = "select COUNT( distinct Contract_identification_no ) from jcicontract";
-		return (int) currentSession().createSQLQuery(sqString).uniqueResult();
-	}
 
 	@Override
 	public List<String> getMillCodeForPcoDate(String pcoDate) {

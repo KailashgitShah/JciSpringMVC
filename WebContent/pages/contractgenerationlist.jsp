@@ -113,7 +113,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
                                                            <div class="row hover">
                                                                   <div class="col-sm-1"><%=i%></div>
-                                                                  <div class="col-sm-2"><%=contract.getContract_identification_no()%></div>
+                                                                  <div class="col-sm-2"><%=contract.getContract_identification_no()%>/<%=contract.getCropYear()%></div>
                                                                   <div class="col-sm-7"><%=contract.getPcso_date()%></div>
                                                                   <%-- <div class="col-sm-2"><%=contract.getContract_date()%></div> --%>
                                                                   <div class="col-sm-2"><%=contract.getContract_qty()%></div>

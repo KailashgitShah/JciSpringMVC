@@ -50,6 +50,7 @@
                       String cropyr  = (String)request.getAttribute("cropyr");
                       String Baled  = (String)request.getAttribute("Baled");
                       String basis  = (String)request.getAttribute("basis");
+                      String variety  = (String)request.getAttribute("variety");
 
                       int size = regionprocured.size();
                       %>     
@@ -107,7 +108,7 @@
 								<tbody>	
 									<tr>
 										<td>(<%=i+1%>)</td>
-										<td id="<%=i%>regionname"><a href ="available_dpcwise.obj?region=<%=procuredDTO.getRoname()%>&cropyr=<%=cropyr%>&Baled=<%=Baled%>&basis=<%=basis%>"><%=procuredDTO.getRoname()%></a></td>
+										<td id="<%=i%>regionname"><a href ="available_dpcwise.obj?region=<%=procuredDTO.getRoname()%>&cropyr=<%=cropyr%>&Baled=<%=Baled%>&basis=<%=basis%>&variety=<%=variety%>"><%=procuredDTO.getRoname()%></a></td>
 										<td id="<%=i%>loosejute"><%=procuredDTO.getGrade8() - availableDTO.getGrade8()%></td>
 										<td id="<%=i%>grade0"><%=procuredDTO.getGrade1() - availableDTO.getGrade1()%></td>
 										<td id="<%=i%>grade1"><%=procuredDTO.getGrade2() - availableDTO.getGrade2()%></td>

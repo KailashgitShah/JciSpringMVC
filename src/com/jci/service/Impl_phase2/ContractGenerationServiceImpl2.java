@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.ContractGenerationDao2;
 import com.jci.model.Contractgeneration;
 import com.jci.service_phase2.ContractGenerationService2;
@@ -102,6 +104,11 @@ public class ContractGenerationServiceImpl2 implements ContractGenerationService
 	@Override
 	public String findEmailByMillCode(String millCode) {
 		return contractGenerationDao2.findEmailByMillCode(millCode);
+	}
+
+	@Override
+	public int getContractCount(String cropyr) {
+		return contractGenerationDao2.getContractCount(cropyr);
 	}
 
 

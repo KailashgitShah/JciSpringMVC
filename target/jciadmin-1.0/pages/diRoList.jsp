@@ -63,7 +63,7 @@
                 <h1 class="page-title">Ro Di List </h1>
             </div>
 				<%
-				List<RoDispatchModel> roDiList = (List<RoDispatchModel>) request.getAttribute("roDiList");
+				List<Object[]> roDi = (List<Object[]>) request.getAttribute("roDiList");
 				%>
 			 <div class="page-content fade-in-up">
                 <div class="ibox">
@@ -80,6 +80,7 @@
 										<th>Contract No</th>
 										<th>Last date of Shipment</th>
 										<th>RO DI No</th>
+										<th>DPC Name</th>
 										<th>RO DI Date </th>
 										<th>Jute Variety</th>
 										<th>Grade 1</th>
@@ -96,35 +97,52 @@
 <%
     int i = 1; // Declare i outside the loop
 
-    for (RoDispatchModel di : roDiList) {
-        String regId = (String) session.getAttribute("regionId");
-        String input = di.getRoDiNo();
-        String[] parts = input.split("/");
+    for (Object[] di : roDi) {
+        
 
         // Check if the regionId matches the first two characters of the second part
-        if (parts.length > 1 && parts[1].startsWith(regId)) {
+       
 %>
 <tr>
     <td style='text-align:center;'><%= i %></td>
-    <td style='text-align:center;'><%= di.getContractNo() %></td>
-    <td style='text-align:center;'><%= di.getLastDateOfShipment() %></td>
-    <td style='text-align:center;'><%= di.getRoDiNo() %></td>
-    <td style='text-align:center;'><%= di.getRoDiDate() %></td>
-    <td style='text-align:center;'><%= di.getJuteVariety() %></td>
-    <td style='text-align:center;'><%= di.getGr1Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr2Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr3Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr4Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr5Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr6Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr7Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr8Qty() %></td>
-    <td style='text-align:center;'><%= di.getGr1Qty() + di.getGr2Qty() + di.getGr3Qty() + di.getGr4Qty() + di.getGr5Qty() + di.getGr6Qty() + di.getGr7Qty() + di.getGr8Qty() %></td>
+    <td style='text-align:center;'><%= di[0] %></td>
+    <td style='text-align:center;'><%= di[1]%></td>
+    <td style='text-align:center;'><%= di[2] %></td>
+    <td style='text-align:center;'><%= di[3] %></td>
+    <td style='text-align:center;'><%= di[4] %></td>
+    <td style='text-align:center;'><%= di[5] %></td>
+    <td style='text-align:center;'><%= di[6] %></td>
+    <td style='text-align:center;'><%= di[7] %></td>
+    <td style='text-align:center;'><%= di[8] %></td>
+    <td style='text-align:center;'><%= di[9] %></td>
+    <td style='text-align:center;'><%= di[10] %></td>
+    <td style='text-align:center;'><%= di[11] %></td>
+    <td style='text-align:center;'><%= di[12] %></td>
+    <td style='text-align:center;'><%= di[13] %></td>
+<td style='text-align:center;'>
+    <%
+        double sum = 0.0;
+        for (int j = 6; j <= 13; j++) { // Adjust range based on your array size
+            if (di[j] != null && !di[j].toString().isEmpty()) {
+                try {
+                    sum += Double.parseDouble(di[j].toString());
+                } catch (NumberFormatException e) {
+                    // Handle parsing error if needed
+                    sum += 0; // or log the error
+                }
+            }
+        }
+        // Format the sum to one decimal point
+        String formattedSum = String.format("%.1f", sum);
+    %>
+    <%= formattedSum %>
+</td>
+
 </tr>
 <%
         i++; // Increment i within the loop
         }
-    }
+    
 %>
 
 
@@ -162,7 +180,7 @@
     <script type="text/javascript">
         $(function() {
             $('#example-table').DataTable({
-                pageLength: 10,
+                pageLength: 25,
                
             });
         })

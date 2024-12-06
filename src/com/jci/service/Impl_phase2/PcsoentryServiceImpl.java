@@ -83,10 +83,6 @@ public class PcsoentryServiceImpl implements PcsoentryService {
 	return this.pcsoentrydao.getAllMillDetailsOfRefNo(refNo , date);
 	}
 
-	@Override
-	public int getCountOfTotalEntries() {
-		return this.pcsoentrydao.getCountOfTotalEntries();
-	}
 
 	@Override
 	public List<String> getMillCodeForPcoDate(String pcoDate) {

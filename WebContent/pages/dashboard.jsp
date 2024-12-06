@@ -56,7 +56,7 @@
                             <img src="./assets/img/admin-avatar.png">
                            <% String name =(String)request.getSession().getAttribute("rolename");
                               int refid =(int)request.getSession().getAttribute("refId");%> 
-                            <span></span><% out.println(name);%><i class="fa fa-angle-down m-l-5"></i></a>
+                            <span></span><i class="fa fa-angle-down m-l-5"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="userProfile.obj"><i class="fa fa-user"></i>Profile</a>
                             <li class="dropdown-divider"></li>

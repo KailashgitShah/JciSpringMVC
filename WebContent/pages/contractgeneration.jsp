@@ -43,7 +43,7 @@ int endYear = Integer.parseInt(years[1]);
 String pastCropYear1 = (startYear - 1) + "-" + (endYear - 1);
 String pastCropYear2 = (startYear - 2) + "-" + (endYear - 2);
 
-int count = (int) request.getAttribute("count") + 1;
+int count = (int) request.getAttribute("count");
 List<Object> allJuteVariety = (List<Object>) request.getAttribute("allJuteVariety");
 int sizeOfJuteVariey = allJuteVariety.size();
 String contactIdnNo = "BT-" + count;
@@ -53,7 +53,6 @@ String contactIdnNo = "BT-" + count;
 	<div class="contractLoader">
 		<img src="assets/img/1488.gif">
 	</div>
-
 	<div class="page-wrapper">
 		<!-- START HEADER-->
 		<%@ include file="header.jsp"%>
@@ -81,8 +80,8 @@ String contactIdnNo = "BT-" + count;
 											<label>Crop Year</label> <select name="crop_year"
 												id="crop_year" class="form-control">
 												<option value="">-Select-</option>
-												<option value="<%=cropYear%>"><%=cropYear%></option>
-												<option selected value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
+												<option selected value="<%=cropYear%>"><%=cropYear%></option>
+												<option value="<%=pastCropYear1%>"><%=pastCropYear1%></option>
 												<option value="<%=pastCropYear2%>"><%=pastCropYear2%></option>
 											</select>
 										</div>
@@ -152,7 +151,8 @@ String contactIdnNo = "BT-" + count;
 														if (i == 1) {
 														%>
 														<td class="col-sm-2"><textarea name="remark"
-																id="remark" class="form-control" oninput="restrictInput(event)"></textarea></td>
+																id="remark" class="form-control"
+																oninput="restrictInput(event)"></textarea></td>
 														<%
 														}
 														%>
@@ -313,8 +313,26 @@ String contactIdnNo = "BT-" + count;
 	    })
  }
  
-$("#crop_year").on("change" , function(){   
-	loadPcsoDateBasedOnCropYr($(this).val()); 
+$("#crop_year").on("change" , function(){ 
+var cropyr = $(this).val();
+	loadPcsoDateBasedOnCropYr(cropyr); 
+ 
+	 $
+		.ajax({
+			type : 'GET',
+			url : 'getUpdatedContractCount.obj',
+			data : {
+				"cropyr":cropyr
+			},
+			success : function(result) {	
+                var counter = +result;
+               $("#contractIdn").val("BT-" + counter);
+               $("#labelname").val("BT-" + counter + "/" + cropyr);
+		
+			}
+		});
+	
+	
 })
 
 </script>
@@ -535,11 +553,10 @@ var gradeArray = [];
 			.click(
 					async () => {
 						
-						
-						
 						var pcsoDate = parsedArray;
 						var contractIdn = $("#contractIdn").val();
 						var contractdate = $("#contactDate").val();
+						var cropyr = $("#crop_year").val();
 						var contractQty = $("#contract_qty").val();
 						var labelName = $("#labelname").val();
 						var availableQty = $("#available_qty").val();
@@ -616,7 +633,8 @@ var gradeArray = [];
 								"availableQty": availableQty,
 								"remarks": remarks,
 		                        "juteGradesArray" : juteGradesArray,
-		                        "systemComp" : sysComArry
+		                        "systemComp" : sysComArry,
+		                        "cropyr" : cropyr
 						 };
 				
 						//return false;
@@ -634,8 +652,9 @@ var gradeArray = [];
 								window.location.href = "authorization.obj";
 							},
 							error: function(xhr, status, error) {
-								alert("error");
-						        console.error("Error: " + error);
+								  console.log("Error: "+  error);
+								  alert("kuch kro yr !!");
+						      
 						    }
 						}); 
 				 }

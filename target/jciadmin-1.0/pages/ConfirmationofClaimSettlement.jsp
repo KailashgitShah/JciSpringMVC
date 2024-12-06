@@ -26,7 +26,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet"
-	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -427,10 +427,23 @@ $(document).ready(function(){
                     var formattedDate = formattedDay + '-' + formattedMonth + '-' + formattedYear;
 
                     var tableHTML = "<table border='1'>";
-                    tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Variety/Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
+                    tableHTML += "<tr><th style='font-weight: bold;'>Jute Variety</th><th style='font-weight: bold;'>Jute Variety/Grade</th><th style='font-weight: bold;'>Contract No.</th><th style='font-weight: bold;'>Date of Inspection</th><th style='font-weight: bold;'>Challan No.</th><th style='font-weight: bold;'>MR No.</th><th style='font-weight: bold;'>MR Date</th><th style='font-weight: bold;'>No. of Bales</th><th style='font-weight: bold;'>Actual Weight</th><th style='font-weight: bold;'>Price(per Qtls)</th><th style='font-weight: bold;'>MR Qty(Qtls)</th><th style='font-weight: bold;'>Quality Claim Percentage</th><th style='font-weight: bold;'>Quality Settlement Percentage</th>"+
                         "<th style='font-weight: bold;'>Moisture Content Claim Percentage</th><th style='font-weight: bold;'>Moisture Content Settlement Percentage</th><th style='font-weight: bold;'>NCV Claim Percentage </th><th style='font-weight: bold;'>NCV Claim Quantity</th><th style='font-weight: bold;'>NCV Settlement Percentage</th><th style='font-weight: bold;'>Dust Claim Percentage</th><th style='font-weight: bold;'>Dust Settlement Percentage</th><th style='font-weight: bold;'>Settlement Amount</th></tr>";
                     //alert(data);
-                        for (var i = 0; i < data.length; i++) {
+                     
+                    const mp = new Map();
+ 
+                     for (var i = 0; i < data.length; i++) {
+                         var mrNo = data[i][16];
+                         var amtVal = +data[i][4];
+                     	if(mp.has(mrNo)){
+                           mp.set(mrNo , +mp.get(mrNo)+amtVal);
+                         }else{
+                        	 mp.set(mrNo,amtVal);	
+                         } 
+                    } 
+                    
+                    for (var i = 0; i < data.length; i++) {
                         var grade = data[i][3];
                            var readOnly = (grade === 'TDN5' || grade === 'WN5' || grade === 'M6' || grade === 'B6') ? 'readonly' : '';
                         var date1 = new Date(data[i][17]);
@@ -442,6 +455,8 @@ $(document).ready(function(){
                            var formattedMonth1 = month1 < 10 ? '0' + month1 : month1;
                            var formattedYear1 = year1;
                            var formattedDate1 = formattedDay1 + '-' + formattedMonth1 + '-' + formattedYear1;
+                           var comVal = ((+data[i][4])/mp.get(data[i][16]))*(+data[i][18]);
+                          // console.log(data[i][16], comVal);
                          // alert(formattedDate1);
                         tableHTML += "<tr>";
                         tableHTML += "<td style='text-align:center;'><input readonly id='jv"+i+"' name='jv"+i+"' value='" + data[i][2] + "'></td>";
@@ -456,6 +471,7 @@ $(document).ready(function(){
     	                tableHTML += "<td style='text-align:center;'><input readonly id='nob"+i+"' name='nob"+i+"' value='" + data[i][8] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='amt"+i+"' name='amt"+i+"' value='" + data[i][4] + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='pr"+i+"' name='pr"+i+"' type='number' value='" + data[i][9] + "'></td>";
+    	                tableHTML += "<td style='text-align:center;'><input readonly id='mr"+i+"' name='mr"+i+"' type='number' value='" + comVal.toFixed(2) + "'></td>";
     	                tableHTML += "<td style='text-align:center;'><input readonly id='qc"+i+"' name='qc"+i+"' value='" + data[i][5] + "%'></td>";
     	                tableHTML += "<td style='text-align:center;'>";
     	                tableHTML += "<input type='number' style='text-align:center; width:80px;' id='qs" + i + "' name='qs" + i + "' value='0.00' " + readOnly + ">";
@@ -546,7 +562,7 @@ $(document).ready(function(){
                         for (var index = 0; index < len; index++) {
                         	  var nsValue = parseFloat($('#ns' + index).val()).toFixed(2);
       	                    var dsValue = parseFloat($('#ds' + index).val()).toFixed(2);
-      	                    var amtValue = parseFloat($('#amt' + index).val()).toFixed(2);
+      	                    var amtValue = parseFloat($('#mr' + index).val()).toFixed(2);
       	                    var qsValue = parseFloat($('#qs' + index).val()).toFixed(2);
       	                    var price = parseFloat($('#pr'+index).val()).toFixed(2);
       	                   // alert("price:"+price+"nsVal"+nsValue+"ds"+dsValue+"amtValue"+amtValue+"qsVal"+qsValue);
@@ -609,11 +625,11 @@ $(document).ready(function(){
                                 	    
                                 	    const AmountSet1 = amtiFixed * (100-rem)/100 * (price - fetchedData1);
                                 	    const AmountSet2 = amtiFixed * (rem)/100 * (price - fetchedData2);
-                                	    //alert(AmountSet1 +"------------"+AmountSet2);
+                                	   // alert(AmountSet1 +"------------"+AmountSet2);
                                 		  $("#cl"+index).val(Math.ceil(parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2)));
                                 	    totalSettlementAmount += parseFloat(AmountSet1) + parseFloat(msAmount) +parseFloat(dnsPrice)+parseFloat(AmountSet2);
-                                	   // alert("AmountSet1+++"+parseFloat(AmountSet1)+"AmountSet2---"+parseFloat(AmountSet2)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
-                                	    //alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
+                                	   //alert("AmountSet1+++"+parseFloat(AmountSet1)+"AmountSet2---"+parseFloat(AmountSet2)+"msAmount++"+parseFloat(msAmount)+"dnsPrice++"+parseFloat(dnsPrice))
+                                	   //alert(AmountSet1+"--------"+msAmount+"------"+dnsPrice+"===="+AmountSet2+"=-----")
                                 	}
 
                                 	else{

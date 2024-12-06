@@ -115,7 +115,7 @@
 							%>
 									<tr>
 										<td><%=i%></td>
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyslipno()%>" target="_blank"><%=verificationlists.getTallyslipno()%></a></td>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyslipno()%>&dpcid=<%= verificationlists.getCreatedfrom() %>" target="_blank"><%=verificationlists.getTallyslipno()%></a></td>
 										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyslipno()%>&farmerno=<%=verificationlists.getFarmerregno()%>" target="_blank"><%=verificationlists.getFarmerregno()%></a></td>
 										<%-- <td><%=verificationlists.getTallyslipno()%></td>
 				                    	<td><%=verificationlists.getFarmerregno()%> </td> --%>
