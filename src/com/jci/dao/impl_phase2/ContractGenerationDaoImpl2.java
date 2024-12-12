@@ -158,10 +158,12 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			int sizeOfComponents = pg.size();
 			int contractedValueForPerticularMill = 0;
 			for (int j = 0; j < sizeOfComponents; j++) {
-				//System.out.println(Double.parseDouble(gradeComp.get(j)) / 100 + "<->" + totalAllocatedToMill + "<->" + pg.get(j));
+				// System.out.println(Double.parseDouble(gradeComp.get(j)) / 100 + "<->" +
+				// totalAllocatedToMill + "<->" + pg.get(j));
 				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
 						* (totalAllocatedToMill * pg.get(j));
-				//System.err.println((Double.parseDouble(gradeComp.get(j)) / 100) * (totalAllocatedToMill * pg.get(j)));
+				// System.err.println((Double.parseDouble(gradeComp.get(j)) / 100) *
+				// (totalAllocatedToMill * pg.get(j)));
 			}
 //			System.out.println("-------------------------------------------");
 //			System.out.println(contractedValueForPerticularMill);
@@ -173,7 +175,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			totalContractedValue += contractedValueForPerticularMill;
 		}
 		// totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
-		//System.err.println(totalContractedValue);
+		// System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
@@ -408,21 +410,12 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 	@Override
 	public List<String> getPscoDateByCropYr(String cropYr) {
-		String sql = "select distinct pcso_date from jcientryof_pcso where cropYear ='" + cropYr
-				+ "' and Pcso_contract_flag = 0";
-		
-//		SELECT DISTINCT 
-//	    pcso_date ,
-//	    CONVERT(DATETIME, pcso_date, 105)
-//	FROM 
-//	    jcientryof_pcso 
-//	WHERE 
-//	    cropYear = '2024-2025' 
-//	    AND Pcso_contract_flag = 0 
-//	ORDER BY 
-//	    CONVERT(DATETIME, pcso_date, 105) DESC;
+//		String sql = "select distinct pcso_date from jcientryof_pcso where cropYear ='" + cropYr
+//				+ "' and Pcso_contract_flag = 0";
 
-		
+		String sql = "SELECT DISTINCT pcso_date,CONVERT(DATETIME, pcso_date, 105) FROM  jcientryof_pcso 	WHERE  cropYear = '"
+				+ cropYr + "' AND Pcso_contract_flag = 0 ORDER BY CONVERT(DATETIME, pcso_date, 105) DESC";
+
 		return (List<String>) currentSession().createSQLQuery(sql).list();
 	}
 
