@@ -168,7 +168,15 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 	@Override
 	public String lcno() {
 	
-		String sql = "SELECT  count(*) FROM jciboe ";
+		//String sql = "SELECT  count(*) FROM jciboe ";
+		String sql = "SELECT \r\n"
+				+ "    CASE \r\n"
+				+ "        WHEN LEN(CAST(COALESCE(MAX(CAST(SUBSTRING(Serialno, 5, 6) AS INT)), 0) + 1 AS VARCHAR)) > 6 \r\n"
+				+ "        THEN CAST(COALESCE(MAX(CAST(SUBSTRING(Serialno, 5, 6) AS INT)), 0) + 1 AS VARCHAR)\r\n"
+				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(SUBSTRING(Serialno, 5, 6) AS INT)), 0) + 1 AS VARCHAR), 6)\r\n"
+				+ "    END AS next_Serialno\r\n"
+				+ "FROM jciboe\r\n"
+				+ "WHERE ISNUMERIC(SUBSTRING(Serialno, 5, 6)) = 1; ";
 		
 //		String sql = "SELECT \r\n"
 //				+ "    topsheet_count + serialno_count AS total_count\r\n"
@@ -183,10 +191,10 @@ public class GenerationAgaistLCsDaoImpl implements GenerationAgaistLCsDao {
 //				+ "    ON \r\n"
 //				+ "        b.Serialno = a.topsheet_generated_id\r\n"
 //				+ ") AS counts;";
-		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
-		total++;
+		 String lcrefno = (String) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+
 		
-		return String.valueOf(total);
+		return lcrefno;
 //		
 //		 String sql = "SELECT MAX(serialno) FROM jciboe";
 //		 		

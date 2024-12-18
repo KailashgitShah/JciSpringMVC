@@ -4729,7 +4729,7 @@ public class Controller_V {
 
 		String yearCode = endYearLastTwoDigits;
 
-		String status = String.format("%06d", Integer.parseInt(this.generationAgaistLCsService.lcno()));
+		String status = this.generationAgaistLCsService.lcno();
 
 		String number = "LC" + yearCode + status;
 
