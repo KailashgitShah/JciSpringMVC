@@ -190,9 +190,15 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 //		else
 //			return "0";
 		
-		String sql = "SELECT  count(*) FROM jcifinancial_concurrence ";
+		String sql = "SELECT \r\n"
+				+ "    CASE \r\n"
+				+ "        WHEN LEN(CAST(COALESCE(MAX(CAST(FC_Ref_No AS INT)), 0) + 1 AS VARCHAR)) > 6 \r\n"
+				+ "        THEN CAST(COALESCE(MAX(CAST(FC_Ref_No AS INT)), 0) + 1 AS VARCHAR)\r\n"
+				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(FC_Ref_No AS INT)), 0) + 1 AS VARCHAR), 6)\r\n"
+				+ "    END AS Next_FC_Ref_No\r\n"
+				+ "FROM jcifinancial_concurrence;";
 		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
-		total++;
+		
 		
 		return String.valueOf(total);
 

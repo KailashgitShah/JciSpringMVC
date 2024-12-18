@@ -358,9 +358,9 @@
         document.getElementById("submit").addEventListener("click", function(event) {
             var daysDifferenceValue = parseInt(document.getElementById("DaysDiffrencetotal").value);
 
-            if (daysDifferenceValue > 35) {
+            if (daysDifferenceValue > 45) {
                 // Show error message or take any other action
-                alert("Days Difference should not exceed 35.");
+                alert("Days Difference should not exceed 45.");
                 event.preventDefault(); // Prevent form submission
             }
             calculateGST();
@@ -407,7 +407,8 @@
         }
 
       
-        var sgstAmt = (charge * 70) * shipmentValue;
+        var sgstAmt = (shipmentValue * 70 * charge) / 30;
+
         sgstAmtInput.value = sgstAmt.toFixed(2); 
         return true; 
     }
@@ -419,9 +420,9 @@
        
              var daysDifferenceValue = parseInt(document.getElementById("DaysDiffrencetotal").value);
 
-             if (daysDifferenceValue > 35) {
+             if (daysDifferenceValue > 45) {
                  // Show error message or take any other action
-                 alert("Days Difference should not exceed 35.");
+                 alert("Days Difference should not exceed 45.");
                  event.preventDefault(); // Prevent form submission
              }
              calculateGST();

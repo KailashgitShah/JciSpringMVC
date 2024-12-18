@@ -5283,11 +5283,7 @@ public class Controller_V {
 //                                        
 		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
 		List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
-		System.err.println(Suplierdetails);
-		System.err.println(Suplierdetails);
-		System.err.println(Suplierdetails);
-		System.err.println(Suplierdetails.toString());
-		List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
+	    List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
 		mv.addObject("ShipmentDetails", ShipmentDetails);
 		mv.addObject("Perticulargoods", Perticulargoods);
 		mv.addObject("Suplierdetails", Suplierdetails);
@@ -10695,8 +10691,7 @@ public class Controller_V {
 						Object instrumentvalue = row[2];
 						Object ContractValue = row[3];
 
-						System.err.println(instrumentDate);
-						System.err.println(instrumentDate);
+					
 						mv.addObject("paymentDueDate", paymentDueDate);
 						mv.addObject("instrumentDate", instrumentDate);
 						mv.addObject("instrumentvalue", instrumentvalue);
@@ -10711,7 +10706,6 @@ public class Controller_V {
 
 			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 
-			System.err.println(Contrated_quanity);
 			String parsed = date.toString().split(" ")[0];
 			mv.addObject("entryPaymentDetailsModel", entryPaymentDetailsModel);
 			mv.addObject("financialConcurenceModel", financialConcurenceModel);
@@ -10723,7 +10717,7 @@ public class Controller_V {
 			BigInteger bigIntValue = new BigInteger(String.valueOf(cost));
 			financialConcurenceModel.setCarrying_Cost_Charged(bigIntValue);
 			mv.addObject("cost", bigIntValue);
-			System.err.println(cost);
+		
 		}
 
 		int allIndiaSerialNo = 1;
@@ -10755,7 +10749,7 @@ public class Controller_V {
 	///////////////
 	private String GenerateFCNO(HttpSession session, int allIndiaSerialNo) {
 
-		String status = String.format("%06d", Integer.parseInt(this.fiannacialConcurenceService.fcref_nocheck()));
+		String status =  this.fiannacialConcurenceService.fcref_nocheck();
 
 		String laString = status;
 
