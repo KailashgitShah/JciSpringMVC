@@ -197,10 +197,10 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(FC_Ref_No AS INT)), 0) + 1 AS VARCHAR), 6)\r\n"
 				+ "    END AS Next_FC_Ref_No\r\n"
 				+ "FROM jcifinancial_concurrence;";
-		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
+		 String fcref = (String) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+
 		
-		
-		return String.valueOf(total);
+		 return fcref;
 
 	}
 

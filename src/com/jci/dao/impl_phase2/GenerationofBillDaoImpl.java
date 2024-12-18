@@ -78,11 +78,17 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public String billofsupplyno() {
-		String sql = "SELECT  count(*) FROM jcibos_generation ";
-		int  total = (Integer)this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();		
-		total++;
-		
-		return String.valueOf(total);
+		String sql = "SELECT \r\n"
+				+ "    CASE \r\n"
+				+ "        WHEN LEN(CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)) > 6 \r\n"
+				+ "        THEN CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)\r\n"
+				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR), 6)\r\n"
+				+ "    END AS next_bill_of_supply_no\r\n"
+				+ "FROM jcibos_generation\r\n"
+				+ "WHERE ISNUMERIC(SUBSTRING(bill_of_supply_no, 4, 6)) = 1;";
+		 String nextBillOfSupplyNo = (String) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+
+		 return nextBillOfSupplyNo;
 			
 
 	}

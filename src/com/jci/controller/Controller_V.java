@@ -5161,10 +5161,7 @@ public class Controller_V {
 				parameters.put("Rpt_PAN", row[8]);
 				parameters.put("recipientState", row[17]);
 				parameters.put("recipientstatecode", row[18]);
-				System.err.println(row[18]);
-				System.err.println(row[18]);
-				System.err.println(row[18]);
-				System.err.println(row[18]);
+			
 				parameters.put("Recipient_address", row[11] + "," + row[12] + "," + row[13] + "," + row[14]);
 				parameters.put("Recipient_name", row[14]);
 			}
@@ -5327,7 +5324,7 @@ public class Controller_V {
 
 		String statecode = this.generationofBillService.statecode(DPC1);
 
-		String status = String.format("%06d", Integer.parseInt(this.generationofBillService.billofsupplyno()));
+		String status = this.generationofBillService.billofsupplyno();
 
 		String status1 = String.format("%05d", Integer.parseInt(this.generationofBillService.statecount(statecode)));
 

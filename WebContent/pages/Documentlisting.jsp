@@ -123,7 +123,7 @@
 									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for(Object[] row : allUserRegistration ){
 
-										if (i <= 200) {
+										if (i <= allUserRegistration.size()) {
 											
 									%>
 									<tr>

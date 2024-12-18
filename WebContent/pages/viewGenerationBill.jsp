@@ -159,7 +159,7 @@ th {
 									int i = 1;
 									for (GenerationOfBillSupplyModel  generationOfBillSupplyModel : GenerationofbillList) {
 
-										if (i <= 200) {
+										if (i <= GenerationofbillList.size()) {
 									%>
 									<tr>
 										<td><%=i%></td>

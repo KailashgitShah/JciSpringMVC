@@ -162,7 +162,7 @@ th {
 									SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									for (MillRecieptModel  millRecieptModel : millList) {
 
-										if (i <= 200) {
+										if (i <= millList.size()) {
 									%>
 									<tr>
 										<td><%=i%></td>
