@@ -326,6 +326,9 @@ $('#hoDiNo, #dpc').change(function() {
 	        },
 	        success: function(result) {
 	            var data = jQuery.parseJSON(result);
+	            
+	            console.log(data,"data");
+	            console.log(data,"data");
 
 	            var numberOfContractDetails = data.contractDetails.length;
 	            size=numberOfContractDetails;

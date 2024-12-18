@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.ContractGenerationDao2;
 import com.jci.model.Contractgeneration;
@@ -416,7 +417,14 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		String sql = "SELECT DISTINCT pcso_date,CONVERT(DATETIME, pcso_date, 105) FROM  jcientryof_pcso 	WHERE  cropYear = '"
 				+ cropYr + "' AND Pcso_contract_flag = 0 ORDER BY CONVERT(DATETIME, pcso_date, 105) DESC";
 
-		return (List<String>) currentSession().createSQLQuery(sql).list();
+		List<Object[]> obj = currentSession().createSQLQuery(sql).list();
+		List<String> pcso_dates = new ArrayList<>();
+		
+	    for(Object[] ele : obj) {
+	    	pcso_dates.add((String)ele[0]);
+	    }
+	   
+		return (List<String>) pcso_dates;
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page
-import="net.sf.jasperreports.engine.util.Java14BigDecimalHandler"%>
+	import="net.sf.jasperreports.engine.util.Java14BigDecimalHandler"%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.LocalDateTime"%>
@@ -10,7 +10,7 @@ import="net.sf.jasperreports.engine.util.Java14BigDecimalHandler"%>
 <!DOCTYPE html>
 <html lang="en">
 <script
-src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
        
 </script>
 <head>
@@ -20,300 +20,300 @@ src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 <title>JCI | CMS</title>
 <!-- GLOBAL MAINLY STYLES-->
 <link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-       rel="stylesheet" />
+	rel="stylesheet" />
 <link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-       rel="stylesheet" />
+	rel="stylesheet" />
 <link href="./assets/vendors/themify-icons/css/themify-icons.css"
-       rel="stylesheet" />
+	rel="stylesheet" />
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/docsupport/style.css">
 <link rel="stylesheet" href="assets/css/docsupport/prism.css">
 <link rel="stylesheet" href="assets/css/chosen.css">
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"
-       type="text/javascript"></script>
-       <link rel="stylesheet" href="assets/css/docsupport/style.css">
-  <link rel="stylesheet" href="assets/css/docsupport/prism.css">
-  <link rel="stylesheet" href="assets/css/chosen.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-       
+	type="text/javascript"></script>
+<link rel="stylesheet" href="assets/css/docsupport/style.css">
+<link rel="stylesheet" href="assets/css/docsupport/prism.css">
+<link rel="stylesheet" href="assets/css/chosen.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 
 
 <style>
 .required:after {
-       content: " *";
-       color: red;
+	content: " *";
+	color: red;
 }
 
 input[type="radio"] {
-       display: inline;
+	display: inline;
 }
 
 #centerordpc {
-       width: 90%;
+	width: 90%;
 }
 
 #container {
-       display: flex;
-       flex-direction: row;
+	display: flex;
+	flex-direction: row;
 }
 
 #l1, #r1 {
-       margin-left: 10px; /* Adjust margin values as needed */
-       margin-right: 0px;
+	margin-left: 10px; /* Adjust margin values as needed */
+	margin-right: 0px;
 }
 
 #r1 {
-       flex: 1; /* Expand to fill remaining space initially */
-       margin-right: -100px;
+	flex: 1; /* Expand to fill remaining space initially */
+	margin-right: -100px;
 }
 
 #ibox {
-       padding: 0 0px;
+	padding: 0 0px;
 }
 
 .cell-input {
-       width: 80px; /* Set the desired width for the cell */
-       height: 40px; /* Set the desired height for the cell */
+	width: 80px; /* Set the desired width for the cell */
+	height: 40px; /* Set the desired height for the cell */
 }
 </style>
 
 </head>
 <body class="fixed-navbar">
-       <div class="page-wrapper">
-             <!-- START HEADER-->
-             <%@ include file="header.jsp"%>
-             <!-- END HEADER-->
-             <!-- START SIDEBAR-->
-             <%@ include file="sidebar.jsp"%>
-             <!-- END SIDEBAR-->
-             <div class="content-wrapper">
-                    <!-- START PAGE CONTENT-->
-                    <div class="page-heading">
-                          <h1 class="page-title">HO Dispatch Instruction</h1>
-                    </div>
+	<div class="page-wrapper">
+		<!-- START HEADER-->
+		<%@ include file="header.jsp"%>
+		<!-- END HEADER-->
+		<!-- START SIDEBAR-->
+		<%@ include file="sidebar.jsp"%>
+		<!-- END SIDEBAR-->
+		<div class="content-wrapper">
+			<!-- START PAGE CONTENT-->
+			<div class="page-heading">
+				<h1 class="page-title">HO Dispatch Instruction</h1>
+			</div>
 
-                    <%
-                    // Author vishal
-                    %>
+			<%
+			// Author vishal
+			%>
 
-                    <%
-                    List<Object[]> contractList = (List<Object[]>) request.getAttribute("ContractList");
-                    %>
-                    <%
-                    List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
-                    List<String> juteVariety = (List<String>) request.getAttribute("juteVariety");
-                    List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooperativesList");
-                    %>
-                    <div class="page-content fade-in-up">
-                          <div class="row">
-                                 <div class="col-md-11">
-                                       <div class="ibox" id="ibox">
-                                              <span>${msg}</span>
-                                              <div class="ibox-body">
-                                                    <form action="savehodispatchInst.obj" method="POST"
-                                                           onsubmit="return myFunc()" id="myForm">
-                                                           <div class="child-checkbox" id="disableform">
-                                                                  <div id="container">
-                                                                        <div id="l1">
-                                                                               <div id="elementId" style="text-align: left;"></div>
-                                                                        </div>
-                                                                        <div id="r1" style="align: right;">
-                                                                               <div class="row">
+			<%
+			List<Object[]> contractList = (List<Object[]>) request.getAttribute("ContractList");
+			%>
+			<%
+			List<Object[]> roList = (List<Object[]>) request.getAttribute("ronameList");
+			List<String> juteVariety = (List<String>) request.getAttribute("juteVariety");
+			List<String> allCooperative = (List<String>) request.getAttribute("loadAllCooperativesList");
+			%>
+			<div class="page-content fade-in-up">
+				<div class="row">
+					<div class="col-md-11">
+						<div class="ibox" id="ibox">
+							<span>${msg}</span>
+							<div class="ibox-body">
+								<form action="savehodispatchInst.obj" method="POST"
+									onsubmit="return myFunc()" id="myForm">
+									<div class="child-checkbox" id="disableform">
+										<div id="container">
+											<div id="l1">
+												<div id="elementId" style="text-align: left;"></div>
+											</div>
+											<div id="r1" style="align: right;">
+												<div class="row">
 
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Full Contract No.</label> <span class="text-danger">*
-                                                                                            </span>&nbsp; <span id="contractno" name="contractno"
-                                                                                                  class="text-danger"> </span> <select
-                                                                                                  name="fullcontractno" id="fullcontractno"
-                                                                                                  class="form-control textbox" required>
-                                                                                                  <option value="" disabled selected>Select</option>
-                                                                                                  <%
-                                                                                                  for (Object[] Contract : contractList) {
-                                                                                                  %>
-                                                                                                  <option value="<%=Contract[0]%>"  readonly><%=Contract[0]+"( FC Ref No.: "+Contract[1]+")"%></option>
-                                                                                                  <%
-                                                                                                  }
-                                                                                                  %>
-                                                                                                  
-                                                                                                  
-                                                                                            </select>
-                                                                                     </div>
+													<div class="col-sm-4 form-group">
+														<label>Full Contract No.</label> <span class="text-danger">*
+														</span>&nbsp; <span id="contractno" name="contractno"
+															class="text-danger"> </span> <select
+															name="fullcontractno" id="fullcontractno"
+															class="form-control textbox" required>
+															<option value="" disabled selected>Select</option>
+															<%
+															for (Object[] Contract : contractList) {
+															%>
+															<option value="<%=Contract[0]%>" readonly><%=Contract[0] + "( FC Ref No.: " + Contract[1] + ")"%></option>
+															<%
+															}
+															%>
 
 
-
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Contract Date</label> <span class="text-danger">*
-                                                                                            </span>&nbsp; <span id="cdate" name="cdate" class="text-danger">
-                                                                                            </span> <input class="form-control" name="contractdate"
-                                                                                                  id="contractdate" type="text" readonly
-                                                                                                  placeholder="DD/MM/YYYY">
-                                                                                     </div>
-
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Crop Year</label> <span class="text-danger">*
-                                                                                            </span>&nbsp; <input name="cropyear" id="cropyear"
-                                                                                                  class="form-control textbox" required readonly
-                                                                                                  placeholder="Crop Year">
+														</select>
+													</div>
 
 
 
-                                                                                     </div>
-                                                                               </div>
+													<div class="col-sm-4 form-group">
+														<label>Contract Date</label> <span class="text-danger">*
+														</span>&nbsp; <span id="cdate" name="cdate" class="text-danger">
+														</span> <input class="form-control" name="contractdate"
+															id="contractdate" type="text" readonly
+															placeholder="DD/MM/YYYY">
+													</div>
 
-                                                                               <div class="row">
-
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Contract Quantity (Qtls) </label> <input
-                                                                                                  class="form-control textbox" name="contractquantity"
-                                                                                                  min="0" type="number" id="contractquantity"
-                                                                                                  placeholder="Contract Quantity" required readonly>
-                                                                                     </div>
-
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>FC Ref No. </label> <input
-                                                                                                  class="form-control textbox" name="FC_Ref_No"
-                                                                                                  type="number" id="fc" placeholder="FC Ref No." required
-                                                                                                  readonly>
-                                                                                     </div>
-
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Allowed Quantity (Qtls) </label> <input
-                                                                                                  class="form-control textbox" name="qty" type="number"
-                                                                                                  id="qty" placeholder="Allowed Quantity" required readonly>
-                                                                                     </div>
-                                                                               </div>
-
-                                                                               <input type="radio" name="opt" value="head" id="regId"
-                                                                                     checked> Region <input type="radio" name="opt"
-                                                                                     value="bod"> DPC
-
-                                                                               <div class="row">
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Regional Office </label> <span class="text-danger">*
-                                                                                            </span>&nbsp;<select name="region" id="region"
-                                                                                                  class="form-control textbox" required>
-                                                                                                  <option value="" disabled selected>Select</option>
-                                                                                                  <%
-                                                                                                  for (Object[] ro : roList) {
-                                                                                                  %>
-                                                                                                  <option value="<%=(String) ro[1]%>"><%=(String) ro[0]%></option>
-                                                                                                  <%
-                                                                                                  }
-                                                                                                  %>
-                                                                                            </select> <a href="#" style="color: blue;">Inventory Region
-                                                                                                  Wise</a>
-
-                                                                                     </div>
-                                                                                     <div class="col-sm-4 form-group" id="dpc_div">
-                                                                                            <label id="dpclabel" class="required">DPC</label>
-                                                                                            &nbsp;&nbsp;&nbsp;
-                                                                                            <div class="form-control" id="dpc_div"></div>
+													<div class="col-sm-4 form-group">
+														<label>Crop Year</label> <span class="text-danger">*
+														</span>&nbsp; <input name="cropyear" id="cropyear"
+															class="form-control textbox" required readonly
+															placeholder="Crop Year">
 
 
-                                                                                     </div>
-                                                                                     <span></span>
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Issued Quantity. (Qtls)</label> <input
-                                                                                                  class="form-control taxtbox" name="IssQty" type="number"
-                                                                                                  placeholder="Issued Qty" id="IssQty" readonly required>
-                                                                                     </div>
-                                                                               </div>
 
-                                                                               <div class="row">
+													</div>
+												</div>
 
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Last Date of Shipment</label> <span
-                                                                                                  class="text-danger">* </span>&nbsp; <span id="lastdate"
-                                                                                                  name="lastdate" class="text-danger"> </span> <input
-                                                                                                  class="form-control" name="lastdateofshipment"
-                                                                                                  id="instdate" type="date" required>
-                                                                                     </div>
+												<div class="row">
 
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>DI no.</label> <input class="form-control taxtbox"
-                                                                                                  name="uniqueno" type="text" placeholder="Unique No"
-                                                                                                  id="uniq" readonly required>
-                                                                                     </div>
+													<div class="col-sm-4 form-group">
+														<label>Contract Quantity (Qtls) </label> <input
+															class="form-control textbox" name="contractquantity"
+															min="0" type="number" id="contractquantity"
+															placeholder="Contract Quantity" required readonly>
+													</div>
 
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Date (DI Date)</label> <span class="text-danger">*
-                                                                                            </span>&nbsp; <span id="DIdate" name="DIdate" class="text-danger">
-                                                                                            </span> <input class="form-control" name="dateofdi" id="instdate"
-                                                                                                  type="date"
-                                                                                                  value="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>"
-                                                                                                  readonly>
-                                                                                     </div>
+													<div class="col-sm-4 form-group">
+														<label>FC Ref No. </label> <input
+															class="form-control textbox" name="FC_Ref_No"
+															type="number" id="fc" placeholder="FC Ref No." required
+															readonly>
+													</div>
 
-                                                                               </div>
-                                                                               <div class="row">
+													<div class="col-sm-4 form-group">
+														<label>Allowed Quantity (Qtls) </label> <input
+															class="form-control textbox" name="qty" type="number"
+															id="qty" placeholder="Allowed Quantity" required readonly>
+													</div>
+												</div>
 
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label>Jute Variety</label> <span class="text-danger">*
-                                                                                            </span> <select name="jutevariety" id="jutevariety"
-                                                                                                  class="form-control" required style="width: 200px;"
-                                                                                                  multiple >
-                                                                                                  <!-- <option value="0" disabled selected>Select</option> -->
-                                                                                                  <%
-                                                                                                  for (String ro : juteVariety) {
-                                                                                                  %>
-                                                                                                  <option value="<%=ro%>"><%=ro%></option>
-                                                                                                  <%
-                                                                                                  }
-                                                                                                  %>
-                                                                                            </select>
-                                                                                     </div>
+												<input type="radio" name="opt" value="head" id="regId"
+													checked> Region <input type="radio" name="opt"
+													value="bod"> DPC
+
+												<div class="row">
+													<div class="col-sm-4 form-group">
+														<label>Regional Office </label> <span class="text-danger">*
+														</span>&nbsp;<select name="region" id="region"
+															class="form-control textbox" required>
+															<option value="" disabled selected>Select</option>
+															<%
+															for (Object[] ro : roList) {
+															%>
+															<option value="<%=(String) ro[1]%>"><%=(String) ro[0]%></option>
+															<%
+															}
+															%>
+														</select> <a href="#" style="color: blue;">Inventory Region
+															Wise</a>
+
+													</div>
+													<div class="col-sm-4 form-group" id="dpc_div">
+														<label id="dpclabel" class="required">DPC</label>
+														&nbsp;&nbsp;&nbsp;
+														<div class="form-control" id="dpc_div"></div>
 
 
-                                                                                   <div class="col-sm-4 form-group">
-    <label>Remarks</label>&nbsp;
-    <textarea class="form-control taxtbox" name="remarks"
-              placeholder="Remarks" maxlength="250"
-              oninput="sanitizeInput(this)"></textarea>
-</div>
+													</div>
+													<span></span>
+													<div class="col-sm-4 form-group">
+														<label>Issued Quantity. (Qtls)</label> <input
+															class="form-control taxtbox" name="IssQty" type="number"
+															placeholder="Issued Qty" id="IssQty" readonly required>
+													</div>
+												</div>
 
-                                                                                     <!-- <div class="col-sm-4 form-group">
+												<div class="row">
+
+													<div class="col-sm-4 form-group">
+														<label>Last Date of Shipment</label> <span
+															class="text-danger">* </span>&nbsp; <span id="lastdate"
+															name="lastdate" class="text-danger"> </span> <input
+															class="form-control" name="lastdateofshipment"
+															id="instdate" type="date" required>
+													</div>
+
+													<div class="col-sm-4 form-group">
+														<label>DI no.</label> <input class="form-control taxtbox"
+															name="uniqueno" type="text" placeholder="Unique No"
+															id="uniq" readonly required>
+													</div>
+
+													<div class="col-sm-4 form-group">
+														<label>Date (DI Date)</label> <span class="text-danger">*
+														</span>&nbsp; <span id="DIdate" name="DIdate" class="text-danger">
+														</span> <input class="form-control" name="dateofdi" id="instdate"
+															type="date"
+															value="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>"
+															readonly>
+													</div>
+
+												</div>
+												<div class="row">
+
+													<div class="col-sm-4 form-group">
+														<label>Jute Variety</label> <span class="text-danger">*
+														</span> <select name="jutevariety" id="jutevariety"
+															class="form-control" required style="width: 200px;"
+															multiple>
+															<!-- <option value="0" disabled selected>Select</option> -->
+															<%
+															for (String ro : juteVariety) {
+															%>
+															<option value="<%=ro%>"><%=ro%></option>
+															<%
+															}
+															%>
+														</select>
+													</div>
+
+
+													<div class="col-sm-4 form-group">
+														<label>Remarks</label>&nbsp;
+														<textarea class="form-control taxtbox" name="remarks"
+															placeholder="Remarks" maxlength="250"
+															oninput="sanitizeInput(this)"></textarea>
+													</div>
+
+													<!-- <div class="col-sm-4 form-group">
                                                                                   <label id="lblName"></label>
                                                                                   <div id="form2"></div>
                                                                                   <span id="misQty"></span>
                                                                            </div> -->
 
-                                                                               </div>
-                                                                               <div class="row">
-                                                                                     <div class="col-sm-4 form-group">
-                                                                                            <label id="lblName"></label>
-                                                                                            <div id="form2"></div>
-                                                                                            <span id="misQty"></span>
-                                                                                     </div>
-                                                                               </div>
-                                                                               <div class="row">
-                                                                                     <div class="col-sm-12 form-group">
-                                                                                            <input type="submit" value="Submit"
-                                                                                                  class="btn btn-primary" id="submit">
-                                                                                     </div>
-                                                                               </div>
-                                                                        </div>
-                                                                  </div>
-                                                           </div>
-                                                    </form>
-                                              </div>
-                                       </div>
-                                 </div>
-                          </div>
-                    </div>
-                    <!-- END PAGE CONTENT-->
-                    <%@ include file="footer.jsp"%>
-             </div>
-       </div>
+												</div>
+												<div class="row">
+													<div class="col-sm-4 form-group">
+														<label id="lblName"></label>
+														<div id="form2"></div>
+														<span id="misQty"></span>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12 form-group">
+														<input type="submit" value="Submit"
+															class="btn btn-primary" id="submit">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END PAGE CONTENT-->
+			<%@ include file="footer.jsp"%>
+		</div>
+	</div>
 
-       <div class="sidenav-backdrop backdrop"></div>
-      <script>
+	<div class="sidenav-backdrop backdrop"></div>
+	<script>
     function sanitizeInput(textarea) {
         // Remove < and > characters from the input value
         textarea.value = textarea.value.replace(/[<>]/g, '');
     }
 </script>
-       <script>
+	<script>
              $(document).ready(function() {
 
                     $("#jutevariety").chosen(); //  select element with the Chosen plugin
@@ -329,7 +329,7 @@ input[type="radio"] {
 
              });
        </script>
-       <script>
+	<script>
              $(document).ready(function() {
                     $("#jutevariety").on("change", function() {
                           var selectedValue = $(this).val();
@@ -437,13 +437,13 @@ input[type="radio"] {
              }
        </script>
 
-       <script>
+	<script>
              if (hasData) {
                     document.getElementById("l1").classList.add("has-data");
              }
        </script>
 
-       <script>
+	<script>
              $(document)
                           .ready(
                                        function() {
@@ -498,30 +498,32 @@ input[type="radio"] {
                                                      if(d[7]!=""){
                                                     if (d[15] == "Letter_of_Credit") {
 
-                                                           document.getElementById("instdate")
-                                                           .setAttribute("max", d[7]);
-                                              document.getElementById("instdate").value = d[7];
-                                                           //alert(instdate);
+                                                    	 document.getElementById("instdate")
+                                                         .setAttribute("min", d[7]);
+                                            document.getElementById("instdate").value = d[7];
+                                            const baseDate = new Date(d[7]);
+
+                                            // Add one month to the base date
+                                            baseDate.setMonth(baseDate.getMonth() + 1);
+
+                                            // Format the updated date in the same format as d[7] (yyyy-mm-dd)
+                                            const updatedDate = baseDate.toISOString()
+                                                         .slice(0, 10);
+
+                                            // Access the element with ID "instdate" using JavaScript (assuming you have access to it)
+                                            const instdateElement = document
+                                                          .getElementById("instdate");
+
+                                            // Set the min attribute of the element to the updated date
+                                            instdateElement.setAttribute("max",
+                                                         updatedDate);
+                                                    	
+                                                 
                                                     } else {
-                                                           document.getElementById("instdate")
-                                                                        .setAttribute("min", d[7]);
-                                                           document.getElementById("instdate").value = d[7];
-                                                           const baseDate = new Date(d[7]);
-
-                                                           // Add one month to the base date
-                                                           baseDate.setMonth(baseDate.getMonth() + 1);
-
-                                                           // Format the updated date in the same format as d[7] (yyyy-mm-dd)
-                                                           const updatedDate = baseDate.toISOString()
-                                                                        .slice(0, 10);
-
-                                                           // Access the element with ID "instdate" using JavaScript (assuming you have access to it)
-                                                           const instdateElement = document
-                                                                         .getElementById("instdate");
-
-                                                           // Set the min attribute of the element to the updated date
-                                                           instdateElement.setAttribute("max",
-                                                                        updatedDate);
+                                                        document.getElementById("instdate")
+                                                        .setAttribute("max", d[7]);
+                                           document.getElementById("instdate").value = d[7];
+                                                        //alert(instdate);
                                                     }
                                                     }
                                                      //alert(d[8][1]);//Grade Comp
@@ -697,12 +699,12 @@ input[type="radio"] {
                                        });
        </script>
 
-<script>
+	<script>
 
 $(document).ready(function() {
     // DI No. generation
     $("#region").on("change", function() {
-        var crp = '<%= (String)session.getAttribute("currCropYear") %>'; // Fetch current crop year from session
+        var crp = '<%=(String) session.getAttribute("currCropYear")%>'; // Fetch current crop year from session
         var reg = this.value; // Get selected region value
         
         $.ajax({
@@ -744,13 +746,13 @@ $(document).ready(function() {
 
 </script>
 
-       <script>
+	<script>
              
        </script>
 
 
 
-       <script>
+	<script>
              function myFunc() {
                     var allow = parseFloat(document.getElementById("qty").value);
                     var issued = parseFloat(document.getElementById("IssQty").value);
@@ -805,7 +807,7 @@ $(document).ready(function() {
        </script>
 
 
-       <script type="text/javascript">
+	<script type="text/javascript">
              $(document).ready(function() {
                     // Trigger the click event on the initially checked radio button
                     $("#dpclabel").hide();
@@ -828,7 +830,7 @@ $(document).ready(function() {
                     });
              });
        </script>
-       <script>
+	<script>
              // "Full Contract No." dropdown has ID "fullcontractno"
              //  "Regional Office" dropdown has ID "region"
 
@@ -865,8 +867,8 @@ $(document).ready(function() {
                     });
              });
        </script>
-       
-       <script>
+
+	<script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {
                 // Disable the submit button
@@ -877,20 +879,20 @@ $(document).ready(function() {
             });
         });
     </script>
-       <script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
-       <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-             type="text/javascript"></script>
-       <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-             type="text/javascript"></script>
-       <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-             type="text/javascript"></script>
-       <script
-             src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-             type="text/javascript"></script>
-       <!-- PAGE LEVEL PLUGINS-->
+	<script src="assets/css/chosen.jquery.js" type="text/javascript"></script>
+	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script
+		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- PAGE LEVEL PLUGINS-->
 
-       <!-- CORE SCRIPTS-->
-       <script src="assets/js/app.min.js" type="text/javascript"></script>
+	<!-- CORE SCRIPTS-->
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 </body>
 
