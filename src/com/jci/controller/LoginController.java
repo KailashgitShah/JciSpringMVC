@@ -180,6 +180,7 @@ public class LoginController {
 
 					int currentyear = obj.getYear();
 					int nextyear = 0;
+					
 					int month = obj.getMonthValue();
 
 					if (month >= 7) {
@@ -190,6 +191,17 @@ public class LoginController {
 					}
 
 					String currCropYear = currentyear + "-" + nextyear;
+			
+					if(month >= 4) {
+						nextyear = currentyear + 1;
+					}else {
+						nextyear = currentyear;
+						currentyear -= 1;
+					}
+					
+					
+					
+					String currFnYr = currentyear + "-" + nextyear;
 
 					useremail1 = email;
 					String set0 = "0";
@@ -227,6 +239,7 @@ public class LoginController {
 					session.setAttribute("dpc_center", dpc_center);
 					session.setAttribute("userpass", password);
 					session.setAttribute("currCropYear", currCropYear);
+					session.setAttribute("currFnYr", currFnYr);
 					System.out.println("check");
 					// session.setAttribute("Concurrentloginflag",flag);
 

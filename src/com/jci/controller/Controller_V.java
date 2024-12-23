@@ -3736,6 +3736,8 @@ public class Controller_V {
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpServletResponse response) {
 		String username = (String) request.getSession().getAttribute("usrname");
+		//String fcyear = (String) request.getSession().getAttribute("currFnYr");
+		
 		if (username == null) {
 			return new ModelAndView("index");
 		}
@@ -3750,6 +3752,7 @@ public class Controller_V {
 			String Payment_id = request.getParameter("Payment_id");
 			int id = Integer.parseInt(Payment_id);
 			String remarks = request.getParameter("Remarks1");
+		
 
 			this.paymentDetailService.remark(remarks, fullcontractno, id);
 
@@ -3772,10 +3775,14 @@ public class Controller_V {
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
+			
 
 			Date date = new Date();
 			financialConcurenceModel.setCreated_date(date);
 			financialConcurenceModel.setRemarks(remarks);
+			
+			
+			//fdocumentListingfinancialConcurenceModel.setFnYr(fcyear);
 
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			this.paymentDetailService.update2(fullcontractno);
@@ -6227,6 +6234,8 @@ public class Controller_V {
 			JSONObject jsonObject = new JSONObject(result);
 			bankDraftDTO.setBankName(jsonObject.optString("BANK"));
 			bankDraftDTO.setBankAddress(jsonObject.optString("ADDRESS"));
+			System.err.println(jsonObject.optString("BANK"));
+			System.err.println(jsonObject.optString("ADDRESS"));
 		} catch (Exception e) {
 			System.err.println("Error fetching data for IFSC " + ifsc + ": " + e.getMessage());
 		}

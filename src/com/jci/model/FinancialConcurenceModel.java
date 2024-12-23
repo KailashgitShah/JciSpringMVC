@@ -44,6 +44,9 @@ public class FinancialConcurenceModel {
 	@Column(name = "Remarks")
 	private  String  Remarks;
 	
+//	@Column(name = "FnYr")
+//	private  String  fnYr;
+	
 	@Column(name = "fcdocumentDownload")
 	private  String  fcdocumentDownload;
 
@@ -126,6 +129,17 @@ public class FinancialConcurenceModel {
 	public void setRemarks(String remarks) {
 		Remarks = remarks;
 	}
+	
+	
+
+//	public String getFnYr() {
+//		return fnYr;
+//	}
+//
+//	public void setFnYr(String fnYr) {
+//		this.fnYr = fnYr;
+//	}
+	
 
 	public FinancialConcurenceModel(int fc_id, String fullcontractno, Date fC_Issue_Date, String fC_Ref_No,
 			String contracted_Qty, String qtyAllowed, BigInteger carrying_Cost_Charged, Date created_date, String remarks) {

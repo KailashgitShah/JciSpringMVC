@@ -48,7 +48,7 @@
 /* CSS classes for the green link */
  .table-cell {
    
-     width: 150px;
+     width: 250px;
     height: 10px;
     
 } 
