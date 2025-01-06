@@ -4618,13 +4618,18 @@ public class Controller_V {
 			financialYearStart = currentYear - 1;
 			financialYearEnd = currentYear;
 		}
+		String millname="";
+		List<Object[]> listOfAddress = generationofBillService.contarctnoformaster(millcode1);
+		for (Object[] row : listOfAddress) {
+			millname = (String) row[0];
+		}
 
 		String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
 		String StartYearLastTwoDigits = Integer.toString(financialYearStart).substring(2);
 		String jciref = "JCI/ind/SALE/INT/ " + StartYearLastTwoDigits + "-" + endYearLastTwoDigits + "/";
-
-		String subdetails = "Our bill for Rs.  " + sumOfInvoiceValue + " for collection and payment under letter of  "
-				+ instnoString + " Dated " + instdate + "  A/c The Ganges Mfg. Co. Ltd";
+		 String formattedValue = String.format("%.2f", sumOfInvoiceValue);
+		String subdetails = "Our bill for Rs.  " + formattedValue + " for collection and payment under letter of  "
+				+ instnoString + " Dated " + instdate + "  "+millname;
 
 		String invoiceValueString = String.valueOf(sumOfInvoiceValue);
 		billOfExchangeDTO.setSubdetails(subdetails);
@@ -5101,7 +5106,7 @@ public class Controller_V {
 
 			genrationDemandNoteModel.setContract_no(Contract_No);
 
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			genrationDemandNoteModel.setDemand_note_no(Demand_note_no);
 			Date instdate4 = formatter1.parse(Demand_note_date);
 			genrationDemandNoteModel.setDemand_note_date(instdate4);
@@ -5845,7 +5850,7 @@ public class Controller_V {
 			double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
 			int convertInt = (int) invoiceDouble;
 			String InvoiceNO = convertWord_k.convertToWords(convertInt);
-			qtygradesum = Math.round(qtygradesum);
+			//qtygradesum = Math.round(qtygradesum);
 			parameters.put("invoicevalue", InvoiceNO);
 			parameters.put("qtysum", qtygradesum);
 
@@ -9715,16 +9720,15 @@ public class Controller_V {
 		String[] creditNoteDoc = request.getParameterValues("creditNoteDoc[]");
 		String[] purpose = request.getParameterValues("purpose[]");
 		Double AmountDiffCNDN = Double.parseDouble(request.getParameter("AmountDifferenceCNDN"));
-		String total = creditNoteGenerationService.CountRecord();
+		Integer total = creditNoteGenerationService.CountRecord();  
 
 		int value1;
 		if (total != null) {
-
-			value1 = Integer.valueOf(total) + 1;
+		    value1 = total + 1;  // Unboxing Integer to int automatically
 		} else {
-			value1 = 1;
-
+		    value1 = 1;  // If total is null, assign 1
 		}
+
 		// System.err.println(value1 + "rrrrrrrrrrrr");
 		String UniqueIdentification = contract + "/" + String.valueOf(value1);
 

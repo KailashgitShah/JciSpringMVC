@@ -598,7 +598,9 @@
 											                     totalBales += (int) Math.ceil(Integer.parseInt(String.valueOf(row[3])));
 
 											                    
-											                     totalQty = totalQty.setScale(0, RoundingMode.CEILING).add(value5.setScale(0, RoundingMode.CEILING));
+											                   /*   totalQty = totalQty.setScale(0, RoundingMode.CEILING).add(value5.setScale(0, RoundingMode.CEILING));
+ */
+ 																totalQty = totalQty.add(value5);
 
 											              
 											                     totalAmount = totalAmount.setScale(0, RoundingMode.CEILING).add(product.setScale(0, RoundingMode.CEILING));

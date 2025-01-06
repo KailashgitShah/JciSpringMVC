@@ -619,13 +619,17 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
               }
 
               @Override
-              public String CountRecord() {
+              public int CountRecord() {
 
                              String q = "SELECT MAX(RowNumber) AS LastRowNumber FROM jcisettlement_cndn";
 
-                             String result = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
-                             System.err.println(result);
-                             return result;
+                             Object result = this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+
+                        
+                              int lastRowNumber = (result != null) ? ((Number) result).intValue() : 0; 
+
+                         
+                             return lastRowNumber;
 
               }
 //           

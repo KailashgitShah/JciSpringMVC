@@ -138,7 +138,7 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	}
 
 	@Override
-	public String CountRecord() {
+	public int CountRecord() {
 		// TODO Auto-generated method stub
 		return creditNoteGenerationDao.CountRecord();
 	}

@@ -39,13 +39,16 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
 <!-- PAGE LEVEL STYLES-->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script type="text/javascript">
-       $(document).ready(function() {
-             $("#farmerVerific").DataTable({
-                    scrollX : true,
-                    "pageLength" : 50
-             });
-       });
+$(document).ready(function() {
+    $('#example-table').DataTable({
+        scrollX: true,
+        pageLength: 50,
+        fixedHeader: true,
+        searching: true // Ensure search is enabled
+    });
+});
 </script>
 <style>
 .scrollmenu {
@@ -111,9 +114,7 @@ th {
 
                     <%
                     List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) request.getAttribute("entryPaymentDetailsModel");
-             
-                    
-                    %>
+                  %>
                     
                     <div class="page-content fade-in-up">
                            <div class="ibox">
@@ -270,6 +271,9 @@ th {
        <!-- CORE SCRIPTS-->
        <script src="assets/js/app.min.js" type="text/javascript"></script>
        <!-- PAGE LEVEL SCRIPTS-->
+       
+       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+       <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
        <script type="text/javascript">
              $(function() {
                     $('#example-table').DataTable({

@@ -172,7 +172,7 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 		// from jcipayment_arrangement where Contract_no ='" + con_no + "' and
 		// Payment_id ='" + Payment_id + "'";
 
-		String hql1 = "SELECT PaymentDue_date, MAX(Instrument_Date) AS Latest_Instrument_Date, SUM(TRY_CAST(Instrument_value AS DECIMAL(10,2))) AS Total_Instrument_Value,Contract_value FROM jcipayment_arrangement"
+		String hql1 = "SELECT PaymentDue_date, MAX(Instrument_Date) AS Latest_Instrument_Date, SUM(TRY_CAST(Instrument_value AS DECIMAL(18,3))) AS Total_Instrument_Value,Contract_value FROM jcipayment_arrangement"
 				+ " WHERE Contract_no =  '" + con_no + "' GROUP BY  PaymentDue_date,Contract_value";
 
 		return (List<Object>) this.sessionFactory.getCurrentSession().createSQLQuery(hql1).list();

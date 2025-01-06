@@ -67,6 +67,7 @@
                  String issuedate = (String) request.getAttribute("parsed");
                  String paymentDueDate = (String) request.getAttribute("paymentDueDate");
                  Object instrumentvalue =request.getAttribute("instrumentvalue");
+                
                  Object  instrumentDateObject =request.getAttribute("instrumentDate");
                  Object remainquantity = request.getAttribute("remainquantity");
                  
@@ -97,15 +98,15 @@
            
                  FinancialConcurenceModel financialConcurenceModel  = (FinancialConcurenceModel) request.getAttribute("financialConcurenceModel");
                  BigInteger charge =(BigInteger) (request.getAttribute("cost"));
-               
-                 
+              
                  String contractValueStr = String.valueOf(ContractValue).trim();
                  String instrumentValueStr = String.valueOf(instrumentvalue).trim();
+                
 
-                 if (!contractValueStr.matches("-?\\d+(\\.\\d+)?") || !instrumentValueStr.matches("-?\\d+(\\.\\d+)?")) {
+               /*   if (!contractValueStr.matches("-?\\d+(\\.\\d+)?") || !instrumentValueStr.matches("-?\\d+(\\.\\d+)?")) {
                      throw new NumberFormatException("Invalid numeric format");
                  }
-                 
+                  */
                  
                  
                  
@@ -114,14 +115,35 @@
                  BigDecimal remainquantity1 = new BigDecimal(String.valueOf(remainquantity));
                  
                  
-             
-                 
-                 
-                
                
-                 BigDecimal contractValueBigInt = new BigDecimal(contractValueStr);
-                 BigDecimal instrumentValueBigInt = new BigDecimal(instrumentValueStr);
+                  if (contractValueStr == null || contractValueStr.isEmpty()) {
+                      contractValueStr = "0"; 
+                  }
+                  if (instrumentValueStr == null || instrumentValueStr.isEmpty()) {
+                      instrumentValueStr = "1"; 
+                  }
 
+                 /* 
+                  contractValueStr = contractValueStr.trim();
+                  instrumentValueStr = instrumentValueStr.trim();
+            
+                   */
+                  if (!contractValueStr.matches("-?\\d+(\\.\\d+)?([eE][-+]?\\d+)?")) {
+                      contractValueStr = "0"; 
+                  }
+                  if (!instrumentValueStr.matches("-?\\d+(\\.\\d+)?([eE][-+]?\\d+)?")) {
+                      instrumentValueStr = "1"; 
+                  }
+            
+                  BigDecimal contractValueBigInt = new BigDecimal(contractValueStr);
+                  BigDecimal instrumentValueBigInt = new BigDecimal(instrumentValueStr);
+                
+             
+                  if (instrumentValueBigInt.compareTo(BigDecimal.ZERO) == 0) {
+                      instrumentValueBigInt = BigDecimal.ONE; 
+                  }
+
+                  // Perform the division
                   BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt, 2, RoundingMode.HALF_UP);
 
                 /*   BigDecimal ratio = contractValueBigInt.divide(instrumentValueBigInt);

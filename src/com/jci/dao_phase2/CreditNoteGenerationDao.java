@@ -32,7 +32,7 @@ public interface CreditNoteGenerationDao {
 	List<String> getAllContractNos(String millCode);
 	List<Object[]> getFullDetailsOfCrnAndDebit(String contract);
 	public List<settlemetCnDnModel> getAll();
-	public String CountRecord();
+	public int CountRecord();
 	public List<Object[]>getMillDetails(String millcode);
 	List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber);
 	public String getAccountNo();
