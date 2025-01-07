@@ -113,10 +113,15 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
                              if (roleId == 6 || roleId == 7 || roleId == 8) {
 
                                            if (parameter.equals("Region")) {
-                                                          sqlString = "  select distinct CONCAT(b.Ro_id, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
-                                                                                      + "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) inner join jcirodetails c on b.Ro_id = c.rocode and b.Ro_id = '"
-                                                                                      + region + "'";
-
+//                                                          sqlString = "  select distinct CONCAT(b.Ro_id, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
+//                                                                                      + "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) inner join jcirodetails c on b.Ro_id = c.rocode and b.Ro_id = '"
+//                                                                                      + region + "'";
+                                                          
+                                                          sqlString = "select distinct CONCAT(d.rocode, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
+                                                          		+ "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) \r\n"
+                                                          		+ "inner join jcipurchasecenter d on d.CENTER_CODE = a.DPCID\r\n"
+                                                          		+ "inner join jcirodetails c on d.rocode = c.rocode  and d.rocode = '" + region + "'";
+                                                        
                                            } else {
                                                           sqlString = " select distinct(a.Contract_no) from jcibos_generation a INNER JOIN "
                                                                                       + " jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = (select a.Bill_of_supply_no where "
@@ -127,8 +132,13 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
                              } else {
 
                                            if (parameter.equals("Region")) {
-                                                          sqlString = "  select distinct CONCAT(b.Ro_id, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
-                                                                                      + "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) inner join jcirodetails c on b.Ro_id = c.rocode ";
+//                                                          sqlString = "  select distinct CONCAT(b.Ro_id, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
+//                                                                                      + "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) inner join jcirodetails c on b.Ro_id = c.rocode ";
+                                        	                                               
+                                               sqlString = "select distinct CONCAT(d.rocode, '--', c.roname) from jcibos_generation a INNER JOIN jciweighment_entry b on b.Verification_status = 1 and b.Bos_no = \r\n"
+                                               		+ "(select a.Bill_of_supply_no where a.Challan_No not in (select distinct ChallanNo from jcicredit_note where Crn_status = 0)) \r\n"
+                                               		+ "inner join jcipurchasecenter d on d.CENTER_CODE = a.DPCID\r\n"
+                                               		+ "inner join jcirodetails c on d.rocode = c.rocode ";
 
                                            } else {
                                                           sqlString = " select distinct(a.Contract_no) from jcibos_generation a INNER JOIN "

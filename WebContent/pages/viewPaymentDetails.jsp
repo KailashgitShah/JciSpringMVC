@@ -21,26 +21,17 @@
 <meta name="viewport" content="width=device-width initial-scale=1.0">
 <title>JCI | CMS</title>
 <!-- GLOBAL MAINLY STYLES-->
-<link href="./assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-       rel="stylesheet" />
-<link href="./assets/vendors/font-awesome/css/font-awesome.min.css"
-       rel="stylesheet" />
-<link href="./assets/vendors/themify-icons/css/themify-icons.css"
-       rel="stylesheet" />
-<script
-src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- GLOBAL MAINLY STYLES-->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/themify-icons/0.1.0/css/themify-icons.min.css" rel="stylesheet" />
+
 <!-- PLUGINS STYLES-->
-<link href="./assets/vendors/DataTables/datatables.min.css"
-       rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+
 <!-- THEME STYLES-->
 <link href="assets/css/main.min.css" rel="stylesheet" />
-<!-- PAGE LEVEL STYLES-->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(document).ready(function() {
     $('#example-table').DataTable({
         scrollX: true,
@@ -49,7 +40,7 @@ $(document).ready(function() {
         searching: true // Ensure search is enabled
     });
 });
-</script>
+</script> -->
 <style>
 .scrollmenu {
        overflow: scroll;
@@ -197,11 +188,11 @@ th {
                                                                    
                                                             <%--   <td><%= entryPaymentDetailsModel.getQtyAllowed() %></td> --%>
                                                             <%--   <td><%= entryPaymentDetailsModel.getSupportingDocument() %></td> --%>
-                                       <td>
-								            <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
-								              <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->
-								               <button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>
-								        </td>
+                                      <td>
+                                                                 <a href="downloadSupportingDocument.obj?filename=<%= entryPaymentDetailsModel.getSupportingDocument() %>">
+                                                                   <!--  class="btn btn-primary btn-sm" target="_blank">View Supporting docs</a> -->
+                                                                    <button class="btn btn-primary btn-sm" target="_blank" type="button">View Supporting docs</button>
+                                                             </td>
                                                                    
 
 
@@ -254,26 +245,23 @@ th {
 
        <!-- END PAGA BACKDROPS-->
        <!-- CORE PLUGINS-->
-       <script src="./assets/vendors/jquery/dist/jquery.min.js"
-             type="text/javascript"></script>
-       <script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-             type="text/javascript"></script>
-       <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-             type="text/javascript"></script>
-       <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
-             type="text/javascript"></script>
-       <script
-             src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-             type="text/javascript"></script>
-       <!-- PAGE LEVEL PLUGINS-->
-       <script src="./assets/vendors/DataTables/datatables.min.js"
-             type="text/javascript"></script>
-       <!-- CORE SCRIPTS-->
-       <script src="assets/js/app.min.js" type="text/javascript"></script>
-       <!-- PAGE LEVEL SCRIPTS-->
-       
-       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-       <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ -->
+<!-- PLUGINS -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<!-- PAGE LEVEL SCRIPTS-->
+<!-- <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
+<script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="assets/js/app.min.js" type="text/javascript"></script> -->
+
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
+
        <script type="text/javascript">
              $(function() {
                     $('#example-table').DataTable({
@@ -294,4 +282,15 @@ th {
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
 

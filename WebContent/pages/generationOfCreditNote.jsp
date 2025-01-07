@@ -125,6 +125,7 @@ input[type="radio"] {
 	String gstSerialNo = String.format("%05d", getGstCount);
 
 	String creditNoteIdnNo = "C" + yearCode + indiaSerialNo + gstCode + gstSerialNo;
+							 
 
 	double sumNmlQty = 0;
 	double sumActQty = 0;
@@ -269,8 +270,8 @@ input[type="radio"] {
 													double rate = (double) p[5];
 													double nmnlQty = (double) p[4];
 
-													double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
-													double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
+													double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
+													double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
 													double shortAmtPrice = Math.round(rate * shtQty);
 													/*  double shtQty = nmnlQty - actQty;
 													double shortAmtPrice = rate * shtQty; */
@@ -295,9 +296,9 @@ input[type="radio"] {
 												<%
 												}
 
-												sumShrtQty = Double.parseDouble(new DecimalFormat("#.##").format(sumShrtQty));
-												sumActQty = Double.parseDouble(new DecimalFormat("#.##").format(sumActQty));
-												sumNmlQty = Double.parseDouble(new DecimalFormat("#.##").format(sumNmlQty));
+												sumShrtQty = Double.parseDouble(new DecimalFormat("#.####").format(sumShrtQty));
+												sumActQty = Double.parseDouble(new DecimalFormat("#.####").format(sumActQty));
+												sumNmlQty = Double.parseDouble(new DecimalFormat("#.####").format(sumNmlQty));
 												int finalAmount = (int) Math.ceil(sumTtlCrnAmt);
 												%>
 												<tr>
@@ -337,34 +338,11 @@ input[type="radio"] {
 
 	<div class="sidenav-backdrop backdrop"></div>
 
-	<!-- END PAGA BACKDROPS-->
-	<!-- CORE PLUGINS-->
-<!-- 	<script src="./assets/vendors/jquery/dist/jquery.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/popper.js/dist/umd/popper.min.js"
-		type="text/javascript"></script>
-	<script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js"
-		type="text/javascript"></script>
+
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
 		type="text/javascript"></script>
-	<script
-		src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"
-		type="text/javascript"></script>
-	PAGE LEVEL PLUGINS
-	<script src="./assets/vendors/DataTables/datatables.min.js"
-		type="text/javascript"></script>
-	CORE SCRIPTS
-	<script src="assets/js/app.min.js" type="text/javascript"></script> -->
-
-    <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL PLUGINS-->
-    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <!-- CORE SCRIPTS-->
-    <script src="assets/js/app.min.js" type="text/javascript"></script>
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
 	<script>
 	$(document).ready(function(){

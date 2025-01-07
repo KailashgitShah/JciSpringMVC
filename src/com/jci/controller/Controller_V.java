@@ -350,11 +350,11 @@ public class Controller_V {
 		int i = 0;
 		try {
 			Integer roleId = (Integer) request.getSession().getAttribute("roleId");
-			System.err.println(roleId);		
+			//System.err.println(roleId);		
 			String actionPer = userpriviligeservice.getactionPer(roleId);
-			System.err.println(actionPer);		
+			//System.err.println(actionPer);		
 			Integer actionid = useractionservice.getactionid(pagename);
-			System.err.println(actionPer);		
+			//System.err.println(actionPer);		
 			String idAction = Integer.toString(actionid);
 			String[] stringArray = actionPer.split(",");
 			for (String action : stringArray) {
@@ -2347,8 +2347,8 @@ public class Controller_V {
 			int noOfBale = (int) p[3];
 			double rate = (double) p[5];
 			double nmnlQty = (double) p[4];
-			double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
-			double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
+			double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
+			double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
 			double shortAmtPrice = Math.round(rate * shtQty);
 
 			contractDate = (String) p[7];

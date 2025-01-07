@@ -166,17 +166,14 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 	<!-- BEGIN PAGA BACKDROPS-->
 	<div class="sidenav-backdrop backdrop"></div>
 
-	 <script src="./assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/metisMenu/dist/metisMenu.min.js" type="text/javascript"></script>
-    <script src="./assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <!-- PAGE LEVEL PLUGINS-->
-    <script src="./assets/vendors/DataTables/datatables.min.js" type="text/javascript"></script>
-    <!-- CORE SCRIPTS-->
-    <script src="assets/js/app.min.js" type="text/javascript"></script>
-	<!-- PAGE LEVEL SCRIPTS-->
+
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"
+		type="text/javascript"></script>
+	<script src="assets/js/app.min.js" type="text/javascript"></script>
+	
 	<script type="text/javascript">
+
 		$(function() {
 			$('#example-table').DataTable({
 				pageLength : 10,
@@ -191,7 +188,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 			});
 		})
 
-		function saveCreditNote(contractNo, ChallanNo, invoiceVal,
+		/* function saveCreditNote(contractNo, ChallanNo, invoiceVal,
 				nominalWeight, ActualWeight, roId, bosNo, diNo, bosDate,
 				millCode) {
 
@@ -216,7 +213,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 					window.location.href = "creditNoteForm.obj";
 				}
 			})
-		}
+		} */
 
 		$("#decision")
 				.on(
@@ -274,6 +271,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 											var filterOption = jQuery
 													.parseJSON(result);
 											
+											
                                             var baseIp = '<%=baseIp%>';
 											var htmlTable = '';
 
@@ -287,7 +285,11 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 
 												htmlTable += '<td><a href="generateCrn.obj?challan='
 														+ filterOption[i][3]
-														+ '" target="_blank" class="btn btn-warning btn-sm">Generate credit Note </a></td>';
+														+ '" target="_blank" class="btn btn-warning btn-sm" id="a'
+														+ counter
+														+ '" onclick = "hideButton('
+														+ counter
+														+ ')">Generate credit Note </a></td>';
 
 												htmlTable += '<td style="text-align:center" name="bosNo">'
 														+ filterOption[i][0]
@@ -344,6 +346,10 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 										}
 									})
 						});
+
+		function hideButton(counter) {
+			$("#a" + counter).css("display", "none");
+		}
 
 		function getShipmentDetails(challanNo) {
 			$.ajax({
