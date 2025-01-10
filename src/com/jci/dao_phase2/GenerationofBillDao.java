@@ -27,6 +27,7 @@ public interface GenerationofBillDao {
 	  public String  billofsupplyno();
 	  public String  statecode(String st);
 	  public String  statecount(String st);
+	  public Double  sumofInvoicevalue(String st);
 	  public String billUpdation(String st);
 	  public void remark(String cont_no,String  con_No);
 	  public GenerationOfBillSupplyModel find(int id);

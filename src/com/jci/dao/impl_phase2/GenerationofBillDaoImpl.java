@@ -2,6 +2,7 @@ package com.jci.dao.impl_phase2;
 
 
 import java.util.List;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.mail.*;
@@ -276,6 +277,26 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 		 List<Object[]>resultList1= (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).list();
 		    return resultList1;
 	}
+
+	@Override
+	public Double sumofInvoicevalue(String st) {
+	    String sql = "SELECT SUM(CAST(Invoice_value AS DECIMAL(10, 2))) AS TotalInvoiceValue " +
+	                 "FROM jcibos_generation " +
+	                 "WHERE Contract_no = '" + st + "'" +
+	                 "AND CONVERT(DATE, BOS_date, 103) BETWEEN " +
+	                 "DATEFROMPARTS(YEAR(GETDATE()) - CASE WHEN MONTH(GETDATE()) < 4 THEN 1 ELSE 0 END, 4, 1) " +
+	                 "AND GETDATE()";
+	    
+	
+	    BigDecimal resultData = (BigDecimal) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+	    
+	    
+	    if (resultData != null) {
+	        return resultData.doubleValue();
+	    }
+	    return 0.0; 
+	}
+
 
 
 

@@ -4,7 +4,6 @@ import java.util.List;
 import com.jci.model.AddOrganizationModel;
 
 public interface AddOrganizationDao {
-
 	public void create(AddOrganizationModel addOrganizationModel);
 	public void update(AddOrganizationModel addOrganizationModel);
 	public AddOrganizationModel edit(int id);

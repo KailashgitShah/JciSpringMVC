@@ -5272,46 +5272,55 @@ public class Controller_V {
 
 	// entrt page of genration bill
 
+	
 	@RequestMapping("EntryofGenerationBillsupply")
-	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		String username = (String) request.getSession().getAttribute("usrname");
+    public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+          String username = (String) request.getSession().getAttribute("usrname");
 
-		ModelAndView mv = new ModelAndView("EntryGenerationBill");
-		if (username == null) {
-			mv = new ModelAndView("index");
-		}
+          ModelAndView mv = new ModelAndView("EntryGenerationBill");
+          if (username == null) {
+                 mv = new ModelAndView("index");
+          }
 
-		final String challan_no = request.getParameter("id");
-		final String DPC1 = request.getParameter("DPC");
-		List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
-		final String millname = request.getParameter("millname");
+          final String challan_no = request.getParameter("id");
+          final String DPC1 = request.getParameter("DPC");
+          List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
+          final String millname = request.getParameter("millname");
+          final String contractno = request.getParameter("contractno");
 
-//                         List<Object[]> ShipmentDetails= (List<Object[]>)
+//                      List<Object[]> ShipmentDetails= (List<Object[]>)
 
-//                                        final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
-//                                        
-		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
-		List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
-	    List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
-		mv.addObject("ShipmentDetails", ShipmentDetails);
-		mv.addObject("Perticulargoods", Perticulargoods);
-		mv.addObject("Suplierdetails", Suplierdetails);
+//                                     final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
+//                                     
+          List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
+          List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
+        List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
+        Double sumofInvoicevalue = (Double) this.generationofBillService.sumofInvoicevalue(contractno);
+        
+          mv.addObject("ShipmentDetails", ShipmentDetails);
+          mv.addObject("Perticulargoods", Perticulargoods);
+          mv.addObject("Suplierdetails", Suplierdetails);
 
-		int allIndiaSerialNo = 1;
-		int stateSerialNo = 1;
-		String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo, DPC1);
-		String Stategstcode = Stategstcode(DPC1);
-		mv.addObject("billOfSupplyNo", billOfSupplyNo);
-		mv.addObject("Stategstcode", Stategstcode);
-		mv.addObject("challan_no", challan_no);
-		mv.addObject("millname", millname);
-		mv.addObject("list", list);
-		mv.addObject("DPC1", DPC1);
+           int allIndiaSerialNo = 1;
+          int stateSerialNo = 1;
+          String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo, DPC1);
+          String Stategstcode = Stategstcode(DPC1);
+          mv.addObject("billOfSupplyNo", billOfSupplyNo);
+          mv.addObject("Stategstcode", Stategstcode);
+          mv.addObject("challan_no", challan_no);
+          mv.addObject("millname", millname);
+          mv.addObject("list", list);
+          mv.addObject("DPC1", DPC1);
+          mv.addObject("sumofInvoicevalue", sumofInvoicevalue);
 
-		return mv;
+          return mv;
 
-	}
+    }
 
+
+	
+	
+	
 	private String generateBillOfSupplyNumber(HttpSession session, int allIndiaSerialNo, int stateSerialNo,
 			String DPC1) {
 		String prefix = "B";

@@ -78,6 +78,7 @@
 			String Stategstcode = (String) request.getAttribute("Stategstcode");
 			String DPC1code = (String) request.getAttribute("DPC1");
 			String millname = (String) request.getAttribute("millname");
+			Double sumofInvoicevalue = (Double) request.getAttribute("sumofInvoicevalue");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			List<Object[]>  Perticulargoods = (List<Object[]>) request.getAttribute("Perticulargoods");
 			List<Object[]>  Suplierdetails = (List<Object[]>) request.getAttribute("Suplierdetails");
@@ -982,7 +983,10 @@
      
       /*   var shipmentValue = parseFloat(document.getElementsByName("Shipment_Value1")[0].value);
         */
-        var shipmentValue =<%=total%>;
+        var shipmentValue1 = parseFloat(<%= total %>);
+        var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
+        var shipmentValue = shipmentValue1 + sumofInvoicevalue1;
+
        
 
         
@@ -1016,10 +1020,10 @@
                     }
                     
                     var Tcsammount = (tsccount / 100) * shipmentValue;
-                    
-                   
-                    var Tcsammount = (tsccount / 100) * shipmentValue;
                   
+                   
+                   /*  var Tcsammount = (tsccount / 100) * shipmentValue;
+                   */
                     
                     var tcs = Math.round(Tcsammount); // Round to the nearest whole number
 
@@ -1059,9 +1063,6 @@
             });
         });
     </script>
-
-
-
 
 
 	<!-- END PAGA BACKDROPS-->

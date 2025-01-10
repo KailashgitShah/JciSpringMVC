@@ -164,7 +164,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
 
                                                                    <td><a
-                                                                          href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%=row[2]%>&DPC=<%=dpcValue%>">
+                                                                          href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%=row[2]%>&DPC=<%=dpcValue%>&contractno=<%=row[1]%>">
                                                                                 <button class="btn btn-primary custom-button" type="button">Generate
                                                                                       BOS</button>
                                                                    </a></td>

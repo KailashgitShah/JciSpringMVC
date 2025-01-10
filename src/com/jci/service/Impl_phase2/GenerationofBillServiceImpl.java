@@ -191,6 +191,13 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 
+
+	@Override
+	public Double sumofInvoicevalue(String st) {
+		return generationofBillDao.sumofInvoicevalue(st);
+	}
+
+
 	
 
 

@@ -29,6 +29,7 @@ public interface GenerationofBillService {
 	  public   String statecode(String St);
 	  public   String statecount(String St);
 	  public String billUpdation(String st);
+	  public Double sumofInvoicevalue(String st);
 	  public void remark(String cont_no,String  con_No);
 	  public GenerationOfBillSupplyModel find(int id);
 }
