@@ -5530,9 +5530,11 @@ public class Controller_V {
 //            List<BankDraftDTO> listOfBankdraft = new ArrayList<>();
 
 			String consignment = "";
+			String licenseno = "";
 			List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
 			for (Object[] row : dateData) {
 				consignment = (String) row[9];
+				licenseno = (String) row[10];
 
 			}
 			String unitname = "";
@@ -5804,8 +5806,11 @@ public class Controller_V {
 			parameters.put("driverlicno", Driver_Lic_no);
 			parameters.put("vehicleno", Vehicle_no);
 			parameters.put("drivernme", Driver_name);
+//			parameters.put("licenseno", licenseno);
 
-			String str = Vehicle_no + "  " + Driver_name;
+			String str = Vehicle_no + "  " + licenseno;
+		
+//			String str = Vehicle_no + "  " + Driver_name;
 			parameters.put("licenceno", str);
 			parameters.put("dpcname", Dpcname);
 

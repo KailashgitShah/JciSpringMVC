@@ -979,66 +979,43 @@
 	
 	
 	<script>
-    function calculateTCS(unit_name) {
-     
-      /*   var shipmentValue = parseFloat(document.getElementsByName("Shipment_Value1")[0].value);
-        */
-        var shipmentValue1 = parseFloat(<%= total %>);
-        var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
-        var shipmentValue = shipmentValue1 + sumofInvoicevalue1;
+	function calculateTCS(unit_name) {
+	    var shipmentValue1 = parseFloat(<%= total %>);
+	    var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
+	    var shipmentValue2 = shipmentValue1 + sumofInvoicevalue1;
 
-       
+	    if (!isNaN(shipmentValue1)) {
+	        $.ajax({
+	            type: 'GET',
+	            url: 'fetchingdataMillname.obj',
+	            data: { "millname": unit_name },
+	            success: function(milldata) {
+	                console.log("Mill data:", milldata);
+	                var tsccount = 0.0;
 
-        
-        if (!isNaN(shipmentValue)) {
-           
-            $.ajax({
-                type: 'GET',
-                url: 'fetchingdataMillname.obj',
-                data: { "millname": unit_name },
-                success: function(milldata) {
-                  
-                    console.log("Mill data:", milldata);
-                    
-                   /*  var tsccount = (milldata === 'true') ? 0.0 : 0.01;
- */
-                    if (milldata === 'true') {
-                         tsccount = 0.00; // Update tsccount without re-declaring
-                        
-                    }
-                    else{
-                    	 if (shipmentValue > 5000000) {
-                             shipmentValue = shipmentValue - 5000000;
+	                if (milldata === 'true') {
+	                    tsccount = 0.0;
+	                } else {
+	                    if (shipmentValue2 > 5000000) {
+	                        tsccount = shipmentValue1 < 0 ? 0.0 : 0.1;
+	                    } else {
+	                        tsccount = 0.0;
+	                    }
+	                }
 
-                             if(shipmentValue<0){tsccount=0.0;}
-                             else {tsccount = 0.01;}
-                              // Update tsccount without re-declaring
+	                var Tcsammount = (tsccount / 100) * shipmentValue1;
+	                var tcs = Math.round(Tcsammount);
 
-                         } else {
-                             tsccount = 0.00; // Update tsccount without re-declaring
-                         }
-                    }
-                    
-                    var Tcsammount = (tsccount / 100) * shipmentValue;
-                  
-                   
-                   /*  var Tcsammount = (tsccount / 100) * shipmentValue;
-                   */
-                    
-                    var tcs = Math.round(Tcsammount); // Round to the nearest whole number
+	                document.getElementById("TCS_Amt").value = tcs;
+	                calculateGST(tcs);
+	            },
+	            error: function(error) {
+	                console.error('Ajax call error:', error);
+	            }
+	        });
+	    }
+	}
 
-                 
-                    document.getElementById("TCS_Amt").value = tcs;
-                    calculateGST(tcs);
-                    
-                },
-                error: function(error) {
-                   
-                    console.error('Ajax call error:', error);
-                }
-            });
-        }
-    }
 </script>
 
 	<script>
