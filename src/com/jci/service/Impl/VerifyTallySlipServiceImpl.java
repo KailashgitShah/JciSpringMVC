@@ -171,6 +171,12 @@ public class VerifyTallySlipServiceImpl implements VerifyTallySlipService {
 		return VerificationTallySlipDao.getexcelpath(regionId);
 	}
 
+	@Override
+	public List<ImageVerificationModel> getImagesbyregion(String tallyNo, String dpcId, String regionid) {
+		// TODO Auto-generated method stub
+		return VerificationTallySlipDao.getImagesbyregion(tallyNo,dpcId,regionid);
+	}
+
 
 
 }

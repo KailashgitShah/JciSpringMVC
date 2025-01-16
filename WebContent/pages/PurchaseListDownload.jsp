@@ -73,6 +73,7 @@ th     { background:#eee; }
 				String cropyear = (String)request.getAttribute("cropyear");
 				String Placeofp = (String)request.getAttribute("Placeofp");
 				String basis = (String)request.getAttribute("basis");
+				String regionid = (String)request.getAttribute("regionid");
 				String purchasesdateFrom = (String)request.getAttribute("purchasesdateFrom");
 				String purchasesdateTo = (String)request.getAttribute("purchasesdateTo");
 				PurchaseRegisterDTO dtomodel = purchaselists.get(1);
@@ -155,7 +156,7 @@ th     { background:#eee; }
 									<tr>
 									    <td><%=i%></td>
 										<td><%=plist.getDatepurchase() %></td>
-										<td><%=plist.getTallyslipno() %></td>
+										<td><a style="color: blue;" href="popupimage.obj?tallyno=<%=plist.getTallyslipno()%>&dpcid=<%=Placeofp %>&regionid=<%=regionid %>" target="_blank"><%=plist.getTallyslipno()%></a></td>
 										<td><%=plist.getRate_slipno() %></td>
 										<td><%=plist.getFarmerregno() %></td>
  	                                    <td><%=plist.getFarmername() %></td>

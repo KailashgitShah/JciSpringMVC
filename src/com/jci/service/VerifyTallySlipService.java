@@ -34,4 +34,5 @@ public interface VerifyTallySlipService {
 	public void updatestatustoRMZM(String[] tallyno,String[] dpc);
 	public List<PurchaseRegisterDTO> getAllPurchase(String cropyear, String placeofp, String basis, String purchasesdate,String purchasesdateTo);
 	public List<String> getexcelpath(String regionId);
+	public List<ImageVerificationModel> getImagesbyregion(String tallyNo, String dpcId, String regionid);
 }

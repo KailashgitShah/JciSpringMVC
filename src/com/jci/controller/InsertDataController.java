@@ -5375,13 +5375,21 @@ System.out.println();
 //        	   System.err.println(tallyNo + "tallyNo");
 //        	 
         	    String dpcId = request.getParameter("dpcid");
+        	    String regionid = request.getParameter("regionid");
                String farmerno = request.getParameter("farmerno");
                //String tallyNo = String.valueOf(Encry.decrypt(decryptedtallyNo, key));
                //String farmerno = String.valueOf(Encry.decrypt(decryptedfarmerno, key));
                
                session.setAttribute("farmerno", farmerno);
               // String farmerno1 =(String)request.getSession().getAttribute("farmerno");
-               final List<ImageVerificationModel> images= (List<ImageVerificationModel>)verifyTallySlipService.getImages(tallyNo, dpcId);
+               List<ImageVerificationModel> images = null;
+               if(!regionid.equals(null) && !regionid.equals("")) {
+                   images= (List<ImageVerificationModel>)verifyTallySlipService.getImagesbyregion(tallyNo, dpcId,regionid);
+
+               }else
+               {
+                   images= (List<ImageVerificationModel>)verifyTallySlipService.getImages(tallyNo, dpcId);
+               }
                mv.addObject("images",(Object) images);
                return mv;
          }
@@ -6359,6 +6367,7 @@ System.out.println();
 		    	String cropyear = request.getParameter("cropyear");
 		    	String Placeofp = request.getParameter("dpc");
 		    	String basis = request.getParameter("basis");
+		    	String regionid = request.getParameter("region");
 		    	String pdateFrom = request.getParameter("purchasesdatefrom");
 		    	String pdateTo = request.getParameter("purchasesdateto");
 		    	SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
@@ -6382,6 +6391,7 @@ System.out.println();
 		        mv.addObject("basis",(Object)basis);
 		        mv.addObject("purchasesdateFrom",(Object)purchasesdateFrom);
 		        mv.addObject("purchasesdateTo",(Object)purchasesdateTo);
+		        mv.addObject("regionid",(Object)regionid);
 			    return mv;
 		    }
 	    

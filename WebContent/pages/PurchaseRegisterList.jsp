@@ -71,7 +71,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 					<select class="form-control" name="cropyear" id="cropyear">
 					    <option disabled selected value>-Select-</option>
 					      <option value="<%=currCropYear%>"><%=currCropYear %></option>
-					      <option value="<%=priviouscropyear%>"><%=priviouscropyear%></option>
+					      <option value="2023-2024">2023-2024</option>
 					       
 					</select>
 				</div>
