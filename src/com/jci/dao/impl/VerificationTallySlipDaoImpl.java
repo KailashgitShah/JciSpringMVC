@@ -96,14 +96,14 @@ public class VerificationTallySlipDaoImpl implements VerificationTallySlipDao {
 			String querystr = "";
 			if (role_type.equalsIgnoreCase("RO")) {
 				
-				querystr = "select distinct a.tallyid,a.tallyNo,a.farmerregno,a.puchasedate,a.netquantity,a.amountpayable,a.facheck_flag,b.basis,c.centername,d.F_NAME,b.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo and b.rateslipno=a.rateslipno and b.datepurchase=a.puchasedate left join jcipurchasecenter c on c.CENTER_CODE = b.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='" + status + "' and a.payment_status='0' and a.region_id = " + region; 
+				querystr = "select distinct a.tallyid,a.tallyNo,a.farmerregno,a.puchasedate,a.netquantity,a.amountpayable,a.facheck_flag,b.basis,c.centername,d.F_NAME,b.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo and b.datepurchase=a.puchasedate left join jcipurchasecenter c on c.CENTER_CODE = b.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='" + status + "' and a.payment_status='0' and a.region_id = " + region; 
 						
 				//querystr = "select a.tallyid,a.tallyNo, a.farmerregno, a.puchasedate, a.netquantity, a.amountpayable, a.facheck_flag, b.basis, c.centername, "
 				//		+ "d.F_NAME from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo left join "
 				//		+ "jcipurchasecenter c on c.CENTER_CODE = a.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno"
 				//		+ " where a.status ='" + status + "' and a.payment_status='0' and a.region_id =" + region;
 			} else if (role_type.equalsIgnoreCase("HO")) {
-				querystr = "select distinct a.tallyid,a.tallyNo,a.farmerregno,a.puchasedate,a.netquantity,a.amountpayable,a.facheck_flag,b.basis,c.centername,d.F_NAME,b.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo and b.rateslipno=a.rateslipno and b.datepurchase=a.puchasedate left join jcipurchasecenter c on c.CENTER_CODE = b.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='" + status + "' and a.payment_status='0'"; 
+				querystr = "select distinct a.tallyid,a.tallyNo,a.farmerregno,a.puchasedate,a.netquantity,a.amountpayable,a.facheck_flag,b.basis,c.centername,d.F_NAME,b.placeOfPurchase from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo and b.datepurchase=a.puchasedate left join jcipurchasecenter c on c.CENTER_CODE = b.placeOfPurchase left join jcirmt d on d.F_REG_NO = a.farmerregno where a.status ='" + status + "' and a.payment_status='0'"; 
 
 				//querystr = "select a.tallyid,a.tallyNo, a.farmerregno, a.puchasedate, a.netquantity, a.amountpayable, a.facheck_flag, b.basis, c.centername, "
 				//		+ "d.F_NAME from verificationtallyslip a left join jciprocurement b on b.tallyslipno = a.tallyNo left join "
