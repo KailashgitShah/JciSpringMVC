@@ -39,8 +39,8 @@ public class HODispachServiceImpl implements HOInstService{
                 }
 
                 @Override
-                public Object getCount(String reg) {
-                                return dispatchHODao.getCount(reg);
+                public Object getCount(String reg,String crp) {
+                                return dispatchHODao.getCount(reg,crp);
                                 
                 }
 

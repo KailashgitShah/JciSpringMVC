@@ -86,6 +86,7 @@ public class RoDispatchDaoImpl implements RoDispatchDao {
 	// To get count of RO entries for RO no. generation
 	@Override
 	public int getCountOfAvailableEntries(String hoNo) {
+		String crpYr= (String) session1.getAttribute("currCropYear");
 		String sqlString = "select count(HO_DI_NO) from jciDI_ro where HO_DI_NO = '" + hoNo + "'";
 		return (int) this.currentSession().createSQLQuery(sqlString).uniqueResult();
 

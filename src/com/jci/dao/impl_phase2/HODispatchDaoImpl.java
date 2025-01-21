@@ -64,7 +64,16 @@ public class HODispatchDaoImpl implements DispatchHODao {
               }
 
               @Override
-              public List<String> getDetails(String contractNo) {
+              public List<String> getDetails(String cnt) {
+            	  System.err.println(cnt);
+            	  
+            	  String[] parts = cnt.split("\\$\\$");
+            	  String contractNo = parts[0];
+            	  String fc= parts[1];
+            	 // System.err.println(contractNo);
+            	 // System.err.println(fc);
+            	
+
                              List<String> result = new ArrayList<>();
                              String sqlString = "SELECT TOP 1 * \r\n"
                                                           + "FROM jcicontract \r\n"
@@ -72,8 +81,8 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                                           + "WHERE jcicontract.Contract_no = '"+contractNo+"'"
                                                           + "ORDER BY jcicontract.Created_date DESC ;";
                                                           
-                             String sqlString2 = "select Top 1 * from jcifinancial_concurrence where Contractno ='" + contractNo
-                                                          + "' Order by Created_date DESC ";
+                             String sqlString2 = "\r\n"
+                             		+ "select Top 1 * from jcifinancial_concurrence where Contractno ='"+contractNo+"'  and FC_Ref_No='"+fc+"'order by Created_date DESC ";
                              String sqString3 = "select TOP 1 Last_shipment_date from jcipayment_arrangement where Contract_No ='"
                                                           + contractNo + "' Order by Created_date DESC";
 
@@ -138,7 +147,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                                                           + "   SUM(Gr3_qty) AS Total_Grade3," + "   SUM(Gr4_qty) AS Total_Grade4,"
                                                           + "   SUM(Gr5_qty) AS Total_Grade5," + "   SUM(Gr6_qty) AS Total_Grade6,"
                                                           + "   SUM(Gr7_qty) AS Total_Grade7," + "   SUM(Gr8_qty) AS Total_Grade8"
-                                                          + "    FROM jciDI_ho WHERE Contract_No =   '" + contractNo + "';";
+                                                          + "    FROM jciDI_ho WHERE FC_Ref_No =   '" + fc + "';";
 
                              List<String> list9 = this.sessionFactory.getCurrentSession().createSQLQuery(sqlString9).list();
                              result.addAll(list9);
@@ -206,9 +215,19 @@ public class HODispatchDaoImpl implements DispatchHODao {
 
               // To get Count of previous DI issued for particular RO code.
               @Override
-              public Object getCount(String reg) {
+              public Object getCount(String reg,String crp) {
                              // TODO Auto-generated method stub
-                             String sqlString = "select Count(DI_HO_ID) from jciDI_ho where Regional_office ='" + reg + "'";
+                             String sqlString = "  SELECT \r\n"
+                             		+ "    COALESCE(\r\n"
+                             		+ "        MAX(CAST(SUBSTRING(DI_no, CHARINDEX('/', DI_no) + 3, LEN(DI_no) - CHARINDEX('/', DI_no) - 2) AS INT)) + 1,\r\n"
+                             		+ "        1\r\n"
+                             		+ "    ) AS next_number\r\n"
+                             		+ "FROM \r\n"
+                             		+ "    jciDI_ho\r\n"
+                             		+ "WHERE \r\n"
+                             		+ "    Regional_office = '"+reg+"' \r\n"
+                             		+ "     AND DI_no Like '"+crp+"%';\r\n"
+                             		+ "";
                              Object list3 = (Object) this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).uniqueResult();
 
                              return list3;
@@ -235,7 +254,7 @@ public class HODispatchDaoImpl implements DispatchHODao {
                   if(roleId ==6||roleId == 7 || roleId ==8) {
                 	  sqlString  = "SELECT ro.roname, diho.*\r\n"
                 	  		+ "                   	   		FROM jciDI_ho diho\r\n"
-                	  		+ "                   	   		LEFT JOIN jcirodetails ro \r\n"
+                	  		+ "                   	   		LEFT JOIN jcirodetails ro \r\n"	
                 	  		+ "                   	   		   ON diho.Regional_office = ro.rocode\r\n"
                 	  		+ "                   	   		WHERE diho.Regional_office ='"+regionString+"';\r\n"
                 	  		+ "                   	   		;";

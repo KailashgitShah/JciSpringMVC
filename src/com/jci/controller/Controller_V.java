@@ -218,12 +218,10 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 import kotlin.Unit;
-import net.sf.jasperreports.engine.*;
-
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 //import com.itextpdf.text.pdf.PdfContentByte;
-import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import com.jci.service_phase2.verifyClaimService;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -6773,10 +6771,10 @@ public class Controller_V {
 //To get count previous HO count dor DI no. for particular Region
 	@ResponseBody
 	@RequestMapping({ "countHo" })
-	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request) {
+	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request, @RequestParam("crp") String crp) {
 
 		final Gson gson = new Gson();
-		return gson.toJson((Object) this.hoInstService.getCount(reg));
+		return gson.toJson((Object) this.hoInstService.getCount(reg,crp));
 
 	}
 
@@ -6805,7 +6803,9 @@ public class Controller_V {
 
 				String user = Integer.toString(usId);
 
-				String contNo = request.getParameter("fullcontractno");//
+				String contI = request.getParameter("fullcontractno");//
+				 String[] parts = contI.split("\\$\\$");
+				String contNo =parts[0];
 
 				String crpyrString = request.getParameter("cropyear");//
 

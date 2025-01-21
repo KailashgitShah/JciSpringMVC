@@ -131,7 +131,7 @@ input[type="radio"] {
 															<%
 															for (Object[] Contract : contractList) {
 															%>
-															<option value="<%=Contract[0]%>" readonly><%=Contract[0] + "( FC Ref No.: " + Contract[1] + ")"%></option>
+															<option value="<%=Contract[0]+"$$"+Contract[1]%>" readonly><%=Contract[0] + "( FC Ref No.: " + Contract[1] + ")"%></option>
 															<%
 															}
 															%>
@@ -453,6 +453,7 @@ input[type="radio"] {
                                                                         function() {
 
                                                                                var cont = $(this).val();
+                                                                              // var cont = cont1.split("$$")[0];
                                                                                //alert(cont);
                                                                                $
                                                                                             .ajax({
@@ -541,7 +542,7 @@ input[type="radio"] {
 
                                                      contentToDisplay += "<p>Contract No.                               :"
                                                                   + "<strong><span style='color: blue'>"
-                                                                  + cont + "</span></strong>" + "</p>";
+                                                                  + cont.split("$$")[0] + "</span></strong>" + "</p>";
                                                      contentToDisplay += "<p>Crop Year                                  : "
                                                                   + "<strong><span style='color: blue'>"
                                                                   + d[1] + "</span></strong>" + "</p>";
@@ -704,14 +705,15 @@ input[type="radio"] {
 $(document).ready(function() {
     // DI No. generation
     $("#region").on("change", function() {
-        var crp = '<%=(String) session.getAttribute("currCropYear")%>'; // Fetch current crop year from session
+        var crp = '<%=(String) session.getAttribute("currCropYear")%>'; 
         var reg = this.value; // Get selected region value
-        
+      // alert(crp);
         $.ajax({
             type: "GET",
             url: "countHo.obj",
             data: {
-                "reg": reg
+                "reg": reg,
+                "crp":crp
             },
             success: function(result) {
                 try {
@@ -720,7 +722,7 @@ $(document).ready(function() {
                         throw new Error("Invalid data received"); // Handle unexpected data
                     }
                     
-                    data = data + 1; // Increment the received data
+                  
                     var DI;
                     if (data < 10) {
                         DI = crp + "/" + reg + "00" + data;

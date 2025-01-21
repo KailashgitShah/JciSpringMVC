@@ -12,7 +12,7 @@ List<String> getDetails(String contractNo);
 
 List<Object[]> getRoname();
 
-Object getCount(String reg);
+Object getCount(String reg, String crp);
 
 
 void save(JciDIHoModel hodispatch);
