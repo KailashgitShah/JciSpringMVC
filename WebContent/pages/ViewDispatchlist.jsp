@@ -139,6 +139,8 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
                                                                    if (i <= allUserRegistration.size()) {
                                                                          String dpcValue = (String) row[7];
+                                                                         String contractNo = (String) row[1];
+                                                                         String millCode = contractNo.split("/")[1];
                                                             %>
                                                             <tr>
                                                                    <td><%=i%></td>
@@ -164,7 +166,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
 
                                                                    <td><a
-                                                                          href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%=row[2]%>&DPC=<%=dpcValue%>&contractno=<%=row[1]%>">
+                                                                          href="EntryofGenerationBillsupply.obj?id=<%=row[0]%>&millname=<%=row[2]%>&DPC=<%=dpcValue%>&contractno=<%=row[1]%>&millCode=<%=millCode%>">
                                                                                 <button class="btn btn-primary custom-button" type="button">Generate
                                                                                       BOS</button>
                                                                    </a></td>

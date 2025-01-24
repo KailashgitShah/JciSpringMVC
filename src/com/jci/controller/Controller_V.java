@@ -5281,6 +5281,7 @@ public class Controller_V {
           }
 
           final String challan_no = request.getParameter("id");
+          final String millCode = request.getParameter("millCode");
           final String DPC1 = request.getParameter("DPC");
           List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
           final String millname = request.getParameter("millname");
@@ -5293,11 +5294,13 @@ public class Controller_V {
           List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
           List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
         List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
-        Double sumofInvoicevalue = (Double) this.generationofBillService.sumofInvoicevalue(contractno);
+        Double sumofInvoicevalue = (Double) this.generationofBillService.sumofInvoicevalue(millCode);
         
           mv.addObject("ShipmentDetails", ShipmentDetails);
           mv.addObject("Perticulargoods", Perticulargoods);
           mv.addObject("Suplierdetails", Suplierdetails);
+          
+          System.err.println("sumofInvoicevalue" + sumofInvoicevalue);
 
            int allIndiaSerialNo = 1;
           int stateSerialNo = 1;
@@ -5452,6 +5455,7 @@ public class Controller_V {
 			generationOfBillSupplyModel.setStatecode_forBOs(statecode);
 			generationOfBillSupplyModel.setDPCID(DPC1code);
 			generationOfBillSupplyModel.setMillcode(millcode234);
+		 
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
@@ -5691,6 +5695,9 @@ public class Controller_V {
 //                                                                    Statename23, StaeCode23, PAN23, mastterSatename, mastterSatename2, ReciepentsStatecode, dateData,
 //                                                                    Dpcname, millcode234, RegionAndCenterName1, consignment);
 			// generationOfBillSupplyModel.setBos_file_path(filePath);
+			
+			String fileName = "billofsupplydoc" + Bill_of_Supply + ".pdf";
+			generationOfBillSupplyModel.setBos_file_path(fileName);
 
 			this.generationofBillService.create(generationOfBillSupplyModel);
 
@@ -5871,7 +5878,7 @@ public class Controller_V {
 			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
 			// Defining the file name and save path
-			String fileName = "billofsupplydoc" + Bill_of_Supply + ".pdf";
+			
 			File directory = new File(Genrationofbill);
 
 			if (!directory.exists()) {
@@ -5983,7 +5990,7 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
 	}
-
+ 
 //           private static void generateAndSendPdf2(HttpServletResponse response, JasperPrint jasperPrint2, String savePath2) throws IOException {
 //        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 //            byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint2);

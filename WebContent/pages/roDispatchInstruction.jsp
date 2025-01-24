@@ -336,6 +336,7 @@ $('#hoDiNo, #dpc').change(function() {
 	            var count = data.count + 1;
 
 	            var contractData = data.contractDetails[0][10];
+	            alert(contractData);
 	            var dataArray = contractData.split(',');
 
 	            var dpcDropdown = $('#dpc');

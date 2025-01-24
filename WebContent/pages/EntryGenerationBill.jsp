@@ -956,16 +956,24 @@
 		/* 	var shipmentValue = parseFloat(document
 					.getElementsByName("Shipment_Value1")[0].value);
  */
+	console.log("tcs" + tcs);
           var tcs;
           var shipmentValue =<%=total%>;
+	//console.log("shipmentValue0" + shipmentValue);
 			// Check if the entered value is a valid number
 			if (!isNaN(shipmentValue)) {
 				// Calculate SGST and CGST amounts (assuming 18% GST rate)
-				var gstRate = 0.0;
+/* 				console.log("shipmentValue" + shipmentValue);
+ */				var gstRate = 0.0;
 				var sgstAmt = (gstRate / 2) * shipmentValue;
 				var cgstAmt = (gstRate / 2) * shipmentValue;
+			/* 	console.log("sgstAmt" + sgstAmt);
+				console.log("cgstAmt" + cgstAmt); */
+				
 				var totalGstAmt = sgstAmt + cgstAmt;
 				var invoiceValue = shipmentValue + totalGstAmt+tcs;
+			/* 	console.log("totalGstAmt" + totalGstAmt);
+				console.log("invoiceValue" + invoiceValue); */
 
 				// Set the calculated amounts to the respective input fields
 				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
@@ -973,6 +981,7 @@
 				document.getElementById("IGST_Amt").value = cgstAmt.toFixed(2);
 				document.getElementById("Invoice_Value").value = invoiceValue
 						.toFixed(2);
+				//alert("Invoice_Value:"+Invoice_Value.String());
 			}
 		}
 	</script>
@@ -980,9 +989,13 @@
 	
 	<script>
 	function calculateTCS(unit_name) {
+		//alert("TCS CALCULATING")
 	    var shipmentValue1 = parseFloat(<%= total %>);
 	    var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
-	    var shipmentValue2 = shipmentValue1 + sumofInvoicevalue1;
+	     var tcsamt = 0;
+	    //existing invoice value
+	   console.log("currInvoiceValue" + shipmentValue1);
+	   console.log("totalInv" + sumofInvoicevalue1);
 
 	    if (!isNaN(shipmentValue1)) {
 	        $.ajax({
@@ -994,18 +1007,37 @@
 	                var tsccount = 0.0;
 
 	                if (milldata === 'true') {
-	                    tsccount = 0.0;
+	                	tcsamt = 0.0;
 	                } else {
-	                    if (shipmentValue2 > 5000000) {
+	                  /*   if (shipmentValue2 > 5000000) {
 	                        tsccount = shipmentValue1 < 0 ? 0.0 : 0.1;
 	                    } else {
 	                        tsccount = 0.0;
-	                    }
+	                    } */
+	                    
+	                	if(sumofInvoicevalue1 > 5000000){
+	            	    	
+	            	    	tcsamt = shipmentValue1 * 0.001;
+	            	       console.log("greate50" , tcsamt);
+	            	    	
+	            	    }else{
+	            	    	
+	            	    	if(shipmentValue1 + sumofInvoicevalue1 > 5000000){
+	            	    		tcsamt = (shipmentValue1 + sumofInvoicevalue1 - 5000000) * 0.001;
+	            	    		console.log("when sum is greate than 50K" + tcsamt);
+	            	    	}else{
+	            	    		tcsamt = 0;
+	            	    	}
+	            	    }
+	                    
 	                }
+	                
 
-	                var Tcsammount = (tsccount / 100) * shipmentValue1;
-	                var tcs = Math.round(Tcsammount);
-
+	                //var Tcsammount = (tsccount / 100) * shipmentValue1;
+	                var tcs = Math.round(tcsamt);
+	                console.log("Tcsammount" + tcsamt);
+	                console.log("tcs" + tcs);
+				
 	                document.getElementById("TCS_Amt").value = tcs;
 	                calculateGST(tcs);
 	            },

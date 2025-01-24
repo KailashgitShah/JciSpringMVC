@@ -280,9 +280,10 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public Double sumofInvoicevalue(String st) {
+		
 	    String sql = "SELECT SUM(CAST(Invoice_value AS DECIMAL(10, 2))) AS TotalInvoiceValue " +
 	                 "FROM jcibos_generation " +
-	                 "WHERE Contract_no = '" + st + "'" +
+	                 "WHERE millcode = '" + st + "'" +
 	                 "AND CONVERT(DATE, BOS_date, 103) BETWEEN " +
 	                 "DATEFROMPARTS(YEAR(GETDATE()) - CASE WHEN MONTH(GETDATE()) < 4 THEN 1 ELSE 0 END, 4, 1) " +
 	                 "AND GETDATE()";
