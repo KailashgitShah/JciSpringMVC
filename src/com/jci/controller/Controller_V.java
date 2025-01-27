@@ -5786,7 +5786,7 @@ public class Controller_V {
 			parameters.put("statename3", Statename23);
 			parameters.put("billofsupllyno", Bill_of_Supply);
 
-			parameters.put("statecode3", StaeCode23);
+			parameters.put("statecode3", ReciepentsStatecode);
 			parameters.put("billofsupplydate", BOS_Date);
 			parameters.put("pan", PAN23);
 
@@ -5799,7 +5799,7 @@ public class Controller_V {
 			parameters.put("consigneeaddre", Consignee_Address);
 			parameters.put("statename", mastterSatename);
 			parameters.put("statename2", mastterSatename2);
-			parameters.put("statecode", ReciepentsStatecode);
+			parameters.put("statecode", statecode);
 			parameters.put("statecode2", Clientcode);
 			parameters.put("pan1", ClientPan);
 
