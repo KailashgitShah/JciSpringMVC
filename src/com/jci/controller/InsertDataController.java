@@ -5372,24 +5372,27 @@ System.out.println();
              }
                String key = LoginController.secretkey;
         	   String tallyNo = request.getParameter("tallyno");
-//        	   System.err.println(tallyNo + "tallyNo");
 //        	 
         	    String dpcId = request.getParameter("dpcid");
         	    String regionid = request.getParameter("regionid");
                String farmerno = request.getParameter("farmerno");
-               //String tallyNo = String.valueOf(Encry.decrypt(decryptedtallyNo, key));
-               //String farmerno = String.valueOf(Encry.decrypt(decryptedfarmerno, key));
-               
+               if (regionid == null) {
+            	    regionid = ""; // or a default value
+            	}
                session.setAttribute("farmerno", farmerno);
               // String farmerno1 =(String)request.getSession().getAttribute("farmerno");
                List<ImageVerificationModel> images = null;
-               if(!regionid.equals(null) && !regionid.equals("")) {
+               if(!regionid.equals("null") && !regionid.equals("")) {
                    images= (List<ImageVerificationModel>)verifyTallySlipService.getImagesbyregion(tallyNo, dpcId,regionid);
+                   System.out.println("iffff");
 
                }else
                {
                    images= (List<ImageVerificationModel>)verifyTallySlipService.getImages(tallyNo, dpcId);
+                   System.out.println("else");
+
                }
+               //
                mv.addObject("images",(Object) images);
                return mv;
          }

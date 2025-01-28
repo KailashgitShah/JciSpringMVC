@@ -191,7 +191,7 @@
 									    </a>
 									</td>
 								
-										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
+										<td><a href="popupimage.obj?tallyno=<%=verificationlists.getTallyNo()%>&farmerno=<%=verificationlists.getFarmerRegNo()%>&dpcid=<%= verificationlists.getErrors() %>" target="_blank"><%=verificationlists.getFarmerRegNo()%></a></td>
 				                    	<td><%=verificationlists.getFarmer_name()%></td>
 				                    	<td><%=verificationlists.getCentername()%></td>
 				                    	<td><%=verificationlists.getBasis()%></td>

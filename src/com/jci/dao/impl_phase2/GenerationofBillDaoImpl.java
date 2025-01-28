@@ -8,6 +8,7 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.persistence.criteria.Order;
+import javax.servlet.http.HttpSession;
 import javax.activation.*;
 
 import org.hibernate.Criteria;
@@ -32,6 +33,9 @@ import com.jci.model.GenerationOfBillSupplyModel;
 public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	@Autowired
 	SessionFactory sessionFactory;
+	@Autowired
+    HttpSession session1;
+
 	protected Session currentSession(){
 		return sessionFactory.getCurrentSession();
 	}
@@ -43,10 +47,33 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	}
 	@Override
     public List<GenerationOfBillSupplyModel> getAll(){
-		 String sqlQuery = "SELECT * FROM jcibos_generation ORDER BY Bos_id DESC";
-		    SQLQuery query = currentSession().createSQLQuery(sqlQuery).addEntity(GenerationOfBillSupplyModel.class);
-		    return query.list();
+             String roIdString = (String) session1.getAttribute("regionId");
+            System.err.println(roIdString);
+            System.err.println(roIdString);
+            System.err.println(roIdString);
+            Integer roleId = (Integer)session1.getAttribute("roleId");
+            String dcpId =(String) session1.getAttribute("dpcId");
+            String sqlQString="";
+            if(roleId ==6||roleId == 7 || roleId ==8 ) {
+               sqlQString = "  SELECT * FROM jcibos_generation where Ro_id='"+roIdString+"' ORDER BY Bos_id DESC";
+               }
+            else if(roleId ==52 || roleId ==53) {
+               
+               sqlQString = " SELECT * FROM jcibos_generation where DPCID='"+dcpId+"'  ORDER BY Bos_id DESC";
+            }
+            else if(roleId == 51 || roleId ==1103||roleId==3|| roleId ==4 ||roleId == 1104) {
+               sqlQString = "  SELECT * FROM jcibos_generation ORDER BY Bos_id DESC";
+                    
+            }
+            else {
+               return null;
+            }
+            
+                 SQLQuery query = currentSession().createSQLQuery(sqlQString).addEntity(GenerationOfBillSupplyModel.class);
+                 return query.list();
     }
+
+
 	
 	
 	
