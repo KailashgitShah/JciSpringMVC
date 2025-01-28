@@ -3915,7 +3915,7 @@ public class Controller_V {
 				double compoqty = (sumqty * percentage) / 100;
 				System.err.println("qty: " + compoqty);
 				sum += compoqty;
-				sum = Math.round(sum);
+//				sum = Math.round(sum);
 				compoqty = Math.round(compoqty);
 				fcDto1.setQty(compoqty);
 
