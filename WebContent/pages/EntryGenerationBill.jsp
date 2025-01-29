@@ -813,7 +813,7 @@
             url: 'fetchingdata1.obj',
             data: { "contractno": field2Value },
             success: function(data) {
-            	
+            
                
                 try {
                     var dataArray = JSON.parse(data);
@@ -835,13 +835,13 @@
                             url: 'contrcatnotomill.obj',
                             data: { "contractno": contractNo },
                             success: function(secondData) {
-                            	
+                            
                             
                                 var dataArray = JSON.parse(secondData);
                               
                                 if (dataArray && dataArray.length > 0) {
                                     var millcode = dataArray[0][0];
-                                    
+                                    console.log(millcode+"millcode data");
                                     var cropyear = dataArray[0][1];
                                     /* $('#Financial_year1').val(cropyear); */
                                   
@@ -855,7 +855,7 @@
                                        
                                         success: function(thirdData) {
                                           
-                                           
+                                       
                                             try {
                                                 var dataArray = JSON.parse(thirdData);
                                                 if (dataArray && dataArray.length > 0) {
@@ -948,48 +948,9 @@
 		});
 		</script>
          
-         
-         
-         <script>
-		function calculateGST(tcs) {
-			// Retrieve the shipment value entered by the user
-		/* 	var shipmentValue = parseFloat(document
-					.getElementsByName("Shipment_Value1")[0].value);
- */
-	console.log("tcs" + tcs);
-          var tcs;
-          var shipmentValue =<%=total%>;
-	//console.log("shipmentValue0" + shipmentValue);
-			// Check if the entered value is a valid number
-			if (!isNaN(shipmentValue)) {
-				// Calculate SGST and CGST amounts (assuming 18% GST rate)
-/* 				console.log("shipmentValue" + shipmentValue);
- */				var gstRate = 0.0;
-				var sgstAmt = (gstRate / 2) * shipmentValue;
-				var cgstAmt = (gstRate / 2) * shipmentValue;
-			/* 	console.log("sgstAmt" + sgstAmt);
-				console.log("cgstAmt" + cgstAmt); */
-				
-				var totalGstAmt = sgstAmt + cgstAmt;
-				var invoiceValue = shipmentValue + totalGstAmt+tcs;
-			/* 	console.log("totalGstAmt" + totalGstAmt);
-				console.log("invoiceValue" + invoiceValue); */
-
-				// Set the calculated amounts to the respective input fields
-				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
-				document.getElementById("CGST_Amt").value = cgstAmt.toFixed(2);
-				document.getElementById("IGST_Amt").value = cgstAmt.toFixed(2);
-				document.getElementById("Invoice_Value").value = invoiceValue
-						.toFixed(2);
-				//alert("Invoice_Value:"+Invoice_Value.String());
-			}
-		}
-	</script>
-	
-	
-	<script>
+         	<script>
 	function calculateTCS(unit_name) {
-		//alert("TCS CALCULATING")
+		
 	    var shipmentValue1 = parseFloat(<%= total %>);
 	    var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
 	     var tcsamt = 0;
@@ -1049,6 +1010,48 @@
 	}
 
 </script>
+         
+         <script>
+		function calculateGST(tcs) {
+			// Retrieve the shipment value entered by the user
+		/* 	var shipmentValue = parseFloat(document
+					.getElementsByName("Shipment_Value1")[0].value);
+ */
+	
+          var shipmentValue =<%=total%>;
+	//console.log("shipmentValue0" + shipmentValue);
+			// Check if the entered value is a valid number
+			if (!isNaN(shipmentValue)) {
+				// Calculate SGST and CGST amounts (assuming 18% GST rate)
+ 				/* console.log("shipmentValue" + shipmentValue); */
+ 			var gstRate = 0.0;
+				var sgstAmt = (gstRate / 2) * shipmentValue;
+				var cgstAmt = (gstRate / 2) * shipmentValue;
+			/* 	console.log("sgstAmt" + sgstAmt);
+				console.log("cgstAmt" + cgstAmt); */
+				
+				var totalGstAmt = sgstAmt + cgstAmt;
+			/* 	console.log("totalGstAmt" + totalGstAmt);  */
+				 var tcs = parseFloat(document.getElementById("TCS_Amt")?.value) || 0;
+				  /*   console.log("tcs: " + tcs);  */
+				var invoiceValue = shipmentValue + totalGstAmt+tcs;
+			/* 	console.log("totalGstAmt" + totalGstAmt);  */
+			/* 	console.log("totalGstAmt" + totalGstAmt);
+				console.log("invoiceValue" + invoiceValue); */
+
+				// Set the calculated amounts to the respective input fields
+				document.getElementById("SGST_Amt").value = sgstAmt.toFixed(2);
+				document.getElementById("CGST_Amt").value = cgstAmt.toFixed(2);
+				document.getElementById("IGST_Amt").value = cgstAmt.toFixed(2);
+				document.getElementById("Invoice_Value").value = invoiceValue
+						.toFixed(2);
+				/* console.log("Invoice_Value" + invoiceValue);  */
+			}
+		}
+	</script>
+	
+	
+
 
 	<script>
     $(document).ready(function(){

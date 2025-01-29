@@ -176,6 +176,21 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	}
 
 	@Override
+		public boolean challanduplicate(String challanno) {
+		    String sql = "SELECT COUNT(*) FROM jcibos_generation WHERE Challan_no = :challanno";
+		    
+		    SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		    query.setParameter("challanno", challanno);
+
+		    Number count = (Number) query.uniqueResult(); 
+
+		    return count.intValue() == 0;
+ 
+		}
+
+	
+	
+	@Override
 	public List<Object[]> ShipmentDetails(String st) {
 		String sql="SELECT  Crop_year,Bale_mark,Jute_grade,No_of_bales,Nominal_wt,Nominal_qty,Rate FROM jcidispatch_details_child where Challan_no ='" + st + "' ";
 		

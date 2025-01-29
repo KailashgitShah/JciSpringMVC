@@ -16,6 +16,7 @@ public interface GenerationofBillService {
 	  public  List<Object[]>dispatchChildlist(String  st);
 	  public  List<Object[]>contrcatnotomill(String  st);
 	  public  boolean millnamefromTCS(String millname);
+	  public  boolean challanduplicate(String challanno);
 	  public  List<Object[]>contarctnoformaster(String  st);
 	  public  List<Object[]>GenrationAginstLCs(String  st);
 	  public  List<Object[]>Dispatchentry(String  st);

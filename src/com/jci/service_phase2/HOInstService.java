@@ -28,6 +28,8 @@ String check(String string);
 List<String> getJuteVariety();
 
 List<Object[]> getJasperData(String diNoString);
+
+String getDeliveryType(String contNo);
                 
                
                 

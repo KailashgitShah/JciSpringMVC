@@ -102,6 +102,11 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 		return  generationofBillDao.millnamefromTCS(millname);
 	}
 
+	@Override
+	public boolean challanduplicate(String challanno) {
+	
+		return  generationofBillDao.challanduplicate(challanno);
+	}
 
 
 	@Override

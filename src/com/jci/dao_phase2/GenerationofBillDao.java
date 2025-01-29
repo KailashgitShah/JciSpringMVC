@@ -14,6 +14,7 @@ public interface GenerationofBillDao {
 	  public List<Object[]>dispatchChildlist( String st);
 	  public  List<Object[]> contarctno(String st);
 	  public  boolean millnamefromTCS(String millname);
+	  public  boolean challanduplicate(String challanno);
 	  public  List<Object[]> contrcatnotomill(String st);
 	  public  List<Object[]> GenrationAginstLCs(String st);
 	  public  List<Object[]>contarctnoformaster(String st);

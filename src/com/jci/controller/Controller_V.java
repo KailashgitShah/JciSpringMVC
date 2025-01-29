@@ -3375,21 +3375,7 @@ public class Controller_V {
 				String Pyamentduedate = request.getParameter("payment_dueDate12");
 				String contrcat_value23 = request.getParameter("contrcat_value23");
 				String autorevolvingamount = request.getParameter("autorevolvingamount");
-				// String QtyAllowed = request.getParameter("QtyAllowed");
-				// String originalFilename = SupportingDocument.getOriginalFilename();
-
-//                                       String uniqueFilename = generateUniqueFilename(originalFilename);
-////            File serverFile = new File(theDir, uniqueFilename);
-////                                    SupportingDocument.transferTo(serverFile);
-//                                        
-
-//                                        // Create unique identifier based on contract details
-//                                       String uniqueFilename = generateUniqueFilename(originalFilename); 
-//                                        File serverFile = new File(theDir,uniqueFilename);
-//                                        SupportingDocument.transferTo(serverFile);
-//                                        
-
-				// Conditionally set autorevolvingamount based on payment type
+		
 
 				EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 
@@ -3400,18 +3386,10 @@ public class Controller_V {
 
 				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
 				entryPaymentDetailsModel.setContract_value(contractvalueajax);
-//                                        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-//                                        Date instdate1 = formatter1.parse(instdate);
-//                                        entryPaymentDetailsModel.setInstdate(instdate1);
-
-//                                        
+                                      
 				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date instdate1 = formatter1.parse(instdate);
-//                                        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
-//                                        String instdate3 = formatter2.format(instdate);
-//                                        Date instdate1 = formatter2.parse(instdate3);
-
-				// Set the time portion to midnight
+                                 
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(instdate1);
 				calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -3504,27 +3482,26 @@ public class Controller_V {
 		return timestamp + "_" + originalFilename;
 	}
 
-	// download the support document which upload
+
 
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
 		String imagePath = PaymentDocument + File.separator + filename;
 		File imageFile = new File(imagePath);
 
-		// Check if the file exists
+
 		if (imageFile.exists()) {
 
 			try {
-				// Set the content type based on the file type
+	
 				String contentType = determineContentType(filename);
 				response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
+				
 				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
+			
 				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
+			
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -3534,7 +3511,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-				// Handle IO exception
+			
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -3548,20 +3525,18 @@ public class Controller_V {
 		String imagePath = PaymentDocument + File.separator + filename;
 		File imageFile = new File(imagePath);
 
-		// Check if the file exists
 		if (imageFile.exists()) {
 
 			try {
-				// Set the content type based on the file type
+	
 				String contentType = determineContentType(filename);
 				response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
+				
 				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
+		
 				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
+		
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -3571,7 +3546,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-				// Handle IO exception
+			
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -3587,20 +3562,18 @@ public class Controller_V {
 	public void downloaFcdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 		String imagePath = fcDownoad + File.separator + filename;
 		File imageFile = new File(imagePath);
-		// System.err.println(filename); // Check if the file exists
+		
 		if (imageFile.exists()) {
 
 			try {
-				// Set the content type based on the file type
+			
 				String contentType = determineContentType(filename);
 				response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
 				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
+			
 				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
+			
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -3610,7 +3583,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-				// Handle IO exception
+	
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -3763,13 +3736,19 @@ public class Controller_V {
 					e.printStackTrace();
 				}
 			}
+			
+			int allIndiaSerialNo = 1;
+
+            String fcref_no1 = GenerateFCNO(request.getSession(), allIndiaSerialNo);
+             
+             
 			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 			financialConcurenceModel.setFullcontractno(fullcontractno);
 
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date contdate = formatter1.parse(FC_Issue_Date);
 			financialConcurenceModel.setFC_Issue_Date(contdate);
-			financialConcurenceModel.setFC_Ref_No(FC_Ref_No);
+			financialConcurenceModel.setFC_Ref_No(fcref_no1);
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
@@ -3814,6 +3793,7 @@ public class Controller_V {
 				parameters.put("Instrument_No", concatenatepayment);
 				// parameters.put("Instrument_Date", details[2]);
 				parameters.put("Instrument_value", details[8]);
+//				parameters.put("millname", details[10]);
 				parameters.put("Instrument_Date", "");
 
 				Double paymentvalue = Double.parseDouble(details[8].toString());
@@ -3893,10 +3873,12 @@ public class Controller_V {
 
 			List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode1);
 			for (Object[] row : listofaddress) {
-				String millname = (String) row[0];
+			
+				
+				String millname = String.join(" ",(String) row[13],(String) row[0]);
 				parameters.put("millname", millname);
 
-				String address = String.join(" ", (String) row[0], (String) row[1], (String) row[2], (String) row[3],
+				String address = String.join(" ",(String) row[13], (String) row[0], (String) row[1], (String) row[2], (String) row[3],
 						(String) row[4]);
 				parameters.put("address", address);
 			}
@@ -4786,8 +4768,7 @@ public class Controller_V {
 
 			GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
 			int balance1 = Integer.parseInt(balance);
-//                                                                      BigDecimal decimalValue = new BigDecimal(balance);
-//                                                             int intValue1 = decimalValue.intValue();
+                                                                   
 			generationofDocumentLCsModel.setBoe_Date(date);
 			generationofDocumentLCsModel.setbOS_No(bosNo[j]);
 			// generationofDocumentLCsModel.setbOS_No(bosConcatenate);
@@ -4810,9 +4791,7 @@ public class Controller_V {
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfTopSheet);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
-		// String savePath = BOSReports + File.separator + fileName;
-//                                                                    JasperExportManager.exportReportToPdfFile(jasperPrint, savePath);
-		// serveFileAsResponse(savePath, fileName, response);
+
 
 		File directory = new File(BOSReports);
 
@@ -4874,16 +4853,14 @@ public class Controller_V {
 		if (imageFile.exists()) {
 
 			try {
-				// Set the content type based on the file type
+			
 				String contentType = determineContentType8(filename);
 				response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
 				response.setContentLength((int) imageFile.length());
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
+			
 				response.setHeader("Content-Disposition", "");
-				// Stream the file content to the response
+			
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -4893,7 +4870,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-				// Handle IO exception
+				
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -4902,18 +4879,6 @@ public class Controller_V {
 		}
 	}
 
-//                         // Utility method to determine content type based on filename
-//                         private String determineContentType8(String filename) {
-//                                        if (filename.endsWith(".pdf")) {
-//                                                      return "application/pdf";
-//                                        } else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
-//                                                      return "image/jpeg";
-//                                        } else if (filename.endsWith(".png")) {
-//                                                      return "image/png";
-//                                        } else {
-//                                                      return "application/octet-stream"; // Default to binary data if content type is unknown
-//                                        }
-//                         }
 
 	@RequestMapping({ "viewMillReciept" })
 	public ModelAndView viewMillReciept(final HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -5419,13 +5384,22 @@ public class Controller_V {
 			String PAN23 = request.getParameter("PAN23");
 			String millcode234 = request.getParameter("millcode");
 
-//                                // String QtyAllowed = request.getParameter("QtyAllowed");
-////                              final String filename = SupportingDocument.getOriginalFilename();
-////                              File serverFile = new File(theDir, filename);
-////                              SupportingDocument.transferTo(serverFile);
-////                              
-//                                 // Conditionally set autorevolvingamount based on payment type
-			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+       	SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+			
+			 int allIndiaSerialNo = 1;
+	          int stateSerialNo = 1;
+	          String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo, DPC1code);
+	          boolean forcheckchallan = generationofBillService.challanduplicate(Challan_No1);
+	          if (!forcheckchallan) {
+	             // Redirect to "viewDispatchChallan" page
+	        		redirectAttributes.addFlashAttribute("msg",
+	        			    "<div class=\"alert alert-warning\"><b>Warning!</b> Challan number is duplicate!</div>");
+
+	    		return new ModelAndView(new RedirectView("viewDispatchChallan.obj"));
+	          }
+
+	     
+			
 			// Date instdate1 = formatter1.parse(Challan_Date1);
 			// Date instdate2 = formatter1.parse(Challan_Date1);
 			GenerationOfBillSupplyModel generationOfBillSupplyModel = new GenerationOfBillSupplyModel();
@@ -5438,7 +5412,10 @@ public class Controller_V {
 			generationOfBillSupplyModel.setIGST_amt(IGST_Amt);
 			generationOfBillSupplyModel.setTCS_amt(TCS_Amt);
 			generationOfBillSupplyModel.setTDS_amt(TDS_Amt);
-			generationOfBillSupplyModel.setBill_of_supply_no(Bill_of_Supply);
+			
+//			generationOfBillSupplyModel.setBill_of_supply_no(Bill_of_Supply);
+			generationOfBillSupplyModel.setBill_of_supply_no(billOfSupplyNo);
+			
 			generationOfBillSupplyModel.setInvoice_value(Invoice_Value);
 			generationOfBillSupplyModel.setBOS_date(BOS_Date);
 			generationOfBillSupplyModel.setSupplier_name(Supplier_Name);
@@ -5465,71 +5442,12 @@ public class Controller_V {
 
 			List<Object[]> Dpcname = generationofBillService.Dpcname(ro_id, DPC1code);
 			generationOfBillSupplyModel.setRo_id(ro_id);
-			// generationOfBillSupplyModel.setBos_file_path("documents");
-
-			// Compile the JRXML file
-//            JasperReport jasperReport1 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\topsheet.jrxml"));
-//            JasperReport jasperReport2 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml"));
-//            JasperReport jasperReport3 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\billofexchange.jrxml"));
-//            JasperReport jasperReport4 = JasperCompileManager.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOE(NON-LC).jrxml"));
-
-			// Parameters for the report
-//            Map<String, Object> parameters = new HashMap<>();
-//            TopSheeetDTO topSheeetDTO = new TopSheeetDTO();
-//            List<TopSheeetDTO> listOfTopSheet = new ArrayList<>();
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
 			List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Conract_no);
-			// List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
-//            for (Object[] details : list) {
-//                         double value4 = (details[4] instanceof Integer) ? ((Integer) details[4]).doubleValue() : Double.parseDouble(details[4].toString());
-//
-//                         double value5 = (details[5] instanceof String) ? Double.parseDouble((String) details[5]) : ((Number) details[5]).doubleValue();
-//
-//                         double result = value4 * value5;
-//                         System.err.println(result);
-//            
-//                             topSheeetDTO.setNominalQty(result);
-//             
-//          }
 
-//            for (Object[] details : list1) {
-//                                 String millcode=(String)details[0];
-//                                                      String hodino= (String)details[3];
-//                                                      String hodidate= (String)details[2];
-//                                                      String dtaeofshipment=(String)details[1];
-//              
-//                topSheeetDTO.setDateofShipment(dtaeofshipment);
-//                topSheeetDTO.setMill_code(millcode);
-//                topSheeetDTO.setHodiNO(hodino);
-//                topSheeetDTO.setHodiDate(hodidate);
-//                
-//               
-//          }
-//            parameters.put("millcode", Conract_no);
-//            parameters.put("dateofshipment", Bill_of_Supply);
-//            
-//            String inputString = Conract_no;
-//
-//            // Split the string by '/'
-//            String[] splitParts = inputString.split("/");
 
-			// Extract the last part
-//            String resultcontract = splitParts[splitParts.length - 1];
-//
-//            topSheeetDTO.setContract_no(resultcontract);
-//            topSheeetDTO.setBillOfSupplyNo(Bill_of_Supply);
-//            System.err.println(Bill_of_Supply);
-//            topSheeetDTO.setInvoicevalue(Invoice_Value);
-//            
-//            listOfTopSheet.add(topSheeetDTO);
-//            System.err.println(topSheeetDTO);
-//            //JRDataSource dataSource = new JREmptyDataSource(listOfTopSheet);
-//            JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(listOfTopSheet);
+  
 
-			// 2nd pdf
-
-//           BankDraftDTO bankDraftDTO = new BankDraftDTO();
-//            List<BankDraftDTO> listOfBankdraft = new ArrayList<>();
 
 			String consignment = "";
 			String licenseno = "";
@@ -5544,101 +5462,15 @@ public class Controller_V {
 
 			List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode234);
 
-//                   for (Object[] row : listofaddress) {
-//                                              unitname = (String) row[0];
-//                                                        bankDraftDTO.setUnitname(unitname);
-//                                                      String strValue2 = (String) row[1];
-//                                                      String strValue3 = (String) row[2];
-//                                                      String strValue4 = (String) row[3];
-//                                                      String strValue5 = (String) row[4];
-//                                                      
-//                                                      unitaddres = strValue2 + strValue3 + strValue4+strValue5;
-//                                                        bankDraftDTO.setUnitaddress(unitaddres);
-//                   }
 
-//                   ConvertWord_k convertWord_k = new ConvertWord_k();
-//                   String stringValue5 =Invoice_Value;
-//                         double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
-//                      int convertInt = (int) invoiceDouble;
-//                         String InvoiceNO = convertWord_k.convertToWords(convertInt);
-//                   bankDraftDTO.setInvoicevalue(InvoiceNO);
-//                   
-//                   bankDraftDTO.setBillOfSupplyNo(Bill_of_Supply);
-//                   bankDraftDTO.setbOS_Date(BOS_Date);
-//                   bankDraftDTO.setInvoicevalueInnumber(Invoice_Value);
-//                   
-//                   listOfBankdraft.add(bankDraftDTO);
-//                                        
 
-			///
 
-//                  
-//            JRBeanCollectionDataSource dataSource2 = new JRBeanCollectionDataSource(listOfBankdraft);
-//            //3rd pdf generation
-//            BillOfExchangeDTO billOfExchangeDTO = new BillOfExchangeDTO();
-//            List<BillOfExchangeDTO> listOfBillofExchange = new ArrayList<>();
-//            billOfExchangeDTO.setInvoicevalue(Invoice_Value);
-//            billOfExchangeDTO.setInstrumentNo(InstrumentNo);
-//            billOfExchangeDTO.setInstrumentDate(Instrumentdate);
-//            billOfExchangeDTO.setBillofsupplyNo(Bill_of_Supply);
-//            billOfExchangeDTO.setBosDate(BOS_Date);
-//            billOfExchangeDTO.setBankname(bankName);
-//            billOfExchangeDTO.setBankAddress(address);
-//            
-//            listOfBillofExchange.add(billOfExchangeDTO);
-//            
-//            
-//           JRBeanCollectionDataSource dataSource3 = new JRBeanCollectionDataSource(listOfBillofExchange);
-			// 4th pdf
+
+
+
 			List<Object[]> contrcatnotomill = generationofBillService.contrcatnotomill(Conract_no);
-//           BillOFExchangeWithout_LC_DTO billOFExchangeWithout_LC_DTO = new BillOFExchangeWithout_LC_DTO();
-//           List<BillOFExchangeWithout_LC_DTO> listOfBillofExchangwithoutLC = new ArrayList<>();
-//           for (Object[] row : contrcatnotomill) {
-//                                            String cropyear = (String) row[1];
-//                                            billOFExchangeWithout_LC_DTO.setCropyear(cropyear);
-//                                                      String contractdate = (String) row[2];
-//                                                      billOFExchangeWithout_LC_DTO.setContarctdate(contractdate);
-//                                                      
-//                                        }
 
-//           billOFExchangeWithout_LC_DTO.setUnitname(unitaddres);
-//           billOFExchangeWithout_LC_DTO.setUnitaddress(unitaddres);
-//           billOFExchangeWithout_LC_DTO.setBillofsupply(Bill_of_Supply);
-//           billOFExchangeWithout_LC_DTO.setBosdate(BOS_Date);
-//           billOFExchangeWithout_LC_DTO.setInvoicevalue(Invoice_Value);
-//           billOFExchangeWithout_LC_DTO.setContarctno(Conract_no);
 
-//           listOfBillofExchangwithoutLC.add(billOFExchangeWithout_LC_DTO);
-
-//           JRBeanCollectionDataSource dataSource4 = new JRBeanCollectionDataSource(listOfBillofExchangwithoutLC);
-
-			// Fill the report
-//            JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
-//            JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2, parameters, dataSource2);
-//            JasperPrint jasperPrint3 = JasperFillManager.fillReport(jasperReport3, parameters, dataSource3);
-//            JasperPrint jasperPrint4 = JasperFillManager.fillReport(jasperReport4, parameters, dataSource4);
-
-			// Path to save the PDF
-
-//            String fileName1 = "Topsheet" + Bill_of_Supply + ".pdf";
-//            String fileName2 = "bankdraft" + Bill_of_Supply + ".pdf";
-//            String fileName3 = "BankerCopy" + Bill_of_Supply + ".pdf";
-//            String fileName4 = "BankerCopywithouLC" + Bill_of_Supply + ".pdf";
-//            String savePath1 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName1;
-//            String savePath2 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName2;
-//            String savePath3 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName3;
-//            String savePath4 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName4;
-
-			// Generate and save the PDF
-//            JasperExportManager.exportReportToPdfFile(jasperPrint1, savePath1);
-//            JasperExportManager.exportReportToPdfFile(jasperPrint2, savePath2);
-//            JasperExportManager.exportReportToPdfFile(jasperPrint3, savePath3);
-
-//            // Send the PDF as a response
-//            generateAndSendPdf1(response, jasperPrint1, savePath1);
-//            generateAndSendPdf2(response, jasperPrint2, savePath2);
-//            generateAndSendPdf3(response, jasperPrint3, savePath3);
-//            generateAndSendPdf4(response, jasperPrint4, savePath4);
 
 			List<Object[]> PANSTATE = generationofBillService.PANSTATE(millcode234);
 			String mastterSatename = "";
@@ -5669,33 +5501,7 @@ public class Controller_V {
 			}
 
 			List<Object> Non_lc = genrationCashDocumentService.Non_lc(Conract_no);
-//                                        for (Object obj : Non_lc) {
-//                                                      String strValue = (String) obj;
-//                                                      if (!strValue.equals("Letter_of_Credit")) {
-//                                                                    CashDocumentModel cashDocumentModel = new CashDocumentModel();
-//                                                                    cashDocumentModel.setCAD_Date(date);
-//                                                                    cashDocumentModel.setBOS_No(Bill_of_Supply);
-//                                                                    cashDocumentModel.setBOS_Date(BOS_Date);
-//                                                                    // cashDocumentModel.setbOEDOCpathnonlc(fileName4);
-//                                                                    cashDocumentModel.setMillcode(millcode234);
-//                                                                    cashDocumentModel.setContarctNo(Conract_no);
-//                                                                    cashDocumentModel.setInvoicevalue(Invoice_Value);
-//                                                                    this.genrationCashDocumentService.create(cashDocumentModel);
-//
-//                                                      }
-//                                        }
-
-//                                   cashDocumentModel.setBOS_Date(BOS_Date);
-//                                   cashDocumentModel.setBOS_No(Bill_of_Supply);
-
-//                                        String filePath = pdfgenereatorK.generateBillPdf(Invoice_Value, Challan_No1, Supplier_Name, Supplier_GSTN,
-//                                                                    Supplier_Address, Recipient_Name, Recipient_GSTN, Recipient_Address, Consignee_Name, Consignee_GSTN,
-//                                                                    Consignee_Address, Bill_of_Supply, Conract_no, Clientstate, Clientcode, ClientPan, BOS_Date,
-//                                                                    TrnasitPolicyNo, list, Vehicle_no, Driver_Lic_no, Driver_name, TCS_Amt, Genrationofbill,
-//                                                                    Statename23, StaeCode23, PAN23, mastterSatename, mastterSatename2, ReciepentsStatecode, dateData,
-//                                                                    Dpcname, millcode234, RegionAndCenterName1, consignment);
-			// generationOfBillSupplyModel.setBos_file_path(filePath);
-			
+	
 			String fileName = "billofsupplydoc" + Bill_of_Supply + ".pdf";
 			generationOfBillSupplyModel.setBos_file_path(fileName);
 
@@ -5784,7 +5590,7 @@ public class Controller_V {
 			parameters.put("instudocinfo", instudocinfo);
 
 			parameters.put("statename3", Statename23);
-			parameters.put("billofsupllyno", Bill_of_Supply);
+			parameters.put("billofsupllyno", billOfSupplyNo);
 
 			parameters.put("statecode3", ReciepentsStatecode);
 			parameters.put("billofsupplydate", BOS_Date);
@@ -5915,37 +5721,14 @@ public class Controller_V {
 			if (ListLCs == null || ListLCs.isEmpty()) {
 				System.err.println("No results found for Contract No: " + Conract_no);
 			} else {
-				GenerationofDocumentLCsModel generationofDocumentLCsModel = null; // Declare and initialize the model
-																					// outside the loop
+				GenerationofDocumentLCsModel generationofDocumentLCsModel = null; 
+																				
 
 				for (Object[] row : ListLCs) {
 					String instNo = (String) row[0];
 					String payentType = (String) row[1];
 
-//                                                                    if (payentType.equalsIgnoreCase("Letter_of_Credit")) {
-//                                                                                  generationofDocumentLCsModel = new GenerationofDocumentLCsModel(); // Initialize the model
-//                                                                                                                                                                                                                                                                                                                                        // inside the loop for each
-//                                                                                                                                                                                                                                                                                                                                        // "Letter_of_Credit" row
-//
-//                                                                                  generationofDocumentLCsModel.setBoe_Date(date);
-//                                                                                  generationofDocumentLCsModel.setbOS_No(Bill_of_Supply);
-//                                                                                  generationofDocumentLCsModel.setbOS_Date(BOS_Date);
-//                                                                                  generationofDocumentLCsModel.setIvoice_value(Invoice_Value);
-//                                                                                  generationofDocumentLCsModel.setInstrument_no(instNo);
-//                                                                                  generationofDocumentLCsModel.setMill_code(millcode234);
-//                                                                                  generationofDocumentLCsModel.setQuantity(Bill_of_Supply);
-//                                                                                  generationofDocumentLCsModel.setBos_Amt(BOS_Date);
-//                                                                                  //generationofDocumentLCsModel.setBillofexchangepath(fileName3);
-//                                                                                   
-//                                                                                  //generationofDocumentLCsModel.setTopsheetpath(fileName1);
-//                                                                                  generationofDocumentLCsModel.setChallanono(Challan_No1);
-//
-//                                                                            this.generationAgaistLCsService.create(generationofDocumentLCsModel);
-//
-//                                                                                   
-//                                                                                   
-//
-//                                                                    }
+                             
 
 				}
 
@@ -5954,27 +5737,24 @@ public class Controller_V {
 				}
 			}
 
-			sendemailBOS email = new sendemailBOS();
-			InternetAddress[] toAddresses = null;
-			String subject = "Bill of Supply attachement";
-			String body = "In this All information regarding Bill of supply . ";
-			// String filename=Genrationofbill;
+//			sendemailBOS email = new sendemailBOS();
+//			InternetAddress[] toAddresses = null;
+//			String subject = "Bill of Supply attachement";
+//			String body = "In this All information regarding Bill of supply . ";
+//		
+//			String filePathDir = Genrationofbill + File.separator + fileName;
+//			String username1 = "";
+//			try {
+//				// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
+//				// InternetAddress("animesh.anand@cyfuture.com")};
+//				toAddresses = new InternetAddress[] { new InternetAddress("kailashshahsha818789@gmail.com") };
+//			} catch (AddressException e) {
+//
+//				e.printStackTrace();
+//			}
+//			email.sendEmailBos(toAddresses, body, subject, filePathDir, username1);
 
-//                        
-			// String filename = "C:\\Users\\kailash.shah\\documentimage\\neft";
-			String filePathDir = Genrationofbill + File.separator + fileName;
-			String username1 = "";
-			try {
-				// toAddresses = { new InternetAddress("vishal.vishwakarma@cyfuture.com") ,new
-				// InternetAddress("animesh.anand@cyfuture.com")};
-				toAddresses = new InternetAddress[] { new InternetAddress("kailashshahsha8187@gmail.com") };
-			} catch (AddressException e) {
-
-				e.printStackTrace();
-			}
-			email.sendEmailBos(toAddresses, body, subject, filePathDir, username1);
-
-//                                
+                                
 			this.paymentDetailService.contratTable(Conract_no);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -5991,49 +5771,7 @@ public class Controller_V {
 
 	}
  
-//           private static void generateAndSendPdf2(HttpServletResponse response, JasperPrint jasperPrint2, String savePath2) throws IOException {
-//        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//            byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint2);
-//            baos.write(bytes);
-//
-//            try (FileOutputStream fos = new FileOutputStream(savePath2)) {
-//                baos.writeTo(fos);
-//            }
-//      } catch (Exception e) {
-//            e.printStackTrace();
-//            response.setContentType("text/plain");
-//            response.getWriter().println("Error generating PDF: " + e.getMessage());
-//        }
-//    }
-//           private static void generateAndSendPdf3(HttpServletResponse response, JasperPrint jasperPrint3, String savePath3) throws IOException {
-//        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//            byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint3);
-//            baos.write(bytes);
-//
-//            try (FileOutputStream fos = new FileOutputStream(savePath3)) {
-//                baos.writeTo(fos);
-//            }
-//      } catch (Exception e) {
-//            e.printStackTrace();
-//            response.setContentType("text/plain");
-//            response.getWriter().println("Error generating PDF: " + e.getMessage());
-//        }
-//    }
 
-//           private static void generateAndSendPdf4(HttpServletResponse response, JasperPrint jasperPrint4, String savePath4) throws IOException {
-//        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//            byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint4);
-//            baos.write(bytes);
-//
-//            try (FileOutputStream fos = new FileOutputStream(savePath4)) {
-//                baos.writeTo(fos);
-//            }
-//      } catch (Exception e) {
-//            e.printStackTrace();
-//            response.setContentType("text/plain");
-//            response.getWriter().println("Error generating PDF: " + e.getMessage());
-//        }
-//    }
 
 	private static void generateAndSendPdf1(HttpServletResponse response, JasperPrint jasperPrint1, String savePath1)
 			throws IOException {
@@ -6141,114 +5879,6 @@ public class Controller_V {
 		}
 	}
 
-//	@RequestMapping("downloadPDFforbos")
-//	public void downloadPDFofafterBOS(@RequestParam("filename") String filename, HttpServletResponse response) {
-//		// String imageDirectory = "upload.Imagedownload";
-//
-//		String imagePath = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator
-//				+ filename;
-//
-//		File imageFile = new File(imagePath);
-//
-//		try {
-//
-//			if (imageFile.exists()) {
-//
-//				String contentType = determineContentType1(filename);
-//				response.setContentType(contentType);
-//
-//				response.setContentLength((int) imageFile.length());
-//				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
-////                                                        //response.setHeader("Content-Disposition", "");
-//
-//				FileInputStream fileInputStream = new FileInputStream(imageFile);
-//				OutputStream responseOutputStream = response.getOutputStream();
-//
-//				byte[] buffer = new byte[1024];
-//				int bytesRead;
-//				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-//					responseOutputStream.write(buffer, 0, bytesRead);
-//				}
-//
-//				fileInputStream.close();
-//				responseOutputStream.close();
-//			} else {
-//				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//			}
-//		} catch (IOException e) {
-//
-//			e.printStackTrace();
-//			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//		}
-//	}
-//
-//	@RequestMapping("downloadPDFforbankDraft.obj")
-//	public void downloadPDFofafterBOSbankdraft(@RequestParam("filename") String millcode,
-//			@RequestParam("challanNO") String challanNO, @RequestParam("InvoiceValue") String InvoiceValue,
-//			@RequestParam("BosNO") String BosNO, @RequestParam("BosDate") String BosDate, HttpServletResponse response)
-//			throws FileNotFoundException, JRException {
-//
-//		// Compile the Jasper reports
-//		JasperReport jasperReport2 = JasperCompileManager
-//				.compileReport(new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml"));
-//
-//		// Set up parameters and data source
-//		Map<String, Object> parameters = new HashMap<>();
-//		BankDraftDTO bankDraftDTO = new BankDraftDTO();
-//		List<BankDraftDTO> listOfBankdraft = new ArrayList<>();
-//
-//		// Fetch and process date data
-//		List<Object[]> dateData = generationofBillService.ForDate(challanNO);
-//		for (Object[] row1 : dateData) {
-//			if (row1[5] != null)
-//				bankDraftDTO.setInstrumentNO(row1[5].toString());
-//			if (row1[6] != null)
-//				bankDraftDTO.setInstrumentDate(row1[6].toString());
-//			if (row1[7] != null) {
-//				String ifsc = row1[7].toString();
-//				fetchBankDetails(ifsc, bankDraftDTO);
-//			}
-//		}
-//
-//		// Fetch and process address data
-//		List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode);
-//		for (Object[] row : listofaddress) {
-//			bankDraftDTO.setUnitname((String) row[0]);
-//			bankDraftDTO.setUnitaddress(
-//					String.join("", (String) row[1], (String) row[2], (String) row[3], (String) row[4]));
-//		}
-//
-//		// Process invoice value
-//		ConvertWord_k convertWord_k = new ConvertWord_k();
-//		double invoiceDouble = Double.parseDouble(InvoiceValue);
-//		int convertInt = (int) invoiceDouble;
-//		bankDraftDTO.setInvoicevalue(convertWord_k.convertToWords(convertInt));
-//		bankDraftDTO.setInvoicevalueInnumber(InvoiceValue);
-//		bankDraftDTO.setBillOfSupplyNo(BosNO);
-//		bankDraftDTO.setbOS_Date(BosDate);
-//		Date date = new Date();
-//		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//		String formattedDate = formatter.format(date);
-//		bankDraftDTO.setCurrentdate(formattedDate);
-//		listOfBankdraft.add(bankDraftDTO);
-//		JRBeanCollectionDataSource dataSource2 = new JRBeanCollectionDataSource(listOfBankdraft);
-//
-//		// Fill the Jasper reports
-//		JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2, parameters, dataSource2);
-//
-//		// Set file names and paths
-//		String fileName2 = "bankdraft" + BosNO + ".pdf";
-//		String savePath2 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator
-//				+ fileName2;
-//
-//		// Export the reports to PDF
-//		JasperExportManager.exportReportToPdfFile(jasperPrint2, savePath2);
-//
-//		serveFileAsResponse(savePath2, fileName2, response);
-//
-//		GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
-//		generationofDocumentLCsModel.setBankdrftpath(fileName2);
-//	}
 
 	private void fetchBankDetails(String ifsc, BankDraftDTO bankDraftDTO) {
 		String url = "https://ifsc.razorpay.com/" + ifsc;
@@ -6281,64 +5911,7 @@ public class Controller_V {
 		}
 	}
 
-	/*
-	 * @RequestMapping("downloadPDFforBillofexchange.obj") public void
-	 * downloadPDFofafterBOSbillofsupply(@RequestParam("challanNO") String
-	 * challanNO,
-	 * 
-	 * @RequestParam("InvoiceValue") String InvoiceValue, @RequestParam("BosNO")
-	 * String BosNO,
-	 * 
-	 * @RequestParam("BosDate") String BosDate, HttpServletResponse response) throws
-	 * FileNotFoundException, JRException, IOException {
-	 * 
-	 * // Compile the Jasper reports JasperReport jasperReport3 =
-	 * JasperCompileManager.compileReport( new FileInputStream(
-	 * "C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\billofexchange.jrxml"));
-	 * 
-	 * // Set up parameters and data source Map<String, Object> parameters = new
-	 * HashMap<>();
-	 * 
-	 * BillOfExchangeDTO billOfExchangeDTO = new BillOfExchangeDTO();
-	 * List<BillOfExchangeDTO> listOfBillofExchange = new ArrayList<>(); // Fetch
-	 * and process date data List<Object[]> dateData =
-	 * generationofBillService.ForDate(challanNO); for (Object[] row1 : dateData) {
-	 * if (row1[5] != null) billOfExchangeDTO.setInstrumentNo(row1[5].toString());
-	 * if (row1[6] != null) billOfExchangeDTO.setInstrumentDate(row1[6].toString());
-	 * if (row1[7] != null) { String ifsc = row1[7].toString();
-	 * fetchBankDetails1(ifsc, billOfExchangeDTO); } }
-	 * 
-	 * billOfExchangeDTO.setInvoicevalue(InvoiceValue);
-	 * billOfExchangeDTO.setBillofsupplyNo(BosNO);
-	 * billOfExchangeDTO.setBosDate(BosDate); Date date = new Date();
-	 * SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); String
-	 * formattedDate = formatter.format(date);
-	 * billOfExchangeDTO.setCurrentdate(formattedDate);
-	 * 
-	 * listOfBillofExchange.add(billOfExchangeDTO);
-	 * 
-	 * JRBeanCollectionDataSource dataSource3 = new
-	 * JRBeanCollectionDataSource(listOfBillofExchange); JasperPrint jasperPrint3 =
-	 * JasperFillManager.fillReport(jasperReport3, parameters, dataSource3);
-	 * 
-	 * // Path to save the PDF String fileName3 = "BankerCopy" + BosNO + ".pdf";
-	 * String savePath3 =
-	 * "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" +
-	 * File.separator + fileName3;
-	 * 
-	 * // Ensure the directory exists File saveDir = new
-	 * File("C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument"); if
-	 * (!saveDir.exists()) { saveDir.mkdirs(); }
-	 * 
-	 * // Export to PDF JasperExportManager.exportReportToPdfFile(jasperPrint3,
-	 * savePath3);
-	 * 
-	 * serveFileAsResponse1(savePath3, fileName3, response);
-	 * 
-	 * GenerationofDocumentLCsModel generationofDocumentLCsModel = new
-	 * GenerationofDocumentLCsModel();
-	 * generationofDocumentLCsModel.setBillofexchangepath(fileName3); }
-	 */
+
 
 	private void fetchBankDetails1(String ifsc, BillOfExchangeDTO billOfExchangeDTO) {
 		String url = "https://ifsc.razorpay.com/" + ifsc;
@@ -6478,8 +6051,8 @@ public class Controller_V {
 			bosno = (String) datas[0];
 			String bosdate = (String) datas[1];
 			String invoicevalue = (String) datas[2];
-			String challanno = (String) datas[3]; // Corrected to proper index
-			String millcode = (String) datas[4]; // Corrected to proper index
+			String challanno = (String) datas[3]; 
+			String millcode = (String) datas[4];
 			System.err.println("Mill code: " + millcode);
 
 			List<Object[]> dateData = generationofBillService.ForDate(challanno);
@@ -6564,30 +6137,6 @@ public class Controller_V {
 			}
 		}
 
-//               try (FileInputStream fis = new FileInputStream("C:\\Users\\kailash.shah\\Desktop\\MSP\\JCI-CMS\\BOEDOC.jrxml")) {
-//                   JasperReport jasperReport2 = JasperCompileManager.compileReport(fis);
-//                   Map<String, Object> parameters = new HashMap<>();
-//                   JRBeanCollectionDataSource dataSource2 = new JRBeanCollectionDataSource(listOfBankdraft);
-//
-//                   JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2, parameters, dataSource2);
-//
-//                   response.setContentType("application/pdf");
-//                   response.setHeader("Content-Disposition", "inline");
-//
-//                   String fileName2 = "bankdraft" + bosno + ".pdf";
-//                   String savePath2 = "C:\\Users\\kailash.shah\\Desktop\\JCIStuff\\billOfSupplyDocument" + File.separator + fileName2;
-//
-//                   
-//                   //JasperExportManager.exportReportToPdfFile(jasperPrint2, savePath2);
-//                  // serveFileAsResponselist(savePath2, fileName2, response);
-//
-////               GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
-////               generationofDocumentLCsModel.setBankdrftpath(fileName2);
-//
-//               } catch (JRException e) {
-//                   e.printStackTrace();
-//                   return "Error generating report: " + e.getMessage();
-//               }
 
 		Gson gson = new Gson();
 		return ""; // return the list of bank drafts as JSON
@@ -6800,7 +6349,7 @@ public class Controller_V {
 			String[] variety = request.getParameterValues("jutevariety");
 
 			List<HoDispatchDto> hoDispatchDtoList = new ArrayList<>();
-
+			String DeliveryType="";
 			String diNoString = "";
 			String documentName = "";
 			Double qty = 0.0;
@@ -6813,7 +6362,7 @@ public class Controller_V {
 				String contI = request.getParameter("fullcontractno");//
 				 String[] parts = contI.split("\\$\\$");
 				String contNo =parts[0];
-
+			 DeliveryType = hoInstService.getDeliveryType(contNo);
 				String crpyrString = request.getParameter("cropyear");//
 
 				String contqtyString = request.getParameter("contractquantity");//
@@ -6982,7 +6531,7 @@ public class Controller_V {
 					parameters.put("Contract_no", details[7]);
 					parameters.put("Contract_Date", details[8]);
 					parameters.put("CropYear", details[9]);
-					parameters.put("LastDate", details[10]);
+					parameters.put("LastDate", details[10]+"    ("+DeliveryType+")");
 					parameters.put("RoName", details[11] + " Regional Office");
 					parameters.put("totalQty", qty);
 				}
@@ -9041,32 +8590,28 @@ public class Controller_V {
 	public void downloadTopSheet(@RequestParam("filename") String filename, HttpServletResponse response)
 			throws JRException {
 		String imagePath = TopSheetNONLCDownload + File.separator + filename;
-//                         imageDirectory + File.separator + idn + File.separator + filename;
+
 
 		File imageFile = new File(imagePath);
 
-		// Check if the file exists
+
 
 		if (imageFile.exists()) {
 
 			try {
 
-				// Set the content type based on the file type
+			
 
 				String contentType = determineContentType(filename);
 
 				response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
+		
 
 				response.setContentLength((int) imageFile.length());
 
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-
 				response.setHeader("Content-Disposition", "");
 
-				// Stream the file content to the response
 
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 
@@ -9088,7 +8633,6 @@ public class Controller_V {
 
 			} catch (IOException e) {
 
-				// Handle IO exception
 
 				e.printStackTrace();
 
@@ -9169,32 +8713,25 @@ public class Controller_V {
 	public void downloadDocumentpayment1(@RequestParam("filename") String filename, HttpServletResponse response) {
 
 		String imagePath = PaymentDocument + File.separator + filename;
-//                                                                                                 imageDirectory + File.separator + idn + File.separator + filename;
+//                                                                                                
 		System.out.println();
 		File imageFile = new File(imagePath);
 
-		// Check if the file exists
 
 		if (imageFile.exists()) {
 
 			try {
 
-				// Set the content type based on the file type
 
 				String contentType = determineContentType(filename);
 
 				response.setContentType(contentType);
 
-				// Set the content length and attachment disposition
 
 				response.setContentLength((int) imageFile.length());
 
-				// response.setHeader("Content-Disposition", "attachment; filename=" +
-				// filename);
-
 				response.setHeader("Content-Disposition", "");
 
-				// Stream the file content to the response
 
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 
@@ -9216,7 +8753,7 @@ public class Controller_V {
 
 			} catch (IOException e) {
 
-				// Handle IO exception
+		
 
 				e.printStackTrace();
 
@@ -9232,7 +8769,7 @@ public class Controller_V {
 
 	}
 
-	// Utility method to determine content type based on filename
+	
 
 	private String determineContentType8(String filename) {
 
@@ -10477,9 +10014,7 @@ public class Controller_V {
 			String dateofship = request.getParameter("dateofship");
 
 			String Millnameletest = request.getParameter("millname234");
-			System.err.println(Millnameletest);
-			System.err.println(dateofship);
-			System.err.println(dateofexpiry);
+		
 
 			String Pyamentduedate = request.getParameter("payment_dueDate12");
 			String contrcat_value23 = request.getParameter("contrcat_value23");
@@ -10786,6 +10321,8 @@ public class Controller_V {
 
 		return laString;
 	}
+	
+	
 
 	@RequestMapping({ "updatefcstatus" })
 	public ModelAndView bnaDeletepay(HttpServletRequest request, RedirectAttributes redirectAttributes) {

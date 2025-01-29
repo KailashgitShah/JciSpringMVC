@@ -85,4 +85,10 @@ public class HODispachServiceImpl implements HOInstService{
 					// TODO Auto-generated method stub
 					return dispatchHODao.getJasperData(diNoString);
 				}
+
+				@Override
+				public String getDeliveryType(String contNo) {
+					// TODO Auto-generated method stub
+					return dispatchHODao.getDeliveryTime(contNo);
+				}
 }

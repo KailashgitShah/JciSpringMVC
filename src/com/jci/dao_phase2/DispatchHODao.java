@@ -29,4 +29,6 @@ List<String> juteVariety();
 
 List<Object[]> getJasperData(String diNoString);
 
+String getDeliveryTime(String contNo);
+
 }

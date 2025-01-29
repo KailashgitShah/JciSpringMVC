@@ -346,4 +346,12 @@ public class HODispatchDaoImpl implements DispatchHODao {
                              
               }
 
+			@Override
+			public String getDeliveryTime(String contNo) {
+				// TODO Auto-generated method stub
+				String sql = "  Select Delivery_type from jcicontract where Contract_no = '"+contNo+"'";
+				  String list3 = (String) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
+				return list3;
+			}
+
 }
