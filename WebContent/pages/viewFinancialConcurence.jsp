@@ -139,9 +139,9 @@ th {
 										if (role_id == 51) {
 										%>
 										<th></th>
-										<% %>
-
-
+										<%
+										}
+										%>
 									</tr>
 								</thead>
 								<tbody>
@@ -180,27 +180,6 @@ th {
 										</a></td>
 										<%
 										}
-										%>
-
-
-
-
-
-
-
-										<%-- <td><a
-                                                                          href="editPaymentInstrument.obj?id=<%=financialConcurenceModel.getFc_id()%>">
-                                                                                <button class="btn btn-primary btn-sm" type="button">Issue FC / Edit</button>
-                                                                   </a></td>
-
-                                                                   <td><a
-                                                                          href="bnaDeletePay.obj?id=<%=financialConcurenceModel.getFc_id()%>"
-                                                                          class="btn btn-danger btn-sm btn-block"
-                                                                          onclick="return confirm('Are you sure you want to delete this record')">Reject</a></td>
-
-
-                                                            </tr> --%>
-										<%
 										}
 										i++;
 										}

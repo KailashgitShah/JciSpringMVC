@@ -114,6 +114,7 @@ th {
 			/* List<MillRecieptModel> millList = (List<MillRecieptModel>)request.getAttribute("millRecieptModel"); */
 			List<GenerationOfBillSupplyModel> GenerationofbillList = (List<GenerationOfBillSupplyModel>) request
 					.getAttribute("GenerationOfBill");
+			int role_id = (Integer) request.getSession().getAttribute("roleId");
 			%>
 
 
@@ -161,15 +162,14 @@ th {
 										if (role_id == 51) {
 										%>
 										<th></th>
-										<% %>
+										<% }%>
 
 									</tr>
 								</thead>
 								<tbody>
 									<%
 									int i = 1;
-									int role_id = (Integer) request.getSession().getAttribute("roleId");
-
+								
 									for (GenerationOfBillSupplyModel generationOfBillSupplyModel : GenerationofbillList) {
 
 										if (i <= GenerationofbillList.size()) {
