@@ -26,11 +26,7 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
         return paymentDetailsdao.getAllPaymentInstruments();
     }
 	
-	@Override
-    public Page<EntryPaymentDetailsModel> findAllpagination( Pageable pageable) {
-        // Implement the method to fetch payment instruments from the DAO
-        return (Page<EntryPaymentDetailsModel>) paymentDetailsdao.findAllpagination(pageable);
-    }
+
 	@Override
     public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry() {
         // Implement the method to fetch payment instruments from the DAO

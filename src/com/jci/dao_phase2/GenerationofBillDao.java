@@ -32,6 +32,8 @@ public interface GenerationofBillDao {
 	  public String billUpdation(String st);
 	  public void remark(String cont_no,String  con_No);
 	  public GenerationOfBillSupplyModel find(int id);
+	public List<Object[]> getDetails(String bOSno);
+	public void updateBosFileName(String fileName, String bill_of_Supply);
 	
 	
 	

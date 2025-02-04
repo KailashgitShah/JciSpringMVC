@@ -31,5 +31,6 @@ public interface FinancialConcurenceDao {
 	 public String fcref_nocheck();
 	 public int paymentid(String cont_no);
 	public List<Object> dataofdates(String con_no,int Payment_id);
+	public void updateFCDoc(String fileName, String fC_Ref_No);
 }
 

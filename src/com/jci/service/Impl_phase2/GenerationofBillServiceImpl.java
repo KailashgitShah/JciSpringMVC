@@ -203,6 +203,23 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 	}
 
 
+
+	@Override
+	public List<Object[]> getDetails(String bOSno) {
+		// TODO Auto-generated method stub
+		return generationofBillDao.getDetails(bOSno);
+	}
+
+
+
+	@Override
+	public void updateBosFileName(String fileName, String bill_of_Supply) {
+		// TODO Auto-generated method stub
+		generationofBillDao.updateBosFileName(fileName , bill_of_Supply);
+		
+	}
+
+
 	
 
 

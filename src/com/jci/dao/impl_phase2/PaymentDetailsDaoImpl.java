@@ -84,36 +84,7 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 
 	
 	
-	@Override
-	public Page<EntryPaymentDetailsModel> findAllpagination(Pageable pageable) {
-	    int pageNumber = pageable.getPageNumber();
-	    int pageSize = pageable.getPageSize();
-	    int offset = pageNumber * pageSize;
 	
-
-	    // SQL query with pagination
-	    String sql = "SELECT * FROM jcipayment_arrangement " +
-	                 "ORDER BY Payment_id DESC " +
-	                 "OFFSET :offset ROWS " +
-	                 "FETCH NEXT :limit ROWS ONLY";
-
-	    // Fetch data using Hibernate
-	    List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession()
-	        .createSQLQuery(sql)
-	        .addEntity(EntryPaymentDetailsModel.class)
-	        .setParameter("limit", pageSize)  
-	        .setParameter("offset", offset)  
-	        .list();
-
-	    // Count total number of rows (needed for pagination)
-	    String countSql = "SELECT COUNT(*) FROM jcipayment_arrangement";
-	    Integer totalCount = (Integer) sessionFactory.getCurrentSession()
-	        .createSQLQuery(countSql)
-	        .uniqueResult();
-
-	    // Create Page object with the fetched list and pagination details
-	    return new PageImpl<>(fCList, pageable, totalCount);
-	}
 
 
 	@Override

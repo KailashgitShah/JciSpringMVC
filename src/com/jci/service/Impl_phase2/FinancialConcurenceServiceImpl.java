@@ -106,6 +106,11 @@ public class FinancialConcurenceServiceImpl implements FinancialConcurenceServic
 	
 		return this.financialConcurencedao.gradecompositionfordetails(cont_no);
 	}
+	@Override
+	public void updateFCDoc(String fileName, String fC_Ref_No) {
+		// TODO Auto-generated method stub
+		this.financialConcurencedao.updateFCDoc(fileName,fC_Ref_No);
+	}
 	
 	
 	

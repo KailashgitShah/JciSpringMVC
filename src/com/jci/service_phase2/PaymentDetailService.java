@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 public interface PaymentDetailService {
 	public void create(EntryPaymentDetailsModel entryPaymentDetailsModel);
 	 public List<EntryPaymentDetailsModel>getAllPaymentInstruments();
-	 public Page<EntryPaymentDetailsModel>findAllpagination(Pageable pageable);
+	
 	 
 	 public void update(EntryPaymentDetailsModel EntryPaymentDetailsModel);
 	 public void updatestatus(EntryPaymentDetailsModel EntryPaymentDetailsModel);

@@ -1121,7 +1121,7 @@
 	        $.ajax({
 	            type: 'GET',
 	            url: 'fetchingdataMillname.obj',
-	            data: { "millcode": millcode },
+	            data: { "millname": millcode },
 	            success: function(milldata) {
 	                console.log("Mill data:", milldata);
 	                var tsccount = 0.0;

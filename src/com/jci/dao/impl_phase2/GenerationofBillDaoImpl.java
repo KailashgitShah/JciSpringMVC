@@ -45,7 +45,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 		return billOfSupplyNo;
 	}
 
-	public  String generateBillOfSupplyNumber(String DPC1) {
+	public String generateBillOfSupplyNumber(String DPC1) {
 
 		String statecodesyn = statecode(DPC1);
 		String statussyn = billofsupplyno();
@@ -393,6 +393,26 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 			return resultData.doubleValue();
 		}
 		return 0.0;
+	}
+
+	@Override
+	public List<Object[]> getDetails(String bOSno) {
+		// TODO Auto-generated method stub
+		String sql = "  Select Challan_No,DPCID,Challan_date,Shipment_value,SGST_amt,CGST_amt,IGST_amt,TCS_amt,TDS_amt,Bill_of_supply_no,Invoice_value,BOS_date,Supplier_name,Supplier_gSTN,Supplier_address,Recipient_name,Recipient_gSTN,Recipient_address,Consignee_name,Consignee_gSTN,Consignee_address,Contract_no,TrnasitPolicyno from jcibos_generation where Bill_of_supply_no='"
+				+ bOSno + "'";
+
+		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.list();
+		return resultList1;
+	}
+
+	@Override
+	public void updateBosFileName(String fileName, String bill_of_Supply) {
+		String sqlString = "Update jcibos_generation set Bos_file_path ='" + fileName + "' where Bill_of_supply_no='"
+				+ bill_of_Supply + "'";
+
+		currentSession().createSQLQuery(sqlString).executeUpdate();
+
 	}
 
 }

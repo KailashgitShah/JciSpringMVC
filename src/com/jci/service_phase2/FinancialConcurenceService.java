@@ -29,6 +29,7 @@ public interface FinancialConcurenceService {
 	 public List<Object> dataofdates(String Con_no,int Payment_id);
 	 
 	 public int  paymentid(String cont_no);
+	public void updateFCDoc(String fileName, String fC_Ref_No);
 	
 }
 

@@ -262,4 +262,11 @@ public class FinancialConcurenceDaoImpl implements FinancialConcurenceDao {
 			 return resultList1;
 	}
 
+	@Override
+	public void updateFCDoc(String fileName, String fC_Ref_No) {
+		// TODO Auto-generated method stub
+		String sqlString ="Update jcifinancial_concurrence set fcdocumentDownload ='"+fileName+"' where FC_Ref_No='"+fC_Ref_No+"';";
+		this.sessionFactory.getCurrentSession().createSQLQuery(sqlString).executeUpdate();
+	}
+
 }

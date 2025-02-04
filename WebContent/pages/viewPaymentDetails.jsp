@@ -287,62 +287,7 @@ th {
                     });
              })
        </script> 
- <!--       <script>
-       document.addEventListener('DOMContentLoaded', function() {
-       let currentPage = 0; 
-       const totalPages = 100; 
 
-       // Function to check if the element has children
-       function findElementWithChildren(selector) {
-           var element = document.querySelector(selector);
-           if (element && element.children.length > 0) {
-               return element; // Element has children
-           }
-           return null; // No children
-       }
-
-       // Function to load page data based on page number
-       function loadPageData(page) {
-           if (page >= 0 && page < totalPages) {
-               // Check if the container for pagination has children before proceeding
-               let paginationContainer = findElementWithChildren('.pagination-container');
-               
-               if (paginationContainer) {
-                   currentPage = page; 
-              /*      window.location.href = 'paymentDetailspagination?pageNo=' + page+ '&pageSize=10';  */
-                  window.location.href = 'paymentDetailspagination.obj';  
-               } else {
-                   console.error('Pagination container has no children.');
-               }
-           }
-       }
-
-       // Go to specific page
-       function goToPage() {
-           var page = document.getElementById("pageInput").value;
-           loadPageData(page); // Adjust for 0-indexed pages
-       }
-
-       // Load Next Page
-       $("#loadMoreBtn").click(function() {
-           if (currentPage < totalPages - 1) {
-               loadPageData(currentPage + 1); 
-           }
-       });
-
-       // Load Previous Page
-       $("#loadPreviousBtn").click(function() {
-           if (currentPage > 0) {
-               loadPageData(currentPage - 1);
-           }
-       });
-
-       // Go to Specific Page
-       $("#goToPageBtn").click(function() {
-           goToPage(); 
-       });
-       });
-       </script> -->
 </body>
 
 </html>

@@ -11,7 +11,7 @@ public interface PaymentDetailsDao {
 	public void create(EntryPaymentDetailsModel entryPaymentDetailsModel);
 	 public List<EntryPaymentDetailsModel> getAllPaymentInstruments();
 	 public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry();
-	 public Page<EntryPaymentDetailsModel> findAllpagination(Pageable pageable);
+	
 	 
 	 public void update(EntryPaymentDetailsModel entryPaymentDetailsModel);
 	 public void updatestatus(EntryPaymentDetailsModel entryPaymentDetailsModel);

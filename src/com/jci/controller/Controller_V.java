@@ -3946,6 +3946,575 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
 	}
 
+	@RequestMapping("regenerateFcDocument")
+	public ModelAndView regenerateFcDocument(HttpServletRequest request, RedirectAttributes redirectAttributes,
+			@RequestParam("fcNo") String FC_Ref_No, @RequestParam("contract") String fullcontractno,
+			@RequestParam("allowedQty") String QtyAllowed , HttpServletResponse response) {
+
+		String username = (String) request.getSession().getAttribute("usrname");
+		// String fcyear = (String) request.getSession().getAttribute("currFnYr");
+
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+
+		try {
+
+		
+
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+
+			// fdocumentListingfinancialConcurenceModel.setFnYr(fcyear);
+
+			/*
+			 * this.financialConcurenceservice.create(financialConcurenceModel);
+			 * this.paymentDetailService.update2(fullcontractno);
+			 */
+
+			String ifsc = "";
+			String millcode1 = "";
+			String labelname = "";
+
+			Map<String, Object> parameters = new HashMap<>();
+
+			List<FcDto> listOfFcdto = new ArrayList<>();
+
+			double sum = 0.0;
+
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+			// Fetching details for report
+			List<Object[]> documentsreport = this.financialConcurenceservice.DetailsForReport(fullcontractno);
+			for (Object[] details : documentsreport) {
+				millcode1 = (String) details[7];
+
+				// parameters.put("Contractno", details[0]);
+
+				String concatenatepayment = (String) details[1] + "  dt. " + (String) details[2];
+				String concatenateContract = "Financial Concurrence against Contract No:  " + (String) details[0]
+						+ "   dt. " + (String) details[9];
+
+				parameters.put("Contractno", concatenateContract);
+				// parameters.put("Instrument_No", details[1]);
+				parameters.put("Instrument_No", concatenatepayment);
+				// parameters.put("Instrument_Date", details[2]);
+				parameters.put("Instrument_value", details[8]);
+//				parameters.put("millname", details[10]);
+				parameters.put("Instrument_Date", "");
+
+				Double paymentvalue = Double.parseDouble(details[8].toString());
+
+				paymentvalue = paymentvalue / 100000;
+				String formattedValue = String.format("%.2f", paymentvalue);
+
+				String strforlastpayString = " Accordingly DI may be issued to the extend of Rupees  " + formattedValue
+						+ " lakhs as per terms of the contract  ";
+				parameters.put("StringInstrument_value", strforlastpayString);
+
+//           parameters.put("Last_shipment_date", details[4]);
+//           parameters.put("Expiry_date", details[5]);
+
+				Date lastShipmentDate = null;
+				Date expiryDate = null;
+				String formattedLastShipmentDate = "Immediately";
+				String formattedExpiryDate = "";
+
+				if (details[4] != null && !((String) details[4]).trim().isEmpty()) {
+					lastShipmentDate = originalFormat.parse((String) details[4]);
+					formattedLastShipmentDate = targetFormat.format(lastShipmentDate);
+				}
+
+				if (details[5] != null && !((String) details[5]).trim().isEmpty()) {
+					expiryDate = originalFormat.parse((String) details[5]);
+					formattedExpiryDate = targetFormat.format(expiryDate);
+				}
+				// Set the formatted dates as parameters
+				parameters.put("Last_shipment_date", formattedLastShipmentDate);
+				parameters.put("Expiry_date", formattedExpiryDate);
+
+				parameters.put("Auto_revolving_amount", details[6]);
+				// parameters.put("contarctdate", details[9]);
+				parameters.put("contarctdate", " ");
+
+				if (details[3] != null) {
+					ifsc = details[3].toString();
+					String url = "https://ifsc.razorpay.com/" + ifsc;
+
+					try {
+						RestTemplate restTemplate = new RestTemplate();
+						String result = restTemplate.getForObject(url, String.class);
+						JSONObject jsonObject = new JSONObject(result);
+
+						String banknameString = jsonObject.optString("BANK");
+						String bankaddressString = jsonObject.optString("ADDRESS");
+
+						if (banknameString == null || banknameString.isEmpty()) {
+							banknameString = "";
+						}
+
+						// Check if bankaddressString is empty or null, if so, set it to a blank string
+						if (bankaddressString == null || bankaddressString.isEmpty()) {
+							bankaddressString = "";
+						}
+
+						String concatenateBank = banknameString + ", " + bankaddressString;
+
+						parameters.put("banknameString", concatenateBank);
+						parameters.put("bankaddressString", "");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.err.println("Failed to retrieve or parse IFSC data");
+					}
+				}
+
+			}
+
+			// Fetching label name and delivery details
+			List<Object[]> documentlabel = this.financialConcurenceservice.LabelnameAndDelivery(fullcontractno);
+			for (Object[] row : documentlabel) {
+				labelname = (String) row[0];
+				parameters.put("deliveryType", row[1]);
+			}
+
+			List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode1);
+			for (Object[] row : listofaddress) {
+
+				String millname = String.join(" ", (String) row[13], (String) row[0]);
+				parameters.put("millname", millname);
+
+				String address = String.join(" ", (String) row[13], (String) row[0], (String) row[1], (String) row[2],
+						(String) row[3], (String) row[4]);
+				parameters.put("address", address);
+			}
+
+			// Fetching grade composition details
+			double sumqty = Double.parseDouble(QtyAllowed);
+
+			List<Object[]> documentforcomposition = this.financialConcurenceservice
+					.gradecompositionfordetails(labelname);
+			for (Object[] row : documentforcomposition) {
+				FcDto fcDto1 = new FcDto();
+				String composition = (String) row[0];
+				fcDto1.setComposition(composition);
+
+				double percentage = Double.parseDouble(row[1].toString());
+				double compoqty = (sumqty * percentage) / 100;
+				System.err.println("qty: " + compoqty);
+				sum += compoqty;
+//				sum = Math.round(sum);
+				compoqty = Math.round(compoqty);
+				fcDto1.setQty(compoqty);
+
+				listOfFcdto.add(fcDto1);
+			}
+
+			parameters.put("total", sum);
+			parameters.put("qtyAllowed", QtyAllowed);
+
+			// Generating the report
+			JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(fcreport));
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfFcdto);
+			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+			// Defining the file name and save path
+			String fileName = "listOfFcdto" + FC_Ref_No + ".pdf";
+			File directory = new File(fcDownoad1);
+  
+			if (!directory.exists()) {
+				if (directory.mkdirs()) {
+					System.out.println("Directory created successfully");
+				} else {
+					System.err.println("Failed to create directory: " + directory.getAbsolutePath());
+					return null;
+				}
+			}
+
+			String savePath = fcDownoad1 + File.separator + fileName;
+			
+			financialConcurenceservice.updateFCDoc(fileName,FC_Ref_No);
+
+			try (OutputStream out = new FileOutputStream(savePath)) {
+				JRPdfExporter exporter = new JRPdfExporter();
+				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+				exporter.exportReport();
+			} catch (Exception e) {
+				System.out.println(e.getLocalizedMessage());
+			}
+
+			response.setContentType("application/pdf");
+			response.setHeader("Content-Disposition", "inline");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("msg",
+					"<div class=\"alert alert-danger\"><b>Error !</b> " + e.getMessage() + "</div>");
+			return new ModelAndView("errorPage");
+		}
+
+		redirectAttributes.addFlashAttribute("msg",
+				"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>");
+		return new ModelAndView(new RedirectView("viewFinancialConcurence.obj"));
+	}
+
+	
+	@RequestMapping("regenerateBosDocument")
+    public ModelAndView RegenerateBOS(HttpServletRequest request,RedirectAttributes redirectAttributes, @RequestParam("id") String BOSno) {
+          final File theDir = new File("Genrationofbill");
+System.err.println("ReachedController");
+
+          if (!theDir.exists()) {
+                 theDir.mkdirs();
+          }
+          final ModelAndView mv = new ModelAndView();
+          String username = (String) request.getSession().getAttribute("usrname");
+          
+          try {
+                 List<Object[]> BOSDetails = generationofBillService.getDetails(BOSno);
+                 //String statecode = request.getParameter("Stategstcode");
+                 
+                 
+                 Object[] rowen = BOSDetails.get(0);
+
+                 String Challan_No1 = (String) rowen[0];
+                 String statecode = Stategstcode((String) rowen[1]);
+                 String DPC1code = (String) rowen[1];
+                 String Challan_Date1 = (String) rowen[2];
+                 String Shipment_Value1 = (String) rowen[3];
+                 String SGST_Amt = (String) rowen[4];
+                 String CGST_Amt = (String) rowen[5];
+                 String IGST_Amt = (String) rowen[6];
+                 String TCS_Amt = (String) rowen[7];
+                 String TDS_Amt = (String) rowen[8];
+                 String Bill_of_Supply = (String) rowen[9];
+                 String Invoice_Value = (String) rowen[10];
+                 String BOS_Date = (String) rowen[11];
+                 String Supplier_Name = (String) rowen[12];
+                 String Supplier_GSTN = (String) rowen[13];
+                 String Supplier_Address = (String) rowen[14];
+                 String Recipient_Name = (String) rowen[15];
+                 String Recipient_GSTN = (String) rowen[16];
+                 String Recipient_Address = (String) rowen[17];
+                 String Consignee_Name = (String) rowen[18];
+                 String Consignee_GSTN = (String) rowen[19];
+                 String Consignee_Address = (String) rowen[20];
+                 String Contract_no = (String) rowen[21];
+                 List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(Challan_No1);
+                 List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1code);
+                 List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(Challan_No1);
+                 
+                 String millCode = Contract_no.split("/")[1];
+                 List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millCode);
+                 
+                 String Clientstate = (String)listofaddress.get(0)[8];
+                 String Clientcode = (String)listofaddress.get(0)[5];
+                 String ClientPan = (String)listofaddress.get(0)[7];
+                 
+                 String TrnasitPolicyNo = (String) rowen[22];
+                 
+                 
+                 String Driver_name = (String) ShipmentDetails.get(0)[4];
+                 String Driver_Lic_no = (String) ShipmentDetails.get(0)[3];
+                 String Vehicle_no = (String) ShipmentDetails.get(0)[2];
+
+                 String Statename23 = (String)Suplierdetails.get(0)[0];
+                 Integer StaeCode23 =  (Integer)Suplierdetails.get(0)[1];
+                 String PAN =  ((String)Suplierdetails.get(0)[2]);
+                 String PAN23=PAN.substring(2,PAN.length()-3);
+                 String millcode234 = millCode;
+
+
+                 Date date = new Date();
+//               generationOfBillSupplyModel.setCreation_date(date);
+                 String ro_id = (String) request.getSession().getAttribute("regionId");
+                 System.out.println(ro_id);
+                 List<Object[]> RegionAndCenterName1 = generationofBillService.RegionAndCenterName(DPC1code);
+
+                 List<Object[]> Dpcname = generationofBillService.Dpcname(ro_id, DPC1code);
+//               generationOfBillSupplyModel.setRo_id(ro_id);
+                 List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
+//               List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Conract_no);
+
+                 String consignment = "";
+                 String licenseno = "";
+                 List<Object[]> dateData = generationofBillService.ForDate(Challan_No1);
+                 for (Object[] row : dateData) {
+                       consignment = (String) row[9];
+                       licenseno = (String) row[10];
+
+                 }
+                 String unitname = "";
+                 String unitaddres = "";
+
+          
+
+                 List<Object[]> contrcatnotomill = generationofBillService.contrcatnotomill(Contract_no);
+
+                 List<Object[]> PANSTATE = generationofBillService.PANSTATE(millcode234);
+                 String mastterSatename = "";
+                 String mastterSatename2 = "";
+                 String CnsigneeStatecode = "";
+                 String ReciepentsStatecode = "";
+                 for (Object[] row : PANSTATE) {
+                       String strValue1 = (String) row[0];
+                       String strValue2 = (String) row[1];
+                       String strValue3 = (String) row[2];
+                       String strValue4 = (String) row[3];
+                       Integer Str = (Integer) row[4];
+                       String strValue5 = String.valueOf(Str);
+                       String strValue6 = (String) row[5];
+
+                       if (strValue2.equals(strValue6) && strValue3.equals(strValue5)) {
+                              mastterSatename = strValue4;
+                              mastterSatename2 = strValue4;
+                              ReciepentsStatecode = strValue5;
+
+                       } else if (strValue3.equals(strValue5)) {
+                              mastterSatename2 = strValue4;
+                       } else if (strValue2.equals(strValue6)) {
+                              mastterSatename = strValue4;
+                              ReciepentsStatecode = strValue5;
+                       }
+
+                 }
+
+                 List<Object> Non_lc = genrationCashDocumentService.Non_lc(Contract_no);
+
+                 
+//               String billofno = this.generationofBillService.create(generationOfBillSupplyModel, DPC1code);
+                 
+                 String fileName = "billofsupplydoc" + Bill_of_Supply + ".pdf";
+//               generationOfBillSupplyModel.setBos_file_path(fileName);
+
+
+                 //this.generationofBillService.billUpdation(Challan_No1);
+
+                 
+                 //document generation starts here. ... 
+                 
+                 String contaractdate = "";
+                 String DiNo = "";
+                 String DiDate = "";
+                 String Challandate = "";
+                 String InstrumentNo = "";
+                 String Instrumentdate = "";
+                 String dpcname = " ";
+
+                 for (Object[] row : dateData) {
+                       if (row[0] != null)
+                              contaractdate = row[0].toString();
+                       if (row[1] != null)
+                              DiNo = row[1].toString();
+                       if (row[2] != null)
+                              DiDate = row[2].toString();
+                       if (row[3] != null)
+                              Challandate = row[3].toString();
+                       if (row[4] != null)
+                              InstrumentNo = row[5].toString();
+                       if (row[5] != null)
+                              Instrumentdate = row[6].toString();
+                 }
+
+                 String centerName = "";
+                 String centercode = "";
+                 String Roname = "";
+                 String Rocode = "";
+
+                 for (Object[] row : RegionAndCenterName1) {
+                       if (row[0] != null)
+                              centerName = row[0].toString();
+                       if (row[1] != null)
+                              centercode = row[1].toString();
+                       if (row[2] != null)
+                              Roname = row[2].toString();
+                       if (row[3] != null)
+                              Rocode = row[3].toString();
+
+                 }
+
+                 Map<String, Object> parameters = new HashMap<>();
+
+                 List<BillofSupplyDocDTO> listOfBillofSupplyDocDTO = new ArrayList<>();
+
+                 parameters.put("GstinSupplier", Supplier_GSTN);
+                 parameters.put("contractRef", Contract_no);
+                 parameters.put("contractdate", contaractdate);
+                 String Contdate = Contract_no + "  dt." + contaractdate;
+                 parameters.put("Contdate", Contdate);
+
+                 parameters.put("namesupplier", Supplier_Name);
+                 parameters.put("Diref", DiNo);
+                 parameters.put("didate", DiDate);
+                 String Didate = DiNo + "  dt." + DiDate;
+                 parameters.put("didateinfo", Didate);
+
+                 parameters.put("centername", centerName);
+                 parameters.put("centercode", centercode);
+
+                 parameters.put("roname", Roname);
+                 parameters.put("rocode", Rocode);
+
+                 String area = centerName + "(" + centercode + ")/" + Roname + "(" + Rocode + ")";
+                 parameters.put("Area", area);
+
+                 parameters.put("challanno", Challan_No1);
+                 parameters.put("challandate", Challandate);
+
+                 String chalandocinfo = Challan_No1 + " dt." + Challandate;
+                 parameters.put("challandocinfo", chalandocinfo);
+
+                 parameters.put("Cnno", consignment);
+
+                 parameters.put("addresSupplier", Supplier_Address);
+                 parameters.put("instrumentno", InstrumentNo);
+                 parameters.put("instrumendate", Instrumentdate);
+
+                 String instudocinfo = InstrumentNo + "  dt." + Instrumentdate;
+                 parameters.put("instudocinfo", instudocinfo);
+
+                 parameters.put("statename3", Statename23);
+                 parameters.put("billofsupllyno", Bill_of_Supply);
+
+                 parameters.put("statecode3", ReciepentsStatecode);
+                 parameters.put("billofsupplydate", BOS_Date);
+                 parameters.put("pan", PAN23);
+
+                 parameters.put("Receipantgstin", Recipient_GSTN);
+                 parameters.put("Consigneegstin", Consignee_GSTN);
+                 parameters.put("receipantsname", Recipient_Name);
+                 parameters.put("millcode", millcode234);
+                 parameters.put("consigneename", Consignee_Name);
+                 parameters.put("receipantsaddress", Recipient_Address);
+                 parameters.put("consigneeaddre", Consignee_Address);
+                 parameters.put("statename", mastterSatename);
+                 parameters.put("statename2", mastterSatename2);
+                 parameters.put("statecode", statecode);
+                 parameters.put("statecode2", Clientcode);
+                 parameters.put("pan1", ClientPan);
+
+                 parameters.put("tcsamount", TCS_Amt);
+
+                 String invoicevalue1 = "Only" + Invoice_Value + "Rupees";
+                 parameters.put("invoicevalue", invoicevalue1);
+                 parameters.put("transitpolicyno", TrnasitPolicyNo);
+                 parameters.put("driverlicno", Driver_Lic_no);
+                 parameters.put("vehicleno", Vehicle_no);
+                 parameters.put("drivernme", Driver_name);
+//               parameters.put("licenseno", licenseno);
+
+                 String str = Vehicle_no + "  " + licenseno;
+
+//               String str = Vehicle_no + "  " + Driver_name;
+                 parameters.put("licenceno", str);
+                 parameters.put("dpcname", Dpcname);
+
+                 int i = 0;
+                 double total = 0.0;
+                 double alltotal = 0.0;
+                 double qtygradesum = 0.0;
+                 for (Object[] row : list) {
+                       BillofSupplyDocDTO billofSupplyDocDTO = new BillofSupplyDocDTO();
+                       String cropyear = (String) row[0];
+
+                        billofSupplyDocDTO.setCropyear(cropyear);
+                       String balemark = (String) row[1];
+                        billofSupplyDocDTO.setBalemark(balemark);
+                       String jutegrade = (String) row[3];
+                        billofSupplyDocDTO.setVariety(jutegrade);
+                       billofSupplyDocDTO.setDescription("Raw jute");
+                       billofSupplyDocDTO.setHsn("53031010");
+                       billofSupplyDocDTO.setUnit("Qntls");
+                       billofSupplyDocDTO.setSiNo(i + 1);
+                       int no_ofbales = (int) row[4];
+                        billofSupplyDocDTO.setNo_of_bales(no_ofbales);
+
+                       double nominlwt = (double) row[5];
+
+                       double qty = (double) no_ofbales * nominlwt;
+                       qty = Math.round(qty * 100.0) / 100.0;
+
+                       qtygradesum += qty;
+                        billofSupplyDocDTO.setNominalWt(nominlwt);
+                       billofSupplyDocDTO.setQty(qty);
+                       double rate = (double) row[6];
+                       total = (double) rate * qty;
+                       billofSupplyDocDTO.setTotal(total);
+                       alltotal += total;
+
+                       billofSupplyDocDTO.setRate(rate);
+                       billofSupplyDocDTO.setRate(rate);
+                       i++;
+                        listOfBillofSupplyDocDTO.add(billofSupplyDocDTO);
+
+                 }
+
+                 double doubleValue = 0.0;
+                 alltotal = alltotal + doubleValue;
+                 alltotal = Math.round(alltotal);
+                 
+                 parameters.put("taotalsum", alltotal);
+
+                 ConvertWord_k convertWord_k = new ConvertWord_k();
+                 String stringValue5 = Double.toString(alltotal);
+                 double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
+                 int convertInt = (int) invoiceDouble;
+                 String InvoiceNO = convertWord_k.convertToWords(convertInt);
+                 // qtygradesum = Math.round(qtygradesum);
+                 parameters.put("invoicevalue", InvoiceNO);
+                 parameters.put("qtysum", qtygradesum);
+
+                 JasperReport jasperReport = JasperCompileManager.compileReport(new FileInputStream(billofsupplyJrxl));
+                 JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfBillofSupplyDocDTO);
+                 JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+                 // Defining the file name and save path
+
+                 File directory = new File(Genrationofbill);
+
+                 if (!directory.exists()) {
+                       if (directory.mkdirs()) {
+                              System.out.println("Directory created successfully");
+                       } else {
+                              System.err.println("Failed to create directory: " + directory.getAbsolutePath());
+                              return null;
+                       }
+                 }
+
+                 String savePath = Genrationofbill + File.separator + fileName;
+                 generationofBillService.updateBosFileName(fileName,Bill_of_Supply);
+                 //generationOfBillSupplyModel.setBos_file_path(fileName);
+
+                 try (OutputStream out = new FileOutputStream(savePath)) {
+                       JRPdfExporter exporter = new JRPdfExporter();
+                       exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+                      exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+                       exporter.exportReport();
+                 } catch (Exception e) {
+                        System.out.println(e.getLocalizedMessage());
+                 }
+
+                 redirectAttributes.addFlashAttribute("msg",
+                              "<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
+
+          } catch (Exception e) {
+
+                 e.printStackTrace();
+          }
+          if (username == null) {
+                 return new ModelAndView("index");
+          }
+
+    //     return new ModelAndView();
+    return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
+
+    }
+
+
+	
+	
+	
 	private void fetchBankDetails(String ifsc) {
 
 		Map<String, Object> parameters = new HashMap<>();
@@ -5402,7 +5971,7 @@ public class Controller_V {
 			generationOfBillSupplyModel.setTDS_amt(TDS_Amt);
 
 //			generationOfBillSupplyModel.setBill_of_supply_no(Bill_of_Supply);
-			//generationOfBillSupplyModel.setBill_of_supply_no(billOfSupplyNo);
+			// generationOfBillSupplyModel.setBill_of_supply_no(billOfSupplyNo);
 
 			generationOfBillSupplyModel.setInvoice_value(Invoice_Value);
 			generationOfBillSupplyModel.setBOS_date(BOS_Date);
@@ -5477,18 +6046,15 @@ public class Controller_V {
 
 			List<Object> Non_lc = genrationCashDocumentService.Non_lc(Conract_no);
 
-			
 			String billofno = this.generationofBillService.create(generationOfBillSupplyModel, DPC1code);
-			
+
 			String fileName = "billofsupplydoc" + billofno + ".pdf";
 			generationOfBillSupplyModel.setBos_file_path(fileName);
 
-
 			this.generationofBillService.billUpdation(Challan_No1);
 
-			
-			//document generation starts here. ... 
-			
+			// document generation starts here. ...
+
 			String contaractdate = "";
 			String DiNo = "";
 			String DiDate = "";
@@ -5645,8 +6211,8 @@ public class Controller_V {
 
 			}
 
-//			double doubleValue = Double.parseDouble(TCS_Amt);
-			double doubleValue = 0.0;
+			double doubleValue = Double.parseDouble(TCS_Amt);
+//			double doubleValue = 0.0;
 			alltotal = alltotal + doubleValue;
 			alltotal = Math.round(alltotal);
 			// billofSupplyDocDTO.setAlltotal(alltotal);
@@ -12735,29 +13301,7 @@ public class Controller_V {
 		}
 	}
 
-	@RequestMapping("paymentDetailspagination")
-	public ModelAndView getPaymentDetails(@RequestParam(required = false) Integer pageNo,
-			@RequestParam(required = false) Integer pageSize) {
-		if (pageNo == null) {
-			pageNo = 2; // Default to page 0 if not provided
-		}
-		if (pageSize == null) {
-			pageSize = 10; // Default to page size 10 if not provided
-		}
-		System.err.println("REaching pagination");
-		Pageable pageable = PageRequest.of(pageNo, pageSize);
-
-		// Get the paginated data from the service
-		Page<EntryPaymentDetailsModel> paymentPage = paymentDetailService.findAllpagination(pageable);
-
-		// Add data to the model
-		ModelAndView modelAndView = new ModelAndView("paymentDetailsView");
-		modelAndView.addObject("paymentData", paymentPage.getContent()); // List of entries
-		modelAndView.addObject("totalPages", paymentPage.getTotalPages()); // Total number of pages
-		modelAndView.addObject("currentPage", pageNo); // Current page number
-
-		return modelAndView;
-	}
+	
 
 }
 
