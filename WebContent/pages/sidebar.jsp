@@ -270,10 +270,13 @@ body {
 						href="EntryofPaymentDetails.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Entry of
 								payment Details</b></a></li>
-					<li data-pre="1108" id="o1108"><a
-						href="viewPaymentEntryDetails.obj"><i
+				 	 <li data-pre="1108" id="o1108"><a
+						href="viewPaymentEntryDetails.obj">
+						<i
 							class="sidebar-item-icon fa fa-th-large"></i><b>View User
-								Payment list</b></a></li>
+								Payment list</b></a></li> 
+								
+						
 
 
 

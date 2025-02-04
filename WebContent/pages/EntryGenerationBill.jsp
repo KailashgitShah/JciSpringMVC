@@ -78,6 +78,8 @@
 			String Stategstcode = (String) request.getAttribute("Stategstcode");
 			String DPC1code = (String) request.getAttribute("DPC1");
 			String millname = (String) request.getAttribute("millname");
+			String millCode = (String) request.getAttribute("millCode");
+			String contractno = (String) request.getAttribute("contractno");
 			Double sumofInvoicevalue = (Double) request.getAttribute("sumofInvoicevalue");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			List<Object[]>  Perticulargoods = (List<Object[]>) request.getAttribute("Perticulargoods");
@@ -795,7 +797,7 @@
 
 	
 	
-    <script type="text/javascript">
+   <%--  <script type="text/javascript">
     $(document).ready(function() {
         function formatDate(date) {
             var day = date.getDate().toString().padStart(2, '0');
@@ -860,6 +862,7 @@
                                                 var dataArray = JSON.parse(thirdData);
                                                 if (dataArray && dataArray.length > 0) {
                                                 	 var  unit_name = dataArray[0][0];
+                                                	 var  millnamefortcs = dataArray[0][13];
                                                      
                                                      var unit_address1 = dataArray[0][1] || '';
                                                      var unit_address2 = dataArray[0][2] || '';
@@ -899,7 +902,7 @@
                                                     $('#Clientcode').val(unit_state);
                                                     $('#ClientPan').val(client_pan);
                                                     
-                                                     calculateTCS(unit_name);
+                                                     calculateTCS(millnamefortcs);
                                                     
                                                     
                                                 }
@@ -938,6 +941,162 @@
 
          
          </script>
+          --%>
+          
+          
+           <script type="text/javascript">
+           $(document).ready(function() {
+        	    // Function to format date to dd/mm/yyyy
+        	    function formatDate(date) {
+        	        var day = date.getDate().toString().padStart(2, '0');
+        	        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        	        var year = date.getFullYear();
+        	        return day + '/' + month + '/' + year;
+        	    }
+
+        	    // Assuming challan_no is correctly rendered in the JSP
+        	    var field2Value = <%= challan_no %>;
+
+        	    console.log("Challan No:", field2Value);
+
+        	    // First AJAX call to fetch contract data
+        	    $.ajax({
+        	        type: 'GET',
+        	        url: 'fetchingdata1.obj',
+        	        data: { "contractno": field2Value },
+        	        success: function(data) {
+        	            try {
+        	                // Parse the received JSON data
+        	                var dataArray = JSON.parse(data);
+
+        	                // Check if the data is valid and not empty
+        	                if (dataArray && dataArray.length > 0) {
+        	                    var contractNo = dataArray[0][0];  // Contract number
+        	                    var creationDateStr = dataArray[0][1];  // Date string
+        	                    var millcode = dataArray[0][2];  // Mill code (if needed)
+
+        	                    // Convert the date string to a Date object
+        	                    var creationDate = new Date(creationDateStr);
+
+        	                    // Format the date and update the fields
+        	                    var formattedDate = formatDate(creationDate);
+        	                    $('#Contarctno').val(contractNo);  // Set contract number
+        	                    $('#ChallanDate1').val(formattedDate);  // Set formatted date
+        	                } else {
+        	                    console.log("No data found for the given contract number.");
+        	                }
+        	            } catch (error) {
+        	                console.error("Error parsing JSON: " + error);
+        	            }
+        	        },
+        	        error: function(error) {
+        	            console.error('Error during the AJAX call:', error);
+        	        }
+        	    });
+        	});
+
+         
+         </script>
+         
+<script type="text/javascript">
+    $(document).ready(function() {
+      var contractNo = <%= contractno %>;
+       $.ajax({
+            type: 'GET',
+            url: 'contrcatnotomill.obj',
+            data: { "contractno": contractNo },
+            success: function(secondData) {
+                try {
+             
+                    var dataArray = JSON.parse(secondData);
+                    
+                    if (dataArray && dataArray.length > 0) {
+                     
+                        var millcode = dataArray[0][0];
+                        console.log(millcode + " millcode data");
+                        var cropyear = dataArray[0][1];
+                        
+                        $('#millcode23').val(millcode);
+
+                    } else {
+                        console.log("No data found for the given contract number.");
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON: " + error);
+                }
+            },
+            error: function(error) {
+                console.error('Error during second AJAX call:', error);
+            }
+        });
+    });
+</script>
+
+      	
+  <script type="text/javascript">
+    $(document).ready(function() {
+     
+        var millcode = <%= millCode %>;
+
+      
+        $.ajax({
+            type: 'GET',
+            url: 'fetchingdataforbill.obj',
+            data: { "contractno": millcode },
+            success: function(thirdData) {
+                try {
+                    // Parse the JSON data
+                    var dataArray = JSON.parse(thirdData);
+
+                    if (dataArray && dataArray.length > 0) {
+                        var unit_name = dataArray[0][0];
+                        var millnamefortcs = dataArray[0][13];
+
+                        var unit_address1 = dataArray[0][1] || '';
+                        var unit_address2 = dataArray[0][2] || '';
+                        var unit_address3 = dataArray[0][3] || '';
+                        var unit_address4 = dataArray[0][4] || '';
+                        var full_address = (unit_address1 + ' ' + unit_address2 + ' ' + unit_address3 + ' ' + unit_address4).trim();
+
+                        var unit_address5 = dataArray[0][9] || '';
+                        var unit_address6 = dataArray[0][10] || '';
+                        var unit_address7 = dataArray[0][11] || '';
+                        var unit_address8 = dataArray[0][12] || '';
+                        var full_address1 = (unit_address5 + ' ' + unit_address6 + ' ' + unit_address7 + ' ' + unit_address8).trim();
+
+                        var unit_state = dataArray[0][5];
+                        var client_gstin = dataArray[0][6];
+                        var client_pan = dataArray[0][7];
+                        var client_state = dataArray[0][8];
+                        var client_name = dataArray[0][13];
+
+                      
+                        $('#Recipient_Name').val(unit_name);
+                        $('#Recipient_GSTN').val(client_gstin);
+                        $('#Recipient_Address').val(full_address);
+                        $('#Consignee_Name').val(client_name);
+                        $('#Consignee_GSTN').val(client_gstin);
+                        $('#Consignee_Address').val(full_address1);
+                        $('#Clientstate').val(client_state);
+                        $('#Clientcode').val(unit_state);
+                        $('#ClientPan').val(client_pan);
+
+                       
+                        calculateTCS(millcode);
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON: " + error);
+                }
+            },
+            error: function(error) {
+                console.error('Third Ajax call error:', error);
+            }
+        });
+    });
+</script>
+
+          
+          
          
         <script>
 
@@ -949,7 +1108,7 @@
 		</script>
          
          	<script>
-	function calculateTCS(unit_name) {
+	function calculateTCS(millcode) {
 		
 	    var shipmentValue1 = parseFloat(<%= total %>);
 	    var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
@@ -962,7 +1121,7 @@
 	        $.ajax({
 	            type: 'GET',
 	            url: 'fetchingdataMillname.obj',
-	            data: { "millname": unit_name },
+	            data: { "millcode": millcode },
 	            success: function(milldata) {
 	                console.log("Mill data:", milldata);
 	                var tsccount = 0.0;

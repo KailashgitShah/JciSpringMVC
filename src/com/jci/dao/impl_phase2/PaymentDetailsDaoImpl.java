@@ -1,6 +1,9 @@
 package com.jci.dao.impl_phase2;
 
 import java.text.ParseException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,11 +16,13 @@ import javax.persistence.Query;
 import javax.persistence.criteria.From;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,17 +69,52 @@ public class PaymentDetailsDaoImpl implements PaymentDetailsDao {
 
 	@Override
 	public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry() {
+	    int pageNo = 1;
+	    int pageSize = 10;
+	    int offset = pageNo * pageSize;
 
-		String sql = "SELECT * FROM jcipayment_arrangement ORDER BY Payment_id DESC";
-//				     String sql = " SELECT *,\r\n"
-//			+ "       CONVERT(varchar(10), Instrument_Date, 105) AS formatted_instrument_date,\r\n"
-//			+ "       CONVERT(varchar(10), Expiry_date, 105) AS formatted_expiry_date,\r\n"
-//			+ "       CONVERT(varchar(10), Last_shipment_date, 105) AS formatted_last_shipment_date\r\n"
-//			+ "FROM jcipayment_arrangement\r\n";
+	    String sql = "SELECT * FROM jcipayment_arrangement "
+	               + "ORDER BY Payment_id DESC "
+	              ;
+
 		List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.addEntity(EntryPaymentDetailsModel.class).list();
 		return fCList;
 	}
+
+	
+	
+	@Override
+	public Page<EntryPaymentDetailsModel> findAllpagination(Pageable pageable) {
+	    int pageNumber = pageable.getPageNumber();
+	    int pageSize = pageable.getPageSize();
+	    int offset = pageNumber * pageSize;
+	
+
+	    // SQL query with pagination
+	    String sql = "SELECT * FROM jcipayment_arrangement " +
+	                 "ORDER BY Payment_id DESC " +
+	                 "OFFSET :offset ROWS " +
+	                 "FETCH NEXT :limit ROWS ONLY";
+
+	    // Fetch data using Hibernate
+	    List<EntryPaymentDetailsModel> fCList = sessionFactory.getCurrentSession()
+	        .createSQLQuery(sql)
+	        .addEntity(EntryPaymentDetailsModel.class)
+	        .setParameter("limit", pageSize)  
+	        .setParameter("offset", offset)  
+	        .list();
+
+	    // Count total number of rows (needed for pagination)
+	    String countSql = "SELECT COUNT(*) FROM jcipayment_arrangement";
+	    Integer totalCount = (Integer) sessionFactory.getCurrentSession()
+	        .createSQLQuery(countSql)
+	        .uniqueResult();
+
+	    // Create Page object with the fetched list and pagination details
+	    return new PageImpl<>(fCList, pageable, totalCount);
+	}
+
 
 	@Override
 	public void updatestatus(EntryPaymentDetailsModel EntryPaymentDetailsModel) {

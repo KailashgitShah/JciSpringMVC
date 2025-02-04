@@ -76,6 +76,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -236,6 +237,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+
 @Transactional
 @Repository
 @Controller
@@ -348,11 +355,11 @@ public class Controller_V {
 		int i = 0;
 		try {
 			Integer roleId = (Integer) request.getSession().getAttribute("roleId");
-			//System.err.println(roleId);		
+			// System.err.println(roleId);
 			String actionPer = userpriviligeservice.getactionPer(roleId);
-			//System.err.println(actionPer);		
+			// System.err.println(actionPer);
 			Integer actionid = useractionservice.getactionid(pagename);
-			//System.err.println(actionPer);		
+			// System.err.println(actionPer);
 			String idAction = Integer.toString(actionid);
 			String[] stringArray = actionPer.split(",");
 			for (String action : stringArray) {
@@ -1181,7 +1188,7 @@ public class Controller_V {
 
 		List<String> pcso = pcsoentryservice.getAllDates();
 		List<Object> allJuteCombination = entryofGradeCompositionService.getAllJuteCombination();
-		
+
 		String cropyr = (String) request.getSession().getAttribute("currCropYear");
 
 		int count = contractGenerationService2.getContractCount(cropyr);
@@ -1199,14 +1206,14 @@ public class Controller_V {
 
 	// saving the grade composition and also generation of the contract letter of
 	// the mill, its also having func of pdg generation and sending email
-	
+
 	@ResponseBody
 	@RequestMapping(value = "contractgenerationPcsoWiseSave", method = { RequestMethod.POST })
 	public String saveContractGenerationPcsoWise(HttpServletRequest request,
 			@RequestBody Map<String, Object> requestBody)
 			throws IOException, ParseException, DocumentException, AddressException {
 
-	//	String cropYear = (String) request.getSession().getAttribute("currCropYear");
+		// String cropYear = (String) request.getSession().getAttribute("currCropYear");
 		ModelAndView mv = new ModelAndView("contractgeneration");
 
 		List<Map<String, String>> millDetails = (List<Map<String, String>>) requestBody.get("millDetails");
@@ -1302,7 +1309,8 @@ public class Controller_V {
 				System.err.println("pcsoDateForMill is not an ArrayList<String>");
 			}
 
-			//List<Object> fullAddress = contractGenerationService2.getFullAddressByMillName(millNameString);
+			// List<Object> fullAddress =
+			// contractGenerationService2.getFullAddressByMillName(millNameString);
 
 			Double millQty = Double.parseDouble(millDetail.get("Qty"));
 			String deliveryType = millDetail.get("delivery_type");
@@ -1339,7 +1347,7 @@ public class Controller_V {
 			contractgeneration.setContract_no(finalGeneratedContractNo);
 
 			String millFullName = contractGenerationService2.millFullName(millCode);
-            String client_name  = millFullName.split("#P#")[0]; 
+			String client_name = millFullName.split("#P#")[0];
 			// contract value = 105% of jute value or fiberValue
 			contractgeneration.setContract_value((int) (juteValue * 1.05));
 			// contract value LC = 110% of jute value or fiberValue
@@ -1411,19 +1419,16 @@ public class Controller_V {
 		System.err.println("code executed successfully");
 		return "Saved";
 	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping("getUpdatedContractCount")
 	public String getUpdatedContractCount(HttpServletRequest req, RedirectAttributes redirectAttributes) {
-		String cropyr = req.getParameter("cropyr");  
+		String cropyr = req.getParameter("cropyr");
 		int count = contractGenerationService2.getContractCount(cropyr);
-		
-		return  count+ "";
-		
+
+		return count + "";
+
 	}
-	
-	
 
 	// listing of the contract list
 	@RequestMapping("viewcontractgeneration")
@@ -1600,7 +1605,7 @@ public class Controller_V {
 			OutputStream outputStream = new FileOutputStream(completeFilePathForOutput);
 
 			PdfReader reader = new PdfReader(contractLetterPath + File.separator + filePath);
-			//System.err.println(contractLetterPath + File.separator + filePath);
+			// System.err.println(contractLetterPath + File.separator + filePath);
 			PdfStamper stamper = new PdfStamper(reader, outputStream);
 
 			// Add your new content
@@ -1611,13 +1616,13 @@ public class Controller_V {
 			// Add "Authorized By" content at the bottom
 //			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase("Authorized By: " + loginName), 545, 50,
 //					0);
-			
+
 			ColumnText.showTextAligned(content, Element.ALIGN_RIGHT, new Phrase(date), 565, 666, 0);
 
 			// Close the PdfStamper
 			stamper.close();
-			
-			//email service
+
+			// email service
 
 //			try {
 //				// send email
@@ -3375,7 +3380,6 @@ public class Controller_V {
 				String Pyamentduedate = request.getParameter("payment_dueDate12");
 				String contrcat_value23 = request.getParameter("contrcat_value23");
 				String autorevolvingamount = request.getParameter("autorevolvingamount");
-		
 
 				EntryPaymentDetailsModel entryPaymentDetailsModel = new EntryPaymentDetailsModel();
 
@@ -3386,10 +3390,10 @@ public class Controller_V {
 
 				entryPaymentDetailsModel.setPaymentDue_date(paymentDueDateajax);
 				entryPaymentDetailsModel.setContract_value(contractvalueajax);
-                                      
+
 				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date instdate1 = formatter1.parse(instdate);
-                                 
+
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(instdate1);
 				calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -3482,26 +3486,22 @@ public class Controller_V {
 		return timestamp + "_" + originalFilename;
 	}
 
-
-
 	@RequestMapping("downloadSupportingDocument")
 	public void downloadImage(@RequestParam("filename") String filename, HttpServletResponse response) {
 		String imagePath = PaymentDocument + File.separator + filename;
 		File imageFile = new File(imagePath);
 
-
 		if (imageFile.exists()) {
 
 			try {
-	
+
 				String contentType = determineContentType(filename);
 				response.setContentType(contentType);
 
-				
 				response.setContentLength((int) imageFile.length());
-			
+
 				response.setHeader("Content-Disposition", "");
-			
+
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -3511,7 +3511,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-			
+
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -3528,15 +3528,14 @@ public class Controller_V {
 		if (imageFile.exists()) {
 
 			try {
-	
+
 				String contentType = determineContentType(filename);
 				response.setContentType(contentType);
 
-				
 				response.setContentLength((int) imageFile.length());
-		
+
 				response.setHeader("Content-Disposition", "");
-		
+
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -3546,7 +3545,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-			
+
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -3562,18 +3561,18 @@ public class Controller_V {
 	public void downloaFcdocument(@RequestParam("filename") String filename, HttpServletResponse response) {
 		String imagePath = fcDownoad + File.separator + filename;
 		File imageFile = new File(imagePath);
-		
+
 		if (imageFile.exists()) {
 
 			try {
-			
+
 				String contentType = determineContentType(filename);
 				response.setContentType(contentType);
 
 				response.setContentLength((int) imageFile.length());
-			
+
 				response.setHeader("Content-Disposition", "");
-			
+
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -3583,7 +3582,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-	
+
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -3707,8 +3706,8 @@ public class Controller_V {
 	public ModelAndView saveentryofFC(HttpServletRequest request, RedirectAttributes redirectAttributes,
 			HttpServletResponse response) {
 		String username = (String) request.getSession().getAttribute("usrname");
-		//String fcyear = (String) request.getSession().getAttribute("currFnYr");
-		
+		// String fcyear = (String) request.getSession().getAttribute("currFnYr");
+
 		if (username == null) {
 			return new ModelAndView("index");
 		}
@@ -3723,7 +3722,6 @@ public class Controller_V {
 			String Payment_id = request.getParameter("Payment_id");
 			int id = Integer.parseInt(Payment_id);
 			String remarks = request.getParameter("Remarks1");
-		
 
 			this.paymentDetailService.remark(remarks, fullcontractno, id);
 
@@ -3736,12 +3734,11 @@ public class Controller_V {
 					e.printStackTrace();
 				}
 			}
-			
+
 			int allIndiaSerialNo = 1;
 
-            String fcref_no1 = GenerateFCNO(request.getSession(), allIndiaSerialNo);
-             
-             
+			String fcref_no1 = GenerateFCNO(request.getSession(), allIndiaSerialNo);
+
 			FinancialConcurenceModel financialConcurenceModel = new FinancialConcurenceModel();
 			financialConcurenceModel.setFullcontractno(fullcontractno);
 
@@ -3752,14 +3749,12 @@ public class Controller_V {
 			financialConcurenceModel.setContracted_Qty(Contracted_Qty);
 			financialConcurenceModel.setQtyAllowed(QtyAllowed);
 			financialConcurenceModel.setCarrying_Cost_Charged(Carrying_Cost_Charged);
-			
 
 			Date date = new Date();
 			financialConcurenceModel.setCreated_date(date);
 			financialConcurenceModel.setRemarks(remarks);
-			
-			
-			//fdocumentListingfinancialConcurenceModel.setFnYr(fcyear);
+
+			// fdocumentListingfinancialConcurenceModel.setFnYr(fcyear);
 
 			this.financialConcurenceservice.create(financialConcurenceModel);
 			this.paymentDetailService.update2(fullcontractno);
@@ -3873,13 +3868,12 @@ public class Controller_V {
 
 			List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode1);
 			for (Object[] row : listofaddress) {
-			
-				
-				String millname = String.join(" ",(String) row[13],(String) row[0]);
+
+				String millname = String.join(" ", (String) row[13], (String) row[0]);
 				parameters.put("millname", millname);
 
-				String address = String.join(" ",(String) row[13], (String) row[0], (String) row[1], (String) row[2], (String) row[3],
-						(String) row[4]);
+				String address = String.join(" ", (String) row[13], (String) row[0], (String) row[1], (String) row[2],
+						(String) row[3], (String) row[4]);
 				parameters.put("address", address);
 			}
 
@@ -4598,7 +4592,7 @@ public class Controller_V {
 			financialYearStart = currentYear - 1;
 			financialYearEnd = currentYear;
 		}
-		String millname="";
+		String millname = "";
 		List<Object[]> listOfAddress = generationofBillService.contarctnoformaster(millcode1);
 		for (Object[] row : listOfAddress) {
 			millname = (String) row[0];
@@ -4607,9 +4601,9 @@ public class Controller_V {
 		String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
 		String StartYearLastTwoDigits = Integer.toString(financialYearStart).substring(2);
 		String jciref = "JCI/ind/SALE/INT/ " + StartYearLastTwoDigits + "-" + endYearLastTwoDigits + "/";
-		 String formattedValue = String.format("%.2f", sumOfInvoiceValue);
+		String formattedValue = String.format("%.2f", sumOfInvoiceValue);
 		String subdetails = "Our bill for Rs.  " + formattedValue + " for collection and payment under letter of  "
-				+ instnoString + " Dated " + instdate + "  "+millname;
+				+ instnoString + " Dated " + instdate + "  " + millname;
 
 		String invoiceValueString = String.valueOf(sumOfInvoiceValue);
 		billOfExchangeDTO.setSubdetails(subdetails);
@@ -4768,7 +4762,7 @@ public class Controller_V {
 
 			GenerationofDocumentLCsModel generationofDocumentLCsModel = new GenerationofDocumentLCsModel();
 			int balance1 = Integer.parseInt(balance);
-                                                                   
+
 			generationofDocumentLCsModel.setBoe_Date(date);
 			generationofDocumentLCsModel.setbOS_No(bosNo[j]);
 			// generationofDocumentLCsModel.setbOS_No(bosConcatenate);
@@ -4790,8 +4784,6 @@ public class Controller_V {
 
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listOfTopSheet);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-
-
 
 		File directory = new File(BOSReports);
 
@@ -4853,14 +4845,14 @@ public class Controller_V {
 		if (imageFile.exists()) {
 
 			try {
-			
+
 				String contentType = determineContentType8(filename);
 				response.setContentType(contentType);
 
 				response.setContentLength((int) imageFile.length());
-			
+
 				response.setHeader("Content-Disposition", "");
-			
+
 				try (FileInputStream fileInputStream = new FileInputStream(imageFile);
 						OutputStream responseOutputStream = response.getOutputStream()) {
 					byte[] buffer = new byte[1024];
@@ -4870,7 +4862,7 @@ public class Controller_V {
 					}
 				}
 			} catch (IOException e) {
-				
+
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
@@ -4878,7 +4870,6 @@ public class Controller_V {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-
 
 	@RequestMapping({ "viewMillReciept" })
 	public ModelAndView viewMillReciept(final HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -5136,7 +5127,7 @@ public class Controller_V {
 				parameters.put("Rpt_PAN", row[8]);
 				parameters.put("recipientState", row[17]);
 				parameters.put("recipientstatecode", row[18]);
-			
+
 				parameters.put("Recipient_address", row[11] + "," + row[12] + "," + row[13] + "," + row[14]);
 				parameters.put("Recipient_name", row[14]);
 			}
@@ -5235,60 +5226,58 @@ public class Controller_V {
 
 	// entrt page of genration bill
 
-	
 	@RequestMapping("EntryofGenerationBillsupply")
-    public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-          String username = (String) request.getSession().getAttribute("usrname");
+	public ModelAndView EntryofGenrationBillsupply(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String username = (String) request.getSession().getAttribute("usrname");
 
-          ModelAndView mv = new ModelAndView("EntryGenerationBill");
-          if (username == null) {
-                 mv = new ModelAndView("index");
-          }
+		ModelAndView mv = new ModelAndView("EntryGenerationBill");
+		if (username == null) {
+			mv = new ModelAndView("index");
+		}
 
-          final String challan_no = request.getParameter("id");
-          final String millCode = request.getParameter("millCode");
-          final String DPC1 = request.getParameter("DPC");
-          List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
-          final String millname = request.getParameter("millname");
-          final String contractno = request.getParameter("contractno");
+		final String challan_no = request.getParameter("id");
+		final String millCode = request.getParameter("millCode");
+		final String DPC1 = request.getParameter("DPC");
+		List<Object[]> list = generationofBillService.Dispatchentry(challan_no);
+		final String millname = request.getParameter("millname");
+		final String contractno = request.getParameter("contractno");
 
 //                      List<Object[]> ShipmentDetails= (List<Object[]>)
 
 //                                     final GenerationOfBillSupplyModel generationOfBillSupplyModel = this.generationofBillService.find(id);
 //                                     
-          List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
-          List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
-        List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
-        Double sumofInvoicevalue = (Double) this.generationofBillService.sumofInvoicevalue(millCode);
-        
-          mv.addObject("ShipmentDetails", ShipmentDetails);
-          mv.addObject("Perticulargoods", Perticulargoods);
-          mv.addObject("Suplierdetails", Suplierdetails);
-          
-          System.err.println("sumofInvoicevalue" + sumofInvoicevalue);
+		List<Object[]> ShipmentDetails = (List<Object[]>) this.generationofBillService.ChallanNo(challan_no);
+		List<Object[]> Suplierdetails = (List<Object[]>) this.generationofBillService.Supplieradd(DPC1);
+		List<Object[]> Perticulargoods = (List<Object[]>) this.generationofBillService.ShipmentDetails(challan_no);
+		Double sumofInvoicevalue = (Double) this.generationofBillService.sumofInvoicevalue(millCode);
 
-           int allIndiaSerialNo = 1;
-          int stateSerialNo = 1;
-          String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo, DPC1);
-          String Stategstcode = Stategstcode(DPC1);
-          mv.addObject("billOfSupplyNo", billOfSupplyNo);
-          mv.addObject("Stategstcode", Stategstcode);
-          mv.addObject("challan_no", challan_no);
-          mv.addObject("millname", millname);
-          mv.addObject("list", list);
-          mv.addObject("DPC1", DPC1);
-          mv.addObject("sumofInvoicevalue", sumofInvoicevalue);
+		mv.addObject("ShipmentDetails", ShipmentDetails);
+		mv.addObject("Perticulargoods", Perticulargoods);
+		mv.addObject("Suplierdetails", Suplierdetails);
 
-          return mv;
+		System.err.println("sumofInvoicevalue" + sumofInvoicevalue);
 
-    }
+		int allIndiaSerialNo = 1;
+		int stateSerialNo = 1;
+		String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo, DPC1);
+		String Stategstcode = Stategstcode(DPC1);
+		mv.addObject("billOfSupplyNo", billOfSupplyNo);
+		mv.addObject("Stategstcode", Stategstcode);
+		mv.addObject("challan_no", challan_no);
+		mv.addObject("millname", millname);
+		mv.addObject("millCode", millCode);
+		mv.addObject("contractno", contractno);
+		mv.addObject("list", list);
+		mv.addObject("DPC1", DPC1);
+		mv.addObject("sumofInvoicevalue", sumofInvoicevalue);
 
+		return mv;
 
-	
-	
-	
+	}
+
 	private String generateBillOfSupplyNumber(HttpSession session, int allIndiaSerialNo, int stateSerialNo,
 			String DPC1) {
+
 		String prefix = "B";
 
 		Calendar calendar = Calendar.getInstance();
@@ -5314,8 +5303,6 @@ public class Controller_V {
 		String status = this.generationofBillService.billofsupplyno();
 
 		String status1 = String.format("%05d", Integer.parseInt(this.generationofBillService.statecount(statecode)));
-
-//                         String laString = prefix + yearCode + formattedAllIndiaSerialNo + stateGSTCode + formattedStateSerialNo;
 		String laString = prefix + yearCode + status + statecode + status1;
 		return laString;
 
@@ -5384,22 +5371,23 @@ public class Controller_V {
 			String PAN23 = request.getParameter("PAN23");
 			String millcode234 = request.getParameter("millcode");
 
-       	SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-			
-			 int allIndiaSerialNo = 1;
-	          int stateSerialNo = 1;
-	          String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(), allIndiaSerialNo, stateSerialNo, DPC1code);
-	          boolean forcheckchallan = generationofBillService.challanduplicate(Challan_No1);
-	          if (!forcheckchallan) {
-	             // Redirect to "viewDispatchChallan" page
-	        		redirectAttributes.addFlashAttribute("msg",
-	        			    "<div class=\"alert alert-warning\"><b>Warning!</b> Challan number is duplicate!</div>");
+			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 
-	    		return new ModelAndView(new RedirectView("viewDispatchChallan.obj"));
-	          }
+			int allIndiaSerialNo = 1;
+			int stateSerialNo = 1;
+			// String billOfSupplyNo = generateBillOfSupplyNumber(request.getSession(),
+			// allIndiaSerialNo, stateSerialNo, DPC1code);
 
-	     
-			
+			// for duplicate challan in bos
+			boolean forcheckchallan = generationofBillService.challanduplicate(Challan_No1);
+			if (!forcheckchallan) {
+				// Redirect to "viewDispatchChallan" page
+				redirectAttributes.addFlashAttribute("msg",
+						"<div class=\"alert alert-warning\"><b>Warning!</b> Challan number is duplicate!</div>");
+
+				return new ModelAndView(new RedirectView("viewDispatchChallan.obj"));
+			}
+
 			// Date instdate1 = formatter1.parse(Challan_Date1);
 			// Date instdate2 = formatter1.parse(Challan_Date1);
 			GenerationOfBillSupplyModel generationOfBillSupplyModel = new GenerationOfBillSupplyModel();
@@ -5412,10 +5400,10 @@ public class Controller_V {
 			generationOfBillSupplyModel.setIGST_amt(IGST_Amt);
 			generationOfBillSupplyModel.setTCS_amt(TCS_Amt);
 			generationOfBillSupplyModel.setTDS_amt(TDS_Amt);
-			
+
 //			generationOfBillSupplyModel.setBill_of_supply_no(Bill_of_Supply);
-			generationOfBillSupplyModel.setBill_of_supply_no(billOfSupplyNo);
-			
+			//generationOfBillSupplyModel.setBill_of_supply_no(billOfSupplyNo);
+
 			generationOfBillSupplyModel.setInvoice_value(Invoice_Value);
 			generationOfBillSupplyModel.setBOS_date(BOS_Date);
 			generationOfBillSupplyModel.setSupplier_name(Supplier_Name);
@@ -5432,7 +5420,6 @@ public class Controller_V {
 			generationOfBillSupplyModel.setStatecode_forBOs(statecode);
 			generationOfBillSupplyModel.setDPCID(DPC1code);
 			generationOfBillSupplyModel.setMillcode(millcode234);
-		 
 
 			Date date = new Date();
 			generationOfBillSupplyModel.setCreation_date(date);
@@ -5444,10 +5431,6 @@ public class Controller_V {
 			generationOfBillSupplyModel.setRo_id(ro_id);
 			List<Object[]> list = generationofBillService.Dispatchentry(Challan_No1);
 			List<Object[]> list1 = generationofBillService.DocumentLcsEntry(Conract_no);
-
-
-  
-
 
 			String consignment = "";
 			String licenseno = "";
@@ -5462,15 +5445,7 @@ public class Controller_V {
 
 			List<Object[]> listofaddress = generationofBillService.contarctnoformaster(millcode234);
 
-
-
-
-
-
-
 			List<Object[]> contrcatnotomill = generationofBillService.contrcatnotomill(Conract_no);
-
-
 
 			List<Object[]> PANSTATE = generationofBillService.PANSTATE(millcode234);
 			String mastterSatename = "";
@@ -5501,14 +5476,19 @@ public class Controller_V {
 			}
 
 			List<Object> Non_lc = genrationCashDocumentService.Non_lc(Conract_no);
-	
-			String fileName = "billofsupplydoc" + Bill_of_Supply + ".pdf";
+
+			
+			String billofno = this.generationofBillService.create(generationOfBillSupplyModel, DPC1code);
+			
+			String fileName = "billofsupplydoc" + billofno + ".pdf";
 			generationOfBillSupplyModel.setBos_file_path(fileName);
 
-			this.generationofBillService.create(generationOfBillSupplyModel);
 
 			this.generationofBillService.billUpdation(Challan_No1);
 
+			
+			//document generation starts here. ... 
+			
 			String contaractdate = "";
 			String DiNo = "";
 			String DiDate = "";
@@ -5590,7 +5570,7 @@ public class Controller_V {
 			parameters.put("instudocinfo", instudocinfo);
 
 			parameters.put("statename3", Statename23);
-			parameters.put("billofsupllyno", billOfSupplyNo);
+			parameters.put("billofsupllyno", billofno);
 
 			parameters.put("statecode3", ReciepentsStatecode);
 			parameters.put("billofsupplydate", BOS_Date);
@@ -5620,7 +5600,7 @@ public class Controller_V {
 //			parameters.put("licenseno", licenseno);
 
 			String str = Vehicle_no + "  " + licenseno;
-		
+
 //			String str = Vehicle_no + "  " + Driver_name;
 			parameters.put("licenceno", str);
 			parameters.put("dpcname", Dpcname);
@@ -5646,7 +5626,10 @@ public class Controller_V {
 				billofSupplyDocDTO.setNo_of_bales(no_ofbales);
 
 				double nominlwt = (double) row[5];
+
 				double qty = (double) no_ofbales * nominlwt;
+				qty = Math.round(qty * 100.0) / 100.0;
+
 				qtygradesum += qty;
 				billofSupplyDocDTO.setNominalWt(nominlwt);
 				billofSupplyDocDTO.setQty(qty);
@@ -5662,7 +5645,8 @@ public class Controller_V {
 
 			}
 
-			double doubleValue = Double.parseDouble(TCS_Amt);
+//			double doubleValue = Double.parseDouble(TCS_Amt);
+			double doubleValue = 0.0;
 			alltotal = alltotal + doubleValue;
 			alltotal = Math.round(alltotal);
 			// billofSupplyDocDTO.setAlltotal(alltotal);
@@ -5675,7 +5659,7 @@ public class Controller_V {
 			double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
 			int convertInt = (int) invoiceDouble;
 			String InvoiceNO = convertWord_k.convertToWords(convertInt);
-			//qtygradesum = Math.round(qtygradesum);
+			// qtygradesum = Math.round(qtygradesum);
 			parameters.put("invoicevalue", InvoiceNO);
 			parameters.put("qtysum", qtygradesum);
 
@@ -5684,7 +5668,7 @@ public class Controller_V {
 			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
 			// Defining the file name and save path
-			
+
 			File directory = new File(Genrationofbill);
 
 			if (!directory.exists()) {
@@ -5721,14 +5705,11 @@ public class Controller_V {
 			if (ListLCs == null || ListLCs.isEmpty()) {
 				System.err.println("No results found for Contract No: " + Conract_no);
 			} else {
-				GenerationofDocumentLCsModel generationofDocumentLCsModel = null; 
-																				
+				GenerationofDocumentLCsModel generationofDocumentLCsModel = null;
 
 				for (Object[] row : ListLCs) {
 					String instNo = (String) row[0];
 					String payentType = (String) row[1];
-
-                             
 
 				}
 
@@ -5754,7 +5735,6 @@ public class Controller_V {
 //			}
 //			email.sendEmailBos(toAddresses, body, subject, filePathDir, username1);
 
-                                
 			this.paymentDetailService.contratTable(Conract_no);
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n" + "");
@@ -5770,8 +5750,6 @@ public class Controller_V {
 		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
 	}
- 
-
 
 	private static void generateAndSendPdf1(HttpServletResponse response, JasperPrint jasperPrint1, String savePath1)
 			throws IOException {
@@ -5879,7 +5857,6 @@ public class Controller_V {
 		}
 	}
 
-
 	private void fetchBankDetails(String ifsc, BankDraftDTO bankDraftDTO) {
 		String url = "https://ifsc.razorpay.com/" + ifsc;
 		RestTemplate restTemplate = new RestTemplate();
@@ -5910,8 +5887,6 @@ public class Controller_V {
 			System.err.println("Error serving file: " + ex.getMessage());
 		}
 	}
-
-
 
 	private void fetchBankDetails1(String ifsc, BillOfExchangeDTO billOfExchangeDTO) {
 		String url = "https://ifsc.razorpay.com/" + ifsc;
@@ -6051,7 +6026,7 @@ public class Controller_V {
 			bosno = (String) datas[0];
 			String bosdate = (String) datas[1];
 			String invoicevalue = (String) datas[2];
-			String challanno = (String) datas[3]; 
+			String challanno = (String) datas[3];
 			String millcode = (String) datas[4];
 			System.err.println("Mill code: " + millcode);
 
@@ -6136,7 +6111,6 @@ public class Controller_V {
 				e.printStackTrace();
 			}
 		}
-
 
 		Gson gson = new Gson();
 		return ""; // return the list of bank drafts as JSON
@@ -6327,10 +6301,11 @@ public class Controller_V {
 //To get count previous HO count dor DI no. for particular Region
 	@ResponseBody
 	@RequestMapping({ "countHo" })
-	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request, @RequestParam("crp") String crp) {
+	public String countHo(@RequestParam("reg") String reg, HttpServletRequest request,
+			@RequestParam("crp") String crp) {
 
 		final Gson gson = new Gson();
-		return gson.toJson((Object) this.hoInstService.getCount(reg,crp));
+		return gson.toJson((Object) this.hoInstService.getCount(reg, crp));
 
 	}
 
@@ -6349,7 +6324,7 @@ public class Controller_V {
 			String[] variety = request.getParameterValues("jutevariety");
 
 			List<HoDispatchDto> hoDispatchDtoList = new ArrayList<>();
-			String DeliveryType="";
+			String DeliveryType = "";
 			String diNoString = "";
 			String documentName = "";
 			Double qty = 0.0;
@@ -6360,9 +6335,9 @@ public class Controller_V {
 				String user = Integer.toString(usId);
 
 				String contI = request.getParameter("fullcontractno");//
-				 String[] parts = contI.split("\\$\\$");
-				String contNo =parts[0];
-			 DeliveryType = hoInstService.getDeliveryType(contNo);
+				String[] parts = contI.split("\\$\\$");
+				String contNo = parts[0];
+				DeliveryType = hoInstService.getDeliveryType(contNo);
 				String crpyrString = request.getParameter("cropyear");//
 
 				String contqtyString = request.getParameter("contractquantity");//
@@ -6531,7 +6506,7 @@ public class Controller_V {
 					parameters.put("Contract_no", details[7]);
 					parameters.put("Contract_Date", details[8]);
 					parameters.put("CropYear", details[9]);
-					parameters.put("LastDate", details[10]+"    ("+DeliveryType+")");
+					parameters.put("LastDate", details[10] + "    (" + DeliveryType + ")");
 					parameters.put("RoName", details[11] + " Regional Office");
 					parameters.put("totalQty", qty);
 				}
@@ -7755,7 +7730,7 @@ public class Controller_V {
 
 		// Adding the Mill Name as a Drop Down List In Entry Of TDS Form
 
-		List<String> Mill = entryofTdsService.MillName();
+		List<Object[]> Mill = entryofTdsService.MillName();
 
 		mv.addObject("Mill", Mill);
 
@@ -7777,6 +7752,7 @@ public class Controller_V {
 		String username = (String) request.getSession().getAttribute("usrname");
 
 		String Mill = request.getParameter("Mill");
+		String millcode = request.getParameter("millcode12");
 
 		String DateofIntimation = request.getParameter("DateofIntimation");
 
@@ -7810,6 +7786,7 @@ public class Controller_V {
 		jciEntryTdsModel.setDate_of_Intimation(DateofIntimation);
 
 		jciEntryTdsModel.setSupporting_document(filename);
+		jciEntryTdsModel.setMillcode(millcode);
 		System.err.println(filename);
 		// setting Static Value for Remaining
 
@@ -8591,27 +8568,19 @@ public class Controller_V {
 			throws JRException {
 		String imagePath = TopSheetNONLCDownload + File.separator + filename;
 
-
 		File imageFile = new File(imagePath);
-
-
 
 		if (imageFile.exists()) {
 
 			try {
 
-			
-
 				String contentType = determineContentType(filename);
 
 				response.setContentType(contentType);
 
-		
-
 				response.setContentLength((int) imageFile.length());
 
 				response.setHeader("Content-Disposition", "");
-
 
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 
@@ -8632,7 +8601,6 @@ public class Controller_V {
 				responseOutputStream.close();
 
 			} catch (IOException e) {
-
 
 				e.printStackTrace();
 
@@ -8717,21 +8685,17 @@ public class Controller_V {
 		System.out.println();
 		File imageFile = new File(imagePath);
 
-
 		if (imageFile.exists()) {
 
 			try {
-
 
 				String contentType = determineContentType(filename);
 
 				response.setContentType(contentType);
 
-
 				response.setContentLength((int) imageFile.length());
 
 				response.setHeader("Content-Disposition", "");
-
 
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 
@@ -8753,8 +8717,6 @@ public class Controller_V {
 
 			} catch (IOException e) {
 
-		
-
 				e.printStackTrace();
 
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -8768,8 +8730,6 @@ public class Controller_V {
 		}
 
 	}
-
-	
 
 	private String determineContentType8(String filename) {
 
@@ -9278,13 +9238,13 @@ public class Controller_V {
 		String[] creditNoteDoc = request.getParameterValues("creditNoteDoc[]");
 		String[] purpose = request.getParameterValues("purpose[]");
 		Double AmountDiffCNDN = Double.parseDouble(request.getParameter("AmountDifferenceCNDN"));
-		Integer total = creditNoteGenerationService.CountRecord();  
+		Integer total = creditNoteGenerationService.CountRecord();
 
 		int value1;
 		if (total != null) {
-		    value1 = total + 1;  // Unboxing Integer to int automatically
+			value1 = total + 1; // Unboxing Integer to int automatically
 		} else {
-		    value1 = 1;  // If total is null, assign 1
+			value1 = 1; // If total is null, assign 1
 		}
 
 		// System.err.println(value1 + "rrrrrrrrrrrr");
@@ -10014,7 +9974,6 @@ public class Controller_V {
 			String dateofship = request.getParameter("dateofship");
 
 			String Millnameletest = request.getParameter("millname234");
-		
 
 			String Pyamentduedate = request.getParameter("payment_dueDate12");
 			String contrcat_value23 = request.getParameter("contrcat_value23");
@@ -10257,7 +10216,6 @@ public class Controller_V {
 						Object instrumentvalue = row[2];
 						Object ContractValue = row[3];
 
-					
 						mv.addObject("paymentDueDate", paymentDueDate);
 						mv.addObject("instrumentDate", instrumentDate);
 						mv.addObject("instrumentvalue", instrumentvalue);
@@ -10283,7 +10241,7 @@ public class Controller_V {
 			BigInteger bigIntValue = new BigInteger(String.valueOf(cost));
 			financialConcurenceModel.setCarrying_Cost_Charged(bigIntValue);
 			mv.addObject("cost", bigIntValue);
-		
+
 		}
 
 		int allIndiaSerialNo = 1;
@@ -10315,14 +10273,12 @@ public class Controller_V {
 	///////////////
 	private String GenerateFCNO(HttpSession session, int allIndiaSerialNo) {
 
-		String status =  this.fiannacialConcurenceService.fcref_nocheck();
+		String status = this.fiannacialConcurenceService.fcref_nocheck();
 
 		String laString = status;
 
 		return laString;
 	}
-	
-	
 
 	@RequestMapping({ "updatefcstatus" })
 	public ModelAndView bnaDeletepay(HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -12777,6 +12733,30 @@ public class Controller_V {
 			mv.addObject("jutevarietyProcured", (Object) jutevarietyProcured);
 			return mv;
 		}
+	}
+
+	@RequestMapping("paymentDetailspagination")
+	public ModelAndView getPaymentDetails(@RequestParam(required = false) Integer pageNo,
+			@RequestParam(required = false) Integer pageSize) {
+		if (pageNo == null) {
+			pageNo = 2; // Default to page 0 if not provided
+		}
+		if (pageSize == null) {
+			pageSize = 10; // Default to page size 10 if not provided
+		}
+		System.err.println("REaching pagination");
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+		// Get the paginated data from the service
+		Page<EntryPaymentDetailsModel> paymentPage = paymentDetailService.findAllpagination(pageable);
+
+		// Add data to the model
+		ModelAndView modelAndView = new ModelAndView("paymentDetailsView");
+		modelAndView.addObject("paymentData", paymentPage.getContent()); // List of entries
+		modelAndView.addObject("totalPages", paymentPage.getTotalPages()); // Total number of pages
+		modelAndView.addObject("currentPage", pageNo); // Current page number
+
+		return modelAndView;
 	}
 
 }

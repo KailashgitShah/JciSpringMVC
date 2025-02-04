@@ -7,7 +7,7 @@ import com.jci.model.GenerationOfBillSupplyModel;
 
 
 public interface GenerationofBillDao {
-	  public void create(GenerationOfBillSupplyModel generationOfBillSupplyModel);
+	  public String create(GenerationOfBillSupplyModel generationOfBillSupplyModel,String DPC1);
 	  public List<GenerationOfBillSupplyModel> getAll();
 	  public List<Object[]>ChallanNo( String st);
 	  public List<Object[]>ShipmentDetails( String st);

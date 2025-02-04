@@ -52,7 +52,7 @@ public class EntryofTdsDaoImpl implements EntryofTdsDao {
 	}
 
 	@Override
-	public List<String> MillName() {
+	public List<Object[]> MillName() {
 //		
 		LocalDate today = LocalDate.now();
 		int currentYear = today.getYear();
@@ -66,12 +66,15 @@ public class EntryofTdsDaoImpl implements EntryofTdsDao {
 		}
 
 	        System.err.println("Fiscal Year: " + financialYear);
-		String q = "SELECT DISTINCT m.client_name " +
-                "FROM jcimilldetailmaster m " +
-                "LEFT JOIN jcitds_entry e ON m.client_name = e.mill " +
-                "                         AND e.mill IS NOT NULL " +
-                "                         AND e.Financial_year = '"+financialYear+"' " +
-                "WHERE e.mill IS NULL";
+		String q = "SELECT DISTINCT m.client_name ,c.client_unit_code\r\n"
+				+ "FROM jcimilldetailmaster m\r\n"
+				+ "LEFT join jcimilldetailchild as c on c.client_code=m.client_code\r\n"
+				+ "WHERE NOT EXISTS (\r\n"
+				+ "    SELECT 1 \r\n"
+				+ "    FROM jcitds_entry e \r\n"
+				+ "    WHERE m.client_name = e.mill \r\n"
+				+ "    AND e.Financial_year = '"+financialYear+"'\r\n"
+				+ ")";
 		
 		List r = (List) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 		return r;

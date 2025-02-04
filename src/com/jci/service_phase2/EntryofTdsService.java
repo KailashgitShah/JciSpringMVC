@@ -9,7 +9,7 @@ public interface EntryofTdsService {
 	
 	public void create(JciEntryTdsModel j);
 	public List <JciEntryTdsModel> getAll();
-	public List<String> MillName();
+	public List<Object[]> MillName();
 	public String contractIdentification(String Mill);
 
 	

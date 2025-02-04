@@ -29,7 +29,7 @@ public class EntryofTdsServiceImpl implements EntryofTdsService {
 	}
 
 	@Override
-	public List<String> MillName() {
+	public List<Object[]> MillName() {
 		// TODO Auto-generated method stub
 		return entryofTdsDao.MillName();
 	}

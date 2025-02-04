@@ -2,15 +2,19 @@ package com.jci.service_phase2;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.jci.model.EntryPaymentDetailsModel;
 //import com.jci.model.MillRecieptModel;
+import org.springframework.data.domain.Page;
 @Service
 public interface PaymentDetailService {
 	public void create(EntryPaymentDetailsModel entryPaymentDetailsModel);
 	 public List<EntryPaymentDetailsModel>getAllPaymentInstruments();
+	 public Page<EntryPaymentDetailsModel>findAllpagination(Pageable pageable);
+	 
 	 public void update(EntryPaymentDetailsModel EntryPaymentDetailsModel);
 	 public void updatestatus(EntryPaymentDetailsModel EntryPaymentDetailsModel);
 		public EntryPaymentDetailsModel edit(int id);

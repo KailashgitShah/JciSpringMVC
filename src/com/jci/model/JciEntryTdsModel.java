@@ -31,6 +31,11 @@ public class JciEntryTdsModel {
 	    @Column(name = "Supporting_document", nullable = false)
 	    private String Supporting_document;
 
+	    
+	    @Column(name = "millcode")
+	    private String millcode;
+	    
+	    
 		public Long getDeclaration_id() {
 			return Declaration_id;
 		}
@@ -77,5 +82,15 @@ public class JciEntryTdsModel {
 					+ Financial_year + ", Date_of_Intimation=" + Date_of_Intimation + ", Supporting_document="
 					+ Supporting_document + "]";
 		}
+
+		public String getMillcode() {
+			return millcode;
+		}
+
+		public void setMillcode(String millcode) {
+			this.millcode = millcode;
+		}
+		
+		
 	    
 }

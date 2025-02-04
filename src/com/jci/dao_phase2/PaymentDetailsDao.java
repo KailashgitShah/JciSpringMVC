@@ -2,12 +2,17 @@ package com.jci.dao_phase2;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.jci.model.EntryPaymentDetailsModel;
 
 public interface PaymentDetailsDao {
 	public void create(EntryPaymentDetailsModel entryPaymentDetailsModel);
 	 public List<EntryPaymentDetailsModel> getAllPaymentInstruments();
 	 public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry();
+	 public Page<EntryPaymentDetailsModel> findAllpagination(Pageable pageable);
+	 
 	 public void update(EntryPaymentDetailsModel entryPaymentDetailsModel);
 	 public void updatestatus(EntryPaymentDetailsModel entryPaymentDetailsModel);
 		public EntryPaymentDetailsModel edit(int id);

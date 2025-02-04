@@ -1,8 +1,10 @@
 package com.jci.service.Impl_phase2;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jci.dao_phase2.PaymentDetailsDao;
@@ -22,6 +24,12 @@ public class PaymentDetailServiceImpl implements PaymentDetailService {
     public List<EntryPaymentDetailsModel> getAllPaymentInstruments() {
         // Implement the method to fetch payment instruments from the DAO
         return paymentDetailsdao.getAllPaymentInstruments();
+    }
+	
+	@Override
+    public Page<EntryPaymentDetailsModel> findAllpagination( Pageable pageable) {
+        // Implement the method to fetch payment instruments from the DAO
+        return (Page<EntryPaymentDetailsModel>) paymentDetailsdao.findAllpagination(pageable);
     }
 	@Override
     public List<EntryPaymentDetailsModel> getAllPaymentInstrumentsentry() {

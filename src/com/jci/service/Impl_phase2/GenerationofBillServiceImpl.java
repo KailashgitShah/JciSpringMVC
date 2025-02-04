@@ -20,9 +20,9 @@ public class GenerationofBillServiceImpl implements GenerationofBillService {
 
 
 	@Override
-	public void create(GenerationOfBillSupplyModel generationOfBillSupplyModel) {
+	public String create(GenerationOfBillSupplyModel generationOfBillSupplyModel,String DPC1) {
 	
-		generationofBillDao.create(generationOfBillSupplyModel);
+		return generationofBillDao.create(generationOfBillSupplyModel,DPC1);
 		
 	}
 

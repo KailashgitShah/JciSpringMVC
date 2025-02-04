@@ -60,6 +60,11 @@
 			<div class="page-heading">
 				<h1 class="page-title">Entry of TDS U/s 194Q Declaration</h1>
 			</div>
+			<%
+			 List<Object[]>fetchMill_NameR=(List<Object[]>)request.getAttribute("Mill");
+            
+        %>
+			   
 
 			<div class="page-content fade-in-up">
 				<div class="row">
@@ -75,14 +80,19 @@
 											<label>Mill </label> <select name="Mill" id="Mill"
 												class="form-control taxtbox" required onchange="setFinancialYear()" onclick="DateFunction()">
 
-												<option value="">-Select-</option>
-
-												<c:forEach items="${Mill}" var="item">
-
-													<option value="${item}">${item}</option>
-
-												</c:forEach>
-
+												 <option value="">-Select-</option>
+													    <%
+													    for (Object[] row : fetchMill_NameR) {
+													    	String  field1 = (String) row[0];
+													    
+													        String field2 = (String) row[1];
+													    %>
+													   <option value="<%= field1 %>" data-millname="<%= field2 %>">
+											             <%= field1 %> 
+											         </option> 
+											     <%
+													    }
+													    %> 
 											</select>
 										</div>
 
@@ -93,6 +103,13 @@
 												class="form-control textbox" name="DateofIntimation" placeholder="dd-mm-yyyy"
 												id="Task_Start_date" required readonly>
 										</div>
+										
+										<div class="col-sm-4 form-group" style="display: none;">
+											    <label class="hidden">millcode </label> 
+											    <input class="form-control textbox" type="text" name="millcode12" 
+											          id="millcodeid" required readonly>
+											</div>
+
 										
 										
 
@@ -176,7 +193,7 @@
 	$( "#DateofIntimation" ).datepicker({ dateFormat: 'dd-mm-yy'    });
 </script> 
 
-<<<<<<< HEAD
+
 <script>
         $(document).ready(function() {
             $('#myForm').on('submit', function(event) {
@@ -188,7 +205,25 @@
             });
         });
     </script>
+<script>
 
+document.getElementById("Mill").addEventListener("change", function() {
+    let selectedOption = this.options[this.selectedIndex];
+
+    let millName1 = selectedOption.value;  // Gets millCode (field1)
+    let millcode = selectedOption.getAttribute("data-millname"); // Gets millName (field2)
+    // Ensure the element exists before trying to set its value
+    let millCodeInput = document.getElementById("millcodeid"); 
+    if (millCodeInput) {
+        millCodeInput.value = millcode;
+    } else {
+        console.error("Element with ID 'millcodeid' not found!");
+    }
+});
+
+
+
+</script>
 <script>
 function f(){
 	// alert(document.getElementsByName("SupportingDocument"))

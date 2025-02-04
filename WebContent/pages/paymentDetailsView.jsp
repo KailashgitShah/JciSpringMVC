@@ -104,8 +104,10 @@ th {
                     </div>
 
                     <%
-                    List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) request.getAttribute("entryPaymentDetailsModel");
-                  %>
+                    List<EntryPaymentDetailsModel> allUserRegistration = (List<EntryPaymentDetailsModel>) request.getAttribute("paymentData");
+                    Integer totalPages = (Integer) request.getAttribute("totalPages");
+                    Integer currentPage = (Integer) request.getAttribute("currentPage");
+                    %>
                     
                     <div class="page-content fade-in-up">
                            <div class="ibox">
@@ -232,14 +234,17 @@ th {
                                   </div>
                            </div>
 
-<!-- <div class="pagination-container">
+<div>
+
     <button id="loadPreviousBtn" class="btn btn-secondary">Previous</button>
+    
+  
     <button id="loadMoreBtn" class="btn btn-primary">Next</button>
-
-    <input type="number" id="pageInput" placeholder="Enter page no" min="0" />
+    
+   
+    <input type="number" id="pageInput" placeholder="Enter page no" min="1" />
     <button id="goToPageBtn" class="btn btn-info">Go</button>
-</div> -->
-
+</div>
                     </div>
                     <!-- END PAGE CONTENT-->
                     <%@ include file="footer.jsp"%>
@@ -270,7 +275,7 @@ th {
 		type="text/javascript"></script>
 	<script src="assets/js/app.min.js" type="text/javascript"></script>
 
-        <script type="text/javascript">
+      <!--  <script type="text/javascript">
              $(function() {
                     $('#example-table').DataTable({
 
@@ -286,41 +291,24 @@ th {
                     ] */
                     });
              })
-       </script> 
- <!--       <script>
-       document.addEventListener('DOMContentLoaded', function() {
+       </script> -->
+       <script>
+       
        let currentPage = 0; 
-       const totalPages = 100; 
+       const totalPages = <%= totalPages %>; 
 
-       // Function to check if the element has children
-       function findElementWithChildren(selector) {
-           var element = document.querySelector(selector);
-           if (element && element.children.length > 0) {
-               return element; // Element has children
-           }
-           return null; // No children
-       }
-
-       // Function to load page data based on page number
        function loadPageData(page) {
+        
            if (page >= 0 && page < totalPages) {
-               // Check if the container for pagination has children before proceeding
-               let paginationContainer = findElementWithChildren('.pagination-container');
-               
-               if (paginationContainer) {
-                   currentPage = page; 
-              /*      window.location.href = 'paymentDetailspagination?pageNo=' + page+ '&pageSize=10';  */
-                  window.location.href = 'paymentDetailspagination.obj';  
-               } else {
-                   console.error('Pagination container has no children.');
-               }
+               currentPage = page; 
+           /*     window.location.href = 'paymentDetailspagination?pageNo=' + page; // Load the page */
+               window.location.href = 'paymentDetailspagination';
            }
        }
 
-       // Go to specific page
        function goToPage() {
            var page = document.getElementById("pageInput").value;
-           loadPageData(page); // Adjust for 0-indexed pages
+           loadPageData(page); 
        }
 
        // Load Next Page
@@ -341,8 +329,10 @@ th {
        $("#goToPageBtn").click(function() {
            goToPage(); 
        });
-       });
-       </script> -->
+   </script>
+
+
+    
 </body>
 
 </html>

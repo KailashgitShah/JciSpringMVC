@@ -10,7 +10,7 @@ public interface EntryofTdsDao {
 	
 	public void create(JciEntryTdsModel j);
 	public List <JciEntryTdsModel> getAll();
-	public List<String> MillName();
+	public List<Object[]> MillName();
 	
 	// fetch data from
 	public String  contractIdentification(String Mill);
