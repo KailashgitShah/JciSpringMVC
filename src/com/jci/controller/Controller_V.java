@@ -6238,8 +6238,8 @@ public class Controller_V {
 
 			double doubleValue = Double.parseDouble(TCS_Amt);
 
-			alltotal = alltotal + doubleValue;
-			alltotal = Math.round(alltotal);
+//			alltotal = alltotal + doubleValue;
+//			alltotal = Math.round(alltotal);
 			// billofSupplyDocDTO.setAlltotal(alltotal);
 			// double doubleValue = Double.parseDouble(TCS_Amt);
 //                       total=total+doubleValue;

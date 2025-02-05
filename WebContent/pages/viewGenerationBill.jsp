@@ -156,7 +156,7 @@ th {
 										<th>Consignee Name</th>
 										<th>Consignee GSTN</th>
 										<th>Consignee Address</th>
-										<th>Trnasit Policy no</th>
+										<th>Transit Policy no</th>
 										<th></th>
 										<%
 										if (role_id == 51) {

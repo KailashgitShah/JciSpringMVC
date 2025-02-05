@@ -78,8 +78,12 @@
 			String Stategstcode = (String) request.getAttribute("Stategstcode");
 			String DPC1code = (String) request.getAttribute("DPC1");
 			String millname = (String) request.getAttribute("millname");
-			String millCode = (String) request.getAttribute("millCode");
+		
 			String contractno = (String) request.getAttribute("contractno");
+			String millCode = (String) request.getAttribute("millCode");
+		/* 	out.println(millCode);
+			out.println(contractno); */
+			//String millCode = contractno.split("/")[1];
 			Double sumofInvoicevalue = (Double) request.getAttribute("sumofInvoicevalue");
 			List<Object[]>  ShipmentDetails = (List<Object[]>) request.getAttribute("ShipmentDetails");
 			List<Object[]>  Perticulargoods = (List<Object[]>) request.getAttribute("Perticulargoods");
@@ -955,8 +959,9 @@
         	    }
 
         	    // Assuming challan_no is correctly rendered in the JSP
-        	    var field2Value = <%= challan_no %>;
-
+        	    var field2Value = '<%=challan_no%>';
+        	    var millcode = '<%=millCode%>';
+                 
         	    console.log("Challan No:", field2Value);
 
         	    // First AJAX call to fetch contract data
@@ -973,7 +978,7 @@
         	                if (dataArray && dataArray.length > 0) {
         	                    var contractNo = dataArray[0][0];  // Contract number
         	                    var creationDateStr = dataArray[0][1];  // Date string
-        	                    var millcode = dataArray[0][2];  // Mill code (if needed)
+        	                    //var millcode = dataArray[0][2];  // Mill code (if needed)
 
         	                    // Convert the date string to a Date object
         	                    var creationDate = new Date(creationDateStr);
@@ -1000,7 +1005,9 @@
          
 <script type="text/javascript">
     $(document).ready(function() {
-      var contractNo = <%= contractno %>;
+    
+      var contractNo = '<%=contractno%>';
+   
        $.ajax({
             type: 'GET',
             url: 'contrcatnotomill.obj',
@@ -1036,14 +1043,15 @@
   <script type="text/javascript">
     $(document).ready(function() {
      
-        var millcode = <%= millCode %>;
-
+        var millcode = '<%=millCode%>';
+        
       
         $.ajax({
             type: 'GET',
             url: 'fetchingdataforbill.obj',
             data: { "contractno": millcode },
             success: function(thirdData) {
+            	//alert(thirdData);
                 try {
                     // Parse the JSON data
                     var dataArray = JSON.parse(thirdData);
@@ -1110,8 +1118,10 @@
          	<script>
 	function calculateTCS(millcode) {
 		
-	    var shipmentValue1 = parseFloat(<%= total %>);
-	    var sumofInvoicevalue1 = parseFloat(<%= sumofInvoicevalue %>); 
+	    var shipmentValue1 = parseFloat(<%=total%>);
+	  //  alert(shipmentValue1);
+	    var sumofInvoicevalue1 = parseFloat(<%=sumofInvoicevalue%>); 
+	  //  alert(sumofInvoicevalue1);
 	     var tcsamt = 0;
 	    //existing invoice value
 	   console.log("currInvoiceValue" + shipmentValue1);
@@ -1129,11 +1139,7 @@
 	                if (milldata === 'true') {
 	                	tcsamt = 0.0;
 	                } else {
-	                  /*   if (shipmentValue2 > 5000000) {
-	                        tsccount = shipmentValue1 < 0 ? 0.0 : 0.1;
-	                    } else {
-	                        tsccount = 0.0;
-	                    } */
+	                
 	                    
 	                	if(sumofInvoicevalue1 > 5000000){
 	            	    	
