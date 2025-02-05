@@ -516,7 +516,7 @@
 													class="text-danger">* </span>&nbsp; <span id="Contarctqty1"
 													name="Contarctqty" class="text-danger"> </span> <input
 													type="hidden" class="form-control" name="millcode"
-													id="millcode23" value="<%=StateCode %>" readonly="readonly">
+													id="millcode23" value="<%=millCode %>" readonly="readonly">
 											</div>
 											
 											

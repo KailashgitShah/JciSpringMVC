@@ -4163,7 +4163,7 @@ public class Controller_V {
 	@RequestMapping("regenerateBosDocument")
     public ModelAndView RegenerateBOS(HttpServletRequest request,RedirectAttributes redirectAttributes, @RequestParam("id") String BOSno) {
           final File theDir = new File("Genrationofbill");
-System.err.println("ReachedController");
+
 
           if (!theDir.exists()) {
                  theDir.mkdirs();
@@ -4431,15 +4431,25 @@ System.err.println("ReachedController");
                         billofSupplyDocDTO.setNo_of_bales(no_ofbales);
 
                        double nominlwt = (double) row[5];
-
-                       double qty = (double) no_ofbales * nominlwt;
-                       qty = Math.round(qty * 100.0) / 100.0;
+                       BigDecimal noOfBalesBigDecimal = new BigDecimal(no_ofbales);
+                       BigDecimal nominalWtBigDecimal = new BigDecimal(Double.toString(nominlwt));
+                       BigDecimal qtyBigDecimalmulti = noOfBalesBigDecimal.multiply(nominalWtBigDecimal).setScale(2, RoundingMode.HALF_UP);
+                       double qty = qtyBigDecimalmulti.doubleValue();
+                       
+//                       double qty = (double) no_ofbales * nominlwt;
+                      
 
                        qtygradesum += qty;
                         billofSupplyDocDTO.setNominalWt(nominlwt);
                        billofSupplyDocDTO.setQty(qty);
                        double rate = (double) row[6];
-                       total = (double) rate * qty;
+                       BigDecimal rateBigDecimal = new BigDecimal(Double.toString(rate));
+                       BigDecimal qtyBigDecimal = new BigDecimal(Double.toString(qty));
+                       BigDecimal totalBigDecimal = rateBigDecimal.multiply(qtyBigDecimal);
+                       totalBigDecimal = totalBigDecimal.setScale(2, RoundingMode.HALF_UP);
+                       total = totalBigDecimal.doubleValue();
+                   
+                
                        billofSupplyDocDTO.setTotal(total);
                        alltotal += total;
 
@@ -4450,10 +4460,16 @@ System.err.println("ReachedController");
 
                  }
 
-                 double doubleValue = 0.0;
-                 alltotal = alltotal + doubleValue;
-                 alltotal = Math.round(alltotal);
-                 
+                 double doubleValue = Double.parseDouble(TCS_Amt);
+//     			double doubleValue = 0.0;
+     		
+//                 alltotal = alltotal + doubleValue;
+//                 alltotal = Math.round(alltotal);
+                 BigDecimal allTotalBigDecimal = new BigDecimal(Double.toString(alltotal));
+                 BigDecimal doubleValueBigDecimal = new BigDecimal(Double.toString(doubleValue));
+                allTotalBigDecimal = allTotalBigDecimal.add(doubleValueBigDecimal);
+                allTotalBigDecimal = allTotalBigDecimal.setScale(0, RoundingMode.HALF_UP);
+                 alltotal = allTotalBigDecimal.doubleValue();
                  parameters.put("taotalsum", alltotal);
 
                  ConvertWord_k convertWord_k = new ConvertWord_k();
@@ -6193,14 +6209,23 @@ System.err.println("ReachedController");
 
 				double nominlwt = (double) row[5];
 
-				double qty = (double) no_ofbales * nominlwt;
-				qty = Math.round(qty * 100.0) / 100.0;
+		        BigDecimal noOfBalesBigDecimal = new BigDecimal(no_ofbales);
+		        BigDecimal nominalWtBigDecimal = new BigDecimal(Double.toString(nominlwt));
+		        BigDecimal qtyBigDecimalmulti = noOfBalesBigDecimal.multiply(nominalWtBigDecimal).setScale(2, RoundingMode.HALF_UP);
+		        double qty = qtyBigDecimalmulti.doubleValue();
+//				double qty = (double) no_ofbales * nominlwt;
+//				qty = Math.round(qty * 100.0) / 100.0;
 
 				qtygradesum += qty;
 				billofSupplyDocDTO.setNominalWt(nominlwt);
 				billofSupplyDocDTO.setQty(qty);
 				double rate = (double) row[6];
-				total = (double) rate * qty;
+//				total = (double) rate * qty;
+				  BigDecimal rateBigDecimal = new BigDecimal(Double.toString(rate));
+                  BigDecimal qtyBigDecimal = new BigDecimal(Double.toString(qty));
+                  BigDecimal totalBigDecimal = rateBigDecimal.multiply(qtyBigDecimal);
+                  totalBigDecimal = totalBigDecimal.setScale(2, RoundingMode.HALF_UP);
+                  total = totalBigDecimal.doubleValue();
 				billofSupplyDocDTO.setTotal(total);
 				alltotal += total;
 
@@ -6212,12 +6237,18 @@ System.err.println("ReachedController");
 			}
 
 			double doubleValue = Double.parseDouble(TCS_Amt);
-//			double doubleValue = 0.0;
+
 			alltotal = alltotal + doubleValue;
 			alltotal = Math.round(alltotal);
 			// billofSupplyDocDTO.setAlltotal(alltotal);
 			// double doubleValue = Double.parseDouble(TCS_Amt);
 //                       total=total+doubleValue;
+			BigDecimal allTotalBigDecimal = new BigDecimal(Double.toString(alltotal));
+			BigDecimal doubleValueBigDecimal = new BigDecimal(Double.toString(doubleValue));
+              allTotalBigDecimal = allTotalBigDecimal.add(doubleValueBigDecimal);
+              allTotalBigDecimal = allTotalBigDecimal.setScale(0, RoundingMode.HALF_UP);
+              alltotal = allTotalBigDecimal.doubleValue();
+			
 			parameters.put("taotalsum", alltotal);
 
 			ConvertWord_k convertWord_k = new ConvertWord_k();
