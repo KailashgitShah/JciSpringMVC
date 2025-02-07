@@ -24,8 +24,8 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	}
 
 	@Override
-	public void create(CreditNotes creditNotes) {
-	    creditNoteGenerationDao.create(creditNotes);
+	public String create(CreditNotes creditNotes) {
+	  return creditNoteGenerationDao.create(creditNotes);
 		
 	}
 
@@ -159,6 +159,11 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	public String getAccountNo() {
 		// TODO Auto-generated method stub
 		return creditNoteGenerationDao.getAccountNo();
+	}
+
+	@Override
+	public boolean duplicatechallan(String challan_no) {
+		return creditNoteGenerationDao.duplicatechallan(challan_no);
 	}
 	
 	

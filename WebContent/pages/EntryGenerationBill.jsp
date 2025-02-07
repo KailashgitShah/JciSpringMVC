@@ -766,7 +766,7 @@
 					return;
 				}
 				var contno = document.getElementById('Contarctno').value;
-		      
+		      alert(contno);
 				$.ajax({
 					type : 'POST',
 					url : 'saveRemarksofbill.obj',

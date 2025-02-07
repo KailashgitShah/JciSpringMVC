@@ -79,7 +79,7 @@ String username = (String) request.getSession().getAttribute("usrname");%>
 				<h1 class="page-title">Generation Of Credit Notes</h1>
 			</div>
 			<%
-			List<Object[]> list = (List<Object[]>) request.getAttribute("list");
+			/* List<Object[]> list = (List<Object[]>) request.getAttribute("list"); */
 			String baseIp = (String) request.getSession().getAttribute("baseIp");
 			%>
 			<div class="page-content fade-in-up">

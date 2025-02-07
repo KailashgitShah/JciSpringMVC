@@ -9,7 +9,7 @@ public interface CreditNoteGenerationService {
 	
 	public List<Object[]> getAllVerifiedWeighment();
 
-	public void create(CreditNotes creditNotes);
+	public String create(CreditNotes creditNotes);
 
 	public List<Object[]> getAllCreditNotes();
 
@@ -62,4 +62,5 @@ public interface CreditNoteGenerationService {
 	public List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber);
 
 	public String getAccountNo();
+	public boolean duplicatechallan( String challan_no);
 }

@@ -2161,7 +2161,7 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		List<Object[]> list = creditNoteGenerationService.getAllVerifiedWeighment();
+//		List<Object[]> list = creditNoteGenerationService.getAllVerifiedWeighment();
 
 		ModelAndView mView = new ModelAndView("generationOfCreditNotelist");
 		String pagename = "generationOfCreditNotelist";
@@ -2170,7 +2170,7 @@ public class Controller_V {
 			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
 			return new ModelAndView("Home");
 		}
-		mView.addObject("list", list);
+//		mView.addObject("list", list);
 
 		return mView;
 
@@ -2264,7 +2264,7 @@ public class Controller_V {
 	// save credit note
 
 	@RequestMapping(value = { "saveCreditNote" })
-	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request, HttpServletResponse response)
+	public ModelAndView saveCreditNoteDetails(final HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes)
 			throws IllegalStateException, IOException {
 
 		String username = (String) request.getSession().getAttribute("usrname");
@@ -2272,11 +2272,24 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 		;
+		
+		final String ChallanNo = request.getParameter("ChallanNo");
+		boolean forcheckchallan = creditNoteGenerationService.duplicatechallan(ChallanNo);
+		System.err.println("forcheckchallan::" +forcheckchallan + " " + ChallanNo);
+	 
+		if (forcheckchallan) { 
+		    redirectAttributes.addFlashAttribute("msg",
+		            "<div class=\"alert alert-warning\"><b>Warning!</b> Challan number is duplicate for credit note generation!</div>");
+
+		    return new ModelAndView(new RedirectView("generationOfCreditNoteList.obj"));
+		}
 
 		final String shipmentDetails = request.getParameter("shipment");
 		final String crnDate = request.getParameter("cnDate");
-		final String crnNo = request.getParameter("cnNo");
-		final String ChallanNo = request.getParameter("ChallanNo");
+		String crnNo = request.getParameter("cnNo");
+		
+		
+	
 		final String contractNo = request.getParameter("contractNo");
 		final String bosNo = request.getParameter("bosNo");
 		final String diNo = request.getParameter("diNo");
@@ -2293,6 +2306,9 @@ public class Controller_V {
 		final Double crnAmount = Double.parseDouble(request.getParameter("creditAmt"));
 		int refId = (int) request.getSession().getAttribute("userId");
 
+		
+		
+		
 		PdfGenerator pdfGenerator = new PdfGenerator();
 
 //                         String supplier_Name = "The Jute Corporation of India Limited";
@@ -2339,8 +2355,9 @@ public class Controller_V {
 		String diDate = "";
 		String challanDate = "";
 		String consigText = "";
-
+     
 		for (Object[] p : dispetchDetails) {
+			int flag=0;  
 			documentName = "";
 			CreditNoteDTO creditNoteDTO = new CreditNoteDTO();
 			CreditNotes creditNotes = new CreditNotes();
@@ -2392,19 +2409,30 @@ public class Controller_V {
 			creditNotes.setCreated_by(refId + "");
 			creditNotes.setCreationDate(new Date());
 			creditNotes.setCrnAmount(shortAmtPrice);
-			creditNotes.setChallanNo(ChallanNo);
+		
 			creditNotes.setContractNo(contractNo);
-			creditNotes.setCrnNo(crnNo);
 			creditNotes.setCrnDate(crnDate);
 			creditNotes.setGstCode(gstCode);
 			creditNotes.setJuteGrade((String) p[2]);
 			// creditNotes.setShipmentDetails(shipmentDetails);
 			creditNotes.setRoId(roId);
 			creditNotes.setShortQty(shtQty);
-			documentName = "creditNote" + ChallanNo + ".pdf";
 			creditNotes.setDocument(documentName);
-			creditNoteGenerationService.create(creditNotes);
+	
+	
+			creditNotes.setChallanNo(ChallanNo);
+			
+			String creditNoteNumber = creditNoteGenerationService.create(creditNotes);
+		
+			creditNotes.setCrnNo(creditNoteNumber);
+			 crnNo = creditNoteNumber;
+		
+		
+		 
+			
+			
 
+		documentName = "creditNote" + ChallanNo + ".pdf";
 		}
 
 		try {
@@ -3662,11 +3690,15 @@ public class Controller_V {
 
 	// ajax remarks for bill of supply form
 
+
 	@ResponseBody
 	@RequestMapping("saveRemarksofbill")
 	public ResponseEntity<String> saveRemarksofbill(@RequestParam("remarks") String remarks,
 			@RequestParam("con_no") String contractNo, HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
+		System.err.println("reached");
+		System.err.println(remarks);
+		System.err.println(contractNo);
 		final ModelAndView mv = new ModelAndView("EntryGenerationBill");
 		String pagename = "EntryGenerationBill";
 		int i = checkprivileges(pagename);
