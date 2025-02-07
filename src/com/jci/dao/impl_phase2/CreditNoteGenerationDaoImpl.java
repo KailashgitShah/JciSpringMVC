@@ -50,8 +50,16 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 	public synchronized String create(CreditNotes creditNotes) {
 
 		String gstCode = creditNotes.getGstCode();
+		if ("0".equals(gstCode)) {
+		    gstCode = "1";
+
+		}
 
 		int getGstCount = getGstCount(gstCode);
+		
+		if (getGstCount == 0) {
+		    getGstCount = 1;
+		}
 		int count = getTotalCount();
 
 		Calendar calendar = Calendar.getInstance();

@@ -2355,9 +2355,9 @@ public class Controller_V {
 		String diDate = "";
 		String challanDate = "";
 		String consigText = "";
-     
+		int flag;
 		for (Object[] p : dispetchDetails) {
-			int flag=0;  
+		   flag=0;  
 			documentName = "";
 			CreditNoteDTO creditNoteDTO = new CreditNoteDTO();
 			CreditNotes creditNotes = new CreditNotes();
@@ -2423,8 +2423,12 @@ public class Controller_V {
 			creditNotes.setChallanNo(ChallanNo);
 			
 			String creditNoteNumber = creditNoteGenerationService.create(creditNotes);
-		
-			creditNotes.setCrnNo(creditNoteNumber);
+			String creditno="";
+			
+			if(flag==0) {
+			 creditno=creditNoteNumber;
+			}
+			creditNotes.setCrnNo(creditno);
 			 crnNo = creditNoteNumber;
 		
 		
@@ -2434,7 +2438,7 @@ public class Controller_V {
 
 		documentName = "creditNote" + ChallanNo + ".pdf";
 		}
-
+       flag=1;
 		try {
 			JasperReport jasperReport1 = JasperCompileManager.compileReport(creditNoteJRXML);
 			// .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
