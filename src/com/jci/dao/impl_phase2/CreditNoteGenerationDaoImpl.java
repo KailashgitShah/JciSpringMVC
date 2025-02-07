@@ -48,20 +48,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public synchronized String create(CreditNotes creditNotes) {
-
-		String gstCode = creditNotes.getGstCode();
-		if ("0".equals(gstCode)) {
-		    gstCode = "1";
-
-		}
-
-		int getGstCount = getGstCount(gstCode);
-		
-		if (getGstCount == 0) {
-		    getGstCount = 1;
-		}
-		int count = getTotalCount();
-
+ 
 		Calendar calendar = Calendar.getInstance();
 		int currentYear = calendar.get(Calendar.YEAR);
 		int currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is zero-based
@@ -75,18 +62,23 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 			financialYearStart = currentYear - 1;
 			financialYearEnd = currentYear;
 		}
-
-		String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
-
-		String yearCode = endYearLastTwoDigits;
-		String indiaSerialNo = String.format("%06d", count);
-		String gstSerialNo = String.format("%05d", getGstCount);
-
-		String creditNoteIdnNo = "C" + yearCode + indiaSerialNo + gstCode + gstSerialNo;
-		creditNotes.setCrnNo(creditNoteIdnNo);
+				
+			if(creditNotes.getCrnNo() == null || creditNotes.getCrnNo().length() == 0) {
+				
+				String gstCode = creditNotes.getGstCode(); 		
+				int getGstCount = getGstCount(gstCode) + 1; //next gstcount	
+				int count = getTotalCount();//next india counter
+				String endYearLastTwoDigits = Integer.toString(financialYearEnd).substring(2);
+				String yearCode = endYearLastTwoDigits;
+				String indiaSerialNo = String.format("%06d", count);
+				String gstSerialNo = String.format("%05d", getGstCount);
+				String creditNoteIdnNo = "C" + yearCode + indiaSerialNo + gstCode + gstSerialNo;
+				creditNotes.setCrnNo(creditNoteIdnNo);
+			}
+		
 		currentSession().save(creditNotes);
 
-		return creditNoteIdnNo;
+		return creditNotes.getCrnNo();
 
 	}
 
@@ -332,7 +324,14 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public int getTotalCount() {
-		String sql = "select count( distinct Credit_note_no) from jcicredit_note where Crn_status = 0";
+		String sql = "SELECT \r\n"
+				+ "    CASE \r\n"
+				+ "        WHEN LEN(CAST(COALESCE(MAX(CAST(SUBSTRING(Credit_note_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)) > 6 \r\n"
+				+ "        THEN CAST(COALESCE(MAX(CAST(SUBSTRING(Credit_note_no, 4, 6) AS INT)), 0) + 1 AS INT)\r\n"
+				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(SUBSTRING(Credit_note_no, 4, 6) AS INT)), 0) + 1 AS INT), 6)\r\n"
+				+ "    END\r\n"
+				+ "FROM jcicredit_note\r\n"
+				+ "WHERE ISNUMERIC(SUBSTRING(Credit_note_no, 4, 6)) = 1 and Crn_status = 0;";
 		return (int) currentSession().createSQLQuery(sql).uniqueResult();
 	}
 
@@ -750,19 +749,9 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 
 	@Override
 	public boolean duplicatechallan(String challan_no) {
-		String sql = "SELECT COALESCE(count(ChallanNo) , 0) FROM jcicredit_note WHERE ChallanNo = '"+challan_no+"'";
-
-
-//		  SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
-		
+		String sql = "SELECT COALESCE(count(ChallanNo) , 0) FROM jcicredit_note WHERE ChallanNo = '"+challan_no+"'  and Crn_status = 0";
 		  int count = (int) currentSession().createSQLQuery(sql).uniqueResult();
-         System.err.println(count);
-         System.err.println(count);
-         System.err.println(count);
-         System.err.println(count);
-//		    Number count = (Number) query.uniqueResult();
-
-		    return count > 0;
+		   return count > 0;
 	}
 
 }

@@ -79,7 +79,7 @@ input[type="radio"] {
 	List<Object[]> dispetchDetails = (List<Object[]>) request.getAttribute("dispetchDetails");
 	List<Object> gradeRatio = (List<Object>) request.getAttribute("gradeRatio");
 	//all india count
-	int Count = (int) request.getAttribute("Count") + 1;
+	int Count = (int) request.getAttribute("Count");
 	//gst code
 	String gstCode = (String) request.getAttribute("gst");
 	
