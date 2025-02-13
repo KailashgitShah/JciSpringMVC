@@ -372,7 +372,7 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 	@Override
 	public List<Object[]> RegionAndCenterName(String st) {
 		String sql = "  select a.centername,a.CENTER_CODE,b.roname,b.rocode  from  jcipurchasecenter as a LEFT join \r\n"
-				+ "  jcirodetails as b  on a.rocode=b.rocode   where a.centertypecode='D' and a.CENTER_CODE='" + st
+				+ "  jcirodetails as b  on a.rocode=b.rocode   where a.CENTER_CODE='" + st
 				+ "'";
 		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.list();
