@@ -98,9 +98,7 @@ public class PdfGenerator {
 		table.addCell(new Cell()
 				.add(new Paragraph().add(new Text("To, ").setBold().setFontColor(Black)).add(new Text(millName))
 						.add(",").add(new Text(unitName)).add("\n").add(new Text(add1)).add("\n").add(new Text(add2))
-						.add("\n")
-
-						.setFontColor(grayColor))
+						.add("\n"))
 				.add(new Paragraph()).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
 
 		Paragraph subHeading = new Paragraph(new Text("Sub : ").setBold())
@@ -108,9 +106,8 @@ public class PdfGenerator {
 				.setTextAlignment(TextAlignment.CENTER).setMarginTop(15);
 
 		Paragraph RefParagraph = new Paragraph(new Text("Ref No : ").setBold()).add(refNos).add(new Text(" dt. "))
-				.add(pcsoDates)
-				.add(" of Dy. Director (Mktg), Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. ")
-				.add(pcsoDates).setUnderline().setTextAlignment(TextAlignment.CENTER);
+				.add(pcsoDates).add(" , Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. ").add(pcsoDates)
+				.setUnderline().setTextAlignment(TextAlignment.CENTER);
 
 		Paragraph messageParagraph = new Paragraph().add("Dear Sir(s)").add("\n").add("We have this day sold to you "
 				+ (int) Math.round(qty) + " quintals of raw jute / Mesta under linkage of " + cropyear
@@ -134,7 +131,7 @@ public class PdfGenerator {
 		for (int i = 0; i < compList.size(); i++) {
 			Double rObject1 = Double.parseDouble(compList.get(i));
 			Object[] rObject2 = priceList.get(0);
-		//	System.err.println("grade" + i + 1 + " ");
+			// System.err.println("grade" + i + 1 + " ");
 			Double composition = (rObject1 / 100) * qty; // Qty in Qtls
 			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
 			totalContractedprice += composition * priceDouble;
@@ -156,22 +153,28 @@ public class PdfGenerator {
 		distributionTable.addCell(new Cell().add(totalCompositionInt + "").setBold());
 		distributionTable.addCell(new Cell().add(" Rs " + finalPrice));
 
-		//System.err.println("Total " + finalPrice);
+		// System.err.println("Total " + finalPrice);
 
-		Paragraph footer = new Paragraph("2252-7027 / 7028 / 6952 / 6779 / 6770 / 6773 / 7108 / 6776")
-				.setTextAlignment(TextAlignment.CENTER).setFontSize(10);
+		Paragraph continueToNextPage = new Paragraph().add(new Text("Contd.. / 2")).setWidth(columnWidth20)
+				.setTextAlignment(TextAlignment.CENTER);
+
+		Paragraph continueToNextPageParagraph = new Paragraph().setTextAlignment(TextAlignment.RIGHT);
+		continueToNextPageParagraph.add(continueToNextPage);
+
+//		Paragraph footer = new Paragraph("2252-7027 / 7028 / 6952 / 6779 / 6770 / 6773 / 7108 / 6776")
+//				.setTextAlignment(TextAlignment.CENTER).setFontSize(10);
 		Table footerTable = new Table(widthOfThreeEqualCoulmn).setBorder(Border.NO_BORDER);
 
-		footerTable.addCell(new Cell().add(new Paragraph("E-mail : jci@jcimail.in")).setBold()
-				.setBorder(Border.NO_BORDER).setFontSize(8)).setMarginLeft(0).setTextAlignment(TextAlignment.LEFT);
-		footerTable.addCell(
-				new Cell().add(new Paragraph().add(new Text("Fax : ").setBold()).add(" 91-033-2252-1771 / 6890 / 6951"))
-						.setBorder(Border.NO_BORDER).setFontSize(8));
-
+//		footerTable.addCell(new Cell().add(new Paragraph("E-mail : jci@jcimail.in")).setBold()
+//				.setBorder(Border.NO_BORDER).setFontSize(8)).setMarginLeft(0).setTextAlignment(TextAlignment.LEFT);
+//		
+		footerTable.addCell(new Cell().add(new Paragraph().add(new Text("E-mail : ").setBold()).add("jci@jcimail.in"))
+				.setBorder(Border.NO_BORDER).setFontSize(8).setTextAlignment(TextAlignment.CENTER));
+		footerTable.addCell(new Cell().add(new Paragraph().add(new Text("").setBold()).add(""))
+				.setBorder(Border.NO_BORDER).setFontSize(8));
 		footerTable
 				.addCell(new Cell().add(new Paragraph().add(new Text("Website : ").setBold()).add(" www.jutecorp.in"))
-						.setBorder(Border.NO_BORDER).setFontSize(8))
-				.setTextAlignment(TextAlignment.RIGHT);
+						.setBorder(Border.NO_BORDER).setFontSize(8));
 
 		letterHead.setWidth(PageSize.A4.getWidth());
 		letterHead.setHeight(160);
@@ -187,12 +190,20 @@ public class PdfGenerator {
 		document.add(messageParagraph);
 		document.add(deliveryTypeParagraph);
 		document.add(distributionTable);
-		document.add(new Paragraph("\n"));
-		document.add(new Paragraph("\n").setHeight(45));
-		document.add(new Paragraph("").setBorder(new SolidBorder(Color.GRAY, 1))).setFixedPosition(0,
-				PageSize.A4.getHeight(), 1);
-		document.add(footer);
-		document.add(footerTable);
+		document.add(new Paragraph("\n").setHeight(3));
+
+//		document.add(new Paragraph("").setBorder(new SolidBorder(Color.GRAY, 1))).setFixedPosition(0,
+//				PageSize.A4.getHeight(), 1);
+//		document.add(footer);
+
+		document.add(continueToNextPageParagraph.setFixedPosition(0, 54, PageSize.A4.getWidth()));
+
+		Paragraph footerLine = new Paragraph().add(new Text("")).setBorder(new SolidBorder(Color.GRAY, 1));
+		
+		document.add(footerLine.setFixedPosition(0, 35, PageSize.A4.getWidth()));
+
+		// Ensure the footer content is at the bottom of the last page
+		document.add(footerTable.setFixedPosition(0, 15, PageSize.A4.getWidth()));
 
 		document.close();
 
