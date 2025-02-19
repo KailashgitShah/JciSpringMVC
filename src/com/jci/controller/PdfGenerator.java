@@ -90,6 +90,7 @@ public class PdfGenerator {
 		String unitName = millNameArr[1];
 		String add1 = millNameArr[2];
 		String add2 = millNameArr[3];
+		String add3 = millNameArr[4];
 
 		if (millName.equalsIgnoreCase(unitName)) {
 			unitName = "";
@@ -98,7 +99,7 @@ public class PdfGenerator {
 		table.addCell(new Cell()
 				.add(new Paragraph().add(new Text("To, ").setBold().setFontColor(Black)).add(new Text(millName))
 						.add(",").add(new Text(unitName)).add("\n").add(new Text(add1)).add("\n").add(new Text(add2))
-						.add("\n"))
+						.add("\n").add(new Text(add3)))
 				.add(new Paragraph()).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
 
 		Paragraph subHeading = new Paragraph(new Text("Sub : ").setBold())
@@ -109,11 +110,7 @@ public class PdfGenerator {
 				.add(pcsoDates).add(" , Office of the Jute Commissioner(MoT), Kolkata against PCO dtd. ").add(pcsoDates)
 				.setUnderline().setTextAlignment(TextAlignment.CENTER);
 
-		Paragraph messageParagraph = new Paragraph().add("Dear Sir(s)").add("\n").add("We have this day sold to you "
-				+ (int) Math.round(qty) + " quintals of raw jute / Mesta under linkage of " + cropyear
-				+ " Crop of the following variety and grades at prices and terms and conditions specified from page no. 2 to 9 including "
-				+ "Annexure - I & II .").add("\n")
-				.add("The grade wise bifurcation under the sale contract quantity is furnished below : ");
+
 
 		Paragraph innerParagraph = new Paragraph().add(new Text(deliveryType).setBold())
 				.setBorderBottom(new SolidBorder(1)).setWidth(columnWidth20).setTextAlignment(TextAlignment.CENTER);
@@ -133,13 +130,13 @@ public class PdfGenerator {
 			Object[] rObject2 = priceList.get(0);
 			// System.err.println("grade" + i + 1 + " ");
 			Double composition = (rObject1 / 100) * qty; // Qty in Qtls
+			int compositionInt = (int) Math.round(composition);
 			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
-			totalContractedprice += composition * priceDouble;
+			totalContractedprice += compositionInt * priceDouble;
 //			System.err.println("composition " + composition);
 //			System.err.println("gradePrice " + priceDouble);
 //			System.err.println("Amount of grade " + priceDouble);
 
-			int compositionInt = (int) Math.round(composition);
 			totalCompositionInt += compositionInt;
 			distributionTable.addCell(new Cell().add(varietyArray.get(i) + "")).setTextAlignment(TextAlignment.CENTER);
 			distributionTable.addCell(new Cell().add(compositionInt + "").setTextAlignment(TextAlignment.CENTER));
@@ -152,6 +149,12 @@ public class PdfGenerator {
 		distributionTable.addCell(new Cell().add("Total").setBold());
 		distributionTable.addCell(new Cell().add(totalCompositionInt + "").setBold());
 		distributionTable.addCell(new Cell().add(" Rs " + finalPrice));
+		
+		Paragraph messageParagraph = new Paragraph().add("Dear Sir(s)").add("\n").add("We have this day sold to you "
+				+ totalCompositionInt + " quintals of raw jute / Mesta under linkage of " + cropyear
+				+ " Crop of the following variety and grades at prices and terms and conditions specified from page no. 2 to 9 including "
+				+ "Annexure - I & II .").add("\n")
+				.add("The grade wise bifurcation under the sale contract quantity is furnished below : ");
 
 		// System.err.println("Total " + finalPrice);
 

@@ -4427,13 +4427,11 @@ public class Controller_V {
 			parameters.put("dpcname", Dpcname);
 
 			int i = 0;
-			double total = 0.0;
 			double alltotal = 0.0;
 			double qtygradesum = 0.0;
 			for (Object[] row : list) {
 				BillofSupplyDocDTO billofSupplyDocDTO = new BillofSupplyDocDTO();
 				String cropyear = (String) row[0];
-
 				billofSupplyDocDTO.setCropyear(cropyear);
 				String balemark = (String) row[1];
 				billofSupplyDocDTO.setBalemark(balemark);
@@ -4445,46 +4443,24 @@ public class Controller_V {
 				billofSupplyDocDTO.setSiNo(i + 1);
 				int no_ofbales = (int) row[4];
 				billofSupplyDocDTO.setNo_of_bales(no_ofbales);
-
 				double nominlwt = (double) row[5];
-				BigDecimal noOfBalesBigDecimal = new BigDecimal(no_ofbales);
-				BigDecimal nominalWtBigDecimal = new BigDecimal(Double.toString(nominlwt));
-				BigDecimal qtyBigDecimalmulti = noOfBalesBigDecimal.multiply(nominalWtBigDecimal).setScale(2,
-						RoundingMode.HALF_UP);
-				double qty = qtyBigDecimalmulti.doubleValue();
-
-//                       double qty = (double) no_ofbales * nominlwt;
-
-				qtygradesum += qty;
 				billofSupplyDocDTO.setNominalWt(nominlwt);
-				billofSupplyDocDTO.setQty(qty);
 				double rate = (double) row[6];
-				BigDecimal rateBigDecimal = new BigDecimal(Double.toString(rate));
-				BigDecimal qtyBigDecimal = new BigDecimal(Double.toString(qty));
-				BigDecimal totalBigDecimal = rateBigDecimal.multiply(qtyBigDecimal);
-				totalBigDecimal = totalBigDecimal.setScale(2, RoundingMode.HALF_UP);
-				total = totalBigDecimal.doubleValue();
-
+				billofSupplyDocDTO.setRate(rate);
+				double qty = (double) row[7];
+				
+				billofSupplyDocDTO.setQty(qty);
+				qtygradesum+=qty;
+				double total = (double) row[8];
 				billofSupplyDocDTO.setTotal(total);
 				alltotal += total;
-
-				billofSupplyDocDTO.setRate(rate);
-				billofSupplyDocDTO.setRate(rate);
 				i++;
 				listOfBillofSupplyDocDTO.add(billofSupplyDocDTO);
 
 			}
-
-			double doubleValue = Double.parseDouble(TCS_Amt);
-//     			double doubleValue = 0.0;
-
-//                 alltotal = alltotal + doubleValue;
-//                 alltotal = Math.round(alltotal);
-			BigDecimal allTotalBigDecimal = new BigDecimal(Double.toString(alltotal));
-			BigDecimal doubleValueBigDecimal = new BigDecimal(Double.toString(doubleValue));
-			allTotalBigDecimal = allTotalBigDecimal.add(doubleValueBigDecimal);
-			allTotalBigDecimal = allTotalBigDecimal.setScale(0, RoundingMode.HALF_UP);
-			alltotal = allTotalBigDecimal.doubleValue();
+			
+			alltotal += Math.round(Double.parseDouble(TCS_Amt));
+ 
 			parameters.put("taotalsum", alltotal);
 
 			ConvertWord_k convertWord_k = new ConvertWord_k();
@@ -4492,7 +4468,7 @@ public class Controller_V {
 			double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
 			int convertInt = (int) invoiceDouble;
 			String InvoiceNO = convertWord_k.convertToWords(convertInt);
-			// qtygradesum = Math.round(qtygradesum);
+		
 			parameters.put("invoicevalue", InvoiceNO);
 			parameters.put("qtysum", qtygradesum);
 
@@ -4537,8 +4513,8 @@ public class Controller_V {
 			return new ModelAndView("index");
 		}
 
-		// return new ModelAndView();
-		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
+//		 return new ModelAndView();
+     return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
 	}
 
@@ -6199,13 +6175,11 @@ public class Controller_V {
 			parameters.put("dpcname", Dpcname);
 
 			int i = 0;
-			double total = 0.0;
 			double alltotal = 0.0;
 			double qtygradesum = 0.0;
 			for (Object[] row : list) {
 				BillofSupplyDocDTO billofSupplyDocDTO = new BillofSupplyDocDTO();
 				String cropyear = (String) row[0];
-
 				billofSupplyDocDTO.setCropyear(cropyear);
 				String balemark = (String) row[1];
 				billofSupplyDocDTO.setBalemark(balemark);
@@ -6217,50 +6191,23 @@ public class Controller_V {
 				billofSupplyDocDTO.setSiNo(i + 1);
 				int no_ofbales = (int) row[4];
 				billofSupplyDocDTO.setNo_of_bales(no_ofbales);
-
 				double nominlwt = (double) row[5];
-
-				BigDecimal noOfBalesBigDecimal = new BigDecimal(no_ofbales);
-				BigDecimal nominalWtBigDecimal = new BigDecimal(Double.toString(nominlwt));
-				BigDecimal qtyBigDecimalmulti = noOfBalesBigDecimal.multiply(nominalWtBigDecimal).setScale(2,
-						RoundingMode.HALF_UP);
-				double qty = qtyBigDecimalmulti.doubleValue();
-//				double qty = (double) no_ofbales * nominlwt;
-//				qty = Math.round(qty * 100.0) / 100.0;
-
-				qtygradesum += qty;
 				billofSupplyDocDTO.setNominalWt(nominlwt);
-				billofSupplyDocDTO.setQty(qty);
 				double rate = (double) row[6];
-//				total = (double) rate * qty;
-				BigDecimal rateBigDecimal = new BigDecimal(Double.toString(rate));
-				BigDecimal qtyBigDecimal = new BigDecimal(Double.toString(qty));
-				BigDecimal totalBigDecimal = rateBigDecimal.multiply(qtyBigDecimal);
-				totalBigDecimal = totalBigDecimal.setScale(2, RoundingMode.HALF_UP);
-				total = totalBigDecimal.doubleValue();
+				billofSupplyDocDTO.setRate(rate);
+				double qty = (double) row[7];
+				billofSupplyDocDTO.setQty(qty);
+				qtygradesum+=qty;
+				double total = (double) row[8];
 				billofSupplyDocDTO.setTotal(total);
 				alltotal += total;
-
-				billofSupplyDocDTO.setRate(rate);
-				billofSupplyDocDTO.setRate(rate);
 				i++;
 				listOfBillofSupplyDocDTO.add(billofSupplyDocDTO);
 
 			}
-
-			double doubleValue = Double.parseDouble(TCS_Amt);
-
-//			alltotal = alltotal + doubleValue;
-//			alltotal = Math.round(alltotal);
-			// billofSupplyDocDTO.setAlltotal(alltotal);
-			// double doubleValue = Double.parseDouble(TCS_Amt);
-//                       total=total+doubleValue;
-			BigDecimal allTotalBigDecimal = new BigDecimal(Double.toString(alltotal));
-			BigDecimal doubleValueBigDecimal = new BigDecimal(Double.toString(doubleValue));
-			allTotalBigDecimal = allTotalBigDecimal.add(doubleValueBigDecimal);
-			allTotalBigDecimal = allTotalBigDecimal.setScale(0, RoundingMode.HALF_UP);
-			alltotal = allTotalBigDecimal.doubleValue();
-
+			
+			alltotal += Math.round(Double.parseDouble(TCS_Amt));
+	
 			parameters.put("taotalsum", alltotal);
 
 			ConvertWord_k convertWord_k = new ConvertWord_k();

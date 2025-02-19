@@ -71,7 +71,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	@Override
 	public List<Object[]> getListOfGradesPriceForExGodown(String cropYear) {
 
-		String sqlQueryToGetHighestPriceOfExGodown = "select top 1 grade1, grade2, grade3, grade4, grade5, grade6 from jcientry_derivative_price where grade1 + grade2 + grade3 + grade4 + grade5 + grade6 = (select Max(grade1+grade2+grade3+grade4+grade5+grade6) as SumGrades from jcientry_derivative_price where state_name='West Bengal' and crop_year='"
+		String sqlQueryToGetHighestPriceOfExGodown = "select top 1 grade1, grade2, grade3, grade4, grade5, grade6 from jcientry_derivative_price where grade1 + grade2 + grade3 + grade4 + grade5 + grade6 = (select Max(grade1+grade2+grade3+grade4+grade5+grade6) as SumGrades from jcientry_derivative_price where state_name='Assam' and crop_year='"
 				+ cropYear + "'and delivery_type='Ex-Godown')";
 		List<Object[]> listOfGradesExGodown = currentSession().createSQLQuery(sqlQueryToGetHighestPriceOfExGodown)
 				.list();
@@ -161,22 +161,21 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			for (int j = 0; j < sizeOfComponents; j++) {
 				// System.out.println(Double.parseDouble(gradeComp.get(j)) / 100 + "<->" +
 				// totalAllocatedToMill + "<->" + pg.get(j));
-				contractedValueForPerticularMill += (Double.parseDouble(gradeComp.get(j)) / 100)
-						* (totalAllocatedToMill * pg.get(j));
-				// System.err.println((Double.parseDouble(gradeComp.get(j)) / 100) *
-				// (totalAllocatedToMill * pg.get(j)));
+				contractedValueForPerticularMill += Math.round(((Double.parseDouble(gradeComp.get(j)) / 100) * totalAllocatedToMill))
+						* pg.get(j);
+				 System.err.println(Math.round(((Double.parseDouble(gradeComp.get(j)) / 100) * totalAllocatedToMill)) + " " +  pg.get(j));
 			}
-//			System.out.println("-------------------------------------------");
-//			System.out.println(contractedValueForPerticularMill);
-//			System.out.println("-------------------------------------------");
+			System.out.println("-------------------------------------------");
+			System.out.println(contractedValueForPerticularMill);
+			System.out.println("-------------------------------------------");
 			// contractedValueForPerticularMill =
 			// Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
 			contractedValueList.add(contractedValueForPerticularMill);
-			// System.out.println("temp : " + contractedValueForPerticularMill);
+			 System.out.println("temp : " + contractedValueForPerticularMill);
 			totalContractedValue += contractedValueForPerticularMill;
 		}
 		// totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
-		// System.err.println(totalContractedValue);
+		 System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
@@ -266,7 +265,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		}
 
-		System.err.println("pg size" + pg.size());
 		if (pg.size() != 0) {
 
 			double totalAllocatedToMill = Double.parseDouble(totalQtyOfMill);
@@ -278,9 +276,9 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 			for (int j = 0; j < gradeArray.size(); j++) {
 
-				updatedContractedValue += (Double.parseDouble(gradeArray.get(j)) / 100)
-						* (totalAllocatedToMill * pg.get(j));
-//			System.err.println(gradeArray.get(j) + " *********** " + pg.get(i));
+				updatedContractedValue += ((int)Math.round((Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill))
+						* pg.get(j);
+//			System.err.println(((int)Math.round((Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill)) + " *********** " + pg.get(j));
 //			System.err.println("j = " + j + " " + "i = " + i);
 
 			}
@@ -403,8 +401,14 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 	public String getMillname(String millCode) {
 		// String sql = "select unit_name from jcimilldetailchild where client_unit_code
 		// = '" + millCode + "'";
-		String sql = "select concat( b.client_name , '#P#' ,  a.unit_name , '#P#',  b.client_address1 , '#P#', Concat(b.client_location ,'-' , b.client_pin)) from jcimilldetailchild a inner join jcimilldetailmaster b on a.client_code = b.client_code where client_unit_code = '"
-				+ millCode + "'";
+//		String sql = "select concat( b.client_name , '#P#' ,  a.unit_name , '#P#',  b.client_address1 , '#P#', Concat(b.client_location ,'-' , b.client_pin)) from jcimilldetailchild a inner join jcimilldetailmaster b on a.client_code = b.client_code where client_unit_code = '"
+//				+ millCode + "'";
+		
+		String sql = "SELECT CONCAT(b.client_name, '#P#', a.unit_name, '#P#', b.client_address1,'#P#', b.client_address2, '#P#', CONCAT(b.client_location, '-', b.client_pin)) AS client_info\r\n"
+				+ "FROM jcimilldetailchild a\r\n"
+				+ "INNER JOIN jcimilldetailmaster b \r\n"
+				+ "    ON a.client_code = b.client_code\r\n"
+				+ "WHERE a.client_unit_code = '"+millCode+"'";
 
 		return (String) currentSession().createSQLQuery(sql).uniqueResult();
 	}
