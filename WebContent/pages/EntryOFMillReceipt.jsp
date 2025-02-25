@@ -182,6 +182,8 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                     String millcode = (String) request.getAttribute("millcode");
 
                     String date = (String) request.getAttribute("parsed");
+                    String region = (String) session.getAttribute("regionId");
+               
                     %>
                     <div class="page-content fade-in-up">
                           <div class="row">
@@ -706,42 +708,19 @@ $(document).ready(function() {
                                                                       + '<td>'
                                                                       + '<div class="table2-cell">'
                                                                       + '<label for="Qualitypercentage_' + index + '"></label>'
-                                                                      + '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0" max="299" step="any" value="0" oninput="if (this.value > 299) this.value = 299;">'
+                                                                      + '<input type="double" id="Qualitypercentage_' + index + '" name="Qualitypercentage[]" min="0" max="299" step="any" value="0" oninput="if (this.value > 299) this.value = 299;   ">'
                                                                       + '</div>'
                                                                       + '</td>'
 
                                                                       + '<td>'
                                                                       + '<div class="table2-cell">'
-                                                                      + '<select id="Nomination_' + index + '" name="Nomination[]" required onchange="handleNominationChange(this, ' + intValue + ', ' + actualvalue1 + ')">'
-                                                                      + '<option value="0">0</option>'
-                                                                      + '<option value="16">16</option>'
-                                                                      + '<option value="17">17</option>'
-                                                                      + '<option value="18">18</option>'
-                                                                      + '<option value="19">19</option>'
-                                                                      + '<option value="20">20</option>'
-                                                                      + '<option value="21">21</option>'
-                                                                      + '<option value="22">22</option>'
-                                                                      + '<option value="23">23</option>'
-                                                                      + '<option value="24">24</option>'
-                                                                      + '<option value="25">25</option>'
-                                                                      + '<option value="26">26</option>'
-                                                                      + '<option value="27">27</option>'
-                                                                      + '<option value="28">28</option>'
-                                                                      + '<option value="29">29</option>'
-                                                                      + '<option value="30">30</option>'
-                                                                      + '<option value="31">31</option>'
-                                                                      + '<option value="32">32</option>'
-                                                                      + '<option value="33">33</option>'
-                                                                      + '<option value="34">34</option>'
-                                                                      + '<option value="35">35</option>'
-                                                                      + '<option value="36">36</option>'
-                                                                      + '<option value="37">37</option>'
-                                                                      + '<option value="38">38</option>'
-                                                                      + '<option value="39">39</option>'
-                                                                      + '<option value="40">40</option>'
-                                                                      + '</select>'
+                                                                      + '<input id="Nomination_' + index + '" type="text" name="Nomination[]" value="0" required'
+                                                                      + ' oninput="restrictToTwoDecimals(this)">'
                                                                       + '</div>'
                                                                       + '</td>'
+
+
+
 
                                                                       + '<td>'
                                                                       + '<div class="table3-cell">'
@@ -841,32 +820,7 @@ $(document).ready(function() {
              
              
 
-             function handleNominationChange(selectElement, intValue, actualvalue1) {
-
-                    var currentMonth = new Date().getMonth() + 1;
-                    var selectedNomination = parseInt(selectElement.value);
-
-                    // Adjust Nomination based on current month
-                    if (currentMonth > 6 && currentMonth <= 10) {
-                          selectedNomination -= 20;
-
-                    } else {
-                          selectedNomination -= 18;
-                    }
-                    selectedNomination = Math.max(0, selectedNomination);
-
-                    /*     selectedNomination = Math.max(0, selectedNomination);
-
-                    selectElement.value = selectedNomination.toString(); */
-
-                    var selectedOption = selectElement.options[selectElement.selectedIndex];
-                    selectedOption.value = selectedNomination.toString();
-                    /*    selectedOption.text = selectedNomination.toString();
-                    */
-                    // Optionally, you can also update the display of the selected option in the dropdown
-                    selectElement.selectedIndex = selectElement.selectedIndex;
-
-             }
+        
 
              $(document)
                           .ready(
@@ -1129,7 +1083,47 @@ $(document).ready(function() {
                             return;  
                         } */
 
-                    var Nomination = document.getElementById(NominationId).value;
+                  
+                        
+                        /*    var actualvalue = $("#Mill_receiptQty123").val(); 
+                        if (!actualvalue || isNaN(actualvalue)) {
+                            alert("Please enter a valid Mill Receipt Qty value.");
+                            return;  
+                        } */
+
+                        var Nominationvalue = parseFloat(document.getElementById(NominationId).value) || 0;
+                        var currentMonth = new Date().getMonth() + 1;
+                        var selectedNomination = Nominationvalue;
+
+                        var regionId = '<%=region%>';
+                        console.log(regionId);
+                        if (!regionId || regionId.trim() === "null" || regionId.trim() === "") {
+                            console.warn("Invalid regionId, defaulting to a safe value.");
+                            regionId = "00";
+                        }
+
+                        if (currentMonth > 6 && currentMonth <= 10) {
+                            if (regionId === "06" || regionId === "07" || regionId === "08") {
+                                selectedNomination -= 20;
+                            } else {
+                                selectedNomination -= 18;
+                            }
+                        } else {
+                            if (regionId === "06" || regionId === "07" || regionId === "08") {
+                                selectedNomination -= 18;
+                            } else {
+                                selectedNomination -= 16;
+                            }
+                        }
+
+              
+                        selectedNomination = Math.max(0, selectedNomination);
+
+                        var Nomination = parseFloat(selectedNomination);
+                      
+
+
+                    
                     var NCVamt = document.getElementById(NCVamtId).value;
                     var NCVQty = document.getElementById(NCVQty).value;
                     var DUSTQty = document.getElementById(DUSTQty).value;
@@ -1145,10 +1139,17 @@ $(document).ready(function() {
                     let qty2 = ((actualvalue * parseFloat(DustAmt)) / 100);
                     let valueinprice1 = (gradeprice * qty2).toFixed(2);
                     let dustValue = parseFloat(valueinprice1);
-
+            
+                    
+               
+                    var Nomination = parseFloat(Nomination) || 0;
+              
+                   
+                    
                     qty3 = ((actualvalue * parseFloat(Nomination)) / 100);
                     valueinprice2 = (gradeprice * qty3).toFixed(2);
                     moisturevalue = parseFloat(valueinprice2);
+                  
 
                     let qty4 = parseFloat(NCVQty);
                     let valueinprice3 = (gradeprice * qty4).toFixed(2);
@@ -1170,7 +1171,7 @@ $(document).ready(function() {
 
                     let qs = integerResult;
                     let rem = parseFloat(Qualitypercentage) % 100;
-
+                   
                     let gradeprice6 = resultsArray[intvalue - 1];
 
                     if (qs < 1) {
@@ -1330,7 +1331,36 @@ $(document).ready(function() {
                     });
              });
        </script>
+<script>
+function restrictToTwoDecimals(inputElement) {
+    let value = inputElement.value;
 
+
+    value = value.replace(/[^0-9.]/g, '');
+
+
+    let parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts[1]; 
+    }
+
+   
+    if (parts.length === 2 && parts[1].length > 2) {
+        value = parts[0] + '.' + parts[1].substring(0, 2); 
+    }
+
+  
+    let num = parseFloat(value);
+    if (!isNaN(num) && num > 100) {
+        value = "100.00"; 
+    }
+
+
+    inputElement.value = value;
+    
+}
+
+</script>
        <!-- <script>
 $(document).ready(function() {
   $("#Quality_Claim").on("change", function() {
