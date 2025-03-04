@@ -723,30 +723,32 @@ $(document).ready(function() {
 
 
                                                                       + '<td>'
-                                                                      + '<div class="table3-cell">'
+                                                                      + '<div class="table2-cell">'
                                                                       + '<label for="NCVamt_' + index + '"></label>'
-                                                                      + '<input type="number" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="0">'
+                                                                      + '<input type="text" id="NCVamt_' + index + '" name="NCVamt[]" min="0" max="10" step="any" value="0" required'
+                                                                      + ' oninput="restrictToTwoDecimals(this)">'
                                                                       + '</div>'
                                                                       + '</td>'
 
                                                                       + '<td>'
-                                                                      + '<div class="table3-cell">'
+                                                                      + '<div class="table2-cell">'
                                                                       + '<label for="ncvdust_' + index + '"></label>'
-                                                                      + '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="0">'
+                                                                      + '<input type="number" id="ncvdust_' + index + '" name="ncvdust[]" step="any" value="0" required'
                                                                       + '</div>'
                                                                       + '</td>'
 
                                                                       + '<td>'
-                                                                      + '<div class="table3-cell">'
+                                                                      + '<div class="table2-cell">'
                                                                       + '<label for="DustAMt_' + index + '"></label>'
-                                                                      + '<input type="number" id="DustAMt_' + index + '" name="DustAMt[]" min="0" max="10" step="any" value="0">'
+                                                                      + '<input type="text" id="DustAMt_' + index + '" name="DustAMt[]" min="0" max="10" step="any" value="0" required'
+                                                                      + ' oninput="restrictToTwoDecimalsforDust(this)">'
                                                                       + '</div>'
                                                                       + '</td>'
 
                                                                       + '<td>'
-                                                                      + '<div class="table3-cell">'
+                                                                      + '<div class="table2-cell">'
                                                                       + '<label for="DustQty_' + index + '"></label>'
-                                                                      + '<input type="number" id="DustQty_' + index + '" name="DustQty[]" step="any" value="0">'
+                                                                      + '<input type="number" id="DustQty_' + index + '" name="DustQty[]" step="any" value="0" required'
                                                                       + '</div>'
                                                                       + '</td>'
 
@@ -1360,6 +1362,34 @@ function restrictToTwoDecimals(inputElement) {
     
 }
 
+
+function restrictToTwoDecimalsforDust(inputElement) {
+    let value = inputElement.value;
+
+
+    value = value.replace(/[^0-9.]/g, '');
+
+
+    let parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts[1]; 
+    }
+
+   
+    if (parts.length === 2 && parts[1].length > 2) {
+        value = parts[0] + '.' + parts[1].substring(0, 2); 
+    }
+
+  
+    let num = parseFloat(value);
+    if (!isNaN(num) && num > 10) {
+        value = "10.00"; 
+    }
+
+
+    inputElement.value = value;
+    
+}
 </script>
        <!-- <script>
 $(document).ready(function() {
