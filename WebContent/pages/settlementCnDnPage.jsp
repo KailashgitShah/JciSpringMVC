@@ -3,6 +3,8 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.jci.model.StateList"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.Comparator"%>
 
 <html lang="en">
 <%@ page import="javax.servlet.http.HttpServletRequest"%>
@@ -141,6 +143,13 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
 
                                                                         <%
                                                                         List<String> mills = (List<String>) request.getAttribute("mills");
+                                                                        
+                                                                        Collections.sort(mills, new Comparator<String>() {
+                                                                            @Override
+                                                                            public int compare(String m1, String m2) {
+                                                                                return m1.split("&-&")[0].compareToIgnoreCase(m2.split("&-&")[0]);
+                                                                            }
+                                                                        });
                                                                         %>
                                                                         <select class="form-control" name="mill" id="mill" required>
                                                                                <option value="">-Select-</option>
@@ -173,10 +182,10 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
                                                            </div> -->
                                                            
                                                           <div class="row">
-															    <div class="col-sm-12 text-center">
-															        <label class="bold-underline">DETAILS OF CREDIT NOTE AND DEBIT NOTE</label>
-															    </div>
-															</div>
+                                                                                                        <div class="col-sm-12 text-center">
+                                                                                                            <label class="bold-underline">DETAILS OF CREDIT NOTE AND DEBIT NOTE</label>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                                                    
                                                            <div class="scrollmenu">
                                                            <div class="row">
@@ -198,7 +207,7 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
                                                       <th>CN/DN Amount</th>
                                                       <th>Settlement_Id</th>
                                                       <th>CN/DN DOC</th>
-                                                      <th>Consignment DOC</th>
+                                                      <th>Weighment Slip DOC</th>
                                                       <th> Bos DOC</th><th> 
                                                          
                                                       </tr>
@@ -253,7 +262,7 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
             $('#myForm').on('submit', function(event) {
                 // Disable the submit button
                 $('#submit').prop('disabled', true);
-                $('#submit').val('Please Wait Processing...');  
+               $('#submit').val('Please Wait Processing...');  
 
               
             });
@@ -262,10 +271,10 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
             
                <script>
                                                           $("#mill").on("change",function() {
-            	                                                $.ajax({
+                                                             $.ajax({
                                                                   type : "GET",
                                                                   url : "selectContractForSettlement.obj",
-                                                                  //url : "pIcon.obj",
+                                                                 //url : "pIcon.obj",
                                                                   data : {
                                                                         "mill" : $(this).val()
                                                                   },
@@ -293,8 +302,8 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
     var debitnotesum = 0.0;
 
     $("#contract").on("change", function() {
-    	document.getElementById('AmountDifference').value = '';
-    	$.ajax({
+       document.getElementById('AmountDifference').value = '';
+       $.ajax({
             type: "GET",
             url: "getFullDetailsOfCrnAndDebit.obj",
             data: {
@@ -412,7 +421,7 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
                 creditnotesum += amount;
             } else if (noteNo.charAt(0) == 'C' && noteNo.charAt(1) == 'S') {
                 creditnotesum += amount;
-            } else {
+           } else {
                 debitnotesum += amount;
             }
         } else {
@@ -432,20 +441,20 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
         var  amountdifference =  creditnotesum - debitnotesum; 
         
         if(amountdifference >0 ){
-        	amountdifference =  creditnotesum - debitnotesum; 
-        	//alert(amountdifference + "correct")
-        	
+             amountdifference =  creditnotesum - debitnotesum; 
+             //alert(amountdifference + "correct")
+             
         
         }
         else if( creditnotesum ==0  &&  amountdifference <0)
         {
-        	amountdifference = debitnotesum
-        	
-        	
+             amountdifference = debitnotesum
+             
+             
         }
         else if( amountdifference <0){
-        	document.getElementById('AmountDifference').value = amountdifference
-        	alert(amountdifference + "credit and debit note differenct is negative" )
+             document.getElementById('AmountDifference').value = amountdifference
+             alert(amountdifference + "credit and debit note differenct is negative" )
         }
         // alert(amountdifference)
        document.getElementById('AmountDifference').value = amountdifference
@@ -467,4 +476,5 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
 
 </body>
 </html>
+
 

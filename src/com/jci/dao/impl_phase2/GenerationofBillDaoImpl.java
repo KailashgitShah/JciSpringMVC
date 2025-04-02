@@ -166,12 +166,27 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public String billofsupplyno() {
-		String sql = "SELECT \r\n" + "    CASE \r\n"
+//		String sql = "SELECT \r\n" + "    CASE \r\n"
+//				+ "        WHEN LEN(CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)) > 6 \r\n"
+//				+ "        THEN CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)\r\n"
+//				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR), 6)\r\n"
+//				+ "    END AS next_bill_of_supply_no\r\n" + "FROM jcibos_generation\r\n"
+//				+ "WHERE ISNUMERIC(SUBSTRING(bill_of_supply_no, 4, 6)) = 1;";
+		
+		String sql = "SELECT \r\n"
+				+ "    CASE \r\n"
 				+ "        WHEN LEN(CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)) > 6 \r\n"
 				+ "        THEN CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR)\r\n"
 				+ "        ELSE RIGHT('000000' + CAST(COALESCE(MAX(CAST(SUBSTRING(bill_of_supply_no, 4, 6) AS INT)), 0) + 1 AS VARCHAR), 6)\r\n"
-				+ "    END AS next_bill_of_supply_no\r\n" + "FROM jcibos_generation\r\n"
-				+ "WHERE ISNUMERIC(SUBSTRING(bill_of_supply_no, 4, 6)) = 1;";
+				+ "    END AS next_bill_of_supply_no\r\n"
+				+ "FROM jcibos_generation\r\n"
+				+ "WHERE ISNUMERIC(SUBSTRING(bill_of_supply_no, 4, 6)) = 1\r\n"
+				+ "AND Creation_date >= DATEFROMPARTS(YEAR(GETDATE()) - CASE WHEN MONTH(GETDATE()) < 4 THEN 1 ELSE 0 END, 4, 1)  -- Start of current financial year (April 1st)\r\n"
+				+ "AND Creation_date < DATEFROMPARTS(YEAR(GETDATE()) + CASE WHEN MONTH(GETDATE()) >= 4 THEN 1 ELSE 0 END, 4, 1)  -- Before next financial year (April 1st next year)\r\n"
+				+ "AND YEAR(Creation_date) = YEAR(GETDATE()) - CASE WHEN MONTH(GETDATE()) < 4 THEN 1 ELSE 0 END;  -- Ensure it's the current financial year\r\n"
+				+ "\r\n"
+				+ "";
+		
 		String nextBillOfSupplyNo = (String) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
 
 		return nextBillOfSupplyNo;
@@ -335,7 +350,18 @@ public class GenerationofBillDaoImpl implements GenerationofBillDao {
 
 	@Override
 	public String statecount(String st) {
-		String sql = "SELECT  count(*) FROM jcibos_generation  where Statecode_forBOs='" + st + "'";
+//		String sql = "SELECT  count(*) FROM jcibos_generation  where Statecode_forBOs='" + st + "'";
+//		
+		
+		String sql = "SELECT  count(*) FROM jcibos_generation  where Statecode_forBOs='"+st+"'\r\n"
+				+ " AND Creation_date >= DATEFROMPARTS(YEAR(GETDATE()) - CASE WHEN MONTH(GETDATE()) < 4 THEN 1 ELSE 0 END, 4, 1)  -- Start of current financial year (April 1st)\r\n"
+				+ "AND Creation_date < DATEFROMPARTS(YEAR(GETDATE()) + CASE WHEN MONTH(GETDATE()) >= 4 THEN 1 ELSE 0 END, 4, 1)  -- Before next financial year (April 1st next year)\r\n"
+				+ "AND YEAR(Creation_date) = YEAR(GETDATE()) - CASE WHEN MONTH(GETDATE()) < 4 THEN 1 ELSE 0 END;  -- Ensure it's the current financial year\r\n"
+				+ "\r\n"
+				+ "";
+//		
+		
+		
 		int total = (Integer) this.sessionFactory.getCurrentSession().createSQLQuery(sql).uniqueResult();
 		total++;
 

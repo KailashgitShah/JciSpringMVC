@@ -147,7 +147,11 @@
 			     String strRate = "";
 			     String strNominalQty = "";
 			     String Tcsname = "";
-			     float total=0;
+			 
+			     int total=0;
+			     
+			  
+
 			     // Iterate over dispatchList data
 			     for (Object[] row : list) {
 			    	 
@@ -156,11 +160,16 @@
 					        float nominalWt = ((Number) row[4]).floatValue(); 
 					        float rate = ((Number) row[5]).floatValue();  
 					        float nominalQty = ((Number) row[6]).floatValue(); 
-					        float shipmentvalue = ((Number) row[8]).floatValue(); 
-					   /*      total+=rate*nominalQty; */
-					        total+=shipmentvalue;
-					      
+					        int shipmentvalue = Math.round(((Number) row[8]).floatValue());
+					         total+=shipmentvalue;
+					       
+					         
+					    
+					    
+					        
 				    }
+			   
+			   
 			%>
 
 
@@ -1143,13 +1152,13 @@
 	                    
 	                	if(sumofInvoicevalue1 > 5000000){
 	            	    	
-	            	    	tcsamt = shipmentValue1 * 0.001;
+	            	    	tcsamt = shipmentValue1 * 0.000;
 	            	       console.log("greate50" , tcsamt);
 	            	    	
 	            	    }else{
 	            	    	
 	            	    	if(shipmentValue1 + sumofInvoicevalue1 > 5000000){
-	            	    		tcsamt = (shipmentValue1 + sumofInvoicevalue1 - 5000000) * 0.001;
+	            	    		tcsamt = (shipmentValue1 + sumofInvoicevalue1 - 5000000) * 0.000;
 	            	    		console.log("when sum is greate than 50K" + tcsamt);
 	            	    	}else{
 	            	    		tcsamt = 0;
