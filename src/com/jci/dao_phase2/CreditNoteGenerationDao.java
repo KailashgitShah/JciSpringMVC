@@ -37,4 +37,5 @@ public interface CreditNoteGenerationDao {
 	List<settlemetCnDnModel> getAlldetails(String cndnIdentificationNumber);
 	public String getAccountNo();
 	public boolean duplicatechallan(String challan_no);
+	List<Object[]> getDataForDocRegeneration(String crnNo);
 }

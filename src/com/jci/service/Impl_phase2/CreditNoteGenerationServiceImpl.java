@@ -165,6 +165,11 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	public boolean duplicatechallan(String challan_no) {
 		return creditNoteGenerationDao.duplicatechallan(challan_no);
 	}
+
+	@Override
+	public List<Object[]> getDataForDocRegeneration(String crnNo) {
+	    return creditNoteGenerationDao.getDataForDocRegeneration(crnNo);
+	}
 	
 	
 

@@ -2323,19 +2323,7 @@ public class Controller_V {
 		List<Object[]> getDetailsofSpp_Con_Rec = creditNoteGenerationService.getDetailsofSpp_Con_Rec(bosNo);
 		List<Object[]> getStateAndPan = creditNoteGenerationService.getStateAndPan(millcode);
 		List<Object[]> getStateAndCodeOfSupplier = creditNoteGenerationService.getStateAndCodeOfSupplier(dpc);
-		// List<Object> gradeRatio =
-		// creditNoteGenerationService.getGradeRatio(ChallanNo);
-
-//                         for (Object[] row : millFullDetailsList) {
-//                                        unit_name = (String) row[0];
-//                                        unit_address = (String) row[1];
-//                                        client_name = (String) row[8];
-//                                        client_GSTN = (String) row[4];
-//                                        client_state = (String) row[6];
-//                                        client_code = (String) row[2];
-//                                        client_address1 = (String) row[7];
-//                                        client_pan = (String) row[5];
-//                         }
+ 
 
 		int sumOfBale = 0;
 		for (Object[] details : dispetchDetails) {
@@ -2369,8 +2357,8 @@ public class Controller_V {
 			int noOfBale = (int) p[3];
 			double rate = (double) p[5];
 			double nmnlQty = (double) p[4];
-			double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
-			double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+			double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
+			double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
 			double shortAmtPrice = Math.round(rate * shtQty);
 
 			contractDate = (String) p[7];
@@ -2547,6 +2535,238 @@ public class Controller_V {
 
 		return new ModelAndView("closeWindowPage");
 	}
+	
+	
+	@RequestMapping("regenerateCrnDoc")
+	public void regenerateCrnDoc(@RequestParam("crnNo") String crnNo, HttpServletResponse response) {
+	   
+		
+		List<Object[]>list = creditNoteGenerationService.getDataForDocRegeneration(crnNo);
+
+//		select top 1 b.Bill_of_supply_no,b.BOS_date,b.millcode,b.DPCID,c.DI_No,c.DI_Date, a.ChallanNo,a.Credit_note_date,a.Contract_no,a.Credit_note_amount from jcicredit_note a inner join 
+//		jcibos_generation b on a.ChallanNo = b.Challan_No
+//		inner join jcidispatch_details c on c.Challan_no = b.Challan_No where
+//		a.Credit_note_no = 'C250063321904788' 
+		
+		 String bosNo = "";
+		 String bosDate = "";
+		 String millcode = "";
+		 String dpc = "";
+		 String diNo = "";
+		 String diDate = "";
+		 String ChallanNo = "";
+		 String crnDate = "";
+		 String contractNo = "";
+		double crnAmount = 0;
+		double actualWt = 0;
+
+		for(Object[] row : list){
+			bosNo = (String)row[0];
+			bosDate = (String)row[1];
+			millcode = (String)row[2];
+			dpc = (String)row[3];
+			diNo = (String)row[4];
+			//diDate = (String)row[5];
+			ChallanNo = (String)row[6];
+			crnDate = (String)row[7];
+			contractNo = (String)row[8];
+			crnAmount = (double)row[9];
+			actualWt = (double) row[10];
+		};
+ 		
+		List<Object[]> dispetchDetails = creditNoteGenerationService.getDispatchDetails(ChallanNo);
+		List<Object[]> getDetailsofSpp_Con_Rec = creditNoteGenerationService.getDetailsofSpp_Con_Rec(bosNo);
+		List<Object[]> getStateAndPan = creditNoteGenerationService.getStateAndPan(millcode);
+		List<Object[]> getStateAndCodeOfSupplier = creditNoteGenerationService.getStateAndCodeOfSupplier(dpc);
+ 
+
+		int sumOfBale = 0;
+		for (Object[] details : dispetchDetails) {
+			sumOfBale += (int) details[3];
+		}
+
+		//List<Object[]> finalList = new ArrayList<>();
+		List<CreditNoteDTO> creditNoteDtoList = new ArrayList<>();
+		// double factor = Double.parseDouble(new DecimalFormat("#.##").format(actualWt
+		// / sumOfBale));
+		double factor = actualWt / sumOfBale;
+		int counter = 1;
+		String documentName = "";
+		String contractDate = "";
+		String challanDate = "";
+		String consigText = "";
+
+		
+		double sumOfNmnlQty = 0;
+		double sumOfShortQty = 0;
+		double sumOfTotalCrnAmount = 0;
+		
+		for (Object[] p : dispetchDetails) {
+			
+			documentName = "";
+			CreditNoteDTO creditNoteDTO = new CreditNoteDTO();
+			CreditNotes creditNotes = new CreditNotes();
+
+			Object[] data = new Object[11];
+
+			int noOfBale = (int) p[3];
+			double rate = (double) p[5];
+			double nmnlQty = (double) p[4];
+			double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
+			double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
+			double shortAmtPrice = Math.round(rate * shtQty);
+
+			contractDate = (String) p[7];
+			diDate = (String) p[8];
+			challanDate = (String) p[9];
+			consigText = (String) p[10];
+
+//			data[0] = (String) p[0]; // crop year
+//			data[1] = (String) p[1]; // bale mark
+//			data[2] = (String) p[2];// jute grade
+//			data[3] = (int) p[3]; // no of bale
+//			data[4] = (double) p[4]; // nominal qty
+//			data[5] = (double) p[5]; // rate
+//			data[6] = (double) p[6]; // nominal wt
+//			data[7] = rate;
+//			data[8] = actQty;
+//			data[9] = shtQty;
+//			data[10] = shortAmtPrice;
+//			finalList.add(data);
+			
+			
+			sumOfNmnlQty += nmnlQty;
+			sumOfShortQty += shtQty;
+			sumOfTotalCrnAmount += shortAmtPrice;
+
+			creditNoteDTO.setSnNo(counter++);
+			creditNoteDTO.setHsnNo("53031010");
+			creditNoteDTO.setDesc("Raw Jute");
+			creditNoteDTO.setCropYear((String) p[0]);
+			creditNoteDTO.setBaleMark((String) p[1]);
+			creditNoteDTO.setJuteGrade((String) p[2]);
+			creditNoteDTO.setNoOfBales(noOfBale);
+			creditNoteDTO.setNominalQty(nmnlQty);
+			creditNoteDTO.setRate(rate);
+			creditNoteDTO.setNominalWt((double) p[6]);
+			creditNoteDTO.setActQty(actQty);
+			creditNoteDTO.setShrtQty(shtQty);
+			creditNoteDTO.setAmt(shortAmtPrice);
+			creditNoteDtoList.add(creditNoteDTO);
+			documentName = "creditNote" + ChallanNo + ".pdf";		 
+		}
+
+	
+		
+		try {
+			JasperReport jasperReport1 = JasperCompileManager.compileReport(creditNoteJRXML);
+			// .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("crnNo", crnNo);
+			parameters.put("crnDate", crnDate);
+			parameters.put("ChallanNo", ChallanNo + " dt." + challanDate);
+		
+			parameters.put("contractNo", contractNo + " dt." + contractDate);
+			parameters.put("bosNo", bosNo + " dt." + bosDate);
+			parameters.put("diNo", diNo + " dt." + diDate);
+			parameters.put("consignNo", consigText + " dt." + diDate);
+			parameters.put("sumCrnAmt", sumOfTotalCrnAmount);
+			parameters.put("sumAct", actualWt);
+			parameters.put("sumInv", sumOfNmnlQty);
+			parameters.put("sumShrt", sumOfShortQty);
+			String amountInWord = convertNumberToCurrencyWords(sumOfTotalCrnAmount);
+			parameters.put("amountInWord", amountInWord + " Only");
+
+
+			for (Object[] details : getDetailsofSpp_Con_Rec) {
+				parameters.put("Supplier_name", details[0]);
+				parameters.put("Supplier_address", details[1]);
+				parameters.put("Supplier_gSTN", details[2]);
+				parameters.put("Recipient_name", details[3]);
+				parameters.put("Recipient_address", details[4]);
+				parameters.put("Recipient_gSTN", details[5]);
+				parameters.put("Consignee_name", details[6]);
+				parameters.put("Consignee_address", details[7]);
+				parameters.put("Consignee_gSTN", details[8]);
+			}
+
+			for (Object[] row : getStateAndCodeOfSupplier) {
+				parameters.put("supplierState", row[0]);
+				parameters.put("supplierStateCode", row[1] + "");
+				String gSTIN = (String) row[2];
+				String pan = gSTIN.substring(2, 12);
+
+				parameters.put("supplierGSTIN", gSTIN);
+				parameters.put("supplierPan", pan);
+			}
+
+			if (getStateAndPan.size() == 2) {
+				for (Object[] obj : getStateAndPan) {
+					parameters.put("recipientPan", obj[0]);
+
+					if (obj[2].equals(obj[4] + "")) {
+						parameters.put("ConsigneeState", obj[3]);
+						parameters.put("ConsigneeStateCode", obj[4] + "");
+
+					} else {
+						parameters.put("recipientState", obj[3]);
+						parameters.put("recipientStateCode", obj[4] + "");
+
+					}
+
+				}
+
+			} else {
+				for (Object[] obj : getStateAndPan) {
+					parameters.put("recipientPan", obj[0]);
+					parameters.put("recipientState", obj[3]);
+					parameters.put("ConsigneeState", obj[3]);
+					parameters.put("recipientStateCode", obj[4] + "");
+					parameters.put("ConsigneeStateCode", obj[4] + "");
+
+				}
+
+			}
+
+			// Prepare data sources
+			JRBeanCollectionDataSource dataSource1 = new JRBeanCollectionDataSource(creditNoteDtoList);
+
+			// Fill JasperPrints
+			JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1, parameters, dataSource1);
+			response.setContentType("application/pdf");
+			response.setHeader("Content-Disposition", "inline");
+			// response.setHeader("Content-Disposition", "attachment;
+			// filename=TestCreditNote.pdf");
+			// try (OutputStream out = response.getOutputStream()) {
+
+			final File theDir = new File(creditNoteFilePath);
+			if (!theDir.exists()) {
+				theDir.mkdirs();
+			}
+
+			String saveFile = creditNoteFilePath + File.separator + documentName;
+
+			try (OutputStream out = new FileOutputStream(saveFile)) {
+				JRPdfExporter exporter = new JRPdfExporter();
+				exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, jasperPrint1);
+
+				exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+				exporter.exportReport();
+
+			} catch (Exception e) {
+				System.out.println(e.getLocalizedMessage());
+			}
+			
+			return;
+
+
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 	
+	}
+	
 
 	// status update of credit note
 	@RequestMapping("changeCrnStatus")

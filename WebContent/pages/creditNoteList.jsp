@@ -93,6 +93,7 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 										<th>Credit Note Amount</th>
 										<th>Credit Note Document</th>
 										<th></th>
+										<th></th>
 								</thead>
 								<tbody>
 									<%
@@ -114,6 +115,8 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 										<td><%=crn.getCrnAmount()%></td>
 										<td><a class="btn-success" target="_blank"
 											href='downloadCreditNoteDocs.obj?imagePath=<%=path%>'>View</a></td>
+											<td><a class="btn-warning"
+											href='regenerateCrnDoc.obj?crnNo=<%=crn.getCrnNo()%>'  target="_blank">Regenerate</a></td>	
 										<td><a
 											onclick="return confirm('Are you sure you want to cancle this Credit Note?');"
 											href="changeCrnStatus.obj?crnId=<%=crn.getCrnId()%>"

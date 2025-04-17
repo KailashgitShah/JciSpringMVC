@@ -63,4 +63,6 @@ public interface CreditNoteGenerationService {
 
 	public String getAccountNo();
 	public boolean duplicatechallan( String challan_no);
+
+	public List<Object[]> getDataForDocRegeneration(String crnNo);
 }

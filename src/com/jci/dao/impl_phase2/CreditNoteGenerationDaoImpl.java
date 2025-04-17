@@ -773,4 +773,15 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
                                 return count > 0;
               }
 
+			@Override
+			public List<Object[]> getDataForDocRegeneration(String crnNo) {
+				String sqlString = "select top 1 b.Bill_of_supply_no,b.BOS_date,b.millcode,b.DPCID,c.DI_No,c.DI_Date, a.ChallanNo,a.Credit_note_date,a.Contract_no,a.Credit_note_amount,d.Dpc_actual_wt from jcicredit_note a inner join \r\n"
+						+ "jcibos_generation b on a.ChallanNo = b.Challan_No\r\n"
+						+ "inner join jcidispatch_details c on c.Challan_no = b.Challan_No\r\n"
+						+ "INNER join jciweighment_entry d on d.Bos_no = b.Bill_of_supply_no\r\n"
+						+ "where a.Credit_note_no = '"+ crnNo +"'";
+				
+				return currentSession().createSQLQuery(sqlString).list();
+			}
+
 }

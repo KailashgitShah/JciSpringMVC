@@ -216,7 +216,7 @@ input[type="radio"] {
 										<div class="col-sm-4 form-group" id="dpc">
 											<label>Short Qty.</label> <input class="form-control"
 												name="shortQty" id="shortQty"
-												value="<%=new DecimalFormat("#.####").format(shortQty)%>"
+												value="<%=new DecimalFormat("#.##").format(shortQty)%>"
 												type="text" readonly>
 										</div>
 
@@ -274,8 +274,8 @@ input[type="radio"] {
 													double rate = (double) p[5];
 													double nmnlQty = (double) p[4];
 
-													double actQty = Double.parseDouble(new DecimalFormat("#.####").format(noOfBale * factor));
-													double shtQty = Double.parseDouble(new DecimalFormat("#.####").format(nmnlQty - actQty));
+													double actQty = Double.parseDouble(new DecimalFormat("#.##").format(noOfBale * factor));
+													double shtQty = Double.parseDouble(new DecimalFormat("#.##").format(nmnlQty - actQty));
 													double shortAmtPrice = Math.round(rate * shtQty);
 													/*  double shtQty = nmnlQty - actQty;
 													double shortAmtPrice = rate * shtQty; */
@@ -300,9 +300,9 @@ input[type="radio"] {
 												<%
 												}
 
-												sumShrtQty = Double.parseDouble(new DecimalFormat("#.####").format(sumShrtQty));
-												sumActQty = Double.parseDouble(new DecimalFormat("#.####").format(sumActQty));
-												sumNmlQty = Double.parseDouble(new DecimalFormat("#.####").format(sumNmlQty));
+												sumShrtQty = Double.parseDouble(new DecimalFormat("#.##").format(sumShrtQty));
+												sumActQty = Double.parseDouble(new DecimalFormat("#.##").format(sumActQty));
+												sumNmlQty = Double.parseDouble(new DecimalFormat("#.##").format(sumNmlQty));
 												int finalAmount = (int) Math.ceil(sumTtlCrnAmt);
 												%>
 												<tr>
