@@ -410,7 +410,8 @@ $(document).ready(function(){
                     var data = JSON.parse(result);
                     console.log(result)
                     var dateString = data[0][1];
-                    $("#mill").val( data[0][15]);
+                    var mill_name = (data[0][15]).split("---")[0];
+                    $("#mill").val( mill_name);
                     $("#mrNo").val(data[0][16]);
                     
                     
@@ -482,7 +483,7 @@ $(document).ready(function(){
                         tableHTML += "<td style='text-align:center;  ' id='nc"+i+"'>" + data[i][7] +"%"+ "</td>";
                         tableHTML += "<td style='text-align:center;  ' id='nq"+i+"'>" + data[i][11] + "</td>";
                         tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ns"+i+"' name='ns"+i+"' value='0.00'></td>";
-                        tableHTML += "<td style='text-align:center;  '  id='dc"+i+"'>" + data[i][7]+"%" + "</td>";
+                        tableHTML += "<td style='text-align:center;  '  id='dc"+i+"'>" + data[i][19]+"%" + "</td>";
                         tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='ds"+i+"'  name='ds"+i+"' value='0.00'></td>";
                         tableHTML += "<td style='text-align:center;  '><input type='number' style='text-align:center; width:80px;' id='cl"+i+"'  name='cl"+i+"' value='0.00' readonly></td>";
                         tableHTML += "</tr>";
