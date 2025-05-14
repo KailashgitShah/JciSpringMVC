@@ -3,6 +3,8 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.io.File"%>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +133,22 @@ th     { background:#eee; }
                         for (LedgerReportDTO list : ledgerList) { %>
                         <tr>
                             <td><%= i %></td>
-                            <td><%= list.getDateofPur() %></td>
+                           <%
+    String rawDate = list.getDateofPur();  // e.g., "2024-05-09"
+    String formattedDate = "";
+
+    if (rawDate != null && !rawDate.isEmpty()) {
+        try {
+            SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat displayFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date parsedDate = dbFormat.parse(rawDate);
+            formattedDate = displayFormat.format(parsedDate);
+        } catch (Exception e) {
+            formattedDate = rawDate;  // fallback to original format if parsing fails
+        }
+    }
+%>
+<td><%= formattedDate %></td>
                             <td><%= list.getRateSlip() %></td>
                             <td><%= list.getTallySlip() %></td>
                             <td><%= list.getGrossQty() %></td>

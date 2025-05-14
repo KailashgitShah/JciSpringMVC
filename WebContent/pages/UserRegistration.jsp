@@ -197,24 +197,7 @@ var hasError2 = false;
 											</select>
 										</div>
 										
-									
-									<%-- <div class="col-sm-4 form-group">
-											<label class="required">Role</label>  &nbsp;&nbsp;&nbsp; <span id="errType" name="errType" class="text-danger"> </span>
-											<%
-												List<UserRoleModel> roleList = (List<UserRoleModel>) request.getAttribute("roleList");
-											%>
-											<select class="form-control" name="role" id="role">
-												<option disabled selected value>-Select-</option>
-												<%
-													for (UserRoleModel roleLists : roleList) {
-												%>
-												<option  data-id="<%=roleLists.getRole_name()%>" value="<%=roleLists.getRole_Id()%>"><%=roleLists.getRole_name()%></option>
-												<%
-													}
-												%>
-											</select>
-											<input class="form-control" type="hidden" name="rolename" id="rolename">
-										</div> --%>
+								
 										<div class="col-sm-4 form-group">
 											<label id="dpclabel" class="required">DPC</label> &nbsp;&nbsp;&nbsp; <span id="errDPC" name="errDPC" class="text-danger"> </span>
 											<select class="form-control" name="centerordpc" id="centerordpc">

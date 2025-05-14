@@ -57,97 +57,102 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 
 	@Override
 	public List<LedgerReportDTO> LedgerReportList(String basis, String cropyr, String farmer) {
-		 List<Integer> result = new ArrayList<>();
-		    String querystr = "";
-		    querystr="  SELECT \r\n" + 
-		    		"    p.cropyr,\r\n" + 
-		    		"    p.farmerregno,\r\n" + 
-		    		"    p.basis,\r\n" + 
-		    		"    p.datepurchase AS Date,\r\n" + 
-		    		"    p.rateslipno AS [Rate Slip Number],\r\n" + 
-		    		"    p.tallyslipno AS [Tally Number],\r\n" + 
-		    		"    SUM(p.grossquantity) / 100 AS [Gross Quantity (Qtls)],\r\n" + 
-		    		"    SUM(p.deductionquantity) / 100 AS [Deduction (Qtls)],\r\n" + 
-		    		"    SUM(p.netquantity) / 100 AS [Net Quantity (Qtls)],\r\n" + 
-		    		"    SUM(p.grasatrate) / 100 AS [grasatrate (Qtls)],\r\n" + 
-		    		"    SUM(SUM(p.grossquantity - p.deductionquantity)) OVER (PARTITION BY p.farmerregno ORDER BY p.datepurchase ROWS UNBOUNDED PRECEDING) / 100 AS [Communitative (Qtls)],\r\n" + 
-		    		"    rmt.F_NAME,\r\n" + 
-		    		"    rmt.F_AC_NO,\r\n" + 
-		    		"    rmt.F_ADDRESS,\r\n" + 
-		    		"    rmt.F_MOBILE,\r\n" + 
-		    		"    rmt.F_ID_PROF_NO,\r\n" + 
-		    		"    rmt.F_BANK_NAME,\r\n" + 
-		    		"    rmt.F_BANK_IFSC,\r\n" + 
-		    		"    tsp.date AS [Payment Date],\r\n" + 
-		    		"    pc.centername AS CentreName\r\n" + 
-		    		"FROM \r\n" + 
-		    		"    jciprocurement p\r\n" + 
-		    		"JOIN \r\n" + 
-		    		"    jcirmt rmt ON p.farmerregno = rmt.F_REG_NO\r\n" + 
-		    		"JOIN\r\n" + 
-		    		"    jcitallyslippayment tsp ON rmt.F_AC_NO = tsp.beneficiaryAC_No\r\n" + 
-		    		"JOIN\r\n" + 
-		    		"    jcipurchasecenter pc ON rmt.dpc_id = pc.CENTER_CODE\r\n" + 
-		    		"WHERE \r\n" + 
-		    		"    p.cropyr = '" + cropyr + "'\r\n" + 
-		    		"    AND p.basis ='" + basis + "'\r\n" + 
-		    		"    AND p.farmerregno = '" + farmer + "'\r\n" + 
-		    		"GROUP BY \r\n" + 
-		    		"    p.cropyr,\r\n" + 
-		    		"    p.farmerregno,\r\n" + 
-		    		"    p.basis,\r\n" + 
-		    		"    p.datepurchase,\r\n" + 
-		    		"    p.rateslipno,\r\n" + 
-		    		"    p.tallyslipno,\r\n" + 
-		    		"    rmt.F_NAME,\r\n" + 
-		    		"    rmt.F_AC_NO,\r\n" + 
-		    		"    rmt.F_ADDRESS,\r\n" + 
-		    		"    rmt.F_MOBILE,\r\n" + 
-		    		"    rmt.F_ID_PROF_NO,\r\n" + 
-		    		"    rmt.F_BANK_NAME,\r\n" + 
-		    		"    rmt.F_BANK_IFSC,\r\n" + 
-		    		"    rmt.F_REG_NO,\r\n" + 
-		    		"    tsp.date,\r\n" + 
-		    		"    pc.centername\r\n" + 
-		    		"ORDER BY \r\n" + 
-		    		"    p.farmerregno";
-		    Session session = sessionFactory.getCurrentSession();
-		    Transaction tx = session.beginTransaction();
-		    SQLQuery query = session.createSQLQuery(querystr);
-		    List<Object[]> rows = query.list();
-		    //System.out.println("mydata" + rows.toString());
-		    
-		    List<LedgerReportDTO> ll = new ArrayList<>();
-		    for (Object[] row : rows) {
-		    	LedgerReportDTO ledgerReportDTO = new LedgerReportDTO();
-		    	
-		    	ledgerReportDTO.setCropyear((String) row[0]);
-		    	ledgerReportDTO.setFarmerRegNo((String) row[1]);
-		    	ledgerReportDTO.setBasis((String) row[2]);
-		    	ledgerReportDTO.setDateofPur((String) row[3]);
-		    	ledgerReportDTO.setRateSlip((Integer) row[4]);
-		    	ledgerReportDTO.setTallySlip((String) row[5]);
-		    	ledgerReportDTO.setGrossQty(row[6] != null ? ((BigDecimal) row[6]).doubleValue() : 0.0);
-		    	ledgerReportDTO.setDedQty(row[7] != null ? ((BigDecimal) row[7]).doubleValue() : 0.0);
-		    	ledgerReportDTO.setNetQty(row[8] != null ? ((BigDecimal) row[8]).doubleValue() : 0.0);
-		    	ledgerReportDTO.setGrasatrate(row[9] != null ? ((BigDecimal) row[9]).doubleValue() : 0.0);
-		    	ledgerReportDTO.setCumQty(row[10] != null ? ((BigDecimal) row[10]).doubleValue() : 0.0);
-		    	ledgerReportDTO.setFarmerName((String) row[11]);
-		    	ledgerReportDTO.setAcNo((String) row[12]);
-		    	ledgerReportDTO.setAddress((String) row[13]);
-		    	ledgerReportDTO.setMobNo((String) row[14]);
-		    	ledgerReportDTO.setAadharNo((String) row[15]);
-		    	ledgerReportDTO.setBankName((String) row[16]);
-		    	ledgerReportDTO.setIfscCode((String) row[17]);
-		    	ledgerReportDTO.setPayDate(row[18] == null ? "" : (String) row[18]);
-		    	ledgerReportDTO.setDpc((String) row[19]);
-		    	
-		        ll.add(ledgerReportDTO);
-		        System.err.println("ll===="+ll);
-		    }
-		    
-		    return ll;
-			}
+		String querystr = "SELECT \r\n"
+				+ "    cropyr,\r\n"
+				+ "    farmerregno,\r\n"
+				+ "    basis,\r\n"
+				+ "    Date,\r\n"
+				+ "    [Rate Slip Number],\r\n"
+				+ "    [Tally Number],\r\n"
+				+ "    [Gross Quantity (Qtls)],\r\n"
+				+ "    [Deduction (Qtls)],\r\n"
+				+ "    [Net Quantity (Qtls)],\r\n"
+				+ "    [grasatrate (Qtls)],\r\n"
+				+ "    [Communitative (Qtls)],\r\n"
+				+ "    F_NAME,\r\n"
+				+ "    F_AC_NO,\r\n"
+				+ "    F_ADDRESS,\r\n"
+				+ "    F_MOBILE,\r\n"
+				+ "    F_ID_PROF_NO,\r\n"
+				+ "    F_BANK_NAME,\r\n"
+				+ "    F_BANK_IFSC,\r\n"
+				+ "    [Payment Date],\r\n"
+				+ "    CentreName\r\n"
+				+ "FROM (\r\n"
+				+ "    SELECT \r\n"
+				+ "        p.cropyr,\r\n"
+				+ "        p.farmerregno,\r\n"
+				+ "        p.basis,\r\n"
+				+ "        TRY_CONVERT(DATE, p.datepurchase, 105) AS Date,\r\n"
+				+ "        p.rateslipno AS [Rate Slip Number],\r\n"
+				+ "        p.tallyslipno AS [Tally Number],\r\n"
+				+ "        p.grossquantity / 100 AS [Gross Quantity (Qtls)],\r\n"
+				+ "        p.deductionquantity / 100 AS [Deduction (Qtls)],\r\n"
+				+ "        p.netquantity / 100 AS [Net Quantity (Qtls)],\r\n"
+				+ "        p.grasatrate / 100 AS [grasatrate (Qtls)],\r\n"
+				+ "        (p.grossquantity - p.deductionquantity) / 100 AS [Communitative (Qtls)],\r\n"
+				+ "        rmt.F_NAME,\r\n"
+				+ "        rmt.F_AC_NO,\r\n"
+				+ "        rmt.F_ADDRESS,\r\n"
+				+ "        rmt.F_MOBILE,\r\n"
+				+ "        rmt.F_ID_PROF_NO,\r\n"
+				+ "        rmt.F_BANK_NAME,\r\n"
+				+ "        rmt.F_BANK_IFSC,\r\n"
+				+ "        tsp.date AS [Payment Date],\r\n"
+				+ "        pc.centername AS CentreName,\r\n"
+				+ "        ROW_NUMBER() OVER (PARTITION BY p.tallyslipno ORDER BY tsp.date DESC) AS rn\r\n"
+				+ "    FROM jciprocurement p\r\n"
+				+ "    JOIN jcirmt rmt ON p.farmerregno = rmt.F_REG_NO\r\n"
+				+ "    JOIN jcitallyslippayment tsp ON rmt.F_AC_NO = tsp.beneficiaryAC_No\r\n"
+				+ "    JOIN jcipurchasecenter pc ON rmt.dpc_id = pc.CENTER_CODE\r\n"
+				+ "    WHERE p.cropyr = '" + cropyr + "'\r\n"
+				+ "      AND p.basis = '" + basis + "'\r\n"
+				+ "      AND p.farmerregno = '" + farmer + "'\r\n"
+				+ ") AS ranked\r\n"
+				+ "WHERE rn = 1\r\n"
+				+ "ORDER BY \r\n"
+				+ "    YEAR(Date), \r\n"
+				+ "    MONTH(Date), \r\n"
+				+ "    DAY(Date), \r\n"
+				+ "    farmerregno";
+
+
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tx = session.beginTransaction();
+	    SQLQuery query = session.createSQLQuery(querystr);
+	    List<Object[]> rows = query.list();
+	    System.err.println("The query is :" + querystr);
+
+	    List<LedgerReportDTO> ll = new ArrayList<>();
+	    for (Object[] row : rows) {
+	        LedgerReportDTO dto = new LedgerReportDTO();
+
+	        dto.setCropyear((String) row[0]);
+	        dto.setFarmerRegNo((String) row[1]);
+	        dto.setBasis((String) row[2]);
+	        dto.setDateofPur(row[3] != null ? row[3].toString() : null);
+	        dto.setRateSlip((Integer) row[4]);
+	        dto.setTallySlip((String) row[5]);
+	        dto.setGrossQty(row[6] != null ? ((BigDecimal) row[6]).doubleValue() : 0.0);
+	        dto.setDedQty(row[7] != null ? ((BigDecimal) row[7]).doubleValue() : 0.0);
+	        dto.setNetQty(row[8] != null ? ((BigDecimal) row[8]).doubleValue() : 0.0);
+	        dto.setGrasatrate(row[9] != null ? ((BigDecimal) row[9]).doubleValue() : 0.0);
+	        dto.setCumQty(row[10] != null ? ((BigDecimal) row[10]).doubleValue() : 0.0);
+	        dto.setFarmerName((String) row[11]);
+	        dto.setAcNo((String) row[12]);
+	        dto.setAddress((String) row[13]);
+	        dto.setMobNo((String) row[14]);
+	        dto.setAadharNo((String) row[15]);
+	        dto.setBankName((String) row[16]);
+	        dto.setIfscCode((String) row[17]);
+	        dto.setPayDate(row[18] != null ? row[18].toString() : "");
+	        dto.setDpc((String) row[19]);
+
+	        ll.add(dto);
+	    }
+
+	    return ll;
+	}
 
 
 	@Override
@@ -331,83 +336,92 @@ public class PurchaseReportDaoImpl implements PurchaseReportDao{
 	    return ll;
 	}
 	@Override
-	public List<PurchaseReportDTO> PurchaseReportList( String DPC, String Basis,String Jute_Variety, String Crop_Year, String From_date,String To_date) {
-		List<Integer> result = new ArrayList<>();
-		String querystr = "";
-		
-		if (Basis.equals("MSP")) {
-			querystr= "SELECT\r\n" + 
-					"    r1.datepurchase,\r\n" + 
-					"    SUM(ROUND(CAST(r1.gquantity AS DECIMAL(18, 2)), 2)) AS total_gquantity, \r\n" + 
-					"    SUM(ROUND(CAST(r1.dquantity AS DECIMAL(18, 2)), 2)) AS total_dquantity,\r\n" +
-					"    SUM(ROUND(CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS total_netquantity,\r\n" + 
-	        	    "    CAST((SUM(CAST(r1.fibervalue AS DECIMAL(18, 2))) /  NULLIF(SUM(CAST(r1.netquantity AS DECIMAL(18, 2))), 0)) AS INT) AS total_grasatrate,\r\n"+
-					"    SUM(CAST(r1.fibervalue AS INT)) AS total_fibervalue,\r\n" + 
-					"    ROUND(CAST(mspGrade.grade3 AS DECIMAL(18, 2)), 2) AS total_basisPrice,\r\n" + 
-					"    SUM(ROUND((CAST(r1.grade1 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade1_percentage_of_netquantity,\r\n" + 
-					"    SUM(ROUND((CAST(r1.grade2 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade2_percentage_of_netquantity, \r\n" + 
-					"    SUM(ROUND((CAST(r1.grade3 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade3_percentage_of_netquantity, \r\n" + 
-					"    SUM(ROUND((CAST(r1.grade4 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade4_percentage_of_netquantity, \r\n" + 
-					"    SUM(ROUND((CAST(r1.grade5 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade5_percentage_of_netquantity, \r\n" + 
-					"    SUM(ROUND((CAST(r1.grade6 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade6_percentage_of_netquantity, \r\n" + 
-					"    SUM(ROUND((CAST(r1.grade7 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade7_percentage_of_netquantity, \r\n" + 
-					"    SUM(ROUND((CAST(r1.grade8 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade8_percentage_of_netquantity\r\n" + 
-					
-					"FROM\r\n" + 
-					"    jcidpc r1\r\n" + 
-					"JOIN \r\n" + 
-					"    jcimspgradesprice mspGrade ON r1.jutevariety = mspGrade.jute_variety AND mspGrade.crop_yr = '" + Crop_Year + "'\r\n" + 
-					"WHERE \r\n" + 
-					"    r1.placeofpurchase = '" + DPC + "' \r\n" + 
-					"    AND r1.jutevariety = '" + Jute_Variety + "' \r\n" + 
-					"    AND r1.cropyr = '" + Crop_Year + "' \r\n" + 
-					"    AND r1.basis = '" + Basis + "' \r\n" + 
-					"    AND TRY_CONVERT(DATE, r1.datepurchase, 105) BETWEEN '" + From_date + "' AND '" + To_date + "'" +
-					"GROUP BY \r\n" + 
-					"    r1.datepurchase, \r\n" + 
-					"    mspGrade.grade3";
+	public List<PurchaseReportDTO> PurchaseReportList(String DPC, String Basis, String Jute_Variety, String Crop_Year, String From_date, String To_date) {
+	    List<Integer> result = new ArrayList<>();
+	    String querystr = "";
 
+	    // When the Basis is "MSP", apply the respective query
+	    if (Basis.equals("MSP")) {
+	        querystr = "SELECT " +
+	                "    r1.datepurchase, " +
+	                "    SUM(ROUND(CAST(r1.gquantity AS DECIMAL(18, 2)), 2)) AS total_gquantity, " +
+	                "    SUM(ROUND(CAST(r1.dquantity AS DECIMAL(18, 2)), 2)) AS total_dquantity, " +
+	                "    SUM(ROUND(CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS total_netquantity, " +
+	                "    CAST((SUM(CAST(r1.fibervalue AS DECIMAL(18, 2))) / NULLIF(SUM(CAST(r1.netquantity AS DECIMAL(18, 2))), 0)) AS INT) AS total_grasatrate, " +
+	                "    SUM(CAST(r1.fibervalue AS INT)) AS total_fibervalue, " +
+	                "    ROUND(CAST(mspGrade.grade3 AS DECIMAL(18, 2)), 2) AS total_basisPrice, " +
+	                "    SUM(ROUND((CAST(r1.grade1 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade1_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade2 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade2_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade3 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade3_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade4 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade4_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade5 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade5_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade6 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade6_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade7 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade7_percentage_of_netquantity, " +
+	                "    SUM(ROUND((CAST(r1.grade8 AS DECIMAL(18, 2)) / 100) * CAST(r1.netquantity AS DECIMAL(18, 2)), 2)) AS grade8_percentage_of_netquantity " +
+	                "FROM " +
+	                "    jcidpc r1 " +
+	                "JOIN " +
+	                "    jcimspgradesprice mspGrade ON r1.jutevariety = mspGrade.jute_variety AND mspGrade.crop_yr = '" + Crop_Year + "' " +
+	                "WHERE " +
+	                "    r1.placeofpurchase = '" + DPC + "' " +
+	                "    AND r1.jutevariety = '" + Jute_Variety + "' " +
+	                "    AND r1.cropyr = '" + Crop_Year + "' " +
+	                "    AND r1.basis = '" + Basis + "' " +
+	                "    AND TRY_CONVERT(DATE, r1.datepurchase, 105) BETWEEN '" + From_date + "' AND '" + To_date + "' " +
+	                "GROUP BY " +
+	                "    r1.datepurchase, " +
+	                "    mspGrade.grade3 " +
+	                "ORDER BY \r\n"
+	                + "    CAST(SUBSTRING(r1.datepurchase, 7, 4) AS INT),  -- Year part (yyyy)\r\n"
+	                + "    CAST(SUBSTRING(r1.datepurchase, 4, 2) AS INT),  -- Month part (MM)\r\n"
+	                + "    CAST(SUBSTRING(r1.datepurchase, 1, 2) AS INT)";  // Added ORDER BY for ascending date order
 
+	    } else {
+	        querystr = "SELECT " +
+	                "    r1.datepurchase, r1.gquantity, r1.dquantity, r1.netquantity, r1.grasatrate, r1.fibervalue, " +
+	                "    r1.grade3 as basisPrice, r1.grade1, r1.grade2, r1.grade3, r1.grade4, r1.grade5, r1.grade6 " +
+	                "FROM jcidpc r1 " +
+	                "WHERE r1.placeofpurchase = '" + DPC + "' " +
+	                "    AND r1.jutevariety = '" + Jute_Variety + "' " +
+	                "    AND r1.cropyr = '" + Crop_Year + "' " +
+	                "    AND r1.basis = '" + Basis + "' " +
+	                "    AND TRY_CONVERT(DATE, r1.datepurchase, 103) BETWEEN '" + From_date + "' AND '" + To_date + "' " +
+	                "ORDER BY r1.datepurchase ASC";  // Added ORDER BY for ascending date order
+	    }
 
-		} else {
-			querystr ="Select r1.datepurchase,r1.gquantity, r1.dquantity, r1.netquantity, r1.grasatrate, r1.fibervalue,r1.grade3 as basisPrice, r1.grade1,r1.grade2, r1.grade3, r1.grade4,r1.grade5, r1.grade6 FROM jcidpc r1  WHERE r1.placeofpurchase = '"+DPC+"' and r1.jutevariety='"+Jute_Variety+"' and r1.cropyr='"+Crop_Year+"' and r1.basis = '"+Basis+"' and TRY_CONVERT(DATE, r1.datepurchase, 103) BETWEEN '"+From_date+"' AND '"+To_date+"'";
+	    // Executing the query and mapping the results
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tx = session.beginTransaction();
+	    SQLQuery query = session.createSQLQuery(querystr);
+	    List<Object[]> rows = query.list();
+	    System.err.println("Generated SQL query is : " + querystr);
 
-		}
-							
-	
-	Session session = sessionFactory.getCurrentSession();
-					Transaction tx = session.beginTransaction();
-					SQLQuery query = session.createSQLQuery(querystr);
-					List<Object[]> rows = query.list();
-					System.out.println("mydata" +rows.toString());
-					//FarmerRegModel farmerReg = new FarmerRegModel();//jcidpc lena h
-					List<PurchaseReportDTO> ll = new ArrayList<>();
-					for(Object[] row: rows) {
-					
-						PurchaseReportDTO PurchaseReportDTO = new PurchaseReportDTO();
-						PurchaseReportDTO.setDatepur((String) row[0]);
-						PurchaseReportDTO.setGrossQuan(((Number) row[1]).doubleValue());
-						PurchaseReportDTO.setDedQuan(((Number) row[2]).doubleValue());
-						PurchaseReportDTO.setNetQuan(((Number) row[3]).doubleValue());
-						PurchaseReportDTO.setGarsatR((int) row[4]);
-						PurchaseReportDTO.setFiberVal((int) row[5]);
-					     PurchaseReportDTO.setBasisPrice(((Number) row[6]).doubleValue());// abhi add kiya h 
-						PurchaseReportDTO.setGr1(((Number) row[7]).doubleValue());
-						PurchaseReportDTO.setGr2(((Number) row[8]).doubleValue());
-						PurchaseReportDTO.setGr3(((Number) row[9]).doubleValue());
-						PurchaseReportDTO.setGr4(((Number) row[10]).doubleValue());
-						PurchaseReportDTO.setGr5(((Number) row[11]).doubleValue());
-						PurchaseReportDTO.setGr6(((Number) row[12]).doubleValue());
-						PurchaseReportDTO.setGr7(((Number) row[13]).doubleValue());
-						PurchaseReportDTO.setGr8(((Number) row[14]).doubleValue());
-						
+	    List<PurchaseReportDTO> ll = new ArrayList<>();
+	    for (Object[] row : rows) {
+	        PurchaseReportDTO dto = new PurchaseReportDTO();
+	        dto.setDatepur((String) row[0]);
+	        dto.setGrossQuan(((Number) row[1]).doubleValue());
+	        dto.setDedQuan(((Number) row[2]).doubleValue());
+	        dto.setNetQuan(((Number) row[3]).doubleValue());
+	        dto.setGarsatR((int) row[4]);
+	        dto.setFiberVal((int) row[5]);
+	        dto.setBasisPrice(((Number) row[6]).doubleValue());
+	        dto.setGr1(((Number) row[7]).doubleValue());
+	        dto.setGr2(((Number) row[8]).doubleValue());
+	        dto.setGr3(((Number) row[9]).doubleValue());
+	        dto.setGr4(((Number) row[10]).doubleValue());
+	        dto.setGr5(((Number) row[11]).doubleValue());
+	        dto.setGr6(((Number) row[12]).doubleValue());
+	        dto.setGr7(((Number) row[13]).doubleValue());
+	        dto.setGr8(((Number) row[14]).doubleValue());
 
-						ll.add(PurchaseReportDTO);
-					}
-					 return ll;
+	        ll.add(dto);
+	    }
+
+	    return ll;
 	}
 
-	      
+
 	}
 
 

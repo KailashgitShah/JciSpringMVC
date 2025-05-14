@@ -810,7 +810,6 @@ public class InsertDataController_2 {
 		    	    Farmer=Farmer.split("-")[0];
 		    	    System.err.println(Farmer);
 		    	   ModelAndView mv = new ModelAndView("LedgerReportList");
-			        System.out.println("bbbbbbbbhfgdgh");
 
 		    	   
 		    	 if(username == null)
