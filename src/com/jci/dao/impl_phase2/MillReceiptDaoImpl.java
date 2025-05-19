@@ -136,9 +136,9 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
                @Override
                public List<Object[]> fetchdata(String st) {
                   
-                               String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code \r\n"
+                               String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code,a.DI_No \r\n"
                                                            + "                                                       FROM   jcibos_generation AS s LEFT JOIN jcidispatch_details AS a ON s.Challan_No = a.Challan_no\r\n"
-                                                           + "                                                       WHERE a.DI_No =  '" +st+"'  AND a.Challan_no NOT IN (SELECT Challan_no FROM jcimill_receipt)"; 
+                                                           + "                                                       WHERE a.DI_No in " +st+"  AND a.Challan_no NOT IN (SELECT Challan_no FROM jcimill_receipt)"; 
                                     
                               
 //                           String sql ="  SELECT distinct a.Challan_no, a.Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,a.Contract_No,a.Mill_code "
@@ -162,10 +162,17 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 //                                                         + "                                                                                     (SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s \r\n"
 //                                                         + "                                                    INNER join (SELECT a.Contract_no,b.Mill_code from jcibos_generation as a INNER JOIN  jcicontract as b on  b.Contract_no=a.Contract_No ) as z on z.Mill_code=s.client_unit_code "; 
 //                           
-                              String sql ="   select  distinct s.client_name,s.client_unit_code from \r\n"
-                                                            + "                                                                                     (SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s \r\n"
-                                                            + "                                                    INNER join (SELECT a.Contract_no,b.Mill_code from jcibos_generation as a INNER JOIN  jcicontract as b on  b.Contract_no=a.Contract_No ) as z on z.Mill_code=s.client_unit_code \r\n"
-                                                            + " "; 
+//                              String sql ="   select  distinct s.client_name,s.client_unit_code from \r\n"
+//                                                            + "                                                                                     (SELECT d.client_name,c.client_unit_code FROM jcimilldetailchild as c INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s \r\n"
+//                                                            + "                                                    INNER join (SELECT a.Contract_no,b.Mill_code from jcibos_generation as a INNER JOIN  jcicontract as b on  b.Contract_no=a.Contract_No ) as z on z.Mill_code=s.client_unit_code \r\n"
+//                                                            + " "; 
+            	   
+            	   String sql = " select  distinct s.client_name,s.client_unit_code, s.unit_name from \r\n"
+            	   		+ " (SELECT d.client_name,c.client_unit_code , c.unit_name FROM jcimilldetailchild as c\r\n"
+            	   		+ "  INNER join jcimilldetailmaster as d on c.client_code=d.client_code) as s \r\n"
+            	   		+ " INNER join (SELECT a.Contract_no,b.Mill_code from jcibos_generation as a\r\n"
+            	   		+ "  INNER JOIN  jcicontract as b on  b.Contract_no=a.Contract_No ) as z\r\n"
+            	   		+ "   on z.Mill_code=s.client_unit_code ORDER by s.client_name ASC";
                               
                               
                               
@@ -204,7 +211,7 @@ public class MillReceiptDaoImpl implements  MillReceiptDao{
 
                @Override
                public List<Object[]> challanbaseddetails(String st) {
-                              String sql = "   SELECT distinct  CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,d.Nominal_qty ,d.Nominal_qty*100,a.Contract_No,a.Mill_code,d.Crop_year,d.Jute_variety \r\n"
+                              String sql = "   SELECT distinct  CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,d.Nominal_qty ,d.Nominal_qty*100,a.Contract_No,a.Mill_code,d.Crop_year,d.Jute_variety,a.Regional_Office \r\n"
                                                            + "                                        FROM  jcidispatch_details AS a \r\n"
                                                            + "                           INNER join jcidispatch_details_child as d on d.Challan_no=a.Challan_no\r\n"
                                                            + "          INNER join jcibos_generation AS s ON s.Challan_No = a.Challan_no \r\n"

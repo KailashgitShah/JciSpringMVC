@@ -362,9 +362,13 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 	@Override
 	public void updatefa(String id, String FAomofficial) {
-
+//
+//		String hql = "UPDATE jciclaimNomination set  FAOfficial = '" + FAomofficial
+//				+ "' settlementScheduleDoc = '" + fileName + "' where Settlement_id_generated= '" + id + "' ";
+		
+		
 		String hql = "UPDATE jciclaimNomination set  FAOfficial = '" + FAomofficial
-				+ "' where Settlement_id_generated= '" + id + "' ";
+				+"' where Settlement_id_generated= '" + id + "' ";
 		this.sessionFactory.getCurrentSession().createSQLQuery(hql).executeUpdate();
 	}
 

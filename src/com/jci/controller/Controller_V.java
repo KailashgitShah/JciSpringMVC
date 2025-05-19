@@ -2212,7 +2212,7 @@ public class Controller_V {
 
 		int getGstCount = creditNoteGenerationService.getGstCount(gstCode);
 		int count = creditNoteGenerationService.getTotalCount();
-		
+
 		System.err.println(count);
 		System.err.println(count);
 		System.err.println(count);
@@ -2323,7 +2323,6 @@ public class Controller_V {
 		List<Object[]> getDetailsofSpp_Con_Rec = creditNoteGenerationService.getDetailsofSpp_Con_Rec(bosNo);
 		List<Object[]> getStateAndPan = creditNoteGenerationService.getStateAndPan(millcode);
 		List<Object[]> getStateAndCodeOfSupplier = creditNoteGenerationService.getStateAndCodeOfSupplier(dpc);
- 
 
 		int sumOfBale = 0;
 		for (Object[] details : dispetchDetails) {
@@ -2343,12 +2342,12 @@ public class Controller_V {
 		String consigText = "";
 		String creditNoteNumber = "";
 		for (Object[] p : dispetchDetails) {
-			
+
 			documentName = "";
 			CreditNoteDTO creditNoteDTO = new CreditNoteDTO();
 			CreditNotes creditNotes = new CreditNotes();
-			
-			if(creditNoteNumber.length() > 0) {
+
+			if (creditNoteNumber.length() > 0) {
 				creditNotes.setCrnNo(creditNoteNumber);
 			}
 
@@ -2407,18 +2406,16 @@ public class Controller_V {
 			// creditNotes.setShipmentDetails(shipmentDetails);
 			creditNotes.setRoId(roId);
 			creditNotes.setShortQty(shtQty);
-			
+
 			documentName = "creditNote" + ChallanNo + ".pdf";
 			creditNotes.setDocument(documentName);
 
 			creditNotes.setChallanNo(ChallanNo);
-			
+
 			creditNoteNumber = creditNoteGenerationService.create(creditNotes);
-		 
+
 		}
 
-	
-		
 		try {
 			JasperReport jasperReport1 = JasperCompileManager.compileReport(creditNoteJRXML);
 			// .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
@@ -2535,57 +2532,55 @@ public class Controller_V {
 
 		return new ModelAndView("closeWindowPage");
 	}
-	
-	
+
 	@RequestMapping("regenerateCrnDoc")
 	public void regenerateCrnDoc(@RequestParam("crnNo") String crnNo, HttpServletResponse response) {
-	   
-		
-		List<Object[]>list = creditNoteGenerationService.getDataForDocRegeneration(crnNo);
+
+		List<Object[]> list = creditNoteGenerationService.getDataForDocRegeneration(crnNo);
 
 //		select top 1 b.Bill_of_supply_no,b.BOS_date,b.millcode,b.DPCID,c.DI_No,c.DI_Date, a.ChallanNo,a.Credit_note_date,a.Contract_no,a.Credit_note_amount from jcicredit_note a inner join 
 //		jcibos_generation b on a.ChallanNo = b.Challan_No
 //		inner join jcidispatch_details c on c.Challan_no = b.Challan_No where
 //		a.Credit_note_no = 'C250063321904788' 
-		
-		 String bosNo = "";
-		 String bosDate = "";
-		 String millcode = "";
-		 String dpc = "";
-		 String diNo = "";
-		 String diDate = "";
-		 String ChallanNo = "";
-		 String crnDate = "";
-		 String contractNo = "";
+
+		String bosNo = "";
+		String bosDate = "";
+		String millcode = "";
+		String dpc = "";
+		String diNo = "";
+		String diDate = "";
+		String ChallanNo = "";
+		String crnDate = "";
+		String contractNo = "";
 		double crnAmount = 0;
 		double actualWt = 0;
 
-		for(Object[] row : list){
-			bosNo = (String)row[0];
-			bosDate = (String)row[1];
-			millcode = (String)row[2];
-			dpc = (String)row[3];
-			diNo = (String)row[4];
-			//diDate = (String)row[5];
-			ChallanNo = (String)row[6];
-			crnDate = (String)row[7];
-			contractNo = (String)row[8];
-			crnAmount = (double)row[9];
+		for (Object[] row : list) {
+			bosNo = (String) row[0];
+			bosDate = (String) row[1];
+			millcode = (String) row[2];
+			dpc = (String) row[3];
+			diNo = (String) row[4];
+			// diDate = (String)row[5];
+			ChallanNo = (String) row[6];
+			crnDate = (String) row[7];
+			contractNo = (String) row[8];
+			crnAmount = (double) row[9];
 			actualWt = (double) row[10];
-		};
- 		
+		}
+		;
+
 		List<Object[]> dispetchDetails = creditNoteGenerationService.getDispatchDetails(ChallanNo);
 		List<Object[]> getDetailsofSpp_Con_Rec = creditNoteGenerationService.getDetailsofSpp_Con_Rec(bosNo);
 		List<Object[]> getStateAndPan = creditNoteGenerationService.getStateAndPan(millcode);
 		List<Object[]> getStateAndCodeOfSupplier = creditNoteGenerationService.getStateAndCodeOfSupplier(dpc);
- 
 
 		int sumOfBale = 0;
 		for (Object[] details : dispetchDetails) {
 			sumOfBale += (int) details[3];
 		}
 
-		//List<Object[]> finalList = new ArrayList<>();
+		// List<Object[]> finalList = new ArrayList<>();
 		List<CreditNoteDTO> creditNoteDtoList = new ArrayList<>();
 		// double factor = Double.parseDouble(new DecimalFormat("#.##").format(actualWt
 		// / sumOfBale));
@@ -2596,13 +2591,12 @@ public class Controller_V {
 		String challanDate = "";
 		String consigText = "";
 
-		
 		double sumOfNmnlQty = 0;
 		double sumOfShortQty = 0;
 		double sumOfTotalCrnAmount = 0;
-		
+
 		for (Object[] p : dispetchDetails) {
-			
+
 			documentName = "";
 			CreditNoteDTO creditNoteDTO = new CreditNoteDTO();
 			CreditNotes creditNotes = new CreditNotes();
@@ -2633,8 +2627,7 @@ public class Controller_V {
 //			data[9] = shtQty;
 //			data[10] = shortAmtPrice;
 //			finalList.add(data);
-			
-			
+
 			sumOfNmnlQty += nmnlQty;
 			sumOfShortQty += shtQty;
 			sumOfTotalCrnAmount += shortAmtPrice;
@@ -2653,11 +2646,9 @@ public class Controller_V {
 			creditNoteDTO.setShrtQty(shtQty);
 			creditNoteDTO.setAmt(shortAmtPrice);
 			creditNoteDtoList.add(creditNoteDTO);
-			documentName = "creditNote" + ChallanNo + ".pdf";		 
+			documentName = "creditNote" + ChallanNo + ".pdf";
 		}
 
-	
-		
 		try {
 			JasperReport jasperReport1 = JasperCompileManager.compileReport(creditNoteJRXML);
 			// .compileReport("C:\\Users\\pradeep.rathor\\Desktop\\creditNote.jrxml");
@@ -2665,7 +2656,7 @@ public class Controller_V {
 			parameters.put("crnNo", crnNo);
 			parameters.put("crnDate", crnDate);
 			parameters.put("ChallanNo", ChallanNo + " dt." + challanDate);
-		
+
 			parameters.put("contractNo", contractNo + " dt." + contractDate);
 			parameters.put("bosNo", bosNo + " dt." + bosDate);
 			parameters.put("diNo", diNo + " dt." + diDate);
@@ -2676,7 +2667,6 @@ public class Controller_V {
 			parameters.put("sumShrt", sumOfShortQty);
 			String amountInWord = convertNumberToCurrencyWords(sumOfTotalCrnAmount);
 			parameters.put("amountInWord", amountInWord + " Only");
-
 
 			for (Object[] details : getDetailsofSpp_Con_Rec) {
 				parameters.put("Supplier_name", details[0]);
@@ -2756,17 +2746,15 @@ public class Controller_V {
 			} catch (Exception e) {
 				System.out.println(e.getLocalizedMessage());
 			}
-			
-			return;
 
+			return;
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 	
+
 	}
-	
 
 	// status update of credit note
 	@RequestMapping("changeCrnStatus")
@@ -4668,9 +4656,9 @@ public class Controller_V {
 				double rate = (double) row[6];
 				billofSupplyDocDTO.setRate(rate);
 				double qty = (double) row[7];
-				
+
 				billofSupplyDocDTO.setQty(qty);
-				qtygradesum+=qty;
+				qtygradesum += qty;
 				double total = (double) row[8];
 				billofSupplyDocDTO.setTotal(total);
 				alltotal += total;
@@ -4678,9 +4666,9 @@ public class Controller_V {
 				listOfBillofSupplyDocDTO.add(billofSupplyDocDTO);
 
 			}
-			
+
 			alltotal += Math.round(Double.parseDouble(TCS_Amt));
- 
+
 			parameters.put("taotalsum", alltotal);
 
 			ConvertWord_k convertWord_k = new ConvertWord_k();
@@ -4688,7 +4676,7 @@ public class Controller_V {
 			double invoiceDouble = Double.parseDouble(stringValue5); // Parse String to double
 			int convertInt = (int) invoiceDouble;
 			String InvoiceNO = convertWord_k.convertToWords(convertInt);
-		
+
 			parameters.put("invoicevalue", InvoiceNO);
 			parameters.put("qtysum", qtygradesum);
 
@@ -4734,7 +4722,7 @@ public class Controller_V {
 		}
 
 //		 return new ModelAndView();
-     return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
+		return new ModelAndView(new RedirectView("ViewofGenerationBillsupply.obj"));
 
 	}
 
@@ -4816,7 +4804,8 @@ public class Controller_V {
 	public ModelAndView entryOfMillReceiptChild(@RequestParam("challanno") String contractNo,
 			@RequestParam("millName") String millName, @RequestParam("cropyear") String hoDate,
 			HttpServletRequest request) {
-		// System.err.println("EntryofMillreceiptChild");
+		 System.err.println("Inside Controller"
+		 		+ "");
 		String username = (String) request.getSession().getAttribute("usrname");
 		ModelAndView mv;
 
@@ -4827,6 +4816,8 @@ public class Controller_V {
 			System.err.println("EntryofMillreceiptChild");
 			// Add any model attributes or business logic here if needed
 		}
+
+		
 		mv.addObject("hoDate", hoDate);
 		mv.addObject("millName", millName);
 		mv.addObject("contractNo", contractNo);
@@ -4836,9 +4827,11 @@ public class Controller_V {
 	// ajax controller for mill reciept service
 	@ResponseBody
 	@RequestMapping(value = "fetchingdata", method = RequestMethod.GET)
-	public String hodinofetch(@RequestParam("contractno") String contractno) {
+	public String hodinofetch(@RequestParam("hoDiNos") String hoDiNos) {
 
-		List<Object[]> millRecieptModelt1 = millRecieptService.fetchdata(contractno);
+		String cleared = "(" + hoDiNos.replace("[", "").replace("]", "").replace("\"", "'") + ")";
+
+		List<Object[]> millRecieptModelt1 = millRecieptService.fetchdata(cleared);
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(millRecieptModelt1);
@@ -4870,7 +4863,6 @@ public class Controller_V {
 	@ResponseBody
 	@RequestMapping(value = "challanbaseddata", method = RequestMethod.GET)
 	public String challanbaseddata(@RequestParam("contractno") String contractno) {
-
 		List<Object[]> millRecieptModelt1 = millRecieptService.challanbaseddetails(contractno);
 		System.err.println("resultList++++++++++" + millRecieptModelt1);
 		Gson gson = new Gson();
@@ -4900,9 +4892,10 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "findmillreceiptNO", method = RequestMethod.GET)
-	public String findmillreceiptNO(@RequestParam("hodino") String hodino) {
+	public String findmillreceiptNO(@RequestParam("hodino") String hoDiNos) {
 
-		boolean dataFound = millRecieptService.findmillreceiptNOlist(hodino);
+//		hoDiNos.stream().forEach(ele -> System.err.println(ele));
+		boolean dataFound = millRecieptService.findmillreceiptNOlist(hoDiNos);
 
 		// Convert boolean result to JSON format
 		JsonObject jsonObject = new JsonObject();
@@ -4910,6 +4903,18 @@ public class Controller_V {
 
 		return jsonObject.toString();
 	}
+//	@ResponseBody
+//	@RequestMapping(value = "findmillreceiptNO", method = RequestMethod.GET)
+//	public String findmillreceiptNO(@RequestParam("hodino") String hodino) {
+//		
+//		boolean dataFound = millRecieptService.findmillreceiptNOlist(hodino);
+//		
+//		// Convert boolean result to JSON format
+//		JsonObject jsonObject = new JsonObject();
+//		jsonObject.addProperty("dataFound", dataFound);
+//		
+//		return jsonObject.toString();
+//	}
 
 	@ResponseBody
 	@RequestMapping(value = "contractlistfetch", method = RequestMethod.GET)
@@ -5099,8 +5104,9 @@ public class Controller_V {
 				millRecieptModel.setBale_mark(Bale_Mark);
 				millRecieptModel.setCrop_year(cropYear1);
 				millRecieptModel.setMR_no(MR_No2);
-				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
+				SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 				Date MR_Date = formatter1.parse(MR_Date1);
+				System.err.println(MR_Date);
 				millRecieptModel.setMr_date(MR_Date);
 				Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(diDate1);
 				millRecieptModel.setHo_date(date2);
@@ -6417,7 +6423,7 @@ public class Controller_V {
 				billofSupplyDocDTO.setRate(rate);
 				double qty = (double) row[7];
 				billofSupplyDocDTO.setQty(qty);
-				qtygradesum+=qty;
+				qtygradesum += qty;
 				double total = (double) row[8];
 				billofSupplyDocDTO.setTotal(total);
 				alltotal += total;
@@ -6425,9 +6431,9 @@ public class Controller_V {
 				listOfBillofSupplyDocDTO.add(billofSupplyDocDTO);
 
 			}
-			
+
 			alltotal += Math.round(Double.parseDouble(TCS_Amt));
-	
+
 			parameters.put("taotalsum", alltotal);
 
 			ConvertWord_k convertWord_k = new ConvertWord_k();
@@ -8289,7 +8295,6 @@ public class Controller_V {
 		try {
 			String FAomofficial = request.getParameter("FAomofficial");
 			String id = request.getParameter("Settlement_id_generated");
-			nominalOfficialService.updatefa(id, FAomofficial);
 
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
@@ -8386,9 +8391,7 @@ public class Controller_V {
 			try {
 				toAddressesmill = new InternetAddress[] {
 						// new InternetAddress("mansi.gupta@cyfuture.com")
-						new InternetAddress("mansigupta18001@gmail.com")
-
-				};
+						new InternetAddress("mansigupta18001@gmail.com") };
 
 			} catch (AddressException e) {
 
@@ -8398,6 +8401,8 @@ public class Controller_V {
 
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
+
+			nominalOfficialService.updatefa(id, FAomofficial);
 
 			return new ModelAndView((View) new RedirectView("viewlistnominal.obj"));
 
@@ -8444,6 +8449,47 @@ public class Controller_V {
 				response.setContentLength((int) imageFile.length());
 				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
 //                                                        //response.setHeader("Content-Disposition", "");
+
+				FileInputStream fileInputStream = new FileInputStream(imageFile);
+				OutputStream responseOutputStream = response.getOutputStream();
+
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					responseOutputStream.write(buffer, 0, bytesRead);
+				}
+
+				fileInputStream.close();
+				responseOutputStream.close();
+			} else {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@RequestMapping("viewSettlementSchedulReport")
+	public void downloadSettlementSchedulReport(@RequestParam("id") String id, HttpServletResponse response) {
+		// String imageDirectory = "upload.Imagedownload";
+		String filename = "claimSettlementReport.pdf";
+		id = id.replaceAll("/", "-");
+
+		String imagePath = claimSettlementReportDownload + File.separator + id + filename;
+		File imageFile = new File(imagePath);
+
+		try {
+
+			if (imageFile.exists()) {
+
+				String contentType = determineContentType4(filename);
+				response.setContentType(contentType);
+
+				response.setContentLength((int) imageFile.length());
+//				response.setHeader("Content-Disposition", "attachment; filename=billofsupplyfinal.pdf");
+				response.setHeader("Content-Disposition", "");
 
 				FileInputStream fileInputStream = new FileInputStream(imageFile);
 				OutputStream responseOutputStream = response.getOutputStream();

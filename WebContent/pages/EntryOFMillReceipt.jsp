@@ -8,7 +8,6 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -175,9 +174,10 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                     String millName = (String) request.getAttribute("millName");
                     String hoDate = (String) request.getAttribute("hoDate");
                     String contractNo = (String) request.getAttribute("contractNo");
-
+                    
                     String actualQty = (String) request.getAttribute("actualQty");
-
+                    
+                    
                     String shortQty = (String) request.getAttribute("shortQty");
                     String millcode = (String) request.getAttribute("millcode");
 
@@ -495,7 +495,7 @@ $(document).ready(function() {
 
 
 
-       <script type="text/javascript">
+<script type="text/javascript">
 
 var resultsArray = [];
 var grade1 = [];
@@ -522,7 +522,9 @@ for (var i = 0; i < numberOfElements; i++) {
        claimAmount.push(0.00);
 }
 
+var regionId = "-1";
 $(document).ready(function() {
+
     var contractNo = "<%=contractNo%>";
                                  // Make sure contractNo is properly formatted
                                  var Contract_No;
@@ -550,8 +552,8 @@ $(document).ready(function() {
                                                     Contract_No = dataArray[0][5];
                                                     Millcode = dataArray[0][6];
                                                     var cropyear = dataArray[0][7];
-
                                                     var jutevariety = dataArray[0][8];
+                                                     regionId = dataArray[0][9];
 
                                                      console.log(actualqty);
 
@@ -638,6 +640,7 @@ $(document).ready(function() {
                                               dataArray
                                                            .forEach(function(row, index) {
                                                                   var str = row[3];
+                                                                 
                                                                   var actualvalue1 = row[7]; 
                                                                   
                                                                   var actualvalue = parseFloat(actualvalue1);
@@ -1096,9 +1099,8 @@ $(document).ready(function() {
                         var Nominationvalue = parseFloat(document.getElementById(NominationId).value) || 0;
                         var currentMonth = new Date().getMonth() + 1;
                         var selectedNomination = Nominationvalue;
-
-                        var regionId = '<%=region%>';
-                        console.log(regionId);
+ 
+                        
                         if (!regionId || regionId.trim() === "null" || regionId.trim() === "") {
                             console.warn("Invalid regionId, defaulting to a safe value.");
                             regionId = "00";

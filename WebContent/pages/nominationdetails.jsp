@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="com.jci.model.JciDIHoModel"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -103,8 +104,7 @@ th {
 		<div class="content-wrapper">
 			<!-- START PAGE CONTENT-->
 			<div class="page-heading">
-				<h1 class="page-title">
-					Settlement Schedule</h1>
+				<h1 class="page-title">Settlement Schedule</h1>
 
 			</div>
 
@@ -114,14 +114,21 @@ th {
 					<span>${msg}</span>
 					<div class="ibox-body">
 						<div class="scrollmenu">
-						<div text-center><a href="viewlistnominal.obj"><button class="btn btn-primary" type="button">Back</button></a></div>
+							<div text-center>
+								<a href="viewlistnominal.obj"><button
+										class="btn btn-primary" type="button">Back</button></a>
+							</div>
 							<%-- <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
                         <div text-center>Settlement Id : ${firstItem.settlement_id_generated}</div> --%>
-                        <c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
+							<c:set var="firstItem" value="${jciclaim_NominationModel[0]}" />
 							<div style="text-align: center;">
-                          <p style="font-weight: bold; ">Settlement Id: ${firstItem.settlement_id_generated}</p>
-                         </div>
-							
+								<p style="font-weight: bold;">Settlement Id:
+									${firstItem.settlement_id_generated}</p>
+							</div>
+							<%
+							List<Integer> hoIds = Arrays.asList(1103, 3, 4, 50, 1105, 51);
+							Integer hoid = (Integer) request.getSession().getAttribute("roleId");
+							%>
 							<table
 								class="table table-striped table-bordered table-hover tableFixHead"
 								id="example-table" cellspacing="0" width="100%">
@@ -129,41 +136,65 @@ th {
 
 								<thead>
 									<tr>
-									<th>Sl.NO</th>
-									<th>Challan</th>
-									<th>MR_No</th>
-									<th>MR_Date</th>
-									<th>MR_Quantity</th>
-									<!-- <th>Quality_Percentage</th> -->
-									<th>Bill_Of_Supply_Number</th>
-									<th>Date_Of_Shipment</th>	
-									<th>Shipment_Quantity</th>	
-									<th>Claim Valuation</th>	
-									<th>View Bos Document</th>												
+										<th>Sl.NO</th>
+										<th>Challan</th>
+										<th>MR_No</th>
+										<th>MR_Date</th>
+										<th>MR_Quantity</th>
+										<!-- <th>Quality_Percentage</th> -->
+										<th>Bill_Of_Supply_Number</th>
+										<th>Date_Of_Shipment</th>
+										<th>Shipment_Quantity</th>
+										<th>Claim Valuation</th>
+										<th>View Bos Document</th>
+										<%
+										if (hoIds.contains(hoid)) {
+										%>
+										<th>Settlement Schedule Claim Report</th>
+										<%
+										}
+										%>
 									</tr>
 								</thead>
 								<tbody>
-								<%int i=1; %>
+									<%
+									int i = 1;
+									%>
 
 									<c:forEach items="${jciclaim_NominationModel}" var="item">
 
 
 										<tr>
-										<td  class="sorting_1"><%=i%></td>
-										<td>${item.getChallans()}</td>
-										<td>${item.getMr_number()}</td>
-										<td>${item.getMr_Date()}</td>
-										<td>${item.getMR_qty()}</td>
-									 <%--  <td>${item.getQualityPercentage()}</td>  --%>
-										 <td>${item.getBillOfSupply_number()}</td>
-										<td>${item.getDateofshipment()}</td>
-										<td>${item.getShipmentquantity()}</td>
-										<td>${item.getClaimValuation()}</td>
-									     <%-- <td>${item.getBos_file_path()}</td>   --%>
-										 <td><a href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}" class="btn btn-primary" target="_blank"> View Document</a></button></td>	
-                                       
+											<td class="sorting_1"><%=i%></td>
+											<td>${item.getChallans()}</td>
+											<td>${item.getMr_number()}</td>
+											<td>${item.getMr_Date()}</td>
+											<td>${item.getMR_qty()}</td>
+											<%--  <td>${item.getQualityPercentage()}</td>  --%>
+											<td>${item.getBillOfSupply_number()}</td>
+
+											<td>${item.getDateofshipment()}</td>
+											<td>${item.getShipmentquantity()}</td>
+											<td>${item.getClaimValuation()}</td>
+											<%-- <td>${item.getBos_file_path()}</td>   --%>
+											<td><a
+												href="downloadBillOfSupplyDocument.obj?filename=${item.getBos_file_path()}"
+												class="btn btn-primary" target="_blank"> View Document</a>
+											</button></td>
+											<%
+											if (hoIds.contains(hoid)) {
+											%>
+											<td><a
+												href="viewSettlementSchedulReport.obj?id=${firstItem.settlement_id_generated}"
+												class="btn btn-warning" target="_blank"> View Document</a>
+											</button></td>
+											<%
+											}
+											%>
 										</tr>
-										<%i++; %>
+										<%
+										i++;
+										%>
 									</c:forEach>
 
 

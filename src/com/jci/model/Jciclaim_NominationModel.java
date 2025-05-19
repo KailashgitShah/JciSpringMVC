@@ -81,6 +81,9 @@ public class Jciclaim_NominationModel {
 	private Double MR_qty;
 	@Column(name= "QualityPercentage")
 	private Double QualityPercentage;
+	
+	@Column(name= "SettlementScheduleDoc")
+	private Double settlementScheduleDoc;
  
 	public Long getSettlement_id() {
 		return Settlement_id;

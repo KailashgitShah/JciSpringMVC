@@ -46,7 +46,6 @@ public interface NominalOfficialDao {
 		 public String getEmaiformills(String  Mill);
 	     public String getcontractidentification(String ContractNo);
 	     public String getmillcode(String millname);
-	     
 	     public Jciclaim_NominationModel find(String id);
 	     public void millrecieptstatus(String mr);
 	     public void updatefa(String id, String FAomofficial);
