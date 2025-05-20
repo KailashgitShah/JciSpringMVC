@@ -16,7 +16,7 @@ public interface MillRecieptService {
 		 public  void updatePaymentInstrument(MillRecieptModel millRecieptModel);
 		public MillRecieptModel find(int id);
 		public void delete(int id);
-		public List<Object> fetchHODINO(String millname);
+		
 		
 		public List<Object[]> fetchdata(String st);
 		public List<Object[]> challanbaseddetails(String st);
@@ -27,6 +27,8 @@ public interface MillRecieptService {
 		public MillRecieptModel Creditqty(String contractno);
 		public void UpdateContractstatus( String s);
 		public boolean  findmillreceiptNOlist( String s);
+		List<Object> fetchHODINO(String millname, String contractNo);
+		List<Object> fetchAllContractNos(String millname);
 		
 		
 		

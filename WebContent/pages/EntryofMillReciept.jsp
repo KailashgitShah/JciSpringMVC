@@ -162,6 +162,13 @@
 												</select>
 
 											</div>
+											<div class="col-sm-4 form-group">
+												<label>Contract No</label> <span class="text-danger">*
+												</span>&nbsp; <select name="contractNo" id="contractNo"
+													class="form-control taxtbox" required>
+													<option value="">-Select-</option>
+												</select>
+											</div>
 
 											<!--   <div class="col-sm-4 form-group">
 	                                             <label>HO DI </label>
@@ -322,6 +329,70 @@
 	</script> -->
 
 
+	<script>
+		$(document)
+				.ready(
+						function() {
+							$('#Mill_name1')
+									.on(
+											'change',
+											function() {
+												$('#HODate').val('');
+												$('#contractNo').val('');
+												var millCode = $(this).val();
+
+												$
+														.ajax({
+															type : 'GET',
+															url : 'contractBasedOnMillForMr.obj',
+															data : {
+																"millCode" : millCode
+															},
+															success : function(
+																	data) {
+																var dataArray = JSON
+																		.parse(data);
+
+																//var htmlEle = "<label class='required'>HO DI</label> <select data-placeholder='Choose HO DI...' class='chosen-select form-control ' name='HODate'  multiple tabindex='3' id = 'HODate'>";
+																console
+																		.log(
+																				"all the contracts",
+																				dataArray);
+																var htmlEle = "<option value=''>-Select-</option>";
+
+																dataArray
+																		.forEach(function(
+																				contract) {
+																			htmlEle += "<option value='"+contract+"'>"
+																					+ contract
+																					+ "</option>";
+																		});
+
+																//	htmlEle += "</select>";
+
+																$("#contractNo")
+																		.html(
+																				htmlEle);
+															
+																//$("#HODate").addClass("chosen-select");
+															},
+															error : function(
+																	xhr,
+																	status,
+																	error) {
+																console
+																		.error(
+																				"AJAX Error:",
+																				status,
+																				error);
+															}
+														});
+
+											})
+						})
+	</script>
+
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#submit").click(function() {
@@ -354,7 +425,7 @@
 		$(document)
 				.ready(
 						function() {
-							$('#Mill_name1')
+							$('#contractNo')
 									.on(
 											'change',
 											function() {
@@ -364,14 +435,17 @@
 												$('#milldetailsTable').css(
 														'display', 'none');
 
-												var field2Value = $(this).val();
+												var field2Value = $(
+														"#Mill_name1").val();
+												var contractNo = $(this).val();
 
 												$
 														.ajax({
 															type : 'GET',
 															url : 'millreceiptbased.obj',
 															data : {
-																"millname" : field2Value
+																"millname" : field2Value,
+																"contractNo" : contractNo
 															},
 															success : function(
 																	data) {
@@ -379,7 +453,10 @@
 																		.parse(data);
 
 																//var htmlEle = "<label class='required'>HO DI</label> <select data-placeholder='Choose HO DI...' class='chosen-select form-control ' name='HODate'  multiple tabindex='3' id = 'HODate'>";
-
+																console
+																		.log(
+																				"HoDINOS",
+																				dataArray);
 																var htmlEle = "";
 
 																dataArray
@@ -462,13 +539,14 @@
 														.forEach(function(
 																rowData) {
 
-															
-															var millNameValue1 = $('#millname234').val();
-															
+															var millNameValue1 = $(
+																	'#millname234')
+																	.val();
+
 															var currentDate = new Date()
 																	.toISOString()
 																	.split('T')[0];
-															 
+
 															var rowHtml = '<tr>'
 																	/*  + '<td><div class="table-cell colored-cell" id="myCell"' + count + '" data-id="' + rowData[0] + '" ><input type="hidden" name="challanNo[]" value="' + rowData[0] + '"> <a href="#" class="green-link">${rowData[0]}</a> '
 																	 + rowData[0]
@@ -479,9 +557,11 @@
 																	+ '&millName='
 																	+ encodeURIComponent(millNameValue1)
 																	+ '&cropyear='
-																	+  encodeURIComponent(rowData[6])
-																	+ '" class="green-link" target="_blank">'+rowData[0]+'</a> '
-							
+																	+ encodeURIComponent(rowData[6])
+																	+ '" class="green-link" target="_blank">'
+																	+ rowData[0]
+																	+ '</a> '
+
 																	+ '</div></td>'
 
 																	+ '<td><div class="table-cell"><input type="hidden" name="dateOfShipment[]" value="'
@@ -525,204 +605,6 @@
 
 						});
 	</script>
-
-
-
-	<!-- <script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-
-							$('#HODate')
-									.on(
-											'change',
-											function() {
-												var field2Value = $(this).find(
-														':selected').attr(
-														'data-value2');
-												var field1Value = $(this).find(
-														':selected').attr(
-														'data-value1');
-
-												// Function to format date
-												function formatDate(date) {
-													var day = date.getDate()
-															.toString()
-															.padStart(2, '0');
-													var month = (date
-															.getMonth() + 1)
-															.toString()
-															.padStart(2, '0');
-													var year = date
-															.getFullYear();
-													return day + '/' + month
-															+ '/' + year;
-												}
-
-												$
-														.ajax({
-															type : 'GET',
-															url : 'findmillreceiptNO.obj',
-															data : {
-																"hodino" : field1Value
-															},
-															success : function(
-																	data) {
-
-																var jsonResponse = JSON
-																		.parse(data);
-																var dataFoundValue = jsonResponse.dataFound;
-
-																/*  if (dataFoundValue === false) { */
-																$('#MR_No')
-																		.prop(
-																				'readonly',
-																				false);
-																$('#MR_Date1')
-																		.prop(
-																				'readonly',
-																				false);
-																$(
-																		'#Mill_Reciept_Qty')
-																		.prop(
-																				'readonly',
-																				false);
-
-																$(
-																		'#messageContainer')
-																		.hide();
-																// AJAX request for fetching data
-																$
-																		.ajax({
-																			type : 'GET',
-																			url : 'fetchingdata.obj',
-																			data : {
-																				"contractno" : field1Value
-																			},
-																			success : function(
-																					data) {
-
-																				var dataArray = JSON
-																						.parse(data);
-																				$(
-																						'#milldetailsTable tbody')
-																						.empty();
-																				if (dataArray.length > 0) {
-																					var millNameValue1 = $(
-																							'#millname234')
-																							.val();
-																					dataArray
-																							.forEach(function(
-																									rowData) {
-																								var currentDate = new Date()
-																										.toISOString()
-																										.split(
-																												'T')[0];
-																								var rowHtml = '<tr>'
-																										/*    + '<td><div class="table-cell colored-cell" id="myCell" data-id="' + rowData[0] + '" ><input type="hidden" name="challanNo[]" value="' + rowData[0] + '"> <a href="#" class="green-link">${rowData[0]}</a> '
-																										   + rowData[0]
-																										   + '</div></td>' */
-
-																										+ '<td><div class="table-cell colored-cell" id="myCell" data-id="' + rowData[0] + '" ><a href="EntryofMillreceiptChild.obj?challanno='
-																										+ rowData[0]
-																										+ '&millName='
-																										+ encodeURIComponent(millNameValue1)
-																										+ '&cropyear='
-																										+ encodeURIComponent(cropyear)
-																										+ ' class="green-link">${rowData[0]}</a> '
-																										+ rowData[0]
-																										+ '</div></td>'
-
-																										/*      	var url = 'EntryofMillreceiptChild.obj';
-																												url += '?challanno=' + encodeURIComponent(id);
-																												url += '&millName='
-																														+ encodeURIComponent(millNameValue1);
-																												url += '&cropyear='
-																														+ encodeURIComponent(cropyear); */
-
-																										+ '<td><div class="table-cell"><input type="hidden" name="dateOfShipment[]" value="'
-																										+ formatDate(new Date(
-																												rowData[1]))
-																										+ '">'
-																										+ formatDate(new Date(
-																												rowData[1]))
-																										+ '</div></td>'
-																										+ '<td><div class="table-cell"><input type="hidden" name="vehicleNo[]" value="' + rowData[2] + '">'
-																										+ rowData[2]
-																										+ '</div></td>'
-																										+ '<td><div class="table-cell"><input type="hidden" name="diDate[]" value="' + rowData[3] + '">'
-																										+ rowData[3]
-																										+ '</div></td>'
-																										+ '<td><div class="table-cell"><input type="hidden" name="ContractNo[]" value="' + rowData[4] + '">'
-																										+ rowData[4]
-																										+ '</div></td>'
-																										+
-																										/*  '<td><div class="table-cell"><input type="hidden" name="shortQty[]" value="' + rowData[5] + '">' + rowData[5] + '</div></td>' +
-																										 */'<td style="display:none;"><div class="table-cell"><input type="hidden" name="millcode[]" value="' + rowData[4] + '">'
-																										+ rowData[7]
-																										+ '</div></td>'
-																										+
-
-																										'</tr>';
-
-																								$(
-																										'#milldetailsTable tbody')
-																										.append(
-																												rowHtml);
-
-																							});
-
-																					document
-																							.getElementById("firstloop1").value = firstloopindex;
-																					$(
-																							'#milldetailsTable')
-																							.css(
-																									'display',
-																									'block');
-																				} else {
-																					$(
-																							'#milldetailsTable')
-																							.css(
-																									'display',
-																									'none');
-																				}
-																			}
-																		});
-
-															}
-														});
-											});
-						});
-	</script>
- -->
-
-
-	<!-- <script>
-		$(document).ready(
-				function() {
-					$('#milldetailsTable').on(
-							'click',
-							'#myCell',
-							function(e) {
-								e.preventDefault();
-								var id = $(this).data('id');
-								var millNameValue1 = $('#millname234').val(); // Get the value from #Mill_name1
-								var cropyear = $('#HODate').find(':selected')
-										.attr('data-value1'); // Get the data-value2 attribute
-								// Get the data-value2 attribute
-
-								// Construct the URL with the parameters
-								var url = 'EntryofMillreceiptChild.obj';
-								url += '?challanno=' + encodeURIComponent(id);
-								url += '&millName='
-										+ encodeURIComponent(millNameValue1);
-								url += '&cropyear='
-										+ encodeURIComponent(cropyear);
-								console.log(id, millNameValue1, cropyear);
-								window.open(url, '_blank');
-							});
-				});
-	</script> -->
 
 
 

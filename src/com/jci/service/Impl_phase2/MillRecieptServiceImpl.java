@@ -57,8 +57,8 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 
     
 	 @Override
-		public List<Object> fetchHODINO(String millname) {
-	    	return millRecieptDao.fetchHODINO(millname);
+		public List<Object> fetchHODINO(String millname,String contractNo) {
+	    	return millRecieptDao.fetchHODINO(millname,contractNo);
 		}
 	
 	@Override
@@ -97,6 +97,12 @@ public class MillRecieptServiceImpl implements  MillRecieptService {
 		
 		return millRecieptDao.gradeprice(st,st1,st2,st3);
 	}
+	@Override
+	public List<Object> fetchAllContractNos(String millname) {
+		// TODO Auto-generated method stub
+		return millRecieptDao.fetchAllContractNos(millname);
+	}
+
 	
 	
 }

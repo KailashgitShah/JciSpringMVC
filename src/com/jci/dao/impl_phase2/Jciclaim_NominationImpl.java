@@ -112,8 +112,10 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 
 	@Override
 	public List<String> millid_MillReceipt() {
-		String q = "SELECT DISTINCT CONCAT(m.unit_name ,'---' ,m.client_unit_code) FROM jcimilldetailchild m JOIN jcimill_receipt r ON m.client_unit_code = r.Mill_id";
-
+//		String q = "SELECT DISTINCT CONCAT(m.unit_name ,'---' ,m.client_unit_code) FROM jcimilldetailchild m JOIN jcimill_receipt r ON m.client_unit_code = r.Mill_id";
+		String q = "SELECT DISTINCT CONCAT(n.client_name,'---' ,m.client_unit_code,'---',m.unit_name) FROM jcimilldetailchild m JOIN jcimill_receipt r ON m.client_unit_code = r.Mill_id\r\n"
+				+ "inner join jcimilldetailmaster n on m.client_code = n.client_code";
+		
 		List<String> millidList = (List<String>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
 
 		return millidList;
@@ -280,7 +282,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 						+ "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No "
 						+ "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no "
 						+ "LEFT JOIN jciweighment_entry jwe ON jci.bill_of_supply_no = jwe.Bos_no "
-						+ "WHERE jcimr.Ho_di = '" + hodi + "' " + // Assuming hodi is a variable containing some value
+						+ "WHERE jcimr.Ho_di in " + hodi + " " +
 						"AND NOT EXISTS (SELECT 1 FROM jciclaimNomination WHERE jcimr.MR_no = jciclaimNomination.Mr_number)";
 
 //                         String q = "SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt, jcimr.claimAmmount , jci.Bos_file_path " +

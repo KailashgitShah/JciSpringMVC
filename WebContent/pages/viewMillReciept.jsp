@@ -141,12 +141,12 @@ th {
 										<th>Bale Mark</th>
 										<th>Crop Year</th>
 									<!-- 	<th>Quality Claim</th> -->
-										<th>Moisture Content</th>
-										<th>NCV Percentage</th>
-										<th>NCV Qty.</th>
-										<th>Dust Percentage</th>
-										<th>Dust Qty.</th>
 										<th>Quality Percentage</th>
+										<th>Moisture Content</th>
+										<th>Dust Percentage</th>
+										<th>NCV Percentage</th>
+										<!-- <th>NCV Qty.</th> -->
+										<!-- <th>Dust Qty.</th> -->
 								        <th>MR No</th>
 										<th>MR Date</th>
 										<th>HO Date</th>
@@ -178,12 +178,12 @@ th {
 										<td><%= millRecieptModel.getBale_mark() %></td>
 										<td><%= millRecieptModel.getCrop_year() %></td>
 										<%-- <td><%= millRecieptModel.getQuality_claim() %></td> --%>
-										<td><%= millRecieptModel.getMoistureContent() %></td>
-										<td><%= millRecieptModel.getNCV_percentage() %></td>
-										<td><%= millRecieptModel.getNCV_qty() %></td>
-										<td><%= millRecieptModel.getDustAmt() %></td>
-										<td><%= millRecieptModel.getDustQty() %></td>
 										<td><%= millRecieptModel.getQualityPercentage() %></td>
+										<td><%= millRecieptModel.getMoistureContent() %></td>
+										<td><%= millRecieptModel.getDustAmt() %></td>
+										<td><%= millRecieptModel.getNCV_percentage() %></td>
+									<%-- 	<td><%= millRecieptModel.getNCV_qty() %></td> --%>
+										<%-- <td><%= millRecieptModel.getDustQty() %></td> --%>
 										<td><%= millRecieptModel.getMR_no() %></td>
 										<td><%= sdf.format(millRecieptModel.getMr_date()) %></td>
 										<td><%= sdf.format(millRecieptModel.getHo_date()) %></td>

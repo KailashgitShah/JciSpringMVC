@@ -15,7 +15,7 @@ public interface MillReceiptDao {
 	 
 		public MillRecieptModel find(int id);
 		public void delete(int id);
-		public List<Object> fetchHODINO(String millname);
+		public List<Object> fetchHODINO(String millname,String contractNo);
 	
 		public  List<Object[]> fetchdata(String st);
 		public  List<Object[]> challanbaseddetails(String st);
@@ -26,5 +26,6 @@ public interface MillReceiptDao {
 		public void UpdateContractstatus( String s);
 		public MillRecieptModel Creditqty(String st);
 		public boolean  findmillreceiptNOlist(String st);
+		List<Object> fetchAllContractNos(String millname);
 		
 }

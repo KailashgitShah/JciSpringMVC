@@ -4871,10 +4871,20 @@ public class Controller_V {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "contractBasedOnMillForMr", method = RequestMethod.GET)
+	public String contractBasedOnMillForMr(@RequestParam("millCode") String millCode) {
+		List<Object> Mill_NameR = millRecieptService.fetchAllContractNos(millCode);
+	
+		Gson gson = new Gson();
+		String resultString = new Gson().toJson(Mill_NameR);
+		
+		return resultString;
+	}
+	@ResponseBody
 	@RequestMapping(value = "millreceiptbased", method = RequestMethod.GET)
-	public String millreceiptbased(@RequestParam("millname") String millname) {
-		List<Object> Mill_NameR = millRecieptService.fetchHODINO(millname);
-		System.err.println("resultList++++++++++" + Mill_NameR);
+	public String millreceiptbased(@RequestParam("millname") String millname,@RequestParam("contractNo") String contract) {
+		List<Object> Mill_NameR = millRecieptService.fetchHODINO(millname,contract);
+		System.err.println("millreceiptbased++++++++++" + Mill_NameR);
 		Gson gson = new Gson();
 		String resultString = new Gson().toJson(Mill_NameR);
 		return resultString;
@@ -8117,9 +8127,11 @@ public class Controller_V {
 
 	@ResponseBody
 	@RequestMapping(value = "findByHoDi", method = RequestMethod.GET)
-	public String hodinofech(@RequestParam("hodino") String hodino) {
+	public String hodinofech(@RequestParam("hodino") String hoDiNos) {
 
-		List<Object[]> millReceiptData = nominalOfficialService.getchallan(hodino);
+		String cleared = "(" + hoDiNos.replace("[", "").replace("]", "").replace("\"", "'") + ")";
+
+		List<Object[]> millReceiptData = nominalOfficialService.getchallan(cleared);
 		// Convert the a JSON in string
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(millReceiptData);

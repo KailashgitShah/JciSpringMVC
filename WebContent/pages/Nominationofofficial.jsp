@@ -160,7 +160,8 @@ th {
 												name="Mill" id="Mill" class="form-control taxtbox" required>
 												<option value="">Select</option>
 												<c:forEach items="${millid}" var="item">
-													<option value="${item}">${item.split('---')[0]}</option>
+													<option value="${item}">${item.split('---')[0]}
+														Unit : ${item.split('---')[2]}</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -176,7 +177,7 @@ th {
 											<label>HO DI </label> <span class="text-danger">* </span>&nbsp;
 											<span id="HO_DI_&_Date" name="HO_DI_&_Date"
 												class="text-danger"> </span> <select name="HO_DI_&_Date"
-												id="HODate" class="form-control taxtbox" required>
+												id="HODate" class="form-control taxtbox" required multiple>
 												<option disabled selected value="-Select-">-Select-</option>
 											</select>
 										</div>
@@ -449,7 +450,7 @@ th {
 							var selectedOmofficial = document
 									.getElementById("omofficial").value;
 							var SelectedMillName = document
-									.getElementById("Mill").value.split('---')[1];
+									.getElementById("Mill").value.split('---')[0];
 							var omMessageElement = document
 									.getElementById("omMessage");
 
@@ -472,11 +473,11 @@ th {
 								}
 							}
 							var millNamesString = millNamesList.join(" , ");
-						/* 	var millsListDiv = document
-							.getElementById("millsListDiv");
-					// Set the inner HTML of the div to the mill names string
-					millsListDiv.innerHTML = millNamesString;
- */	
+							/* 	var millsListDiv = document
+								.getElementById("millsListDiv");
+							// Set the inner HTML of the div to the mill names string
+							millsListDiv.innerHTML = millNamesString;
+							 */
 							for (var i = 0; i < response.length; i++) {
 								var innerArray = response[i];
 								var omoofficial = innerArray[0]
@@ -545,9 +546,16 @@ th {
 											'change',
 											function() {
 
+												var hoDiNos = [];
 												var selectedOption = $(this)
 														.val();
 
+												hoDiNos.push($(this).val());
+												console.log("hoDisNos",
+														hoDiNos);
+												
+
+												var jsonhoDiNos = JSON.stringify(hoDiNos);
 												//alert(selectedOption);
 
 												// Make an AJAX request to fetch data based on the selected HO DI
@@ -556,7 +564,7 @@ th {
 															type : 'GET',
 															url : 'findByHoDi.obj',
 															data : {
-																hodino : selectedOption
+																hodino : jsonhoDiNos
 															},
 															dataType : 'json', // Set the dataType to 'json'
 															success : function(
@@ -670,7 +678,7 @@ th {
 											'change',
 											function() {
 												var selectedOption = $(this)
-														.val().split('---')[1];
+														.val().split("---")[1];
 
 												$
 														.ajax({
