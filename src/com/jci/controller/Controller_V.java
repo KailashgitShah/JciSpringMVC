@@ -8179,37 +8179,40 @@ public class Controller_V {
 		String[] dateofshipment = request.getParameterValues("dateofshipment[]");
 		String[] shipmentquantity = request.getParameterValues("shipmentquantity[]");
 		String[] claimamount = request.getParameterValues("claimamount[]");
+		String[] hoDiNos = request.getParameterValues("hodiNo[]");
+
 
 		// String SetllementIdGenerated;
 		String Settlement_id_generated = request.getParameter("Settlement_id_generated");
-		String HoDI = request.getParameter("HO_DI_&_Date");
-		String total = nominalOfficialService.CountRecord();
-		int value1;
-		if (total != null) {
-			String str = total;
-			int secondSlashIndex = str.indexOf('/', str.indexOf('/') + 1); // Find the index of the second '/'
-			String extractedValue = str.substring(secondSlashIndex + 1); // Extract the substring after the second '/'
-			int value = Integer.parseInt(extractedValue); // Convert the extracted substring to an integer
-			value1 = value + 1;
-			System.out.println(value1);
-		} else {
-			value1 = 1;
-
-		}
-
-		// System.err.println(total);
-		String SetllementIdGenerated = HoDI + "/" + value1;
+//		String HoDI = request.getParameter("HO_DI_&_Date");
+		String highestSettlementId = nominalOfficialService.CountRecord();
+	
+		
 		String username = (String) request.getSession().getAttribute("usrname");
 		String millname = request.getParameter("client_name");
 		String Mill = request.getParameter("Mill");
 		String ContractNo = request.getParameter("ContractNo");
+		String cropYr = ContractNo.split("/")[2];
+		String millcode =ContractNo.split("/")[1];
 		String omofficial = request.getParameter("omofficial");
 		String FAofficial = request.getParameter("FAomofficial");
 		String DateofInpection = request.getParameter("DateofInpection");
 		String contractIdentificationnumber = nominalOfficialService.getcontractidentification(ContractNo);
-		String millcode = nominalOfficialService.getmillcode(Mill);
+//		String SetllementIdGenerated = hoDiNos[i] + "/" + count;
+//		newformatforsettlementidgeneration 
+		
+		int count = 1;
+		if (highestSettlementId != null) {
+			count = Integer.parseInt(highestSettlementId.split("/")[2]) + 1;
+		}
+		
+		String formattedCount = String.format("%03d", count);
+		
+		String SetllementIdGenerated = cropYr + "/" + millcode + "/" + formattedCount;
 
 		for (int i = 0; i < rows; i++) {
+	        
+
 			String check = request.getParameter("rowCheckbox" + i);
 			if (check != null) {
 				Jciclaim_NominationModel jciclaim_NominationModel = new Jciclaim_NominationModel();
@@ -8219,7 +8222,7 @@ public class Controller_V {
 				jciclaim_NominationModel.setOMOfficial(omofficial);
 				jciclaim_NominationModel.setFAOfficial(FAofficial);
 				jciclaim_NominationModel.setCreated_by(username);
-				jciclaim_NominationModel.setHoDi(HoDI);
+				jciclaim_NominationModel.setHoDi(hoDiNos[i]);
 				jciclaim_NominationModel.setDateofInspection(DateofInpection);
 				jciclaim_NominationModel.setChallans(challanNos[i]);
 				jciclaim_NominationModel.setMr_number(mr_no[i]);
@@ -8230,11 +8233,11 @@ public class Controller_V {
 				jciclaim_NominationModel.setClaimValuation(claimamount[i]);
 				jciclaim_NominationModel.setSettlement_id_generated(SetllementIdGenerated);
 				jciclaim_NominationModel.setDispute_flag(0);
-
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				LocalDate currentDate = LocalDate.now();
-				String formattedDate = currentDate.format(formatter);
-				jciclaim_NominationModel.setCreated_on(formattedDate);
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+				LocalDate currentDateTime = LocalDate.now();
+				String formattedDateTime = currentDateTime.format(formatter);
+				jciclaim_NominationModel.setCreated_on(formattedDateTime);
 				nominalOfficialService.create(jciclaim_NominationModel);
 				String mr = mr_no[i];
 				nominalOfficialService.millrecieptstatus(mr);
@@ -8285,8 +8288,9 @@ public class Controller_V {
 		}
 
 		String settlement_id = request.getParameter("id");
+		String hoDiNo = request.getParameter("hodiNo");
 		List<Jciclaim_NominationModel> AllList = (List<Jciclaim_NominationModel>) nominalOfficialService
-				.getAlldetails(settlement_id);
+				.getAlldetails(settlement_id,hoDiNo);
 		model.addAttribute("jciclaim_NominationModel", AllList);
 		return mv;
 	}

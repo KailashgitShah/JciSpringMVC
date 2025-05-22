@@ -275,9 +275,8 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		/////////////////// correct
 		String q =
 
-				"SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt ,jcimr.claimAmmount "
+				"SELECT DISTINCT jcimr.challan_no, jcimr.MR_no, jcimr.Mr_date, jci.bill_of_supply_no, jcd.Date_of_shipment, jwe.Dpc_actual_wt ,jcimr.claimAmmount, jcimr.Ho_di "
 						+
-
 						"FROM jcimill_receipt jcimr "
 						+ "LEFT JOIN jcibos_generation jci ON jcimr.challan_no = jci.Challan_No "
 						+ "LEFT JOIN jcidispatch_details jcd ON jcimr.challan_no = jcd.Challan_no "
@@ -375,7 +374,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	}
 
 	@Override
-	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
+	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id,String hodiNo) {
 //
 
 		String sqlQuery = "SELECT DISTINCT " + "jciclaimNomination.Challans, " + "jciclaimNomination.Mr_number, "
@@ -385,7 +384,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 				+ "jcibos_generation.Bos_file_path, " + "jcimill_receipt.MR_qty " + "FROM jciclaimNomination "
 				+ "LEFT JOIN jcibos_generation ON jciclaimNomination.billOfSupply_number = jcibos_generation.bill_of_supply_no "
 				+ "LEFT JOIN jcimill_receipt ON jciclaimNomination.Mr_number = jcimill_receipt.MR_no "
-				+ "WHERE jciclaimNomination.Settlement_id_generated = '" + settlement_id + "'";
+				+ "WHERE jciclaimNomination.Settlement_id_generated = '" + settlement_id + "' and jciclaimNomination.HoDi = '" + hodiNo + "'";
 
 		List<Object[]> contracts = currentSession().createSQLQuery(sqlQuery).list();
 
@@ -445,7 +444,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 				+ "mill.Jute_Grade, " + "mill.No_of_Bales, " + "mill.Actual_qty, " + "mill.MR_qty, "
 				+ "mill.QualityPercentage, " + "mill.MoistureContent, " + "mill.DustAmt, " + "mill.NCV_percentage, "
 				+ "nom.Settlement_id_generated, " + "nom.dateofshipment, " + "dispatchdetails.Place_of_Shipment, "
-				+ "jcipurchase.centername " + // Add the centername field here
+				+ "jcipurchase.centername,nom.DateofInspection " + // Add the centername field here
 				"FROM " + "jciclaimNomination nom " + "INNER JOIN "
 				+ "jcimill_receipt mill ON mill.MR_no = nom.Mr_number " + "INNER JOIN "
 				+ "jciDI_ho diHo ON diHo.DI_no = nom.HoDi " + "INNER JOIN "
@@ -461,7 +460,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		for (Object[] eleObject : contracts) {
 			ClaimSettlementReport nomination = new ClaimSettlementReport();
 
-			nomination.setMillname((String) eleObject[0]);
+			nomination.setMillname(((String) eleObject[0]).split("---")[0]);
 			nomination.setContract_no((String) eleObject[1]);
 			nomination.setDi_no((String) eleObject[2]);
 			nomination.setDi_date((String) eleObject[3]);
@@ -485,6 +484,7 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 			nomination.setDateOfDespatch((String) eleObject[21]);
 			// INCREASE THIS
 			nomination.setPlaceOfDespatch((String) eleObject[23]);
+			nomination.setDateOfInspection((String) eleObject[24]);
 
 			list1.add(nomination);
 		}

@@ -120,47 +120,56 @@ th {
 
 								<thead>
 									<tr>
-									<th>Sl.NO</th>
-									<th>Settlement ID</th>
-									<th>Date Of Entry</th>
-									<th>Date of Inspection</th>
-									<th>Mill</th>
-									<th>Contract No</th>
-									<th>HO DI No</th>
-									<th>O&M Official</th> 
-									<th>Details	</th>	
-									<th>Nominate F&A Official</th>															
+										<th>Sl.NO</th>
+										<th>Settlement ID</th>
+										<th>Date Of Entry</th>
+										<th>Date of Inspection</th>
+										<th>Mill</th>
+										<th>Contract No</th>
+										<th>HO DI No</th>
+										<th>O&M Official</th>
+										<th>Details</th>
+										<th>Nominate F&A Official</th>
 									</tr>
 								</thead>
 								<tbody>
-								<%int i=1; %>
+									<%
+									int i = 1;
+									%>
 
 									<c:forEach items="${jciclaim_NominationModel}" var="item">
 
 
 										<tr>
-										<td  class="sorting_1"><%=i%></td>
-                                            <td >${item.getSettlement_id_generated()}</td>
-                                           <td>${item.getCreated_on()}</td>
-                                            <td>${item.getDateofInspection()}</td>
-											<td >${item.getMill().split('---')[0]}</td>
-											 <td>${item.getContractNo()}</td>
-											 <td>${item.getHoDi()}</td>
-											 <td>${item.getOMOfficial()}</td>																
-                                         <td><a href="nominationdetails.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-warning" type="button">Details</button></a></td>    
-                                         
-                                <c:choose>
-							    <c:when test="${empty item.getFAOfficial()}">
-							        <td><a href="updatenominalform.obj?id=${item.getSettlement_id_generated()}"><button class="btn btn-primary" type="button">Add F&A Official</button></a></td>
-							    </c:when>
-							    <c:otherwise>
-							        <td>${item.getFAOfficial()}</td>
-							    </c:otherwise>
-							</c:choose>
+											<td class="sorting_1"><%=i%></td>
+											<td>${item.getSettlement_id_generated()}</td>
+											<td>${item.getCreated_on()}</td>
+											<td>${item.getDateofInspection()}</td>
+											<td>${item.getMill().split('---')[0]}</td>
+											<td>${item.getContractNo()}</td>
+											<td>${item.getHoDi()}</td>
+											<td>${item.getOMOfficial()}</td>
+											<td><a
+												href="nominationdetails.obj?id=${item.getSettlement_id_generated()}&hodiNo=${item.getHoDi()}"><button
+														class="btn btn-warning" type="button">Details</button></a></td>
+
+											<c:choose>
+												<c:when test="${empty item.getFAOfficial()}">
+													<td><a
+														href="updatenominalform.obj?id=${item.getSettlement_id_generated()}"><button
+																class="btn btn-primary" type="button">Add F&A
+																Official</button></a></td>
+												</c:when>
+												<c:otherwise>
+													<td>${item.getFAOfficial()}</td>
+												</c:otherwise>
+											</c:choose>
 
 
 										</tr>
-										<%i++; %>
+										<%
+										i++;
+										%>
 									</c:forEach>
 
 

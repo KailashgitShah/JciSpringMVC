@@ -369,70 +369,7 @@ th {
 					checkAvailablitiyOFOm(selectedDate);
 				})
 
-		/* 	
-			$("#omofficial")
-					.change(
-							function() { // Corrected the typo here
-								// Execute the logic when omofficial selection changes
-								var selectedOmofficial = document
-										.getElementById("omofficial").value;
-								var selectedDate = document
-										.getElementById("DateofInpection").value;
-								var omMessageElement = document
-										.getElementById("omMessage");
-								$
-										.ajax({
-											type : 'GET',
-											url : 'fetchdateOfInspection.obj',
-											data : {
-												DateOfInspection : selectedDate
-											},
-											success : function(data) {
-												var response = JSON.parse(data);
-
-												var millNamesList = []; // Array to store mill names
-												for (var i = 0; i < response.length; i++) {
-													var innerArray = response[i];
-													var omoofficial = innerArray[0]
-													var millName = innerArray[2];
-													if (omoofficial == selectedOmofficial) {
-														millNamesList
-																.push(millName); // Collecting mill names
-													}
-												}
-												var millNamesString = millNamesList
-														.join(" , ");
-												var millsListDiv = document
-														.getElementById("millsListDiv");
-												// Set the inner HTML of the div to the mill names string
-												millsListDiv.innerHTML = millNamesString;
-
-												for (var i = 0; i < response.length; i++) {
-													var innerArray = response[i];
-													var omoofficial = innerArray[0];
-													var faofficial = innerArray[1];
-													var millName = innerArray[2];
-													if (selectedDate == document
-															.getElementById("DateofInpection").value
-															&& omoofficial == selectedOmofficial) {
-														omMessageElement.innerText = selectedOmofficial
-																+ "- is Already Occupied On This Date for Another Claim Settlement For MillName :";
-														return;
-													}
-
-												}
-												// If no conflicting dates found, clear any existing messages
-												omMessageElement.innerText = "";
-											},
-											error : function(err) {
-												console
-														.error('AJAX request failed: '
-																+ err);
-											}
-										});
-
-							});
-		 */
+		
 	</script>
 
 	<script>
@@ -551,8 +488,7 @@ th {
 														.val();
 
 												hoDiNos.push($(this).val());
-												console.log("hoDisNos",
-														hoDiNos);
+												
 												
 
 												var jsonhoDiNos = JSON.stringify(hoDiNos);
@@ -631,10 +567,10 @@ th {
 																			+ dataArray[i][5]
 																			+ '</div></td>'
 																			+
-
 																			'<td><div class="table-cell"><input type="hidden"  name="claimamount[]" value="' + dataArray[i][6] + '">'
 																			+ dataArray[i][6]
-																			+ '</div></td>';
+																			+ '</div></td>'
+																			+ '<input type="hidden"  name="hodiNo[]" value="' + dataArray[i][7] + '">';
 
 																	newRow += "</tr>";
 																	$(
@@ -679,6 +615,8 @@ th {
 											function() {
 												var selectedOption = $(this)
 														.val().split("---")[1];
+												
+												
 
 												$
 														.ajax({
@@ -699,12 +637,12 @@ th {
 																			+ "</option>";
 																}
 
-																$("#ContractNo")
-																		.html(
-																				html);
+																$("#ContractNo").html(html);
+																$("#HODate").html("<option>-Select-</option>");
 																$(
-																		"#contractNoContainer")
-																		.show(); // Show contract number container
+																"#binDataBody")
+																.empty();
+																$("#contractNoContainer").show(); // Show contract number container
 															},
 															error : function(
 																	err) {
@@ -750,6 +688,9 @@ th {
 																$("#HODate")
 																		.html(
 																				html);
+																$(
+																"#binDataBody")
+																.empty();
 																// Show contract number container
 															},
 															error : function(

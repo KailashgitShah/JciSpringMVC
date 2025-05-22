@@ -30,6 +30,7 @@ public class ClaimSettlementReport {
 	private String settlement;
 	private String roDiNo;
 	private String dateOfDespatch;
+	private String dateOfInspection;
 	private String placeOfDespatch;
 	public String getMillname() {
 		return millname;
@@ -183,6 +184,13 @@ public class ClaimSettlementReport {
 	}
 	public void setDateOfDespatch(String dateOfDespatch) {
 		this.dateOfDespatch = dateOfDespatch;
+	}
+	
+	public String getDateOfInspection() {
+		return dateOfInspection;
+	}
+	public void setDateOfInspection(String dateOfInspection) {
+		this.dateOfInspection = dateOfInspection;
 	}
 	public ClaimSettlementReport(String millname, String contract_no, String di_no, String di_date, String roCode,
 			String regionName, String challan, String mr_no, String mrDate, String cropYear, String bale_mark,

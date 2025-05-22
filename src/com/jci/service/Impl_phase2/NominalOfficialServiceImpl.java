@@ -184,9 +184,9 @@ public class NominalOfficialServiceImpl implements NominalOfficialService {
 	}
 
 	@Override
-	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id) {
+	public List<Jciclaim_NominationModel> getAlldetails(String settlement_id,String hodiNo) {
 		// TODO Auto-generated method stub
-		return nominalOfficialDao.getAlldetails(settlement_id);
+		return nominalOfficialDao.getAlldetails(settlement_id,hodiNo);
 	}
 
 	@Override

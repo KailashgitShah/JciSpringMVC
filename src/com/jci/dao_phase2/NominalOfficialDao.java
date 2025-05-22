@@ -49,7 +49,7 @@ public interface NominalOfficialDao {
 	     public Jciclaim_NominationModel find(String id);
 	     public void millrecieptstatus(String mr);
 	     public void updatefa(String id, String FAomofficial);
-	     public List<Jciclaim_NominationModel>getAlldetails(String settlement_id);
+	     public List<Jciclaim_NominationModel>getAlldetails(String settlement_id,String hodiNo);
 	     public List<Jciclaim_NominationModel>findnominationdetails(String id) ;
 	     public List<ClaimSettlementReport> getNominationReportData(String settlement_id);
 		public List<Object[]> getAllHoDiByContract(String contract);
