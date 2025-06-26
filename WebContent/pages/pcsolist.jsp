@@ -171,7 +171,7 @@
 
 									tableData += "<td>" + data[i].pcso_date
 											+ "</td>";
-									tableData += "<td>" + data[i].pcsoQty/10
+									tableData += "<td>" + data[i].pcsoQty
 											+ "</td>";
 									tableData += "<td>"
 											+ data[i].dispatch_period + "</td>";
@@ -179,7 +179,7 @@
 											+ "</td>";
 									tableData += "<td>" + data[i].mill_name
 											+ "</td>";
-									tableData += "<td>" + data[i].allocatedQty/10
+									tableData += "<td>" + data[i].allocatedQty
 											+ "</td>";
 									tableData += "<td><a href='updatePcso.obj?pcsorefid="
 											+ data[i].pcsorefid

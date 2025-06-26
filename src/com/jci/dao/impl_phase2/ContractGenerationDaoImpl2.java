@@ -1,6 +1,7 @@
 package com.jci.dao.impl_phase2;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,16 +155,21 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 
 		for (Object[] row : rows) {
 			int size = row.length;
-			Double totalAllocatedToMill = (Double) row[size - 1];
+			BigDecimal totalAllocatedToMill = (BigDecimal) row[size - 1];
 			// System.err.println(pg.size());
 			int sizeOfComponents = pg.size();
 			int contractedValueForPerticularMill = 0;
 			for (int j = 0; j < sizeOfComponents; j++) {
 				// System.out.println(Double.parseDouble(gradeComp.get(j)) / 100 + "<->" +
 				// totalAllocatedToMill + "<->" + pg.get(j));
-				contractedValueForPerticularMill += Math.round(((Double.parseDouble(gradeComp.get(j)) / 100) * totalAllocatedToMill))
-						* pg.get(j);
-				 System.err.println(Math.round(((Double.parseDouble(gradeComp.get(j)) / 100) * totalAllocatedToMill)) + " " +  pg.get(j));
+				Double millqty = new BigDecimal(
+				        (Double.parseDouble(gradeComp.get(j)) / 100) * totalAllocatedToMill.doubleValue())
+				        .setScale(2, RoundingMode.HALF_UP)
+				        .doubleValue();
+				
+				contractedValueForPerticularMill +=  millqty * pg.get(j);
+				System.err.println("Mill Qty : "  + millqty);
+				System.err.println("Price  : "  + pg.get(j));
 			}
 			System.out.println("-------------------------------------------");
 			System.out.println(contractedValueForPerticularMill);

@@ -224,20 +224,22 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 		String rolename = "OM Role";
 		String q = "SELECT email FROM jciumt WHERE roles_name IN ('OM Role', 'RO Manager', 'HO Manager', 'HO Operation') AND employeename = '"
 				+ omofficial + "'";
-		String omoEmail = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
+		List<String> omoEmail = (List<String>) this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+		String omoEmailsString = String.join("--" , omoEmail);
 		// TODO Auto-generated method stub
-		return omoEmail;
+		return omoEmailsString;
 	}
 
 	@Override
 	public String getEmailForFA(String FAofficial) {
-		// TODO Auto-generated method stub
 		String rolename = "FA Role";
 		String q = "SELECT email FROM jciumt WHERE roles_name IN ('FA Role', 'HO Finance', 'RO Finance') AND employeename = '"
-				+ FAofficial + "'";
+		        + FAofficial + "'";
 
-		String FaEmail = (String) this.sessionFactory.getCurrentSession().createSQLQuery(q).uniqueResult();
-		// TODO Auto-generated method stub
+		List<String> emails = this.sessionFactory.getCurrentSession().createSQLQuery(q).list();
+
+		String FaEmail = String.join("--", emails);
+
 		return FaEmail;
 
 	}
@@ -439,7 +441,10 @@ public class Jciclaim_NominationImpl implements NominalOfficialDao {
 	@Override
 	public List<ClaimSettlementReport> getNominationReportData(String settlement_id) {
 		String sqlQuery = "SELECT DISTINCT " + "nom.Mill, " + "nom.ContractNo, " + "nom.HoDi, " + "diHo.DI_Date, "
-				+ "diHo.Regional_office, " + "rodetails.roname, " + "nom.Challans, " + "nom.Mr_number, "
+				+ "diHo.Regional_office, " + "rodetails.roname, " 
+//				+ "nom.Challans, " 
+				+ "dispatchdetails.Consignment_note_text, " 
+				+ "nom.Mr_number, "
 				+ "nom.Mr_Date, " + "mill.Crop_year, " + "mill.Bale_mark, " + "mill.Jute_Variety, "
 				+ "mill.Jute_Grade, " + "mill.No_of_Bales, " + "mill.Actual_qty, " + "mill.MR_qty, "
 				+ "mill.QualityPercentage, " + "mill.MoistureContent, " + "mill.DustAmt, " + "mill.NCV_percentage, "

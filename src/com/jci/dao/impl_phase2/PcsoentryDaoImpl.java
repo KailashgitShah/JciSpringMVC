@@ -1,6 +1,7 @@
 package com.jci.dao.impl_phase2;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -197,12 +198,19 @@ public class PcsoentryDaoImpl implements PcsoentryDao {
 			model.setPcso_req_date((String) eleObjects[13]);
 			model.setLetterRef((String) eleObjects[6]);
 			model.setPcso_date((String) eleObjects[12]);
-			model.setPcsoQty((double) eleObjects[10]);
+			BigDecimal originalpcsoqty = (BigDecimal) eleObjects[10];
+			BigDecimal dividedpcsoqty = originalpcsoqty.divide(BigDecimal.TEN, 2, RoundingMode.HALF_UP);
+			model.setPcsoQty(dividedpcsoqty);
+
 			model.setPcsoReqQty((double) eleObjects[11]);
 			model.setDispatch_period((String) eleObjects[3]);
 			model.setMill_code((String) eleObjects[7]);
 			model.setMill_name((String) eleObjects[8]);
-			model.setAllocatedQty((double) eleObjects[1]);
+			
+			BigDecimal original = (BigDecimal) eleObjects[1];
+			BigDecimal divided = original.divide(BigDecimal.TEN, 2, RoundingMode.HALF_UP);
+			model.setAllocatedQty(divided);
+	
 			model.setPcsorefid((int) eleObjects[0]);
 			listOfPcso.add(model);
 		}

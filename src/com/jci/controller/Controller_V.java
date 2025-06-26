@@ -948,7 +948,10 @@ public class Controller_V {
 			String cropyr = request.getParameter("cropyr");
 			String juteRatio = request.getParameter("juteRatio");
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty"));
-			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty"));
+			String pcsoQtyStr = request.getParameter("pcsoQty");
+			BigDecimal pcsoQty = pcsoQtyStr != null && !pcsoQtyStr.isEmpty() 
+			    ? new BigDecimal(pcsoQtyStr) 
+			    : BigDecimal.ZERO;
 
 			for (int c = 0; c < count; c++) {
 
@@ -969,13 +972,12 @@ public class Controller_V {
 
 				String millcode = request.getParameter("millcode" + c);
 				String millname = request.getParameter("millname" + c);
-				Double tallocation = Double.parseDouble(request.getParameter("totalallocation" + c));
-				if (tallocation != 0.0 && tallocation != null) {
+				String tallocationString = request.getParameter("totalallocation" + c);
+				if (tallocationString != null && !tallocationString.isEmpty() ) {
 					entryofpcsoCopy.setMill_code(millcode);
-					entryofpcsoCopy.setMill_name(millname);
-					entryofpcsoCopy.setAllocatedQty(tallocation);
+					entryofpcsoCopy.setMill_name(millname); 
+					entryofpcsoCopy.setAllocatedQty(new BigDecimal(tallocationString));
 					ll.add(entryofpcsoCopy);
-
 				}
 
 			}
@@ -1016,7 +1018,13 @@ public class Controller_V {
 			pcsoReqdate = formateDate(pcsoReqdate);
 			dispatchPeriod = formateDate(dispatchPeriod);
 
-			Double pcsoQty = Double.parseDouble(request.getParameter("pcsoQty")) * 10;
+			String pcsoQtyStr =  request.getParameter("pcsoQty");
+			
+			BigDecimal pcsoQty = pcsoQtyStr != null && !pcsoQtyStr.isEmpty() 
+				    ? new BigDecimal(pcsoQtyStr).multiply(BigDecimal.TEN)
+				    : BigDecimal.ZERO;
+	
+			
 			Double pcsoReqQty = Double.parseDouble(request.getParameter("pcsoReqQty")) * 10;
 
 			String juteRatio = request.getParameter("juteRatio");
@@ -1036,12 +1044,19 @@ public class Controller_V {
 				entryofpcso.setCropYear(cropyr);
 				entryofpcso.setCreated_date(date);
 				entryofpcso.setPcsoQty(pcsoQty);
+								
 				entryofpcso.setPcsoReqQty(pcsoReqQty);
 
 				// dynamic values
 				String millcode = request.getParameter("millcode" + i);
 				String millname = request.getParameter("millname" + i);
-				Double tallocation = Double.parseDouble(request.getParameter("totalallocation" + i)) * 10;
+				 
+				String tallocationStr = request.getParameter("totalallocation" + i);
+				
+				BigDecimal tallocation = tallocationStr != null && !tallocationStr.isEmpty() 
+					    ? new BigDecimal(tallocationStr).multiply(BigDecimal.TEN)
+					    : BigDecimal.ZERO;
+				
 				entryofpcso.setMill_code(millcode);
 				entryofpcso.setMill_name(millname);
 				entryofpcso.setAllocatedQty(tallocation);
@@ -1142,8 +1157,14 @@ public class Controller_V {
 		int refid = Integer.parseInt(request.getParameter("pcsorefid"));
 
 		EntryofpcsoModel entryofpcsoModel = this.pcsoentryservice.getPcso(refid);
-
-		Double totalallocation = Double.parseDouble(request.getParameter("totalallocation"));
+ 
+		
+		String tallocationStr = request.getParameter("totalallocation");
+		
+		BigDecimal totalallocation = tallocationStr != null && !tallocationStr.isEmpty() 
+			    ? new BigDecimal(tallocationStr).multiply(BigDecimal.TEN)
+			    : BigDecimal.ZERO;
+		
 
 		entryofpcsoModel.setAllocatedQty(totalallocation);
 
@@ -8340,6 +8361,10 @@ public class Controller_V {
 			} catch (JRException e) {
 				e.printStackTrace();
 			}
+			
+			System.err.println("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
+			System.out.println("Report generated...");
+			System.err.println("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
 
 			// Email sending code
 			// 1- This email is for FaOfficial
@@ -8353,17 +8378,14 @@ public class Controller_V {
 
 			String filenamefa1 = filepath;
 			String usernamefa = filename;
-			String userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial);
-			try {
-				toAddresses = new InternetAddress[] {
-						// new InternetAddress("mansi.gupta@cyfuture.com")
-						new InternetAddress(userEmailFA) };
-
-			} catch (AddressException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			emailfa.sendEmail(toAddresses, bodyfa, subjectfa, filenamefa1, usernamefa);
+			String[] userEmailFA = nominalOfficialService.getEmailForFA(FAomofficial).split("--");
+			InternetAddress[] allEmailFA = convertToInternetAddresses(userEmailFA);
+			 
+			emailfa.sendEmail(allEmailFA, bodyfa, subjectfa, filenamefa1, usernamefa);
+			
+			System.err.println("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
+			System.out.println("FA Mail sent...");
+			System.err.println("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
 
 			// 2- email is for omoofficial
 			EmailSender emailomo = new EmailSender();
@@ -8376,53 +8398,50 @@ public class Controller_V {
 			String filenameomo = filepath;
 
 			String usernameomo = filename;
-			String userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial);
-			try {
-				toAddressesomo = new InternetAddress[] {
-						// new InternetAddress("mansi.gupta@cyfuture.com")
-						// new InternetAddress("mansigupta18001@gmail.com")
-						new InternetAddress(userEmailOmo)
+			String[] userEmailOmo = nominalOfficialService.getEmailForOmo(omofficial).split("--");
+			InternetAddress[] allEmailOM = convertToInternetAddresses(userEmailOmo);
 
-				};
+		 
+			emailomo.sendEmail(allEmailOM, bodyomo, subjectomo, filenameomo, usernameomo);
 
-			} catch (AddressException e) {
-				e.printStackTrace();
-			}
-			emailomo.sendEmail(toAddressesomo, bodyomo, subjectomo, filenameomo, usernameomo);
-
-			// 3- email is for mill
-			EmailSender emailmill = new EmailSender();
-			InternetAddress[] toAddressesmill = null;
-			String subjectmill = "Nomination for Claim Settlement";
-
-			String bodymill = "Dear " + Mill + ",\n" + "I hope this email finds you well.\n"
-					+ "We are pleased to inform you that " + Mill
-					+ " have been nominated for the claim settlement  on Date: " + DateofInpection + ".\n" + "\n"
-					+ "Thanks & Regards,\n" + "Jute Corporation of India";
-
-			String filenamemill = filepath;
-			String usernamemill = filename;
-
-			String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
-			try {
-				toAddressesmill = new InternetAddress[] {
-						// new InternetAddress("mansi.gupta@cyfuture.com")
-						new InternetAddress("mansigupta18001@gmail.com") };
-
-			} catch (AddressException e) {
-
-				e.printStackTrace();
-			}
-			emailmill.sendEmail(toAddressesmill, bodymill, subjectmill, filenamemill, usernamemill);
+			System.err.println("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
+			System.out.println("OA Mail Sent...");
+			System.err.println("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
+			
+//			// 3- email is for mill
+//			EmailSender emailmill = new EmailSender();
+//			InternetAddress[] toAddressesmill = null;
+//			String subjectmill = "Nomination for Claim Settlement";
+//
+//			String bodymill = "Dear " + Mill + ",\n" + "I hope this email finds you well.\n"
+//					+ "We are pleased to inform you that " + Mill
+//					+ " have been nominated for the claim settlement  on Date: " + DateofInpection + ".\n" + "\n"
+//					+ "Thanks & Regards,\n" + "Jute Corporation of India";
+//
+//			String filenamemill = filepath;
+//			String usernamemill = filename;
+//
+//			String userEmailmill = nominalOfficialService.getEmailForOmo(omofficial);
+//			try {
+//				toAddressesmill = new InternetAddress[] {
+//						// new InternetAddress("mansi.gupta@cyfuture.com")
+//						new InternetAddress("mansigupta18001@gmail.com") };
+//
+//			} catch (AddressException e) {
+//
+//				e.printStackTrace();
+//			}
+//			emailmill.sendEmail(toAddressesmill, bodymill, subjectmill, filenamemill, usernamemill);
 
 			redirectAttributes.addFlashAttribute("msg",
 					"<div class=\"alert alert-success\"><b>Success !</b> Record saved successfully.</div>\r\n");
-
 			nominalOfficialService.updatefa(id, FAomofficial);
 
 			return new ModelAndView((View) new RedirectView("viewlistnominal.obj"));
 
 		} catch (Exception e) {
+			System.out.println("<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>");
+			e.printStackTrace();
 			System.out.println("Error in update user profile" + e.getStackTrace());
 			return mv;
 		}

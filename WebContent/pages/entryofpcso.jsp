@@ -217,7 +217,7 @@
 												value="<%=entryofpcsolist[1]%>" readonly>
 										</div>
 										<div class="col-sm-4 form-group">
-											<input type="number" inputmode="numeric" step="any"
+											<input type="number" inputmode="numeric" step="0.01"
 												class="form-control tAll" min="0"
 												name="totalallocation<%=mill%>" value="0"
 												id="totalallocation<%=mill%>">
@@ -307,7 +307,8 @@
 					var newDate = pcsoReqdate[2]+"-"+pcsoReqdate[1]+"-"+pcsoReqdate[0];
 					
 				    
-					var reqQty = data[0][7]/10;
+					var reqQty = (data[0][7]/10).toFixed(3);
+			
 					var cropyr = data[0][2];
 					// $("#pcsoDate").prop("readonly", false);
 					$("#pcsoReqdate").val(newDate);
@@ -556,6 +557,29 @@ alert("called1");
             }
         });
     });
+</script>
+<script>
+
+const input1 = document.getElementById('pcsoQty');
+const input2 = document.getElementsByClassName('tAll');
+const regex = /^\d*(\.\d{0,2})?$/; 
+
+// For input1
+input1.addEventListener('input', function () {
+  if (!regex.test(this.value)) {
+    this.value = this.value.slice(0, -1);
+  }
+});
+
+// For input2 (loop through collection)
+Array.from(input2).forEach(function(input) {
+  input.addEventListener('input', function () {
+    if (!regex.test(this.value)) {
+      this.value = this.value.slice(0, -1);
+    }
+  });
+});
+
 </script>
 	
 

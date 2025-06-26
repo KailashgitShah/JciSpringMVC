@@ -316,7 +316,7 @@ List<Double> contractInHand = (List<Double>)request.getAttribute("contractinhand
 
 										<div class="col-sm-4 form-group">
 											<label class="required">Requested Qty. (Qtls.)</label> <input
-												class="form-control" name="reqQty" id="reqQty" type="number"
+												class="form-control" name="reqQty" id="reqQty" type="number" step="0.01"
 												min="0" required /> <span id="errMsg" class="text-danger"></span>
 										</div>
 									</div>
@@ -626,6 +626,17 @@ List<Double> contractInHand = (List<Double>)request.getAttribute("contractinhand
 		// Optionally, initialize the link when the page loads
 		window.onload = updateHref;
 	</script>
+	
+	<script>
+  const input = document.getElementById('reqQty');
+
+  input.addEventListener('input', function () {
+    const regex = /^\d*(\.\d{0,2})?$/; // Allows only up to 2 decimal places
+    if (!regex.test(this.value)) {
+      this.value = this.value.slice(0, -1); // Remove last character if invalid
+    }
+  });
+</script>
 
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<script src="./assets/vendors/metisMenu/dist/metisMenu.min.js"

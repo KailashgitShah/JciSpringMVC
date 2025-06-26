@@ -1,5 +1,6 @@
 package com.jci.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -61,12 +62,12 @@ public class EntryofpcsoModel {
 
 	@Column(name = "Allocated_qty")
 	@NotNull
-	private Double allocatedQty = 0.0;
+	private BigDecimal allocatedQty = BigDecimal.ZERO;
 	
 
 	@Column(name = "pcso_qty")
 	@NotNull
-	private Double pcsoQty = 0.0;
+	private BigDecimal pcsoQty = BigDecimal.ZERO;
 	
 	
 	@Column(name = "pcso_req_qty")
@@ -164,19 +165,19 @@ public class EntryofpcsoModel {
 		this.mill_name = mill_name;
 	}
 
-	public Double getAllocatedQty() {
+	public BigDecimal getAllocatedQty() {
 		return allocatedQty;
 	}
 
-	public void setAllocatedQty(Double allocatedQty) {
+	public void setAllocatedQty(BigDecimal allocatedQty) {
 		this.allocatedQty = allocatedQty;
 	}
 
-	public Double getPcsoQty() {
+	public BigDecimal getPcsoQty() {
 		return pcsoQty;
 	}
 
-	public void setPcsoQty(Double pcsoQty) {
+	public void setPcsoQty(BigDecimal pcsoQty) {
 		this.pcsoQty = pcsoQty;
 	}
 
@@ -226,7 +227,7 @@ public class EntryofpcsoModel {
 
 	public EntryofpcsoModel(int pcsorefid, String reference_no, String pcso_date, String pcso_req_date,
 			String letterRef, String juteRatio, String dispatch_period, String letterPath, String mill_code,
-			String mill_name, Double allocatedQty, Double pcsoQty, Double pcsoReqQty, Date created_date,
+			String mill_name, BigDecimal allocatedQty, BigDecimal pcsoQty, Double pcsoReqQty, Date created_date,
 			String cropYear, int pcsoContractFlag) {
 		super();
 		this.pcsorefid = pcsorefid;
