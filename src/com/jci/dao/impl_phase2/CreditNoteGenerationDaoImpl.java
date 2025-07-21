@@ -100,7 +100,7 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
                                                                         + "GROUP BY  Credit_note_date, Credit_note_no, ChallanNo ORDER BY Max_Creation_date DESC";
                              } else {
 
-                                           sql = "SELECT Credit_note_date,  Credit_note_no,ChallanNo,SUM(BOS_qty) as bos_qty,"
+                                           sql = "SELECT TOP 10 Credit_note_date,  Credit_note_no,ChallanNo,SUM(BOS_qty) as bos_qty,"
                                                                         + "  SUM(Actual_qty) as actual_qty ,SUM(Short_qty) as shrt_qty ,SUM(Credit_note_amount) as crn_amt , MAX(document) as docs, MAX(Creation_date)"
                                                                         + " as Max_Creation_date FROM jcicredit_note WHERE Crn_status = 0 "
                                                                         + "GROUP BY  Credit_note_date, Credit_note_no, ChallanNo ORDER BY Max_Creation_date DESC";
@@ -780,6 +780,49 @@ public class CreditNoteGenerationDaoImpl implements CreditNoteGenerationDao {
 						+ "inner join jcidispatch_details c on c.Challan_no = b.Challan_No\r\n"
 						+ "INNER join jciweighment_entry d on d.Bos_no = b.Bill_of_supply_no\r\n"
 						+ "where a.Credit_note_no = '"+ crnNo +"'";
+				
+				return currentSession().createSQLQuery(sqlString).list();
+			}
+
+			@Override
+			public List<Object[]> getExcelDataByCrn(String millCode,String startDate,String endDate) {
+			   
+		String sqlString = "SELECT DISTINCT\r\n"
+				+ "    bos.Bill_of_supply_no,\r\n"
+				+ "    bos.BOS_date,\r\n"
+				+ "    bos.Invoice_value,\r\n"
+				+ "    ro.roname,\r\n"
+				+ "    pur.centername,\r\n"
+				+ "    crn.Credit_note_no,\r\n"
+				+ "    crn.Credit_note_date,\r\n"
+				+ "    bos.Contract_no,\r\n"
+				+ "    contract.Contract_date,\r\n"
+				+ "    contract.Mill_name,\r\n"
+				+ "    contract.CropYear,\r\n"
+				+ "    dischild.Bale_mark,\r\n"
+				+ "    dis.DI_No,\r\n"
+				+ "    diho.DI_Date,\r\n"
+				+ "    dis.Consignment_note_text,\r\n"
+				+ "    dischild.Jute_variety,\r\n"
+				+ "    dischild.Jute_grade,\r\n"
+				+ "    dischild.Rate,\r\n"
+				+ "    crn.BOS_qty,\r\n"
+				+ "    crn.Actual_qty,\r\n"
+				+ "    crn.Short_qty,\r\n"
+				+ "    crn.Credit_note_amount,\r\n"
+				+ "millChild.unit_name\r\n"
+				+ "FROM jcicredit_note crn\r\n"
+				+ "INNER JOIN jcibos_generation bos ON crn.ChallanNo = bos.Challan_No\r\n"
+				+ "INNER JOIN jcidispatch_details dis ON dis.Challan_no = bos.Challan_No\r\n"
+				+ "INNER JOIN jcidispatch_details_child dischild ON dischild.Challan_no = dis.Challan_no\r\n"
+				+ "INNER JOIN jciDI_ho diho ON diho.DI_no = dis.DI_No\r\n"
+				+ "INNER JOIN jcicontract contract ON contract.Contract_no = bos.Contract_no\r\n"
+				+ "inner join jcirodetails ro on ro.rocode = bos.Ro_id\r\n"
+				+ "inner join jcipurchasecenter pur on pur .CENTER_CODE = bos.DPCID\r\n"
+				+ "inner join jcimilldetailchild millChild on millChild.client_unit_code = contract.Mill_code\r\n"
+				+ "WHERE crn.document <> ''\r\n"
+				+ "  AND contract.Mill_code = '"+millCode+"'\r\n"
+				+ "  AND convert(date,bos.BOS_date,105) BETWEEN CONVERT(date,'"+startDate+"',105) AND CONVERT(date, '"+endDate+"',105);";
 				
 				return currentSession().createSQLQuery(sqlString).list();
 			}

@@ -65,4 +65,6 @@ public interface CreditNoteGenerationService {
 	public boolean duplicatechallan( String challan_no);
 
 	public List<Object[]> getDataForDocRegeneration(String crnNo);
+
+	public List<Object[]> getExcelDataByCrn(String millCode,String startDate,String endDate);
 }

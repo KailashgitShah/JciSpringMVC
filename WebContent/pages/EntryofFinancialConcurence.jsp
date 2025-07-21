@@ -259,7 +259,7 @@
                                                                                                                      <label>Qty. Allowed (Qtls) ( max Allowed =  <%=qtdivtotal %> )</label>
                                                                                                                      <span class="text-danger">*</span>
                                                                                                                      <span id="Shipment_Value" class="text-danger"></span>
-                                                                                                                     <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step="1" pattern="\d+" type ="number" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
+                                                                                                                     <input class="form-control taxtbox" name="Shipment_Value1" id="Shipment_Value12"  min="0" step=".01" pattern="\d+" type ="number" placeholder="Qty. Allowed" required oninput="validateAmount();calculateGST();">
                                                                                                                      <div id="errorMessage" style="color: red; display: none;">Amount exceeds the allowed limit!</div>
                                                                                                                  </div>
                                                                                                           <div class="col-sm-4 form-group">

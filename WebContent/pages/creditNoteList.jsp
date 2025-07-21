@@ -91,7 +91,8 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 										<th>Actual Qty</th>
 										<th>Short Qty.</th>
 										<th>Credit Note Amount</th>
-										<th>Credit Note Document</th>
+										<th>Document</th>
+									<!-- 	<th>Excel</th> -->
 										<th></th>
 										<th></th>
 								</thead>
@@ -115,6 +116,8 @@ List<CreditNotes> list = (List<CreditNotes>) request.getAttribute("list");
 										<td><%=crn.getCrnAmount()%></td>
 										<td><a class="btn-success" target="_blank"
 											href='downloadCreditNoteDocs.obj?imagePath=<%=path%>'>View</a></td>
+					<%-- 					<td><a class="btn-success" target="_blank"
+											href='downloadCreditNoteExcel.obj?crnNo=<%=crn.getCrnNo()%>'>Excel</a></td> --%>
 											<td><a class="btn-warning"
 											href='regenerateCrnDoc.obj?crnNo=<%=crn.getCrnNo()%>'  target="_blank">Regenerate</a></td>	
 										<td><a

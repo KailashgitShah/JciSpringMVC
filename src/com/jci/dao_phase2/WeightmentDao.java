@@ -21,4 +21,5 @@ public interface WeightmentDao {
 	 jciWeighmentEntry ListOFWeightmentSlipById(int weighment_id);
 	List<Object[]> SlipDetails(String id);
 	void editDetails(Double gross, Double actual, Double net, Date currDate, String bosNo);
+	List<Object[]> getAllPendingWeightmentSlip(String ro_id);
 }

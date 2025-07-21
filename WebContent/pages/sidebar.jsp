@@ -377,6 +377,10 @@ body {
 						href="WeightmentSlipList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>Weightment
 								Slip</b></a></li>
+					<li data-pre="11416" id="o11416"><a
+						href="pendingWeightmentSlipList.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Pending Weightment
+								Slips</b></a></li>
 				</ul></li>
 
 
@@ -397,6 +401,10 @@ body {
 					<li data-pre="1118" id="o1118"><a href="creditNoteList.obj"><i
 							class="sidebar-item-icon fa fa-th-large"></i><b>All Credit
 								Notes </b></a></li>
+
+					<li data-pre="11128" id="o11128"><a href="creditNoteExcel.obj"><i
+							class="sidebar-item-icon fa fa-th-large"></i><b>Credit
+								Notes Excel</b></a></li>
 				</ul></li>
 
 			<li><a href="javascript:void(0);"><i

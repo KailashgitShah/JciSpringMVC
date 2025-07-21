@@ -27,4 +27,5 @@ public interface ContractGenerationService2 {
 	public String findEmailByMillCode(String millCode);
 	public int getContractCount(String cropyr);
 
+
 }

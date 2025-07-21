@@ -68,8 +68,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 <% 
 
 
-List<Object[]> WeightmentList = (List<Object[]>) request.getAttribute("WeightmentList");
-String baseIp = (String) request.getSession().getAttribute("baseIp");
+List<Object[]> WeightmentList = (List<Object[]>) request.getAttribute("pendingWeightmentSlipList");
 %>
 
 <body class="fixed-navbar">
@@ -83,7 +82,7 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
              <div class="content-wrapper">
                     <!-- START PAGE CONTENT-->
                     <div class="page-heading">
-                          <h1 class="page-title">Weightment List</h1>
+                          <h1 class="page-title">Pending Weightment List</h1>
                     </div>
 
 
@@ -95,50 +94,31 @@ String baseIp = (String) request.getSession().getAttribute("baseIp");
              <table id="farmerVerific" class="table table-striped table-bordered table-hover" cellspacing="0">
     <thead>
         <tr>
-            <th>S.No</th>
-            <th>Bill of Supply no</th>
-            <th>Bill of Supply date</th>
-           <th>Nominal Weight(Qtls)</th>
-            <th>DPC End Actual Weight (Qtls)</th>
-            <th>Mill End Actual Weight (Qtls)</th>
-            <th>PC End Truck Gross Weight</th>
-            <th>DPC End Truck Tare Weight</th>
-            <th>DPC End Truck Net Weight</th>
-            <th>DPC Wt Document</th>
-            <th>Mill Wt Document</th>
-            <th>Signed Bos Document</th>
-            <th>Bill of Supply</th>
-            <th>Challan document</th>
+            <th style="text-align: center">S.No</th>
+            <th style="text-align: center">Region Name</th>
+            <th style="text-align: center">Center Name</th>
+            <th style="text-align: center">Bos Date</th>
+            <th style="text-align: center">Bos No.</th>
         </tr>
     </thead>
    <tbody>
     <% int i = 1;
     SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the current format of row[1] is yyyy-MM-dd
     SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy"); // Desired output format
-       for (Object[] row : WeightmentList) { %>
+       for (Object[] row : WeightmentList) { 
+       
+    	   String region = (String)row[0];
+    	   String center = (String)row[1];    
+       
+       %>
     <tr>
         <td class="sorting_1" style="text-align: center"><%= i %></td>
-       
-            <% if ((int)row[10] == 0) { %>
-             <td style="text-align: center">
-                <a href="WeightmentById.obj?id=<%= row[2] %>"><%= row[2] %></a>  </td>
-            <% } else { %>
-              <td style="text-align: center;color:green" > <%= row[2] %></td>
-            <% } %>
-      
-          <td style="text-align: center"><%= outputFormat.format(inputFormat.parse(row[1].toString())) %></td>
-        <td style="text-align: center"><%= row[7] %></td> 
-        <td style="text-align: center"><%= row[4] %></td> 
-        <td style="text-align: center"><%= row[6] %></td> 
-        
-        <td style="text-align: center"><%= (row[13] != null) ? row[13] : '-' %></td> 
-       <td style="text-align: center"><%= (row[15] != null) ? row[15] : '-' %></td> 
-        <td style="text-align: center"><%= (row[14] != null) ? row[14] : '-' %></td> 
-        <td>  <a href="<%=baseIp%>/WeightSlipment/<%= row[5] %>" target="_blank">DPC Wt Document</a></td>
-        <td style="text-align: center"><a href="<%=baseIp%>/WeightSlipment/<%=row[12] %>"  target="_blank">Mill Weight Document</a></td> 
-        <td style="text-align: center"><a href="<%=baseIp%>/WeightSlipment/<%=row[11] %>"  target="_blank">Signed Bos</a></td> 
-        <td style="text-align: center"><a href="<%=baseIp%>/JCIStuff/billofsupply/<%= row[20] %>"  target="_blank">Bill Of Supply</a></td>
-        <td style="text-align: center"><a href="<%=baseIp%>/DispatchDetail/<%= row[50] %>"  target="_blank">Challan Document</a></td>
+        <td style="text-align: center"><%= region.split("-")[1] %></td> 
+        <td style="text-align: center"><%= center.split("-")[1]  %></td> 
+        <td style="text-align: center"><%= row[2] %></td> 
+        <td style="text-align: center"><%= row[3] %></td> 
+
+
     </tr>
     <% i++; } %>
 </tbody>

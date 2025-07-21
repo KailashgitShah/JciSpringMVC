@@ -170,6 +170,12 @@ public class CreditNoteGenerationServiceImpl implements CreditNoteGenerationServ
 	public List<Object[]> getDataForDocRegeneration(String crnNo) {
 	    return creditNoteGenerationDao.getDataForDocRegeneration(crnNo);
 	}
+
+	@Override
+	public List<Object[]> getExcelDataByCrn(String millCode,String startDate,String endDate) {
+		return creditNoteGenerationDao.getExcelDataByCrn(millCode,startDate,endDate);
+	}
+	
 	
 	
 

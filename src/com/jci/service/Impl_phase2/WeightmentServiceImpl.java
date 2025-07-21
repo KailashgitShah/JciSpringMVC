@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.jci.dao_phase2.WeightmentDao;
 import com.jci.model.jciWeighmentEntry;
 import com.jci.service_phase2.WeighmentEntryService;
@@ -69,6 +70,11 @@ public class WeightmentServiceImpl implements WeighmentEntryService{
 	public void editVerification(Double gross, Double actual, Double net, Date currDate, String bosNo) {
 		// TODO Auto-generated method stub
 		weightmentDao.editDetails(gross,actual,net,currDate,bosNo);
+	}
+
+	@Override
+	public List<Object[]> getAllPendingWeightmentSlip(String ro_id) {
+		return weightmentDao.getAllPendingWeightmentSlip(ro_id);
 	}
 
 }
