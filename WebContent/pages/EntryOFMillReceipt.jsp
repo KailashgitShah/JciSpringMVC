@@ -1,3 +1,4 @@
+<%@page import="org.eclipse.jdt.internal.compiler.parser.RecoveredRequiresStatement"%>
 <%@page import="com.mashape.unirest.http.options.Option"%>
 <%@page import="java.util.List"%>
 <%@page import="java.time.LocalDate"%>
@@ -183,6 +184,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
 
                     String date = (String) request.getAttribute("parsed");
                     String region = (String) session.getAttribute("regionId");
+                 
                
                     %>
                     <div class="page-content fade-in-up">
@@ -339,7 +341,7 @@ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></scri
                                                                                               </div>
                                                                                             </th>
                                                                                             <th>
-                                                                                              <div class="form-check">
+                                                                                             <div class="form-check">
                                                                                                
                                                                                                  
                                                                                                   <label class="form-check-label" for="checkNcvQty">Ncv Qty &nbsp; &nbsp;&nbsp; <input class="form-check-input" type="checkbox"   id="checkNcvQty"></label>
@@ -523,6 +525,7 @@ for (var i = 0; i < numberOfElements; i++) {
 }
 
 var regionId = "-1";
+var Bosdate = " ";
 $(document).ready(function() {
 
     var contractNo = "<%=contractNo%>";
@@ -542,7 +545,7 @@ $(document).ready(function() {
                                               "contractno" : contractNo
                                        },
                                        success : function(data) {
-
+                                   
                                               var dataArray = JSON.parse(data);
                                               if (dataArray.length > 0) {
                                                     var dateOfShipmentValue = dataArray[0][0];
@@ -554,12 +557,14 @@ $(document).ready(function() {
                                                     var cropyear = dataArray[0][7];
                                                     var jutevariety = dataArray[0][8];
                                                      regionId = dataArray[0][9];
+                                                     Bosdate = dataArray[0][10];
 
                                                      console.log(actualqty);
+                                                     console.log(Bosdate);
 
                                                      $('#diDate').val(diDate);
                                                      $('#vehicleNo').val(vehicleNo);
-                                                     $('#dateOfShipmentValue').val(
+                                                    $('#dateOfShipmentValue').val(
                                                                   dateOfShipmentValue);
                                                      $('#Contractno12').val(Contract_No);
                                                      $('#millcode1').val(Millcode);
@@ -650,7 +655,7 @@ $(document).ready(function() {
                                                                   var intValue = parseInt(numericPartStr,
                                                                                10);
 
-                                                                  var initialNomination;
+                                                              /*     var initialNomination;
                                                                   if (currentMonth > 6
                                                                                && currentMonth <= 10) {
                                                                         initialNomination = Math.max(0,
@@ -658,7 +663,7 @@ $(document).ready(function() {
                                                                   } else {
                                                                         initialNomination = Math.max(0,
                                                                                      intValue - 18);
-                                                                  }
+                                                                  } */
                                                            
                                                                   actQtyList.push(+row[7]);
                                                                   sumOfActQty += +row[7];
@@ -755,12 +760,34 @@ $(document).ready(function() {
                                                                       + '</div>'
                                                                       + '</td>'
 
-                                                                      + '<td>'
+                                                                /*       + '<td>'
                                                                       + '<div class="table4-cell">'
                                                                       + '<button type="button" class="btn btn-primary" id="DustValue1_' + index + '" name="calculate" '
                                                                       + 'onclick="calculateQtyfrompercent(\'Qualitypercentage_' + index + '\', \'Nomination_' + index + '\', \'NCVamt_' + index + '\', \'DustAMt_' + index + '\', \'ncvdust_' + index + '\', \'DustQty_' + index + '\', \'' + actualvalue + '\', ' + intValue + ', ' + index + ')">Calculate</button>'
                                                                       + '</div>'
+                                                                      + '</td>' */
+                                                                      
+                                                                      + '<td>'
+                                                                      + '<div class="table4-cell">'
+                                                                      + '<button type="button" class="btn btn-primary" id="DustValue1_' + index + '" name="calculate" '
+                                                                      + 'onclick="calculateQtyfrompercent('
+                                                                          + '\'Qualitypercentage_' + index + '\', '
+                                                                          + '\'Nomination_' + index + '\', '
+                                                                          + '\'NCVamt_' + index + '\', '
+                                                                          + '\'DustAMt_' + index + '\', '
+                                                                          + '\'ncvdust_' + index + '\', '
+                                                                          + '\'DustQty_' + index + '\', '
+                                                                          + '\'actualQty_' + index + '\', '
+                                                                          + intValue + ', '
+                                                                          + index + ', '
+                                                                          + '\'' + Bosdate + '\', '
+                                                                          + '\'' + regionId + '\')">'
+                                                                      + 'Calculate</button>'
+                                                                      + '</div>'
                                                                       + '</td>'
+
+
+
 
                                                                       + '<td>'
                                                                       + '<div class="table3-cell">'
@@ -1023,7 +1050,7 @@ $(document).ready(function() {
                           }
                     } else {
                           console.log('Unknown checkbox triggered.'); // Log if an unknown checkbox triggers the function
-                    }
+                   }
              }
 
              function toggleInputFields1(checkbox, inputFields, index) {
@@ -1073,8 +1100,9 @@ $(document).ready(function() {
        </script>
        <script>
              function calculateQtyfrompercent(QualitypercentageId, NominationId,
-                          NCVamtId, DustAmtId, NCVQty, DUSTQty, actualvalue, intvalue,
-                          index) {
+                          NCVamtId, DustAmtId, NCVQty, DUSTQty, actualQtyId, intvalue,
+                          index,bosDate,regionId) {
+               console.log("BOS Date:", bosDate);
                     // Retrieve the actual input values using the IDs
           
                     //alert(Qualitypercentage1);
@@ -1090,43 +1118,57 @@ $(document).ready(function() {
 
                   
                         
-                        /*    var actualvalue = $("#Mill_receiptQty123").val(); 
-                        if (!actualvalue || isNaN(actualvalue)) {
+                            var actualvalueforrow = $("#Mill_receiptQty123").val(); 
+                        if (!actualvalueforrow || isNaN(actualvalueforrow)) {
                             alert("Please enter a valid Mill Receipt Qty value.");
                             return;  
-                        } */
+                        } 
 
                         var Nominationvalue = parseFloat(document.getElementById(NominationId).value) || 0;
-                        var currentMonth = new Date().getMonth() + 1;
+                   
+                        var actualvalue = parseFloat(document.getElementById(actualQtyId).value) || 0;
+                        console.log(actualvalue);
                         var selectedNomination = Nominationvalue;
- 
-                        
-                        if (!regionId || regionId.trim() === "null" || regionId.trim() === "") {
-                            console.warn("Invalid regionId, defaulting to a safe value.");
-                            regionId = "00";
-                        }
 
-                        if (currentMonth > 6 && currentMonth <= 10) {
-                            if (regionId === "06" || regionId === "07" || regionId === "08") {
+                    
+                        let [day, month, year] = bosDate.split("-").map(Number);
+                        let date = new Date(year, month - 1, day); // Month is 0-based
+
+                         month = date.getMonth() + 1; // 1 to 12
+                      
+              <%--     var region1='<%=region %>'; --%>
+                var region1=regionId;
+              
+                  console.log("region1",region1);
+                  
+                  if (!region1 || region1.trim() === "null" || region1.trim() === "") {
+                      console.warn("Invalid regionId, defaulting to a safe value.");
+                      region1 = "00";
+                  }
+                  
+                  console.log(month);
+                  console.log(region1);
+                        if (month > 6 && month <= 10) {
+                            if (region1 === "06" || region1 === "07" || region1 === "08" || region1 === "02") {
                                 selectedNomination -= 20;
                             } else {
                                 selectedNomination -= 18;
                             }
                         } else {
-                            if (regionId === "06" || regionId === "07" || regionId === "08") {
+                            if (region1 === "06" || region1 === "07" || region1 === "08" || region1 === "02") {
                                 selectedNomination -= 18;
                             } else {
                                 selectedNomination -= 16;
                             }
-                        }
-
+                        } 
+                     
               
                         selectedNomination = Math.max(0, selectedNomination);
 
                         var Nomination = parseFloat(selectedNomination);
                       
 
-
+                    console.log(Nomination);
                     
                     var NCVamt = document.getElementById(NCVamtId).value;
                     var NCVQty = document.getElementById(NCVQty).value;
@@ -1188,7 +1230,8 @@ $(document).ready(function() {
                                  gradeprice = 0; // Set gradeprice to 0 if index is out of bounds
                           }
                           gradeprice = gradeprice1 - gradeprice;
-
+                          console.log('gradeprice:', gradeprice);
+                          
                           let qty = ((newactualqty * parseFloat(Qualitypercentage)) / 100);
 
                           valueinprice = (gradeprice * qty).toFixed(2);
@@ -1274,7 +1317,7 @@ $(document).ready(function() {
 
                           } else {
                                  intvalue++;
-                                 intvalue++;
+                                intvalue++;
                                  intvalue++;
 
                                  if (intvalue - 1 < resultsArray.length) {
@@ -1343,7 +1386,7 @@ function restrictToTwoDecimals(inputElement) {
     value = value.replace(/[^0-9.]/g, '');
 
 
-    let parts = value.split('.');
+   let parts = value.split('.');
     if (parts.length > 2) {
         value = parts[0] + '.' + parts[1]; 
     }
@@ -1449,5 +1492,6 @@ $(document).ready(function() {
        <!-- PAGE LEVEL SCRIPTS-->
 </body>
 </html>
+
 
 

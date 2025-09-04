@@ -223,16 +223,32 @@ public class MillReceiptDaoImpl implements MillReceiptDao {
 
 	@Override
 	public List<Object[]> challanbaseddetails(String st) {
-		String sql = "   SELECT distinct  CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, a.Vehicle_no, CONVERT(varchar, a.DI_Date, 103) AS DI_Date,d.Nominal_qty ,d.Nominal_qty*100,a.Contract_No,a.Mill_code,d.Crop_year,d.Jute_variety,a.Regional_Office \r\n"
-				+ "                                        FROM  jcidispatch_details AS a \r\n"
-				+ "                           INNER join jcidispatch_details_child as d on d.Challan_no=a.Challan_no\r\n"
-				+ "          INNER join jcibos_generation AS s ON s.Challan_No = a.Challan_no \r\n"
-				+ "WHERE a.Challan_no =  '" + st + "'";
+	    String sql = "SELECT DISTINCT " +
+	            "CONVERT(varchar, a.Date_of_shipment, 103) AS Date_of_shipment, " +
+	            "a.Vehicle_no, " +
+	            "CONVERT(varchar, a.DI_Date, 103) AS DI_Date, " +
+	            "d.Nominal_qty, " +
+	            "d.Nominal_qty * 100 AS CalculatedQty, " +
+	            "a.Contract_No, " +
+	            "a.Mill_code, " +
+	            "d.Crop_year, " +
+	            "d.Jute_variety, " +
+	            "a.Regional_Office, " +
+	            "CONVERT(varchar, s.BOS_date, 103) AS BOS_date " +
+	            "FROM jcidispatch_details AS a " +
+	            "INNER JOIN jcidispatch_details_child AS d ON d.Challan_no = a.Challan_no " +
+	            "INNER JOIN jcibos_generation AS s ON s.Challan_No = a.Challan_no " +
+	            "WHERE a.Challan_no = :challanNo";
 
-		List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
-				.list();
-		return resultList1;
+	    List<Object[]> resultList1 = (List<Object[]>) this.sessionFactory
+	        .getCurrentSession()
+	        .createSQLQuery(sql)
+	        .setParameter("challanNo", st)
+	        .list();
+
+	    return resultList1;
 	}
+
 
 	@Override
 	public List<Object[]> gradeprice(String Challan, String contract, String cropyear, String jutevarirty) {
