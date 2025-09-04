@@ -2196,6 +2196,32 @@ public class Controller_V {
 		return mView;
 
 	}
+	
+	@RequestMapping("creditNoteExcel")
+	public ModelAndView creditNoteExcel(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		
+//		List<Object[]> list = creditNoteGenerationService.getAllVerifiedWeighment();
+		
+		ModelAndView mView = new ModelAndView("creditNoteExcelJsp");
+		
+//		String pagename = "generationOfCreditNotelist";
+//		int i = checkprivileges(pagename);
+//		if (i != 1) {
+//			redirectAttributes.addFlashAttribute("errorMessage", "Access denied");
+//			return new ModelAndView("Home");
+//		}
+		List<String> millid = nominalOfficialService.millid_MillReceipt();
+
+		mView.addObject("millid", millid);
+		
+		return mView;
+		
+	}
 
 	// set all the contract details in session and redirect to the generate credit
 	// note form page in the ajax response
@@ -4145,14 +4171,15 @@ public class Controller_V {
 
 				double percentage = Double.parseDouble(row[1].toString());
 				double compoqty = (sumqty * percentage) / 100;
+				compoqty = new BigDecimal(compoqty).setScale(2, RoundingMode.HALF_UP).doubleValue();
 				System.err.println("qty: " + compoqty);
 				sum += compoqty;
 //				sum = Math.round(sum);
-				compoqty = Math.round(compoqty);
 				fcDto1.setQty(compoqty);
-
 				listOfFcdto.add(fcDto1);
 			}
+			
+			sum = new BigDecimal(sum).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
 			parameters.put("total", sum);
 			parameters.put("qtyAllowed", QtyAllowed);
@@ -7664,9 +7691,8 @@ public class Controller_V {
 		if (username == null) {
 			return new ModelAndView("index");
 		}
-
-		List<Object[]> allDi = roDispatchService.getAllRoDi();
-
+	
+		List<Object[]> allDi = roDispatchService.getAllRoDi();		
 		ModelAndView mv = new ModelAndView("diRoList");
 		String pagename = "roDispatchList";
 		int i = checkprivileges(pagename);
@@ -9741,8 +9767,27 @@ public class Controller_V {
 
 		ModelAndView mv = new ModelAndView("WeightmentSlipList");
 		mv.addObject("WeightmentList", list);
-		System.err.println(list.toString());
+//		System.err.println(list.toString());
 		return mv;
+	}
+	
+	
+	@RequestMapping({"pendingWeightmentSlipList"})
+	public ModelAndView getAllPendingWeighmentList(HttpSession session, HttpServletRequest request,
+			RedirectAttributes redirect) {
+		String username = (String) request.getSession().getAttribute("usrname");
+		if (username == null) {
+			return new ModelAndView("index");
+		}
+		String Ro_id = (String) session.getAttribute("region");
+		List<Object[]> list = weighmentEntryService.getAllPendingWeightmentSlip(Ro_id);
+
+		ModelAndView mv = new ModelAndView("pendingWeightmentSlip");
+		mv.addObject("pendingWeightmentSlipList", list);
+//		System.err.println(list.toString());
+		System.err.println(list.size());
+		return mv;
+
 	}
 
 	@RequestMapping(value = { "WeightmentById" }, method = RequestMethod.GET)
@@ -10546,6 +10591,94 @@ public class Controller_V {
 		}
 
 	}
+	
+	
+	
+	@RequestMapping("downloadCreditNoteExcel")
+	public void downloadCreditNoteExcel(HttpServletRequest request, HttpServletResponse response) {
+	    String startDate = request.getParameter("startDate");
+	    String endDate = request.getParameter("endDate");
+	    String millName = request.getParameter("Mill").split("---")[1];
+	    
+
+	    try (Workbook workbook = new XSSFWorkbook()) {
+	        Sheet sheet = workbook.createSheet("Credit Note Data");
+
+	        // Header styling
+	        Font headerFont = workbook.createFont();
+	        headerFont.setBold(true);
+	        headerFont.setFontHeightInPoints((short) 11);
+	        headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+	        CellStyle headerCellStyle = workbook.createCellStyle();
+	        headerCellStyle.setFont(headerFont);
+
+	        // Define the columns
+	        String[] columns = {
+	            "BOS No", "BOS Date", "BOS Amount (₹)", "RO Name", "Center Name", "Credit Note No", 
+	            "Credit Note Date", "Contract No", "Contract Date", "Mill Name", "Unit Name", "Crop Year",
+	            "DPC10 Bale Mark", "HO DI No", "HO DI Date", "CN No", "Jute Variety", "Jute Grade", 
+	            "Rate per Quintal (₹)", "Nominal Quantity (Qtls)", "Actual Quantity (Qtls)", 
+	            "Short Quantity (Qtls)", "Credit Note Amount (₹)"
+	        };
+
+	        // Header row
+	        Row headerRow = sheet.createRow(0);
+	        for (int j = 0; j < columns.length; j++) {
+	            Cell cell = headerRow.createCell(j);
+	            cell.setCellValue(columns[j]);
+	            cell.setCellStyle(headerCellStyle);
+	        }
+
+	        List<Object[]> crnDataList = creditNoteGenerationService.getExcelDataByCrn(millName,startDate,endDate);
+	        int rowIndex = 1;
+
+	        for (Object[] row : crnDataList) {
+	            Row dataRow = sheet.createRow(rowIndex++);
+
+	            dataRow.createCell(0).setCellValue((String) row[0]);    // BOS No
+	            dataRow.createCell(1).setCellValue((String) row[1]);    // BOS Date
+	            dataRow.createCell(2).setCellValue((String) row[2]);    // BOS Amount
+	            dataRow.createCell(3).setCellValue((String) row[3]);    // RO Name
+	            dataRow.createCell(4).setCellValue((String) row[4]);    // Center Name
+	            dataRow.createCell(5).setCellValue((String) row[5]);    // Credit Note No
+	            dataRow.createCell(6).setCellValue((String) row[6]);    // Credit Note Date
+	            dataRow.createCell(7).setCellValue((String) row[7]);    // Contract No
+	            dataRow.createCell(8).setCellValue((String) row[8]);    // Contract Date
+	            dataRow.createCell(9).setCellValue((String) row[9]);    // Mill Name
+	            dataRow.createCell(10).setCellValue((String) row[22]);                // Unit Name (not in SQL)
+	            dataRow.createCell(11).setCellValue((String) row[10]);  // Crop Year
+	            dataRow.createCell(12).setCellValue((String) row[11]);  // Bale Mark
+	            dataRow.createCell(13).setCellValue((String) row[12]);  // HO DI No
+	            dataRow.createCell(14).setCellValue((String) row[13]);  // HO DI Date
+	            dataRow.createCell(15).setCellValue((String) row[14]);  // CN No (Consignment Note)
+	            dataRow.createCell(16).setCellValue((String) row[15]);  // Jute Variety
+	            dataRow.createCell(17).setCellValue((String) row[16]);  // Jute Grade
+	            dataRow.createCell(18).setCellValue((double) row[17]);  // Rate
+	            dataRow.createCell(19).setCellValue((double) row[18]);  // BOS Qty
+	            dataRow.createCell(20).setCellValue((double) row[19]);  // Actual Qty
+	            dataRow.createCell(21).setCellValue((double) row[20]);  // Short Qty
+	            dataRow.createCell(22).setCellValue((double) row[21]);  // Credit Note Amount
+	        }
+
+	        for (int j = 0; j < columns.length; j++) {
+	            sheet.autoSizeColumn(j);
+	        }
+
+	        // Set response headers
+	        String fileName = "CreditNote_" + millName + "_" + startDate + "_" +endDate+ ".xlsx";
+	        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+	        // Write workbook to response OutputStream
+	        workbook.write(response.getOutputStream());
+	        response.flushBuffer(); // Push everything to client
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Excel download failed: " + e.getMessage());
+	    }
+	}
+
 
 	@Value("${upload.cndndownloadxl}")
 	String cndndownloadxl;

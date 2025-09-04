@@ -158,7 +158,7 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 			BigDecimal totalAllocatedToMill = (BigDecimal) row[size - 1];
 			// System.err.println(pg.size());
 			int sizeOfComponents = pg.size();
-			int contractedValueForPerticularMill = 0;
+			double contractedValueForPerticularMill = 0;
 			for (int j = 0; j < sizeOfComponents; j++) {
 				// System.out.println(Double.parseDouble(gradeComp.get(j)) / 100 + "<->" +
 				// totalAllocatedToMill + "<->" + pg.get(j));
@@ -168,20 +168,22 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 				        .doubleValue();
 				
 				contractedValueForPerticularMill +=  millqty * pg.get(j);
-				System.err.println("Mill Qty : "  + millqty);
-				System.err.println("Price  : "  + pg.get(j));
+//				System.err.println("Mill Qty : "  + millqty);
+//				System.err.println("Price  : "  + pg.get(j));
+				
+//				System.err.println(millqty + "<-->" + pg.get(j) + " ==> " +  millqty * pg.get(j));
 			}
-			System.out.println("-------------------------------------------");
-			System.out.println(contractedValueForPerticularMill);
-			System.out.println("-------------------------------------------");
+//			System.out.println("-------------------------------------------");
+//			System.out.println(contractedValueForPerticularMill);
+//			System.out.println("-------------------------------------------");
 			// contractedValueForPerticularMill =
 			// Math.round(contractedValueForPerticularMill * 100.0) / 100.0;
-			contractedValueList.add(contractedValueForPerticularMill);
-			 System.out.println("temp : " + contractedValueForPerticularMill);
+			contractedValueList.add((int) contractedValueForPerticularMill);
+//			 System.out.println("Sum : " + contractedValueForPerticularMill);
 			totalContractedValue += contractedValueForPerticularMill;
 		}
 		// totalContractedValue = Math.round(totalContractedValue * 100.0) / 100.0;
-		 System.err.println(totalContractedValue);
+//		 System.err.println(totalContractedValue);
 
 		ModelAndView mView = new ModelAndView();
 		mView.addObject("List", rows);
@@ -274,24 +276,34 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		if (pg.size() != 0) {
 
 			double totalAllocatedToMill = Double.parseDouble(totalQtyOfMill);
-			int updatedContractedValue = 0;
-
-//		System.err.println("updated function called in i value starts from " + i + "---");
-//
-//		System.err.println(gradeArray.size() + " " + pg.size());
+			double updatedContractedValue = 0;
 
 			for (int j = 0; j < gradeArray.size(); j++) {
-
-				updatedContractedValue += ((int)Math.round((Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill))
-						* pg.get(j);
-//			System.err.println(((int)Math.round((Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill)) + " *********** " + pg.get(j));
-//			System.err.println("j = " + j + " " + "i = " + i);
-
+				
+				updatedContractedValue += (new BigDecimal(
+				        (Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill)
+				        .setScale(2, RoundingMode.HALF_UP)
+				        .doubleValue() * pg.get(j));
+				
+//				System.err.println(new BigDecimal(
+//				        (Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill)
+//				        .setScale(2, RoundingMode.HALF_UP)
+//				        .doubleValue()  + " X " +  pg.get(j) + " = " +  
+//				        (new BigDecimal(
+//						        (Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill)
+//						        .setScale(2, RoundingMode.HALF_UP)
+//						        .doubleValue() * pg.get(j)));
+				
+//				double test =  new BigDecimal(
+//					        (Double.parseDouble(gradeArray.get(j)) / 100) * totalAllocatedToMill)
+//					        .setScale(2, RoundingMode.HALF_UP)
+//					        .doubleValue();
+//				contractedValueForPerticularMill +=  millqty * pg.get(j);7
 			}
 
 			// System.err.println(updatedContractedValue);
 
-			return updatedContractedValue;
+			return (int)updatedContractedValue;
 
 		} else {
 			return -1;
@@ -343,7 +355,6 @@ public class ContractGenerationDaoImpl2 implements ContractGenerationDao2 {
 		String sql = "select client_address1 , client_address2 , client_location , client_pin from jcimilldetailmaster where client_name = '"
 				+ millNameString + "'";
 		return (List<Object>) currentSession().createSQLQuery(sql).list();
-
 	}
 
 	@Override

@@ -49,8 +49,7 @@ public class WeightmentDaoImpl implements WeightmentDao{
 		 }
           else {
         	  
-         
-		listString ="  SELECT * \r\n"
+		   listString ="  SELECT * \r\n"
 				+ "FROM jciweighment_entry \r\n"
 				+ "JOIN jcibos_generation ON jciweighment_entry.Bos_no = jcibos_generation.Bill_of_supply_no\r\n"
 				+ "JOIN jcidispatch_details ON jcibos_generation.Challan_No = jcidispatch_details.Challan_no \r\n"
@@ -59,7 +58,7 @@ public class WeightmentDaoImpl implements WeightmentDao{
           }
 		List<Object[]> list = currentSession().createSQLQuery(listString).list();
 		
-		System.err.println(list.toString());
+//		System.err.println(list.toString());
 		return list;	
 		
 	}
@@ -139,6 +138,47 @@ public class WeightmentDaoImpl implements WeightmentDao{
 		return ;
 		
 		
+	}
+	@Override
+	public List<Object[]> getAllPendingWeightmentSlip(String ro_id) {
+		 String regionString=(String)session1.getAttribute("regionId");
+         Integer roleId = (Integer)session1.getAttribute("roleId");
+         String dpcId = (String)session1.getAttribute("dpcId");
+         String listString ="";
+          if(roleId == 52|| roleId==53|| roleId == 54) {//DPC roles
+        	  listString ="select (bos.Ro_id+'-'+ro.roname) as ro ,(bos.DPCID+'-'+pur.centername) as center,\r\n"
+        	  		+ " bos.Bill_of_supply_no , bos.BOS_date from \r\n"
+        	  		+ "jcibos_generation bos \r\n"
+        	  		+ "inner join jcirodetails ro on ro.roid = bos.Ro_id\r\n"
+        	  		+ "inner join jcipurchasecenter pur on bos.DPCID = pur.CENTER_CODE \r\n"
+        	  		+ "where bos.DPCID = '"+dpcId+"' and  bos.Bill_of_supply_no not in (select Bos_no from jciweighment_entry) and bos.Bos_file_path <> null \r\n"
+        	  		+ "order by ro.roname asc,pur.centername asc , convert(date , bos.BOS_date,105) desc\r\n"
+        	  		+ "\r\n"
+        	  		+ "";
+		 }else if(roleId == 6 || roleId==7 || roleId == 8 || roleId == 49) {
+			  listString ="select (bos.Ro_id+'-'+ro.roname) as ro ,(bos.DPCID+'-'+pur.centername) as center,\r\n"
+	        	  		+ " bos.Bill_of_supply_no , bos.BOS_date from \r\n"
+	        	  		+ "jcibos_generation bos \r\n"
+	        	  		+ "inner join jcirodetails ro on ro.roid = bos.Ro_id\r\n"
+	        	  		+ "inner join jcipurchasecenter pur on bos.DPCID = pur.CENTER_CODE \r\n"
+	        	  		+ "where  bos.Ro_id = '"+regionString+"' and  bos.Bill_of_supply_no not in (select Bos_no from jciweighment_entry) and bos.Bos_file_path <> null \r\n"
+	        	  		+ "order by ro.roname asc,pur.centername asc , convert(date , bos.BOS_date,105) desc\r\n"
+	        	  		+ "\r\n"
+	        	  		+ "";
+		 }
+          else {
+        	  listString ="select (bos.Ro_id+'-'+ro.roname) as ro ,(bos.DPCID+'-'+pur.centername) as center,\r\n"
+          	  		+ " bos.Bill_of_supply_no , bos.BOS_date from \r\n"
+          	  		+ "jcibos_generation bos \r\n"
+          	  		+ "inner join jcirodetails ro on ro.roid = bos.Ro_id\r\n"
+          	  		+ "inner join jcipurchasecenter pur on bos.DPCID = pur.CENTER_CODE \r\n"
+          	  		+ "where bos.Bill_of_supply_no not in (select Bos_no from jciweighment_entry) and bos.Bos_file_path <> null \r\n"
+          	  		+ "order by ro.roname asc,pur.centername asc , convert(date , bos.BOS_date,105) desc\r\n"
+          	  		+ "\r\n"
+          	  		+ "";
+          }
+		List<Object[]> list = currentSession().createSQLQuery(listString).list();
+		return list;
 	}
 
 }

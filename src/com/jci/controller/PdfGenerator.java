@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Month;
@@ -123,35 +124,40 @@ public class PdfGenerator {
 		distributionTable.addCell(new Cell().add("Quantity (Qtls.)").setBold()).setTextAlignment(TextAlignment.CENTER);
 		distributionTable.addCell(new Cell().add("Price (Rs./Qtl.)").setBold()).setTextAlignment(TextAlignment.CENTER);
 
-		int totalCompositionInt = 0;
+		double totalCompositionDouble = 0;
 		double totalContractedprice = 0.0;
 		for (int i = 0; i < compList.size(); i++) {
-			Double rObject1 = Double.parseDouble(compList.get(i));
 			Object[] rObject2 = priceList.get(0);
-			// System.err.println("grade" + i + 1 + " ");
-			Double composition = (rObject1 / 100) * qty; // Qty in Qtls
-			int compositionInt = (int) Math.round(composition);
-			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();
-			totalContractedprice += compositionInt * priceDouble;
-//			System.err.println("composition " + composition);
-//			System.err.println("gradePrice " + priceDouble);
-//			System.err.println("Amount of grade " + priceDouble);
+	
+			Double composition = new BigDecimal(
+			        (Double.parseDouble(compList.get(i)) / 100)*qty)
+			        .setScale(2, RoundingMode.HALF_UP)
+			        .doubleValue();
 
-			totalCompositionInt += compositionInt;
+			Double priceDouble = ((BigDecimal) rObject2[i]).doubleValue();		
+			totalContractedprice += composition * priceDouble;
+			
+//			System.out.println(composition + " XX " + priceDouble + " == " + composition * priceDouble);
+
+			totalCompositionDouble += composition;
 			distributionTable.addCell(new Cell().add(varietyArray.get(i) + "")).setTextAlignment(TextAlignment.CENTER);
-			distributionTable.addCell(new Cell().add(compositionInt + "").setTextAlignment(TextAlignment.CENTER));
-
+			distributionTable.addCell(new Cell().add(composition + "").setTextAlignment(TextAlignment.CENTER));
 			distributionTable.addCell(new Cell().add("##.##").setTextAlignment(TextAlignment.CENTER));
 		}
 
 		int finalPrice = (int) totalContractedprice;
+		
+		totalCompositionDouble = new BigDecimal(
+				totalCompositionDouble)
+		        .setScale(2, RoundingMode.HALF_UP)
+		        .doubleValue();
 
 		distributionTable.addCell(new Cell().add("Total").setBold());
-		distributionTable.addCell(new Cell().add(totalCompositionInt + "").setBold());
+		distributionTable.addCell(new Cell().add(totalCompositionDouble + "").setBold());
 		distributionTable.addCell(new Cell().add(" Rs " + finalPrice));
 		
 		Paragraph messageParagraph = new Paragraph().add("Dear Sir(s)").add("\n").add("We have this day sold to you "
-				+ totalCompositionInt + " quintals of raw jute / Mesta under linkage of " + cropyear
+				+ totalCompositionDouble + " quintals of raw jute / Mesta under linkage of " + cropyear
 				+ " Crop of the following variety and grades at prices and terms and conditions specified from page no. 2 to 9 including "
 				+ "Annexure - I & II .").add("\n")
 				.add("The grade wise bifurcation under the sale contract quantity is furnished below : ");

@@ -571,7 +571,7 @@ input[type="radio"] {
                                                          contentToDisplay += "<tr><td style='border: 1px solid black; width: 50%;'><span style='color: blue;'>" +
                                                             d[i][0] +
                                                             "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
-                                                            (d[i][1] * d[2] / 100) +
+                                                            (d[i][1] * d[2] / 100).toFixed(2) +
                                                             "</span></td>" +
                                                             "</span></td><td style='border: 1px solid black; width: 20%;'><span style='color: green;'>" +
                                                             no + "</span></td></tr>";

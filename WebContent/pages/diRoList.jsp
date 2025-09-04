@@ -133,7 +133,7 @@
             }
         }
         // Format the sum to one decimal point
-        String formattedSum = String.format("%.1f", sum);
+        String formattedSum = String.format("%.2f", sum);
     %>
     <%= formattedSum %>
 </td>

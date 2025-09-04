@@ -28,4 +28,6 @@ public interface WeighmentEntryService {
 	public List<Object[]> getSlipDetails(String id);
 
 	public void editVerification(Double gross, Double actual, Double net, Date currDate, String bosNo);
+
+	public List<Object[]> getAllPendingWeightmentSlip(String ro_id);
 }
